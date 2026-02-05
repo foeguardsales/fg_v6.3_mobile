@@ -319,6 +319,8 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
   // Other fields
   const [deliveryDate, setDeliveryDate] = useState('');
   const [isSubscription, setIsSubscription] = useState(false);
+  const [subscriptionFrequency, setSubscriptionFrequency] = useState('monthly');
+  const [orderNotes, setOrderNotes] = useState('');
 
   const discount = DISCOUNT_RATES[boxSize] || 0;
 
