@@ -664,9 +664,63 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
           />
           <div className="subscription-info">
             <strong>Subscribe & Save 10%</strong>
-            <p>Get recurring deliveries every month. Pause or cancel anytime.</p>
+            <p>Get recurring deliveries. Pause or cancel anytime.</p>
           </div>
         </label>
+        
+        {isSubscription && (
+          <div className="subscription-frequency" style={{ marginTop: '16px', paddingLeft: '40px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '14px' }}>
+              Delivery Frequency:
+            </label>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <label className={`frequency-option ${subscriptionFrequency === 'biweekly' ? 'active' : ''}`}>
+                <input
+                  type="radio"
+                  name="frequency"
+                  value="biweekly"
+                  checked={subscriptionFrequency === 'biweekly'}
+                  onChange={(e) => setSubscriptionFrequency(e.target.value)}
+                />
+                Every 2 Weeks
+              </label>
+              <label className={`frequency-option ${subscriptionFrequency === 'monthly' ? 'active' : ''}`}>
+                <input
+                  type="radio"
+                  name="frequency"
+                  value="monthly"
+                  checked={subscriptionFrequency === 'monthly'}
+                  onChange={(e) => setSubscriptionFrequency(e.target.value)}
+                />
+                Monthly
+              </label>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Order/Delivery Notes */}
+      <div className="checkout-section" style={{ borderBottom: 'none' }}>
+        <h3>Delivery & Order Instructions</h3>
+        <p className="checkout-note">Any special requests for your order or delivery?</p>
+        <div className="form-group">
+          <textarea
+            value={orderNotes}
+            onChange={(e) => setOrderNotes(e.target.value)}
+            placeholder="e.g., Leave at back door, ring doorbell, specific cutting instructions..."
+            rows={3}
+            style={{
+              width: '100%',
+              padding: '14px 16px',
+              border: '2px solid #D9C8B3',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontFamily: 'inherit',
+              resize: 'vertical'
+            }}
+            data-testid="order-notes"
+          />
+        </div>
       </div>
 
       {error && (
