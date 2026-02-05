@@ -1898,16 +1898,16 @@ h1, h2, h3, h4 {
 
 /* Collapsible Sections */
 .product-details-sections {
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
   gap: 12px;
 }
 
 .collapsible-section {
-  background: var(--white);
-  border-radius: var(--radius-lg);
+  background: #FFFFFF !important;
+  border-radius: 20px !important;
   overflow: hidden;
-  border: 1px solid var(--khaki-light);
+  border: 1px solid #E8DDD0 !important;
 }
 
 .collapsible-header {
