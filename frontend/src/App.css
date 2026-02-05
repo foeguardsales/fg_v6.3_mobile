@@ -128,14 +128,14 @@ h1, h2, h3, h4 {
 .nav-mobile-link {
   background: none;
   border: none;
-  color: var(--text-inverse);
+  color: #A41E34;
   font-family: 'Source Sans 3', sans-serif;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   padding: 14px 0;
   text-align: left;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(164, 30, 52, 0.15);
 }
 
 .nav-mobile-link:last-child {
