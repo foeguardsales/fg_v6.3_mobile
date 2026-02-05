@@ -1774,14 +1774,14 @@ h1, h2, h3, h4 {
 
 /* ========== PRODUCT DETAIL PAGE (REDESIGNED) ========== */
 .product-detail-page {
-  background: var(--offwhite);
+  background: #F2F4F3 !important;
   min-height: 100vh;
   padding: 0 0 80px;
 }
 
 .product-detail-wrapper {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 800px !important;
+  margin: 0 auto !important;
   padding: 32px 24px;
 }
 
