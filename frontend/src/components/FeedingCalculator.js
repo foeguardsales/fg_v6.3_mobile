@@ -213,7 +213,7 @@ export const FeedingCalculator = ({ onComplete }) => {
               <strong style={{ color: '#8B4513' }}>{pet.name}'s Recommendation:</strong>
               <p style={{ margin: '8px 0 0 0', color: '#555' }}>
                 Feed approximately <strong>{calculateFeeding(pet)} oz</strong> per day 
-                ({(calculateFeeding(pet) / 16).toFixed(2)} lbs/day)
+                ({(calculateFeeding(pet) / 16).toFixed(2)} lbs/day) | <strong>{((calculateFeeding(pet) / 16) * 30).toFixed(1)} lbs/month</strong>
               </p>
             </div>
           )}
