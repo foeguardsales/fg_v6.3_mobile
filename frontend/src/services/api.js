@@ -41,11 +41,11 @@ export const orderService = {
     return data;
   },
 
-  manageSubscription: async (orderId, action) => {
+  manageSubscription: async (orderId, action, payload = {}) => {
     const token = authService.getToken();
     const { data } = await axios.post(
       `${API}/subscriptions/${action}`,
-      { order_id: orderId },
+      { order_id: orderId, ...payload },
       { headers: { Authorization: `Bearer ${token}` } }
     );
     return data;
