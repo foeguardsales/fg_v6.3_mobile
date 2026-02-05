@@ -415,7 +415,9 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
         tax, 
         total,
         box_discount: discount * 100,
-        is_subscription: isSubscription
+        is_subscription: isSubscription,
+        subscription_frequency: isSubscription ? subscriptionFrequency : null,
+        order_notes: orderNotes
       };
 
       const { data } = await axios.post(`${API}/create-payment-intent`, checkoutData);
