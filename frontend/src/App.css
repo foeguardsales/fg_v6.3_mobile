@@ -1834,10 +1834,10 @@ h1, h2, h3, h4 {
 
 /* Product Hero */
 .product-hero {
-  background: var(--white);
-  border-radius: var(--radius-xl);
+  background: #FFFFFF !important;
+  border-radius: 20px !important;
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 16px rgba(43, 43, 43, 0.08) !important;
   margin-bottom: 24px;
 }
 
