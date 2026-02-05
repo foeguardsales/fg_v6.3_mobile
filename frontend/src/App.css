@@ -102,6 +102,55 @@ h1, h2, h3, h4 {
   text-decoration-color: rgba(255,255,255,0.5);
 }
 
+.nav-mobile-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-inverse);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.nav-mobile-menu {
+  display: none;
+  flex-direction: column;
+  padding: 0 20px 20px;
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.nav-mobile-link {
+  background: none;
+  border: none;
+  color: var(--text-inverse);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 14px 0;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-mobile-link:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: none !important;
+  }
+  
+  .nav-mobile-btn {
+    display: block;
+  }
+  
+  .nav-mobile-menu {
+    display: flex;
+  }
+}
+
 /* ========== BUTTONS ========== */
 .btn-primary {
   background: var(--barn-red);
