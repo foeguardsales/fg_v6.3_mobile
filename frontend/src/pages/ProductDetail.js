@@ -23,16 +23,39 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   
   return (
-    <div className="collapsible-section">
+    <div style={{
+      background: '#FFFFFF',
+      borderRadius: '20px',
+      overflow: 'hidden',
+      border: '1px solid #E8DDD0'
+    }}>
       <button 
-        className="collapsible-header"
         onClick={() => setIsOpen(!isOpen)}
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '20px 24px',
+          background: isOpen ? '#FAF8F5' : 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          fontFamily: 'Crimson Pro, Georgia, serif',
+          fontSize: '20px',
+          fontWeight: '600',
+          color: '#2B2B2B',
+          transition: 'background 0.2s ease'
+        }}
       >
         <span>{title}</span>
-        {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+        {isOpen ? <ChevronUp size={20} color="#A41E34" /> : <ChevronDown size={20} color="#A41E34" />}
       </button>
       {isOpen && (
-        <div className="collapsible-content">
+        <div style={{
+          padding: '0 24px 24px',
+          borderTop: '1px solid #E8DDD0',
+          paddingTop: '20px'
+        }}>
           {children}
         </div>
       )}
