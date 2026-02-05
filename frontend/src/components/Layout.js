@@ -1,24 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const Navbar = () => {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  
   return (
     <nav className="navbar">
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <img 
           src="https://customer-assets.emergentagent.com/job_b173aa98-8700-42d1-aca5-6a3b8220c855/artifacts/0fo0kwz0_fglogo.png" 
           alt="FoeGuard" 
-          style={{ height: '60px', cursor: 'pointer' }}
+          style={{ height: '56px', cursor: 'pointer' }}
           onClick={() => navigate('/')}
+          data-testid="nav-logo"
         />
-        <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-          <button onClick={() => navigate('/build-box')} className="nav-link">Order</button>
-          <button onClick={() => navigate('/about')} className="nav-link">About Us</button>
-          <button onClick={() => navigate('/calculator')} className="nav-link">Feeding Calculator</button>
-          <button onClick={() => navigate('/account')} className="nav-link">Account</button>
+        {/* Desktop Nav */}
+        <div className="nav-desktop" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+          <button onClick={() => navigate('/build-box')} className="nav-link" data-testid="nav-order">Order</button>
+          <button onClick={() => navigate('/about')} className="nav-link" data-testid="nav-about">About Us</button>
+          <button onClick={() => navigate('/calculator')} className="nav-link" data-testid="nav-calculator">Calculator</button>
+          <button onClick={() => navigate('/account')} className="nav-link" data-testid="nav-account">Account</button>
         </div>
+        {/* Mobile Menu Button */}
+        <button 
+          className="nav-mobile-btn"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+          data-testid="nav-mobile-toggle"
+        >
+          {menuOpen ? '✕' : '☰'}
+        </button>
       </div>
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="nav-mobile-menu" data-testid="nav-mobile-menu">
+          <button onClick={() => { navigate('/build-box'); setMenuOpen(false); }} className="nav-mobile-link">Order</button>
+          <button onClick={() => { navigate('/about'); setMenuOpen(false); }} className="nav-mobile-link">About Us</button>
+          <button onClick={() => { navigate('/calculator'); setMenuOpen(false); }} className="nav-mobile-link">Calculator</button>
+          <button onClick={() => { navigate('/account'); setMenuOpen(false); }} className="nav-mobile-link">Account</button>
+        </div>
+      )}
     </nav>
   );
 };
