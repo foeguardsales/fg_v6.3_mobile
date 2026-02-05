@@ -1,53 +1,59 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import axios from 'axios';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import './App.css';
+
+import { LandingPage } from './pages/LandingPage';
+import { BoxBuilder } from './pages/BoxBuilder';
+import { ProductDetailPage } from './pages/ProductDetail';
+import { AboutPage, PoliciesPage, TermsPage } from './pages/ContentPages';
+import { CalculatorPage } from './pages/CalculatorPage';
+import { AccountPage } from './pages/AccountPage';
+import { AdminPage } from './pages/AdminPage';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+let stripePromise = null;
 
 function App() {
+  const [stripeReady, setStripeReady] = useState(false);
+
+  useEffect(() => {
+    const initStripe = async () => {
+      try {
+        const { data } = await axios.get(`${API}/stripe-public-key`);
+        stripePromise = loadStripe(data.publicKey);
+        setStripeReady(true);
+      } catch (error) {
+        console.error('Failed to load Stripe:', error);
+      }
+    };
+    initStripe();
+  }, []);
+
+  if (!stripeReady) {
+    return <div style={{ padding: '40px', textAlign: 'center' }}>Loading...</div>;
+  }
+
   return (
-    <div className="App">
+    <Elements stripe={stripePromise}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/build-box" element={<BoxBuilder />} />
+          <Route path="/product/:productId" element={<ProductDetailPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/policies" element={<PoliciesPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/calculator" element={<CalculatorPage />} />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </Elements>
   );
 }
 

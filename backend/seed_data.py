@@ -1,0 +1,444 @@
+# Base ingredients for each protein
+BASE_INGREDIENTS = {
+    "chicken": [
+        "Ground chicken with bone",
+        "Chicken liver",
+        "Chicken heart",
+        "Organic kale",
+        "Organic spinach",
+        "Organic carrots",
+        "Wild blueberries",
+        "Kelp powder",
+        "Fish oil (omega-3)"
+    ],
+    "beef": [
+        "Grass-fed ground beef",
+        "Beef liver",
+        "Beef kidney",
+        "Beef heart",
+        "Organic broccoli",
+        "Organic sweet potato",
+        "Pumpkin",
+        "Kelp powder",
+        "Fish oil (omega-3)"
+    ],
+    "duck": [
+        "Ground duck with bone",
+        "Duck liver",
+        "Duck heart",
+        "Organic chard",
+        "Organic celery",
+        "Cranberries",
+        "Kelp powder",
+        "Fish oil (omega-3)"
+    ],
+    "fish": [
+        "Wild-caught salmon",
+        "Wild-caught mackerel",
+        "Salmon oil",
+        "Organic green beans",
+        "Organic zucchini",
+        "Organic berries",
+        "Kelp powder"
+    ],
+    "goat": [
+        "Ground goat meat",
+        "Goat liver",
+        "Goat heart",
+        "Organic kale",
+        "Organic carrots",
+        "Organic apples",
+        "Kelp powder",
+        "Fish oil (omega-3)"
+    ],
+    "lamb": [
+        "Ground lamb",
+        "Lamb liver",
+        "Lamb kidney",
+        "Organic spinach",
+        "Organic pumpkin",
+        "Blueberries",
+        "Kelp powder",
+        "Fish oil (omega-3)"
+    ],
+    "rabbit": [
+        "Ground rabbit with bone",
+        "Rabbit liver",
+        "Rabbit heart",
+        "Organic kale",
+        "Organic carrots",
+        "Cranberries",
+        "Kelp powder",
+        "Fish oil (omega-3)"
+    ],
+    "turkey": [
+        "Ground turkey with bone",
+        "Turkey liver",
+        "Turkey heart",
+        "Organic sweet potato",
+        "Organic green beans",
+        "Blueberries",
+        "Kelp powder",
+        "Fish oil (omega-3)"
+    ]
+}
+
+NUTRITION_FACTS = {
+    "chicken": {
+        "protein": "18%",
+        "fat": "12%",
+        "fiber": "2%",
+        "moisture": "68%",
+        "calories": "150 kcal per 100g"
+    },
+    "beef": {
+        "protein": "20%",
+        "fat": "15%",
+        "fiber": "2%",
+        "moisture": "65%",
+        "calories": "180 kcal per 100g"
+    },
+    "duck": {
+        "protein": "19%",
+        "fat": "16%",
+        "fiber": "2%",
+        "moisture": "64%",
+        "calories": "190 kcal per 100g"
+    },
+    "fish": {
+        "protein": "22%",
+        "fat": "14%",
+        "fiber": "1.5%",
+        "moisture": "66%",
+        "calories": "170 kcal per 100g"
+    },
+    "goat": {
+        "protein": "21%",
+        "fat": "13%",
+        "fiber": "2%",
+        "moisture": "67%",
+        "calories": "165 kcal per 100g"
+    },
+    "lamb": {
+        "protein": "20%",
+        "fat": "17%",
+        "fiber": "2%",
+        "moisture": "64%",
+        "calories": "195 kcal per 100g"
+    },
+    "rabbit": {
+        "protein": "23%",
+        "fat": "11%",
+        "fiber": "2%",
+        "moisture": "68%",
+        "calories": "155 kcal per 100g"
+    },
+    "turkey": {
+        "protein": "19%",
+        "fat": "12%",
+        "fiber": "2%",
+        "moisture": "68%",
+        "calories": "150 kcal per 100g"
+    }
+}
+
+HOW_TO_USE = {
+    "comfort_dinner": "Thaw in refrigerator for 24 hours. Serve at room temperature. Feed 2-3% of your dog's body weight daily, divided into two meals. Adjust portions based on activity level and weight goals. Store frozen until ready to use. Once thawed, use within 3-4 days.",
+    "primal_feast": "Thaw in refrigerator for 24 hours. Serve at room temperature or slightly warmed. Feed 2-3% of your dog's body weight daily, split into two meals. Monitor your pet's condition and adjust as needed. Keep frozen until use. Refrigerate after thawing and use within 3-4 days."
+}
+
+COMFORT_DINNER_PRODUCTS = [
+    {
+        "product_id": "cd-chicken",
+        "product_line": "comfort_dinner",
+        "protein_type": "chicken",
+        "name": "Comfort Dinner Chicken",
+        "description": "Farm-fresh chicken, perfect for sensitive stomachs. Our Comfort Dinner line is gently prepared to support digestive health while providing complete, balanced nutrition. Ideal for dogs transitioning to raw or those with food sensitivities.",
+        "ingredients": BASE_INGREDIENTS["chicken"],
+        "nutrition_facts": NUTRITION_FACTS["chicken"],
+        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "pricing": [
+            {"size_lb": 6, "price": 26.99, "price_per_lb": 4.50, "savings_percent": 0},
+            {"size_lb": 12, "price": 48.60, "price_per_lb": 4.05, "savings_percent": 10},
+            {"size_lb": 18, "price": 73.17, "price_per_lb": 4.07, "savings_percent": 5},
+            {"size_lb": 24, "price": 97.20, "price_per_lb": 4.05, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "cd-beef",
+        "product_line": "comfort_dinner",
+        "protein_type": "beef",
+        "name": "Comfort Dinner Beef",
+        "description": "Grass-fed Ontario beef, rich in nutrients. Packed with iron and B vitamins, our beef formula supports muscle development and energy. Sourced from local farms committed to sustainable practices.",
+        "ingredients": BASE_INGREDIENTS["beef"],
+        "nutrition_facts": NUTRITION_FACTS["beef"],
+        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 69.97, "price_per_lb": 5.83, "savings_percent": 12},
+            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
+            {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "cd-duck",
+        "product_line": "comfort_dinner",
+        "protein_type": "duck",
+        "name": "Comfort Dinner Duck",
+        "description": "Premium duck, great for food sensitivities. Duck is naturally rich in iron and selenium, supporting immune health. A novel protein option for dogs with common protein allergies.",
+        "ingredients": BASE_INGREDIENTS["duck"],
+        "nutrition_facts": NUTRITION_FACTS["duck"],
+        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 69.97, "price_per_lb": 5.83, "savings_percent": 12},
+            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
+            {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "cd-fish",
+        "product_line": "comfort_dinner",
+        "protein_type": "fish",
+        "name": "Comfort Dinner Fish",
+        "description": "Wild-caught fish, omega-3 rich. Supports healthy skin, coat, and cognitive function. Sustainably sourced from cold Canadian waters for maximum freshness and nutritional value.",
+        "ingredients": BASE_INGREDIENTS["fish"],
+        "nutrition_facts": NUTRITION_FACTS["fish"],
+        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "pricing": [
+            {"size_lb": 6, "price": 44.95, "price_per_lb": 7.49, "savings_percent": 0},
+            {"size_lb": 12, "price": 80.95, "price_per_lb": 6.75, "savings_percent": 10},
+            {"size_lb": 18, "price": 128.27, "price_per_lb": 7.13, "savings_percent": 5},
+            {"size_lb": 24, "price": 161.46, "price_per_lb": 6.73, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "cd-goat",
+        "product_line": "comfort_dinner",
+        "protein_type": "goat",
+        "name": "Comfort Dinner Goat",
+        "description": "Lean goat protein, novel protein option. Highly digestible and lower in fat than traditional proteins. Excellent for dogs with allergies or weight management needs.",
+        "ingredients": BASE_INGREDIENTS["goat"],
+        "nutrition_facts": NUTRITION_FACTS["goat"],
+        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "pricing": [
+            {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
+            {"size_lb": 12, "price": 107.88, "price_per_lb": 8.99, "savings_percent": 10},
+            {"size_lb": 18, "price": 170.89, "price_per_lb": 9.49, "savings_percent": 5},
+            {"size_lb": 24, "price": 215.78, "price_per_lb": 8.99, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "cd-lamb",
+        "product_line": "comfort_dinner",
+        "protein_type": "lamb",
+        "name": "Comfort Dinner Lamb",
+        "description": "Premium lamb, highly digestible. Rich in zinc and B vitamins, supporting immune function and metabolism. Grass-fed for superior flavor and nutrition.",
+        "ingredients": BASE_INGREDIENTS["lamb"],
+        "nutrition_facts": NUTRITION_FACTS["lamb"],
+        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "pricing": [
+            {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
+            {"size_lb": 12, "price": 107.88, "price_per_lb": 8.99, "savings_percent": 10},
+            {"size_lb": 18, "price": 170.89, "price_per_lb": 9.49, "savings_percent": 5},
+            {"size_lb": 24, "price": 215.78, "price_per_lb": 8.99, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "cd-rabbit",
+        "product_line": "comfort_dinner",
+        "protein_type": "rabbit",
+        "name": "Comfort Dinner Rabbit",
+        "description": "Exotic rabbit protein, hypoallergenic. One of the leanest proteins available, perfect for elimination diets. High in B12 and selenium for optimal health.",
+        "ingredients": BASE_INGREDIENTS["rabbit"],
+        "nutrition_facts": NUTRITION_FACTS["rabbit"],
+        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "pricing": [
+            {"size_lb": 6, "price": 86.28, "price_per_lb": 14.38, "savings_percent": 0},
+            {"size_lb": 12, "price": 155.30, "price_per_lb": 12.94, "savings_percent": 10},
+            {"size_lb": 18, "price": 246.04, "price_per_lb": 13.67, "savings_percent": 5},
+            {"size_lb": 24, "price": 310.27, "price_per_lb": 12.93, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "cd-turkey",
+        "product_line": "comfort_dinner",
+        "protein_type": "turkey",
+        "name": "Comfort Dinner Turkey",
+        "description": "Lean turkey, low-fat option. High in protein and low in fat, ideal for maintaining healthy weight. Rich in tryptophan for calm, balanced energy.",
+        "ingredients": BASE_INGREDIENTS["turkey"],
+        "nutrition_facts": NUTRITION_FACTS["turkey"],
+        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 69.94, "price_per_lb": 5.83, "savings_percent": 13},
+            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
+            {"size_lb": 24, "price": 143.86, "price_per_lb": 5.99, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    }
+]
+
+PRIMAL_FEAST_PRODUCTS = [
+    {
+        "product_id": "pf-chicken",
+        "product_line": "primal_feast",
+        "protein_type": "chicken",
+        "name": "Primal Feast Chicken",
+        "description": "Raw chicken feast, species-appropriate nutrition. Our Primal Feast line delivers raw, biologically appropriate meals that mirror what carnivores eat in nature. Maximum nutrient retention through minimal processing.",
+        "ingredients": BASE_INGREDIENTS["chicken"],
+        "nutrition_facts": NUTRITION_FACTS["chicken"],
+        "how_to_use": HOW_TO_USE["primal_feast"],
+        "pricing": [
+            {"size_lb": 6, "price": 26.99, "price_per_lb": 4.50, "savings_percent": 0},
+            {"size_lb": 12, "price": 48.60, "price_per_lb": 4.05, "savings_percent": 10},
+            {"size_lb": 18, "price": 73.17, "price_per_lb": 4.07, "savings_percent": 5},
+            {"size_lb": 24, "price": 97.20, "price_per_lb": 4.05, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "pf-beef",
+        "product_line": "primal_feast",
+        "protein_type": "beef",
+        "name": "Primal Feast Beef",
+        "description": "Raw beef, protein-packed. Muscle meat, organ meats, and ground bone provide complete nutrition. Rich, satisfying flavor dogs instinctively crave.",
+        "ingredients": BASE_INGREDIENTS["beef"],
+        "nutrition_facts": NUTRITION_FACTS["beef"],
+        "how_to_use": HOW_TO_USE["primal_feast"],
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 69.97, "price_per_lb": 5.83, "savings_percent": 12},
+            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
+            {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "pf-duck",
+        "product_line": "primal_feast",
+        "protein_type": "duck",
+        "name": "Primal Feast Duck",
+        "description": "Raw duck, rich flavor. Naturally fatty acids support skin and coat health. Wild game nutrition for the domestic dog.",
+        "ingredients": BASE_INGREDIENTS["duck"],
+        "nutrition_facts": NUTRITION_FACTS["duck"],
+        "how_to_use": HOW_TO_USE["primal_feast"],
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 69.97, "price_per_lb": 5.83, "savings_percent": 12},
+            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
+            {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "pf-fish",
+        "product_line": "primal_feast",
+        "protein_type": "fish",
+        "name": "Primal Feast Fish",
+        "description": "Raw fish, omega-rich. Cold-water fish provide EPA and DHA for brain and heart health. Clean, sustainable protein source.",
+        "ingredients": BASE_INGREDIENTS["fish"],
+        "nutrition_facts": NUTRITION_FACTS["fish"],
+        "how_to_use": HOW_TO_USE["primal_feast"],
+        "pricing": [
+            {"size_lb": 6, "price": 44.95, "price_per_lb": 7.49, "savings_percent": 0},
+            {"size_lb": 12, "price": 80.95, "price_per_lb": 6.75, "savings_percent": 10},
+            {"size_lb": 18, "price": 128.27, "price_per_lb": 7.13, "savings_percent": 5},
+            {"size_lb": 24, "price": 161.46, "price_per_lb": 6.73, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "pf-goat",
+        "product_line": "primal_feast",
+        "protein_type": "goat",
+        "name": "Primal Feast Goat",
+        "description": "Raw goat, novel protein. Lean and easily digestible, perfect for sensitive systems. Unique flavor profile for variety.",
+        "ingredients": BASE_INGREDIENTS["goat"],
+        "nutrition_facts": NUTRITION_FACTS["goat"],
+        "how_to_use": HOW_TO_USE["primal_feast"],
+        "pricing": [
+            {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
+            {"size_lb": 12, "price": 107.88, "price_per_lb": 8.99, "savings_percent": 10},
+            {"size_lb": 18, "price": 170.89, "price_per_lb": 9.49, "savings_percent": 5},
+            {"size_lb": 24, "price": 215.78, "price_per_lb": 8.99, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "pf-lamb",
+        "product_line": "primal_feast",
+        "protein_type": "lamb",
+        "name": "Primal Feast Lamb",
+        "description": "Raw lamb, premium quality. Grass-fed lamb delivers CLA and omega-3s. Rich taste and complete amino acid profile.",
+        "ingredients": BASE_INGREDIENTS["lamb"],
+        "nutrition_facts": NUTRITION_FACTS["lamb"],
+        "how_to_use": HOW_TO_USE["primal_feast"],
+        "pricing": [
+            {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
+            {"size_lb": 12, "price": 107.88, "price_per_lb": 8.99, "savings_percent": 10},
+            {"size_lb": 18, "price": 170.89, "price_per_lb": 9.49, "savings_percent": 5},
+            {"size_lb": 24, "price": 215.78, "price_per_lb": 8.99, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "pf-rabbit",
+        "product_line": "primal_feast",
+        "protein_type": "rabbit",
+        "name": "Primal Feast Rabbit",
+        "description": "Raw rabbit, exotic choice. Ultra-lean protein for weight management. Naturally hypoallergenic and highly digestible.",
+        "ingredients": BASE_INGREDIENTS["rabbit"],
+        "nutrition_facts": NUTRITION_FACTS["rabbit"],
+        "how_to_use": HOW_TO_USE["primal_feast"],
+        "pricing": [
+            {"size_lb": 6, "price": 86.28, "price_per_lb": 14.38, "savings_percent": 0},
+            {"size_lb": 12, "price": 155.30, "price_per_lb": 12.94, "savings_percent": 10},
+            {"size_lb": 18, "price": 246.04, "price_per_lb": 13.67, "savings_percent": 5},
+            {"size_lb": 24, "price": 310.27, "price_per_lb": 12.93, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "pf-turkey",
+        "product_line": "primal_feast",
+        "protein_type": "turkey",
+        "name": "Primal Feast Turkey",
+        "description": "Raw turkey, lean protein. Low-fat, high-protein option for active dogs. Complete with organ meats and bone for balanced nutrition.",
+        "ingredients": BASE_INGREDIENTS["turkey"],
+        "nutrition_facts": NUTRITION_FACTS["turkey"],
+        "how_to_use": HOW_TO_USE["primal_feast"],
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 69.94, "price_per_lb": 5.83, "savings_percent": 13},
+            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
+            {"size_lb": 24, "price": 143.86, "price_per_lb": 5.99, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    }
+]
+
+TREATS = [
+    {"treat_id": "treat-chicken-carcass", "name": "Chicken Carcass", "price": 24.99, "quantity_description": "2 Pack"},
+    {"treat_id": "treat-chicken-heads", "name": "Whole Chicken Heads", "price": 9.99, "quantity_description": "10 Pack"},
+    {"treat_id": "treat-chicken-necks-2lb", "name": "Whole Chicken Necks", "price": 8.99, "quantity_description": "2lb"},
+    {"treat_id": "treat-chicken-necks-5lb", "name": "Whole Chicken Necks", "price": 19.99, "quantity_description": "5lb"},
+    {"treat_id": "treat-chicken-feet", "name": "Chicken Feet", "price": 5.99, "quantity_description": "1lb"},
+    {"treat_id": "treat-duck-feet", "name": "Duck Feet", "price": 9.99, "quantity_description": "1lb"},
+    {"treat_id": "treat-turkey-feet", "name": "Turkey Feet", "price": 9.99, "quantity_description": "2 Pack"},
+    {"treat_id": "treat-duck-heads", "name": "Whole Duck Heads", "price": 9.99, "quantity_description": "5 Pack"},
+    {"treat_id": "treat-lamb-head-1", "name": "Whole Lamb Head", "price": 12.99, "quantity_description": "1 Pack"},
+    {"treat_id": "treat-lamb-head-2", "name": "Whole Lamb Head", "price": 19.99, "quantity_description": "2 Pack"},
+    {"treat_id": "treat-beef-marrow", "name": "Beef Marrow Bones", "price": 9.99, "quantity_description": "1 Pack"},
+    {"treat_id": "treat-beef-neck", "name": "Beef Neck Bones", "price": 9.99, "quantity_description": "1 Pack"},
+    {"treat_id": "treat-beef-rib", "name": "Beef Flat Rib Bones", "price": 9.99, "quantity_description": "1lb"}
+]
+
+ALL_PRODUCTS = COMFORT_DINNER_PRODUCTS + PRIMAL_FEAST_PRODUCTS
