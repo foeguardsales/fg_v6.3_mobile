@@ -209,6 +209,8 @@ async def create_payment_intent(checkout_data: CheckoutRequest):
             "total": discounted_total,
             "is_subscription": is_subscription,
             "subscription_status": "active" if is_subscription else None,
+            "subscription_frequency": getattr(checkout_data, 'subscription_frequency', 'monthly') if is_subscription else None,
+            "order_notes": getattr(checkout_data, 'order_notes', ''),
             "stripe_payment_id": intent.id,
             "status": "pending",
             "created_at": datetime.now(timezone.utc).isoformat()
