@@ -709,7 +709,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
           <textarea
             value={orderNotes}
             onChange={(e) => setOrderNotes(e.target.value)}
-            placeholder="e.g., Leave at back door, ring doorbell, specific cutting instructions..."
+            placeholder="e.g., Leave at back door, ring doorbell, remove certain ingredients..."
             rows={3}
             style={{
               width: '100%',
