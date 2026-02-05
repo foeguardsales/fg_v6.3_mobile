@@ -115,10 +115,8 @@ h1, h2, h3, h4 {
 .nav-mobile-menu {
   display: none;
   flex-direction: column;
-  padding: 0 20px 20px;
+  padding: 8px 20px 20px;
   gap: 0;
-  border-top: 1px solid rgba(255,255,255,0.15);
-  background: var(--barn-red);
 }
 
 .nav-mobile-link {
@@ -131,7 +129,7 @@ h1, h2, h3, h4 {
   cursor: pointer;
   padding: 14px 0;
   text-align: left;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
 .nav-mobile-link:last-child {
