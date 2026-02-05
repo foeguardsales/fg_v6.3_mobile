@@ -29,6 +29,17 @@ Build and maintain FoeGuard, a raw dog food subscription e-commerce platform for
 
 ## What's Been Implemented
 
+### Feb 5, 2026 - Session 3 Updates
+- ✅ **Contact Us in Navigation**: Added after Calculator link
+- ✅ **Delivery Instructions**: Changed placeholder from "cutting" to "remove certain ingredients"
+- ✅ **Product Detail Page Redesign**:
+  - Hero image with product photo
+  - Clean back button with arrow icon
+  - Collapsible sections: Ingredients (open), Nutrition Facts, Feeding Guide
+  - Removed "Available Sizes" section
+  - Removed "Add to Box" button
+  - Modern card-based layout
+
 ### Feb 5, 2026 - Session 2 Updates
 - ✅ **Subscription Frequency Choice**: Biweekly OR Monthly options
 - ✅ **Contact Us Page**: Full form (Name, Phone, Email, Message) with company info:
