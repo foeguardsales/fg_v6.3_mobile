@@ -8,7 +8,7 @@ import './App.css';
 import { LandingPage } from './pages/LandingPage';
 import { BoxBuilder } from './pages/BoxBuilder';
 import { ProductDetailPage } from './pages/ProductDetail';
-import { AboutPage, PoliciesPage, TermsPage } from './pages/ContentPages';
+import { AboutPage, PoliciesPage, TermsPage, ContactPage } from './pages/ContentPages';
 import { CalculatorPage } from './pages/CalculatorPage';
 import { AccountPage } from './pages/AccountPage';
 import { AdminPage } from './pages/AdminPage';
