@@ -2,42 +2,40 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
+import { ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const IngredientsList = ({ items }) => (
-  <ul className="ingredients-list">
-    {items.map((ing, i) => <li key={i}>{ing}</li>)}
-  </ul>
-);
-
-const NutritionGrid = ({ facts }) => {
-  const entries = Object.entries(facts);
-  return (
-    <div className="nutrition-grid">
-      {entries.map(([k, v], i) => (
-        <div key={k} className="nutrition-item" style={k === 'calories' ? {gridColumn: '1 / -1'} : {}}>
-          <span className="nutrition-label">{k.charAt(0).toUpperCase() + k.slice(1)}</span>
-          <span className="nutrition-value">{v}</span>
-        </div>
-      ))}
-    </div>
-  );
+// Protein type to image mapping (placeholder - will be replaced with actual images)
+const proteinImages = {
+  chicken: 'https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=600&h=400&fit=crop',
+  beef: 'https://images.unsplash.com/photo-1588347818036-558601350947?w=600&h=400&fit=crop',
+  duck: 'https://images.unsplash.com/photo-1606728035253-49e8a23146de?w=600&h=400&fit=crop',
+  fish: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&h=400&fit=crop',
+  lamb: 'https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=600&h=400&fit=crop',
+  turkey: 'https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?w=600&h=400&fit=crop',
+  venison: 'https://images.unsplash.com/photo-1608039755401-742074f0548d?w=600&h=400&fit=crop',
+  bison: 'https://images.unsplash.com/photo-1551028150-64b9f398f678?w=600&h=400&fit=crop'
 };
 
-const PricingCards = ({ tiers }) => {
-  const sizes = tiers.filter(t => t.size_lb >= 12);
+const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  
   return (
-    <div className="pricing-grid">
-      {sizes.map(t => (
-        <div key={t.size_lb} className="price-card">
-          <div className="price-size">{t.size_lb}lb</div>
-          <div className="price-amount">${t.price.toFixed(2)}</div>
-          <div className="price-per-lb">${t.price_per_lb.toFixed(2)}/lb</div>
-          {t.savings_percent > 0 && <span className="savings-badge">Save {t.savings_percent}%</span>}
+    <div className="collapsible-section">
+      <button 
+        className="collapsible-header"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>{title}</span>
+        {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+      </button>
+      {isOpen && (
+        <div className="collapsible-content">
+          {children}
         </div>
-      ))}
+      )}
     </div>
   );
 };
@@ -55,67 +53,100 @@ export const ProductDetailPage = () => {
       .finally(() => setLoading(false));
   }, [productId]);
 
-  if (loading) return <div style={{ padding: '60px', textAlign: 'center' }}>Loading...</div>;
-  if (!product) return <div style={{ padding: '60px', textAlign: 'center' }}>Product not found</div>;
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="product-detail-loading">
+          <div className="loading-spinner"></div>
+          <p>Loading product...</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (!product) {
+    return (
+      <>
+        <Navbar />
+        <div className="product-detail-not-found">
+          <h2>Product not found</h2>
+          <button className="btn-primary" onClick={() => navigate('/build-box')}>
+            Back to Menu
+          </button>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   const lineName = product.product_line === 'comfort_dinner' ? 'Comfort Dinner' : 'Primal Feast';
+  const productImage = proteinImages[product.protein_type] || proteinImages.chicken;
 
   return (
     <>
       <Navbar />
       <div className="product-detail-page">
-        <div className="product-detail-container">
-          <button className="back-link" onClick={() => navigate('/build-box')}>
-            ← Back to Box Builder
+        <div className="product-detail-wrapper">
+          {/* Back Button */}
+          <button className="product-back-btn" onClick={() => navigate('/build-box')}>
+            <ChevronLeft size={20} />
+            <span>Back to Menu</span>
           </button>
-          
-          <div className="product-detail-hero">
-            <h1 className="product-detail-title">{product.name}</h1>
-            <div className="product-line-badge-large">{lineName}</div>
-          </div>
 
-          <div className="product-detail-grid">
-            <div className="product-detail-left">
-              <h3>Ingredients</h3>
-              <IngredientsList items={product.ingredients} />
+          {/* Product Hero */}
+          <div className="product-hero">
+            <div className="product-image-container">
+              <img 
+                src={productImage} 
+                alt={product.name}
+                className="product-hero-image"
+              />
+              <span className="product-line-tag">{lineName}</span>
             </div>
-
-            <div className="product-detail-center">
-              <div className="bowl-visual">
-                <div className="bowl-icon">🍖</div>
-                <p className="bowl-label">{product.protein_type}</p>
-              </div>
-            </div>
-
-            <div className="product-detail-right">
-              <h3>About This Recipe</h3>
+            
+            <div className="product-hero-info">
+              <h1 className="product-title">{product.name}</h1>
+              <p className="product-protein-type">{product.protein_type}</p>
               <p className="product-description">{product.description}</p>
-              
-              <div className="nutrition-section">
-                <h3>Nutrition Facts</h3>
-                <NutritionGrid facts={product.nutrition_facts} />
-              </div>
-
-              <div className="how-to-use-section">
-                <h3>How to Use</h3>
-                <p>{product.how_to_use}</p>
-              </div>
             </div>
           </div>
 
-          <div className="pricing-section">
-            <h3>Available Sizes</h3>
-            <PricingCards tiers={product.pricing} />
-          </div>
+          {/* Collapsible Sections */}
+          <div className="product-details-sections">
+            <CollapsibleSection title="Ingredients" defaultOpen={true}>
+              <ul className="ingredients-grid">
+                {product.ingredients.map((ing, i) => (
+                  <li key={i}>{ing}</li>
+                ))}
+              </ul>
+            </CollapsibleSection>
 
-          <div style={{ textAlign: 'center', marginTop: '40px' }}>
-            <button 
-              className="btn-primary" 
-              style={{ maxWidth: '400px', padding: '16px 48px' }}
-              onClick={() => navigate('/build-box')}
-            >
-              Add to Your Box
-            </button>
+            <CollapsibleSection title="Nutrition Facts">
+              <div className="nutrition-grid-detail">
+                {Object.entries(product.nutrition_facts).map(([key, value]) => (
+                  <div key={key} className="nutrition-row">
+                    <span className="nutrition-key">{key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}</span>
+                    <span className="nutrition-val">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </CollapsibleSection>
+
+            <CollapsibleSection title="Feeding Guide">
+              <div className="feeding-guide">
+                <p>{product.how_to_use}</p>
+                <div className="feeding-tips">
+                  <h4>Tips</h4>
+                  <ul>
+                    <li>Thaw in refrigerator for 24 hours before serving</li>
+                    <li>Serve at room temperature for best palatability</li>
+                    <li>Store unused portion in refrigerator for up to 3 days</li>
+                  </ul>
+                </div>
+              </div>
+            </CollapsibleSection>
           </div>
         </div>
       </div>
