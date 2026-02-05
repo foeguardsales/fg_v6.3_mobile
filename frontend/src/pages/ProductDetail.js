@@ -87,48 +87,115 @@ export const ProductDetailPage = () => {
   return (
     <>
       <Navbar />
-      <div className="product-detail-page">
-        <div className="product-detail-wrapper">
+      <div className="product-detail-page" style={{ background: '#F2F4F3', minHeight: '100vh', padding: '0 0 80px' }}>
+        <div className="product-detail-wrapper" style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 24px' }}>
           {/* Back Button */}
-          <button className="product-back-btn" onClick={() => navigate('/build-box')}>
+          <button className="product-back-btn" onClick={() => navigate('/build-box')} style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: 'none',
+            border: 'none',
+            color: '#A41E34',
+            fontFamily: 'Source Sans 3, sans-serif',
+            fontSize: '15px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            padding: '12px 0',
+            marginBottom: '24px'
+          }}>
             <ChevronLeft size={20} />
             <span>Back to Menu</span>
           </button>
 
           {/* Product Hero */}
-          <div className="product-hero">
-            <div className="product-image-container">
+          <div className="product-hero" style={{
+            background: '#FFFFFF',
+            borderRadius: '20px',
+            overflow: 'hidden',
+            boxShadow: '0 4px 16px rgba(43, 43, 43, 0.08)',
+            marginBottom: '24px'
+          }}>
+            <div className="product-image-container" style={{ position: 'relative', width: '100%', height: '320px', overflow: 'hidden' }}>
               <img 
                 src={productImage} 
                 alt={product.name}
                 className="product-hero-image"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
-              <span className="product-line-tag">{lineName}</span>
+              <span className="product-line-tag" style={{
+                position: 'absolute',
+                top: '20px',
+                left: '20px',
+                background: '#A41E34',
+                color: '#FFFFFF',
+                padding: '8px 20px',
+                borderRadius: '100px',
+                fontFamily: 'Source Sans 3, sans-serif',
+                fontSize: '13px',
+                fontWeight: '700',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em'
+              }}>{lineName}</span>
             </div>
             
-            <div className="product-hero-info">
-              <h1 className="product-title">{product.name}</h1>
-              <p className="product-protein-type">{product.protein_type}</p>
-              <p className="product-description">{product.description}</p>
+            <div className="product-hero-info" style={{ padding: '32px' }}>
+              <h1 style={{
+                fontFamily: 'Crimson Pro, Georgia, serif',
+                fontSize: '36px',
+                color: '#2B2B2B',
+                margin: '0 0 8px 0',
+                lineHeight: '1.2'
+              }}>{product.name}</h1>
+              <p style={{
+                fontSize: '15px',
+                color: '#A41E34',
+                fontWeight: '600',
+                textTransform: 'capitalize',
+                margin: '0 0 20px 0'
+              }}>{product.protein_type}</p>
+              <p style={{
+                fontSize: '17px',
+                lineHeight: '1.7',
+                color: '#3D3D3D',
+                margin: '0'
+              }}>{product.description}</p>
             </div>
           </div>
 
           {/* Collapsible Sections */}
-          <div className="product-details-sections">
+          <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <CollapsibleSection title="Ingredients" defaultOpen={true}>
-              <ul className="ingredients-grid">
+              <ul className="ingredients-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '8px 24px',
+                listStyle: 'none',
+                padding: 0,
+                margin: 0
+              }}>
                 {product.ingredients.map((ing, i) => (
-                  <li key={i}>{ing}</li>
+                  <li key={i} style={{
+                    fontSize: '15px',
+                    color: '#2B2B2B',
+                    padding: '8px 0',
+                    borderBottom: '1px solid #E8DDD0'
+                  }}>{ing}</li>
                 ))}
               </ul>
             </CollapsibleSection>
 
             <CollapsibleSection title="Nutrition Facts">
-              <div className="nutrition-grid-detail">
+              <div className="nutrition-grid-detail" style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
                 {Object.entries(product.nutrition_facts).map(([key, value]) => (
-                  <div key={key} className="nutrition-row">
-                    <span className="nutrition-key">{key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}</span>
-                    <span className="nutrition-val">{value}</span>
+                  <div key={key} className="nutrition-row" style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    padding: '12px 0',
+                    borderBottom: '1px solid #E8DDD0'
+                  }}>
+                    <span style={{ color: '#5A5A5A', fontSize: '15px' }}>{key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}</span>
+                    <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '15px' }}>{value}</span>
                   </div>
                 ))}
               </div>
@@ -136,13 +203,30 @@ export const ProductDetailPage = () => {
 
             <CollapsibleSection title="Feeding Guide">
               <div className="feeding-guide">
-                <p>{product.how_to_use}</p>
-                <div className="feeding-tips">
-                  <h4>Tips</h4>
-                  <ul>
-                    <li>Thaw in refrigerator for 24 hours before serving</li>
-                    <li>Serve at room temperature for best palatability</li>
-                    <li>Store unused portion in refrigerator for up to 3 days</li>
+                <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 20px 0' }}>{product.how_to_use}</p>
+                <div style={{ background: '#FAF8F5', padding: '20px', borderRadius: '12px' }}>
+                  <h4 style={{
+                    fontFamily: 'Source Sans 3, sans-serif',
+                    fontSize: '14px',
+                    fontWeight: '700',
+                    color: '#A41E34',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    margin: '0 0 12px 0'
+                  }}>Tips</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    <li style={{ fontSize: '14px', color: '#3D3D3D', padding: '6px 0', paddingLeft: '20px', position: 'relative' }}>
+                      <span style={{ position: 'absolute', left: 0, color: '#A41E34' }}>•</span>
+                      Thaw in refrigerator for 24 hours before serving
+                    </li>
+                    <li style={{ fontSize: '14px', color: '#3D3D3D', padding: '6px 0', paddingLeft: '20px', position: 'relative' }}>
+                      <span style={{ position: 'absolute', left: 0, color: '#A41E34' }}>•</span>
+                      Serve at room temperature for best palatability
+                    </li>
+                    <li style={{ fontSize: '14px', color: '#3D3D3D', padding: '6px 0', paddingLeft: '20px', position: 'relative' }}>
+                      <span style={{ position: 'absolute', left: 0, color: '#A41E34' }}>•</span>
+                      Store unused portion in refrigerator for up to 3 days
+                    </li>
                   </ul>
                 </div>
               </div>
