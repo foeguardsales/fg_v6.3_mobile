@@ -14,7 +14,7 @@ export const AboutPage = () => (
             FoeGuard was born from a simple belief: our pets deserve the same quality food we eat. Based in Ontario, we partner with local farms to source human-grade ingredients, creating biologically appropriate raw meals that honor your pet's carnivorous nature.
           </p>
           <p>
-            Every recipe is crafted with care, combining muscle meat, organ meats, ground bone, and fresh vegetables to deliver complete, balanced nutrition. We believe raw feeding isn’t a trend—it’s a return to what nature intended.
+            Every recipe is crafted with care, combining muscle meat, organ meats, ground bone, and fresh vegetables to deliver complete, balanced nutrition. We believe raw feeding isn't a trend—it's a return to what nature intended.
           </p>
         </section>
 
@@ -25,7 +25,7 @@ export const AboutPage = () => (
             Dogs and cats are carnivores. Their digestive systems are designed to process raw meat, bones, and organs—not heavily processed kibble. Raw diets provide enzymes, natural probiotics, and bioavailable nutrients that cooking destroys.
           </p>
 
-          <h3>The Benefits You’ll See</h3>
+          <h3>The Benefits You'll See</h3>
           <ul className="benefits-list">
             <li><strong>Improved Digestion:</strong> Smaller, firmer stools and reduced gas</li>
             <li><strong>Healthier Skin & Coat:</strong> Natural oils create shine and reduce shedding</li>
@@ -92,7 +92,7 @@ export const PoliciesPage = () => (
         <section>
           <h2>Return & Refund Policy</h2>
           <p>
-            Due to the perishable nature of our products, we cannot accept returns. However, if you’re unsatisfied with your order, contact us within 7 days of delivery for a refund or replacement.
+            Due to the perishable nature of our products, we cannot accept returns. However, if you're unsatisfied with your order, contact us within 7 days of delivery for a refund or replacement.
           </p>
           <p>
             For damaged or incorrect orders, please email photos to hello@foeguard.com within 48 hours of delivery.
@@ -131,7 +131,7 @@ export const TermsPage = () => (
         <section>
           <h2>Agreement to Terms</h2>
           <p>
-            By accessing FoeGuard’s website and purchasing products, you agree to these Terms of Use. If you disagree with any part, you may not access our service.
+            By accessing FoeGuard's website and purchasing products, you agree to these Terms of Use. If you disagree with any part, you may not access our service.
           </p>
         </section>
 
@@ -181,3 +181,149 @@ export const TermsPage = () => (
     <Footer />
   </>
 );
+
+export const ContactPage = () => {
+  const [formData, setFormData] = React.useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: ''
+  });
+  const [submitted, setSubmitted] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    // Simulate form submission
+    setTimeout(() => {
+      setSubmitted(true);
+      setLoading(false);
+    }, 1000);
+  };
+
+  return (
+    <>
+      <Navbar />
+      <div className="contact-page">
+        <div className="contact-container">
+          <div className="contact-form-section">
+            <h1>Contact Us</h1>
+            <p className="contact-intro">
+              We love getting inquiries about new products, recommendations and custom recipes. 
+              Feel free to reach out through the form below or directly at our contact information.
+            </p>
+
+            {submitted ? (
+              <div className="contact-success">
+                <div className="success-icon">✓</div>
+                <h2>Message Sent!</h2>
+                <p>Thank you for reaching out. We'll get back to you within 24-48 hours.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="contact-form">
+                <div className="form-group">
+                  <label>Your Name *</label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    placeholder="John Smith"
+                    required
+                  />
+                </div>
+                
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Phone Number</label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      placeholder="+1 (555) 000-0000"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Email Address *</label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      placeholder="john@example.com"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>Your Message *</label>
+                  <textarea
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    placeholder="How can we help you?"
+                    rows={5}
+                    required
+                  />
+                </div>
+
+                <button type="submit" className="btn-primary" disabled={loading}>
+                  {loading ? 'Sending...' : 'Send Message'}
+                </button>
+              </form>
+            )}
+          </div>
+
+          <div className="contact-info-section">
+            <div className="contact-card">
+              <h3>Get in Touch</h3>
+              
+              <div className="contact-item">
+                <span className="contact-label">Partnerships & Collaborations</span>
+                <a href="mailto:sales@foeguard.com">sales@foeguard.com</a>
+              </div>
+              
+              <div className="contact-item">
+                <span className="contact-label">General Inquiries</span>
+                <a href="mailto:info@foeguard.com">info@foeguard.com</a>
+              </div>
+              
+              <div className="contact-item">
+                <span className="contact-label">Call Us</span>
+                <a href="tel:905-466-7787">905-466-7787</a>
+              </div>
+            </div>
+
+            <div className="contact-card">
+              <h3>Hours of Operation</h3>
+              <div className="hours-list">
+                <div className="hours-row">
+                  <span>Monday - Friday</span>
+                  <span>9am - 10pm</span>
+                </div>
+                <div className="hours-row">
+                  <span>Saturday</span>
+                  <span>9am - 6pm</span>
+                </div>
+                <div className="hours-row">
+                  <span>Sunday</span>
+                  <span>Closed</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="contact-card">
+              <h3>Corporate Office</h3>
+              <p className="address">
+                405 The West Mall<br />
+                Etobicoke, M9C 5J1, ON<br />
+                Canada
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
+};
