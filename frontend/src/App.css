@@ -112,11 +112,17 @@ h1, h2, h3, h4 {
   padding: 8px;
 }
 
+.navbar-inner {
+  background: transparent;
+}
+
 .nav-mobile-menu {
   display: none;
   flex-direction: column;
   padding: 8px 20px 20px;
   gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .nav-mobile-link {
