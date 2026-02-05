@@ -662,7 +662,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
           />
           <div className="subscription-info">
             <strong>Subscribe & Save 10%</strong>
-            <p>Get recurring deliveries every 2 weeks. Pause or cancel anytime.</p>
+            <p>Get recurring deliveries every month. Pause or cancel anytime.</p>
           </div>
         </label>
       </div>
