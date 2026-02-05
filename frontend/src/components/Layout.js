@@ -20,6 +20,7 @@ export const Navbar = () => {
           <button onClick={() => navigate('/build-box')} className="nav-link" data-testid="nav-order">Order</button>
           <button onClick={() => navigate('/about')} className="nav-link" data-testid="nav-about">About Us</button>
           <button onClick={() => navigate('/calculator')} className="nav-link" data-testid="nav-calculator">Calculator</button>
+          <button onClick={() => navigate('/contact')} className="nav-link" data-testid="nav-contact">Contact Us</button>
           <button onClick={() => navigate('/account')} className="nav-link" data-testid="nav-account">Account</button>
         </div>
         {/* Mobile Menu Button */}
