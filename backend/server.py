@@ -294,6 +294,26 @@ async def cancel_subscription(data: dict, current_user = Depends(get_current_use
         raise HTTPException(status_code=404, detail="Subscription not found")
     return {"success": True}
 
+@api_router.post("/subscriptions/swap")
+async def swap_subscription(data: dict, current_user = Depends(get_current_user)):
+    """Change box size for a subscription"""
+    order_id = data.get("order_id")
+    new_box_size = data.get("new_box_size")
+    
+    if not order_id or not new_box_size:
+        raise HTTPException(status_code=400, detail="Missing order_id or new_box_size")
+    
+    if new_box_size not in [12, 18, 24, 30]:
+        raise HTTPException(status_code=400, detail="Invalid box size")
+    
+    result = await db.orders.update_one(
+        {"order_id": order_id, "customer_email": current_user["email"], "is_subscription": True},
+        {"$set": {"box_size_lb": new_box_size}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Subscription not found")
+    return {"success": True}
+
 # Admin routes
 @api_router.get("/admin/orders")
 async def get_all_orders(current_user = Depends(get_current_user)):
