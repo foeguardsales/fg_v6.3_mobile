@@ -536,7 +536,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
 
       {/* Shipping Address - Complete Fields */}
       <div className="checkout-section">
-        <h3>Shipping Address</h3>
+        <h3>Delivery Address</h3>
         <div className="form-group">
           <label>Street Address *</label>
           <AddressAutocomplete 
