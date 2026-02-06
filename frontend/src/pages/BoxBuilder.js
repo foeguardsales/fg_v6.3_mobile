@@ -2,25 +2,37 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess } from '../components/CartAndCheckout';
+import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Discount rates by box size
-const DISCOUNT_RATES = {
+// Discount rates by box size - DOG
+const DOG_DISCOUNT_RATES = {
   12: 0,
   18: 0.05,
   24: 0.10,
   30: 0.15
 };
 
-// Box size options with base prices (before discount)
-const BOX_OPTIONS = [
+// Discount rates by box size - CAT
+const CAT_DISCOUNT_RATES = {
+  6: 0,
+  12: 0.05
+};
+
+// Box size options - DOG
+const DOG_BOX_OPTIONS = [
   { size: 12, label: '12 lb', discount: 0 },
   { size: 18, label: '18 lb', discount: 5 },
   { size: 24, label: '24 lb', discount: 10 },
   { size: 30, label: '30 lb', discount: 15 }
+];
+
+// Box size options - CAT
+const CAT_BOX_OPTIONS = [
+  { size: 6, label: '6 lb', discount: 0 },
+  { size: 12, label: '12 lb', discount: 5 }
 ];
 
 // Collection banner images
@@ -28,14 +40,16 @@ const COLLECTION_IMAGES = {
   dog: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/1olxgtz6_3.png',
   cat: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/7fyd6l6l_4.png',
   comfort_dinner: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/a5bhlhqi_5.png',
-  primal_feast: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/wtts10dz_4.png'
+  primal_feast: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/wtts10dz_4.png',
+  royal_paws: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/u0taocl0_6.png'
 };
 
 export const BoxBuilder = () => {
   const navigate = useNavigate();
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
-  const [boxSize, setBoxSize] = useState(18); // Default to 18lb
+  const [boxSize, setBoxSize] = useState(18); // Default to 18lb for dog
   const [products, setProducts] = useState([]);
+  const [treats, setTreats] = useState([]);
   const [selectedProteins, setSelectedProteins] = useState({});
   const [selectedTreats, setSelectedTreats] = useState([]);
   const [orderComplete, setOrderComplete] = useState(false);
@@ -43,11 +57,20 @@ export const BoxBuilder = () => {
   const [showCheckout, setShowCheckout] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Get current discount rates and box options based on pet type
+  const DISCOUNT_RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
+  const BOX_OPTIONS = petType === 'cat' ? CAT_BOX_OPTIONS : DOG_BOX_OPTIONS;
+
   useEffect(() => {
     const loadData = async () => {
+      setLoading(true);
       try {
-        const { data } = await axios.get(`${API}/products`);
-        setProducts(data);
+        const [productsRes, treatsRes] = await Promise.all([
+          axios.get(`${API}/products?pet_type=${petType}`),
+          axios.get(`${API}/treats?pet_type=${petType}`)
+        ]);
+        setProducts(productsRes.data);
+        setTreats(treatsRes.data);
       } catch (error) {
         console.error('Failed to load data:', error);
       } finally {
@@ -55,7 +78,16 @@ export const BoxBuilder = () => {
       }
     };
     loadData();
-  }, []);
+  }, [petType]);
+
+  // Reset selections when pet type changes
+  const handlePetTypeChange = (newPetType) => {
+    setPetType(newPetType);
+    setSelectedProteins({});
+    setSelectedTreats([]);
+    // Set default box size for new pet type
+    setBoxSize(newPetType === 'cat' ? 6 : 18);
+  };
 
   // Calculate price for 6lb based on box size discount
   const getDiscountedPrice = (basePrice) => {
