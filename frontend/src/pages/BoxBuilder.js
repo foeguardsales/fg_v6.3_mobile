@@ -301,83 +301,64 @@ export const BoxBuilder = () => {
           </div>
         </div>
 
-        {/* Coming Soon for Cat */}
-        {petType === 'cat' ? (
-          <div style={{
-            textAlign: 'center',
-            padding: '80px 20px',
-            background: '#FFFFFF',
-            borderRadius: '20px',
-            maxWidth: '600px',
-            margin: '0 auto'
-          }}>
-            <div style={{ fontSize: '64px', marginBottom: '20px' }}>🐱</div>
-            <h2 style={{ fontFamily: 'Crimson Pro, Georgia, serif', fontSize: '32px', color: '#2B2B2B', marginBottom: '16px' }}>
-              Cat Food Coming Soon!
-            </h2>
-            <p style={{ color: '#666', fontSize: '17px', lineHeight: '1.7', maxWidth: '400px', margin: '0 auto' }}>
-              We're crafting the perfect raw meals for your feline friends. Sign up to be notified when our cat food line launches.
-            </p>
+        {/* Main Content - Dog or Cat */}
+        <>
+          {/* Header with cart button */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+            <div>
+              <h1 style={{ fontFamily: 'Crimson Pro, Georgia, serif', fontSize: '36px', marginBottom: '8px', color: '#2B2B2B' }}>
+                {petType === 'cat' ? 'Build Your Cat Box' : 'Build Your Box'}
+              </h1>
+              <p style={{ color: '#666' }}>
+                {petType === 'cat' 
+                  ? 'Select your box size, then choose your cat proteins' 
+                  : 'Select your box size, then choose your proteins'}
+              </p>
+            </div>
             <button 
-              className="btn-primary" 
-              style={{ marginTop: '30px' }}
-              onClick={() => navigate('/contact')}
+              className="btn-cart-floating"
+              onClick={() => setCartOpen(true)}
+              data-testid="cart-button"
             >
-              Notify Me
+              🛒 {getTotalSelectedLbs()}/{boxSize}lb
+              {isBoxComplete && (
+                <span className="cart-complete-badge">✓</span>
+              )}
             </button>
           </div>
-        ) : (
-          <>
-            {/* Header with cart button */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-              <div>
-                <h1 style={{ fontFamily: 'Crimson Pro, Georgia, serif', fontSize: '36px', marginBottom: '8px', color: '#2B2B2B' }}>Build Your Box</h1>
-                <p style={{ color: '#666' }}>Select your box size, then choose your proteins</p>
-              </div>
-              <button 
-                className="btn-cart-floating"
-                onClick={() => setCartOpen(true)}
-                data-testid="cart-button"
-              >
-                🛒 {getTotalSelectedLbs()}/{boxSize}lb
-                {isBoxComplete && (
-                  <span className="cart-complete-badge">✓</span>
-                )}
-              </button>
-            </div>
 
-            {/* Box Size Selector - Inline */}
-            <div className="box-size-selector-inline" data-testid="box-size-selector">
-              <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#A41E34' }}>
-                Select Box Size
-              </h3>
-              <div className="box-size-tabs">
-                {BOX_OPTIONS.map(box => (
-                  <button
-                    key={box.size}
-                    className={`box-size-tab ${boxSize === box.size ? 'active' : ''}`}
-                    onClick={() => handleBoxSizeChange(box.size)}
-                    data-testid={`box-size-${box.size}lb`}
-                  >
-                    <span className="box-size-label">{box.label}</span>
-                    {box.discount > 0 && (
-                      <span className="box-discount-badge">Save {box.discount}%</span>
-                    )}
-                  </button>
-                ))}
-              </div>
+          {/* Box Size Selector - Inline */}
+          <div className="box-size-selector-inline" data-testid="box-size-selector">
+            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#A41E34' }}>
+              Select Box Size
+            </h3>
+            <div className="box-size-tabs">
+              {BOX_OPTIONS.map(box => (
+                <button
+                  key={box.size}
+                  className={`box-size-tab ${boxSize === box.size ? 'active' : ''}`}
+                  onClick={() => handleBoxSizeChange(box.size)}
+                  data-testid={`box-size-${box.size}lb`}
+                >
+                  <span className="box-size-label">{box.label}</span>
+                  {box.discount > 0 && (
+                    <span className="box-discount-badge">Save {box.discount}%</span>
+                  )}
+                </button>
+              ))}
             </div>
+          </div>
 
-            {/* Progress Bar */}
-            <div className="box-progress-bar">
-              <div 
-                className="box-progress-fill" 
-                style={{ width: `${(getTotalSelectedLbs() / boxSize) * 100}%` }}
-              />
-              <span className="box-progress-text">
-                {getTotalSelectedLbs()}lb / {boxSize}lb selected
-              </span>
-            </div>
+          {/* Progress Bar */}
+          <div className="box-progress-bar">
+            <div 
+              className="box-progress-fill" 
+              style={{ width: `${(getTotalSelectedLbs() / boxSize) * 100}%` }}
+            />
+            <span className="box-progress-text">
+              {getTotalSelectedLbs()}lb / {boxSize}lb selected
+            </span>
+          </div>
 
             {loading ? (
               <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
