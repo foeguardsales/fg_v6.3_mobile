@@ -16,7 +16,7 @@ import sib_api_v3_sdk
 from sib_api_v3_sdk.rest import ApiException
 
 from models import Product, Treat, Order, CheckoutRequest
-from seed_data import ALL_PRODUCTS, TREATS
+from seed_data import ALL_PRODUCTS, ALL_TREATS, ROYAL_PAWS_PRODUCTS, CAT_TREATS
 
 # Logging setup - must be before any logger usage
 logging.basicConfig(
