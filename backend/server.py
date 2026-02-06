@@ -58,8 +58,17 @@ async def seed_database():
     if not existing:
         logger.info("Seeding products...")
         await db.products.insert_many(ALL_PRODUCTS)
-        await db.treats.insert_many(TREATS)
+        await db.treats.insert_many(ALL_TREATS)
         logger.info("Database seeded successfully")
+    else:
+        # Check if cat products exist, if not add them
+        cat_product = await db.products.find_one({"product_line": "royal_paws"})
+        if not cat_product:
+            logger.info("Adding cat products...")
+            from seed_data import ROYAL_PAWS_PRODUCTS, CAT_TREATS
+            await db.products.insert_many(ROYAL_PAWS_PRODUCTS)
+            await db.treats.insert_many(CAT_TREATS)
+            logger.info("Cat products added successfully")
 
 # Auth helpers
 def hash_password(password: str) -> str:
