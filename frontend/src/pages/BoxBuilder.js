@@ -23,8 +23,17 @@ const BOX_OPTIONS = [
   { size: 30, label: '30 lb', discount: 15 }
 ];
 
+// Collection banner images
+const COLLECTION_IMAGES = {
+  dog: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/1olxgtz6_3.png',
+  cat: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/7fyd6l6l_4.png',
+  comfort_dinner: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/a5bhlhqi_5.png',
+  primal_feast: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/wtts10dz_4.png'
+};
+
 export const BoxBuilder = () => {
   const navigate = useNavigate();
+  const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
   const [boxSize, setBoxSize] = useState(18); // Default to 18lb
   const [products, setProducts] = useState([]);
   const [selectedProteins, setSelectedProteins] = useState({});
