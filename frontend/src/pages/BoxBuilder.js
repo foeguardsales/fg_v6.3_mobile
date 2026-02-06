@@ -176,6 +176,7 @@ export const BoxBuilder = () => {
 
   const comfortDinnerProducts = products.filter(p => p.product_line === 'comfort_dinner');
   const primalFeastProducts = products.filter(p => p.product_line === 'primal_feast');
+  const royalPawsProducts = products.filter(p => p.product_line === 'royal_paws');
 
   return (
     <>
@@ -186,7 +187,7 @@ export const BoxBuilder = () => {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '900px', margin: '0 auto' }}>
             <button 
               className={`pet-selector-btn ${petType === 'dog' ? 'active' : ''}`}
-              onClick={() => setPetType('dog')}
+              onClick={() => handlePetTypeChange('dog')}
               data-testid="pet-selector-dog"
               style={{
                 position: 'relative',
@@ -243,7 +244,7 @@ export const BoxBuilder = () => {
 
             <button 
               className={`pet-selector-btn ${petType === 'cat' ? 'active' : ''}`}
-              onClick={() => setPetType('cat')}
+              onClick={() => handlePetTypeChange('cat')}
               data-testid="pet-selector-cat"
               style={{
                 position: 'relative',
