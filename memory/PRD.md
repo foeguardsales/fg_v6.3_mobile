@@ -29,6 +29,16 @@ Build and maintain FoeGuard, a raw dog food subscription e-commerce platform for
 
 ## What's Been Implemented
 
+### Feb 5, 2026 - Session 4 Updates
+- ✅ **Dog/Cat Pet Selector**: Large image buttons at top of menu
+  - Dog: Shows full box builder with products
+  - Cat: Shows "Coming Soon" message with Notify Me button
+- ✅ **Collection Banners**: Beautiful full-width banners with user images
+  - Comfort Dinner: Bowl of food image with burgundy gradient overlay
+  - Primal Feast: Raw meat image with charcoal gradient overlay
+- ✅ Removed small emoji icons, replaced with professional image banners
+- ✅ Mobile responsive design for pet selector and banners
+
 ### Feb 5, 2026 - Session 3 Updates
 - ✅ **Contact Us in Navigation**: Added after Calculator link
 - ✅ **Delivery Instructions**: Changed placeholder from "cutting" to "remove certain ingredients"
