@@ -572,8 +572,7 @@ export const BoxBuilder = () => {
               getDiscountedPrice={getDiscountedPrice}
               getBasePrice={getBasePrice}
             />
-          </>
-        )}
+        </>
       </div>
       <Footer />
     </>
