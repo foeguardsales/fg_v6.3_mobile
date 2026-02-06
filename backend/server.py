@@ -154,8 +154,13 @@ async def root():
     return {"message": "FoeGuard API"}
 
 @api_router.get("/products", response_model=List[Product])
-async def get_products():
-    products = await db.products.find({}, {"_id": 0}).to_list(100)
+async def get_products(pet_type: str = None):
+    query = {}
+    if pet_type == "dog":
+        query = {"product_line": {"$in": ["comfort_dinner", "primal_feast"]}}
+    elif pet_type == "cat":
+        query = {"product_line": "royal_paws"}
+    products = await db.products.find(query, {"_id": 0}).to_list(100)
     return products
 
 @api_router.get("/products/{product_id}", response_model=Product)
@@ -166,8 +171,13 @@ async def get_product(product_id: str):
     return product
 
 @api_router.get("/treats", response_model=List[Treat])
-async def get_treats():
-    treats = await db.treats.find({}, {"_id": 0}).to_list(100)
+async def get_treats(pet_type: str = None):
+    query = {}
+    if pet_type == "dog":
+        query = {"$or": [{"pet_type": {"$exists": False}}, {"pet_type": "dog"}]}
+    elif pet_type == "cat":
+        query = {"pet_type": "cat"}
+    treats = await db.treats.find(query, {"_id": 0}).to_list(100)
     return treats
 
 @api_router.get("/stripe-public-key")
