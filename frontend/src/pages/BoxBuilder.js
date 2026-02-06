@@ -362,9 +362,9 @@ export const BoxBuilder = () => {
 
             {loading ? (
               <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
-            ) : (
+            ) : petType === 'dog' ? (
               <>
-                {/* Comfort Dinner Collection */}
+                {/* Comfort Dinner Collection - DOG */}
                 <div className="product-collection">
                   {/* Collection Banner */}
                   <div style={{
@@ -417,12 +417,13 @@ export const BoxBuilder = () => {
                         getBasePrice={getBasePrice}
                         boxSize={boxSize}
                         navigate={navigate}
+                        petType={petType}
                       />
                     ))}
                   </div>
                 </div>
 
-                {/* Primal Feast Collection */}
+                {/* Primal Feast Collection - DOG */}
                 <div className="product-collection">
                   {/* Collection Banner */}
                   <div style={{
@@ -475,15 +476,86 @@ export const BoxBuilder = () => {
                         getBasePrice={getBasePrice}
                         boxSize={boxSize}
                         navigate={navigate}
+                        petType={petType}
                       />
                     ))}
                   </div>
                 </div>
 
-                {/* Treats Section */}
+                {/* Treats Section - DOG */}
                 <TreatsSection 
                   selectedTreats={selectedTreats}
                   onToggleTreat={handleToggleTreat}
+                  treats={treats}
+                />
+              </>
+            ) : (
+              <>
+                {/* Royal Paws Collection - CAT */}
+                <div className="product-collection">
+                  {/* Collection Banner */}
+                  <div style={{
+                    position: 'relative',
+                    height: '200px',
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    marginBottom: '28px'
+                  }}>
+                    <img 
+                      src={COLLECTION_IMAGES.royal_paws}
+                      alt="Royal Paws Collection"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(to right, rgba(164, 30, 52, 0.9) 0%, rgba(164, 30, 52, 0.4) 60%, transparent 100%)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      padding: '32px 40px'
+                    }}>
+                      <h3 style={{
+                        fontFamily: 'Crimson Pro, Georgia, serif',
+                        fontSize: '36px',
+                        fontWeight: '700',
+                        color: '#FFFFFF',
+                        margin: '0 0 8px 0'
+                      }}>Royal Paws</h3>
+                      <p style={{
+                        color: 'rgba(255,255,255,0.9)',
+                        fontSize: '16px',
+                        margin: 0,
+                        maxWidth: '350px',
+                        lineHeight: '1.5'
+                      }}>Premium raw cat food, rich in taurine. Biologically appropriate nutrition for feline carnivores.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="product-grid">
+                    {royalPawsProducts.map(product => (
+                      <ProductCard 
+                        key={product.product_id}
+                        product={product}
+                        selectedQty={selectedProteins[product.product_id]?.qty || 0}
+                        onUpdate={handleUpdateProtein}
+                        canAdd={canAdd(product.product_id)}
+                        getDiscountedPrice={getDiscountedPrice}
+                        getBasePrice={getBasePrice}
+                        boxSize={boxSize}
+                        navigate={navigate}
+                        petType={petType}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Treats Section - CAT */}
+                <TreatsSection 
+                  selectedTreats={selectedTreats}
+                  onToggleTreat={handleToggleTreat}
+                  treats={treats}
+                  petType="cat"
                 />
               </>
             )}
