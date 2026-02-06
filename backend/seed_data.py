@@ -441,4 +441,226 @@ TREATS = [
     {"treat_id": "treat-beef-rib", "name": "Beef Flat Rib Bones", "price": 9.99, "quantity_description": "1lb"}
 ]
 
-ALL_PRODUCTS = COMFORT_DINNER_PRODUCTS + PRIMAL_FEAST_PRODUCTS
+# Cat-specific ingredients (smaller portions, taurine-enriched)
+CAT_INGREDIENTS = {
+    "chicken": [
+        "Ground chicken with bone",
+        "Chicken liver",
+        "Chicken heart",
+        "Taurine supplement",
+        "Salmon oil (omega-3)",
+        "Kelp powder"
+    ],
+    "beef": [
+        "Grass-fed ground beef",
+        "Beef liver",
+        "Beef heart",
+        "Taurine supplement",
+        "Fish oil (omega-3)",
+        "Kelp powder"
+    ],
+    "duck": [
+        "Ground duck with bone",
+        "Duck liver",
+        "Duck heart",
+        "Taurine supplement",
+        "Fish oil (omega-3)",
+        "Kelp powder"
+    ],
+    "turkey": [
+        "Ground turkey with bone",
+        "Turkey liver",
+        "Turkey heart",
+        "Taurine supplement",
+        "Fish oil (omega-3)",
+        "Kelp powder"
+    ],
+    "fish": [
+        "Wild-caught salmon",
+        "Wild-caught mackerel",
+        "Salmon oil",
+        "Taurine supplement",
+        "Kelp powder"
+    ],
+    "goat": [
+        "Ground goat meat",
+        "Goat liver",
+        "Goat heart",
+        "Taurine supplement",
+        "Fish oil (omega-3)",
+        "Kelp powder"
+    ],
+    "lamb": [
+        "Ground lamb",
+        "Lamb liver",
+        "Lamb heart",
+        "Taurine supplement",
+        "Fish oil (omega-3)",
+        "Kelp powder"
+    ],
+    "rabbit": [
+        "Ground rabbit with bone",
+        "Rabbit liver",
+        "Rabbit heart",
+        "Taurine supplement",
+        "Fish oil (omega-3)",
+        "Kelp powder"
+    ]
+}
+
+CAT_NUTRITION_FACTS = {
+    "chicken": {"protein": "20%", "fat": "14%", "fiber": "0.5%", "moisture": "70%", "taurine": "0.15%", "calories": "160 kcal per 100g"},
+    "beef": {"protein": "22%", "fat": "16%", "fiber": "0.5%", "moisture": "66%", "taurine": "0.15%", "calories": "190 kcal per 100g"},
+    "duck": {"protein": "21%", "fat": "18%", "fiber": "0.5%", "moisture": "64%", "taurine": "0.15%", "calories": "200 kcal per 100g"},
+    "turkey": {"protein": "21%", "fat": "13%", "fiber": "0.5%", "moisture": "70%", "taurine": "0.15%", "calories": "155 kcal per 100g"},
+    "fish": {"protein": "24%", "fat": "15%", "fiber": "0.5%", "moisture": "66%", "taurine": "0.18%", "calories": "175 kcal per 100g"},
+    "goat": {"protein": "23%", "fat": "14%", "fiber": "0.5%", "moisture": "68%", "taurine": "0.15%", "calories": "170 kcal per 100g"},
+    "lamb": {"protein": "22%", "fat": "18%", "fiber": "0.5%", "moisture": "65%", "taurine": "0.15%", "calories": "200 kcal per 100g"},
+    "rabbit": {"protein": "25%", "fat": "12%", "fiber": "0.5%", "moisture": "68%", "taurine": "0.15%", "calories": "160 kcal per 100g"}
+}
+
+HOW_TO_USE_CAT = "Thaw in refrigerator for 12-24 hours. Serve at room temperature. Feed 2-4% of your cat's body weight daily, divided into 2-3 meals. Cats prefer smaller, more frequent meals. Store frozen until ready to use. Once thawed, use within 3 days."
+
+ROYAL_PAWS_PRODUCTS = [
+    {
+        "product_id": "rp-chicken",
+        "product_line": "royal_paws",
+        "pet_type": "cat",
+        "protein_type": "chicken",
+        "name": "Royal Paws Chicken",
+        "description": "Premium chicken recipe crafted specifically for cats. Rich in taurine and essential amino acids for heart health and vision. Perfect for feline obligate carnivores.",
+        "ingredients": CAT_INGREDIENTS["chicken"],
+        "nutrition_facts": CAT_NUTRITION_FACTS["chicken"],
+        "how_to_use": HOW_TO_USE_CAT,
+        "pricing": [
+            {"size_lb": 6, "price": 26.99, "price_per_lb": 4.50, "savings_percent": 0},
+            {"size_lb": 12, "price": 51.28, "price_per_lb": 4.27, "savings_percent": 5}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "rp-beef",
+        "product_line": "royal_paws",
+        "pet_type": "cat",
+        "protein_type": "beef",
+        "name": "Royal Paws Beef",
+        "description": "Grass-fed beef packed with iron and B vitamins. High-protein formula for active cats. Essential taurine added for optimal feline nutrition.",
+        "ingredients": CAT_INGREDIENTS["beef"],
+        "nutrition_facts": CAT_NUTRITION_FACTS["beef"],
+        "how_to_use": HOW_TO_USE_CAT,
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 75.94, "price_per_lb": 6.33, "savings_percent": 5}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "rp-duck",
+        "product_line": "royal_paws",
+        "pet_type": "cat",
+        "protein_type": "duck",
+        "name": "Royal Paws Duck",
+        "description": "Novel protein perfect for cats with sensitivities. Rich, flavorful duck with natural fatty acids for healthy skin and coat.",
+        "ingredients": CAT_INGREDIENTS["duck"],
+        "nutrition_facts": CAT_NUTRITION_FACTS["duck"],
+        "how_to_use": HOW_TO_USE_CAT,
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 75.94, "price_per_lb": 6.33, "savings_percent": 5}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "rp-turkey",
+        "product_line": "royal_paws",
+        "pet_type": "cat",
+        "protein_type": "turkey",
+        "name": "Royal Paws Turkey",
+        "description": "Lean turkey for weight-conscious cats. Low fat, high protein with essential amino acids. Gentle on sensitive stomachs.",
+        "ingredients": CAT_INGREDIENTS["turkey"],
+        "nutrition_facts": CAT_NUTRITION_FACTS["turkey"],
+        "how_to_use": HOW_TO_USE_CAT,
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 75.94, "price_per_lb": 6.33, "savings_percent": 5}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "rp-fish",
+        "product_line": "royal_paws",
+        "pet_type": "cat",
+        "protein_type": "fish",
+        "name": "Royal Paws Fish",
+        "description": "Wild-caught fish cats naturally crave. Omega-3 rich for healthy brain function and shiny coat. Natural taurine from fish sources.",
+        "ingredients": CAT_INGREDIENTS["fish"],
+        "nutrition_facts": CAT_NUTRITION_FACTS["fish"],
+        "how_to_use": HOW_TO_USE_CAT,
+        "pricing": [
+            {"size_lb": 6, "price": 44.95, "price_per_lb": 7.49, "savings_percent": 0},
+            {"size_lb": 12, "price": 85.41, "price_per_lb": 7.12, "savings_percent": 5}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "rp-goat",
+        "product_line": "royal_paws",
+        "pet_type": "cat",
+        "protein_type": "goat",
+        "name": "Royal Paws Goat",
+        "description": "Exotic goat protein for cats with allergies. Highly digestible and lean. Perfect for elimination diets and sensitive cats.",
+        "ingredients": CAT_INGREDIENTS["goat"],
+        "nutrition_facts": CAT_NUTRITION_FACTS["goat"],
+        "how_to_use": HOW_TO_USE_CAT,
+        "pricing": [
+            {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
+            {"size_lb": 12, "price": 113.88, "price_per_lb": 9.49, "savings_percent": 5}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "rp-lamb",
+        "product_line": "royal_paws",
+        "pet_type": "cat",
+        "protein_type": "lamb",
+        "name": "Royal Paws Lamb",
+        "description": "Premium grass-fed lamb for discerning cats. Rich in zinc and B vitamins. Satisfying flavor even picky eaters love.",
+        "ingredients": CAT_INGREDIENTS["lamb"],
+        "nutrition_facts": CAT_NUTRITION_FACTS["lamb"],
+        "how_to_use": HOW_TO_USE_CAT,
+        "pricing": [
+            {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
+            {"size_lb": 12, "price": 113.88, "price_per_lb": 9.49, "savings_percent": 5}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "rp-rabbit",
+        "product_line": "royal_paws",
+        "pet_type": "cat",
+        "protein_type": "rabbit",
+        "name": "Royal Paws Rabbit",
+        "description": "Ultra-lean rabbit for cats. Naturally hypoallergenic with high protein content. Ideal for cats with multiple food sensitivities.",
+        "ingredients": CAT_INGREDIENTS["rabbit"],
+        "nutrition_facts": CAT_NUTRITION_FACTS["rabbit"],
+        "how_to_use": HOW_TO_USE_CAT,
+        "pricing": [
+            {"size_lb": 6, "price": 86.28, "price_per_lb": 14.38, "savings_percent": 0},
+            {"size_lb": 12, "price": 163.93, "price_per_lb": 13.66, "savings_percent": 5}
+        ],
+        "inventory_status": "available"
+    }
+]
+
+# Cat treats
+CAT_TREATS = [
+    {"treat_id": "cat-treat-chicken-hearts", "name": "Chicken Hearts", "price": 6.99, "quantity_description": "4oz", "pet_type": "cat"},
+    {"treat_id": "cat-treat-duck-hearts", "name": "Duck Hearts", "price": 8.99, "quantity_description": "4oz", "pet_type": "cat"},
+    {"treat_id": "cat-treat-rabbit-ears", "name": "Rabbit Ears", "price": 7.99, "quantity_description": "6 Pack", "pet_type": "cat"},
+    {"treat_id": "cat-treat-chicken-necks", "name": "Chicken Necks (Small)", "price": 5.99, "quantity_description": "8oz", "pet_type": "cat"},
+    {"treat_id": "cat-treat-sardines", "name": "Whole Sardines", "price": 9.99, "quantity_description": "8oz", "pet_type": "cat"},
+    {"treat_id": "cat-treat-quail", "name": "Whole Quail", "price": 12.99, "quantity_description": "2 Pack", "pet_type": "cat"}
+]
+
+ALL_PRODUCTS = COMFORT_DINNER_PRODUCTS + PRIMAL_FEAST_PRODUCTS + ROYAL_PAWS_PRODUCTS
+ALL_TREATS = TREATS + CAT_TREATS
