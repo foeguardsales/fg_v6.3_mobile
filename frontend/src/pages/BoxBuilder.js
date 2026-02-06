@@ -149,137 +149,345 @@ export const BoxBuilder = () => {
     <>
       <Navbar />
       <div className="box-builder">
-        {/* Header with cart button */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-          <div>
-            <h1 style={{ fontSize: '36px', marginBottom: '8px', color: '#2C2C2C' }}>Build Your Box</h1>
-            <p style={{ color: '#666' }}>Select your box size, then choose your proteins</p>
+        {/* Pet Type Selector - Dog vs Cat */}
+        <div className="pet-selector" style={{ marginBottom: '40px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '900px', margin: '0 auto' }}>
+            <button 
+              className={`pet-selector-btn ${petType === 'dog' ? 'active' : ''}`}
+              onClick={() => setPetType('dog')}
+              data-testid="pet-selector-dog"
+              style={{
+                position: 'relative',
+                height: '280px',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                border: petType === 'dog' ? '4px solid #A41E34' : '4px solid transparent',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                padding: 0,
+                background: 'none'
+              }}
+            >
+              <img 
+                src={COLLECTION_IMAGES.dog} 
+                alt="Raw Dog Food"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%)',
+                display: 'flex',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                padding: '30px'
+              }}>
+                <span style={{
+                  fontFamily: 'Crimson Pro, Georgia, serif',
+                  fontSize: '32px',
+                  fontWeight: '700',
+                  color: '#FFFFFF',
+                  textShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                }}>Raw Dog Food</span>
+              </div>
+              {petType === 'dog' && (
+                <div style={{
+                  position: 'absolute',
+                  top: '16px',
+                  right: '16px',
+                  background: '#A41E34',
+                  color: '#FFFFFF',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '18px',
+                  fontWeight: '700'
+                }}>✓</div>
+              )}
+            </button>
+
+            <button 
+              className={`pet-selector-btn ${petType === 'cat' ? 'active' : ''}`}
+              onClick={() => setPetType('cat')}
+              data-testid="pet-selector-cat"
+              style={{
+                position: 'relative',
+                height: '280px',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                border: petType === 'cat' ? '4px solid #A41E34' : '4px solid transparent',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                padding: 0,
+                background: 'none'
+              }}
+            >
+              <img 
+                src={COLLECTION_IMAGES.cat} 
+                alt="Raw Cat Food"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%)',
+                display: 'flex',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                padding: '30px'
+              }}>
+                <span style={{
+                  fontFamily: 'Crimson Pro, Georgia, serif',
+                  fontSize: '32px',
+                  fontWeight: '700',
+                  color: '#FFFFFF',
+                  textShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                }}>Raw Cat Food</span>
+              </div>
+              {petType === 'cat' && (
+                <div style={{
+                  position: 'absolute',
+                  top: '16px',
+                  right: '16px',
+                  background: '#A41E34',
+                  color: '#FFFFFF',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '18px',
+                  fontWeight: '700'
+                }}>✓</div>
+              )}
+            </button>
           </div>
-          <button 
-            className="btn-cart-floating"
-            onClick={() => setCartOpen(true)}
-            data-testid="cart-button"
-          >
-            🛒 {getTotalSelectedLbs()}/{boxSize}lb
-            {isBoxComplete && (
-              <span className="cart-complete-badge">✓</span>
-            )}
-          </button>
         </div>
 
-        {/* Box Size Selector - Inline */}
-        <div className="box-size-selector-inline" data-testid="box-size-selector">
-          <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#8B4513' }}>
-            Select Box Size
-          </h3>
-          <div className="box-size-tabs">
-            {BOX_OPTIONS.map(box => (
-              <button
-                key={box.size}
-                className={`box-size-tab ${boxSize === box.size ? 'active' : ''}`}
-                onClick={() => handleBoxSizeChange(box.size)}
-                data-testid={`box-size-${box.size}lb`}
-              >
-                <span className="box-size-label">{box.label}</span>
-                {box.discount > 0 && (
-                  <span className="box-discount-badge">Save {box.discount}%</span>
-                )}
-              </button>
-            ))}
+        {/* Coming Soon for Cat */}
+        {petType === 'cat' ? (
+          <div style={{
+            textAlign: 'center',
+            padding: '80px 20px',
+            background: '#FFFFFF',
+            borderRadius: '20px',
+            maxWidth: '600px',
+            margin: '0 auto'
+          }}>
+            <div style={{ fontSize: '64px', marginBottom: '20px' }}>🐱</div>
+            <h2 style={{ fontFamily: 'Crimson Pro, Georgia, serif', fontSize: '32px', color: '#2B2B2B', marginBottom: '16px' }}>
+              Cat Food Coming Soon!
+            </h2>
+            <p style={{ color: '#666', fontSize: '17px', lineHeight: '1.7', maxWidth: '400px', margin: '0 auto' }}>
+              We're crafting the perfect raw meals for your feline friends. Sign up to be notified when our cat food line launches.
+            </p>
+            <button 
+              className="btn-primary" 
+              style={{ marginTop: '30px' }}
+              onClick={() => navigate('/contact')}
+            >
+              Notify Me
+            </button>
           </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="box-progress-bar">
-          <div 
-            className="box-progress-fill" 
-            style={{ width: `${(getTotalSelectedLbs() / boxSize) * 100}%` }}
-          />
-          <span className="box-progress-text">
-            {getTotalSelectedLbs()}lb / {boxSize}lb selected
-          </span>
-        </div>
-
-        {loading ? (
-          <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
         ) : (
           <>
-            {/* Comfort Dinner Collection */}
-            <div className="product-collection">
-              <div className="collection-header">
-                <div className="collection-icon">🍽️</div>
-                <div className="collection-info">
-                  <h3 className="collection-title">Comfort Dinner</h3>
-                  <p className="collection-description">
-                    Gently prepared meals perfect for sensitive stomachs. Complete, balanced nutrition.
-                  </p>
-                </div>
+            {/* Header with cart button */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+              <div>
+                <h1 style={{ fontFamily: 'Crimson Pro, Georgia, serif', fontSize: '36px', marginBottom: '8px', color: '#2B2B2B' }}>Build Your Box</h1>
+                <p style={{ color: '#666' }}>Select your box size, then choose your proteins</p>
               </div>
-              <div className="product-grid">
-                {comfortDinnerProducts.map(product => (
-                  <ProductCard 
-                    key={product.product_id}
-                    product={product}
-                    selectedQty={selectedProteins[product.product_id]?.qty || 0}
-                    onUpdate={handleUpdateProtein}
-                    canAdd={canAdd(product.product_id)}
-                    getDiscountedPrice={getDiscountedPrice}
-                    getBasePrice={getBasePrice}
-                    boxSize={boxSize}
-                    navigate={navigate}
-                  />
+              <button 
+                className="btn-cart-floating"
+                onClick={() => setCartOpen(true)}
+                data-testid="cart-button"
+              >
+                🛒 {getTotalSelectedLbs()}/{boxSize}lb
+                {isBoxComplete && (
+                  <span className="cart-complete-badge">✓</span>
+                )}
+              </button>
+            </div>
+
+            {/* Box Size Selector - Inline */}
+            <div className="box-size-selector-inline" data-testid="box-size-selector">
+              <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#A41E34' }}>
+                Select Box Size
+              </h3>
+              <div className="box-size-tabs">
+                {BOX_OPTIONS.map(box => (
+                  <button
+                    key={box.size}
+                    className={`box-size-tab ${boxSize === box.size ? 'active' : ''}`}
+                    onClick={() => handleBoxSizeChange(box.size)}
+                    data-testid={`box-size-${box.size}lb`}
+                  >
+                    <span className="box-size-label">{box.label}</span>
+                    {box.discount > 0 && (
+                      <span className="box-discount-badge">Save {box.discount}%</span>
+                    )}
+                  </button>
                 ))}
               </div>
             </div>
 
-            {/* Primal Feast Collection */}
-            <div className="product-collection">
-              <div className="collection-header">
-                <div className="collection-icon">🥩</div>
-                <div className="collection-info">
-                  <h3 className="collection-title">Primal Feast</h3>
-                  <p className="collection-description">
-                    Raw, biologically appropriate meals. Maximum nutrient retention.
-                  </p>
-                </div>
-              </div>
-              <div className="product-grid">
-                {primalFeastProducts.map(product => (
-                  <ProductCard 
-                    key={product.product_id}
-                    product={product}
-                    selectedQty={selectedProteins[product.product_id]?.qty || 0}
-                    onUpdate={handleUpdateProtein}
-                    canAdd={canAdd(product.product_id)}
-                    getDiscountedPrice={getDiscountedPrice}
-                    getBasePrice={getBasePrice}
-                    boxSize={boxSize}
-                    navigate={navigate}
-                  />
-                ))}
-              </div>
+            {/* Progress Bar */}
+            <div className="box-progress-bar">
+              <div 
+                className="box-progress-fill" 
+                style={{ width: `${(getTotalSelectedLbs() / boxSize) * 100}%` }}
+              />
+              <span className="box-progress-text">
+                {getTotalSelectedLbs()}lb / {boxSize}lb selected
+              </span>
             </div>
 
-            {/* Treats Section */}
-            <TreatsSection 
+            {loading ? (
+              <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
+            ) : (
+              <>
+                {/* Comfort Dinner Collection */}
+                <div className="product-collection">
+                  {/* Collection Banner */}
+                  <div style={{
+                    position: 'relative',
+                    height: '200px',
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    marginBottom: '28px'
+                  }}>
+                    <img 
+                      src={COLLECTION_IMAGES.comfort_dinner}
+                      alt="Comfort Dinner Collection"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(to right, rgba(136, 48, 47, 0.9) 0%, rgba(136, 48, 47, 0.4) 60%, transparent 100%)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      padding: '32px 40px'
+                    }}>
+                      <h3 style={{
+                        fontFamily: 'Crimson Pro, Georgia, serif',
+                        fontSize: '36px',
+                        fontWeight: '700',
+                        color: '#FFFFFF',
+                        margin: '0 0 8px 0'
+                      }}>Comfort Dinner</h3>
+                      <p style={{
+                        color: 'rgba(255,255,255,0.9)',
+                        fontSize: '16px',
+                        margin: 0,
+                        maxWidth: '350px',
+                        lineHeight: '1.5'
+                      }}>Gently prepared meals perfect for sensitive stomachs. Complete, balanced nutrition.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="product-grid">
+                    {comfortDinnerProducts.map(product => (
+                      <ProductCard 
+                        key={product.product_id}
+                        product={product}
+                        selectedQty={selectedProteins[product.product_id]?.qty || 0}
+                        onUpdate={handleUpdateProtein}
+                        canAdd={canAdd(product.product_id)}
+                        getDiscountedPrice={getDiscountedPrice}
+                        getBasePrice={getBasePrice}
+                        boxSize={boxSize}
+                        navigate={navigate}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Primal Feast Collection */}
+                <div className="product-collection">
+                  {/* Collection Banner */}
+                  <div style={{
+                    position: 'relative',
+                    height: '200px',
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    marginBottom: '28px'
+                  }}>
+                    <img 
+                      src={COLLECTION_IMAGES.primal_feast}
+                      alt="Primal Feast Collection"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(to right, rgba(43, 43, 43, 0.9) 0%, rgba(43, 43, 43, 0.4) 60%, transparent 100%)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      padding: '32px 40px'
+                    }}>
+                      <h3 style={{
+                        fontFamily: 'Crimson Pro, Georgia, serif',
+                        fontSize: '36px',
+                        fontWeight: '700',
+                        color: '#FFFFFF',
+                        margin: '0 0 8px 0'
+                      }}>Primal Feast</h3>
+                      <p style={{
+                        color: 'rgba(255,255,255,0.9)',
+                        fontSize: '16px',
+                        margin: 0,
+                        maxWidth: '350px',
+                        lineHeight: '1.5'
+                      }}>Raw, biologically appropriate meals. Maximum nutrient retention for optimal health.</p>
+                    </div>
+                  </div>
+
+                  <div className="product-grid">
+                    {primalFeastProducts.map(product => (
+                      <ProductCard 
+                        key={product.product_id}
+                        product={product}
+                        selectedQty={selectedProteins[product.product_id]?.qty || 0}
+                        onUpdate={handleUpdateProtein}
+                        canAdd={canAdd(product.product_id)}
+                        getDiscountedPrice={getDiscountedPrice}
+                        getBasePrice={getBasePrice}
+                        boxSize={boxSize}
+                        navigate={navigate}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Treats Section */}
+                <TreatsSection 
+                  selectedTreats={selectedTreats}
+                  onToggleTreat={handleToggleTreat}
+                />
+              </>
+            )}
+
+            {/* Cart Drawer */}
+            <CartDrawer 
+              isOpen={cartOpen}
+              onClose={() => setCartOpen(false)}
+              boxSize={boxSize}
+              selectedProteins={selectedProteins}
               selectedTreats={selectedTreats}
-              onToggleTreat={handleToggleTreat}
+              products={products}
+              onProceed={() => { setCartOpen(false); setShowCheckout(true); }}
+              getDiscountedPrice={getDiscountedPrice}
+              getBasePrice={getBasePrice}
             />
           </>
         )}
-
-        {/* Cart Drawer */}
-        <CartDrawer 
-          isOpen={cartOpen}
-          onClose={() => setCartOpen(false)}
-          boxSize={boxSize}
-          selectedProteins={selectedProteins}
-          selectedTreats={selectedTreats}
-          products={products}
-          onProceed={() => { setCartOpen(false); setShowCheckout(true); }}
-          getDiscountedPrice={getDiscountedPrice}
-          getBasePrice={getBasePrice}
-        />
       </div>
       <Footer />
     </>
