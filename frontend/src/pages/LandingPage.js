@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { Check, Leaf, Award, ShieldCheck, Truck, Heart, Users } from 'lucide-react';
+import { Check, Leaf, Award, ShieldCheck, Truck, Sparkles, Heart, Bone, Zap, Shield, Droplets } from 'lucide-react';
 
 export const LandingPage = () => {
   const navigate = useNavigate();
@@ -23,8 +23,8 @@ export const LandingPage = () => {
         <section className="hero-section" data-testid="hero-section">
           <div className="hero-content">
             <h1 className="hero-title">
-              See a happier, healthier pet<br />
-              <span className="hero-accent">in just 14 days</span>
+              See a Happier, Healthier Pet<br />
+              <span className="hero-accent">In Just 14 Days</span>
             </h1>
             <p className="hero-subtitle">
               Farm-fresh raw meals designed for carnivores — delivered directly to your door.
@@ -42,7 +42,7 @@ export const LandingPage = () => {
             <div className="hero-trust-strip">
               <span><Check size={16} /> Farm Raised</span>
               <span><Check size={16} /> Human Grade, Whole Foods</span>
-              <span><Check size={16} /> Organic Ingredients - no Grains, Fillers or Preservatives</span>
+              <span><Check size={16} /> Organic Ingredients - No Grains, Fillers or Preservatives</span>
             </div>
           </div>
         </section>
@@ -54,22 +54,21 @@ export const LandingPage = () => {
             <div className="why-switch-grid">
               <div className="why-switch-item">
                 <div className="why-switch-icon">
-                  {/* Placeholder for icon/image */}
                   <Leaf size={40} />
                 </div>
-                <p>Owned farms</p>
+                <p>Owned Farms</p>
               </div>
               <div className="why-switch-item">
                 <div className="why-switch-icon">
                   <Award size={40} />
                 </div>
-                <p>Human-grade ingredients</p>
+                <p>Human-Grade Ingredients</p>
               </div>
               <div className="why-switch-item">
                 <div className="why-switch-icon">
                   <ShieldCheck size={40} />
                 </div>
-                <p>No fillers or synthetic additives</p>
+                <p>No Fillers or Synthetic Additives</p>
               </div>
             </div>
           </div>
@@ -78,19 +77,13 @@ export const LandingPage = () => {
         {/* ===== SECTION 2 — THE PROBLEM ===== */}
         <section className="problem-section">
           <div className="section-container">
-            <h2 className="section-title">Feeding real food shouldn't feel complicated.</h2>
+            <h2 className="section-title">Feeding Real Food Shouldn't Feel Complicated.</h2>
             <div className="problem-content">
               <p>
-                Most pet food is built for shelf life — not biology.
+                Most pet food is built for shelf life — not biology. It's processed, overcooked, and designed to sit on a warehouse shelf for months – or even years. That doesn't sound like something built for carnivores.
               </p>
               <p>
-                It's processed, overcooked, and designed to sit on a warehouse shelf for months – or even years.
-              </p>
-              <p className="problem-highlight">
-                That doesn't sound like something built for carnivores.
-              </p>
-              <p>
-                Whether you're new to raw or already feeding it, we make it simple to feed your whole fur-family — build, thaw, feed.
+                Whether you're new to raw or already feeding it, we make it simple to feed your dogs and cats — build, thaw, feed.
               </p>
             </div>
           </div>
@@ -110,7 +103,7 @@ export const LandingPage = () => {
               </div>
               <div className="standard-card">
                 <h3>For Guardians Who Refuse to Compromise</h3>
-                <p>Clear ingredients. No vague labels. No marketing hype.</p>
+                <p>Full transparency. No hidden fillers. Just honest nutrition you can trust.</p>
               </div>
             </div>
           </div>
@@ -123,18 +116,18 @@ export const LandingPage = () => {
             <div className="steps-grid">
               <div className="step-card">
                 <div className="step-number">1</div>
-                <h3>Choose Their Favourites</h3>
-                <p>Mix and match from a variety of raw meals and natural treats.</p>
+                <h3>Choose Your Box Size</h3>
+                <p>Select from 12lb, 18lb, 24lb, or 30lb boxes with increasing savings. Mix & match from 8 premium proteins in 6lb increments.</p>
               </div>
               <div className="step-card">
                 <div className="step-number">2</div>
                 <h3>We Prepare Fresh</h3>
-                <p>Using strict food-handling standards and complete personalization</p>
+                <p>Meals prepared individually in a government-regulated facility with complete personalization.</p>
               </div>
               <div className="step-card">
                 <div className="step-number">3</div>
                 <h3>Delivered to Your Door</h3>
-                <p>Flash-frozen for peak safety and easy storage. Just thaw and feed</p>
+                <p>Flash-frozen for peak safety and easy storage. Just thaw and feed.</p>
               </div>
             </div>
             <p className="steps-subtext">
@@ -147,39 +140,54 @@ export const LandingPage = () => {
         <section className="benefits-section">
           <div className="section-container">
             <h2 className="section-title">Real Food. Real Results.</h2>
-            <div className="benefits-list">
-              <div className="benefit-item">
-                <Check size={20} className="benefit-check" />
-                <span>Noticeably smaller stools from better nutrient absorption</span>
+            <div className="benefits-grid">
+              <div className="benefit-card">
+                <div className="benefit-icon">
+                  <Sparkles size={28} />
+                </div>
+                <h3>Better Digestion</h3>
+                <p>Noticeably smaller stools from better nutrient absorption.</p>
               </div>
-              <div className="benefit-item">
-                <Check size={20} className="benefit-check" />
-                <span>Reduced itchiness from healthier skin & coat</span>
+              <div className="benefit-card">
+                <div className="benefit-icon">
+                  <Heart size={28} />
+                </div>
+                <h3>Healthier Skin & Coat</h3>
+                <p>Reduced itchiness and a shinier coat from real nutrition.</p>
               </div>
-              <div className="benefit-item">
-                <Check size={20} className="benefit-check" />
-                <span>Cleaner teeth from natures toothbrush – bones!</span>
+              <div className="benefit-card">
+                <div className="benefit-icon">
+                  <Bone size={28} />
+                </div>
+                <h3>Cleaner Teeth</h3>
+                <p>Nature's toothbrush – raw bones naturally clean teeth.</p>
               </div>
-              <div className="benefit-item">
-                <Check size={20} className="benefit-check" />
-                <span>Steady energy & vitality provided by real food</span>
+              <div className="benefit-card">
+                <div className="benefit-icon">
+                  <Zap size={28} />
+                </div>
+                <h3>Steady Energy</h3>
+                <p>Real food provides sustained vitality without crashes.</p>
               </div>
-              <div className="benefit-item">
-                <Check size={20} className="benefit-check" />
-                <span>Reduced food sensitivities from ingredients they are meant to eat.</span>
+              <div className="benefit-card">
+                <div className="benefit-icon">
+                  <Shield size={28} />
+                </div>
+                <h3>Fewer Sensitivities</h3>
+                <p>Reduced food sensitivities from ingredients they're meant to eat.</p>
               </div>
-              <div className="benefit-item">
-                <Check size={20} className="benefit-check" />
-                <span>Supports safer digestion through proper moisture and nutrient absorption</span>
+              <div className="benefit-card">
+                <div className="benefit-icon">
+                  <Droplets size={28} />
+                </div>
+                <h3>Safer Digestion</h3>
+                <p>Proper moisture and nutrient absorption supports gut health.</p>
               </div>
             </div>
             
-            <div className="aafco-box">
-              <h3>AAFCO Compliant</h3>
-              <p>Formulated to meet recognized nutritional standards and developed with professional nutritionists.</p>
-              <button className="btn-link" onClick={() => navigate('/about')}>
-                Learn More About Raw Nutrition →
-              </button>
+            {/* AAFCO Logo Placeholder */}
+            <div className="aafco-logo-placeholder">
+              <p>[ AAFCO Logo ]</p>
             </div>
           </div>
         </section>
@@ -188,22 +196,19 @@ export const LandingPage = () => {
         <section className="farm-section">
           <div className="section-container">
             <h2 className="section-title">From Farm to Bowl</h2>
-            <p className="farm-intro">
-              No middlemen. No unknown sources. Full control from start to finish - for ultimate consistency, traceability, and safety.
-            </p>
-            <p className="farm-story">
-              What began as a mission to support local pet guardians became a commitment to Ontario dogs and cats.
-            </p>
-            <p className="farm-quote">
-              If it's not good enough for our own table, it's not good enough for your pet's bowl.
-            </p>
+            <div className="farm-content">
+              <p>
+                What began as a mission to support local pet guardians became a commitment to Ontario dogs and cats. No middlemen. No unknown sources. Full control from start to finish - for ultimate consistency, traceability, and safety.
+              </p>
+              <p className="farm-quote">
+                If it's not good enough for our own table, it's not good enough for your pet's bowl.
+              </p>
+            </div>
             
             {/* 8 Protein Grid */}
             <div className="protein-grid">
               <div className="protein-item">
-                <div className="protein-image-placeholder">
-                  {/* Image placeholder */}
-                </div>
+                <div className="protein-image-placeholder"></div>
                 <span>Chicken</span>
               </div>
               <div className="protein-item">
@@ -275,7 +280,7 @@ export const LandingPage = () => {
             </p>
             <button 
               className="btn-primary" 
-              onClick={() => navigate('/build-box')}
+              onClick={() => navigate('/about')}
               data-testid="trial-box-btn"
             >
               Build Your Risk-Free Trial Box
@@ -289,8 +294,14 @@ export const LandingPage = () => {
             <h2 className="section-title">Trusted by FoeGuardians Across Ontario.</h2>
             <p className="community-subtitle">Real dogs. Real cats. Real guardians choosing better.</p>
             
-            {/* Customer Photo Grid Placeholder */}
+            {/* Customer Photo Grid - 12 images */}
             <div className="customer-photo-grid">
+              <div className="customer-photo-placeholder"></div>
+              <div className="customer-photo-placeholder"></div>
+              <div className="customer-photo-placeholder"></div>
+              <div className="customer-photo-placeholder"></div>
+              <div className="customer-photo-placeholder"></div>
+              <div className="customer-photo-placeholder"></div>
               <div className="customer-photo-placeholder"></div>
               <div className="customer-photo-placeholder"></div>
               <div className="customer-photo-placeholder"></div>
