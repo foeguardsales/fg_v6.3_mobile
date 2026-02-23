@@ -56,7 +56,8 @@ export const Footer = () => {
         <div className="footer-section">
           <h4>About</h4>
           <ul>
-            <li><a href="/about">About Us & Why Raw</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/new-to-raw">New to FoeGuard?</a></li>
             <li><a href="/contact">Contact Us</a></li>
           </ul>
         </div>
