@@ -1,123 +1,95 @@
-# FoeGuard - Raw Dog Food Subscription Platform
+# FoeGuard E-Commerce Platform - PRD
 
 ## Original Problem Statement
-Build and maintain FoeGuard, a raw dog food subscription e-commerce platform for Ontario, Canada. Features include box customization, protein selection, treats, checkout with Stripe, Google Places autocomplete, and subscription management.
+Build a modern e-commerce website for FoeGuard, a raw pet food company selling farm-fresh meals for dogs and cats in Ontario.
 
-## Architecture
-- **Frontend**: React 18 with Tailwind CSS
-- **Backend**: FastAPI with MongoDB (Motor driver)
-- **Payments**: Stripe integration
-- **Email**: Brevo (SendinBlue) for transactional emails
-- **Address**: Google Places Autocomplete
-
-## User Personas
-1. **Pet Parents**: Ontario dog owners seeking premium raw food options
-2. **Health-Conscious Owners**: Those wanting biologically appropriate diets for pets
-3. **Subscription Users**: Recurring customers with auto-delivery preferences
-
-## Core Requirements (Static)
-- Box builder with 4 size options (12lb, 18lb, 24lb, 30lb)
-- 8 protein options across 2 product lines (Comfort Dinner, Primal Feast)
-- Volume discounts (5%, 10%, 15% for larger boxes)
-- Cart drawer with order summary
-- Checkout with separate Stripe card fields
+## Core Requirements
+- Modern farmhouse aesthetic with Fraunces/Inter fonts
+- Color palette: barn red (#88302F), burgundy (#732827), cream (#f5f3ef), khaki (#D9C8B3)
+- 9-section homepage with specific copy
+- Dog and Cat food product lines
+- Build-a-Box customization
+- Stripe payment integration
 - Google Places address autocomplete
-- Delivery date selector (3+ days from today)
-- Subscription vs one-time purchase option
-- User authentication (login/register)
-- Order history in account page
+- Brevo email integration
 
-## What's Been Implemented
+---
 
-### Feb 5, 2026 - Session 4 Updates
-- ✅ **Dog/Cat Pet Selector**: Large image buttons at top of menu
-  - Dog: Shows full box builder with products
-  - Cat: Shows "Coming Soon" message with Notify Me button
-- ✅ **Collection Banners**: Beautiful full-width banners with user images
-  - Comfort Dinner: Bowl of food image with burgundy gradient overlay
-  - Primal Feast: Raw meat image with charcoal gradient overlay
-- ✅ Removed small emoji icons, replaced with professional image banners
-- ✅ Mobile responsive design for pet selector and banners
+## What's Been Implemented (Dec 2025)
 
-### Feb 5, 2026 - Session 3 Updates
-- ✅ **Contact Us in Navigation**: Added after Calculator link
-- ✅ **Delivery Instructions**: Changed placeholder from "cutting" to "remove certain ingredients"
-- ✅ **Product Detail Page Redesign**:
-  - Hero image with product photo
-  - Clean back button with arrow icon
-  - Collapsible sections: Ingredients (open), Nutrition Facts, Feeding Guide
-  - Removed "Available Sizes" section
-  - Removed "Add to Box" button
-  - Modern card-based layout
+### Homepage (9 Sections) ✅
+1. Hero with "See a Happier, Healthier Pet In Just 14 Days"
+2. Why Guardians Switch (3 icons)
+3. The Problem section
+4. Our Standards (3 pillars with header)
+5. How It Works (3 steps - concise)
+6. Real Food Real Results (6 benefits + AAFCO)
+7. From Farm to Bowl (8 proteins, testimonials)
+8. New to FoeGuard section
+9. Final CTA with promise list
 
-### Feb 5, 2026 - Session 2 Updates
-- ✅ **Subscription Frequency Choice**: Biweekly OR Monthly options
-- ✅ **Contact Us Page**: Full form (Name, Phone, Email, Message) with company info:
-  - Partnerships: sales@foeguard.com
-  - General: info@foeguard.com
-  - Phone: 905-466-7787
-  - Hours: Mon-Fri 9am-10pm, Sat 9am-6pm, Sun Closed
-  - Office: 405 The West Mall, Etobicoke, M9C 5J1, ON
-- ✅ **Delivery/Order Instructions**: Textarea in checkout for custom notes
-- ✅ **"Delivery Address"**: Changed from "Shipping Address"
-- ✅ **Subscription Swap**: Users can change box size (12/18/24/30lb)
-- ✅ **Product Detail Page**: Fixed styling
-- ✅ **Calculator**: Added lbs/month display
+### Pages ✅
+- Landing Page (complete with all 9 sections)
+- Build-a-Box (dog/cat selector, image banners)
+- Product Detail (redesigned, collapsible sections)
+- Contact Us
+- About Us
+- Calculator
+- Account/Login
+- New to Raw (placeholder)
 
-### Feb 5, 2026 - Session 1 (Design Refresh)
-- ✅ Updated color scheme to authentic farm palette
-- ✅ New typography: Crimson Pro, Source Sans 3
-- ✅ Responsive mobile navigation with hamburger menu
+### Integrations ✅
+- Stripe payments (test key)
+- Google Places autocomplete
+- Brevo email (configured)
 
-### Previous Implementation
-- ✅ Single-page menu with direct box selection
-- ✅ Complete address form with Google Places
-- ✅ Separate Stripe card fields
-- ✅ Delivery date selector
+### Checkout Features ✅
+- Biweekly/Monthly subscription choice
+- Delivery instructions textarea
+- "Delivery Address" labeling
 
-## Testing Status
-- Backend: 100%
-- Frontend: 95% (minor 401 console warning, non-blocking)
+---
 
-## Next Action Items (Requested by User)
-1. **Dog/Cat Menu Selection**: Large menu buttons with images to switch between dog food and cat food
-2. **Header Images for Menu Items**: Replace small icons with header images above each product
-   - **Recommended Image Sizes**:
-     - Desktop: 280px × 180px (16:10 ratio)
-     - Mobile: 100% width × 150px height
-     - Format: WebP or optimized JPEG
-     - Resolution: 2x for retina displays (560px × 360px actual)
+## Pending Tasks
 
-## Prioritized Backlog
-
-### P1 - In Progress
-- [ ] Dog/Cat menu selector with large image buttons
-- [ ] Header images for menu product cards (awaiting user images)
+### P1 - High Priority
+- [ ] Complete "Why FoeGuard" page (pending user copy)
+- [ ] Expand "New to Raw" page (pending user copy)
+- [ ] Test Royal Paws cat food line on Build-a-Box
+- [ ] Verify cart calculations for cat food
 
 ### P2 - Medium Priority
-- [ ] Admin dashboard enhancements
-- [ ] Cat food products and treats
+- [ ] Complete subscription swap functionality
+- [ ] End-to-end checkout testing
 
-### P3 - Lower Priority
+### Backlog
+- [ ] Quick Reorder feature
 - [ ] Blog page
 - [ ] Marketing email automation
 - [ ] Rewards/loyalty program
+- [ ] Admin dashboard enhancements
 
-## Tech Stack
-- React 18.x
-- FastAPI
-- MongoDB with Motor
-- Stripe
-- Google Places API
-- Brevo (SendinBlue)
+---
 
-## Environment Variables
-### Backend (.env)
-- MONGO_URL, DB_NAME
-- STRIPE_SECRET_KEY, STRIPE_PUBLIC_KEY
-- JWT_SECRET
-- BREVO_API_KEY
-- GOOGLE_PLACES_API_KEY
+## Image Placeholders Needed
+- 3 icons for "Why Guardians Switch"
+- Farm sourcing banner
+- 8 protein images (Chicken, Beef, Duck, Fish, Lamb, Turkey, Goat, Rabbit)
+- 3 testimonial photos
+- 12 customer photo grid
+- AAFCO logo
 
-### Frontend (.env)
-- REACT_APP_BACKEND_URL
+---
+
+## Technical Stack
+- Frontend: React + TailwindCSS (craco)
+- Backend: FastAPI + Python
+- Database: MongoDB
+- Styling: CSS variables, Fraunces/Inter fonts
+
+## Key Files
+- `/app/frontend/src/pages/LandingPage.js` - Homepage
+- `/app/frontend/src/App.css` - Main styles
+- `/app/frontend/src/pages/BoxBuilder.js` - Build-a-box
+- `/app/backend/server.py` - API endpoints
+- `/app/backend/seed_data.py` - Product data
