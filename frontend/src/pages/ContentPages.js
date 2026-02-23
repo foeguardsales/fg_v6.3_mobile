@@ -476,20 +476,26 @@ export const NewToRawPage = () => {
         <section className="ntf-section ntf-safe">
           <div className="ntf-container">
             <h2>Is Raw Safe?</h2>
-            <p className="ntf-answer">Yes — when it's done properly.</p>
+            <p className="ntf-answer">Yes—it's not just safe, it's often the healthiest option you can give your dog, cat, puppy, or kitten.</p>
             <p>
-              Dogs and cats are biologically designed to digest raw meat, bone, and organ. Their highly acidic stomachs are built to process what would challenge humans.
+              Not all raw food is created equal. The safety and benefits of a raw diet depend entirely on ingredient quality, balance, and handling. That's why at FoeGuard, we go back to the basics: fresh, human-grade meat raised ethically and handled with the care you'd give your own meals.
             </p>
-            <p className="ntf-emphasis">The key is quality and handling.</p>
-            <p>At FoeGuard:</p>
-            <ul className="ntf-list">
-              <li>We use human-grade ingredients</li>
-              <li>Recipes are professionally formulated</li>
-              <li>Meals are prepared in a government-inspected facility</li>
-              <li>Every batch is flash frozen immediately</li>
-            </ul>
             <p>
-              When handled like you would your own meat at home — thawed in the fridge and served fresh — raw feeding is a safe, biologically appropriate option.
+              When prepared and stored like you would at home—thawed in the fridge and served fresh—raw feeding is a clean, biologically appropriate way to nourish pets.
+            </p>
+            <p>
+              We've seen pets thrive on proteins they were once thought "allergic" to. More often, the issue isn't the protein itself—it's hidden hormones, antibiotics, or poor-quality meat in conventional food.
+            </p>
+            <p className="ntf-emphasis">Here's how FoeGuard does it differently:</p>
+            <ul className="ntf-list">
+              <li>Human-grade ingredients prepared in a government-inspected facility</li>
+              <li>100% naturally raised meat with no fillers, GMOs, preservatives, antibiotics, or hormones</li>
+              <li>Ethically sourced proteins from our own farms and trusted Canadian partners</li>
+              <li>Balanced by pet nutrition experts</li>
+              <li>Delivered to your door by a dedicated FoeGuard team member</li>
+            </ul>
+            <p className="ntf-conclusion">
+              It's not complicated. It's just real, safe, wholesome food—and your pet will feel the difference.
             </p>
           </div>
         </section>
