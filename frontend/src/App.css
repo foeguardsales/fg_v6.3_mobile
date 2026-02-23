@@ -3169,6 +3169,21 @@ h1, h2, h3, h4 {
   margin-top: 32px !important;
 }
 
+.story-question {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 24px !important;
+  font-style: italic;
+  color: var(--barn-red) !important;
+  text-align: center;
+  margin: 24px 0 32px !important;
+}
+
+.story-final {
+  font-weight: 500;
+  color: var(--charcoal) !important;
+  margin-top: 24px !important;
+}
+
 .about-team-image {
   background: var(--cream);
   padding: 0;
