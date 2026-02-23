@@ -86,13 +86,10 @@ export const LandingPage = () => {
                 Digestion. Energy. Skin. Comfort.
               </p>
               <p>
-                The right ingredients can restore balance from the inside out — but only when you know exactly what's in the bowl.
+                The right ingredients can restore balance from the inside out — but only when you know exactly what's in the bowl. Too many pet owners end up paying premium prices for mystery ingredients, while big brands spend heavily on packaging and retail markups instead of quality.
               </p>
               <p>
-                Too many pet owners end up paying premium prices for mystery ingredients. Big brands spend heavily on packaging and retail markups. We put the value where it belongs: into responsibly raised meat, transparent sourcing, and proper formulation.
-              </p>
-              <p>
-                We remove the prep, the balancing, and the uncertainty — delivering farm-fresh meals directly to your door so you can support your pet's health and local Canadian farms, all at retail cost.
+                At FoeGuard, the value goes where it belongs: into responsibly raised meat, transparent sourcing, and proper formulation. No prep, no balancing, no uncertainty — just farm-fresh meals delivered directly to your door, so you can support your pet's health and local Canadian farms, all at retail cost.
               </p>
             </div>
           </div>
