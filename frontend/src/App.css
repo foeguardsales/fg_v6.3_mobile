@@ -386,6 +386,32 @@ h1, h2, h3, h4 {
   margin-bottom: 20px;
 }
 
+.problem-lead {
+  font-size: 19px !important;
+  font-weight: 500;
+  color: var(--charcoal) !important;
+}
+
+.problem-symptoms {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px !important;
+  color: var(--barn-red) !important;
+  font-style: italic;
+  margin: 24px 0 32px !important;
+}
+
+.problem-benefits {
+  margin-top: 40px;
+}
+
+.problem-benefits p {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px !important;
+  font-weight: 500;
+  color: var(--charcoal) !important;
+  margin-bottom: 8px !important;
+}
+
 .problem-highlight {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 24px !important;
