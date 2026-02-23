@@ -350,7 +350,7 @@ h1, h2, h3, h4 {
 .why-switch-icon {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--barn-red) 0%, var(--burgundy) 100%);
+  background: var(--barn-red);
   border-radius: 20px;
   display: flex;
   align-items: center;
