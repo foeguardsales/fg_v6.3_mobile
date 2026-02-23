@@ -131,20 +131,20 @@ h1, h2, h3, h4 {
   gap: 0;
   max-width: 1200px;
   margin: 0 auto;
-  background: var(--cream);
+  background: var(--barn-red);
 }
 
 .nav-mobile-link {
   background: none;
   border: none;
-  color: var(--charcoal);
+  color: var(--text-inverse);
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   padding: 14px 0;
   text-align: left;
-  border-bottom: 1px solid var(--khaki);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .nav-mobile-link:last-child {
