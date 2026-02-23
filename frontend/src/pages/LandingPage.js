@@ -106,8 +106,8 @@ export const LandingPage = () => {
                 <p>Ethically sourced from local Canadian farms — including farms we directly own and oversee.</p>
               </div>
               <div className="standard-card">
-                <h3>Full Transparency Always</h3>
-                <p>Full transparency. No hidden fillers. Just honest nutrition you can trust.</p>
+                <h3>For Guardians Who Care</h3>
+                <p>For those who treat their pets like family. No hidden fillers. Just honest nutrition you can trust.</p>
               </div>
             </div>
           </div>
