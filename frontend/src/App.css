@@ -3535,10 +3535,14 @@ h1, h2, h3, h4 {
   font-weight: 700;
 }
 
+.status-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
 .varies-text {
   font-size: 14px;
   color: var(--text-secondary);
-  font-style: italic;
 }
 
 .limited-text {
