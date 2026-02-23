@@ -327,3 +327,70 @@ export const ContactPage = () => {
     </>
   );
 };
+
+export const NewToRawPage = () => {
+  return (
+    <>
+      <Navbar />
+      <div className="content-page">
+        <div className="content-container">
+          <h1>New to FoeGuard or Raw Feeding?</h1>
+          
+          <section>
+            <h2>Transitioning is Easier Than You Think</h2>
+            <p>
+              Whether you're switching from kibble or another raw brand, we guide you every step of the way — so feeding better never feels overwhelming.
+            </p>
+          </section>
+
+          <section>
+            <h2>Why Go Raw?</h2>
+            <p>
+              Dogs and cats are carnivores. Their digestive systems are designed to process raw meat, bones, and organs — not heavily processed kibble that sits on shelves for months.
+            </p>
+            <p>
+              Raw diets provide enzymes, natural probiotics, and bioavailable nutrients that cooking destroys. Most pet guardians see visible improvements within the first 14 days.
+            </p>
+          </section>
+
+          <section>
+            <h2>How to Transition</h2>
+            <p>
+              We recommend a gradual transition over 7-10 days:
+            </p>
+            <ul className="benefits-list">
+              <li><strong>Days 1-3:</strong> 25% FoeGuard, 75% current food</li>
+              <li><strong>Days 4-6:</strong> 50% FoeGuard, 50% current food</li>
+              <li><strong>Days 7-9:</strong> 75% FoeGuard, 25% current food</li>
+              <li><strong>Day 10+:</strong> 100% FoeGuard</li>
+            </ul>
+            <p>
+              Some pets with sensitive stomachs may need a slower transition. If you notice loose stools, slow down and give their system time to adjust.
+            </p>
+          </section>
+
+          <section>
+            <h2>The FoeGuard Promise</h2>
+            <ul className="benefits-list">
+              <li>Free custom meal consultation</li>
+              <li>Farm-fresh delivery to your door</li>
+              <li>Transition support for new raw feeders</li>
+              <li>Free Raw Feeding Guide ($29 value)</li>
+              <li>14-Day Happiness Guarantee</li>
+            </ul>
+          </section>
+
+          <section style={{ textAlign: 'center', marginTop: '48px' }}>
+            <button 
+              className="btn-primary"
+              onClick={() => window.location.href = '/build-box'}
+            >
+              Build Your Risk-Free Trial Box
+            </button>
+          </section>
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
+};
