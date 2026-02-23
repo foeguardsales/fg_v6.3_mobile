@@ -77,17 +77,28 @@ export const LandingPage = () => {
         {/* ===== SECTION 2 — THE PROBLEM ===== */}
         <section className="problem-section">
           <div className="section-container">
-            <h2 className="section-title">Feeding Real Food Shouldn't Feel Complicated.</h2>
+            <h2 className="section-title">Feeding real food shouldn't be complicated.</h2>
             <div className="problem-content">
+              <p className="problem-lead">
+                Most common health concerns begin with what they eat.
+              </p>
+              <p className="problem-symptoms">
+                Digestion. Energy. Skin. Comfort.
+              </p>
               <p>
-                Most pet food is built for shelf life — not biology. It's processed, overcooked, and designed to sit on a warehouse shelf for months – or even years.
-              </p>
-              <p className="problem-emphasis">
-                That doesn't sound like something built for carnivores.
+                The right ingredients can restore balance from the inside out — but only when you know exactly what's in the bowl.
               </p>
               <p>
-                Whether you're new to raw or already feeding it, we make it simple to feed your dogs and cats — build, thaw, feed.
+                Too many pet owners end up paying premium prices for mystery ingredients. Big brands spend heavily on packaging and retail markups. We put the value where it belongs: into responsibly raised meat, transparent sourcing, and proper formulation.
               </p>
+              <p>
+                We remove the prep, the balancing, and the uncertainty — delivering farm-fresh meals directly to your door so mealtime is simple, consistent, and something dogs genuinely enjoy.
+              </p>
+              <div className="problem-benefits">
+                <p>Real ingredients.</p>
+                <p>Fair retail pricing.</p>
+                <p>No stress at serving time.</p>
+              </div>
             </div>
           </div>
         </section>
