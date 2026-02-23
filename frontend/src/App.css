@@ -251,7 +251,7 @@ h1, h2, h3, h4 {
 
 /* Hero Section */
 .hero-section {
-  background: linear-gradient(145deg, var(--burgundy) 0%, var(--barn-red) 50%, var(--burgundy-deep) 100%);
+  background: linear-gradient(145deg, var(--barn-red) 0%, var(--barn-red) 50%, var(--barn-red) 100%);
   min-height: 85vh;
   display: flex;
   align-items: center;
@@ -524,7 +524,7 @@ h1, h2, h3, h4 {
 .benefit-icon {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, var(--foeguard-red) 0%, var(--overlay-red) 100%);
+  background: var(--barn-red);
   border-radius: 16px;
   display: flex;
   align-items: center;
