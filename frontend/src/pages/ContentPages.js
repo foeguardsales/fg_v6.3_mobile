@@ -572,21 +572,27 @@ export const NewToRawPage = () => {
         {/* Problem Awareness Section */}
         <section className="ntf-section ntf-problem">
           <div className="ntf-container">
-            <h2>When something feels off, food is often the missing piece</h2>
-            <p className="ntf-symptoms">
-              Allergies. Digestive issues. Low energy. Ongoing discomfort.
+            <h2>Uncover What's Really Causing Your Pet's Discomfort</h2>
+            <p className="ntf-lead-question">
+              Could it be their food, the environment, or something at home?
             </p>
             <p>
-              When pets don't feel their best, the cause isn't always obvious.
+              From ultra-processed kibble to inconsistent raw made with unclear sourcing, hidden risks are everywhere. Feeding clean, biologically appropriate food can help support digestion, strengthen immunity, improve dental health, and reduce common sensitivities over time.
             </p>
             <p>
-              Many conventional foods—even premium ones—are heavily processed or lack clear sourcing. Even some raw options vary in quality and consistency.
+              While we can't promise instant answers, switching to properly sourced raw food often helps eliminate one of the biggest unknowns — their diet.
             </p>
             <p>
-              Feeding fresh, properly sourced food gives you a clear, reliable foundation you can trust—and often removes one of the biggest variables affecting your pet's wellbeing.
+              It's a simple, effective way to observe how your pet responds to different proteins while ensuring they receive highly absorbable, nutrient-dense nutrition.
+            </p>
+            <p>
+              Like many pet parents, you may feel frustrated by the lack of transparency in traditional pet food. Even store-bought raw can vary in sourcing and consistency, leaving uncertainty about what you're feeding.
+            </p>
+            <p>
+              These challenges don't just create stress — they can affect your pet's long-term wellbeing and lead to ongoing issues and expenses.
             </p>
             <p className="ntf-conclusion">
-              It's a simple change that can make a meaningful difference.
+              Finding reliable pet food shouldn't feel complicated. At FoeGuard, we make clean, transparent feeding simple and dependable — so you can focus on your pet, not question their food.
             </p>
           </div>
         </section>
