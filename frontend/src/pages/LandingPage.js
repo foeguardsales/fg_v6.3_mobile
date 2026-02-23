@@ -226,13 +226,13 @@ export const LandingPage = () => {
                 If it's not good enough for our family, it's not good enough for your pets.
               </p>
               <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
-                We raise and source from our own farms and trusted Ontario partners — animals raised responsibly, without shortcuts.
+                We raise and source directly from our own farms and trusted Ontario partners — with full visibility into how every ingredient is produced, handled, and prepared.
               </p>
               <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
-                Every order is prepared fresh in small batches, made to order, and personalized when needed.
+                Every order is made fresh in small batches, prepared to order, and personalized when needed.
               </p>
               <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
-                Our meals and treats are designed for carnivores — not shelf life. You'll always know exactly what goes into your pet's bowl, where it came from, and why it's there.
+                You'll always know exactly what's in your pet's bowl, where it came from, and why it's there.
               </p>
             </div>
             
