@@ -400,14 +400,6 @@ h1, h2, h3, h4 {
   padding: 100px 24px;
 }
 
-.section-title-white {
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: clamp(32px, 5vw, 44px);
-  color: var(--text-inverse);
-  text-align: center;
-  margin: 0 0 60px 0;
-}
-
 .standard-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -801,6 +793,7 @@ h1, h2, h3, h4 {
   font-family: 'Fraunces', Georgia, serif;
   font-size: clamp(28px, 4.5vw, 40px);
   color: var(--text-inverse);
+  text-align: center;
   margin: 0 0 48px 0;
   position: relative;
   z-index: 1;
