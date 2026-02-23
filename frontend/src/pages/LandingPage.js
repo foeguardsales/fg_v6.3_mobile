@@ -216,11 +216,14 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title">From Farm to Bowl</h2>
             <div className="farm-content" style={{ textAlign: 'center' }}>
-              <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
-                What began as a mission to support local pet guardians became a commitment to Ontario dogs and cats. No middlemen. No unknown sources. Full control from start to finish — for ultimate consistency, traceability, and safety.
-              </p>
               <p className="farm-emphasis">
-                If it's not good enough for our own table, it's not good enough for your pet's bowl.
+                If it's not good enough for our family, it's not good enough for your pets.
+              </p>
+              <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
+                We source from our own local farms and trusted Ontario partners. Every order is prepared fresh, in small batches and made to order - even personalized when needed.
+              </p>
+              <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
+                Our meals and treats are designed for carnivores — not shelf-life. You'll always know exactly what goes into your pet's bowl.
               </p>
             </div>
             
