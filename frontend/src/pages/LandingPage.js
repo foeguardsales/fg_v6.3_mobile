@@ -116,18 +116,18 @@ export const LandingPage = () => {
             <div className="steps-grid">
               <div className="step-card">
                 <div className="step-number">1</div>
-                <h3>Choose Your Box Size</h3>
-                <p>Select from 12lb, 18lb, 24lb, or 30lb boxes with increasing savings. Mix & match from 8 premium proteins in 6lb increments.</p>
+                <h3>Build Your Box</h3>
+                <p>Pick your size. Mix & match from 8 premium proteins in 6lb increments.</p>
               </div>
               <div className="step-card">
                 <div className="step-number">2</div>
                 <h3>We Prepare Fresh</h3>
-                <p>Meals prepared individually in a government-regulated facility with complete personalization.</p>
+                <p>Each order is prepared in a government-regulated facility. Never sitting on shelves.</p>
               </div>
               <div className="step-card">
                 <div className="step-number">3</div>
-                <h3>Delivered to Your Door</h3>
-                <p>Flash-frozen for peak safety and easy storage. Just thaw and feed.</p>
+                <h3>Thaw & Serve</h3>
+                <p>Flash-frozen and delivered. Just thaw and feed.</p>
               </div>
             </div>
             <p className="steps-subtext">
@@ -185,9 +185,14 @@ export const LandingPage = () => {
               </div>
             </div>
             
-            {/* AAFCO Logo Placeholder */}
-            <div className="aafco-logo-placeholder">
-              <p>[ AAFCO Logo ]</p>
+            {/* AAFCO Logo with compliance text */}
+            <div className="aafco-section">
+              <div className="aafco-logo-placeholder">
+                <p>[ AAFCO Logo ]</p>
+              </div>
+              <p className="aafco-text">
+                Formulated to meet the nutritional levels established by AAFCO Dog and Cat Food Nutrient Profiles for all life stages.
+              </p>
             </div>
           </div>
         </section>
@@ -196,9 +201,9 @@ export const LandingPage = () => {
         <section className="farm-section">
           <div className="section-container">
             <h2 className="section-title">From Farm to Bowl</h2>
-            <div className="farm-content">
-              <p>
-                What began as a mission to support local pet guardians became a commitment to Ontario dogs and cats. No middlemen. No unknown sources. Full control from start to finish - for ultimate consistency, traceability, and safety.
+            <div className="farm-content" style={{ textAlign: 'center' }}>
+              <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
+                What began as a mission to support local pet guardians became a commitment to Ontario dogs and cats. No middlemen. No unknown sources. Full control from start to finish — for ultimate consistency, traceability, and safety.
               </p>
               <p className="farm-quote">
                 If it's not good enough for our own table, it's not good enough for your pet's bowl.
