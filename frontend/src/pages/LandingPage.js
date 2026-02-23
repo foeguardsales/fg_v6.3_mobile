@@ -292,7 +292,7 @@ export const LandingPage = () => {
               onClick={() => navigate('/new-to-raw')}
               data-testid="trial-box-btn"
             >
-              Build Your Risk-Free Trial Box
+              Visit New to Raw
             </button>
           </div>
         </section>
