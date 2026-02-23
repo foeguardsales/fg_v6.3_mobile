@@ -119,17 +119,26 @@ export const LandingPage = () => {
             <h2 className="section-title">How It Works</h2>
             <div className="steps-grid">
               <div className="step-card">
-                <div className="step-number">1</div>
+                <div className="step-image-container">
+                  <div className="step-image-placeholder"></div>
+                  <div className="step-number-overlay">1</div>
+                </div>
                 <h3>Build Your Box</h3>
                 <p>Pick your size. Mix & match from 8 premium proteins in 6lb increments.</p>
               </div>
               <div className="step-card">
-                <div className="step-number">2</div>
+                <div className="step-image-container">
+                  <div className="step-image-placeholder"></div>
+                  <div className="step-number-overlay">2</div>
+                </div>
                 <h3>We Prepare Fresh</h3>
                 <p>Each order is prepared in a government-regulated facility. Never sitting on shelves.</p>
               </div>
               <div className="step-card">
-                <div className="step-number">3</div>
+                <div className="step-image-container">
+                  <div className="step-image-placeholder"></div>
+                  <div className="step-number-overlay">3</div>
+                </div>
                 <h3>Thaw & Serve</h3>
                 <p>Flash-frozen and delivered. Just thaw and feed.</p>
               </div>
