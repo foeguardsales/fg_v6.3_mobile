@@ -92,7 +92,7 @@ h1, h2, h3, h4 {
   background: none;
   border: none;
   color: var(--text-inverse);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
@@ -137,7 +137,7 @@ h1, h2, h3, h4 {
   background: none;
   border: none;
   color: #A41E34;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -171,7 +171,7 @@ h1, h2, h3, h4 {
   border: none;
   padding: 16px 36px;
   border-radius: 100px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -207,7 +207,7 @@ h1, h2, h3, h4 {
   border: 2px solid var(--barn-red);
   padding: 14px 32px;
   border-radius: 100px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -225,7 +225,7 @@ h1, h2, h3, h4 {
   border: 2px solid var(--barn-red);
   padding: 18px 48px;
   border-radius: 100px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
@@ -281,7 +281,7 @@ h1, h2, h3, h4 {
 }
 
 .hero-title {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: clamp(38px, 6vw, 58px);
   font-weight: 700;
   color: var(--text-inverse);
@@ -328,7 +328,7 @@ h1, h2, h3, h4 {
 }
 
 .section-title-sm {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 28px;
   color: var(--charcoal);
   text-align: center;
@@ -386,7 +386,7 @@ h1, h2, h3, h4 {
 }
 
 .problem-highlight {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 24px !important;
   font-weight: 600;
   color: var(--barn-red) !important;
@@ -412,7 +412,7 @@ h1, h2, h3, h4 {
 }
 
 .standard-card h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 24px;
   color: var(--khaki);
   margin: 0 0 16px 0;
@@ -432,7 +432,7 @@ h1, h2, h3, h4 {
 }
 
 .section-title {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: clamp(32px, 5vw, 44px);
   color: var(--charcoal);
   text-align: center;
@@ -464,14 +464,14 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Crimson Pro', serif;
+  font-family: 'Fraunces', serif;
   font-size: 26px;
   font-weight: 700;
   margin: 0 auto 20px;
 }
 
 .step-card h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 22px;
   color: var(--charcoal);
   margin: 0 0 12px 0;
@@ -538,7 +538,7 @@ h1, h2, h3, h4 {
 }
 
 .aafco-box h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 24px;
   color: var(--barn-red);
   margin: 0 0 12px 0;
@@ -555,7 +555,7 @@ h1, h2, h3, h4 {
   background: none;
   border: none;
   color: var(--barn-red);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -593,7 +593,7 @@ h1, h2, h3, h4 {
 }
 
 .farm-quote {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 22px;
   font-style: italic;
   color: var(--barn-red);
@@ -643,7 +643,7 @@ h1, h2, h3, h4 {
 }
 
 .testimonials-section h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 28px;
   color: var(--charcoal);
   text-align: center;
@@ -753,7 +753,7 @@ h1, h2, h3, h4 {
 }
 
 .section-title-white {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: clamp(28px, 4.5vw, 40px);
   color: var(--text-inverse);
   margin: 0 0 48px 0;
@@ -774,7 +774,7 @@ h1, h2, h3, h4 {
 }
 
 .promise-box h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 22px;
   color: var(--khaki);
   margin: 0 0 20px 0;
@@ -841,7 +841,7 @@ h1, h2, h3, h4 {
   background: none;
   border: none;
   color: var(--khaki);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -949,7 +949,7 @@ h1, h2, h3, h4 {
   border: none;
   padding: 20px 52px;
   border-radius: 100px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
@@ -980,7 +980,7 @@ h1, h2, h3, h4 {
 }
 
 .footer-section h4 {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
@@ -1043,7 +1043,7 @@ h1, h2, h3, h4 {
   border: none;
   padding: 14px 28px;
   border-radius: 100px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -1088,7 +1088,7 @@ h1, h2, h3, h4 {
 }
 
 .box-size-selector-inline h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 20px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -1133,7 +1133,7 @@ h1, h2, h3, h4 {
 
 .box-size-label {
   display: block;
-  font-family: 'Crimson Pro', serif;
+  font-family: 'Fraunces', serif;
   font-size: 26px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1146,7 +1146,7 @@ h1, h2, h3, h4 {
   color: var(--text-inverse);
   padding: 4px 12px;
   border-radius: 100px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 700;
 }
@@ -1174,7 +1174,7 @@ h1, h2, h3, h4 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 15px;
   color: var(--charcoal);
@@ -1209,7 +1209,7 @@ h1, h2, h3, h4 {
 }
 
 .collection-title {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 30px;
   color: var(--charcoal);
   margin: 0 0 4px 0;
@@ -1245,7 +1245,7 @@ h1, h2, h3, h4 {
 }
 
 .product-card h4 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 22px;
   color: var(--charcoal);
   margin: 8px 0;
@@ -1271,14 +1271,14 @@ h1, h2, h3, h4 {
 }
 
 .price-discounted {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 700;
   color: var(--forest-green);
 }
 
 .price-regular {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1328,7 +1328,7 @@ h1, h2, h3, h4 {
 
 .qty-display {
   min-width: 70px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: var(--charcoal);
@@ -1338,7 +1338,7 @@ h1, h2, h3, h4 {
   background: transparent;
   border: none;
   color: var(--barn-red);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -1358,7 +1358,7 @@ h1, h2, h3, h4 {
 }
 
 .treats-section h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 28px;
   color: var(--charcoal);
   margin-bottom: 28px;
@@ -1392,7 +1392,7 @@ h1, h2, h3, h4 {
 }
 
 .treat-info h4 {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 600;
   color: var(--charcoal);
@@ -1412,7 +1412,7 @@ h1, h2, h3, h4 {
 }
 
 .treat-price-checkbox span {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1482,7 +1482,7 @@ h1, h2, h3, h4 {
 }
 
 .cart-drawer-header h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 26px;
   color: var(--barn-red);
   margin: 0;
@@ -1510,7 +1510,7 @@ h1, h2, h3, h4 {
 }
 
 .cart-box-info {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 24px;
@@ -1557,7 +1557,7 @@ h1, h2, h3, h4 {
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 22px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1587,7 +1587,7 @@ h1, h2, h3, h4 {
 }
 
 .checkout-form h2 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 34px;
   color: var(--charcoal);
   text-align: center;
@@ -1601,7 +1601,7 @@ h1, h2, h3, h4 {
 }
 
 .checkout-section h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 22px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -1619,7 +1619,7 @@ h1, h2, h3, h4 {
 
 .form-group label {
   display: block;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: var(--charcoal);
@@ -1632,7 +1632,7 @@ h1, h2, h3, h4 {
   padding: 16px 18px;
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   background: var(--white);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -1669,7 +1669,7 @@ h1, h2, h3, h4 {
 }
 
 .checkout-summary h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 20px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -1694,7 +1694,7 @@ h1, h2, h3, h4 {
   padding-top: 20px;
   margin-top: 12px;
   border-top: 2px solid var(--khaki);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 22px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1741,7 +1741,7 @@ h1, h2, h3, h4 {
 
 .subscription-info strong {
   display: block;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   color: var(--barn-red);
   margin-bottom: 6px;
 }
@@ -1778,7 +1778,7 @@ h1, h2, h3, h4 {
   padding: 16px 18px;
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
 }
 
@@ -1848,7 +1848,7 @@ h1, h2, h3, h4 {
   padding: 16px 18px;
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
 }
 
@@ -1888,7 +1888,7 @@ h1, h2, h3, h4 {
 }
 
 .order-success h1 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 40px;
   color: var(--forest-green);
   margin-bottom: 16px;
@@ -1910,7 +1910,7 @@ h1, h2, h3, h4 {
 }
 
 .auth-card h2 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 34px;
   text-align: center;
   color: var(--charcoal);
@@ -1929,7 +1929,7 @@ h1, h2, h3, h4 {
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
   background: var(--white);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -1967,7 +1967,7 @@ h1, h2, h3, h4 {
 }
 
 .product-detail-title {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 48px;
   color: var(--charcoal);
   margin-bottom: 16px;
@@ -1989,7 +1989,7 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 15px;
 }
@@ -2008,14 +2008,14 @@ h1, h2, h3, h4 {
 }
 
 .content-page h1 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 44px;
   color: var(--charcoal);
   margin-bottom: 32px;
 }
 
 .content-page h2 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 28px;
   color: var(--barn-red);
   margin: 40px 0 16px;
@@ -2087,7 +2087,7 @@ h1, h2, h3, h4 {
 }
 
 .contact-form-section h1 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 44px;
   color: var(--charcoal);
   margin-bottom: 16px;
@@ -2122,7 +2122,7 @@ h1, h2, h3, h4 {
   padding: 14px 16px;
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
   transition: all 0.2s ease;
 }
@@ -2164,7 +2164,7 @@ h1, h2, h3, h4 {
 }
 
 .contact-success h2 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   color: var(--forest-green);
   margin-bottom: 12px;
 }
@@ -2183,7 +2183,7 @@ h1, h2, h3, h4 {
 }
 
 .contact-card h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 20px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -2292,7 +2292,7 @@ h1, h2, h3, h4 {
   background: none;
   border: none;
   color: var(--barn-red);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -2336,7 +2336,7 @@ h1, h2, h3, h4 {
   color: var(--text-inverse);
   padding: 8px 20px;
   border-radius: 100px;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
@@ -2348,7 +2348,7 @@ h1, h2, h3, h4 {
 }
 
 .product-title {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 36px;
   color: var(--charcoal);
   margin: 0 0 8px 0;
@@ -2393,7 +2393,7 @@ h1, h2, h3, h4 {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 20px;
   font-weight: 600;
   color: var(--charcoal);
@@ -2480,7 +2480,7 @@ h1, h2, h3, h4 {
 }
 
 .feeding-tips h4 {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: var(--barn-red);
@@ -2562,7 +2562,7 @@ h1, h2, h3, h4 {
 }
 
 .subscription-modal-header h3 {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 24px;
   color: var(--barn-red);
   margin: 0;
@@ -2627,7 +2627,7 @@ h1, h2, h3, h4 {
   color: #C33;
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 15px;
   transition: all 0.2s ease;
@@ -2720,7 +2720,7 @@ h1, h2, h3, h4 {
 }
 
 .price-size {
-  font-family: 'Crimson Pro', Georgia, serif;
+  font-family: 'Fraunces', Georgia, serif;
   font-size: 28px;
   font-weight: 700;
   color: var(--charcoal);
@@ -2728,7 +2728,7 @@ h1, h2, h3, h4 {
 }
 
 .price-amount {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 24px;
   font-weight: 700;
   color: var(--barn-red);
