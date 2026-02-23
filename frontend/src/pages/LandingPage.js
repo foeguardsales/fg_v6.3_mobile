@@ -153,6 +153,7 @@ export const LandingPage = () => {
         <section className="benefits-section">
           <div className="section-container">
             <h2 className="section-title">Real Food. Real Results.</h2>
+            <p className="section-subtitle">See the FoeGuard Difference.</p>
             <div className="benefits-grid">
               <div className="benefit-card">
                 <div className="benefit-icon">
