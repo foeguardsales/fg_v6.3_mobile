@@ -516,25 +516,25 @@ export const NewToRawPage = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="feature-cell">Human-Grade Whole Ingredients</td>
+                    <td className="feature-cell">Human-Grade Ingredients</td>
                     <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="varies-text">Varies</span></td>
+                    <td className="check-cell"><span className="status-text">Varies</span></td>
                     <td className="check-cell"><span className="limited-text">Feed-Grade</span></td>
                   </tr>
                   <tr>
-                    <td className="feature-cell">Certified Organic & Non-GMO</td>
+                    <td className="feature-cell">Organic & Non-GMO</td>
                     <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
                     <td className="check-cell"><span className="limited-text">Limited</span></td>
                     <td className="check-cell"><span className="limited-text">Rare</span></td>
                   </tr>
                   <tr>
-                    <td className="feature-cell">Ethically Raised Proteins</td>
+                    <td className="feature-cell">Farm Fresh, Transparent Sourcing</td>
                     <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
                     <td className="check-cell"><span className="limited-text">Limited</span></td>
-                    <td className="check-cell"><span className="limited-text">Limited</span></td>
+                    <td className="check-cell"><span className="limited-text">Rare</span></td>
                   </tr>
                   <tr>
-                    <td className="feature-cell">Small-Batch Production</td>
+                    <td className="feature-cell">Ethically Raised in Small Batches</td>
                     <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
                     <td className="check-cell"><span className="limited-text">Mass Produced</span></td>
                     <td className="check-cell"><span className="limited-text">Mass Produced</span></td>
@@ -542,8 +542,8 @@ export const NewToRawPage = () => {
                   <tr>
                     <td className="feature-cell">Formulated by Nutrition Professionals</td>
                     <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="varies-text">Varies</span></td>
-                    <td className="check-cell"><span className="varies-text">Yes (Processed)</span></td>
+                    <td className="check-cell"><span className="status-text">Varies</span></td>
+                    <td className="check-cell"><span className="status-text">Yes (Processed)</span></td>
                   </tr>
                 </tbody>
               </table>
