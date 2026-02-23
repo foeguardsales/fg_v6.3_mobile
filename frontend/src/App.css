@@ -546,18 +546,31 @@ h1, h2, h3, h4 {
   margin: 0;
 }
 
+.aafco-section {
+  text-align: center;
+  margin-top: 48px;
+}
+
 .aafco-logo-placeholder {
   background: var(--white);
   border: 2px dashed var(--khaki);
   border-radius: 16px;
   height: 100px;
+  width: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 300px;
-  margin: 0 auto;
+  margin: 0 auto 16px;
   color: var(--text-muted);
   font-size: 14px;
+}
+
+.aafco-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .btn-link {
