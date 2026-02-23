@@ -151,11 +151,13 @@ export const AboutPage = () => {
           <div className="about-container">
             <h2>Our Team</h2>
             <p>
-              Behind FoeGuard is a network of Ontario farmers, nutrition professionals, animal behaviour specialists, and a dedicated in-house team committed to one standard:
+              We don't just focus on what's in the bowl—we bring expertise and care to every step of the process.
             </p>
-            <p className="team-standard">Uncompromised care.</p>
             <p>
-              Every recipe is tested, refined, and fed to real dogs and cats – including our own - before it ever reaches yours.
+              Our team includes a diverse range of professionals, from local Ontario farmers and nutritional experts like our on-site biologist, to pet specialists such as a canine behaviourist, dedicated drivers and partnered breeders.
+            </p>
+            <p>
+              Every FoeGuard product meets rigorous human-grade safety standards and is crafted for optimal carnivore nutrition. Our recipes are thoroughly tested and tried by dozens of dogs and cats to ensure consistent, premium quality, so you can trust that your pet is getting the very best every time.
             </p>
           </div>
         </section>
