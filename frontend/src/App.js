@@ -52,6 +52,7 @@ function App() {
   return (
     <Elements stripe={stripePromise}>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/build-box" element={<BoxBuilder />} />
