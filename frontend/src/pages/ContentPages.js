@@ -581,6 +581,28 @@ export const NewToRawPage = () => {
           </div>
         </section>
 
+        {/* Problem Awareness Section */}
+        <section className="ntf-section ntf-problem">
+          <div className="ntf-container">
+            <h2>When something feels off, food is often the missing piece</h2>
+            <p className="ntf-symptoms">
+              Allergies. Digestive issues. Low energy. Ongoing discomfort.
+            </p>
+            <p>
+              When pets don't feel their best, the cause isn't always obvious.
+            </p>
+            <p>
+              Many conventional foods—even premium ones—are heavily processed or lack clear sourcing. Even some raw options vary in quality and consistency.
+            </p>
+            <p>
+              Feeding fresh, properly sourced food gives you a clear, reliable foundation you can trust—and often removes one of the biggest variables affecting your pet's wellbeing.
+            </p>
+            <p className="ntf-conclusion">
+              It's a simple change that can make a meaningful difference.
+            </p>
+          </div>
+        </section>
+
         {/* Transition Section */}
         <section className="ntf-section ntf-transition">
           <div className="ntf-container">
