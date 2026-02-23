@@ -211,6 +211,35 @@ export const LandingPage = () => {
           </div>
         </section>
 
+        {/* ===== SECTION 5.5 — FEEDING REAL FOOD ===== */}
+        <section className="feeding-intro-section">
+          <div className="section-container">
+            <h2 className="section-title">Feeding real food shouldn't be complicated.</h2>
+            <div className="feeding-intro-content">
+              <p className="feeding-lead">
+                Most common health concerns begin with what they eat.
+              </p>
+              <p className="feeding-symptoms">
+                Digestion. Energy. Skin. Comfort.
+              </p>
+              <p>
+                The right ingredients can restore balance from the inside out — but only when you know exactly what's in the bowl.
+              </p>
+              <p>
+                Too many pet owners end up paying premium prices for mystery ingredients. Big brands spend heavily on packaging and retail markups. We put the value where it belongs: into responsibly raised meat, transparent sourcing, and proper formulation.
+              </p>
+              <p>
+                We remove the prep, the balancing, and the uncertainty — delivering farm-fresh meals directly to your door so mealtime is simple, consistent, and something dogs genuinely enjoy.
+              </p>
+              <div className="feeding-benefits-list">
+                <p>Real ingredients.</p>
+                <p>Fair retail pricing.</p>
+                <p>No stress at serving time.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ===== SECTION 6 — FROM FARM TO BOWL ===== */}
         <section className="farm-section">
           <div className="section-container">
