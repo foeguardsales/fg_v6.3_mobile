@@ -394,10 +394,18 @@ h1, h2, h3, h4 {
   margin: 32px 0 !important;
 }
 
-/* Section 3 - Our Standard */
+/* Section 3 - Our Standards */
 .standard-section {
   background: var(--charcoal);
   padding: 100px 24px;
+}
+
+.section-title-white {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(32px, 5vw, 44px);
+  color: var(--text-inverse);
+  text-align: center;
+  margin: 0 0 60px 0;
 }
 
 .standard-grid {
@@ -621,6 +629,21 @@ h1, h2, h3, h4 {
   color: var(--barn-red);
   text-align: center;
   margin: 40px auto 60px;
+}
+
+.farm-emphasis {
+  font-size: 17px;
+  color: var(--barn-red);
+  text-align: center;
+  margin: 20px auto 40px;
+  font-weight: 600;
+}
+
+.problem-emphasis {
+  font-size: 18px;
+  color: var(--barn-red);
+  font-weight: 600;
+  margin: 24px 0;
 }
 
 .protein-grid {
