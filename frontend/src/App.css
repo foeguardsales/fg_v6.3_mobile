@@ -3484,6 +3484,26 @@ h1, h2, h3, h4 {
   color: var(--charcoal) !important;
 }
 
+.ntf-conclusion {
+  font-weight: 500;
+  font-style: italic;
+  color: var(--charcoal) !important;
+  margin-top: 24px !important;
+}
+
+.ntf-symptoms {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px !important;
+  font-style: italic;
+  color: var(--barn-red) !important;
+  margin: 16px 0 24px !important;
+}
+
+/* Problem Awareness Section */
+.ntf-problem {
+  background: var(--cream);
+}
+
 .ntf-list {
   list-style: none;
   padding: 0;
