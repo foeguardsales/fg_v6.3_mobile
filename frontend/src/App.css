@@ -3524,6 +3524,14 @@ h1, h2, h3, h4 {
   margin-top: 24px !important;
 }
 
+.ntf-lead-question {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px !important;
+  font-style: italic;
+  color: var(--barn-red) !important;
+  margin: 16px 0 32px !important;
+}
+
 .ntf-symptoms {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 20px !important;
