@@ -3142,7 +3142,7 @@ h1, h2, h3, h4 {
 
 .about-story h2 {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 32px;
+  font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 24px;
 }
