@@ -8,7 +8,7 @@ import './App.css';
 import { LandingPage } from './pages/LandingPage';
 import { BoxBuilder } from './pages/BoxBuilder';
 import { ProductDetailPage } from './pages/ProductDetail';
-import { AboutPage, PoliciesPage, TermsPage, ContactPage } from './pages/ContentPages';
+import { AboutPage, PoliciesPage, TermsPage, ContactPage, NewToRawPage } from './pages/ContentPages';
 import { CalculatorPage } from './pages/CalculatorPage';
 import { AccountPage } from './pages/AccountPage';
 import { AdminPage } from './pages/AdminPage';
@@ -49,6 +49,7 @@ function App() {
           <Route path="/policies" element={<PoliciesPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/new-to-raw" element={<NewToRawPage />} />
           <Route path="/calculator" element={<CalculatorPage />} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/admin" element={<AdminPage />} />
