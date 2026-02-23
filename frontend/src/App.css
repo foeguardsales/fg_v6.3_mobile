@@ -609,6 +609,59 @@ h1, h2, h3, h4 {
   line-height: 1.6;
 }
 
+/* Section subtitle for Real Results */
+.section-subtitle {
+  font-size: 20px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin: -40px 0 48px 0;
+}
+
+/* Section 5.5 - Feeding Intro */
+.feeding-intro-section {
+  background: var(--cream);
+  padding: 100px 24px;
+}
+
+.feeding-intro-content {
+  max-width: 750px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.feeding-intro-content p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--charcoal-light);
+  margin-bottom: 20px;
+}
+
+.feeding-lead {
+  font-size: 19px !important;
+  font-weight: 500;
+  color: var(--charcoal) !important;
+}
+
+.feeding-symptoms {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px !important;
+  color: var(--barn-red) !important;
+  font-style: italic;
+  margin: 24px 0 32px !important;
+}
+
+.feeding-benefits-list {
+  margin-top: 40px;
+}
+
+.feeding-benefits-list p {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px !important;
+  font-weight: 500;
+  color: var(--charcoal) !important;
+  margin-bottom: 8px !important;
+}
+
 .btn-link {
   background: none;
   border: none;
