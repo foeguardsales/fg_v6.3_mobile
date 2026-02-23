@@ -484,7 +484,7 @@ export const NewToRawPage = () => {
             <h2>Is Raw Safe?</h2>
             <p className="ntf-answer">Yes—it's not just safe, it's often the healthiest option you can give your dog, cat, puppy, or kitten.</p>
             <p>
-              Not all raw food is created equal. The safety and benefits of a raw diet depend entirely on ingredient quality, balance, and handling. That's why at FoeGuard, we go back to the basics: fresh, human-grade meat raised ethically and handled with the care you'd give your own meals.
+              However, not all raw food is created equal. The safety and benefits of a raw diet depend entirely on ingredient quality, balance, and handling. That's why at FoeGuard, we go back to the basics: fresh, human-grade meat raised ethically and handled with the care you'd give your own meals.
             </p>
             <p>
               When prepared and stored like you would at home—thawed in the fridge and served fresh—raw feeding is a clean, biologically appropriate way to nourish pets.
