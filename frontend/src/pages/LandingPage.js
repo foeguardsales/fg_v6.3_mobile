@@ -80,7 +80,10 @@ export const LandingPage = () => {
             <h2 className="section-title">Feeding Real Food Shouldn't Feel Complicated.</h2>
             <div className="problem-content">
               <p>
-                Most pet food is built for shelf life — not biology. It's processed, overcooked, and designed to sit on a warehouse shelf for months – or even years. That doesn't sound like something built for carnivores.
+                Most pet food is built for shelf life — not biology. It's processed, overcooked, and designed to sit on a warehouse shelf for months – or even years.
+              </p>
+              <p className="problem-emphasis">
+                That doesn't sound like something built for carnivores.
               </p>
               <p>
                 Whether you're new to raw or already feeding it, we make it simple to feed your dogs and cats — build, thaw, feed.
@@ -89,12 +92,13 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* ===== SECTION 3 — OUR STANDARD ===== */}
+        {/* ===== SECTION 3 — OUR STANDARDS ===== */}
         <section className="standard-section">
           <div className="section-container">
+            <h2 className="section-title-white">Our Standards</h2>
             <div className="standard-grid">
               <div className="standard-card">
-                <h3>Real Food for Pets</h3>
+                <h3>Real Food for Carnivores</h3>
                 <p>Human-grade, organic, biologically appropriate whole-food ingredients.</p>
               </div>
               <div className="standard-card">
@@ -102,7 +106,7 @@ export const LandingPage = () => {
                 <p>Ethically sourced from local Canadian farms — including farms we directly own and oversee.</p>
               </div>
               <div className="standard-card">
-                <h3>For Guardians Who Refuse to Compromise</h3>
+                <h3>Full Transparency Always</h3>
                 <p>Full transparency. No hidden fillers. Just honest nutrition you can trust.</p>
               </div>
             </div>
@@ -205,7 +209,7 @@ export const LandingPage = () => {
               <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
                 What began as a mission to support local pet guardians became a commitment to Ontario dogs and cats. No middlemen. No unknown sources. Full control from start to finish — for ultimate consistency, traceability, and safety.
               </p>
-              <p className="farm-quote">
+              <p className="farm-emphasis">
                 If it's not good enough for our own table, it's not good enough for your pet's bowl.
               </p>
             </div>
@@ -285,7 +289,7 @@ export const LandingPage = () => {
             </p>
             <button 
               className="btn-primary" 
-              onClick={() => navigate('/about')}
+              onClick={() => navigate('/new-to-raw')}
               data-testid="trial-box-btn"
             >
               Build Your Risk-Free Trial Box
