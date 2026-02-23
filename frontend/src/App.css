@@ -934,7 +934,9 @@ h1, h2, h3, h4 {
   }
 }
 
-/* ========== LEGACY STYLES - KEPT FOR COMPONENTS ========== */
+/* ========== BTN HERO (USED IN MULTIPLE PLACES) ========== */
+.btn-hero {
+  background: var(--cream);
   color: var(--burgundy);
   border: none;
   padding: 20px 52px;
@@ -954,60 +956,7 @@ h1, h2, h3, h4 {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-.hero-note {
-  margin-top: 36px;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 14px;
-  letter-spacing: 0.02em;
-}
-
-/* Benefits Section */
-.benefits-section {
-  background: var(--white);
-  padding: 100px 24px;
-}
-
-.benefits-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.section-title {
-  font-family: 'Crimson Pro', Georgia, serif;
-  font-size: clamp(32px, 5vw, 44px);
-  color: var(--charcoal);
-  text-align: center;
-  margin: 0 0 60px 0;
-}
-
-.benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 32px;
-}
-
-.benefit-card {
-  background: var(--cream);
-  border: 1px solid var(--khaki-light);
-  border-radius: var(--radius-lg);
-  padding: 36px 28px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.benefit-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--khaki);
-}
-
-.benefit-icon {
-  width: 64px;
-  height: 64px;
-  background: linear-gradient(135deg, var(--barn-red) 0%, var(--burgundy) 100%);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
+/* ========== BOX BUILDER ========== */
   justify-content: center;
   font-size: 28px;
   margin: 0 auto 20px;
