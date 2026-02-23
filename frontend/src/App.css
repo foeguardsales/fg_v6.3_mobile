@@ -933,21 +933,8 @@ h1, h2, h3, h4 {
     padding: 28px 20px;
   }
 }
-  color: var(--khaki);
-}
 
-.hero-subtitle {
-  font-size: clamp(17px, 2.5vw, 20px);
-  color: rgba(255, 255, 255, 0.88);
-  margin: 0 0 40px 0;
-  line-height: 1.6;
-  max-width: 560px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.btn-hero {
-  background: var(--cream);
+/* ========== LEGACY STYLES - KEPT FOR COMPONENTS ========== */
   color: var(--burgundy);
   border: none;
   padding: 20px 52px;
