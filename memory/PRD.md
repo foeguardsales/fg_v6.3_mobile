@@ -53,10 +53,11 @@ Build a modern e-commerce website for FoeGuard, a raw pet food company selling f
 ## Pending Tasks
 
 ### P1 - High Priority
-- [ ] Complete "Why FoeGuard" page (pending user copy)
-- [ ] Expand "New to Raw" page (pending user copy)
+- [x] Complete "About Us / Why FoeGuard" page (user copy implemented)
+- [x] Expand "New to FoeGuard" page (user copy implemented with comparison table)
 - [ ] Test Royal Paws cat food line on Build-a-Box
 - [ ] Verify cart calculations for cat food
+- [ ] Fix errors (pending user feedback)
 
 ### P2 - Medium Priority
 - [ ] Complete subscription swap functionality
