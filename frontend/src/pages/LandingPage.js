@@ -298,10 +298,7 @@ export const LandingPage = () => {
             </p>
             <button 
               className="btn-primary" 
-              onClick={() => {
-                navigate('/new-to-raw');
-                window.scrollTo(0, 0);
-              }}
+              onClick={() => navigate('/new-to-raw')}
               data-testid="trial-box-btn"
             >
               Visit New to Raw
