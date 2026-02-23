@@ -222,35 +222,6 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* ===== SECTION 5.5 — FEEDING REAL FOOD ===== */}
-        <section className="feeding-intro-section">
-          <div className="section-container">
-            <h2 className="section-title">Feeding real food shouldn't be complicated.</h2>
-            <div className="feeding-intro-content">
-              <p className="feeding-lead">
-                Most common health concerns begin with what they eat.
-              </p>
-              <p className="feeding-symptoms">
-                Digestion. Energy. Skin. Comfort.
-              </p>
-              <p>
-                The right ingredients can restore balance from the inside out — but only when you know exactly what's in the bowl.
-              </p>
-              <p>
-                Too many pet owners end up paying premium prices for mystery ingredients. Big brands spend heavily on packaging and retail markups. We put the value where it belongs: into responsibly raised meat, transparent sourcing, and proper formulation.
-              </p>
-              <p>
-                We remove the prep, the balancing, and the uncertainty — delivering farm-fresh meals directly to your door so mealtime is simple, consistent, and something dogs genuinely enjoy.
-              </p>
-              <div className="feeding-benefits-list">
-                <p>Real ingredients.</p>
-                <p>Fair retail pricing.</p>
-                <p>No stress at serving time.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ===== SECTION 6 — FROM FARM TO BOWL ===== */}
         <section className="farm-section">
           <div className="section-container">
@@ -260,10 +231,13 @@ export const LandingPage = () => {
                 If it's not good enough for our family, it's not good enough for your pets.
               </p>
               <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
-                We source from our own local farms and trusted Ontario partners. Every order is prepared fresh, in small batches and made to order - even personalized when needed.
+                We raise and source from our own farms and trusted Ontario partners — animals raised responsibly, without shortcuts.
               </p>
               <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
-                Our meals and treats are designed for carnivores — not shelf-life. You'll always know exactly what goes into your pet's bowl.
+                Every order is prepared fresh in small batches, made to order, and personalized when needed.
+              </p>
+              <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
+                Our meals and treats are designed for carnivores — not shelf life. You'll always know exactly what goes into your pet's bowl, where it came from, and why it's there.
               </p>
             </div>
             
