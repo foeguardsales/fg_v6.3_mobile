@@ -77,7 +77,7 @@ export const LandingPage = () => {
         {/* ===== SECTION 2 — THE PROBLEM ===== */}
         <section className="problem-section">
           <div className="section-container">
-            <h2 className="section-title">Feeding real food shouldn't be complicated.</h2>
+            <h2 className="section-title">Feeding Real Food Shouldn't Be Complicated.</h2>
             <div className="problem-content">
               <p className="problem-lead">
                 Most common health concerns begin with what they eat.
@@ -92,13 +92,8 @@ export const LandingPage = () => {
                 Too many pet owners end up paying premium prices for mystery ingredients. Big brands spend heavily on packaging and retail markups. We put the value where it belongs: into responsibly raised meat, transparent sourcing, and proper formulation.
               </p>
               <p>
-                We remove the prep, the balancing, and the uncertainty — delivering farm-fresh meals directly to your door so mealtime is simple, consistent, and something dogs genuinely enjoy.
+                We remove the prep, the balancing, and the uncertainty — delivering farm-fresh meals directly to your door so you can support your pet's health and local Canadian farms, all at retail cost.
               </p>
-              <div className="problem-benefits">
-                <p>Real ingredients.</p>
-                <p>Fair retail pricing.</p>
-                <p>No stress at serving time.</p>
-              </div>
             </div>
           </div>
         </section>
