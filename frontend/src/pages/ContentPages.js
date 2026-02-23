@@ -71,41 +71,27 @@ export const AboutPage = () => {
           </div>
         </section>
 
-        {/* Story Section */}
+        {/* From Our Family to Yours Section */}
         <section className="about-section about-story">
           <div className="about-container">
+            <h2>From Our Family to Yours</h2>
             <p>
-              What began as a personal shift toward real, minimally processed food for our own family started with a simple question:
-            </p>
-            <p className="story-question">
-              Why weren't we feeding our pets the same way?
+              FoeGuard began with a simple belief: pets deserve the same quality of food we expect for ourselves.
             </p>
             <p>
-              With roots in Ontario farming and meat processing, we understood how much quality, sourcing, and handling mattered. So we began feeding our own dogs fresh, responsibly raised meat—free from fillers, preservatives, and shortcuts.
+              With our background in farming and biology, we understood how much sourcing, handling, and ingredient quality truly matter. When we began feeding our own dogs fresh, responsibly raised, species-appropriate food, the difference was clear — stronger digestion, healthier coats, better energy, and overall vitality.
             </p>
             <p>
-              The difference was immediate and visible:
-            </p>
-            <div className="story-benefits">
-              <span>Energy.</span>
-              <span>Digestion.</span>
-              <span>Coat.</span>
-              <span>Vitality.</span>
-            </div>
-            <p>
-              It wasn't a supplement or a temporary boost. It was what happens when animals are fed the way their biology intended.
+              It reinforced what nature intended. Carnivores thrive on real, properly raised meat — not heavily processed alternatives with unclear origins.
             </p>
             <p>
-              What started in our own homes soon extended to friends, family, and eventually other pet owners who were searching for the same thing: food they could trust.
+              We focused on doing things the right way: raising and sourcing responsibly, working with trusted Ontario farms, and preparing meals with complete transparency from start to finish.
+            </p>
+            <p>
+              What started as a personal journey soon became a mission to help others. We began using our farm to prepare meals for friends and neighbours, and soon realized that more and more Canadians were missing access to transparent, farm fresh raw pet food.
             </p>
             <p className="story-conclusion">
-              <strong>That's how FoeGuard began.</strong>
-            </p>
-            <p>
-              Today, we work directly with our own farms and trusted Canadian partners, formulate meals with nutrition professionals, and prepare everything in government-inspected facilities.
-            </p>
-            <p className="story-final">
-              We oversee every step—from farm to bowl—so you never have to question what you're feeding your pet.
+              Needless to say, that passion grew into profession — <strong>FoeGuard was born.</strong>
             </p>
           </div>
         </section>
