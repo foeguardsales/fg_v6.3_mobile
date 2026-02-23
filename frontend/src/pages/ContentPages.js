@@ -1,78 +1,204 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar, Footer } from '../components/Layout';
 
-export const AboutPage = () => (
-  <>
-    <Navbar />
-    <div className="content-page">
-      <div className="content-container">
-        <h1>About FoeGuard</h1>
-        
-        <section>
-          <h2>Our Story</h2>
-          <p>
-            FoeGuard was born from a simple belief: our pets deserve the same quality food we eat. Based in Ontario, we partner with local farms to source human-grade ingredients, creating biologically appropriate raw meals that honor your pet's carnivorous nature.
-          </p>
-          <p>
-            Every recipe is crafted with care, combining muscle meat, organ meats, ground bone, and fresh vegetables to deliver complete, balanced nutrition. We believe raw feeding isn't a trend—it's a return to what nature intended.
-          </p>
+export const AboutPage = () => {
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email) return;
+    setLoading(true);
+    // Simulate subscription
+    setTimeout(() => {
+      setSubscribed(true);
+      setLoading(false);
+    }, 800);
+  };
+
+  return (
+    <>
+      <Navbar />
+      <div className="about-page">
+        {/* Hero Section */}
+        <section className="about-hero">
+          <div className="about-hero-content">
+            <h1>Welcome to FoeGuard.</h1>
+            <p className="about-hero-statement">
+              FoeGuard began with a simple conviction:<br />
+              <span className="highlight-text">If we wouldn't serve it at our own table, we won't put it in our pets' bowls.</span>
+            </p>
+          </div>
         </section>
 
-        <section>
-          <h2>Why Raw Feeding?</h2>
-          <h3>Biologically Appropriate Nutrition</h3>
-          <p>
-            Dogs and cats are carnivores. Their digestive systems are designed to process raw meat, bones, and organs—not heavily processed kibble. Raw diets provide enzymes, natural probiotics, and bioavailable nutrients that cooking destroys.
-          </p>
-
-          <h3>The Benefits You'll See</h3>
-          <ul className="benefits-list">
-            <li><strong>Improved Digestion:</strong> Smaller, firmer stools and reduced gas</li>
-            <li><strong>Healthier Skin & Coat:</strong> Natural oils create shine and reduce shedding</li>
-            <li><strong>More Energy:</strong> Clean protein fuels vitality without fillers</li>
-            <li><strong>Stronger Immunity:</strong> Nutrient-dense food supports immune function</li>
-            <li><strong>Better Weight Management:</strong> High protein, low carb keeps pets lean</li>
-            <li><strong>Cleaner Teeth:</strong> Chewing raw bones naturally cleans teeth</li>
-          </ul>
-
-          <h3>Feeding Guidelines</h3>
-          <p>
-            Feed 2-3.5% of your pet's body weight daily for adult dogs and 3-3.5% for adult cats. Puppies and kittens require more based on age:
-          </p>
-          <ul className="benefits-list">
-            <li><strong>Puppies (2-4 months):</strong> 10-13% of body weight</li>
-            <li><strong>Puppies (4-8 months):</strong> 6-10% of body weight</li>
-            <li><strong>Puppies (8-12 months):</strong> 3-6% of body weight</li>
-            <li><strong>Kittens (2-4 months):</strong> 6-9% of body weight</li>
-            <li><strong>Kittens (4-8 months):</strong> 5-8% of body weight</li>
-            <li><strong>Kittens (8-12 months):</strong> 2-6% of body weight</li>
-          </ul>
-          <p>Adjust portions based on activity level, metabolism, and weight goals. Always consult your veterinarian when changing diets.</p>
-
-          <h3>Is Raw Safe?</h3>
-          <p>
-            When handled properly, raw feeding is safe and vet-recommended. Dogs and cats have highly acidic stomachs designed to handle bacteria that would affect humans. We follow strict food safety protocols, and our meals are frozen immediately to preserve freshness.
-          </p>
-          <p>
-            Always thaw in the refrigerator, wash hands and surfaces after handling, and transition gradually if your pet is new to raw food.
-          </p>
+        {/* Farm Image Section */}
+        <section className="about-farm-image">
+          <div className="farm-image-placeholder">
+            <span>Farm Image</span>
+          </div>
         </section>
 
-        <section>
-          <h2>Our Commitment</h2>
-          <ul className="benefits-list">
-            <li>100% human-grade ingredients</li>
-            <li>No hormones, antibiotics, or preservatives</li>
-            <li>Ontario-sourced whenever possible</li>
-            <li>Ethically raised proteins</li>
-            <li>Frozen fresh, never freeze-dried or dehydrated</li>
-          </ul>
+        {/* Roots Section */}
+        <section className="about-section about-roots">
+          <div className="about-container">
+            <p className="about-lead-text">
+              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving.
+            </p>
+          </div>
+        </section>
+
+        {/* Three Images Section */}
+        <section className="about-three-images">
+          <div className="about-container">
+            <div className="three-images-grid">
+              <div className="image-card">
+                <div className="image-placeholder">
+                  <span>Our Environment</span>
+                </div>
+              </div>
+              <div className="image-card">
+                <div className="image-placeholder">
+                  <span>Preparation</span>
+                </div>
+              </div>
+              <div className="image-card">
+                <div className="image-placeholder">
+                  <span>Storage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Story Section */}
+        <section className="about-section about-story">
+          <div className="about-container">
+            <p>
+              What started as a personal shift toward real, minimally processed food for our own family and friends soon became something much bigger — a movement driven by guardians choosing to raise the standard for their pets.
+            </p>
+            <p>
+              When we began feeding our own dogs the same way — fresh, species-appropriate, responsibly raised food — the difference was undeniable.
+            </p>
+            <div className="story-benefits">
+              <span>Energy.</span>
+              <span>Digestion.</span>
+              <span>Coat.</span>
+              <span>Vitality.</span>
+            </div>
+            <p className="story-conclusion">
+              <strong>That's when FoeGuard was born.</strong>
+            </p>
+          </div>
+        </section>
+
+        {/* Team Image */}
+        <section className="about-team-image">
+          <div className="team-image-placeholder">
+            <span>Our Team / Dogs Eating FoeGuard</span>
+          </div>
+        </section>
+
+        {/* From Our Farm Section */}
+        <section className="about-section about-farm-bowl">
+          <div className="about-container">
+            <h2>From Our Farm to Your Bowl</h2>
+            <div className="farm-statements">
+              <p className="statement-bold">We are not a distributor.</p>
+              <p className="statement-bold">We are not a white-label brand.</p>
+            </div>
+            <p>
+              We work directly with trusted Ontario farms — including our own — to source ethically raised, human-grade meats.
+            </p>
+            <p className="sub-heading">Every meal is:</p>
+            <ul className="about-list">
+              <li>Made in a government-inspected facility</li>
+              <li>Formulated with professional nutritionists and biologists</li>
+              <li>Free from antibiotics, hormones, fillers, and preservatives</li>
+              <li>Flash frozen at peak freshness</li>
+            </ul>
+            <p className="farm-conclusion">
+              We oversee every step — from sourcing to preparation to delivery — so you never have to question what's in your pet's bowl.
+            </p>
+          </div>
+        </section>
+
+        {/* Why We Do This Section */}
+        <section className="about-section about-why">
+          <div className="about-container">
+            <h2>Why We Do This</h2>
+            <p>
+              Too many pet guardians feel overwhelmed by unclear labels, inconsistent sourcing, and highly processed options.
+            </p>
+            <p>
+              We believe feeding your carnivore shouldn't feel confusing.
+            </p>
+            <p className="why-emphasis">
+              It should feel <strong>natural</strong>. <strong>Transparent</strong>. <strong>Grounded</strong>.
+            </p>
+            <p>
+              Raw feeding isn't new — it's simply a return to biological design.
+            </p>
+          </div>
+        </section>
+
+        {/* Our Team Section */}
+        <section className="about-section about-team-text">
+          <div className="about-container">
+            <h2>Our Team</h2>
+            <p>
+              Behind FoeGuard is a network of Ontario farmers, nutrition professionals, animal behaviour specialists, and a dedicated in-house team committed to one standard:
+            </p>
+            <p className="team-standard">Uncompromised care.</p>
+            <p>
+              Every recipe is tested, refined, and fed to real dogs and cats – including our own - before it ever reaches yours.
+            </p>
+          </div>
+        </section>
+
+        {/* Mission Section */}
+        <section className="about-section about-mission">
+          <div className="about-container">
+            <h2>Our Mission</h2>
+            <p>
+              To give responsible guardians a transparent and trustworthy source for information, collaboration, and farm-fresh pet food.
+            </p>
+            <p>
+              To raise the standard of what pet food should be — real, accountable, and biologically appropriate.
+            </p>
+            <p className="mission-callout">
+              If you believe pets deserve real food, you're already part of the mission.
+            </p>
+
+            {/* Email Signup */}
+            <div className="about-signup">
+              {subscribed ? (
+                <div className="signup-success">
+                  <div className="success-check">✓</div>
+                  <p>Welcome to the FoeGuard Pack!</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubscribe} className="signup-form">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    required
+                  />
+                  <button type="submit" className="btn-primary" disabled={loading}>
+                    {loading ? 'Joining...' : 'Join the FoeGuard Pack'}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
         </section>
       </div>
-    </div>
-    <Footer />
-  </>
-);
+      <Footer />
+    </>
+  );
+};
 
 export const PoliciesPage = () => (
   <>
@@ -332,63 +458,262 @@ export const NewToRawPage = () => {
   return (
     <>
       <Navbar />
-      <div className="content-page">
-        <div className="content-container">
-          <h1>New to FoeGuard or Raw Feeding?</h1>
-          
-          <section>
-            <h2>Transitioning is Easier Than You Think</h2>
-            <p>
-              Whether you're switching from kibble or another raw brand, we guide you every step of the way — so feeding better never feels overwhelming.
+      <div className="new-to-fg-page">
+        {/* Hero Section */}
+        <section className="ntf-hero">
+          <div className="ntf-hero-content">
+            <h1>New to FoeGuard?</h1>
+            <p className="ntf-hero-subtitle">
+              Switching your pet's food doesn't have to feel complicated.
             </p>
-          </section>
+            <p className="ntf-hero-text">
+              Whether you're new to raw feeding or simply new to us, we make the transition simple, safe, and supported.
+            </p>
+          </div>
+        </section>
 
-          <section>
-            <h2>Why Go Raw?</h2>
+        {/* Is Raw Safe Section */}
+        <section className="ntf-section ntf-safe">
+          <div className="ntf-container">
+            <h2>Is Raw Safe?</h2>
+            <p className="ntf-answer">Yes — when it's done properly.</p>
             <p>
-              Dogs and cats are carnivores. Their digestive systems are designed to process raw meat, bones, and organs — not heavily processed kibble that sits on shelves for months.
+              Dogs and cats are biologically designed to digest raw meat, bone, and organ. Their highly acidic stomachs are built to process what would challenge humans.
             </p>
-            <p>
-              Raw diets provide enzymes, natural probiotics, and bioavailable nutrients that cooking destroys. Most pet guardians see visible improvements within the first 14 days.
-            </p>
-          </section>
-
-          <section>
-            <h2>How to Transition</h2>
-            <p>
-              We recommend a gradual transition over 7-10 days:
-            </p>
-            <ul className="benefits-list">
-              <li><strong>Days 1-3:</strong> 25% FoeGuard, 75% current food</li>
-              <li><strong>Days 4-6:</strong> 50% FoeGuard, 50% current food</li>
-              <li><strong>Days 7-9:</strong> 75% FoeGuard, 25% current food</li>
-              <li><strong>Day 10+:</strong> 100% FoeGuard</li>
+            <p className="ntf-emphasis">The key is quality and handling.</p>
+            <p>At FoeGuard:</p>
+            <ul className="ntf-list">
+              <li>We use human-grade ingredients</li>
+              <li>Recipes are professionally formulated</li>
+              <li>Meals are prepared in a government-inspected facility</li>
+              <li>Every batch is flash frozen immediately</li>
             </ul>
             <p>
-              Some pets with sensitive stomachs may need a slower transition. If you notice loose stools, slow down and give their system time to adjust.
+              When handled like you would your own meat at home — thawed in the fridge and served fresh — raw feeding is a safe, biologically appropriate option.
             </p>
-          </section>
+          </div>
+        </section>
 
-          <section>
-            <h2>The FoeGuard Promise</h2>
-            <ul className="benefits-list">
-              <li>Free custom meal consultation</li>
-              <li>Farm-fresh delivery to your door</li>
-              <li>Transition support for new raw feeders</li>
-              <li>Free Raw Feeding Guide ($29 value)</li>
-              <li>14-Day Happiness Guarantee</li>
+        {/* Comparison Table Section */}
+        <section className="ntf-section ntf-compare">
+          <div className="ntf-container">
+            <h2>Compare Us to Others</h2>
+            <div className="comparison-table-wrapper">
+              <table className="comparison-table">
+                <thead>
+                  <tr>
+                    <th className="feature-col"></th>
+                    <th className="brand-col foeguard-col">
+                      <span className="brand-name">FoeGuard</span>
+                    </th>
+                    <th className="brand-col">
+                      <span className="brand-name">Retail Raw</span>
+                    </th>
+                    <th className="brand-col">
+                      <span className="brand-name">Kibble</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="feature-cell">Human-Grade Whole Ingredients</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="varies-text">Varies</span></td>
+                    <td className="check-cell"><span className="limited-text">Feed-Grade</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Certified Organic & Non-GMO</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="limited-text">Limited</span></td>
+                    <td className="check-cell"><span className="limited-text">Rare</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Ethically Raised Proteins</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="limited-text">Limited</span></td>
+                    <td className="check-cell"><span className="limited-text">Limited</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Small-Batch Production</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="limited-text">Mass Produced</span></td>
+                    <td className="check-cell"><span className="limited-text">Mass Produced</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Formulated by Nutrition Professionals</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="varies-text">Varies</span></td>
+                    <td className="check-cell"><span className="varies-text">Yes (Processed)</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* Transition Section */}
+        <section className="ntf-section ntf-transition">
+          <div className="ntf-container">
+            <h2>How Do I Transition My Pet?</h2>
+            <p>
+              Because our meals are nutrient-dense and minimally processed, a thoughtful transition helps avoid digestive upset.
+            </p>
+            <p>We recommend the following approaches:</p>
+
+            {/* Option 1 */}
+            <div className="transition-option">
+              <h3>Option 1: 10-Day Gradual Transition</h3>
+              <p className="option-subtitle">
+                Best for kibble-fed pets, sensitive stomachs, puppies, seniors, or cautious guardians.
+              </p>
+              <div className="transition-schedule">
+                <div className="schedule-row">
+                  <span className="day">Day 1</span>
+                  <span className="ratio">10% FoeGuard / 90% current food</span>
+                </div>
+                <div className="schedule-row">
+                  <span className="day">Day 2</span>
+                  <span className="ratio">20% FoeGuard / 80% current food</span>
+                </div>
+                <div className="schedule-row highlight">
+                  <span className="day">...</span>
+                  <span className="ratio">Continue increasing FoeGuard by 10% daily</span>
+                </div>
+                <div className="schedule-row">
+                  <span className="day">Day 10</span>
+                  <span className="ratio">100% FoeGuard — fully transitioned!</span>
+                </div>
+              </div>
+              <div className="transition-tips">
+                <p><span className="tip-check">✓</span> Feed slightly smaller portions during transition</p>
+                <p><span className="tip-check">✓</span> Monitor stool consistency</p>
+                <p><span className="tip-check">✓</span> Avoid introducing new treats during this period</p>
+              </div>
+              <p className="method-note">This method is the safest and most predictable.</p>
+            </div>
+
+            {/* Option 2 */}
+            <div className="transition-option optional-method">
+              <h3>Optional: Structured Fast + Switch</h3>
+              <p className="option-subtitle warning">
+                Only recommended for healthy adult dogs already eating raw or lightly processed diets.
+              </p>
+              <ol className="numbered-list">
+                <li>Feed their regular meal in the morning.</li>
+                <li>Allow a 24-hour digestive reset (water is fine).</li>
+                <li>Introduce FoeGuard at the next evening meal.</li>
+              </ol>
+              <div className="important-note">
+                <strong>Important:</strong>
+                <ul>
+                  <li>Start with a slightly smaller portion than usual.</li>
+                  <li>We generally do not recommend fasting for kibble-fed dogs unless guided.</li>
+                  <li>Feed one or two meals per day.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Won't Eat Section */}
+        <section className="ntf-section ntf-wont-eat">
+          <div className="ntf-container">
+            <h2>What If My Dog or Cat Won't Eat Raw?</h2>
+            <p>
+              Transitioning to raw is often <strong>behavioural</strong> — not nutritional.
+            </p>
+            <p>
+              Many pets are accustomed to processed foods engineered for taste intensity, flavour enhancers, and frequent treats. Real food can feel unfamiliar at first.
+            </p>
+            <p className="ntf-emphasis">
+              It's our role as guardians to prioritize nourishment first.
+            </p>
+            <p>To encourage success:</p>
+            <ul className="ntf-list">
+              <li>Feed at consistent times</li>
+              <li>Avoid free-feeding</li>
+              <li>Limit treats during transition</li>
+              <li>Ensure your dog is exercised before mealtime</li>
+              <li>Remove the bowl after 15–20 minutes if uneaten</li>
             </ul>
-          </section>
+            <p>
+              Structure builds appetite. If they skip a meal, store the food in the fridge and offer it again at the next scheduled feeding.
+            </p>
+            <p className="conclusion-text">
+              With patience and consistency, most pets adapt quickly — and thrive.
+            </p>
+          </div>
+        </section>
 
-          <section style={{ textAlign: 'center', marginTop: '48px' }}>
-            <button 
-              className="btn-primary"
-              onClick={() => window.location.href = '/build-box'}
-            >
-              Build Your Risk-Free Trial Box
-            </button>
-          </section>
-        </div>
+        {/* Is It Hard Section */}
+        <section className="ntf-section ntf-easy">
+          <div className="ntf-container">
+            <h2>Is It Hard to Feed?</h2>
+            <p className="ntf-answer">Not at all.</p>
+            <div className="easy-steps">
+              <div className="easy-step">
+                <span className="step-number">1</span>
+                <p>Store meals in your freezer</p>
+              </div>
+              <div className="easy-step">
+                <span className="step-number">2</span>
+                <p>Thaw in the refrigerator</p>
+              </div>
+              <div className="easy-step">
+                <span className="step-number">3</span>
+                <p>Serve and watch them thrive</p>
+              </div>
+            </div>
+            <p className="no-hassle">
+              No supplements required for our complete dinners.<br />
+              No complicated prep.<br />
+              <strong>Just real food.</strong>
+            </p>
+          </div>
+        </section>
+
+        {/* How Much Section */}
+        <section className="ntf-section ntf-amount">
+          <div className="ntf-container">
+            <h2>How Much Should I Feed?</h2>
+            <p>As a general guideline:</p>
+            <ul className="ntf-list">
+              <li><strong>Adult dogs:</strong> 2–3% of body weight daily</li>
+              <li><strong>Adult cats:</strong> 2.5–3.5% daily</li>
+              <li><strong>Puppies & kittens:</strong> require more depending on age</li>
+            </ul>
+            <p>
+              Body condition matters more than strict percentages — adjust as needed based on activity level, metabolism, and goals.
+            </p>
+            <p>
+              If you're unsure, check out our <a href="/calculator" className="ntf-link">Feeding Calculator</a> or contact us directly, we're happy to guide you.
+            </p>
+          </div>
+        </section>
+
+        {/* Start Simple Section */}
+        <section className="ntf-section ntf-start">
+          <div className="ntf-container">
+            <h2>Start Simple</h2>
+            <p>
+              If you're unsure which proteins to begin with, start with a light protein like <strong>Chicken</strong> or our <strong>Trial Box</strong> and observe how your pet responds.
+            </p>
+            <p className="ntf-emphasis">
+              Switching shouldn't feel overwhelming.
+            </p>
+            <p className="final-message">
+              We're here to support you at every step.
+            </p>
+            <div className="ntf-cta">
+              <button 
+                className="btn-primary"
+                onClick={() => window.location.href = '/build-box'}
+              >
+                Build Your First Box
+              </button>
+            </div>
+          </div>
+        </section>
       </div>
       <Footer />
     </>
