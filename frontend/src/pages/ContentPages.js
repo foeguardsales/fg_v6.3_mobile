@@ -75,10 +75,16 @@ export const AboutPage = () => {
         <section className="about-section about-story">
           <div className="about-container">
             <p>
-              What started as a personal shift toward real, minimally processed food for our own family and friends soon became something much bigger — a movement driven by guardians choosing to raise the standard for their pets.
+              What began as a personal shift toward real, minimally processed food for our own family started with a simple question:
+            </p>
+            <p className="story-question">
+              Why weren't we feeding our pets the same way?
             </p>
             <p>
-              When we began feeding our own dogs the same way — fresh, species-appropriate, responsibly raised food — the difference was undeniable.
+              With roots in Ontario farming and meat processing, we understood how much quality, sourcing, and handling mattered. So we began feeding our own dogs fresh, responsibly raised meat—free from fillers, preservatives, and shortcuts.
+            </p>
+            <p>
+              The difference was immediate and visible:
             </p>
             <div className="story-benefits">
               <span>Energy.</span>
@@ -86,8 +92,20 @@ export const AboutPage = () => {
               <span>Coat.</span>
               <span>Vitality.</span>
             </div>
+            <p>
+              It wasn't a supplement or a temporary boost. It was what happens when animals are fed the way their biology intended.
+            </p>
+            <p>
+              What started in our own homes soon extended to friends, family, and eventually other pet owners who were searching for the same thing: food they could trust.
+            </p>
             <p className="story-conclusion">
-              <strong>That's when FoeGuard was born.</strong>
+              <strong>That's how FoeGuard began.</strong>
+            </p>
+            <p>
+              Today, we work directly with our own farms and trusted Canadian partners, formulate meals with nutrition professionals, and prepare everything in government-inspected facilities.
+            </p>
+            <p className="story-final">
+              We oversee every step—from farm to bowl—so you never have to question what you're feeding your pet.
             </p>
           </div>
         </section>
