@@ -528,7 +528,13 @@ export const NewToRawPage = () => {
                     <td className="check-cell"><span className="limited-text">Rare</span></td>
                   </tr>
                   <tr>
-                    <td className="feature-cell">Farm Fresh, Transparent Sourcing</td>
+                    <td className="feature-cell">Farm Fresh</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="limited-text">Months Old</span></td>
+                    <td className="check-cell"><span className="limited-text">Months Old</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Transparent Sourcing</td>
                     <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
                     <td className="check-cell"><span className="limited-text">Limited</span></td>
                     <td className="check-cell"><span className="limited-text">Rare</span></td>
