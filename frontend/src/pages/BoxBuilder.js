@@ -540,7 +540,8 @@ export const BoxBuilder = () => {
                 <TreatsSection 
                   selectedTreats={selectedTreats}
                   onToggleTreat={handleToggleTreat}
-                  treats={treats}
+                  petType="dog"
+                  navigate={navigate}
                 />
               </>
             ) : (
