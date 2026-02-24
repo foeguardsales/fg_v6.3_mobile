@@ -104,7 +104,19 @@ export const ProductDetailPage = () => {
     );
   }
 
-  const lineName = product.product_line === 'comfort_dinner' ? 'Comfort Dinner' : 'Primal Feast';
+  // Get collection color and name based on product line
+  const getCollectionInfo = () => {
+    switch(product.product_line) {
+      case 'comfort_dinner': return { color: '#5F7C5A', name: 'Comfort Dinner' };
+      case 'primal_feast': return { color: '#732827', name: 'Primal Feast' };
+      case 'royal_paws': return { color: '#5e4b73', name: 'Royal Paws' };
+      default: return { color: '#88302F', name: 'FoeGuard' };
+    }
+  };
+
+  const collectionInfo = getCollectionInfo();
+  const lineName = collectionInfo.name;
+  const lineColor = collectionInfo.color;
   const productImage = proteinImages[product.protein_type] || proteinImages.chicken;
 
   return (
@@ -119,7 +131,7 @@ export const ProductDetailPage = () => {
             gap: '6px',
             background: 'none',
             border: 'none',
-            color: '#A41E34',
+            color: lineColor,
             fontFamily: 'Source Sans 3, sans-serif',
             fontSize: '15px',
             fontWeight: '600',
@@ -150,7 +162,7 @@ export const ProductDetailPage = () => {
                 position: 'absolute',
                 top: '20px',
                 left: '20px',
-                background: '#A41E34',
+                background: lineColor,
                 color: '#FFFFFF',
                 padding: '8px 20px',
                 borderRadius: '100px',
