@@ -117,7 +117,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
 
 export const CartPopup = CartDrawer;
 
-export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog' }) => {
+export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', navigate }) => {
   const [treats, setTreats] = useState([]);
 
   useEffect(() => {
@@ -125,9 +125,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog' }
       try {
         const { data } = await axios.get(`${API}/treats`);
         // Filter treats by pet type
-        const filteredTreats = data.filter(t => 
-          petType === 'cat' ? t.treat_id.includes('cat') : !t.treat_id.includes('cat')
-        );
+        const filteredTreats = data.filter(t => t.pet_type === petType);
         setTreats(filteredTreats);
       } catch (error) {
         console.error('Failed to load treats:', error);
@@ -207,19 +205,46 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog' }
           <div 
             key={treat.treat_id} 
             className={`treat-item ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'selected' : ''}`}
-            onClick={() => onToggleTreat(treat)}
             data-testid={`treat-${treat.treat_id}`}
           >
-            <div className="treat-info">
-              <h4 style={{ fontSize: '16px', marginBottom: '4px' }}>{treat.name}</h4>
-              <p style={{ color: '#666', fontSize: '13px' }}>{treat.quantity_description}</p>
-            </div>
-            <div className="treat-price-checkbox">
-              <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513' }}>${treat.price.toFixed(2)}</span>
-              <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
-                {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
+            <div 
+              className="treat-clickable"
+              onClick={() => onToggleTreat(treat)}
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flex: 1, cursor: 'pointer' }}
+            >
+              <div className="treat-info">
+                <h4 style={{ fontSize: '16px', marginBottom: '4px' }}>{treat.name}</h4>
+                <p style={{ color: '#666', fontSize: '13px' }}>{treat.quantity_description}</p>
+              </div>
+              <div className="treat-price-checkbox">
+                <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513' }}>${treat.price.toFixed(2)}</span>
+                <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
+                  {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
+                </div>
               </div>
             </div>
+            {navigate && (
+              <button 
+                className="btn-learn-more-treat"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/treat/${treat.treat_id}`);
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: treatColor,
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  padding: '8px 0 0',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '3px'
+                }}
+              >
+                Learn More
+              </button>
+            )}
           </div>
         ))}
       </div>
