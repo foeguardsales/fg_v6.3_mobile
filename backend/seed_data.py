@@ -654,12 +654,11 @@ ROYAL_PAWS_PRODUCTS = [
 
 # Cat treats
 CAT_TREATS = [
-    {"treat_id": "cat-treat-chicken-hearts", "name": "Chicken Hearts", "price": 6.99, "quantity_description": "4oz", "pet_type": "cat"},
-    {"treat_id": "cat-treat-duck-hearts", "name": "Duck Hearts", "price": 8.99, "quantity_description": "4oz", "pet_type": "cat"},
-    {"treat_id": "cat-treat-rabbit-ears", "name": "Rabbit Ears", "price": 7.99, "quantity_description": "6 Pack", "pet_type": "cat"},
-    {"treat_id": "cat-treat-chicken-necks", "name": "Chicken Necks (Small)", "price": 5.99, "quantity_description": "8oz", "pet_type": "cat"},
-    {"treat_id": "cat-treat-sardines", "name": "Whole Sardines", "price": 9.99, "quantity_description": "8oz", "pet_type": "cat"},
-    {"treat_id": "cat-treat-quail", "name": "Whole Quail", "price": 12.99, "quantity_description": "2 Pack", "pet_type": "cat"}
+    {"treat_id": "cat-treat-chicken-heads", "name": "Whole Chicken Heads", "price": 8.99, "quantity_description": "4 Pack", "pet_type": "cat"},
+    {"treat_id": "cat-treat-chicken-necks", "name": "Whole Chicken Necks Pack", "price": 6.99, "quantity_description": "8oz", "pet_type": "cat"},
+    {"treat_id": "cat-treat-chicken-feet", "name": "Chicken Feet", "price": 5.99, "quantity_description": "6 Pack", "pet_type": "cat"},
+    {"treat_id": "cat-treat-duck-heads", "name": "Whole Duck Heads", "price": 10.99, "quantity_description": "3 Pack", "pet_type": "cat"},
+    {"treat_id": "cat-treat-duck-feet", "name": "Duck Feet", "price": 7.99, "quantity_description": "6 Pack", "pet_type": "cat"}
 ]
 
 ALL_PRODUCTS = COMFORT_DINNER_PRODUCTS + PRIMAL_FEAST_PRODUCTS + ROYAL_PAWS_PRODUCTS
