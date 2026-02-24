@@ -117,26 +117,91 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
 
 export const CartPopup = CartDrawer;
 
-export const TreatsSection = ({ selectedTreats, onToggleTreat }) => {
+export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog' }) => {
   const [treats, setTreats] = useState([]);
 
   useEffect(() => {
     const loadTreats = async () => {
       try {
         const { data } = await axios.get(`${API}/treats`);
-        setTreats(data);
+        // Filter treats by pet type
+        const filteredTreats = data.filter(t => 
+          petType === 'cat' ? t.treat_id.includes('cat') : !t.treat_id.includes('cat')
+        );
+        setTreats(filteredTreats);
       } catch (error) {
         console.error('Failed to load treats:', error);
       }
     };
     loadTreats();
-  }, []);
+  }, [petType]);
 
   if (treats.length === 0) return null;
 
+  const isDog = petType !== 'cat';
+  const treatColor = isDog ? '#8B6914' : '#6B5B73';
+
   return (
     <div className="treats-section">
-      <h3 style={{ fontSize: '24px', marginBottom: '20px', marginTop: '50px' }}>Add Treats (Optional)</h3>
+      {/* Treats Banner */}
+      <div style={{
+        position: 'relative',
+        height: '220px',
+        borderRadius: '20px',
+        overflow: 'hidden',
+        marginBottom: '28px',
+        marginTop: '40px',
+        background: `linear-gradient(135deg, ${treatColor} 0%, ${treatColor}dd 100%)`
+      }}>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '32px 40px'
+        }}>
+          <span style={{
+            display: 'inline-block',
+            background: treatColor,
+            color: '#fff',
+            fontSize: '11px',
+            fontWeight: '600',
+            padding: '4px 12px',
+            borderRadius: '20px',
+            marginBottom: '12px',
+            width: 'fit-content',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            border: '1px solid rgba(255,255,255,0.3)'
+          }}>Optional Add-On</span>
+          <h3 style={{
+            fontFamily: 'Fraunces, Georgia, serif',
+            fontSize: '32px',
+            fontWeight: '600',
+            color: '#FFFFFF',
+            margin: '0 0 12px 0'
+          }}>Raw {isDog ? 'Dog' : 'Cat'} Treats</h3>
+          <p style={{
+            color: 'rgba(255,255,255,0.95)',
+            fontSize: '15px',
+            margin: '0 0 12px 0',
+            maxWidth: '450px',
+            lineHeight: '1.6'
+          }}>{isDog 
+            ? 'Whole prey raw treats that support dental health, mental stimulation, and natural chewing.'
+            : 'Natural whole prey treats designed to support your cat\'s instinct to hunt and chew.'
+          }</p>
+          <p style={{
+            color: 'rgba(255,255,255,0.85)',
+            fontSize: '13px',
+            margin: 0,
+            maxWidth: '450px',
+            lineHeight: '1.5'
+          }}><strong>For:</strong> {isDog ? 'Dogs' : 'Cats'} of all life stages. Ideal for treats, enrichment, or dental support.</p>
+        </div>
+      </div>
+
       <div className="treats-grid">
         {treats.map(treat => (
           <div 
