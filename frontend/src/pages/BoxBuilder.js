@@ -661,13 +661,48 @@ export const BoxBuilder = () => {
 };
 
 // Product Card Component
-const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate }) => {
+const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType }) => {
   const basePrice = getBasePrice(product);
   const discountedPrice = getDiscountedPrice(basePrice);
   const hasDiscount = boxSize > 12;
   
+  // Get collection color based on product line
+  const getCollectionColor = () => {
+    switch(product.product_line) {
+      case 'comfort_dinner': return '#5F7C5A';
+      case 'primal_feast': return '#732827';
+      case 'royal_paws': return '#5e4b73';
+      default: return '#88302F';
+    }
+  };
+  
+  const getCollectionLabel = () => {
+    switch(product.product_line) {
+      case 'comfort_dinner': return 'Complete & Balanced';
+      case 'primal_feast': return '80/10/10 Base';
+      case 'royal_paws': return 'Complete & Balanced';
+      default: return '';
+    }
+  };
+
+  const collectionColor = getCollectionColor();
+  
   return (
     <div className="product-card" data-testid={`product-${product.product_id}`}>
+      {/* Collection Tag */}
+      <span style={{
+        display: 'inline-block',
+        background: collectionColor,
+        color: '#fff',
+        fontSize: '10px',
+        fontWeight: '600',
+        padding: '4px 10px',
+        borderRadius: '20px',
+        marginBottom: '8px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.3px'
+      }}>{getCollectionLabel()}</span>
+      
       <h4 style={{ fontSize: '20px', margin: '8px 0', textTransform: 'capitalize' }}>
         {product.protein_type}
       </h4>
