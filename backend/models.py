@@ -27,6 +27,7 @@ class Treat(BaseModel):
     price: float
     quantity_description: str
     image_url: Optional[str] = None
+    pet_type: Optional[str] = "dog"  # 'dog' or 'cat'
 
 class BoxItem(BaseModel):
     product_id: str
