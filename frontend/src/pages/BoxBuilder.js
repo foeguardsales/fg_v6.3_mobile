@@ -455,7 +455,7 @@ export const BoxBuilder = () => {
                   {/* Collection Banner */}
                   <div style={{
                     position: 'relative',
-                    height: '200px',
+                    height: '280px',
                     borderRadius: '20px',
                     overflow: 'hidden',
                     marginBottom: '28px'
@@ -468,26 +468,53 @@ export const BoxBuilder = () => {
                     <div style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(to right, rgba(43, 43, 43, 0.9) 0%, rgba(43, 43, 43, 0.4) 60%, transparent 100%)',
+                      background: 'linear-gradient(to right, rgba(115, 40, 39, 0.95) 0%, rgba(115, 40, 39, 0.7) 50%, rgba(115, 40, 39, 0.3) 100%)',
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'center',
                       padding: '32px 40px'
                     }}>
+                      <span style={{
+                        display: 'inline-block',
+                        background: '#732827',
+                        color: '#fff',
+                        fontSize: '11px',
+                        fontWeight: '600',
+                        padding: '4px 12px',
+                        borderRadius: '20px',
+                        marginBottom: '12px',
+                        width: 'fit-content',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>80/10/10 Base</span>
                       <h3 style={{
-                        fontFamily: 'Crimson Pro, Georgia, serif',
+                        fontFamily: 'Fraunces, Georgia, serif',
                         fontSize: '36px',
-                        fontWeight: '700',
+                        fontWeight: '600',
                         color: '#FFFFFF',
-                        margin: '0 0 8px 0'
+                        margin: '0 0 12px 0'
                       }}>Primal Feast</h3>
                       <p style={{
-                        color: 'rgba(255,255,255,0.9)',
-                        fontSize: '16px',
-                        margin: 0,
-                        maxWidth: '350px',
+                        color: 'rgba(255,255,255,0.95)',
+                        fontSize: '15px',
+                        margin: '0 0 16px 0',
+                        maxWidth: '420px',
+                        lineHeight: '1.6'
+                      }}>Farm-fresh whole prey raw food designed for customizable feeding.</p>
+                      <p style={{
+                        color: 'rgba(255,255,255,0.85)',
+                        fontSize: '13px',
+                        margin: '0 0 8px 0',
+                        maxWidth: '420px',
                         lineHeight: '1.5'
-                      }}>Raw, biologically appropriate meals. Maximum nutrient retention for optimal health.</p>
+                      }}><strong>Recipe:</strong> 80% meat, 10% bone, 10% organ (Prey Model Raw ratio)</p>
+                      <p style={{
+                        color: 'rgba(255,255,255,0.85)',
+                        fontSize: '13px',
+                        margin: 0,
+                        maxWidth: '420px',
+                        lineHeight: '1.5'
+                      }}><strong>For:</strong> DIY raw feeding, rotation, toppers, or supplementation. Not complete on its own.</p>
                     </div>
                   </div>
 
