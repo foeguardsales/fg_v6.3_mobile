@@ -550,7 +550,7 @@ export const BoxBuilder = () => {
                   {/* Collection Banner */}
                   <div style={{
                     position: 'relative',
-                    height: '200px',
+                    height: '280px',
                     borderRadius: '20px',
                     overflow: 'hidden',
                     marginBottom: '28px'
@@ -563,26 +563,53 @@ export const BoxBuilder = () => {
                     <div style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(to right, rgba(164, 30, 52, 0.9) 0%, rgba(164, 30, 52, 0.4) 60%, transparent 100%)',
+                      background: 'linear-gradient(to right, rgba(94, 75, 115, 0.95) 0%, rgba(94, 75, 115, 0.7) 50%, rgba(94, 75, 115, 0.3) 100%)',
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'center',
                       padding: '32px 40px'
                     }}>
+                      <span style={{
+                        display: 'inline-block',
+                        background: '#5e4b73',
+                        color: '#fff',
+                        fontSize: '11px',
+                        fontWeight: '600',
+                        padding: '4px 12px',
+                        borderRadius: '20px',
+                        marginBottom: '12px',
+                        width: 'fit-content',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}>Complete & Balanced</span>
                       <h3 style={{
-                        fontFamily: 'Crimson Pro, Georgia, serif',
+                        fontFamily: 'Fraunces, Georgia, serif',
                         fontSize: '36px',
-                        fontWeight: '700',
+                        fontWeight: '600',
                         color: '#FFFFFF',
-                        margin: '0 0 8px 0'
-                      }}>Royal Paws</h3>
+                        margin: '0 0 12px 0'
+                      }}>Royal Paws Dinner</h3>
                       <p style={{
-                        color: 'rgba(255,255,255,0.9)',
-                        fontSize: '16px',
-                        margin: 0,
-                        maxWidth: '350px',
+                        color: 'rgba(255,255,255,0.95)',
+                        fontSize: '15px',
+                        margin: '0 0 16px 0',
+                        maxWidth: '420px',
+                        lineHeight: '1.6'
+                      }}>Complete and balanced raw meals crafted for your cat's carnivorous biology.</p>
+                      <p style={{
+                        color: 'rgba(255,255,255,0.85)',
+                        fontSize: '13px',
+                        margin: '0 0 8px 0',
+                        maxWidth: '420px',
                         lineHeight: '1.5'
-                      }}>Premium raw cat food, rich in taurine. Biologically appropriate nutrition for feline carnivores.</p>
+                      }}><strong>Recipe:</strong> 95% meat, organs & bone, 3% fruits & vegetables, 2% supplements</p>
+                      <p style={{
+                        color: 'rgba(255,255,255,0.85)',
+                        fontSize: '13px',
+                        margin: 0,
+                        maxWidth: '420px',
+                        lineHeight: '1.5'
+                      }}><strong>For:</strong> Daily feeding for cats of all life stages. Supports lean muscle, digestion & coat health.</p>
                     </div>
                   </div>
                   
