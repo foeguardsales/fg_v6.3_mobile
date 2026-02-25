@@ -711,16 +711,19 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       </p>
       
       {/* Price Display */}
-      <div className="product-price-display">
+      <div className="product-price-display" style={{ 
+        color: isSelected ? '#FDFCFA' : 'inherit',
+        transition: 'color 0.3s ease'
+      }}>
         {hasDiscount ? (
           <>
-            <span className="price-original">${basePrice.toFixed(2)}</span>
-            <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
+            <span className="price-original" style={{ color: isSelected ? 'rgba(253, 252, 250, 0.7)' : 'inherit' }}>${basePrice.toFixed(2)}</span>
+            <span className="price-discounted" style={{ color: isSelected ? '#FDFCFA' : 'inherit' }}>${discountedPrice.toFixed(2)}</span>
           </>
         ) : (
-          <span className="price-regular">${basePrice.toFixed(2)}</span>
+          <span className="price-regular" style={{ color: isSelected ? '#FDFCFA' : 'inherit' }}>${basePrice.toFixed(2)}</span>
         )}
-        <span className="price-unit">/ 6lb</span>
+        <span className="price-unit" style={{ color: isSelected ? 'rgba(253, 252, 250, 0.8)' : 'inherit' }}>/ 6lb</span>
       </div>
       
       {/* Quantity Controls */}
@@ -730,10 +733,14 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
           onClick={() => onUpdate(product.product_id, product.name, Math.max(0, selectedQty - 6))}
           disabled={selectedQty === 0}
           data-testid={`decrease-${product.product_id}`}
+          style={{ color: isSelected ? '#FDFCFA' : 'inherit' }}
         >
           −
         </button>
-        <div className="qty-display" data-testid={`qty-${product.product_id}`}>
+        <div className="qty-display" data-testid={`qty-${product.product_id}`} style={{ 
+          color: isSelected ? '#FDFCFA' : 'inherit',
+          transition: 'color 0.3s ease'
+        }}>
           {selectedQty}lb
         </div>
         <button 
@@ -741,6 +748,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
           onClick={() => onUpdate(product.product_id, product.name, selectedQty + 6)}
           disabled={!canAdd}
           data-testid={`increase-${product.product_id}`}
+          style={{ color: isSelected ? '#FDFCFA' : 'inherit' }}
         >
           +
         </button>
@@ -748,6 +756,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       
       <button 
         className="btn-learn-more"
+        style={{ color: isSelected ? '#FDFCFA' : 'inherit', transition: 'color 0.3s ease' }}
         onClick={() => navigate(`/product/${product.product_id}`)}
         data-testid={`learn-more-${product.product_id}`}
       >
