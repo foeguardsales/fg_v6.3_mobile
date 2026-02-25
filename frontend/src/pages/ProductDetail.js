@@ -179,16 +179,9 @@ export const ProductDetailPage = () => {
                 fontFamily: 'Crimson Pro, Georgia, serif',
                 fontSize: '36px',
                 color: '#2B2B2B',
-                margin: '0 0 8px 0',
+                margin: '0 0 20px 0',
                 lineHeight: '1.2'
               }}>{product.name}</h1>
-              <p style={{
-                fontSize: '15px',
-                color: '#A41E34',
-                fontWeight: '600',
-                textTransform: 'capitalize',
-                margin: '0 0 20px 0'
-              }}>{product.protein_type}</p>
               <p style={{
                 fontSize: '17px',
                 lineHeight: '1.7',
