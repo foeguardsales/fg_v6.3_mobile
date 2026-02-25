@@ -14,9 +14,15 @@ class Product(BaseModel):
     protein_type: str
     name: str
     description: str
-    ingredients: List[str]
+    mini_description: Optional[str] = None
+    highlights: Optional[List[str]] = None
+    ingredients: Union[List[str], str]
+    recipe_breakdown: Optional[str] = None
     nutrition_facts: Dict[str, str]
-    how_to_use: str
+    nutrition_notes: Optional[str] = None
+    how_to_use: Optional[str] = None
+    product_information: Optional[str] = None
+    feeding_guide: Optional[Dict[str, str]] = None
     pricing: List[PricingTier]
     inventory_status: str = "available"
     image_url: Optional[str] = None
@@ -26,6 +32,9 @@ class Treat(BaseModel):
     name: str
     price: float
     quantity_description: str
+    description: Optional[str] = None
+    product_information: Optional[str] = None
+    feeding_guide: Optional[Dict[str, str]] = None
     image_url: Optional[str] = None
     pet_type: Optional[str] = "dog"  # 'dog' or 'cat'
 
