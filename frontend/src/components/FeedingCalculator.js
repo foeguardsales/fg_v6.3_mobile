@@ -155,18 +155,28 @@ export const FeedingCalculator = ({ onComplete }) => {
                 }}
               >
                 <option value="dog">Dog</option>
+                <option value="puppy">Puppy</option>
                 <option value="cat">Cat</option>
+                <option value="kitten">Kitten</option>
               </select>
             </div>
 
             <div className="form-group">
-              <label>Age (months)</label>
+              <label>Age ({(pet.species === 'dog' || pet.species === 'cat') ? 'years' : 'months'})</label>
               <input 
                 type="number"
                 value={pet.age_months}
-                onChange={(e) => updatePet(pet.id, 'age_months', e.target.value)}
-                placeholder="e.g., 24"
+                onChange={(e) => {
+                  let value = e.target.value;
+                  // Convert to months for storage if dog/cat (years input)
+                  if (pet.species === 'dog' || pet.species === 'cat') {
+                    value = value ? parseInt(value) * 12 : '';
+                  }
+                  updatePet(pet.id, 'age_months', value);
+                }}
+                placeholder={(pet.species === 'dog' || pet.species === 'cat') ? 'e.g., 2' : 'e.g., 8'}
                 min="1"
+                value={(pet.species === 'dog' || pet.species === 'cat') && pet.age_months ? Math.floor(pet.age_months / 12) : pet.age_months}
               />
             </div>
 
