@@ -200,24 +200,35 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
         </div>
       </div>
 
-      <div className="treats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(450px, 1fr))', gap: '16px' }}>
+      <div className="treats-grid" style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '600px' }}>
         {treats.map(treat => (
           <div 
             key={treat.treat_id} 
             className={`treat-item ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'selected' : ''}`}
             data-testid={`treat-${treat.treat_id}`}
+            style={{ position: 'relative', paddingRight: '100px' }}
           >
             <div 
               className="treat-clickable"
               onClick={() => onToggleTreat(treat)}
-              style={{ display: 'grid', gridTemplateColumns: '1fr 85px', gap: '16px', alignItems: 'center', cursor: 'pointer' }}
+              style={{ cursor: 'pointer' }}
             >
               <div className="treat-info">
                 <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>
                 <p style={{ color: '#666', fontSize: '13px', margin: '0 0 8px 0' }}>{treat.quantity_description}</p>
                 <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513', display: 'block' }}>${treat.price.toFixed(2)}</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', justifySelf: 'center' }}>
+              <div style={{ 
+                position: 'absolute',
+                right: '0',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center', 
+                gap: '10px',
+                width: '85px'
+              }}>
                 <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
                   {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
                 </div>
