@@ -428,7 +428,7 @@ const AddressAutocomplete = ({ value, onChange, onSelect }) => {
 const DeliveryDateSelector = ({ value, onChange }) => {
   const getMinDate = () => {
     const date = new Date();
-    date.setDate(date.getDate() + 2);
+    date.setDate(date.getDate() + 3);
     return date.toISOString().split('T')[0];
   };
 
