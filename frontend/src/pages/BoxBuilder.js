@@ -694,7 +694,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         {product.protein_type}
       </h4>
       <p style={{ fontSize: '13px', color: '#666', lineHeight: '1.4', marginBottom: '16px' }}>
-        {product.description.split('.')[0]}
+        {product.mini_description || product.description.split('.')[0]}
       </p>
       
       {/* Price Display */}
