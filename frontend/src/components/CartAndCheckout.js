@@ -781,7 +781,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
               Delivery Frequency:
             </label>
             <div style={{ display: 'flex', gap: '12px' }}>
-              <label className={`frequency-option ${subscriptionFrequency === 'biweekly' ? 'active' : ''}`}>
+              <label className={`frequency-option ${subscriptionFrequency === 'biweekly' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <input
                   type="radio"
                   name="frequency"
@@ -789,9 +789,9 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
                   checked={subscriptionFrequency === 'biweekly'}
                   onChange={(e) => setSubscriptionFrequency(e.target.value)}
                 />
-                Every 2 Weeks
+                <span>Biweekly</span>
               </label>
-              <label className={`frequency-option ${subscriptionFrequency === 'monthly' ? 'active' : ''}`}>
+              <label className={`frequency-option ${subscriptionFrequency === 'monthly' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <input
                   type="radio"
                   name="frequency"
@@ -799,7 +799,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
                   checked={subscriptionFrequency === 'monthly'}
                   onChange={(e) => setSubscriptionFrequency(e.target.value)}
                 />
-                Monthly
+                <span>Monthly</span>
               </label>
             </div>
           </div>
