@@ -800,7 +800,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
       {/* Delivery Date */}
       <div className="checkout-section">
         <h3>Delivery Date</h3>
-        <p className="checkout-note">Select your preferred delivery date (minimum 2 business days after today)</p>
+        <p className="checkout-note">Select your preferred delivery date (minimum 3 days from order date)</p>
         <div className="form-group">
           <DeliveryDateSelector 
             value={deliveryDate}
