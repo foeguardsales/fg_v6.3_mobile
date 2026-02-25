@@ -16,6 +16,24 @@ const DISCOUNT_RATES = {
 
 // Cart Drawer Component (slide-in from right)
 export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice }) => {
+  const [promoCode, setPromoCode] = useState('');
+  const [promoDiscount, setPromoDiscount] = useState(0);
+  const [specialInstructions, setSpecialInstructions] = useState('');
+  const [promoError, setPromoError] = useState('');
+
+  const applyPromo = async () => {
+    try {
+      const response = await axios.post(`${API}/validate-promo`, {
+        code: promoCode,
+        order_total: total
+      });
+      setPromoDiscount(response.data.discount_amount);
+      setPromoError('');
+    } catch (error) {
+      setPromoError(error.response?.data?.detail || 'Invalid promo code');
+      setPromoDiscount(0);
+    }
+  };
   const calculateSubtotal = () => {
     let total = 0;
     const discount = DISCOUNT_RATES[boxSize] || 0;
