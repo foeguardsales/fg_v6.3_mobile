@@ -244,16 +244,18 @@ export const ProductDetailPage = () => {
                 {product.feeding_guide && (
                   <>
                     <div style={{ marginBottom: '20px' }}>
-                      <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Handling Instructions</h4>
-                      <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.handling}</p>
-                    </div>
-                    <div style={{ marginBottom: '20px' }}>
                       <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Feeding Instructions</h4>
                       <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.feeding}</p>
                     </div>
+                    <div style={{ marginBottom: '20px' }}>
+                      <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Handling Instructions</h4>
+                      <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.handling}</p>
+                    </div>
                     {product.feeding_guide.note && (
                       <div style={{ background: '#FAF8F5', padding: '16px', borderRadius: '12px' }}>
-                        <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.note}</p>
+                        <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0 }}>
+                          <a href="/calculator" style={{ color: '#A41E34', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
+                        </p>
                       </div>
                     )}
                   </>
