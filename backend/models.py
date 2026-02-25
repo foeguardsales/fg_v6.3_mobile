@@ -2,6 +2,18 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Union
 from datetime import datetime
 
+class PromoCode(BaseModel):
+    code: str
+    discount_type: str = "percentage"  # or "fixed"
+    discount_value: float
+    min_order_value: Optional[float] = None
+    max_uses: Optional[int] = None
+    current_uses: int = 0
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    is_active: bool = True
+    description: Optional[str] = None
+
 class PricingTier(BaseModel):
     size_lb: int
     price: float
