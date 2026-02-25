@@ -54,11 +54,19 @@ export const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h4>About</h4>
+          <h4>Explore</h4>
           <ul>
             <li><a href="/about">About Us</a></li>
             <li><a href="/new-to-raw">New to FoeGuard?</a></li>
-            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="/calculator">Feeding Calculator</a></li>
+          </ul>
+        </div>
+        <div className="footer-section">
+          <h4>My Account</h4>
+          <ul>
+            <li><a href="/account">Account Dashboard</a></li>
+            <li><a href="/account">Order History</a></li>
+            <li><a href="/account">Manage Subscription</a></li>
           </ul>
         </div>
         <div className="footer-section">
@@ -70,8 +78,18 @@ export const Footer = () => {
         </div>
         <div className="footer-section">
           <h4>Contact</h4>
-          <p>Ontario, Canada</p>
-          <p>hello@foeguard.com</p>
+          <p style={{ margin: '0 0 12px 0', lineHeight: '1.6' }}>
+            <strong>Partnerships & Collaborations</strong><br />
+            <a href="mailto:sales@foeguard.com" style={{ color: '#A41E34' }}>sales@foeguard.com</a>
+          </p>
+          <p style={{ margin: '0 0 12px 0', lineHeight: '1.6' }}>
+            <strong>General Inquiries</strong><br />
+            <a href="mailto:info@foeguard.com" style={{ color: '#A41E34' }}>info@foeguard.com</a>
+          </p>
+          <p style={{ margin: 0, lineHeight: '1.6' }}>
+            <strong>Call Us</strong><br />
+            <a href="tel:9054667787" style={{ color: '#A41E34' }}>905-466-7787</a>
+          </p>
         </div>
       </div>
       <div className="footer-bottom">
