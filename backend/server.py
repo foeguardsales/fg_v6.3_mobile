@@ -242,6 +242,43 @@ async def create_payment_intent(checkout_data: CheckoutRequest):
         logger.error(f"Payment intent creation failed: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
 
+@api_router.post("/validate-promo")
+async def validate_promo(data: dict):
+    """Validate promo code and return discount info"""
+    code = data.get("code", "").upper()
+    order_total = data.get("order_total", 0)
+    
+    promo = await db.promo_codes.find_one({"code": code, "is_active": True})
+    
+    if not promo:
+        raise HTTPException(status_code=404, detail="Invalid promo code")
+    
+    # Check expiry
+    if promo.get("end_date") and datetime.now() > promo["end_date"]:
+        raise HTTPException(status_code=400, detail="Promo code expired")
+    
+    # Check usage limit
+    if promo.get("max_uses") and promo.get("current_uses", 0) >= promo["max_uses"]:
+        raise HTTPException(status_code=400, detail="Promo code usage limit reached")
+    
+    # Check min order value
+    if promo.get("min_order_value") and order_total < promo["min_order_value"]:
+        raise HTTPException(status_code=400, detail=f"Minimum order value ${promo['min_order_value']} required")
+    
+    # Calculate discount
+    discount_value = promo["discount_value"]
+    if promo["discount_type"] == "percentage":
+        discount_amount = order_total * (discount_value / 100)
+    else:
+        discount_amount = discount_value
+    
+    return {
+        "valid": True,
+        "discount_amount": discount_amount,
+        "discount_type": promo["discount_type"],
+        "code": code
+    }
+
 @api_router.post("/confirm-order")
 async def confirm_order(data: dict):
     try:
