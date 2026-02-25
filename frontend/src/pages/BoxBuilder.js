@@ -687,13 +687,26 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   };
 
   const collectionColor = getCollectionColor();
+  const isSelected = selectedQty > 0;
   
   return (
     <div className="product-card" data-testid={`product-${product.product_id}`}>
-      <h4 style={{ fontSize: '20px', margin: '0 0 8px 0', textTransform: 'capitalize' }}>
+      <h4 style={{ 
+        fontSize: '20px', 
+        margin: '0 0 8px 0', 
+        textTransform: 'capitalize',
+        color: isSelected ? '#FDFCFA' : '#2B2B2B',
+        transition: 'color 0.3s ease'
+      }}>
         {product.protein_type}
       </h4>
-      <p style={{ fontSize: '13px', color: '#666', lineHeight: '1.4', marginBottom: '16px' }}>
+      <p style={{ 
+        fontSize: '13px', 
+        color: isSelected ? 'rgba(253, 252, 250, 0.9)' : '#666', 
+        lineHeight: '1.4', 
+        marginBottom: '16px',
+        transition: 'color 0.3s ease'
+      }}>
         {product.mini_description || product.description.split('.')[0]}
       </p>
       
