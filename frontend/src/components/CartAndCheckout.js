@@ -766,9 +766,9 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
             className="subscription-checkbox"
             data-testid="subscription-toggle"
           />
-          <div className="subscription-info">
+          <div className="subscription-info" style={{ marginLeft: '12px' }}>
             <strong>Subscribe & Save 10%</strong>
-            <p>Get recurring deliveries. Pause or cancel anytime.</p>
+            <p style={{ marginTop: '4px' }}>Get recurring deliveries. Pause or cancel anytime.</p>
           </div>
         </label>
         
