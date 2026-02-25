@@ -509,6 +509,91 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
 
   const discount = DISCOUNT_RATES[boxSize] || 0;
 
+  // Setup Payment Request Button for Apple Pay / Google Pay
+  useEffect(() => {
+    if (!stripe) return;
+
+    const subtotal = calculateSubtotal();
+    const tax = subtotal * 0.13;
+    const total = subtotal + tax;
+
+    const pr = stripe.paymentRequest({
+      country: 'CA',
+      currency: 'cad',
+      total: {
+        label: 'FoeGuard Order',
+        amount: Math.round(total * 100),
+      },
+      requestPayerName: true,
+      requestPayerEmail: true,
+      requestPayerPhone: true,
+      requestShipping: true,
+      shippingOptions: [
+        {
+          id: 'standard',
+          label: 'Standard Delivery',
+          detail: 'Delivered within 3-5 days',
+          amount: 0,
+        },
+      ],
+    });
+
+    pr.canMakePayment().then((result) => {
+      if (result) {
+        setPaymentRequest(pr);
+        setCanMakePayment(true);
+      }
+    });
+
+    pr.on('paymentmethod', async (ev) => {
+      try {
+        const subtotal = calculateSubtotal();
+        const tax = subtotal * 0.13;
+        const total = subtotal + tax;
+
+        // Create payment intent
+        const { data } = await axios.post(`${API}/create-payment-intent`, {
+          amount: Math.round(total * 100),
+          customer_email: ev.payerEmail,
+        });
+
+        // Confirm payment
+        const { error: confirmError } = await stripe.confirmCardPayment(
+          data.client_secret,
+          { payment_method: ev.paymentMethod.id },
+          { handleActions: false }
+        );
+
+        if (confirmError) {
+          ev.complete('fail');
+          setError(confirmError.message);
+        } else {
+          ev.complete('success');
+          
+          // Save order
+          await axios.post(`${API}/confirm-order`, {
+            payment_intent_id: data.payment_intent_id,
+            customer_name: ev.payerName,
+            customer_email: ev.payerEmail,
+            customer_phone: ev.payerPhone,
+            shipping_address: ev.shippingAddress,
+            box_size: boxSize,
+            selected_proteins: selectedProteins,
+            selected_treats: selectedTreats,
+            delivery_date: deliveryDate,
+            is_subscription: isSubscription,
+            subscription_frequency: subscriptionFrequency,
+          });
+          
+          onSuccess();
+        }
+      } catch (error) {
+        ev.complete('fail');
+        setError(error.message);
+      }
+    });
+  }, [stripe, boxSize, selectedProteins, selectedTreats, deliveryDate, isSubscription, subscriptionFrequency]);
+
   // Handle address selection from Google Places
   const handleAddressSelect = (details) => {
     if (details.street) setStreetAddress(details.street);
