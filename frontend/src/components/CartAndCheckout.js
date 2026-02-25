@@ -206,11 +206,6 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             key={treat.treat_id} 
             className={`treat-item ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'selected' : ''}`}
             data-testid={`treat-${treat.treat_id}`}
-            style={{ 
-              display: 'flex', 
-              flexDirection: 'column',
-              gap: '12px'
-            }}
           >
             <div 
               className="treat-clickable"
@@ -222,34 +217,35 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                 <p style={{ color: '#666', fontSize: '13px', margin: '0 0 8px 0' }}>{treat.quantity_description}</p>
                 <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513', display: 'block' }}>${treat.price.toFixed(2)}</span>
               </div>
-              <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`} style={{ flexShrink: 0 }}>
-                {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0 }}>
+                <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
+                  {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
+                </div>
+                {navigate && (
+                  <button 
+                    className="btn-learn-more-treat"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/treat/${treat.treat_id}`);
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: treatColor,
+                      fontSize: '13px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      padding: '0',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: '3px',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
+                    Learn More
+                  </button>
+                )}
               </div>
             </div>
-            {navigate && (
-              <button 
-                className="btn-learn-more-treat"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/treat/${treat.treat_id}`);
-                }}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: treatColor,
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  padding: '0',
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '3px',
-                  textAlign: 'left',
-                  width: 'fit-content'
-                }}
-              >
-                Learn More
-              </button>
-            )}
           </div>
         ))}
       </div>
