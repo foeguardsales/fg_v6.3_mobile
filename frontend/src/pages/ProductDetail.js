@@ -193,8 +193,20 @@ export const ProductDetailPage = () => {
                 fontSize: '17px',
                 lineHeight: '1.7',
                 color: '#3D3D3D',
-                margin: '0'
+                margin: '0 0 20px 0',
+                whiteSpace: 'pre-line'
               }}>{product.description}</p>
+              
+              {product.highlights && product.highlights.length > 0 && (
+                <div style={{ marginTop: '20px' }}>
+                  <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 12px 0' }}>Key Highlights</h3>
+                  <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {product.highlights.map((highlight, i) => (
+                      <li key={i} style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.6' }}>{highlight}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
