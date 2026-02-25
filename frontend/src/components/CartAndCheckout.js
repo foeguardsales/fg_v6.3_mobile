@@ -108,13 +108,76 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             <span>Subtotal</span>
             <span data-testid="cart-subtotal">${subtotal.toFixed(2)}</span>
           </div>
+          {promoDiscount > 0 && (
+            <div className="cart-item" style={{ color: '#228B22' }}>
+              <span>Promo Discount</span>
+              <span>-${promoDiscount.toFixed(2)}</span>
+            </div>
+          )}
           <div className="cart-item">
             <span>Tax (13%)</span>
             <span data-testid="cart-tax">${tax.toFixed(2)}</span>
           </div>
           <div className="cart-total">
             <span>Total</span>
-            <span data-testid="cart-total">${total.toFixed(2)}</span>
+            <span data-testid="cart-total">${(total - promoDiscount).toFixed(2)}</span>
+          </div>
+          
+          {/* Promo Code Section */}
+          <div style={{ marginTop: '16px', padding: '16px 0', borderTop: '1px solid #E8DDD0' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Promo Code</label>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <input
+                type="text"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                placeholder="Enter code"
+                style={{
+                  flex: 1,
+                  padding: '10px 12px',
+                  border: '2px solid #D9C8B3',
+                  borderRadius: '8px',
+                  fontSize: '14px'
+                }}
+              />
+              <button
+                type="button"
+                onClick={applyPromo}
+                style={{
+                  padding: '10px 16px',
+                  background: '#A41E34',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                Apply
+              </button>
+            </div>
+            {promoError && <p style={{ color: '#D32F2F', fontSize: '12px', marginTop: '4px' }}>{promoError}</p>}
+          </div>
+
+          {/* Special Instructions */}
+          <div style={{ marginTop: '16px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Special Instructions</label>
+            <textarea
+              value={specialInstructions}
+              onChange={(e) => setSpecialInstructions(e.target.value)}
+              placeholder="Any special requests?"
+              rows={2}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '2px solid #D9C8B3',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontFamily: 'inherit',
+                resize: 'vertical'
+              }}
+            />
           </div>
         </div>
         
