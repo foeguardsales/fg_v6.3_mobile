@@ -200,13 +200,13 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
         </div>
       </div>
 
-      <div className="treats-grid" style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '600px' }}>
+      <div className="treats-grid">
         {treats.map(treat => (
           <div 
             key={treat.treat_id} 
             className={`treat-item ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'selected' : ''}`}
             data-testid={`treat-${treat.treat_id}`}
-            style={{ position: 'relative', paddingRight: '100px' }}
+            style={{ position: 'relative', paddingRight: '110px' }}
           >
             <div 
               className="treat-clickable"
@@ -220,7 +220,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
               </div>
               <div style={{ 
                 position: 'absolute',
-                right: '0',
+                right: '16px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 display: 'flex', 
