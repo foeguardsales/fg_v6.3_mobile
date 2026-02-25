@@ -58,6 +58,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/build-box" element={<BoxBuilder />} />
           <Route path="/product/:productId" element={<ProductDetailPage />} />
+          <Route path="/treat/:treatId" element={<TreatDetailPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/policies" element={<PoliciesPage />} />
           <Route path="/terms" element={<TermsPage />} />
