@@ -808,7 +808,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
 
       {/* Order/Delivery Notes */}
       <div className="checkout-section" style={{ borderBottom: 'none' }}>
-        <h3>Delivery & Order Instructions</h3>
+        <h3>Delivery</h3>
         <p className="checkout-note">Any special requests for your order or delivery?</p>
         <div className="form-group">
           <textarea
