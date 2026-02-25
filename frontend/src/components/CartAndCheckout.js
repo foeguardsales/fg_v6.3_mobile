@@ -209,23 +209,21 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             style={{ 
               display: 'flex', 
               flexDirection: 'column',
-              gap: '8px'
+              gap: '12px'
             }}
           >
             <div 
               className="treat-clickable"
               onClick={() => onToggleTreat(treat)}
-              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', cursor: 'pointer' }}
             >
-              <div className="treat-info">
-                <h4 style={{ fontSize: '16px', marginBottom: '4px' }}>{treat.name}</h4>
-                <p style={{ color: '#666', fontSize: '13px', margin: 0 }}>{treat.quantity_description}</p>
-              </div>
-              <div className="treat-price-checkbox">
+              <div className="treat-info" style={{ flex: 1 }}>
+                <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>
+                <p style={{ color: '#666', fontSize: '13px', margin: '0 0 8px 0' }}>{treat.quantity_description}</p>
                 <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513' }}>${treat.price.toFixed(2)}</span>
-                <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
-                  {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
-                </div>
+              </div>
+              <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
+                {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
               </div>
             </div>
             {navigate && (
