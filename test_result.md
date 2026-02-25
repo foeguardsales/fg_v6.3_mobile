@@ -189,3 +189,20 @@ agent_communication:
       - Cat treats display correctly in BoxBuilder
       - Learn More buttons appear in correct position (under treats, not beside)
       - No duplicate or incorrect treats shown
+  
+  - agent: "main"
+    message: |
+      Completed additional UI improvements:
+      1. Fixed treat pricing layout - Price now appears UNDER the title/quantity (like meal cards), not beside it
+         - Applied to both cat and dog treats
+         - Checkbox is isolated on the right
+         - Layout is cleaner and more consistent with meal cards
+      
+      2. Removed repetitive collection pills from product cards
+         - Removed "Complete & Balanced" and "80/10/10 Base" badges from individual cards
+         - Collection headers already explain this, so badges were redundant
+         
+      Next steps (per user):
+      - Add custom product descriptions
+      - Update mini descriptions for menu products
+      - Update product page with feeding guidelines, product information, nutrition info, and key highlights
