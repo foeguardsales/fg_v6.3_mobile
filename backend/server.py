@@ -162,7 +162,7 @@ async def get_me(current_user = Depends(get_current_user)):
 async def root():
     return {"message": "FoeGuard API"}
 
-@api_router.get("/products", response_model=List[Product])
+@api_router.get("/products")
 async def get_products(pet_type: str = None):
     query = {}
     if pet_type == "dog":
@@ -172,7 +172,7 @@ async def get_products(pet_type: str = None):
     products = await db.products.find(query, {"_id": 0}).to_list(100)
     return products
 
-@api_router.get("/products/{product_id}", response_model=Product)
+@api_router.get("/products/{product_id}")
 async def get_product(product_id: str):
     product = await db.products.find_one({"product_id": product_id}, {"_id": 0})
     if not product:
