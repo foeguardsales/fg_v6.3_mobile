@@ -142,7 +142,7 @@ export const FeedingCalculator = ({ onComplete }) => {
             </div>
 
             <div className="form-group">
-              <label>Species</label>
+              <label>Life Stage</label>
               <select 
                 value={pet.species}
                 onChange={(e) => updatePet(pet.id, 'species', e.target.value)}
@@ -155,8 +155,8 @@ export const FeedingCalculator = ({ onComplete }) => {
                 }}
               >
                 <option value="dog">Dog</option>
-                <option value="puppy">Puppy</option>
                 <option value="cat">Cat</option>
+                <option value="puppy">Puppy</option>
                 <option value="kitten">Kitten</option>
               </select>
             </div>
