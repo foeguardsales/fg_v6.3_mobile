@@ -8,6 +8,7 @@ import './App.css';
 import { LandingPage } from './pages/LandingPage';
 import { BoxBuilder } from './pages/BoxBuilder';
 import { ProductDetailPage } from './pages/ProductDetail';
+import { TreatDetailPage } from './pages/TreatDetail';
 import { AboutPage, PoliciesPage, TermsPage, ContactPage, NewToRawPage } from './pages/ContentPages';
 import { CalculatorPage } from './pages/CalculatorPage';
 import { AccountPage } from './pages/AccountPage';
