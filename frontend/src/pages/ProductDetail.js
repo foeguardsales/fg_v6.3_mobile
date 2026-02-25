@@ -212,54 +212,67 @@ export const ProductDetailPage = () => {
 
           {/* Collapsible Sections */}
           <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <CollapsibleSection title="Ingredients" defaultOpen={true}>
-              <ul className="ingredients-grid" style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: '8px 24px',
-                listStyle: 'none',
-                padding: 0,
-                margin: 0
-              }}>
-                {product.ingredients.map((ing, i) => (
-                  <li key={i} style={{
-                    fontSize: '15px',
-                    color: '#2B2B2B',
-                    padding: '8px 0',
-                    borderBottom: '1px solid #E8DDD0'
-                  }}>{ing}</li>
-                ))}
-              </ul>
-            </CollapsibleSection>
-
-            <CollapsibleSection title="Nutrition Facts">
-              <div className="nutrition-grid-detail" style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                {Object.entries(product.nutrition_facts).map(([key, value]) => (
-                  <div key={key} className="nutrition-row" style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    padding: '12px 0',
-                    borderBottom: '1px solid #E8DDD0'
-                  }}>
-                    <span style={{ color: '#5A5A5A', fontSize: '15px' }}>{key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}</span>
-                    <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '15px' }}>{value}</span>
-                  </div>
-                ))}
+            <CollapsibleSection title="Ingredients & Nutrition" defaultOpen={true}>
+              <div style={{ marginBottom: '24px' }}>
+                <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 12px 0' }}>Ingredients</h4>
+                <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
+                  {typeof product.ingredients === 'string' ? product.ingredients : product.ingredients.join(', ')}
+                </p>
               </div>
+              
+              {product.recipe_breakdown && (
+                <div style={{ marginBottom: '24px', padding: '16px', background: '#FAF8F5', borderRadius: '12px' }}>
+                  <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#A41E34', margin: '0 0 8px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recipe Breakdown</h4>
+                  <p style={{ fontSize: '15px', color: '#3D3D3D', margin: 0 }}>{product.recipe_breakdown}</p>
+                </div>
+              )}
+              
+              <div>
+                <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 12px 0' }}>Nutrition Facts (per 100g)</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                  {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
+                    <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #E8DDD0' }}>
+                      <span style={{ color: '#5A5A5A', fontSize: '15px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
+                      <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '15px' }}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {product.nutrition_notes && (
+                <div style={{ marginTop: '16px', padding: '16px', background: '#FFF9F0', border: '1px solid #FFE4B5', borderRadius: '12px' }}>
+                  <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.6', margin: 0 }}>{product.nutrition_notes}</p>
+                </div>
+              )}
             </CollapsibleSection>
 
             <CollapsibleSection title="Feeding Guide">
               <div className="feeding-guide">
-                <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 20px 0' }}>{product.how_to_use}</p>
-                <div style={{ background: '#FAF8F5', padding: '20px', borderRadius: '12px' }}>
-                  <h4 style={{
-                    fontFamily: 'Source Sans 3, sans-serif',
-                    fontSize: '14px',
-                    fontWeight: '700',
-                    color: '#A41E34',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    margin: '0 0 12px 0'
+                {product.feeding_guide && (
+                  <>
+                    <div style={{ marginBottom: '20px' }}>
+                      <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Handling Instructions</h4>
+                      <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.handling}</p>
+                    </div>
+                    <div style={{ marginBottom: '20px' }}>
+                      <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Feeding Instructions</h4>
+                      <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.feeding}</p>
+                    </div>
+                    {product.feeding_guide.note && (
+                      <div style={{ background: '#FAF8F5', padding: '16px', borderRadius: '12px' }}>
+                        <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.note}</p>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </CollapsibleSection>
+            
+            <CollapsibleSection title="Product Information">
+              <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
+                {product.product_information}
+              </p>
+            </CollapsibleSection>
                   }}>Tips</h4>
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                     <li style={{ fontSize: '14px', color: '#3D3D3D', padding: '6px 0', paddingLeft: '20px', position: 'relative' }}>
