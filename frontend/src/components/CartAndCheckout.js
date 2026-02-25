@@ -220,10 +220,11 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
               <div style={{ 
                 display: 'flex', 
                 flexDirection: 'column', 
-                alignItems: 'flex-end', 
+                alignItems: 'center', 
                 gap: '12px', 
-                width: '100px',
-                flexShrink: 0
+                width: '90px',
+                flexShrink: 0,
+                marginLeft: 'auto'
               }}>
                 <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
                   {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
