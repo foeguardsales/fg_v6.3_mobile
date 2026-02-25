@@ -200,19 +200,20 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
         </div>
       </div>
 
-      <div className="treats-grid">
+      <div className="treats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: '16px' }}>
         {treats.map(treat => (
           <div 
             key={treat.treat_id} 
             className={`treat-item ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'selected' : ''}`}
             data-testid={`treat-${treat.treat_id}`}
+            style={{ width: '100%' }}
           >
             <div 
               className="treat-clickable"
               onClick={() => onToggleTreat(treat)}
               style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', cursor: 'pointer' }}
             >
-              <div className="treat-info" style={{ flex: 1, paddingRight: '24px' }}>
+              <div className="treat-info" style={{ flex: 1, paddingRight: '24px', minWidth: 0 }}>
                 <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>
                 <p style={{ color: '#666', fontSize: '13px', margin: '0 0 8px 0' }}>{treat.quantity_description}</p>
                 <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513', display: 'block' }}>${treat.price.toFixed(2)}</span>
@@ -223,8 +224,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                 alignItems: 'center', 
                 gap: '12px', 
                 width: '90px',
-                flexShrink: 0,
-                marginLeft: 'auto'
+                flexShrink: 0
               }}>
                 <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
                   {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
