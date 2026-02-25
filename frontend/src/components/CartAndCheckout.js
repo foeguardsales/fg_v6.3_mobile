@@ -830,6 +830,70 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
         </div>
       </div>
 
+      {/* Special Instructions */}
+      <div className="checkout-section" style={{ borderBottom: '1px solid #E8DDD0', paddingBottom: '24px' }}>
+        <h3>Special Instructions</h3>
+        <div className="form-group">
+          <textarea
+            value={specialInstructions}
+            onChange={(e) => setSpecialInstructions(e.target.value)}
+            placeholder="Any additional notes or requests..."
+            rows={2}
+            style={{
+              width: '100%',
+              padding: '14px 16px',
+              border: '2px solid #D9C8B3',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontFamily: 'inherit',
+              resize: 'vertical'
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Promo Code */}
+      <div className="checkout-section" style={{ borderBottom: 'none' }}>
+        <h3>Promo Code</h3>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <input
+            type="text"
+            value={promoCode}
+            onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+            placeholder="Enter promo code"
+            style={{
+              flex: 1,
+              padding: '14px 16px',
+              border: '2px solid #D9C8B3',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontFamily: 'inherit'
+            }}
+          />
+          <button
+            type="button"
+            onClick={() => {/* TODO: Validate promo code */}}
+            style={{
+              padding: '14px 24px',
+              background: '#A41E34',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            Apply
+          </button>
+        </div>
+        {promoDiscount > 0 && (
+          <p style={{ marginTop: '8px', color: '#228B22', fontSize: '14px', fontWeight: '600' }}>
+            Promo applied! ${promoDiscount.toFixed(2)} discount
+          </p>
+        )}
+      </div>
+
       {error && (
         <div className="checkout-error" data-testid="payment-error">
           {error}
