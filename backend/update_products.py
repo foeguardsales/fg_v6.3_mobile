@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import os
 
 client = MongoClient(os.environ.get('MONGO_URL', 'mongodb://localhost:27017'))
-db = client['foeguard']
+db = client[os.environ.get('DB_NAME', 'foeguard')]
 
 # Common data
 PRODUCT_INFO = "This product is processed and packaged in a government-regulated facility to ensure human-grade quality standards. It's freshly made, then flash-frozen to preserve all nutrients. Best consumed by pets within 12 months from the purchase date.\nSince our products are 100% natural, slight variations from the pictured product may occur."
