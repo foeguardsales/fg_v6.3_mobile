@@ -690,21 +690,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   
   return (
     <div className="product-card" data-testid={`product-${product.product_id}`}>
-      {/* Collection Tag */}
-      <span style={{
-        display: 'inline-block',
-        background: collectionColor,
-        color: '#fff',
-        fontSize: '10px',
-        fontWeight: '600',
-        padding: '4px 10px',
-        borderRadius: '20px',
-        marginBottom: '8px',
-        textTransform: 'uppercase',
-        letterSpacing: '0.3px'
-      }}>{getCollectionLabel()}</span>
-      
-      <h4 style={{ fontSize: '20px', margin: '8px 0', textTransform: 'capitalize' }}>
+      <h4 style={{ fontSize: '20px', margin: '0 0 8px 0', textTransform: 'capitalize' }}>
         {product.protein_type}
       </h4>
       <p style={{ fontSize: '13px', color: '#666', lineHeight: '1.4', marginBottom: '16px' }}>
