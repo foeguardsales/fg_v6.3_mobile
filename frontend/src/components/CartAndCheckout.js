@@ -485,6 +485,8 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [paymentRequest, setPaymentRequest] = useState(null);
+  const [canMakePayment, setCanMakePayment] = useState(false);
   
   // Customer Info
   const [customerName, setCustomerName] = useState('');
