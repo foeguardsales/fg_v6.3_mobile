@@ -73,7 +73,7 @@ export const TreatDetailPage = () => {
   if (loading) {
     return (
       <>
-        <Header />
+        <Navbar />
         <div style={{ padding: '60px 20px', textAlign: 'center' }}>Loading...</div>
         <Footer />
       </>
@@ -83,7 +83,7 @@ export const TreatDetailPage = () => {
   if (!treat) {
     return (
       <>
-        <Header />
+        <Navbar />
         <div style={{ padding: '60px 20px', textAlign: 'center' }}>
           <h2>Treat not found</h2>
           <button onClick={() => navigate('/build-box')} style={{ marginTop: '20px', padding: '12px 24px', background: '#A41E34', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
@@ -97,7 +97,7 @@ export const TreatDetailPage = () => {
 
   return (
     <>
-      <Header />
+      <Navbar />
       <div className="product-detail-page" style={{ background: '#FDFCFA', minHeight: '100vh', paddingTop: '80px' }}>
         <div className="product-detail-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
           <button
