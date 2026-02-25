@@ -748,9 +748,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
         <h2 style={{ fontSize: '32px', marginBottom: '8px' }}>Checkout</h2>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '13px', color: '#888' }}>
           <span>Secure payment powered by</span>
-          <svg width="42" height="18" viewBox="0 0 60 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.9 8.7c0-1.4 1.1-2.3 2.9-2.3 1.3 0 2.4.4 3.2 1L22 5.2c-1-.7-2.3-1.1-4.2-1.1-3.5 0-5.9 1.8-5.9 4.8 0 4.7 6.5 3.9 6.5 5.9 0 .8-.7 1.3-2 1.3-1.7 0-3.1-.7-4-1.4l-1 2.3c1.1.8 2.6 1.3 5 1.3 3.6 0 6.2-1.7 6.2-4.8-.1-5.1-6.7-4.2-6.7-5.8zm11.5 9.6h3.6l.4-2h5.2l.8 2h4l-4.4-10.5h-4.5l-5.1 10.5zm5.5-4.8l1.8-4.7 1.1 4.7h-2.9zm14.1-5.7c-1.1 0-2 .5-2.6 1.3l-.2-1h-3.4v10.2h3.6v-5.7c.6-.8 1.5-1.3 2.4-1.3.2 0 .5 0 .7.1V8c-.2-.1-.3-.2-.5-.2zm4.8 10.5h3.6V7.8h-3.6v10.5zm1.8-12.1c1.2 0 2.1-.9 2.1-2s-.9-2-2.1-2-2.1.9-2.1 2 .9 2 2.1 2zm6.5 12.1h3.6v-5.6c.6-1 1.6-1.6 2.7-1.6 1.8 0 2.8 1.2 2.8 3.2v4h3.6v-4.9c0-3.4-1.9-5.4-4.8-5.4-1.5 0-2.8.6-3.7 1.7l-.2-1.4h-3.5l-.5 9.5v.5z" fill="#635BFF"/>
-          </svg>
+          <span style={{ fontWeight: '700', color: '#635BFF', fontSize: '18px', letterSpacing: '-0.5px' }}>Stripe</span>
         </div>
       </div>
       
