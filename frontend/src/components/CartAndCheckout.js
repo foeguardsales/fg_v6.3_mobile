@@ -215,14 +215,14 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             <div 
               className="treat-clickable"
               onClick={() => onToggleTreat(treat)}
-              style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }}
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', cursor: 'pointer', gap: '20px' }}
             >
-              <div className="treat-info">
+              <div className="treat-info" style={{ flex: 1, paddingRight: '16px' }}>
                 <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>
                 <p style={{ color: '#666', fontSize: '13px', margin: '0 0 8px 0' }}>{treat.quantity_description}</p>
-                <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513', display: 'block', marginBottom: '12px' }}>${treat.price.toFixed(2)}</span>
+                <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513', display: 'block' }}>${treat.price.toFixed(2)}</span>
               </div>
-              <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`} style={{ alignSelf: 'flex-start' }}>
+              <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`} style={{ flexShrink: 0 }}>
                 {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
               </div>
             </div>
