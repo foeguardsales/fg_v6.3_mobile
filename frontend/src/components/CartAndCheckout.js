@@ -899,6 +899,38 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
       {/* Payment - Separate Card Fields */}
       <div className="checkout-section">
         <h3>Payment Details</h3>
+        
+        {/* Apple Pay / Google Pay Button */}
+        {canMakePayment && paymentRequest && (
+          <div style={{ marginBottom: '24px' }}>
+            <PaymentRequestButtonElement
+              options={{ paymentRequest }}
+              style={{
+                paymentRequestButton: {
+                  type: 'default',
+                  theme: 'dark',
+                  height: '48px',
+                },
+              }}
+            />
+            <div style={{ 
+              textAlign: 'center', 
+              margin: '16px 0', 
+              color: '#666', 
+              fontSize: '14px',
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px'
+            }}>
+              <div style={{ flex: 1, height: '1px', background: '#E8DDD0' }} />
+              <span>or pay with card</span>
+              <div style={{ flex: 1, height: '1px', background: '#E8DDD0' }} />
+            </div>
+          </div>
+        )}
+        
         <div className="form-group">
           <label>Card Number *</label>
           <div className="stripe-element-wrapper">
