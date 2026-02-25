@@ -355,7 +355,13 @@ export const BoxBuilder = () => {
               className="box-progress-fill" 
               style={{ width: `${(getTotalSelectedLbs() / boxSize) * 100}%` }}
             />
-            <span className="box-progress-text">
+            <span 
+              className="box-progress-text"
+              style={{ 
+                color: (getTotalSelectedLbs() / boxSize) > 0.3 ? '#FDFCFA' : 'var(--charcoal)',
+                textShadow: (getTotalSelectedLbs() / boxSize) > 0.3 ? '0 1px 2px rgba(0, 0, 0, 0.3)' : '0 1px 2px rgba(255, 255, 255, 0.8)'
+              }}
+            >
               {getTotalSelectedLbs()}lb / {boxSize}lb selected
             </span>
           </div>
