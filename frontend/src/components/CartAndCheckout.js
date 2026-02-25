@@ -246,8 +246,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                       padding: '0',
                       textDecoration: 'underline',
                       textUnderlineOffset: '3px',
-                      whiteSpace: 'nowrap',
-                      textAlign: 'right'
+                      whiteSpace: 'nowrap'
                     }}
                   >
                     Learn More
