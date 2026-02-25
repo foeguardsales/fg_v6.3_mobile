@@ -179,7 +179,7 @@ async def get_product(product_id: str):
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
-@api_router.get("/treats", response_model=List[Treat])
+@api_router.get("/treats")
 async def get_treats(pet_type: str = None):
     query = {}
     if pet_type == "dog":
