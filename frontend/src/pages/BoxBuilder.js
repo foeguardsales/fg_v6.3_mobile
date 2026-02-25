@@ -690,19 +690,19 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const isSelected = selectedQty > 0;
   
   return (
-    <div className="product-card" data-testid={`product-${product.product_id}`}>
+    <div className="product-card" data-testid={`product-${product.product_id}`} data-selected={isSelected}>
       <h4 style={{ 
         fontSize: '20px', 
         margin: '0 0 8px 0', 
         textTransform: 'capitalize',
-        color: isSelected ? '#FDFCFA' : '#2B2B2B',
+        color: isSelected ? '#FDFCFA !important' : '#2B2B2B',
         transition: 'color 0.3s ease'
       }}>
         {product.protein_type}
       </h4>
       <p style={{ 
         fontSize: '13px', 
-        color: isSelected ? 'rgba(253, 252, 250, 0.9)' : '#666', 
+        color: isSelected ? 'rgba(253, 252, 250, 0.9) !important' : '#666', 
         lineHeight: '1.4', 
         marginBottom: '16px',
         transition: 'color 0.3s ease'
