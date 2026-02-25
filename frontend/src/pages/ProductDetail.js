@@ -273,24 +273,6 @@ export const ProductDetailPage = () => {
                 {product.product_information}
               </p>
             </CollapsibleSection>
-                  }}>Tips</h4>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                    <li style={{ fontSize: '14px', color: '#3D3D3D', padding: '6px 0', paddingLeft: '20px', position: 'relative' }}>
-                      <span style={{ position: 'absolute', left: 0, color: '#A41E34' }}>•</span>
-                      Thaw in refrigerator for 24 hours before serving
-                    </li>
-                    <li style={{ fontSize: '14px', color: '#3D3D3D', padding: '6px 0', paddingLeft: '20px', position: 'relative' }}>
-                      <span style={{ position: 'absolute', left: 0, color: '#A41E34' }}>•</span>
-                      Serve at room temperature for best palatability
-                    </li>
-                    <li style={{ fontSize: '14px', color: '#3D3D3D', padding: '6px 0', paddingLeft: '20px', position: 'relative' }}>
-                      <span style={{ position: 'absolute', left: 0, color: '#A41E34' }}>•</span>
-                      Store unused portion in refrigerator for up to 3 days
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </CollapsibleSection>
           </div>
         </div>
       </div>
