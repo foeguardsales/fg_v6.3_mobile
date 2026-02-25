@@ -80,15 +80,15 @@ export const Footer = () => {
           <h4>Contact</h4>
           <p style={{ margin: '0 0 12px 0', lineHeight: '1.6' }}>
             <strong>Partnerships & Collaborations</strong><br />
-            <a href="mailto:sales@foeguard.com" style={{ color: '#A41E34' }}>sales@foeguard.com</a>
+            <a href="mailto:sales@foeguard.com" style={{ color: '#FDFCFA' }}>sales@foeguard.com</a>
           </p>
           <p style={{ margin: '0 0 12px 0', lineHeight: '1.6' }}>
             <strong>General Inquiries</strong><br />
-            <a href="mailto:info@foeguard.com" style={{ color: '#A41E34' }}>info@foeguard.com</a>
+            <a href="mailto:info@foeguard.com" style={{ color: '#FDFCFA' }}>info@foeguard.com</a>
           </p>
           <p style={{ margin: 0, lineHeight: '1.6' }}>
             <strong>Call Us</strong><br />
-            <a href="tel:9054667787" style={{ color: '#A41E34' }}>905-466-7787</a>
+            <a href="tel:9054667787" style={{ color: '#FDFCFA' }}>905-466-7787</a>
           </p>
         </div>
       </div>
