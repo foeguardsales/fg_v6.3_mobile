@@ -141,6 +141,27 @@ frontend:
           Updated treats grid layout to properly position Learn More button below each treat item.
           Changed flexDirection to column with gap, removed flex: 1 from clickable area,
           and adjusted Learn More button styling to align left and appear clearly under the treat info.
+      - working: true
+        agent: "main"
+        comment: |
+          Fixed treat pricing layout - price now appears under the title/quantity, not beside it.
+          Restructured treat-info to use flex: 1 and stack elements vertically.
+          Checkbox is now isolated on the right side. Applied to both cat and dog treats.
+  
+  - task: "Remove repetitive collection pills from product cards"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/BoxBuilder.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: |
+          Removed "Complete & Balanced" and "80/10/10 Base" pills from individual product cards
+          in ProductCard component. Collection headers already explain this information,
+          so the repetitive badges on each card were redundant. Cleaned up the layout.
 
 metadata:
   created_by: "main_agent"
