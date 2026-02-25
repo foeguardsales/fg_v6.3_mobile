@@ -210,14 +210,21 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             <div 
               className="treat-clickable"
               onClick={() => onToggleTreat(treat)}
-              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', cursor: 'pointer', gap: '20px' }}
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', cursor: 'pointer' }}
             >
-              <div className="treat-info" style={{ flex: 1, paddingRight: '16px' }}>
+              <div className="treat-info" style={{ flex: 1, paddingRight: '24px' }}>
                 <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>
                 <p style={{ color: '#666', fontSize: '13px', margin: '0 0 8px 0' }}>{treat.quantity_description}</p>
                 <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513', display: 'block' }}>${treat.price.toFixed(2)}</span>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0 }}>
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'flex-end', 
+                gap: '12px', 
+                width: '100px',
+                flexShrink: 0
+              }}>
                 <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
                   {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
                 </div>
@@ -238,7 +245,8 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                       padding: '0',
                       textDecoration: 'underline',
                       textUnderlineOffset: '3px',
-                      whiteSpace: 'nowrap'
+                      whiteSpace: 'nowrap',
+                      textAlign: 'right'
                     }}
                   >
                     Learn More
