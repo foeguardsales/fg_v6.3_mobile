@@ -3967,3 +3967,20 @@ h1, h2, h3, h4 {
   }
 }
 
+
+/* Product card selected state - white text override */
+.product-card[data-selected="true"] h4,
+.product-card[data-selected="true"] p,
+.product-card[data-selected="true"] .product-price-display,
+.product-card[data-selected="true"] .qty-display,
+.product-card[data-selected="true"] .qty-btn,
+.product-card[data-selected="true"] .btn-learn-more,
+.product-card[data-selected="true"] .price-regular,
+.product-card[data-selected="true"] .price-discounted,
+.product-card[data-selected="true"] .price-unit {
+  color: #FDFCFA !important;
+}
+
+.product-card[data-selected="true"] .price-original {
+  color: rgba(253, 252, 250, 0.7) !important;
+}
