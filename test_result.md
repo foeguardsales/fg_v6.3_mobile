@@ -210,3 +210,20 @@ agent_communication:
       
       Used single bulk update script - efficient credit usage.
       Ready to update Product Detail pages to display all new information.
+  
+  - agent: "main"
+    message: |
+      ✅ FIXED CHECKOUT & UI ISSUES:
+      
+      1. Made Stripe logo smaller (18px → 15px) on checkout page
+      2. Fixed checkout refresh issue - now uses URL parameters (?step=checkout)
+         - Refreshing at checkout stays on checkout page
+         - Refreshing at success page stays on success page
+         - Back button properly clears URL parameters
+      3. Apple Pay/Google Pay already correctly integrated - shows automatically for compatible browsers
+      
+      Changes made:
+      - BoxBuilder.js: Added useSearchParams hook and URL state management
+      - CartAndCheckout.js: Reduced Stripe logo font size
+      
+      Next: Implementing Admin Section (Customer DB, Blog, SEO, Promo Codes)
