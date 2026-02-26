@@ -167,7 +167,10 @@ export const BoxBuilder = () => {
         <div className="box-builder">
           <button 
             className="btn-secondary" 
-            onClick={() => setShowCheckout(false)}
+            onClick={() => {
+              setShowCheckout(false);
+              setSearchParams({});
+            }}
             style={{ marginBottom: '20px', width: 'auto', padding: '12px 24px' }}
           >
             ← Back to Menu
@@ -177,7 +180,10 @@ export const BoxBuilder = () => {
             selectedProteins={selectedProteins}
             selectedTreats={selectedTreats}
             products={products}
-            onSuccess={() => setOrderComplete(true)}
+            onSuccess={() => {
+              setOrderComplete(true);
+              setSearchParams({ step: 'success' });
+            }}
           />
         </div>
         <Footer />
