@@ -2197,7 +2197,8 @@ h1, h2, h3, h4 {
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
-
+  /* Empty media query - can be removed if not needed */
+}
 
 /* ========== SUBSCRIPTION FREQUENCY ========== */
 .frequency-option {
