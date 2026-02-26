@@ -446,6 +446,7 @@ export const BlogManager = () => {
                   value={formData.meta_title}
                   onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
                   placeholder={formData.title}
+                  maxLength={60}
                   style={{
                     width: '100%',
                     padding: '10px 12px',
@@ -454,6 +455,10 @@ export const BlogManager = () => {
                     fontSize: '15px'
                   }}
                 />
+                <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                  {formData.meta_title.length}/60 characters | 
+                  <strong style={{ color: '#8B4513' }}> SEO Best Practice: 50-60 characters</strong>
+                </p>
               </div>
 
               <div style={{ marginBottom: '12px' }}>
@@ -464,7 +469,8 @@ export const BlogManager = () => {
                   value={formData.meta_description}
                   onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
                   placeholder={formData.excerpt}
-                  rows={2}
+                  maxLength={165}
+                  rows={3}
                   style={{
                     width: '100%',
                     padding: '10px 12px',
@@ -474,6 +480,10 @@ export const BlogManager = () => {
                     fontFamily: 'inherit'
                   }}
                 />
+                <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                  {formData.meta_description.length}/165 characters | 
+                  <strong style={{ color: '#8B4513' }}> SEO Best Practice: 150-165 characters</strong>
+                </p>
               </div>
 
               <div>
