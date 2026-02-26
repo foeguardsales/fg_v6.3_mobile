@@ -673,7 +673,11 @@ export const BoxBuilder = () => {
               selectedProteins={selectedProteins}
               selectedTreats={selectedTreats}
               products={products}
-              onProceed={() => { setCartOpen(false); setShowCheckout(true); }}
+              onProceed={() => { 
+                setCartOpen(false); 
+                setShowCheckout(true);
+                setSearchParams({ step: 'checkout' });
+              }}
               getDiscountedPrice={getDiscountedPrice}
               getBasePrice={getBasePrice}
             />
