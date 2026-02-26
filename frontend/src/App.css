@@ -2329,6 +2329,7 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 }
 
 .contact-card {
@@ -2336,6 +2337,8 @@ h1, h2, h3, h4 {
   padding: 28px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--khaki-light);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  width: 100%;
 }
 
 .contact-card h3 {
