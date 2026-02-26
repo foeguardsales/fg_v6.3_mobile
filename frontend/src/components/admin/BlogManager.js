@@ -229,17 +229,18 @@ export const BlogManager = () => {
               />
             </div>
 
-            {/* Content */}
+            {/* Content - WYSIWYG Editor */}
             <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', fontSize: '14px' }}>
                 Blog Content *
               </label>
               
-              {/* User-Friendly Formatting Toolbar */}
+              {/* WYSIWYG Formatting Toolbar */}
               <div style={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: '8px',
+                alignItems: 'center',
                 marginBottom: '8px',
                 padding: '12px',
                 background: 'white',
@@ -247,57 +248,32 @@ export const BlogManager = () => {
                 border: '2px solid #D9C8B3',
                 borderBottom: 'none'
               }}>
-                <button
-                  type="button"
-                  onClick={() => insertFormatting('large')}
-                  title="Large Heading"
+                {/* Font Size Dropdown */}
+                <select
+                  onChange={(e) => applyFormatting('fontSize', e.target.value)}
+                  defaultValue="3"
                   style={{
-                    padding: '8px 14px',
-                    background: '#F8F6F4',
+                    padding: '8px 12px',
                     border: '1px solid #D9C8B3',
                     borderRadius: '6px',
                     cursor: 'pointer',
-                    fontWeight: '600',
-                    fontSize: '14px'
+                    fontSize: '14px',
+                    fontWeight: '500'
                   }}
                 >
-                  📏 Large Heading
-                </button>
+                  <option value="7">Extra Large</option>
+                  <option value="5">Large</option>
+                  <option value="4">Medium</option>
+                  <option value="3">Normal</option>
+                  <option value="2">Small</option>
+                </select>
+
+                <div style={{ width: '1px', height: '24px', background: '#D9C8B3' }} />
+
+                {/* Formatting Buttons */}
                 <button
                   type="button"
-                  onClick={() => insertFormatting('medium')}
-                  title="Medium Heading"
-                  style={{
-                    padding: '8px 14px',
-                    background: '#F8F6F4',
-                    border: '1px solid #D9C8B3',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontWeight: '600',
-                    fontSize: '13px'
-                  }}
-                >
-                  📐 Medium Heading
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormatting('paragraph')}
-                  title="Paragraph"
-                  style={{
-                    padding: '8px 14px',
-                    background: '#F8F6F4',
-                    border: '1px solid #D9C8B3',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '14px'
-                  }}
-                >
-                  ¶ Paragraph
-                </button>
-                <div style={{ width: '1px', background: '#D9C8B3' }} />
-                <button
-                  type="button"
-                  onClick={() => insertFormatting('bold')}
+                  onClick={() => applyFormatting('bold')}
                   title="Bold"
                   style={{
                     padding: '8px 14px',
@@ -311,9 +287,10 @@ export const BlogManager = () => {
                 >
                   <strong>B</strong> Bold
                 </button>
+
                 <button
                   type="button"
-                  onClick={() => insertFormatting('italic')}
+                  onClick={() => applyFormatting('italic')}
                   title="Italic"
                   style={{
                     padding: '8px 14px',
@@ -327,10 +304,29 @@ export const BlogManager = () => {
                 >
                   <em>I</em> Italic
                 </button>
-                <div style={{ width: '1px', background: '#D9C8B3' }} />
+
                 <button
                   type="button"
-                  onClick={() => insertFormatting('link')}
+                  onClick={() => applyFormatting('underline')}
+                  title="Underline"
+                  style={{
+                    padding: '8px 14px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    fontSize: '14px'
+                  }}
+                >
+                  U Underline
+                </button>
+
+                <div style={{ width: '1px', height: '24px', background: '#D9C8B3' }} />
+
+                <button
+                  type="button"
+                  onClick={insertLink}
                   title="Insert Link"
                   style={{
                     padding: '8px 14px',
@@ -343,9 +339,10 @@ export const BlogManager = () => {
                 >
                   🔗 Link
                 </button>
+
                 <button
                   type="button"
-                  onClick={() => insertFormatting('ul')}
+                  onClick={() => applyFormatting('insertUnorderedList')}
                   title="Bullet List"
                   style={{
                     padding: '8px 14px',
@@ -358,28 +355,45 @@ export const BlogManager = () => {
                 >
                   • Bullet List
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => applyFormatting('insertOrderedList')}
+                  title="Numbered List"
+                  style={{
+                    padding: '8px 14px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  1. Numbered List
+                </button>
               </div>
               
-              <textarea
-                id="blog-content"
-                required
-                value={formData.content}
-                onChange={(e) => setFormData({...formData, content: e.target.value})}
-                rows={18}
-                placeholder="Write your blog content here. Select any text and click the formatting buttons above to style it!"
+              {/* Visual Editor - ContentEditable */}
+              <div
+                id="blog-content-editor"
+                contentEditable
+                onInput={handleContentChange}
+                dangerouslySetInnerHTML={{ __html: formData.content }}
                 style={{
+                  minHeight: '400px',
                   width: '100%',
                   padding: '16px',
                   border: '2px solid #D9C8B3',
                   borderRadius: '0 0 8px 8px',
-                  fontSize: '15px',
-                  fontFamily: 'inherit',
+                  fontSize: '16px',
                   lineHeight: '1.6',
-                  resize: 'vertical'
+                  background: 'white',
+                  outline: 'none',
+                  overflowY: 'auto'
                 }}
               />
-              <p style={{ fontSize: '13px', color: '#666', marginTop: '8px', background: '#FFF9E6', padding: '8px 12px', borderRadius: '6px' }}>
-                💡 <strong>How to use:</strong> Type or paste your text, then select any portion and click a formatting button to style it.
+              <p style={{ fontSize: '13px', color: '#666', marginTop: '8px', background: '#E8F5E9', padding: '8px 12px', borderRadius: '6px' }}>
+                ✅ <strong>WYSIWYG Editor</strong> - What you see is what you get! Just type and format like Word or Gmail.
               </p>
             </div>
 
