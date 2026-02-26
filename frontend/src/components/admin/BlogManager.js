@@ -392,9 +392,6 @@ export const BlogManager = () => {
                   overflowY: 'auto'
                 }}
               />
-              <p style={{ fontSize: '13px', color: '#666', marginTop: '8px', background: '#E8F5E9', padding: '8px 12px', borderRadius: '6px' }}>
-                ✅ <strong>WYSIWYG Editor</strong> - What you see is what you get! Just type and format like Word or Gmail.
-              </p>
             </div>
 
             {/* Image Upload */}
