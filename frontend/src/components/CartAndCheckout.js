@@ -748,7 +748,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
         <h2 style={{ fontSize: '32px', marginBottom: '8px' }}>Checkout</h2>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '13px', color: '#888' }}>
           <span>Secure payment powered by</span>
-          <span style={{ fontWeight: '700', color: '#635BFF', fontSize: '18px', letterSpacing: '-0.5px' }}>Stripe</span>
+          <span style={{ fontWeight: '700', color: '#635BFF', fontSize: '15px', letterSpacing: '-0.5px' }}>Stripe</span>
         </div>
       </div>
       
