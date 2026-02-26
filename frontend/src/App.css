@@ -2236,8 +2236,8 @@ h1, h2, h3, h4 {
 .contact-container {
   max-width: 1200px;
   margin: 0 auto;
-  display: grid !important;
-  grid-template-columns: 1fr 380px !important;
+  display: grid;
+  grid-template-columns: 1fr 380px;
   gap: 48px;
   align-items: start;
 }
@@ -2245,7 +2245,6 @@ h1, h2, h3, h4 {
 .contact-form-section {
   width: 100%;
   max-width: 100%;
-  min-width: 0;
 }
 
 .contact-form-section h1 {
@@ -2345,11 +2344,11 @@ h1, h2, h3, h4 {
 }
 
 .contact-card {
-  background: var(--white) !important;
-  padding: 28px !important;
-  border-radius: var(--radius-lg) !important;
-  border: 1px solid var(--khaki-light) !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+  background: var(--white);
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--khaki-light);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   width: 100%;
 }
 
