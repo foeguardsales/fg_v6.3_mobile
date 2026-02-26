@@ -2236,8 +2236,8 @@ h1, h2, h3, h4 {
 .contact-container {
   max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 380px;
+  display: grid !important;
+  grid-template-columns: 1fr 380px !important;
   gap: 48px;
   align-items: start;
 }
@@ -2245,6 +2245,7 @@ h1, h2, h3, h4 {
 .contact-form-section {
   width: 100%;
   max-width: 100%;
+  min-width: 0;
 }
 
 .contact-form-section h1 {
