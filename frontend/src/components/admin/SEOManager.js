@@ -259,6 +259,7 @@ export const SEOManager = () => {
                 value={formData.page_title}
                 onChange={(e) => setFormData({...formData, page_title: e.target.value})}
                 placeholder="FoeGuard - Premium Raw Pet Food"
+                maxLength={60}
                 style={{
                   width: '100%',
                   padding: '10px 12px',
@@ -267,8 +268,10 @@ export const SEOManager = () => {
                   fontSize: '15px'
                 }}
               />
-              <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
-                Appears in browser tab and search results
+              <p style={{ fontSize: '12px', color: '#666', marginTop: '4px', background: '#FFF9E6', padding: '6px 10px', borderRadius: '4px' }}>
+                📊 {formData.page_title.length}/60 characters | 
+                <strong style={{ color: '#8B4513' }}> Best: 50-60 characters</strong><br/>
+                💡 Appears in browser tabs and Google search results
               </p>
             </div>
 
@@ -282,6 +285,7 @@ export const SEOManager = () => {
                 onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
                 rows={3}
                 placeholder="Brief description of this page for search engines"
+                maxLength={165}
                 style={{
                   width: '100%',
                   padding: '10px 12px',
@@ -292,8 +296,10 @@ export const SEOManager = () => {
                   resize: 'vertical'
                 }}
               />
-              <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
-                Recommended: 150-160 characters
+              <p style={{ fontSize: '12px', color: '#666', marginTop: '4px', background: '#FFF9E6', padding: '6px 10px', borderRadius: '4px' }}>
+                📊 {formData.meta_description.length}/165 characters | 
+                <strong style={{ color: '#8B4513' }}> Best: 150-165 characters</strong><br/>
+                💡 Appears below your page title in Google search results. Make it compelling!
               </p>
             </div>
 
@@ -315,7 +321,7 @@ export const SEOManager = () => {
                 }}
               />
               <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
-                Comma-separated keywords
+                💡 Comma-separated keywords (5-10 keywords recommended)
               </p>
             </div>
 
