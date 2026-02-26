@@ -46,6 +46,7 @@ const COLLECTION_IMAGES = {
 
 export const BoxBuilder = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
   const [boxSize, setBoxSize] = useState(18); // Default to 18lb for dog
   const [products, setProducts] = useState([]);
@@ -60,6 +61,16 @@ export const BoxBuilder = () => {
   // Get current discount rates and box options based on pet type
   const DISCOUNT_RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
   const BOX_OPTIONS = petType === 'cat' ? CAT_BOX_OPTIONS : DOG_BOX_OPTIONS;
+
+  // Check URL parameters on mount to restore state after refresh
+  useEffect(() => {
+    const step = searchParams.get('step');
+    if (step === 'checkout') {
+      setShowCheckout(true);
+    } else if (step === 'success') {
+      setOrderComplete(true);
+    }
+  }, []);
 
   useEffect(() => {
     const loadData = async () => {
