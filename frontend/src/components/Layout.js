@@ -19,8 +19,8 @@ export const Navbar = () => {
         <div className="nav-desktop" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
           <button onClick={() => navigate('/build-box')} className="nav-link" data-testid="nav-order">Order</button>
           <button onClick={() => navigate('/about')} className="nav-link" data-testid="nav-about">About Us</button>
-          <button onClick={() => navigate('/blog')} className="nav-link" data-testid="nav-blog">Blog</button>
           <button onClick={() => navigate('/new-to-raw')} className="nav-link" data-testid="nav-new-to-raw">New to FG</button>
+          <button onClick={() => navigate('/blog')} className="nav-link" data-testid="nav-blog">Blog</button>
           <button onClick={() => navigate('/calculator')} className="nav-link" data-testid="nav-calculator">Calculator</button>
           <button onClick={() => navigate('/contact')} className="nav-link" data-testid="nav-contact">Contact Us</button>
           <button onClick={() => navigate('/account')} className="nav-link" data-testid="nav-account">Account</button>
@@ -40,8 +40,8 @@ export const Navbar = () => {
         <div className="nav-mobile-menu" data-testid="nav-mobile-menu">
           <button onClick={() => { navigate('/build-box'); setMenuOpen(false); }} className="nav-mobile-link">Order</button>
           <button onClick={() => { navigate('/about'); setMenuOpen(false); }} className="nav-mobile-link">About Us</button>
-          <button onClick={() => { navigate('/blog'); setMenuOpen(false); }} className="nav-mobile-link">Blog</button>
           <button onClick={() => { navigate('/new-to-raw'); setMenuOpen(false); }} className="nav-mobile-link">New to FG</button>
+          <button onClick={() => { navigate('/blog'); setMenuOpen(false); }} className="nav-mobile-link">Blog</button>
           <button onClick={() => { navigate('/calculator'); setMenuOpen(false); }} className="nav-mobile-link">Calculator</button>
           <button onClick={() => { navigate('/contact'); setMenuOpen(false); }} className="nav-mobile-link">Contact Us</button>
           <button onClick={() => { navigate('/account'); setMenuOpen(false); }} className="nav-mobile-link">Account</button>
