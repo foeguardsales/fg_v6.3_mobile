@@ -14,6 +14,38 @@ class PromoCode(BaseModel):
     is_active: bool = True
     description: Optional[str] = None
 
+class Customer(BaseModel):
+    customer_id: str
+    name: str
+    email: str
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    total_orders: int = 0
+    total_spent: float = 0.0
+    created_at: str
+    notes: Optional[str] = None
+
+class Blog(BaseModel):
+    blog_id: str
+    title: str
+    content: str
+    excerpt: Optional[str] = None
+    image_url: Optional[str] = None
+    author: str = "FoeGuard"
+    meta_title: Optional[str] = None
+    meta_description: Optional[str] = None
+    meta_keywords: Optional[str] = None
+    published: bool = True
+    created_at: str
+    updated_at: Optional[str] = None
+
+class SEOSettings(BaseModel):
+    page_name: str
+    page_title: str
+    meta_description: str
+    meta_keywords: Optional[str] = None
+    og_image: Optional[str] = None
+
 class PricingTier(BaseModel):
     size_lb: int
     price: float
