@@ -40,6 +40,7 @@ export const Navbar = () => {
         <div className="nav-mobile-menu" data-testid="nav-mobile-menu">
           <button onClick={() => { navigate('/build-box'); setMenuOpen(false); }} className="nav-mobile-link">Order</button>
           <button onClick={() => { navigate('/about'); setMenuOpen(false); }} className="nav-mobile-link">About Us</button>
+          <button onClick={() => { navigate('/blog'); setMenuOpen(false); }} className="nav-mobile-link">Blog</button>
           <button onClick={() => { navigate('/new-to-raw'); setMenuOpen(false); }} className="nav-mobile-link">New to FG</button>
           <button onClick={() => { navigate('/calculator'); setMenuOpen(false); }} className="nav-mobile-link">Calculator</button>
           <button onClick={() => { navigate('/contact'); setMenuOpen(false); }} className="nav-mobile-link">Contact Us</button>
