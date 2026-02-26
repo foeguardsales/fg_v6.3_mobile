@@ -2237,9 +2237,14 @@ h1, h2, h3, h4 {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 400px;
+  grid-template-columns: 1fr 380px;
   gap: 48px;
   align-items: start;
+}
+
+.contact-form-section {
+  width: 100%;
+  max-width: 100%;
 }
 
 .contact-form-section h1 {
