@@ -902,8 +902,79 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
         </div>
       </div>
 
-      {/* Payment - Separate Card Fields */}
+      {/* Subscription Option */}
+      <div className="subscription-option">
+        <label className="subscription-label">
+          <input 
+            type="checkbox" 
+            checked={isSubscription}
+            onChange={(e) => setIsSubscription(e.target.checked)}
+            className="subscription-checkbox"
+            data-testid="subscription-toggle"
+          />
+          <div className="subscription-info" style={{ marginLeft: '12px' }}>
+            <strong>Subscribe & Save 10%</strong>
+            <p style={{ marginTop: '4px' }}>Get recurring deliveries. Pause or cancel anytime.</p>
+          </div>
+        </label>
+        
+        {isSubscription && (
+          <div className="subscription-frequency" style={{ marginTop: '16px', paddingLeft: '40px' }}>
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '14px' }}>
+              Delivery Frequency:
+            </label>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <label className={`frequency-option ${subscriptionFrequency === 'biweekly' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  type="radio"
+                  name="frequency"
+                  value="biweekly"
+                  checked={subscriptionFrequency === 'biweekly'}
+                  onChange={(e) => setSubscriptionFrequency(e.target.value)}
+                />
+                <span>Biweekly</span>
+              </label>
+              <label className={`frequency-option ${subscriptionFrequency === 'monthly' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  type="radio"
+                  name="frequency"
+                  value="monthly"
+                  checked={subscriptionFrequency === 'monthly'}
+                  onChange={(e) => setSubscriptionFrequency(e.target.value)}
+                />
+                <span>Monthly</span>
+              </label>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Order/Delivery Notes */}
       <div className="checkout-section">
+        <h3>Delivery</h3>
+        <p className="checkout-note">Any special requests for your order or delivery?</p>
+        <div className="form-group">
+          <textarea
+            value={orderNotes}
+            onChange={(e) => setOrderNotes(e.target.value)}
+            placeholder="e.g., Leave at back door, ring doorbell, remove certain ingredients..."
+            rows={3}
+            style={{
+              width: '100%',
+              padding: '14px 16px',
+              border: '2px solid #D9C8B3',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontFamily: 'inherit',
+              resize: 'vertical'
+            }}
+            data-testid="order-notes"
+          />
+        </div>
+      </div>
+
+      {/* Payment - Separate Card Fields */}
+      <div className="checkout-section" style={{ borderBottom: 'none' }}>
         <h3>Payment Details</h3>
         
         {/* Apple Pay / Google Pay Button */}
@@ -960,77 +1031,6 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
         <p className="checkout-note" style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
           🔒 Your payment info is secure and encrypted
         </p>
-      </div>
-
-      {/* Subscription Option */}
-      <div className="subscription-option">
-        <label className="subscription-label">
-          <input 
-            type="checkbox" 
-            checked={isSubscription}
-            onChange={(e) => setIsSubscription(e.target.checked)}
-            className="subscription-checkbox"
-            data-testid="subscription-toggle"
-          />
-          <div className="subscription-info" style={{ marginLeft: '12px' }}>
-            <strong>Subscribe & Save 10%</strong>
-            <p style={{ marginTop: '4px' }}>Get recurring deliveries. Pause or cancel anytime.</p>
-          </div>
-        </label>
-        
-        {isSubscription && (
-          <div className="subscription-frequency" style={{ marginTop: '16px', paddingLeft: '40px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '14px' }}>
-              Delivery Frequency:
-            </label>
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <label className={`frequency-option ${subscriptionFrequency === 'biweekly' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <input
-                  type="radio"
-                  name="frequency"
-                  value="biweekly"
-                  checked={subscriptionFrequency === 'biweekly'}
-                  onChange={(e) => setSubscriptionFrequency(e.target.value)}
-                />
-                <span>Biweekly</span>
-              </label>
-              <label className={`frequency-option ${subscriptionFrequency === 'monthly' ? 'active' : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <input
-                  type="radio"
-                  name="frequency"
-                  value="monthly"
-                  checked={subscriptionFrequency === 'monthly'}
-                  onChange={(e) => setSubscriptionFrequency(e.target.value)}
-                />
-                <span>Monthly</span>
-              </label>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Order/Delivery Notes */}
-      <div className="checkout-section" style={{ borderBottom: 'none' }}>
-        <h3>Delivery</h3>
-        <p className="checkout-note">Any special requests for your order or delivery?</p>
-        <div className="form-group">
-          <textarea
-            value={orderNotes}
-            onChange={(e) => setOrderNotes(e.target.value)}
-            placeholder="e.g., Leave at back door, ring doorbell, remove certain ingredients..."
-            rows={3}
-            style={{
-              width: '100%',
-              padding: '14px 16px',
-              border: '2px solid #D9C8B3',
-              borderRadius: '12px',
-              fontSize: '16px',
-              fontFamily: 'inherit',
-              resize: 'vertical'
-            }}
-            data-testid="order-notes"
-          />
-        </div>
       </div>
 
       {error && (
