@@ -142,7 +142,7 @@ export const BlogManager = () => {
     const textarea = document.getElementById('blog-content');
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
-    const selectedText = formData.content.substring(start, end);
+    const selectedText = formData.content.substring(start, end) || 'Your text here';
     let newText = formData.content;
 
     switch(format) {
@@ -152,26 +152,30 @@ export const BlogManager = () => {
       case 'italic':
         newText = formData.content.substring(0, start) + `<em>${selectedText}</em>` + formData.content.substring(end);
         break;
-      case 'h2':
-        newText = formData.content.substring(0, start) + `<h2>${selectedText}</h2>` + formData.content.substring(end);
+      case 'large':
+        newText = formData.content.substring(0, start) + `<h2>${selectedText}</h2>\n` + formData.content.substring(end);
         break;
-      case 'h3':
-        newText = formData.content.substring(0, start) + `<h3>${selectedText}</h3>` + formData.content.substring(end);
+      case 'medium':
+        newText = formData.content.substring(0, start) + `<h3>${selectedText}</h3>\n` + formData.content.substring(end);
+        break;
+      case 'paragraph':
+        newText = formData.content.substring(0, start) + `<p>${selectedText}</p>\n` + formData.content.substring(end);
         break;
       case 'link':
-        const url = prompt('Enter URL:');
+        const url = prompt('Enter the link URL:', 'https://');
         if (url) {
-          newText = formData.content.substring(0, start) + `<a href="${url}">${selectedText}</a>` + formData.content.substring(end);
+          newText = formData.content.substring(0, start) + `<a href="${url}" target="_blank">${selectedText}</a>` + formData.content.substring(end);
         }
         break;
       case 'ul':
-        newText = formData.content.substring(0, start) + `<ul>\n<li>${selectedText}</li>\n</ul>` + formData.content.substring(end);
+        newText = formData.content.substring(0, start) + `<ul>\n  <li>${selectedText}</li>\n</ul>\n` + formData.content.substring(end);
         break;
       default:
         break;
     }
 
     setFormData({...formData, content: newText});
+    setTimeout(() => textarea.focus(), 100);
   };
 
   if (loading) return <div style={{ padding: '20px', textAlign: 'center' }}>Loading blogs...</div>;
