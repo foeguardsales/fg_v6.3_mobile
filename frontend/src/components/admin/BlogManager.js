@@ -255,15 +255,16 @@ export const BlogManager = () => {
             {/* Content */}
             <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', fontSize: '14px' }}>
-                Content * (HTML supported)
+                Blog Content *
               </label>
               
-              {/* Formatting Toolbar */}
+              {/* User-Friendly Formatting Toolbar */}
               <div style={{
                 display: 'flex',
+                flexWrap: 'wrap',
                 gap: '8px',
                 marginBottom: '8px',
-                padding: '8px',
+                padding: '12px',
                 background: 'white',
                 borderRadius: '8px 8px 0 0',
                 border: '2px solid #D9C8B3',
@@ -271,91 +272,114 @@ export const BlogManager = () => {
               }}>
                 <button
                   type="button"
+                  onClick={() => insertFormatting('large')}
+                  title="Large Heading"
+                  style={{
+                    padding: '8px 14px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontWeight: '600',
+                    fontSize: '14px'
+                  }}
+                >
+                  📏 Large Heading
+                </button>
+                <button
+                  type="button"
+                  onClick={() => insertFormatting('medium')}
+                  title="Medium Heading"
+                  style={{
+                    padding: '8px 14px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontWeight: '600',
+                    fontSize: '13px'
+                  }}
+                >
+                  📐 Medium Heading
+                </button>
+                <button
+                  type="button"
+                  onClick={() => insertFormatting('paragraph')}
+                  title="Paragraph"
+                  style={{
+                    padding: '8px 14px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  ¶ Paragraph
+                </button>
+                <div style={{ width: '1px', background: '#D9C8B3' }} />
+                <button
+                  type="button"
                   onClick={() => insertFormatting('bold')}
                   title="Bold"
                   style={{
-                    padding: '6px 12px',
+                    padding: '8px 14px',
                     background: '#F8F6F4',
                     border: '1px solid #D9C8B3',
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     cursor: 'pointer',
-                    fontWeight: 'bold'
+                    fontWeight: 'bold',
+                    fontSize: '14px'
                   }}
                 >
-                  B
+                  <strong>B</strong> Bold
                 </button>
                 <button
                   type="button"
                   onClick={() => insertFormatting('italic')}
                   title="Italic"
                   style={{
-                    padding: '6px 12px',
+                    padding: '8px 14px',
                     background: '#F8F6F4',
                     border: '1px solid #D9C8B3',
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     cursor: 'pointer',
-                    fontStyle: 'italic'
+                    fontStyle: 'italic',
+                    fontSize: '14px'
                   }}
                 >
-                  I
+                  <em>I</em> Italic
                 </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormatting('h2')}
-                  title="Heading 2"
-                  style={{
-                    padding: '6px 12px',
-                    background: '#F8F6F4',
-                    border: '1px solid #D9C8B3',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontWeight: '600'
-                  }}
-                >
-                  H2
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormatting('h3')}
-                  title="Heading 3"
-                  style={{
-                    padding: '6px 12px',
-                    background: '#F8F6F4',
-                    border: '1px solid #D9C8B3',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontWeight: '600'
-                  }}
-                >
-                  H3
-                </button>
+                <div style={{ width: '1px', background: '#D9C8B3' }} />
                 <button
                   type="button"
                   onClick={() => insertFormatting('link')}
                   title="Insert Link"
                   style={{
-                    padding: '6px 12px',
+                    padding: '8px 14px',
                     background: '#F8F6F4',
                     border: '1px solid #D9C8B3',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '14px'
                   }}
                 >
-                  🔗
+                  🔗 Link
                 </button>
                 <button
                   type="button"
                   onClick={() => insertFormatting('ul')}
                   title="Bullet List"
                   style={{
-                    padding: '6px 12px',
+                    padding: '8px 14px',
                     background: '#F8F6F4',
                     border: '1px solid #D9C8B3',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '14px'
                   }}
                 >
-                  • List
+                  • Bullet List
                 </button>
               </div>
               
@@ -364,20 +388,21 @@ export const BlogManager = () => {
                 required
                 value={formData.content}
                 onChange={(e) => setFormData({...formData, content: e.target.value})}
-                rows={15}
-                placeholder="Write your blog content here. You can use HTML tags or use the formatting buttons above."
+                rows={18}
+                placeholder="Write your blog content here. Select any text and click the formatting buttons above to style it!"
                 style={{
                   width: '100%',
-                  padding: '12px',
+                  padding: '16px',
                   border: '2px solid #D9C8B3',
                   borderRadius: '0 0 8px 8px',
                   fontSize: '15px',
-                  fontFamily: 'monospace',
+                  fontFamily: 'inherit',
+                  lineHeight: '1.6',
                   resize: 'vertical'
                 }}
               />
-              <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
-                Tip: Select text and click formatting buttons to add HTML tags
+              <p style={{ fontSize: '13px', color: '#666', marginTop: '8px', background: '#FFF9E6', padding: '8px 12px', borderRadius: '6px' }}>
+                💡 <strong>How to use:</strong> Type or paste your text, then select any portion and click a formatting button to style it.
               </p>
             </div>
 
