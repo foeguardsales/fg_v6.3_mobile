@@ -4,7 +4,7 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const PAGES = [
+const STATIC_PAGES = [
   { name: 'home', label: 'Home Page' },
   { name: 'about', label: 'About Us' },
   { name: 'menu', label: 'Menu / Box Builder' },
@@ -19,7 +19,10 @@ const PAGES = [
 export const SEOManager = () => {
   const [seoSettings, setSeoSettings] = useState({});
   const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [treats, setTreats] = useState([]);
   const [selectedPage, setSelectedPage] = useState('home');
+  const [pageType, setPageType] = useState('static'); // 'static', 'product', 'treat'
   const [formData, setFormData] = useState({
     page_title: '',
     meta_description: '',
@@ -30,6 +33,8 @@ export const SEOManager = () => {
 
   useEffect(() => {
     loadSEOSettings();
+    loadProducts();
+    loadTreats();
   }, []);
 
   useEffect(() => {
@@ -61,6 +66,42 @@ export const SEOManager = () => {
       console.error('Failed to load SEO settings:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadProducts = async () => {
+    try {
+      const { data: dogProducts } = await axios.get(`${API}/products?pet_type=dog`);
+      const { data: catProducts } = await axios.get(`${API}/products?pet_type=cat`);
+      setProducts([...dogProducts, ...catProducts]);
+    } catch (error) {
+      console.error('Failed to load products:', error);
+    }
+  };
+
+  const loadTreats = async () => {
+    try {
+      const { data } = await axios.get(`${API}/treats`);
+      setTreats(data);
+    } catch (error) {
+      console.error('Failed to load treats:', error);
+    }
+  };
+
+  const handlePageSelect = (type, pageName) => {
+    setPageType(type);
+    setSelectedPage(pageName);
+  };
+
+  const getCurrentPageLabel = () => {
+    if (pageType === 'static') {
+      return STATIC_PAGES.find(p => p.name === selectedPage)?.label;
+    } else if (pageType === 'product') {
+      const product = products.find(p => p.product_id === selectedPage);
+      return product ? `Product: ${product.name}` : 'Product';
+    } else if (pageType === 'treat') {
+      const treat = treats.find(t => t.treat_id === selectedPage);
+      return treat ? `Treat: ${treat.name}` : 'Treat';
     }
   };
 
