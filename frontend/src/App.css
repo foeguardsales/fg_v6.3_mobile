@@ -2267,6 +2267,12 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-xl);
   border: 1px solid var(--khaki-light);
   box-shadow: var(--shadow-md);
+  width: 100%;
+}
+
+.contact-form .btn-primary {
+  width: 100%;
+  margin-top: 8px;
 }
 
 .contact-form .form-group label {
