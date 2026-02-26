@@ -149,6 +149,13 @@ export const BlogManager = () => {
     ]
   };
 
+  const quillFormats = [
+    'header',
+    'bold', 'italic', 'underline',
+    'list', 'bullet',
+    'link'
+  ];
+
   if (loading) return <div style={{ padding: '20px', textAlign: 'center' }}>Loading blogs...</div>;
 
   return (
