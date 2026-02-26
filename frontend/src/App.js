@@ -68,7 +68,8 @@ function App() {
           <Route path="/new-to-raw" element={<NewToRawPage />} />
           <Route path="/calculator" element={<CalculatorPage />} />
           <Route path="/account" element={<AccountPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </BrowserRouter>
     </Elements>
