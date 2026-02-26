@@ -229,13 +229,15 @@ export const BlogManager = () => {
                 Content *
               </label>
               <div style={{ background: 'white', borderRadius: '8px' }}>
-                <ReactQuill
-                  theme="snow"
-                  value={formData.content}
-                  onChange={(content) => setFormData({...formData, content})}
-                  modules={quillModules}
-                  style={{ minHeight: '300px' }}
-                />
+                {showForm && (
+                  <ReactQuill
+                    theme="snow"
+                    value={formData.content}
+                    onChange={(content) => setFormData({...formData, content})}
+                    modules={quillModules}
+                    style={{ minHeight: '300px' }}
+                  />
+                )}
               </div>
             </div>
 
