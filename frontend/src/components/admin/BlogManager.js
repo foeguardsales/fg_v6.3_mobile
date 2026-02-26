@@ -137,22 +137,42 @@ export const BlogManager = () => {
     setShowForm(false);
   };
 
-  const quillModules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      ['link'],
-      ['clean']
-    ]
-  };
+  // Helper function to add formatting
+  const insertFormatting = (format) => {
+    const textarea = document.getElementById('blog-content');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = formData.content.substring(start, end);
+    let newText = formData.content;
 
-  const quillFormats = [
-    'header',
-    'bold', 'italic', 'underline',
-    'list', 'bullet',
-    'link'
-  ];
+    switch(format) {
+      case 'bold':
+        newText = formData.content.substring(0, start) + `<strong>${selectedText}</strong>` + formData.content.substring(end);
+        break;
+      case 'italic':
+        newText = formData.content.substring(0, start) + `<em>${selectedText}</em>` + formData.content.substring(end);
+        break;
+      case 'h2':
+        newText = formData.content.substring(0, start) + `<h2>${selectedText}</h2>` + formData.content.substring(end);
+        break;
+      case 'h3':
+        newText = formData.content.substring(0, start) + `<h3>${selectedText}</h3>` + formData.content.substring(end);
+        break;
+      case 'link':
+        const url = prompt('Enter URL:');
+        if (url) {
+          newText = formData.content.substring(0, start) + `<a href="${url}">${selectedText}</a>` + formData.content.substring(end);
+        }
+        break;
+      case 'ul':
+        newText = formData.content.substring(0, start) + `<ul>\n<li>${selectedText}</li>\n</ul>` + formData.content.substring(end);
+        break;
+      default:
+        break;
+    }
+
+    setFormData({...formData, content: newText});
+  };
 
   if (loading) return <div style={{ padding: '20px', textAlign: 'center' }}>Loading blogs...</div>;
 
