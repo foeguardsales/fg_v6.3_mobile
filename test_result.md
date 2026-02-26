@@ -141,7 +141,7 @@ frontend:
     file: "/app/frontend/src/components/CartAndCheckout.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
@@ -155,6 +155,14 @@ frontend:
           Fixed treat pricing layout - price now appears under the title/quantity, not beside it.
           Restructured treat-info to use flex: 1 and stack elements vertically.
           Checkbox is now isolated on the right side. Applied to both cat and dog treats.
+      - working: true
+        agent: "testing"
+        comment: |
+          VERIFIED ✓ Learn More button layout is perfect:
+          - Button appears BELOW treat info (name, quantity, price)
+          - Checkbox positioned on RIGHT side with proper spacing
+          - Layout is clean and user-friendly
+          - Works correctly for both cat and dog treats
   
   - task: "Remove repetitive collection pills from product cards"
     implemented: true
@@ -162,7 +170,7 @@ frontend:
     file: "/app/frontend/src/pages/BoxBuilder.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
@@ -170,6 +178,11 @@ frontend:
           Removed "Complete & Balanced" and "80/10/10 Base" pills from individual product cards
           in ProductCard component. Collection headers already explain this information,
           so the repetitive badges on each card were redundant. Cleaned up the layout.
+      - working: true
+        agent: "testing"
+        comment: |
+          VERIFIED ✓ Product cards no longer show repetitive collection pills.
+          Collection headers (Comfort Dinner, Primal Feast) provide context instead.
 
 metadata:
   created_by: "main_agent"
