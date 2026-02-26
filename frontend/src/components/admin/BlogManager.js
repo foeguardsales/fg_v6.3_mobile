@@ -251,20 +251,130 @@ export const BlogManager = () => {
             {/* Content */}
             <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', fontSize: '14px' }}>
-                Content *
+                Content * (HTML supported)
               </label>
-              <div style={{ background: 'white', borderRadius: '8px', minHeight: '350px' }}>
-                {showForm && (
-                  <ReactQuill
-                    theme="snow"
-                    value={formData.content}
-                    onChange={(content) => setFormData({...formData, content})}
-                    modules={quillModules}
-                    formats={quillFormats}
-                    style={{ height: '300px' }}
-                  />
-                )}
+              
+              {/* Formatting Toolbar */}
+              <div style={{
+                display: 'flex',
+                gap: '8px',
+                marginBottom: '8px',
+                padding: '8px',
+                background: 'white',
+                borderRadius: '8px 8px 0 0',
+                border: '2px solid #D9C8B3',
+                borderBottom: 'none'
+              }}>
+                <button
+                  type="button"
+                  onClick={() => insertFormatting('bold')}
+                  title="Bold"
+                  style={{
+                    padding: '6px 12px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  B
+                </button>
+                <button
+                  type="button"
+                  onClick={() => insertFormatting('italic')}
+                  title="Italic"
+                  style={{
+                    padding: '6px 12px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontStyle: 'italic'
+                  }}
+                >
+                  I
+                </button>
+                <button
+                  type="button"
+                  onClick={() => insertFormatting('h2')}
+                  title="Heading 2"
+                  style={{
+                    padding: '6px 12px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontWeight: '600'
+                  }}
+                >
+                  H2
+                </button>
+                <button
+                  type="button"
+                  onClick={() => insertFormatting('h3')}
+                  title="Heading 3"
+                  style={{
+                    padding: '6px 12px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontWeight: '600'
+                  }}
+                >
+                  H3
+                </button>
+                <button
+                  type="button"
+                  onClick={() => insertFormatting('link')}
+                  title="Insert Link"
+                  style={{
+                    padding: '6px 12px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  🔗
+                </button>
+                <button
+                  type="button"
+                  onClick={() => insertFormatting('ul')}
+                  title="Bullet List"
+                  style={{
+                    padding: '6px 12px',
+                    background: '#F8F6F4',
+                    border: '1px solid #D9C8B3',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  • List
+                </button>
               </div>
+              
+              <textarea
+                id="blog-content"
+                required
+                value={formData.content}
+                onChange={(e) => setFormData({...formData, content: e.target.value})}
+                rows={15}
+                placeholder="Write your blog content here. You can use HTML tags or use the formatting buttons above."
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '2px solid #D9C8B3',
+                  borderRadius: '0 0 8px 8px',
+                  fontSize: '15px',
+                  fontFamily: 'monospace',
+                  resize: 'vertical'
+                }}
+              />
+              <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                Tip: Select text and click formatting buttons to add HTML tags
+              </p>
             </div>
 
             {/* Image Upload */}
