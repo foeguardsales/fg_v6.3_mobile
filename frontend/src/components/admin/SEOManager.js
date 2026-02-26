@@ -151,30 +151,90 @@ export const SEOManager = () => {
     <div>
       <h2 style={{ fontSize: '24px', color: '#2B2B2B', marginBottom: '24px' }}>SEO Management</h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '24px' }}>
-        {/* Page List */}
+      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '24px' }}>
+        {/* Page List with Dropdowns */}
         <div>
           <h3 style={{ fontSize: '16px', marginBottom: '12px', color: '#666' }}>Select Page</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {PAGES.map(page => (
-              <button
-                key={page.name}
-                onClick={() => setSelectedPage(page.name)}
-                style={{
-                  padding: '12px 16px',
-                  background: selectedPage === page.name ? '#8B4513' : 'white',
-                  color: selectedPage === page.name ? 'white' : '#2C2C2C',
-                  border: '2px solid ' + (selectedPage === page.name ? '#8B4513' : '#E8DDD0'),
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  fontWeight: selectedPage === page.name ? '600' : '400',
-                  transition: 'all 0.2s'
-                }}
-              >
-                {page.label}
-              </button>
-            ))}
+          
+          {/* Static Pages */}
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#8B4513' }}>
+              Static Pages
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {STATIC_PAGES.map(page => (
+                <button
+                  key={page.name}
+                  onClick={() => handlePageSelect('static', page.name)}
+                  style={{
+                    padding: '10px 12px',
+                    background: selectedPage === page.name && pageType === 'static' ? '#8B4513' : 'white',
+                    color: selectedPage === page.name && pageType === 'static' ? 'white' : '#2C2C2C',
+                    border: '2px solid ' + (selectedPage === page.name && pageType === 'static' ? '#8B4513' : '#E8DDD0'),
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    fontWeight: selectedPage === page.name && pageType === 'static' ? '600' : '400',
+                    fontSize: '14px',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {page.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Product Pages */}
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#8B4513' }}>
+              Product Pages
+            </h4>
+            <select
+              value={pageType === 'product' ? selectedPage : ''}
+              onChange={(e) => handlePageSelect('product', e.target.value)}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '2px solid #E8DDD0',
+                borderRadius: '8px',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="">Select a product...</option>
+              {products.map(product => (
+                <option key={product.product_id} value={product.product_id}>
+                  {product.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Treat Pages */}
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#8B4513' }}>
+              Treat Pages
+            </h4>
+            <select
+              value={pageType === 'treat' ? selectedPage : ''}
+              onChange={(e) => handlePageSelect('treat', e.target.value)}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '2px solid #E8DDD0',
+                borderRadius: '8px',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="">Select a treat...</option>
+              {treats.map(treat => (
+                <option key={treat.treat_id} value={treat.treat_id}>
+                  {treat.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -185,7 +245,7 @@ export const SEOManager = () => {
           borderRadius: '12px'
         }}>
           <h3 style={{ marginBottom: '20px', fontSize: '18px' }}>
-            SEO Settings - {PAGES.find(p => p.name === selectedPage)?.label}
+            SEO Settings - {getCurrentPageLabel()}
           </h3>
           
           <form onSubmit={handleSubmit}>
