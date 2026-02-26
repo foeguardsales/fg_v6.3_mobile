@@ -137,45 +137,22 @@ export const BlogManager = () => {
     setShowForm(false);
   };
 
-  // Helper function to add formatting
-  const insertFormatting = (format) => {
-    const textarea = document.getElementById('blog-content');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = formData.content.substring(start, end) || 'Your text here';
-    let newText = formData.content;
+  // Helper function for WYSIWYG formatting
+  const applyFormatting = (command, value = null) => {
+    document.execCommand(command, false, value);
+    document.getElementById('blog-content-editor')?.focus();
+  };
 
-    switch(format) {
-      case 'bold':
-        newText = formData.content.substring(0, start) + `<strong>${selectedText}</strong>` + formData.content.substring(end);
-        break;
-      case 'italic':
-        newText = formData.content.substring(0, start) + `<em>${selectedText}</em>` + formData.content.substring(end);
-        break;
-      case 'large':
-        newText = formData.content.substring(0, start) + `<h2>${selectedText}</h2>\n` + formData.content.substring(end);
-        break;
-      case 'medium':
-        newText = formData.content.substring(0, start) + `<h3>${selectedText}</h3>\n` + formData.content.substring(end);
-        break;
-      case 'paragraph':
-        newText = formData.content.substring(0, start) + `<p>${selectedText}</p>\n` + formData.content.substring(end);
-        break;
-      case 'link':
-        const url = prompt('Enter the link URL:', 'https://');
-        if (url) {
-          newText = formData.content.substring(0, start) + `<a href="${url}" target="_blank">${selectedText}</a>` + formData.content.substring(end);
-        }
-        break;
-      case 'ul':
-        newText = formData.content.substring(0, start) + `<ul>\n  <li>${selectedText}</li>\n</ul>\n` + formData.content.substring(end);
-        break;
-      default:
-        break;
+  const handleContentChange = () => {
+    const editor = document.getElementById('blog-content-editor');
+    setFormData({...formData, content: editor.innerHTML});
+  };
+
+  const insertLink = () => {
+    const url = prompt('Enter the link URL:', 'https://');
+    if (url) {
+      applyFormatting('createLink', url);
     }
-
-    setFormData({...formData, content: newText});
-    setTimeout(() => textarea.focus(), 100);
   };
 
   if (loading) return <div style={{ padding: '20px', textAlign: 'center' }}>Loading blogs...</div>;
