@@ -19,6 +19,7 @@ export const Navbar = () => {
         <div className="nav-desktop" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
           <button onClick={() => navigate('/build-box')} className="nav-link" data-testid="nav-order">Order</button>
           <button onClick={() => navigate('/about')} className="nav-link" data-testid="nav-about">About Us</button>
+          <button onClick={() => navigate('/blog')} className="nav-link" data-testid="nav-blog">Blog</button>
           <button onClick={() => navigate('/new-to-raw')} className="nav-link" data-testid="nav-new-to-raw">New to FG</button>
           <button onClick={() => navigate('/calculator')} className="nav-link" data-testid="nav-calculator">Calculator</button>
           <button onClick={() => navigate('/contact')} className="nav-link" data-testid="nav-contact">Contact Us</button>
