@@ -13,6 +13,8 @@ import { AboutPage, PoliciesPage, TermsPage, ContactPage, NewToRawPage } from '.
 import { CalculatorPage } from './pages/CalculatorPage';
 import { AccountPage } from './pages/AccountPage';
 import { AdminPage } from './pages/AdminPage';
+import { AdminLogin } from './pages/AdminLogin';
+import { AdminDashboard } from './pages/AdminDashboard';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
