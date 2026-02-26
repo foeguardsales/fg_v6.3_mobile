@@ -56,7 +56,7 @@ export const LandingPage = () => {
                 <div className="why-switch-icon">
                   <Leaf size={40} />
                 </div>
-                <p>Owned Farms</p>
+                <p>Family Farms</p>
               </div>
               <div className="why-switch-item">
                 <div className="why-switch-icon">
