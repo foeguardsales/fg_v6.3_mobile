@@ -26,16 +26,7 @@ export const AboutPage = () => {
         {/* Hero Section */}
         <section className="about-hero">
           <div className="about-hero-content">
-            <h1>Welcome to FoeGuard.</h1>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              FoeGuard began with a simple conviction:
-            </p>
-            <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '32px' }}>
-              If we wouldn't serve it at our own table, we won't put it in our pets' bowls.
-            </p>
-            <p style={{ fontSize: '17px' }}>
-              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving. Sourcing, handling, and ingredient integrity aren't marketing points to us — they're standards.
-            </p>
+            <h1>About FoeGuard</h1>
           </div>
         </section>
 
@@ -46,9 +37,19 @@ export const AboutPage = () => {
           </div>
         </section>
 
-        {/* The Difference Section */}
+        {/* Complete Story Section */}
         <section className="about-section about-story">
           <div className="about-container">
+            <h2>Welcome to FoeGuard.</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              FoeGuard began with a simple conviction:
+            </p>
+            <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '24px' }}>
+              If we wouldn't serve it at our own table, we won't put it in our pets' bowls.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '32px' }}>
+              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving. Sourcing, handling, and ingredient integrity aren't marketing points to us — they're standards.
+            </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               When we began feeding our own dogs fresh, responsibly raised, species-appropriate food, the difference was undeniable.
             </p>
@@ -58,7 +59,7 @@ export const AboutPage = () => {
               Steady energy.<br />
               Real vitality.
             </p>
-            <p style={{ fontSize: '17px', marginBottom: '24px', fontWeight: '600' }}>
+            <p style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
               It confirmed what nature already designed:
             </p>
             <p style={{ fontSize: '17px', marginBottom: '32px' }}>
@@ -70,7 +71,7 @@ export const AboutPage = () => {
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Friends and neighbours began asking for the same meals we were preparing on our farm. Word spread. Demand grew.
             </p>
-            <p className="story-conclusion" style={{ fontSize: '17px' }}>
+            <p style={{ fontSize: '17px' }}>
               FoeGuard was born from that demand — and from a commitment to raise the standard of what pet food should be.
             </p>
           </div>
