@@ -181,10 +181,10 @@ export const LandingPage = () => {
               <p style={{ fontSize: '17px', marginBottom: '16px' }}>
                 <strong>Carnivores deserve better.</strong>
               </p>
-              <p style={{ fontSize: '17px', marginBottom: '32px' }}>
+              <p style={{ fontSize: '17px', marginBottom: '16px' }}>
                 Whether you're new to raw or already feeding it, we make it simple:
               </p>
-              <p style={{ fontSize: '17px', fontWeight: '600', textAlign: 'center' }}>
+              <p style={{ fontSize: '17px', fontWeight: '600', textAlign: 'center', marginTop: '8px' }}>
                 Build. Thaw. Feed.
               </p>
             </div>
