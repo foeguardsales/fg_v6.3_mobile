@@ -172,19 +172,19 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title">Feeding real food shouldn't feel complicated.</h2>
             <div className="problem-content">
-              <p style={{ fontSize: '18px', marginBottom: '20px' }}>
+              <p style={{ fontSize: '17px', marginBottom: '16px' }}>
                 Most pet food is built for shelf life — not biology.
               </p>
-              <p style={{ fontSize: '18px', marginBottom: '20px' }}>
+              <p style={{ fontSize: '17px', marginBottom: '16px' }}>
                 Ultra-processed. Overcooked. Designed to sit for months.
               </p>
-              <p style={{ fontSize: '20px', fontWeight: '600', marginBottom: '20px', color: '#8B4513' }}>
-                Carnivores deserve better.
+              <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+                <strong>Carnivores deserve better.</strong>
               </p>
-              <p style={{ fontSize: '17px', marginBottom: '20px' }}>
+              <p style={{ fontSize: '17px', marginBottom: '24px' }}>
                 Whether you're new to raw or already feeding it, we make it simple:
               </p>
-              <p style={{ fontSize: '22px', fontWeight: '600', textAlign: 'center', marginTop: '32px', color: '#2B2B2B' }}>
+              <p style={{ fontSize: '17px', fontWeight: '600', textAlign: 'center', marginTop: '32px' }}>
                 Build. Thaw. Feed.
               </p>
             </div>
@@ -209,17 +209,9 @@ export const LandingPage = () => {
               </div>
             </div>
             
-            <div style={{ textAlign: 'center', marginTop: '48px' }}>
-              <p style={{ fontSize: '17px', marginBottom: '12px', color: '#E8DDD0' }}>
-                No vague labels.
-              </p>
-              <p style={{ fontSize: '17px', marginBottom: '12px', color: '#E8DDD0' }}>
-                No marketing hype.
-              </p>
-              <p style={{ fontSize: '17px', color: '#E8DDD0' }}>
-                No shortcuts.
-              </p>
-            </div>
+            <p style={{ textAlign: 'center', marginTop: '40px', fontSize: '17px', color: '#E8DDD0' }}>
+              No vague labels. No marketing hype. No shortcuts.
+            </p>
           </div>
         </section>
 
@@ -269,14 +261,17 @@ export const LandingPage = () => {
         {/* ===== SECTION 6 — FROM FARM TO BOWL (Authority) ===== */}
         <section className="farm-section">
           <div className="section-container">
+            {/* Farm Banner at Top */}
+            <div className="farm-banner-placeholder" style={{ marginBottom: '40px' }}>
+              <p>[ Farm Sourcing Image Banner ]</p>
+            </div>
+
             <h2 className="section-title">From Farm to Bowl</h2>
             <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto 48px' }}>
-              <p style={{ fontSize: '18px', marginBottom: '20px', fontWeight: '600' }}>
-                No distributors.<br />
-                No unknown suppliers.<br />
-                Full control from sourcing to delivery.
+              <p style={{ fontSize: '17px', marginBottom: '20px' }}>
+                No distributors. No unknown suppliers. Full control from sourcing to delivery.
               </p>
-              <p style={{ fontSize: '17px', color: '#666' }}>
+              <p style={{ fontSize: '17px', fontWeight: '600' }}>
                 If it's not good enough for our own table, it's not good enough for your pet's bowl.
               </p>
             </div>
@@ -315,11 +310,6 @@ export const LandingPage = () => {
                 <div className="protein-image-placeholder"></div>
                 <span>Rabbit</span>
               </div>
-            </div>
-
-            {/* Farm Banner Placeholder */}
-            <div className="farm-banner-placeholder" style={{ marginBottom: '48px' }}>
-              <p>[ Farm Sourcing Image Banner ]</p>
             </div>
 
             {/* Short Professional Credibility Strip */}
