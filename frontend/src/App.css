@@ -880,6 +880,10 @@ h1, h2, h3, h4 {
   gap: 16px;
 }
 
+.photo-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
 .customer-photo-placeholder {
   aspect-ratio: 1;
   background: var(--khaki-light);
