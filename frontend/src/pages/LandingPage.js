@@ -341,25 +341,35 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* ===== SECTION 7 — BENEFITS (Tighter + Cleaner) ===== */}
+        {/* ===== SECTION 7 — BENEFITS (Icon Cards) ===== */}
         <section className="benefits-section">
           <div className="section-container">
             <h2 className="section-title">Real Food. Real Results.</h2>
-            <div className="benefits-grid" style={{ maxWidth: '900px', margin: '0 auto' }}>
-              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
-                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Smaller stools from improved nutrient absorption</h3>
+            <div className="benefits-grid">
+              <div className="benefit-card">
+                <div className="benefit-icon">🦴</div>
+                <h3>Cleaner Teeth</h3>
+                <p>Natural chewing action helps maintain dental health.</p>
               </div>
-              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
-                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Healthier skin & coat</h3>
+              <div className="benefit-card">
+                <div className="benefit-icon">✨</div>
+                <h3>Healthier Skin & Coat</h3>
+                <p>Improved nutrition shows in their appearance.</p>
               </div>
-              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
-                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Cleaner teeth through natural chewing</h3>
+              <div className="benefit-card">
+                <div className="benefit-icon">⚡</div>
+                <h3>Steady Energy</h3>
+                <p>Balanced nutrients support natural vitality.</p>
               </div>
-              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
-                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Steady energy & vitality</h3>
+              <div className="benefit-card">
+                <div className="benefit-icon">💪</div>
+                <h3>Better Nutrient Absorption</h3>
+                <p>Smaller stools reflect improved digestion.</p>
               </div>
-              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
-                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Fewer unnecessary fillers and irritants</h3>
+              <div className="benefit-card">
+                <div className="benefit-icon">🛡️</div>
+                <h3>Fewer Fillers & Irritants</h3>
+                <p>Real ingredients without unnecessary additives.</p>
               </div>
             </div>
             
@@ -379,42 +389,29 @@ export const LandingPage = () => {
         <section className="new-to-raw-section">
           <div className="section-container">
             <h2 className="section-title">New to Raw?</h2>
-            <p style={{ fontSize: '18px', marginBottom: '32px', textAlign: 'center' }}>
-              Switching doesn't have to feel overwhelming.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center', maxWidth: '600px', margin: '0 auto 32px' }}>
-              We guide you every step of the way.
+            <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center' }}>
+              Switching doesn't have to feel overwhelming. We guide you every step of the way.
             </p>
             
             <div style={{ 
               display: 'flex', 
-              justifyContent: 'center', 
-              gap: '32px', 
-              marginBottom: '40px',
-              flexWrap: 'wrap'
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '16px', 
+              marginBottom: '40px'
             }}>
-              <div style={{ textAlign: 'center' }}>
-                <Check size={24} style={{ color: '#8B4513', marginBottom: '8px' }} />
-                <p style={{ fontWeight: '600' }}>Free custom consultation</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Check size={24} style={{ color: '#8B4513' }} />
+                <p style={{ fontWeight: '600', fontSize: '17px' }}>Free custom consultation</p>
               </div>
-              <div style={{ textAlign: 'center' }}>
-                <Check size={24} style={{ color: '#8B4513', marginBottom: '8px' }} />
-                <p style={{ fontWeight: '600' }}>Transition guide included</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Check size={24} style={{ color: '#8B4513' }} />
+                <p style={{ fontWeight: '600', fontSize: '17px' }}>Transition guide included</p>
               </div>
-              <div style={{ textAlign: 'center' }}>
-                <Check size={24} style={{ color: '#8B4513', marginBottom: '8px' }} />
-                <p style={{ fontWeight: '600' }}>14-Day Happiness Guarantee</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <Check size={24} style={{ color: '#8B4513' }} />
+                <p style={{ fontWeight: '600', fontSize: '17px' }}>14-Day Happiness Guarantee</p>
               </div>
-            </div>
-
-            <div style={{ textAlign: 'center' }}>
-              <button 
-                className="btn-primary" 
-                onClick={() => navigate('/build-box')}
-                data-testid="trial-box-btn"
-              >
-                Build Your Trial Box
-              </button>
             </div>
           </div>
         </section>
