@@ -170,16 +170,13 @@ export const LandingPage = () => {
         {/* ===== SECTION 3 — THE BELIEF SHIFT ===== */}
         <section className="problem-section">
           <div className="section-container">
-            <h2 className="section-title">Feeding real food shouldn't feel complicated.</h2>
+            <h2 className="section-title">Feeding Real Food Should Feel Simple.</h2>
             <div className="problem-content">
               <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-                Most pet food is built for shelf life — not biology.
+                Many traditional pet foods are designed for convenience and long shelf life.
               </p>
               <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-                Ultra-processed. Overcooked. Designed to sit for months.
-              </p>
-              <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-                <strong>Carnivores deserve better.</strong>
+                We focus on freshness, sourcing, and biological alignment — the way carnivores were designed to eat.
               </p>
               <p>
                 Whether you're new to raw or already feeding it, we make it simple:
@@ -268,11 +265,17 @@ export const LandingPage = () => {
 
             <h2 className="section-title">From Farm to Bowl</h2>
             <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto 48px' }}>
-              <p style={{ fontSize: '17px', marginBottom: '20px' }}>
-                No distributors. No unknown suppliers. Full control from sourcing to delivery.
-              </p>
-              <p style={{ fontSize: '17px', fontWeight: '600' }}>
+              <p style={{ fontSize: '17px', marginBottom: '20px', fontWeight: '600' }}>
                 If it's not good enough for our own table, it's not good enough for your pet's bowl.
+              </p>
+              <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+                We source directly from trusted Ontario farms — including our own — and deliver straight to your door.
+              </p>
+              <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+                By working direct-to-consumer, we remove unnecessary retail layers. That allows us to focus our investment on responsibly raised, human-grade ingredients while keeping pricing aligned with traditional in-store options.
+              </p>
+              <p style={{ fontSize: '17px' }}>
+                It's a simpler, more transparent way to feed raw.
               </p>
             </div>
             
@@ -344,7 +347,7 @@ export const LandingPage = () => {
         {/* ===== SECTION 7 — BENEFITS (Clean Checkmark List) ===== */}
         <section className="benefits-section">
           <div className="section-container">
-            <h2 className="section-title">Real Food. Real Results.</h2>
+            <h2 className="section-title">Benefits You Can See, and They Can Feel.</h2>
             <div style={{ 
               maxWidth: '700px', 
               margin: '0 auto',
@@ -392,7 +395,7 @@ export const LandingPage = () => {
         {/* ===== SECTION 8 — NEW TO RAW? ===== */}
         <section className="new-to-raw-section">
           <div className="section-container">
-            <h2 className="section-title">New to Raw?</h2>
+            <h2 className="section-title">New to FoeGuard Raw</h2>
             <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center' }}>
               Switching doesn't have to feel overwhelming. We guide you every step of the way.
             </p>
@@ -417,6 +420,21 @@ export const LandingPage = () => {
                 <p style={{ fontWeight: '600', fontSize: '17px' }}>14-Day Happiness Guarantee</p>
               </div>
             </div>
+            
+            <div style={{ textAlign: 'center', marginTop: '32px' }}>
+              <button 
+                className="btn-secondary" 
+                onClick={() => navigate('/new-to-raw')}
+                style={{ 
+                  padding: '10px 24px',
+                  borderRadius: '24px',
+                  fontSize: '15px',
+                  fontWeight: '600'
+                }}
+              >
+                New to FG
+              </button>
+            </div>
           </div>
         </section>
 
@@ -424,19 +442,11 @@ export const LandingPage = () => {
         <section className="final-cta-section">
           <div className="section-container">
             <h2 className="section-title-white" style={{ fontSize: '36px', marginBottom: '24px' }}>
-              For Guardians Who Refuse to Compromise
+              See the FoeGuard Difference
             </h2>
             
-            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.9)', marginBottom: '32px' }}>
-              You care about what goes in your pet's bowl. So do we.
-            </p>
-            
             <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.9)', marginBottom: '40px' }}>
-              Farm-raised. Professionally formulated. Delivered across Ontario.
-            </p>
-            
-            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.9)', marginBottom: '40px', fontWeight: '600' }}>
-              See the FoeGuard Difference first-hand!
+              Farm-raised, professionally formulated raw meals for pet parents who care about exactly what goes in the bowl.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', maxWidth: '500px', margin: '0 auto' }}>
