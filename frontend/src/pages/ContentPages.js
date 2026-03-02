@@ -493,33 +493,31 @@ export const NewToRawPage = () => {
         </section>
 
         {/* SECTION 2 — Keep It Simple */}
-        <section className="ntf-section ntf-easy">
+        <section className="ntf-section ntf-easy" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
             <h2 style={{ textAlign: 'center' }}>Feeding Raw Is Easier Than You Think</h2>
             <div className="easy-steps">
               <div className="easy-step">
                 <span className="step-number">1</span>
-                <p>Store meals in your freezer</p>
+                <p style={{ fontSize: '17px' }}>Store meals in your freezer</p>
               </div>
               <div className="easy-step">
                 <span className="step-number">2</span>
-                <p>Thaw in the refrigerator</p>
+                <p style={{ fontSize: '17px' }}>Thaw in the refrigerator</p>
               </div>
               <div className="easy-step">
                 <span className="step-number">3</span>
-                <p>Serve and watch them thrive</p>
+                <p style={{ fontSize: '17px' }}>Serve and watch them thrive</p>
               </div>
             </div>
-            <p className="no-hassle">
-              No complicated prep.<br />
-              No added supplements for complete dinners.<br />
-              <strong>Just real food.</strong>
+            <p style={{ fontSize: '17px', textAlign: 'center', marginTop: '32px' }}>
+              No complicated prep. No added supplements for complete dinners. <strong>Just real food.</strong>
             </p>
           </div>
         </section>
 
         {/* SECTION 3 — Why FoeGuard Is Different */}
-        <section className="ntf-section ntf-safe">
+        <section className="ntf-section ntf-safe" style={{ background: 'white' }}>
           <div className="ntf-container">
             <h2>Why Guardians Feel Confident Switching to FoeGuard</h2>
             <ul className="ntf-list" style={{ fontSize: '17px', lineHeight: '1.8' }}>
@@ -533,10 +531,10 @@ export const NewToRawPage = () => {
         </section>
 
         {/* SECTION 4 — Is Raw Safe? */}
-        <section className="ntf-section" style={{ background: '#F8F6F4' }}>
+        <section className="ntf-section" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
             <h2>Is Raw Safe?</h2>
-            <p className="ntf-answer" style={{ fontSize: '17px', marginBottom: '24px' }}>
+            <p style={{ fontSize: '17px', marginBottom: '24px' }}>
               When handled properly — yes.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
@@ -559,7 +557,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* SECTION 5 — When Diet Is the Missing Piece */}
-        <section className="ntf-section ntf-problem">
+        <section className="ntf-section ntf-problem" style={{ background: 'white' }}>
           <div className="ntf-container">
             <h2>When Diet Is the Missing Piece</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
@@ -572,7 +570,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* SECTION 6 — Transition Guide */}
-        <section className="ntf-section ntf-transition">
+        <section className="ntf-section ntf-transition" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
             <h2>How Do I Transition My Pet?</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
@@ -636,7 +634,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* SECTION 7 — If They Won't Eat */}
-        <section className="ntf-section ntf-wont-eat">
+        <section className="ntf-section ntf-wont-eat" style={{ background: 'white' }}>
           <div className="ntf-container">
             <h2>What If My Dog or Cat Won't Eat Raw?</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
@@ -666,7 +664,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* SECTION 8 — How Much to Feed */}
-        <section className="ntf-section ntf-amount">
+        <section className="ntf-section ntf-amount" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
             <h2>How Much Should I Feed?</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>As a general guideline:</p>
@@ -685,7 +683,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* SECTION 9 — Comparison Table (Simplified) */}
-        <section className="ntf-section ntf-compare">
+        <section className="ntf-section ntf-compare" style={{ background: 'white' }}>
           <div className="ntf-container">
             <h2>Compare Us to Others</h2>
             <div className="comparison-table-wrapper">
@@ -742,7 +740,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* FINAL CTA */}
-        <section className="ntf-section ntf-start">
+        <section className="ntf-section ntf-start" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
             <h2>Ready to Start Simple?</h2>
             <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center' }}>
