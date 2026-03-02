@@ -746,7 +746,7 @@ export const NewToRawPage = () => {
           <div className="ntf-container">
             <h2>Ready to Start Simple?</h2>
             <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center' }}>
-              Begin with our Trial Box and see how your pet responds.
+              Build your first box and see how your pet responds.
             </p>
             <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '32px', textAlign: 'center' }}>
               Structured. Balanced. Farm-raised.
