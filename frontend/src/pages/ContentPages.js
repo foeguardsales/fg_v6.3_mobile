@@ -495,7 +495,7 @@ export const NewToRawPage = () => {
         {/* SECTION 2 — Keep It Simple */}
         <section className="ntf-section ntf-easy">
           <div className="ntf-container">
-            <h2>Feeding Raw Is Easier Than You Think</h2>
+            <h2 style={{ textAlign: 'center' }}>Feeding Raw Is Easier Than You Think</h2>
             <div className="easy-steps">
               <div className="easy-step">
                 <span className="step-number">1</span>
