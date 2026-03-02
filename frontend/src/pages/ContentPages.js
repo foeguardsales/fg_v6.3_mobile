@@ -27,11 +27,14 @@ export const AboutPage = () => {
         <section className="about-hero">
           <div className="about-hero-content">
             <h1>Welcome to FoeGuard.</h1>
-            <p className="about-hero-statement" style={{ fontSize: '17px', marginBottom: '24px' }}>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               FoeGuard began with a simple conviction:
             </p>
-            <p className="highlight-text" style={{ fontSize: '17px', fontWeight: '600' }}>
+            <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '32px' }}>
               If we wouldn't serve it at our own table, we won't put it in our pets' bowls.
+            </p>
+            <p style={{ fontSize: '17px' }}>
+              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving. Sourcing, handling, and ingredient integrity aren't marketing points to us — they're standards.
             </p>
           </div>
         </section>
@@ -40,38 +43,6 @@ export const AboutPage = () => {
         <section className="about-farm-image">
           <div className="farm-image-placeholder">
             <span>Farm Image</span>
-          </div>
-        </section>
-
-        {/* Roots Section */}
-        <section className="about-section about-roots">
-          <div className="about-container">
-            <p className="about-lead-text" style={{ fontSize: '17px' }}>
-              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving. Sourcing, handling, and ingredient integrity aren't marketing points to us — they're standards.
-            </p>
-          </div>
-        </section>
-
-        {/* Three Images Section */}
-        <section className="about-three-images">
-          <div className="about-container">
-            <div className="three-images-grid">
-              <div className="image-card">
-                <div className="image-placeholder">
-                  <span>Our Environment</span>
-                </div>
-              </div>
-              <div className="image-card">
-                <div className="image-placeholder">
-                  <span>Preparation</span>
-                </div>
-              </div>
-              <div className="image-card">
-                <div className="image-placeholder">
-                  <span>Storage</span>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 
