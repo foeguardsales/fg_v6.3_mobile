@@ -461,11 +461,13 @@ export const ContactPage = () => {
 };
 
 export const NewToRawPage = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Navbar />
       <div className="new-to-fg-page">
-        {/* Hero Section */}
+        {/* SECTION 1 — Emotional Entry */}
         <section className="ntf-hero">
           <div className="ntf-hero-content">
             <h1>New to FoeGuard?</h1>
@@ -473,138 +475,101 @@ export const NewToRawPage = () => {
               Switching your pet's food doesn't have to feel complicated.
             </p>
             <p className="ntf-hero-text">
-              Whether you're new to raw feeding or simply new to us, we make the transition simple, safe, and supported.
+              Whether you're new to raw feeding or simply new to us, we make the transition simple, structured, and fully supported.
+            </p>
+            <p className="ntf-hero-text" style={{ fontWeight: '600', marginTop: '20px' }}>
+              You don't have to figure this out alone.
             </p>
           </div>
         </section>
 
-        {/* Is Raw Safe Section */}
+        {/* SECTION 2 — Keep It Simple */}
+        <section className="ntf-section ntf-easy">
+          <div className="ntf-container">
+            <h2>Feeding Raw Is Easier Than You Think</h2>
+            <div className="easy-steps">
+              <div className="easy-step">
+                <span className="step-number">1</span>
+                <p>Store meals in your freezer</p>
+              </div>
+              <div className="easy-step">
+                <span className="step-number">2</span>
+                <p>Thaw in the refrigerator</p>
+              </div>
+              <div className="easy-step">
+                <span className="step-number">3</span>
+                <p>Serve and watch them thrive</p>
+              </div>
+            </div>
+            <p className="no-hassle">
+              No complicated prep.<br />
+              No added supplements for complete dinners.<br />
+              <strong>Just real food.</strong>
+            </p>
+          </div>
+        </section>
+
+        {/* SECTION 3 — Why FoeGuard Is Different */}
         <section className="ntf-section ntf-safe">
           <div className="ntf-container">
-            <h2>Is Raw Safe?</h2>
-            <p className="ntf-answer">Yes—it's not just safe, it's often the healthiest option you can give your dog, cat, puppy, or kitten.</p>
-            <p>
-              However, not all raw food is created equal. The safety and benefits of a raw diet depend entirely on ingredient quality, balance, and handling. That's why at FoeGuard, we go back to the basics: fresh, human-grade meat raised ethically and handled with the care you'd give your own meals.
-            </p>
-            <p>
-              When prepared and stored like you would at home—thawed in the fridge and served fresh—raw feeding is a clean, biologically appropriate way to nourish pets.
-            </p>
-            <p>
-              We've seen pets thrive on proteins they were once thought "allergic" to. More often, the issue isn't the protein itself—it's hidden hormones, antibiotics, or poor-quality meat in conventional food.
-            </p>
-            <p className="ntf-emphasis">Here's how FoeGuard does it differently:</p>
-            <ul className="ntf-list">
+            <h2>Why Guardians Feel Confident Switching to FoeGuard</h2>
+            <ul className="ntf-list" style={{ fontSize: '17px', lineHeight: '1.8' }}>
               <li>Human-grade ingredients prepared in a government-inspected facility</li>
-              <li>100% naturally raised meat with no fillers, GMOs, preservatives, antibiotics, or hormones</li>
-              <li>Ethically sourced proteins from our own farms and trusted Canadian partners</li>
-              <li>Balanced by pet nutrition experts</li>
-              <li>Delivered to your door by a dedicated FoeGuard team member</li>
+              <li>Naturally raised meats — no fillers, antibiotics, hormones, or preservatives</li>
+              <li>Ethically sourced from our own farms and trusted Canadian partners</li>
+              <li>Professionally formulated for complete, balanced nutrition</li>
+              <li>Delivered directly across Ontario by our FoeGuard team</li>
             </ul>
-            <p className="ntf-conclusion">
-              It's not complicated. It's just real, safe, wholesome food—and your pet will feel the difference.
+          </div>
+        </section>
+
+        {/* SECTION 4 — Is Raw Safe? */}
+        <section className="ntf-section" style={{ background: '#F8F6F4' }}>
+          <div className="ntf-container">
+            <h2>Is Raw Safe?</h2>
+            <p className="ntf-answer" style={{ fontSize: '17px', marginBottom: '24px' }}>
+              When handled properly — yes.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Dogs and cats are biologically designed to digest raw meat, bone, and organ. The key is quality, formulation, and proper storage.
+            </p>
+            <p className="ntf-emphasis" style={{ fontSize: '17px', marginBottom: '16px' }}>
+              At FoeGuard, every meal is:
+            </p>
+            <ul className="ntf-list" style={{ fontSize: '17px', marginBottom: '24px' }}>
+              <li>Professionally balanced</li>
+              <li>Prepared in a government-inspected facility</li>
+              <li>Flash frozen immediately</li>
+              <li>Handled with the same standards you would use for your own food</li>
+            </ul>
+            <p style={{ fontSize: '17px' }}>
+              Raw feeding isn't extreme.<br />
+              It's simply a return to biological design.
             </p>
           </div>
         </section>
 
-        {/* Comparison Table Section */}
-        <section className="ntf-section ntf-compare">
-          <div className="ntf-container">
-            <h2>Compare Us to Others</h2>
-            <div className="comparison-table-wrapper">
-              <table className="comparison-table">
-                <thead>
-                  <tr>
-                    <th className="feature-col"></th>
-                    <th className="brand-col foeguard-col">
-                      <span className="brand-name">FoeGuard</span>
-                    </th>
-                    <th className="brand-col">
-                      <span className="brand-name">Retail Raw</span>
-                    </th>
-                    <th className="brand-col">
-                      <span className="brand-name">Kibble</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="feature-cell">Human-Grade Ingredients</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="status-text">Varies</span></td>
-                    <td className="check-cell"><span className="limited-text">Feed-Grade</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Organic & Non-GMO</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="limited-text">Limited</span></td>
-                    <td className="check-cell"><span className="limited-text">Rare</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Farm Fresh</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="limited-text">Months Old</span></td>
-                    <td className="check-cell"><span className="limited-text">Months Old</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Transparent Sourcing</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="limited-text">Limited</span></td>
-                    <td className="check-cell"><span className="limited-text">Rare</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Ethically Raised in Small Batches</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="limited-text">Mass Produced</span></td>
-                    <td className="check-cell"><span className="limited-text">Mass Produced</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Formulated by Nutrition Professionals</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="status-text">Varies</span></td>
-                    <td className="check-cell"><span className="status-text">Yes (Processed)</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        {/* Problem Awareness Section */}
+        {/* SECTION 5 — When Diet Is the Missing Piece */}
         <section className="ntf-section ntf-problem">
           <div className="ntf-container">
-            <h2>Uncover What's Really Causing Your Pet's Discomfort</h2>
-            <p className="ntf-lead-question">
-              Could it be their food, the environment, or something at home?
+            <h2>When Diet Is the Missing Piece</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Many guardians feel frustrated by unclear labels and inconsistent sourcing.
             </p>
-            <p>
-              From ultra-processed kibble to inconsistent raw made with unclear sourcing, hidden risks are everywhere. Feeding clean, biologically appropriate food can help support digestion, strengthen immunity, improve dental health, and reduce common sensitivities over time.
-            </p>
-            <p>
-              While we can't promise instant answers, switching to properly sourced raw food often helps eliminate one of the biggest unknowns — their diet.
-            </p>
-            <p>
-              It's a simple, effective way to observe how your pet responds to different proteins while ensuring they receive highly absorbable, nutrient-dense nutrition.
-            </p>
-            <p>
-              Like many pet parents, you may feel frustrated by the lack of transparency in traditional pet food. Even store-bought raw can vary in sourcing and consistency, leaving uncertainty about what you're feeding.
-            </p>
-            <p>
-              These challenges don't just create stress — they can affect your pet's long-term wellbeing and lead to ongoing issues and expenses.
-            </p>
-            <p className="ntf-conclusion">
-              Finding reliable pet food shouldn't feel complicated. At FoeGuard, we make clean, transparent feeding simple and dependable — so you can focus on your pet, not question their food.
+            <p style={{ fontSize: '17px' }}>
+              While we can't promise instant answers, switching to properly sourced, biologically appropriate food often removes one of the biggest unknowns — their diet.
             </p>
           </div>
         </section>
 
-        {/* Transition Section */}
+        {/* SECTION 6 — Transition Guide */}
         <section className="ntf-section ntf-transition">
           <div className="ntf-container">
             <h2>How Do I Transition My Pet?</h2>
-            <p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Because our meals are nutrient-dense and minimally processed, a thoughtful transition helps avoid digestive upset.
             </p>
-            <p>We recommend the following approaches:</p>
+            <p style={{ fontSize: '17px', marginBottom: '32px' }}>We recommend the following approaches:</p>
 
             {/* Option 1 */}
             <div className="transition-option">
@@ -661,101 +626,128 @@ export const NewToRawPage = () => {
           </div>
         </section>
 
-        {/* Won't Eat Section */}
+        {/* SECTION 7 — If They Won't Eat */}
         <section className="ntf-section ntf-wont-eat">
           <div className="ntf-container">
             <h2>What If My Dog or Cat Won't Eat Raw?</h2>
-            <p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Transitioning to raw is often <strong>behavioural</strong> — not nutritional.
             </p>
-            <p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Many pets are accustomed to processed foods engineered for taste intensity, flavour enhancers, and frequent treats. Real food can feel unfamiliar at first.
             </p>
-            <p className="ntf-emphasis">
-              It's our role as guardians to prioritize nourishment first.
+            <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '24px' }}>
+              Consistency and structure usually solve it.
             </p>
-            <p>To encourage success:</p>
-            <ul className="ntf-list">
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>To encourage success:</p>
+            <ul className="ntf-list" style={{ fontSize: '17px', marginBottom: '24px' }}>
               <li>Feed at consistent times</li>
               <li>Avoid free-feeding</li>
               <li>Limit treats during transition</li>
               <li>Ensure your dog is exercised before mealtime</li>
               <li>Remove the bowl after 15–20 minutes if uneaten</li>
             </ul>
-            <p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Structure builds appetite. If they skip a meal, store the food in the fridge and offer it again at the next scheduled feeding.
             </p>
-            <p className="conclusion-text">
+            <p className="conclusion-text" style={{ fontSize: '17px' }}>
               With patience and consistency, most pets adapt quickly — and thrive.
             </p>
           </div>
         </section>
 
-        {/* Is It Hard Section */}
-        <section className="ntf-section ntf-easy">
-          <div className="ntf-container">
-            <h2>Is It Hard to Feed?</h2>
-            <p className="ntf-answer">Not at all.</p>
-            <div className="easy-steps">
-              <div className="easy-step">
-                <span className="step-number">1</span>
-                <p>Store meals in your freezer</p>
-              </div>
-              <div className="easy-step">
-                <span className="step-number">2</span>
-                <p>Thaw in the refrigerator</p>
-              </div>
-              <div className="easy-step">
-                <span className="step-number">3</span>
-                <p>Serve and watch them thrive</p>
-              </div>
-            </div>
-            <p className="no-hassle">
-              No supplements required for our complete dinners.<br />
-              No complicated prep.<br />
-              <strong>Just real food.</strong>
-            </p>
-          </div>
-        </section>
-
-        {/* How Much Section */}
+        {/* SECTION 8 — How Much to Feed */}
         <section className="ntf-section ntf-amount">
           <div className="ntf-container">
             <h2>How Much Should I Feed?</h2>
-            <p>As a general guideline:</p>
-            <ul className="ntf-list">
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>As a general guideline:</p>
+            <ul className="ntf-list" style={{ fontSize: '17px', marginBottom: '24px' }}>
               <li><strong>Adult dogs:</strong> 2–3% of body weight daily</li>
               <li><strong>Adult cats:</strong> 2.5–3.5% daily</li>
               <li><strong>Puppies & kittens:</strong> require more depending on age</li>
             </ul>
-            <p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Body condition matters more than strict percentages — adjust as needed based on activity level, metabolism, and goals.
             </p>
-            <p>
+            <p style={{ fontSize: '17px' }}>
               If you're unsure, check out our <a href="/calculator" className="ntf-link">Feeding Calculator</a> or contact us directly, we're happy to guide you.
             </p>
           </div>
         </section>
 
-        {/* Start Simple Section */}
+        {/* SECTION 9 — Comparison Table (Simplified) */}
+        <section className="ntf-section ntf-compare">
+          <div className="ntf-container">
+            <h2>Compare Us to Others</h2>
+            <div className="comparison-table-wrapper">
+              <table className="comparison-table">
+                <thead>
+                  <tr>
+                    <th className="feature-col"></th>
+                    <th className="brand-col foeguard-col">
+                      <span className="brand-name">FoeGuard</span>
+                    </th>
+                    <th className="brand-col">
+                      <span className="brand-name">Retail Raw</span>
+                    </th>
+                    <th className="brand-col">
+                      <span className="brand-name">Kibble</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="feature-cell">Human-Grade Ingredients</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Organic & Non-GMO</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Farm Fresh</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Transparent Sourcing</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Ethically Raised in Small Batches</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
         <section className="ntf-section ntf-start">
           <div className="ntf-container">
-            <h2>Start Simple</h2>
-            <p>
-              If you're unsure which proteins to begin with, start with a light protein like <strong>Chicken</strong> or our <strong>Trial Box</strong> and observe how your pet responds.
+            <h2>Ready to Start Simple?</h2>
+            <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center' }}>
+              Begin with our Trial Box and see how your pet responds.
             </p>
-            <p className="ntf-emphasis">
-              Switching shouldn't feel overwhelming.
-            </p>
-            <p className="final-message">
-              We're here to support you at every step.
+            <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '32px', textAlign: 'center' }}>
+              Structured. Balanced. Farm-raised.
             </p>
             <div className="ntf-cta">
               <button 
                 className="btn-primary"
-                onClick={() => window.location.href = '/build-box'}
+                onClick={() => navigate('/build-box')}
               >
-                Build Your First Box
+                Build Your Box
               </button>
             </div>
           </div>
