@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { Check, Leaf, Award, ShieldCheck, Truck, Sparkles, Heart, Bone, Zap, Shield, Droplets } from 'lucide-react';
+import { Check, Leaf, Award, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const LandingPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
+  const [emailSubmitted, setEmailSubmitted] = useState('');
+  const photoScrollRef = useRef(null);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
     // TODO: Connect to email service
     setEmailSubmitted(true);
+  };
+
+  const scrollPhotos = (direction) => {
+    if (photoScrollRef.current) {
+      const scrollAmount = 300;
+      photoScrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
   };
   
   return (
@@ -23,14 +34,14 @@ export const LandingPage = () => {
         <section className="hero-section" data-testid="hero-section">
           <div className="hero-content">
             <h1 className="hero-title">
-              See a Happier, Healthier Pet<br />
-              <span className="hero-accent">In Just 14 Days</span>
+              Feed the Way Carnivores<br />
+              <span className="hero-accent">Were Designed to Eat.</span>
             </h1>
             <p className="hero-subtitle">
-              Farm-fresh raw meals designed for carnivores — delivered directly to your door.
+              Farm-raised, human-grade raw meals delivered across Ontario.
             </p>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', marginBottom: '28px' }}>
-              Takes less than 60 seconds to build your pet's box.
+              Delivered to your door in as little as 3 days.
             </p>
             <button 
               className="btn-hero" 
@@ -40,201 +51,238 @@ export const LandingPage = () => {
               Build Your Box
             </button>
             <div className="hero-trust-strip">
-              <span><Check size={16} /> Farm Raised</span>
-              <span><Check size={16} /> Human Grade, Whole Foods</span>
-              <span><Check size={16} /> Organic Ingredients - No Grains, Fillers or Preservatives</span>
+              <span><Check size={16} /> Farm Raised in Ontario</span>
+              <span><Check size={16} /> Human-Grade Whole Ingredients</span>
+              <span><Check size={16} /> No Fillers. No Grains. No Preservatives.</span>
             </div>
           </div>
         </section>
 
-        {/* ===== SECTION 1.5 — WHY GUARDIANS SWITCH ===== */}
-        <section className="why-switch-section">
+        {/* ===== SECTION 2 — SOCIAL PROOF (MOVED UP) ===== */}
+        <section className="community-section" style={{ background: '#F8F6F4' }}>
           <div className="section-container">
-            <h2 className="section-title-sm">Why Guardians Switch to FoeGuard</h2>
-            <div className="why-switch-grid">
-              <div className="why-switch-item">
-                <div className="why-switch-icon">
-                  <Leaf size={40} />
-                </div>
-                <p>Family Farms</p>
+            <h2 className="section-title">Trusted by FoeGuardians Across Ontario</h2>
+            
+            {/* Testimonials - 3 Short Quotes */}
+            <div className="testimonials-grid" style={{ marginBottom: '48px' }}>
+              <div className="testimonial-card" style={{ textAlign: 'center' }}>
+                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
+                  "Her digestion improved within weeks. I'll never go back to kibble."
+                </p>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>— Sarah M.</span>
               </div>
-              <div className="why-switch-item">
-                <div className="why-switch-icon">
-                  <Award size={40} />
-                </div>
-                <p>Human-Grade Ingredients</p>
+              <div className="testimonial-card" style={{ textAlign: 'center' }}>
+                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
+                  "Finally a raw brand I trust."
+                </p>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>— Daniel R.</span>
               </div>
-              <div className="why-switch-item">
-                <div className="why-switch-icon">
-                  <ShieldCheck size={40} />
-                </div>
-                <p>No Fillers or Synthetic Additives</p>
+              <div className="testimonial-card" style={{ textAlign: 'center' }}>
+                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
+                  "Energy, coat, stools — everything changed."
+                </p>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>— Melissa T.</span>
               </div>
             </div>
+
+            {/* Swipeable Customer Photo Grid - 12 photos */}
+            <div style={{ position: 'relative' }}>
+              <button
+                onClick={() => scrollPhotos('left')}
+                style={{
+                  position: 'absolute',
+                  left: '-20px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'white',
+                  border: '2px solid #E8DDD0',
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  zIndex: 10,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              
+              <div 
+                ref={photoScrollRef}
+                style={{
+                  display: 'flex',
+                  gap: '16px',
+                  overflowX: 'auto',
+                  scrollBehavior: 'smooth',
+                  paddingBottom: '16px',
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none'
+                }}
+                className="photo-scroll-container"
+              >
+                {[...Array(12)].map((_, i) => (
+                  <div 
+                    key={i}
+                    className="customer-photo-placeholder"
+                    style={{
+                      minWidth: '250px',
+                      height: '250px',
+                      borderRadius: '12px',
+                      background: '#E8DDD0'
+                    }}
+                  ></div>
+                ))}
+              </div>
+
+              <button
+                onClick={() => scrollPhotos('right')}
+                style={{
+                  position: 'absolute',
+                  right: '-20px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'white',
+                  border: '2px solid #E8DDD0',
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  zIndex: 10,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                }}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+
+            <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '15px', color: '#666' }}>
+              Real dogs. Real cats. Real guardians choosing better.
+            </p>
           </div>
         </section>
 
-        {/* ===== SECTION 2 — THE PROBLEM ===== */}
+        {/* ===== SECTION 3 — THE BELIEF SHIFT ===== */}
         <section className="problem-section">
           <div className="section-container">
-            <h2 className="section-title">Feeding Real Food Shouldn't Be Complicated.</h2>
+            <h2 className="section-title">Feeding real food shouldn't feel complicated.</h2>
             <div className="problem-content">
-              <p className="problem-lead">
-                Most common health concerns begin with what they eat.
+              <p style={{ fontSize: '18px', marginBottom: '20px' }}>
+                Most pet food is built for shelf life — not biology.
               </p>
-              <p className="problem-symptoms">
-                Digestion. Energy. Skin. Comfort.
+              <p style={{ fontSize: '18px', marginBottom: '20px' }}>
+                Ultra-processed. Overcooked. Designed to sit for months.
               </p>
-              <p>
-                The right ingredients can restore balance from the inside out — but only when you know exactly what's in the bowl. Too many pet owners end up paying premium prices for mystery ingredients, while big brands spend heavily on packaging and retail markups instead of quality.
+              <p style={{ fontSize: '20px', fontWeight: '600', marginBottom: '20px', color: '#8B4513' }}>
+                Carnivores deserve better.
               </p>
-              <p>
-                At FoeGuard, the value goes where it belongs: into responsibly raised meat, transparent sourcing, and proper formulation. No prep, no balancing, no uncertainty — just farm-fresh meals delivered directly to your door, so you can support your pet's health and local Canadian farms, all at retail cost.
+              <p style={{ fontSize: '17px', marginBottom: '20px' }}>
+                Whether you're new to raw or already feeding it, we make it simple:
+              </p>
+              <p style={{ fontSize: '22px', fontWeight: '600', textAlign: 'center', marginTop: '32px', color: '#2B2B2B' }}>
+                Build. Thaw. Feed.
               </p>
             </div>
           </div>
         </section>
 
-        {/* ===== SECTION 3 — OUR STANDARDS ===== */}
+        {/* ===== SECTION 4 — OUR STANDARD (3 Pillars) ===== */}
         <section className="standard-section">
           <div className="section-container">
-            <h2 className="section-title-white">Our Standards</h2>
             <div className="standard-grid">
               <div className="standard-card">
-                <h3>Real Food for Carnivores</h3>
-                <p>Human-grade, organic, biologically appropriate whole-food ingredients.</p>
+                <h3>Real Food for Pets</h3>
+                <p>Human-grade, whole-food ingredients formulated for biological needs.</p>
               </div>
               <div className="standard-card">
                 <h3>Raised as Nature Intended</h3>
-                <p>Ethically sourced from local Canadian farms — including farms we directly own and oversee.</p>
+                <p>Ethically sourced from trusted Ontario farms — including our own.</p>
               </div>
               <div className="standard-card">
-                <h3>For Guardians Who Care</h3>
-                <p>For those who treat their pets like family. No hidden fillers. Just honest nutrition you can trust.</p>
+                <h3>Uncompromised Care</h3>
+                <p>Government-inspected facility. Professionally formulated. Flash frozen at peak freshness.</p>
               </div>
+            </div>
+            
+            <div style={{ textAlign: 'center', marginTop: '48px' }}>
+              <p style={{ fontSize: '17px', marginBottom: '12px', color: '#E8DDD0' }}>
+                No vague labels.
+              </p>
+              <p style={{ fontSize: '17px', marginBottom: '12px', color: '#E8DDD0' }}>
+                No marketing hype.
+              </p>
+              <p style={{ fontSize: '17px', color: '#E8DDD0' }}>
+                No shortcuts.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ===== SECTION 4 — HOW IT WORKS ===== */}
+        {/* ===== SECTION 5 — HOW IT WORKS (Condensed) ===== */}
         <section className="how-it-works-section">
           <div className="section-container">
-            <h2 className="section-title">How It Works</h2>
             <div className="steps-grid">
               <div className="step-card">
                 <div className="step-image-container">
                   <div className="step-image-placeholder"></div>
                   <div className="step-number-overlay">1</div>
                 </div>
-                <h3>Build Your Box</h3>
-                <p>Pick your size. Mix & match from 8 premium proteins in 6lb increments.</p>
+                <h3>Choose Their Favourites</h3>
               </div>
               <div className="step-card">
                 <div className="step-image-container">
                   <div className="step-image-placeholder"></div>
                   <div className="step-number-overlay">2</div>
                 </div>
-                <h3>We Prepare Fresh</h3>
-                <p>Each order is prepared in a government-regulated facility. Never sitting on shelves.</p>
+                <h3>We Prepare Fresh & Flash Freeze</h3>
               </div>
               <div className="step-card">
                 <div className="step-image-container">
                   <div className="step-image-placeholder"></div>
                   <div className="step-number-overlay">3</div>
                 </div>
-                <h3>Thaw & Serve</h3>
-                <p>Flash-frozen and delivered. Just thaw and feed.</p>
+                <h3>Delivered to Your Door</h3>
               </div>
             </div>
-            <p className="steps-subtext">
-              No contracts. Adjust, pause, or cancel anytime. Subscribe only if you want extra savings.
+            <p style={{ textAlign: 'center', marginTop: '32px', fontSize: '16px', color: '#666' }}>
+              No contracts. Pause anytime.
             </p>
-          </div>
-        </section>
-
-        {/* ===== SECTION 5 — BENEFITS OF FEEDING RAW ===== */}
-        <section className="benefits-section">
-          <div className="section-container">
-            <h2 className="section-title">Real Food. Real Results.</h2>
-            <p className="section-subtitle">See the FoeGuard Difference.</p>
-            <div className="benefits-grid">
-              <div className="benefit-card">
-                <div className="benefit-icon">
-                  <Sparkles size={28} />
-                </div>
-                <h3>Better Digestion</h3>
-                <p>Noticeably smaller stools from better nutrient absorption.</p>
-              </div>
-              <div className="benefit-card">
-                <div className="benefit-icon">
-                  <Heart size={28} />
-                </div>
-                <h3>Healthier Skin & Coat</h3>
-                <p>Reduced itchiness and a shinier coat from real nutrition.</p>
-              </div>
-              <div className="benefit-card">
-                <div className="benefit-icon">
-                  <Bone size={28} />
-                </div>
-                <h3>Cleaner Teeth</h3>
-                <p>Nature's toothbrush – raw bones naturally clean teeth.</p>
-              </div>
-              <div className="benefit-card">
-                <div className="benefit-icon">
-                  <Zap size={28} />
-                </div>
-                <h3>Steady Energy</h3>
-                <p>Real food provides sustained vitality without crashes.</p>
-              </div>
-              <div className="benefit-card">
-                <div className="benefit-icon">
-                  <Shield size={28} />
-                </div>
-                <h3>Fewer Sensitivities</h3>
-                <p>Reduced food sensitivities from ingredients they're meant to eat.</p>
-              </div>
-              <div className="benefit-card">
-                <div className="benefit-icon">
-                  <Droplets size={28} />
-                </div>
-                <h3>Safer Digestion</h3>
-                <p>Proper moisture and nutrient absorption supports gut health.</p>
-              </div>
-            </div>
-            
-            {/* AAFCO Logo with compliance text */}
-            <div className="aafco-section">
-              <div className="aafco-logo-placeholder">
-                <p>[ AAFCO Logo ]</p>
-              </div>
-              <p className="aafco-text">
-                Formulated to meet the nutritional levels established by AAFCO Dog and Cat Food Nutrient Profiles for all life stages.
-              </p>
+            <p style={{ textAlign: 'center', marginTop: '12px', fontSize: '16px', fontWeight: '600', color: '#8B4513' }}>
+              Delivered in as little as 3 days.
+            </p>
+            <div style={{ textAlign: 'center', marginTop: '32px' }}>
+              <button 
+                className="btn-primary" 
+                onClick={() => navigate('/build-box')}
+              >
+                Build Your Box
+              </button>
             </div>
           </div>
         </section>
 
-        {/* ===== SECTION 6 — FROM FARM TO BOWL ===== */}
+        {/* ===== SECTION 6 — FROM FARM TO BOWL (Authority) ===== */}
         <section className="farm-section">
           <div className="section-container">
             <h2 className="section-title">From Farm to Bowl</h2>
-            <div className="farm-content" style={{ textAlign: 'center' }}>
-              <p className="farm-emphasis">
-                If it's not good enough for our family, it's not good enough for your pets.
+            <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto 48px' }}>
+              <p style={{ fontSize: '18px', marginBottom: '20px', fontWeight: '600' }}>
+                No distributors.<br />
+                No unknown suppliers.<br />
+                Full control from sourcing to delivery.
               </p>
-              <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
-                We raise and source directly from our own farms and trusted Ontario partners — with full visibility into how every ingredient is produced, handled, and prepared.
-              </p>
-              <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
-                Every order is made fresh in small batches, prepared to order, and personalized when needed.
-              </p>
-              <p style={{ maxWidth: '750px', margin: '0 auto 20px' }}>
-                You'll always know exactly what's in your pet's bowl, where it came from, and why it's there.
+              <p style={{ fontSize: '17px', color: '#666' }}>
+                If it's not good enough for our own table, it's not good enough for your pet's bowl.
               </p>
             </div>
             
             {/* 8 Protein Grid */}
-            <div className="protein-grid">
+            <div className="protein-grid" style={{ marginBottom: '48px' }}>
               <div className="protein-item">
                 <div className="protein-image-placeholder"></div>
                 <span>Chicken</span>
@@ -270,116 +318,189 @@ export const LandingPage = () => {
             </div>
 
             {/* Farm Banner Placeholder */}
-            <div className="farm-banner-placeholder">
+            <div className="farm-banner-placeholder" style={{ marginBottom: '48px' }}>
               <p>[ Farm Sourcing Image Banner ]</p>
             </div>
 
-            {/* Testimonials */}
-            <div className="testimonials-section">
-              <h3>What FoeGuardians Are Saying</h3>
-              <div className="testimonials-grid">
-                <div className="testimonial-card">
-                  <div className="testimonial-image-placeholder"></div>
-                  <p className="testimonial-text">[ Testimonial 1 ]</p>
-                  <span className="testimonial-author">— Pet Guardian Name</span>
-                </div>
-                <div className="testimonial-card">
-                  <div className="testimonial-image-placeholder"></div>
-                  <p className="testimonial-text">[ Testimonial 2 ]</p>
-                  <span className="testimonial-author">— Pet Guardian Name</span>
-                </div>
-                <div className="testimonial-card">
-                  <div className="testimonial-image-placeholder"></div>
-                  <p className="testimonial-text">[ Testimonial 3 ]</p>
-                  <span className="testimonial-author">— Pet Guardian Name</span>
-                </div>
+            {/* Short Professional Credibility Strip */}
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              gap: '48px', 
+              flexWrap: 'wrap',
+              padding: '32px',
+              background: '#F8F6F4',
+              borderRadius: '12px'
+            }}>
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontSize: '15px', fontWeight: '600', color: '#8B4513' }}>
+                  Formulated with nutrition professionals
+                </p>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontSize: '15px', fontWeight: '600', color: '#8B4513' }}>
+                  AAFCO compliant
+                </p>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontSize: '15px', fontWeight: '600', color: '#8B4513' }}>
+                  Government-inspected facility
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ===== SECTION 7 — NEW TO RAW ===== */}
+        {/* ===== SECTION 7 — BENEFITS (Tighter + Cleaner) ===== */}
+        <section className="benefits-section">
+          <div className="section-container">
+            <h2 className="section-title">Real Food. Real Results.</h2>
+            <div className="benefits-grid" style={{ maxWidth: '900px', margin: '0 auto' }}>
+              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
+                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Smaller stools from improved nutrient absorption</h3>
+              </div>
+              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
+                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Healthier skin & coat</h3>
+              </div>
+              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
+                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Cleaner teeth through natural chewing</h3>
+              </div>
+              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
+                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Steady energy & vitality</h3>
+              </div>
+              <div className="benefit-card" style={{ textAlign: 'left', padding: '24px' }}>
+                <h3 style={{ fontSize: '17px', marginBottom: '8px' }}>✔ Fewer unnecessary fillers and irritants</h3>
+              </div>
+            </div>
+            
+            <div style={{ textAlign: 'center', marginTop: '48px' }}>
+              <button 
+                className="btn-secondary" 
+                onClick={() => navigate('/new-to-raw')}
+                style={{ padding: '14px 32px' }}
+              >
+                Learn More About Raw Nutrition →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* ===== SECTION 8 — NEW TO RAW? ===== */}
         <section className="new-to-raw-section">
           <div className="section-container">
-            <h2 className="section-title">New to FoeGuard or Raw Feeding?</h2>
-            <p className="new-to-raw-subtitle">Transitioning is easier than you think.</p>
-            <p className="new-to-raw-text">
-              Whether you're switching from kibble or another raw brand, we guide you every step of the way — so feeding better never feels overwhelming.
+            <h2 className="section-title">New to Raw?</h2>
+            <p style={{ fontSize: '18px', marginBottom: '32px', textAlign: 'center' }}>
+              Switching doesn't have to feel overwhelming.
             </p>
-            <button 
-              className="btn-primary" 
-              onClick={() => navigate('/new-to-raw')}
-              data-testid="trial-box-btn"
-            >
-              Visit New to Raw
-            </button>
-          </div>
-        </section>
-
-        {/* ===== SECTION 8 — COMMUNITY ===== */}
-        <section className="community-section">
-          <div className="section-container">
-            <h2 className="section-title">Trusted by FoeGuardians Across Ontario.</h2>
-            <p className="community-subtitle">Real dogs. Real cats. Real guardians choosing better.</p>
+            <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center', maxWidth: '600px', margin: '0 auto 32px' }}>
+              We guide you every step of the way.
+            </p>
             
-            {/* Customer Photo Grid - 12 images */}
-            <div className="customer-photo-grid">
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
-              <div className="customer-photo-placeholder"></div>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              gap: '32px', 
+              marginBottom: '40px',
+              flexWrap: 'wrap'
+            }}>
+              <div style={{ textAlign: 'center' }}>
+                <Check size={24} style={{ color: '#8B4513', marginBottom: '8px' }} />
+                <p style={{ fontWeight: '600' }}>Free custom consultation</p>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <Check size={24} style={{ color: '#8B4513', marginBottom: '8px' }} />
+                <p style={{ fontWeight: '600' }}>Transition guide included</p>
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <Check size={24} style={{ color: '#8B4513', marginBottom: '8px' }} />
+                <p style={{ fontWeight: '600' }}>14-Day Happiness Guarantee</p>
+              </div>
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <button 
+                className="btn-primary" 
+                onClick={() => navigate('/build-box')}
+                data-testid="trial-box-btn"
+              >
+                Build Your Trial Box
+              </button>
             </div>
           </div>
         </section>
 
-        {/* ===== SECTION 9 — FINAL CTA ===== */}
+        {/* ===== SECTION 9 — FINAL CTA (STRONG & CLEAN) ===== */}
         <section className="final-cta-section">
           <div className="section-container">
-            <h2 className="section-title-white">Give Your Pet the Food They Were Biologically Designed to Eat.</h2>
+            <h2 className="section-title-white" style={{ fontSize: '36px', marginBottom: '24px' }}>
+              For Guardians Who Refuse to Compromise
+            </h2>
             
-            <div className="promise-box">
-              <h3>The FoeGuard Promise:</h3>
-              <ul className="promise-list">
-                <li><Check size={18} /> Free custom meal consultation</li>
-                <li><Check size={18} /> Farm-fresh delivery to your door</li>
-                <li><Check size={18} /> Transition support for new raw feeders</li>
-                <li><Check size={18} /> Free Raw Feeding Guide ($29 value)</li>
-                <li><Check size={18} /> 14-Day Happiness Guarantee</li>
-              </ul>
+            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', marginBottom: '16px' }}>
+              You care about what goes in your pet's bowl.
+            </p>
+            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', marginBottom: '32px' }}>
+              So do we.
+            </p>
+            
+            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.85)', marginBottom: '40px' }}>
+              Farm-raised. Professionally formulated. Delivered across Ontario.
+            </p>
+            
+            <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.8)', marginBottom: '32px' }}>
+              Start with a Trial Box and see the difference firsthand.
+            </p>
+
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button 
+                className="btn-hero" 
+                onClick={() => navigate('/build-box')}
+                data-testid="final-cta-btn"
+              >
+                Build Your Box
+              </button>
+
+              {!emailSubmitted ? (
+                <form onSubmit={handleEmailSubmit} style={{ display: 'inline-flex', gap: '12px' }}>
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    style={{
+                      padding: '14px 20px',
+                      borderRadius: '8px',
+                      border: '2px solid rgba(255,255,255,0.3)',
+                      background: 'rgba(255,255,255,0.1)',
+                      color: 'white',
+                      fontSize: '16px',
+                      minWidth: '250px'
+                    }}
+                  />
+                  <button 
+                    type="submit" 
+                    className="btn-link-white"
+                    style={{
+                      padding: '14px 28px',
+                      background: 'white',
+                      color: '#8B4513',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      fontSize: '16px'
+                    }}
+                  >
+                    Join the FoeGuard Pack
+                  </button>
+                </form>
+              ) : (
+                <p className="email-success" style={{ color: 'white', fontSize: '16px' }}>
+                  Welcome to the pack! Check your inbox.
+                </p>
+              )}
             </div>
-
-            <button 
-              className="btn-hero" 
-              onClick={() => navigate('/build-box')}
-              data-testid="final-cta-btn"
-            >
-              Build Your Box
-            </button>
-
-            {!emailSubmitted ? (
-              <form onSubmit={handleEmailSubmit} className="email-signup">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <button type="submit" className="btn-link-white">
-                  Join the FoeGuard Pack
-                </button>
-              </form>
-            ) : (
-              <p className="email-success">Welcome to the pack! Check your inbox.</p>
-            )}
           </div>
         </section>
 
