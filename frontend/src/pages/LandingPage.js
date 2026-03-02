@@ -423,70 +423,75 @@ export const LandingPage = () => {
               For Guardians Who Refuse to Compromise
             </h2>
             
-            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', marginBottom: '16px' }}>
-              You care about what goes in your pet's bowl.
-            </p>
-            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', marginBottom: '32px' }}>
-              So do we.
+            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.9)', marginBottom: '32px' }}>
+              You care about what goes in your pet's bowl. So do we.
             </p>
             
-            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.85)', marginBottom: '40px' }}>
+            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.9)', marginBottom: '40px' }}>
               Farm-raised. Professionally formulated. Delivered across Ontario.
             </p>
             
-            <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.8)', marginBottom: '32px' }}>
-              Start with a Trial Box and see the difference firsthand.
+            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.9)', marginBottom: '40px', fontWeight: '600' }}>
+              See the FoeGuard Difference first-hand!
             </p>
 
-            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', maxWidth: '500px', margin: '0 auto' }}>
               <button 
                 className="btn-hero" 
                 onClick={() => navigate('/build-box')}
                 data-testid="final-cta-btn"
+                style={{ width: '100%', maxWidth: '400px' }}
               >
                 Build Your Box
               </button>
 
-              {!emailSubmitted ? (
-                <form onSubmit={handleEmailSubmit} style={{ display: 'inline-flex', gap: '12px' }}>
-                  <input 
-                    type="email" 
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    style={{
-                      padding: '14px 20px',
-                      borderRadius: '8px',
-                      border: '2px solid rgba(255,255,255,0.3)',
-                      background: 'rgba(255,255,255,0.1)',
-                      color: 'white',
-                      fontSize: '16px',
-                      minWidth: '250px'
-                    }}
-                  />
-                  <button 
-                    type="submit" 
-                    className="btn-link-white"
-                    style={{
-                      padding: '14px 28px',
-                      background: 'white',
-                      color: '#8B4513',
-                      border: 'none',
-                      borderRadius: '8px',
-                      fontWeight: '600',
-                      cursor: 'pointer',
-                      fontSize: '16px'
-                    }}
-                  >
-                    Join the FoeGuard Pack
-                  </button>
-                </form>
-              ) : (
-                <p className="email-success" style={{ color: 'white', fontSize: '16px' }}>
-                  Welcome to the pack! Check your inbox.
+              <div style={{ width: '100%', maxWidth: '400px', textAlign: 'center' }}>
+                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.8)', marginBottom: '12px', lineHeight: '1.5' }}>
+                  Get our Raw Feeding Guide for Free (and lots more) by Joining the FoeGuard Pack. See you on the other side!
                 </p>
-              )}
+                {!emailSubmitted ? (
+                  <form onSubmit={handleEmailSubmit} style={{ width: '100%' }}>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <input 
+                        type="email" 
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        style={{
+                          flex: 1,
+                          padding: '14px 20px',
+                          borderRadius: '8px',
+                          border: '2px solid rgba(255,255,255,0.3)',
+                          background: 'rgba(255,255,255,0.1)',
+                          color: 'white',
+                          fontSize: '16px'
+                        }}
+                      />
+                      <button 
+                        type="submit" 
+                        style={{
+                          padding: '14px 24px',
+                          background: 'white',
+                          color: '#8B4513',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          fontSize: '16px',
+                          whiteSpace: 'nowrap'
+                        }}
+                      >
+                        Join Pack
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <p style={{ color: 'white', fontSize: '16px', padding: '14px', background: 'rgba(255,255,255,0.1)', borderRadius: '8px' }}>
+                    Welcome to the pack! Check your inbox.
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </section>
