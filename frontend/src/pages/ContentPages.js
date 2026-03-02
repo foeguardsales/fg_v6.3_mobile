@@ -77,10 +77,12 @@ export const AboutPage = () => {
           </div>
         </section>
 
-        {/* Team Image */}
-        <section className="about-team-image">
-          <div className="team-image-placeholder">
-            <span>Our Team / Dogs Eating FoeGuard</span>
+        {/* Team Images */}
+        <section className="about-team-images-grid">
+          <div className="team-grid">
+            <div className="team-image-card"><span>Image 1</span></div>
+            <div className="team-image-card"><span>Image 2</span></div>
+            <div className="team-image-card"><span>Image 3</span></div>
           </div>
         </section>
 
