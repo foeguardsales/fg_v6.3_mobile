@@ -84,6 +84,13 @@ export const AboutPage = () => {
             <div className="team-image-card"><span>Image 2</span></div>
             <div className="team-image-card"><span>Image 3</span></div>
           </div>
+          <div className="team-carousel">
+            <div className="team-carousel-track">
+              <div className="team-image-card"><span>Image 1</span></div>
+              <div className="team-image-card"><span>Image 2</span></div>
+              <div className="team-image-card"><span>Image 3</span></div>
+            </div>
+          </div>
         </section>
 
         {/* From Our Farm Section */}
