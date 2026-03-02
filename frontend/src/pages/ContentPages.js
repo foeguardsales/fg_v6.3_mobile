@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 
 export const AboutPage = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,9 +27,11 @@ export const AboutPage = () => {
         <section className="about-hero">
           <div className="about-hero-content">
             <h1>Welcome to FoeGuard.</h1>
-            <p className="about-hero-statement">
-              FoeGuard began with a simple conviction:<br />
-              <span className="highlight-text">If we wouldn't serve it at our own table, we won't put it in our pets' bowls.</span>
+            <p className="about-hero-statement" style={{ fontSize: '17px', marginBottom: '24px' }}>
+              FoeGuard began with a simple conviction:
+            </p>
+            <p className="highlight-text" style={{ fontSize: '17px', fontWeight: '600' }}>
+              If we wouldn't serve it at our own table, we won't put it in our pets' bowls.
             </p>
           </div>
         </section>
@@ -43,8 +46,8 @@ export const AboutPage = () => {
         {/* Roots Section */}
         <section className="about-section about-roots">
           <div className="about-container">
-            <p className="about-lead-text">
-              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving.
+            <p className="about-lead-text" style={{ fontSize: '17px' }}>
+              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving. Sourcing, handling, and ingredient integrity aren't marketing points to us — they're standards.
             </p>
           </div>
         </section>
@@ -72,27 +75,32 @@ export const AboutPage = () => {
           </div>
         </section>
 
-        {/* From Our Family to Yours Section */}
+        {/* The Difference Section */}
         <section className="about-section about-story">
           <div className="about-container">
-            <h2>From Our Family to Yours</h2>
-            <p>
-              FoeGuard began with a simple belief: pets deserve the same quality of food we expect for ourselves.
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              When we began feeding our own dogs fresh, responsibly raised, species-appropriate food, the difference was undeniable.
             </p>
-            <p>
-              With our background in farming and biology, we understood how much sourcing, handling, and ingredient quality truly matter. When we began feeding our own dogs fresh, responsibly raised, species-appropriate food, the difference was clear — stronger digestion, healthier coats, better energy, and overall vitality.
+            <p style={{ fontSize: '17px', marginBottom: '24px' }}>
+              Stronger digestion.<br />
+              Healthier coats.<br />
+              Steady energy.<br />
+              Real vitality.
             </p>
-            <p>
-              It reinforced what nature intended. Carnivores thrive on real, properly raised meat — not heavily processed alternatives with unclear origins.
+            <p style={{ fontSize: '17px', marginBottom: '24px', fontWeight: '600' }}>
+              It confirmed what nature already designed:
             </p>
-            <p>
-              We focused on doing things the right way: raising and sourcing responsibly, working with trusted Ontario farms, and preparing meals with complete transparency from start to finish.
+            <p style={{ fontSize: '17px', marginBottom: '32px' }}>
+              Carnivores thrive on properly raised, minimally processed meat — not heavily manufactured alternatives with unclear origins.
             </p>
-            <p>
-              What started as a personal journey soon became a mission to help others. We began using our farm to prepare meals for friends and neighbours, and soon realized that more and more Canadians were missing access to transparent, farm fresh raw pet food.
+            <p style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
+              What started as a personal standard became something bigger.
             </p>
-            <p className="story-conclusion">
-              Needless to say, that passion grew into profession — <strong>FoeGuard was born.</strong>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Friends and neighbours began asking for the same meals we were preparing on our farm. Word spread. Demand grew.
+            </p>
+            <p className="story-conclusion" style={{ fontSize: '17px' }}>
+              FoeGuard was born from that demand — and from a commitment to raise the standard of what pet food should be.
             </p>
           </div>
         </section>
@@ -109,20 +117,20 @@ export const AboutPage = () => {
           <div className="about-container">
             <h2>From Our Farm to Your Bowl</h2>
             <div className="farm-statements">
-              <p className="statement-bold">We are not a distributor.</p>
-              <p className="statement-bold">We are not a white-label brand.</p>
+              <p className="statement-bold" style={{ fontSize: '17px' }}>We are not a distributor.</p>
+              <p className="statement-bold" style={{ fontSize: '17px' }}>We are not a white-label brand.</p>
             </div>
-            <p>
+            <p style={{ fontSize: '17px', marginBottom: '24px' }}>
               We work directly with trusted Ontario farms — including our own — to source ethically raised, human-grade meats.
             </p>
-            <p className="sub-heading">Every meal is:</p>
-            <ul className="about-list">
-              <li>Made in a government-inspected facility</li>
-              <li>Formulated with professional nutritionists and biologists</li>
+            <p className="sub-heading" style={{ fontSize: '17px', marginBottom: '16px' }}>Every meal is:</p>
+            <ul className="about-list" style={{ fontSize: '17px', lineHeight: '1.8' }}>
+              <li>Prepared in a government-inspected facility</li>
+              <li>Professionally formulated for complete, balanced nutrition</li>
               <li>Free from antibiotics, hormones, fillers, and preservatives</li>
               <li>Flash frozen at peak freshness</li>
             </ul>
-            <p className="farm-conclusion">
+            <p className="farm-conclusion" style={{ fontSize: '17px', marginTop: '24px' }}>
               We oversee every step — from sourcing to preparation to delivery — so you never have to question what's in your pet's bowl.
             </p>
           </div>
@@ -132,33 +140,33 @@ export const AboutPage = () => {
         <section className="about-section about-why">
           <div className="about-container">
             <h2>Why We Do This</h2>
-            <p>
-              Too many pet guardians feel overwhelmed by unclear labels, inconsistent sourcing, and highly processed options.
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Too many guardians feel overwhelmed by unclear labels, inconsistent sourcing, and highly processed options.
             </p>
-            <p>
-              We believe feeding your carnivore shouldn't feel confusing.
+            <p style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
+              Feeding your carnivore shouldn't feel confusing.
             </p>
-            <p className="why-emphasis">
-              It should feel <strong>natural</strong>. <strong>Transparent</strong>. <strong>Grounded</strong>.
+            <p className="why-emphasis" style={{ fontSize: '17px', marginBottom: '24px' }}>
+              It should feel natural. Transparent. Grounded.
             </p>
-            <p>
-              Raw feeding isn't new — it's simply a return to biological design.
+            <p style={{ fontSize: '17px' }}>
+              Raw feeding isn't extreme — it's simply a return to biological design.
             </p>
           </div>
         </section>
 
-        {/* Our Team Section */}
+        {/* Our Standard Section */}
         <section className="about-section about-team-text">
           <div className="about-container">
-            <h2>Our Team</h2>
-            <p>
-              We don't just focus on what's in the bowl—we bring expertise and care to every step of the process.
+            <h2>Our Standard</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Behind FoeGuard is a network of Ontario farmers, nutrition professionals, and animal specialists committed to one principle:
             </p>
-            <p>
-              Our team includes a diverse range of professionals, from local Ontario farmers and nutritional experts like our on-site biologist, to pet specialists such as a canine behaviourist, dedicated drivers and partnered breeders.
+            <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '24px' }}>
+              Uncompromised care.
             </p>
-            <p>
-              Every FoeGuard product meets rigorous human-grade safety standards and is crafted for optimal carnivore nutrition. Our recipes are thoroughly tested and tried by dozens of dogs and cats to ensure consistent, premium quality, so you can trust that your pet is getting the very best every time.
+            <p style={{ fontSize: '17px' }}>
+              Every recipe is refined, tested, and fed to real dogs and cats — including our own — before it ever reaches yours.
             </p>
           </div>
         </section>
@@ -167,13 +175,13 @@ export const AboutPage = () => {
         <section className="about-section about-mission">
           <div className="about-container">
             <h2>Our Mission</h2>
-            <p>
-              To give responsible guardians a transparent and trustworthy source for information, collaboration, and farm-fresh pet food.
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              To provide responsible guardians with a transparent, trustworthy source for farm-fresh, biologically appropriate pet food.
             </p>
-            <p>
-              To raise the standard of what pet food should be — real, accountable, and biologically appropriate.
+            <p style={{ fontSize: '17px', marginBottom: '24px' }}>
+              To raise the standard of what pet food should be — real, accountable, and properly sourced.
             </p>
-            <p className="mission-callout">
+            <p className="mission-callout" style={{ fontSize: '17px', fontWeight: '600', marginBottom: '40px' }}>
               If you believe pets deserve real food, you're already part of the mission.
             </p>
 
