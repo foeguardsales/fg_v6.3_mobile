@@ -181,10 +181,10 @@ export const LandingPage = () => {
               <p style={{ fontSize: '17px', marginBottom: '16px' }}>
                 <strong>Carnivores deserve better.</strong>
               </p>
-              <p style={{ fontSize: '17px', marginBottom: '24px' }}>
+              <p style={{ fontSize: '17px', marginBottom: '32px' }}>
                 Whether you're new to raw or already feeding it, we make it simple:
               </p>
-              <p style={{ fontSize: '17px', fontWeight: '600', textAlign: 'center', marginTop: '32px' }}>
+              <p style={{ fontSize: '17px', fontWeight: '600', textAlign: 'center' }}>
                 Build. Thaw. Feed.
               </p>
             </div>
@@ -341,35 +341,39 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* ===== SECTION 7 — BENEFITS (Icon Cards) ===== */}
+        {/* ===== SECTION 7 — BENEFITS (Clean Checkmark List) ===== */}
         <section className="benefits-section">
           <div className="section-container">
             <h2 className="section-title">Real Food. Real Results.</h2>
-            <div className="benefits-grid">
-              <div className="benefit-card">
-                <div className="benefit-icon">🦴</div>
-                <h3>Cleaner Teeth</h3>
-                <p>Natural chewing action helps maintain dental health.</p>
-              </div>
-              <div className="benefit-card">
-                <div className="benefit-icon">✨</div>
-                <h3>Healthier Skin & Coat</h3>
-                <p>Improved nutrition shows in their appearance.</p>
-              </div>
-              <div className="benefit-card">
-                <div className="benefit-icon">⚡</div>
-                <h3>Steady Energy</h3>
-                <p>Balanced nutrients support natural vitality.</p>
-              </div>
-              <div className="benefit-card">
-                <div className="benefit-icon">💪</div>
-                <h3>Better Nutrient Absorption</h3>
-                <p>Smaller stools reflect improved digestion.</p>
-              </div>
-              <div className="benefit-card">
-                <div className="benefit-icon">🛡️</div>
-                <h3>Fewer Fillers & Irritants</h3>
-                <p>Real ingredients without unnecessary additives.</p>
+            <div style={{ 
+              maxWidth: '700px', 
+              margin: '0 auto',
+              background: 'white',
+              padding: '40px',
+              borderRadius: '16px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'start', gap: '12px' }}>
+                  <span style={{ color: '#8B4513', fontSize: '20px', marginTop: '2px' }}>✔</span>
+                  <p style={{ fontSize: '17px', margin: 0 }}>Smaller stools from improved nutrient absorption</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'start', gap: '12px' }}>
+                  <span style={{ color: '#8B4513', fontSize: '20px', marginTop: '2px' }}>✔</span>
+                  <p style={{ fontSize: '17px', margin: 0 }}>Healthier skin & coat</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'start', gap: '12px' }}>
+                  <span style={{ color: '#8B4513', fontSize: '20px', marginTop: '2px' }}>✔</span>
+                  <p style={{ fontSize: '17px', margin: 0 }}>Cleaner teeth through natural chewing</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'start', gap: '12px' }}>
+                  <span style={{ color: '#8B4513', fontSize: '20px', marginTop: '2px' }}>✔</span>
+                  <p style={{ fontSize: '17px', margin: 0 }}>Steady energy & vitality</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'start', gap: '12px' }}>
+                  <span style={{ color: '#8B4513', fontSize: '20px', marginTop: '2px' }}>✔</span>
+                  <p style={{ fontSize: '17px', margin: 0 }}>Fewer unnecessary fillers and irritants</p>
+                </div>
               </div>
             </div>
             
