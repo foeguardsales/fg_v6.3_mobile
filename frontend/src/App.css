@@ -9,6 +9,12 @@
   font-style: normal;
 }
 
+/* Neue Haas Grotesk fallback to Helvetica Now, then system sans-serif */
+:root {
+  --font-body: 'Helvetica Now', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: 'CS Gordon', Georgia, serif;
+}
+
 /* ========== CSS VARIABLES ========== */
 :root {
   /* Primary Colors - FoeGuard Brand */
@@ -70,7 +76,7 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--font-body);
   background-color: var(--offwhite);
   color: var(--charcoal);
   -webkit-font-smoothing: antialiased;
@@ -81,7 +87,7 @@ body {
 
 /* Typography Hierarchy */
 h1 {
-  font-family: 'CS Gordon', Georgia, serif;
+  font-family: var(--font-heading);
   font-weight: normal;
   color: var(--charcoal);
   line-height: 1.25;
@@ -90,7 +96,7 @@ h1 {
 }
 
 h2, h3, h4 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-weight: 600;
   color: var(--charcoal);
   line-height: 1.25;
@@ -110,7 +116,7 @@ h2, h3, h4 {
   background: none;
   border: none;
   color: var(--text-inverse);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
@@ -156,7 +162,7 @@ h2, h3, h4 {
   background: none;
   border: none;
   color: var(--text-inverse);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -190,7 +196,7 @@ h2, h3, h4 {
   border: none;
   padding: 16px 36px;
   border-radius: 100px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -226,7 +232,7 @@ h2, h3, h4 {
   border: 2px solid var(--barn-red);
   padding: 14px 32px;
   border-radius: 100px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -244,7 +250,7 @@ h2, h3, h4 {
   border: 2px solid var(--barn-red);
   padding: 18px 48px;
   border-radius: 100px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 18px;
   font-weight: 600;
   cursor: pointer;
@@ -301,7 +307,7 @@ h2, h3, h4 {
 
 .hero-title {
   font-family: 'CS Gordon', Georgia, serif;
-  font-size: clamp(38px, 6vw, 58px);
+  font-size: clamp(32px, 5vw, 48px);
   font-weight: normal;
   color: var(--text-inverse);
   line-height: 1.15;
@@ -348,7 +354,7 @@ h2, h3, h4 {
 }
 
 .section-title-sm {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 28px;
   font-weight: 600;
   color: var(--charcoal);
@@ -425,7 +431,7 @@ h2, h3, h4 {
 }
 
 .problem-symptoms {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px !important;
   color: var(--barn-red) !important;
   font-style: italic;
@@ -437,7 +443,7 @@ h2, h3, h4 {
 }
 
 .problem-benefits p {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 20px !important;
   font-weight: 500;
   color: var(--charcoal) !important;
@@ -445,7 +451,7 @@ h2, h3, h4 {
 }
 
 .problem-highlight {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px !important;
   font-weight: 600;
   color: var(--barn-red) !important;
@@ -472,7 +478,7 @@ h2, h3, h4 {
 }
 
 .standard-card h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px;
   color: var(--cream);
   margin: 0 0 16px 0;
@@ -492,7 +498,7 @@ h2, h3, h4 {
 }
 
 .section-title {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(32px, 5vw, 44px);
   font-weight: 600;
   color: var(--charcoal);
@@ -542,7 +548,7 @@ h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px;
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
@@ -557,14 +563,14 @@ h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 26px;
   font-weight: 700;
   margin: 0 auto 20px;
 }
 
 .step-card h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px;
   color: var(--charcoal);
   margin: 0 0 12px 0;
@@ -628,7 +634,7 @@ h2, h3, h4 {
 }
 
 .benefit-card h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 18px;
   color: var(--charcoal);
   margin: 0 0 10px 0;
@@ -702,7 +708,7 @@ h2, h3, h4 {
 }
 
 .feeding-symptoms {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px !important;
   color: var(--barn-red) !important;
   font-style: italic;
@@ -714,7 +720,7 @@ h2, h3, h4 {
 }
 
 .feeding-benefits-list p {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 20px !important;
   font-weight: 500;
   color: var(--charcoal) !important;
@@ -725,7 +731,7 @@ h2, h3, h4 {
   background: none;
   border: none;
   color: var(--foeguard-red);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -763,7 +769,7 @@ h2, h3, h4 {
 }
 
 .farm-quote {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px;
   font-style: italic;
   color: var(--barn-red);
@@ -772,7 +778,7 @@ h2, h3, h4 {
 }
 
 .farm-emphasis {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px;
   color: var(--barn-red);
   text-align: center;
@@ -830,7 +836,7 @@ h2, h3, h4 {
 }
 
 .testimonials-section h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 28px;
   color: var(--charcoal);
   text-align: center;
@@ -944,7 +950,7 @@ h2, h3, h4 {
 }
 
 .section-title-white {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(28px, 4.5vw, 40px);
   font-weight: 600;
   color: var(--text-inverse);
@@ -967,7 +973,7 @@ h2, h3, h4 {
 }
 
 .promise-box h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px;
   color: var(--khaki);
   margin: 0 0 20px 0;
@@ -1034,7 +1040,7 @@ h2, h3, h4 {
   background: none;
   border: none;
   color: var(--khaki);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -1142,7 +1148,7 @@ h2, h3, h4 {
   border: none;
   padding: 20px 52px;
   border-radius: 100px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
@@ -1173,7 +1179,7 @@ h2, h3, h4 {
 }
 
 .footer-section h4 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
@@ -1236,7 +1242,7 @@ h2, h3, h4 {
   border: none;
   padding: 14px 28px;
   border-radius: 100px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -1281,7 +1287,7 @@ h2, h3, h4 {
 }
 
 .box-size-selector-inline h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 20px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -1326,7 +1332,7 @@ h2, h3, h4 {
 
 .box-size-label {
   display: block;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 26px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1339,7 +1345,7 @@ h2, h3, h4 {
   color: var(--text-inverse);
   padding: 4px 12px;
   border-radius: 100px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 12px;
   font-weight: 700;
 }
@@ -1367,7 +1373,7 @@ h2, h3, h4 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 15px;
   color: var(--charcoal);
@@ -1402,7 +1408,7 @@ h2, h3, h4 {
 }
 
 .collection-title {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 30px;
   color: var(--charcoal);
   margin: 0 0 4px 0;
@@ -1438,7 +1444,7 @@ h2, h3, h4 {
 }
 
 .product-card h4 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px;
   color: var(--charcoal);
   margin: 8px 0;
@@ -1464,14 +1470,14 @@ h2, h3, h4 {
 }
 
 .price-discounted {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 700;
   color: var(--forest-green);
 }
 
 .price-regular {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1521,7 +1527,7 @@ h2, h3, h4 {
 
 .qty-display {
   min-width: 70px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 18px;
   font-weight: 700;
   color: var(--charcoal);
@@ -1531,7 +1537,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   color: var(--barn-red);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -1551,7 +1557,7 @@ h2, h3, h4 {
 }
 
 .treats-section h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 28px;
   color: var(--charcoal);
   margin-bottom: 28px;
@@ -1585,7 +1591,7 @@ h2, h3, h4 {
 }
 
 .treat-info h4 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 600;
   color: var(--charcoal);
@@ -1605,7 +1611,7 @@ h2, h3, h4 {
 }
 
 .treat-price-checkbox span {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 18px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1675,7 +1681,7 @@ h2, h3, h4 {
 }
 
 .cart-drawer-header h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 26px;
   color: var(--barn-red);
   margin: 0;
@@ -1703,7 +1709,7 @@ h2, h3, h4 {
 }
 
 .cart-box-info {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 24px;
@@ -1750,7 +1756,7 @@ h2, h3, h4 {
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1780,7 +1786,7 @@ h2, h3, h4 {
 }
 
 .checkout-form h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 34px;
   color: var(--charcoal);
   text-align: center;
@@ -1794,7 +1800,7 @@ h2, h3, h4 {
 }
 
 .checkout-section h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -1812,7 +1818,7 @@ h2, h3, h4 {
 
 .form-group label {
   display: block;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
   color: var(--charcoal);
@@ -1825,7 +1831,7 @@ h2, h3, h4 {
   padding: 16px 18px;
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   background: var(--white);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -1862,7 +1868,7 @@ h2, h3, h4 {
 }
 
 .checkout-summary h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 20px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -1887,7 +1893,7 @@ h2, h3, h4 {
   padding-top: 20px;
   margin-top: 12px;
   border-top: 2px solid var(--khaki);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1934,7 +1940,7 @@ h2, h3, h4 {
 
 .subscription-info strong {
   display: block;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   color: var(--barn-red);
   margin-bottom: 6px;
 }
@@ -1971,7 +1977,7 @@ h2, h3, h4 {
   padding: 16px 18px;
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
 }
 
@@ -2041,7 +2047,7 @@ h2, h3, h4 {
   padding: 16px 18px;
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
 }
 
@@ -2081,7 +2087,7 @@ h2, h3, h4 {
 }
 
 .order-success h1 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 40px;
   color: var(--forest-green);
   margin-bottom: 16px;
@@ -2103,7 +2109,7 @@ h2, h3, h4 {
 }
 
 .auth-card h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 34px;
   text-align: center;
   color: var(--charcoal);
@@ -2122,7 +2128,7 @@ h2, h3, h4 {
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
   background: var(--white);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -2160,7 +2166,7 @@ h2, h3, h4 {
 }
 
 .product-detail-title {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 48px;
   color: var(--charcoal);
   margin-bottom: 16px;
@@ -2182,7 +2188,7 @@ h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 15px;
 }
@@ -2201,14 +2207,14 @@ h2, h3, h4 {
 }
 
 .content-page h1 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 44px;
   color: var(--charcoal);
   margin-bottom: 32px;
 }
 
 .content-page h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 28px;
   color: var(--barn-red);
   margin: 40px 0 16px;
@@ -2287,7 +2293,7 @@ h2, h3, h4 {
 }
 
 .contact-form-section h1 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 44px;
   color: var(--charcoal);
   margin-bottom: 16px;
@@ -2328,7 +2334,7 @@ h2, h3, h4 {
   padding: 14px 16px;
   border: 2px solid var(--khaki);
   border-radius: var(--radius-md);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   transition: all 0.2s ease;
 }
@@ -2370,7 +2376,7 @@ h2, h3, h4 {
 }
 
 .contact-success h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   color: var(--forest-green);
   margin-bottom: 12px;
 }
@@ -2392,7 +2398,7 @@ h2, h3, h4 {
 }
 
 .contact-card h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 20px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -2501,7 +2507,7 @@ h2, h3, h4 {
   background: none;
   border: none;
   color: var(--barn-red);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
@@ -2545,7 +2551,7 @@ h2, h3, h4 {
   color: var(--text-inverse);
   padding: 8px 20px;
   border-radius: 100px;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
@@ -2557,7 +2563,7 @@ h2, h3, h4 {
 }
 
 .product-title {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 36px;
   color: var(--charcoal);
   margin: 0 0 8px 0;
@@ -2602,7 +2608,7 @@ h2, h3, h4 {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 20px;
   font-weight: 600;
   color: var(--charcoal);
@@ -2689,7 +2695,7 @@ h2, h3, h4 {
 }
 
 .feeding-tips h4 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 700;
   color: var(--barn-red);
@@ -2771,7 +2777,7 @@ h2, h3, h4 {
 }
 
 .subscription-modal-header h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px;
   color: var(--barn-red);
   margin: 0;
@@ -2836,7 +2842,7 @@ h2, h3, h4 {
   color: #C33;
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-weight: 600;
   font-size: 15px;
   transition: all 0.2s ease;
@@ -2929,7 +2935,7 @@ h2, h3, h4 {
 }
 
 .price-size {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 28px;
   font-weight: 700;
   color: var(--charcoal);
@@ -2937,7 +2943,7 @@ h2, h3, h4 {
 }
 
 .price-amount {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 700;
   color: var(--barn-red);
@@ -3116,7 +3122,7 @@ h2, h3, h4 {
 }
 
 .about-hero h1 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(36px, 5vw, 52px);
   color: var(--text-inverse);
   margin: 0 0 32px 0;
@@ -3148,7 +3154,7 @@ h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 18px;
   color: var(--text-secondary);
   font-weight: 500;
@@ -3169,7 +3175,7 @@ h2, h3, h4 {
 }
 
 .about-lead-text {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(22px, 3vw, 28px);
   color: var(--charcoal);
   text-align: center;
@@ -3199,7 +3205,7 @@ h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   color: var(--text-secondary);
   font-weight: 500;
@@ -3210,7 +3216,7 @@ h2, h3, h4 {
 }
 
 .about-story h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 24px;
@@ -3232,7 +3238,7 @@ h2, h3, h4 {
 }
 
 .story-benefits span {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 600;
   color: var(--barn-red);
@@ -3246,7 +3252,7 @@ h2, h3, h4 {
 }
 
 .story-question {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px !important;
   font-style: italic;
   color: var(--barn-red) !important;
@@ -3284,7 +3290,7 @@ h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   color: var(--text-secondary);
   font-weight: 500;
@@ -3327,7 +3333,7 @@ h2, h3, h4 {
 }
 
 .about-farm-bowl h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 32px;
@@ -3391,7 +3397,7 @@ h2, h3, h4 {
 }
 
 .about-why h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 24px;
@@ -3414,7 +3420,7 @@ h2, h3, h4 {
 }
 
 .about-team-text h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 24px;
@@ -3428,7 +3434,7 @@ h2, h3, h4 {
 }
 
 .team-standard {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px !important;
   font-weight: 600;
   color: var(--barn-red) !important;
@@ -3442,7 +3448,7 @@ h2, h3, h4 {
 }
 
 .about-mission h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(28px, 4vw, 36px);
   color: var(--text-inverse);
   margin-bottom: 24px;
@@ -3456,7 +3462,7 @@ h2, h3, h4 {
 }
 
 .mission-callout {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 22px !important;
   font-weight: 500;
   color: var(--khaki) !important;
@@ -3480,7 +3486,7 @@ h2, h3, h4 {
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.1);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   color: var(--text-inverse);
   transition: all 0.2s ease;
@@ -3549,7 +3555,7 @@ h2, h3, h4 {
 }
 
 .ntf-hero h1 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(36px, 5vw, 52px);
   color: var(--text-inverse);
   margin: 0 0 24px 0;
@@ -3580,7 +3586,7 @@ h2, h3, h4 {
 }
 
 .ntf-section h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 24px;
@@ -3612,7 +3618,7 @@ h2, h3, h4 {
 }
 
 .ntf-lead-question {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 20px !important;
   font-style: italic;
   color: var(--barn-red) !important;
@@ -3620,7 +3626,7 @@ h2, h3, h4 {
 }
 
 .ntf-symptoms {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 20px !important;
   font-style: italic;
   color: var(--barn-red) !important;
@@ -3686,7 +3692,7 @@ h2, h3, h4 {
 .comparison-table th {
   padding: 20px 16px;
   text-align: center;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
   color: var(--text-inverse);
@@ -3781,7 +3787,7 @@ h2, h3, h4 {
 }
 
 .transition-option h3 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px;
   color: var(--charcoal);
   margin: 0 0 12px 0;
@@ -3942,7 +3948,7 @@ h2, h3, h4 {
   background: var(--barn-red);
   color: var(--text-inverse);
   border-radius: 50%;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 16px;

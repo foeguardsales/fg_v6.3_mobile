@@ -233,11 +233,13 @@ export const BoxBuilder = () => {
                 padding: '30px'
               }}>
                 <span style={{
-                  fontFamily: 'Crimson Pro, Georgia, serif',
+                  fontFamily: "'CS Gordon', serif",
                   fontSize: '32px',
-                  fontWeight: '700',
+                  fontWeight: 'normal',
                   color: '#FFFFFF',
-                  textShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                  textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
                 }}>Raw Dog Food</span>
               </div>
               {petType === 'dog' && (
@@ -290,11 +292,13 @@ export const BoxBuilder = () => {
                 padding: '30px'
               }}>
                 <span style={{
-                  fontFamily: 'Crimson Pro, Georgia, serif',
+                  fontFamily: "'CS Gordon', serif",
                   fontSize: '32px',
-                  fontWeight: '700',
+                  fontWeight: 'normal',
                   color: '#FFFFFF',
-                  textShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                  textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
                 }}>Raw Cat Food</span>
               </div>
               {petType === 'cat' && (
@@ -425,11 +429,13 @@ export const BoxBuilder = () => {
                         letterSpacing: '0.5px'
                       }}>Complete & Balanced</span>
                       <h3 style={{
-                        fontFamily: 'Fraunces, Georgia, serif',
+                        fontFamily: "'CS Gordon', serif",
                         fontSize: '36px',
-                        fontWeight: '600',
+                        fontWeight: 'normal',
                         color: '#FFFFFF',
-                        margin: '0 0 12px 0'
+                        margin: '0 0 12px 0',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
                       }}>Comfort Dinner</h3>
                       <p style={{
                         color: 'rgba(255,255,255,0.95)',
@@ -511,11 +517,13 @@ export const BoxBuilder = () => {
                         letterSpacing: '0.5px'
                       }}>80/10/10 Base</span>
                       <h3 style={{
-                        fontFamily: 'Fraunces, Georgia, serif',
+                        fontFamily: "'CS Gordon', serif",
                         fontSize: '36px',
-                        fontWeight: '600',
+                        fontWeight: 'normal',
                         color: '#FFFFFF',
-                        margin: '0 0 12px 0'
+                        margin: '0 0 12px 0',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
                       }}>Primal Feast</h3>
                       <p style={{
                         color: 'rgba(255,255,255,0.95)',
@@ -607,11 +615,13 @@ export const BoxBuilder = () => {
                         letterSpacing: '0.5px'
                       }}>Complete & Balanced</span>
                       <h3 style={{
-                        fontFamily: 'Fraunces, Georgia, serif',
+                        fontFamily: "'CS Gordon', serif",
                         fontSize: '36px',
-                        fontWeight: '600',
+                        fontWeight: 'normal',
                         color: '#FFFFFF',
-                        margin: '0 0 12px 0'
+                        margin: '0 0 12px 0',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
                       }}>Royal Paws Dinner</h3>
                       <p style={{
                         color: 'rgba(255,255,255,0.95)',

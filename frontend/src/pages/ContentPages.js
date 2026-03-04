@@ -461,13 +461,13 @@ export const NewToRawPage = () => {
         <section className="ntf-hero">
           <div className="ntf-hero-content">
             <h1>New to FoeGuard?</h1>
-            <p className="ntf-hero-subtitle">
+            <p className="ntf-hero-subtitle" style={{ fontWeight: '600', fontSize: '18px', marginBottom: '16px' }}>
               Switching your pet's food doesn't have to feel complicated.
             </p>
-            <p className="ntf-hero-text">
+            <p className="ntf-hero-text" style={{ fontSize: '18px', fontWeight: 'normal' }}>
               Whether you're new to raw feeding or simply new to us, we make the transition simple, structured, and fully supported.
             </p>
-            <p className="ntf-hero-text" style={{ fontWeight: '600', marginTop: '20px' }}>
+            <p className="ntf-hero-text" style={{ fontSize: '18px', fontWeight: 'normal', marginTop: '16px' }}>
               You don't have to figure this out alone.
             </p>
           </div>
