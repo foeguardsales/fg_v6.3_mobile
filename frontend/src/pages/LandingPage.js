@@ -38,10 +38,13 @@ export const LandingPage = () => {
               <span className="hero-accent">Were Designed to Eat.</span>
             </h1>
             <p className="hero-subtitle">
-              Farm-raised, human-grade raw meals delivered across Ontario.
+              Organic, human-grade raw pet food delivered across Ontario.
+            </p>
+            <p className="hero-subtitle" style={{ marginBottom: '12px' }}>
+              From our family farm to your pet's bowl within days
             </p>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', marginBottom: '28px' }}>
-              Delivered to your door in as little as 3 days.
+              Delivered in as little as 3 days.
             </p>
             <button 
               className="btn-hero" 
@@ -52,8 +55,8 @@ export const LandingPage = () => {
             </button>
             <div className="hero-trust-strip">
               <span><Check size={16} /> Farm Raised in Ontario</span>
-              <span><Check size={16} /> Human-Grade Whole Ingredients</span>
-              <span><Check size={16} /> No Fillers. No Grains. No Preservatives.</span>
+              <span><Check size={16} /> AAFCO Compliant</span>
+              <span><Check size={16} /> Grain-Free. No Artificial Additives.</span>
             </div>
           </div>
         </section>
