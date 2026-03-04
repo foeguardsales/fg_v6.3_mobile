@@ -1,5 +1,6 @@
 /* FoeGuard - Modern Farmhouse Design System */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
 
 /* ========== CSS VARIABLES ========== */
 :root {
@@ -72,7 +73,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 600;
   color: var(--charcoal);
   line-height: 1.25;
@@ -282,7 +283,7 @@ h1, h2, h3, h4 {
 }
 
 .hero-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(38px, 6vw, 58px);
   font-weight: 700;
   color: var(--text-inverse);
@@ -329,7 +330,7 @@ h1, h2, h3, h4 {
 }
 
 .section-title-sm {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 28px;
   color: var(--charcoal);
   text-align: center;
@@ -405,7 +406,7 @@ h1, h2, h3, h4 {
 }
 
 .problem-symptoms {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 22px !important;
   color: var(--barn-red) !important;
   font-style: italic;
@@ -417,7 +418,7 @@ h1, h2, h3, h4 {
 }
 
 .problem-benefits p {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 20px !important;
   font-weight: 500;
   color: var(--charcoal) !important;
@@ -425,7 +426,7 @@ h1, h2, h3, h4 {
 }
 
 .problem-highlight {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 24px !important;
   font-weight: 600;
   color: var(--barn-red) !important;
@@ -452,7 +453,7 @@ h1, h2, h3, h4 {
 }
 
 .standard-card h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 24px;
   color: var(--cream);
   margin: 0 0 16px 0;
@@ -472,7 +473,7 @@ h1, h2, h3, h4 {
 }
 
 .section-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(32px, 5vw, 44px);
   color: var(--charcoal);
   text-align: center;
@@ -521,7 +522,7 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Fraunces', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 22px;
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
@@ -536,14 +537,14 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Fraunces', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 26px;
   font-weight: 700;
   margin: 0 auto 20px;
 }
 
 .step-card h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 22px;
   color: var(--charcoal);
   margin: 0 0 12px 0;
@@ -607,7 +608,7 @@ h1, h2, h3, h4 {
 }
 
 .benefit-card h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 18px;
   color: var(--charcoal);
   margin: 0 0 10px 0;
@@ -681,7 +682,7 @@ h1, h2, h3, h4 {
 }
 
 .feeding-symptoms {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 22px !important;
   color: var(--barn-red) !important;
   font-style: italic;
@@ -693,7 +694,7 @@ h1, h2, h3, h4 {
 }
 
 .feeding-benefits-list p {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 20px !important;
   font-weight: 500;
   color: var(--charcoal) !important;
@@ -742,7 +743,7 @@ h1, h2, h3, h4 {
 }
 
 .farm-quote {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 22px;
   font-style: italic;
   color: var(--barn-red);
@@ -751,7 +752,7 @@ h1, h2, h3, h4 {
 }
 
 .farm-emphasis {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 22px;
   color: var(--barn-red);
   text-align: center;
@@ -809,7 +810,7 @@ h1, h2, h3, h4 {
 }
 
 .testimonials-section h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 28px;
   color: var(--charcoal);
   text-align: center;
@@ -923,7 +924,7 @@ h1, h2, h3, h4 {
 }
 
 .section-title-white {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(28px, 4.5vw, 40px);
   color: var(--text-inverse);
   text-align: center;
@@ -945,7 +946,7 @@ h1, h2, h3, h4 {
 }
 
 .promise-box h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 22px;
   color: var(--khaki);
   margin: 0 0 20px 0;
@@ -1259,7 +1260,7 @@ h1, h2, h3, h4 {
 }
 
 .box-size-selector-inline h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 20px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -1304,7 +1305,7 @@ h1, h2, h3, h4 {
 
 .box-size-label {
   display: block;
-  font-family: 'Fraunces', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 26px;
   font-weight: 700;
   color: var(--barn-red);
@@ -1380,7 +1381,7 @@ h1, h2, h3, h4 {
 }
 
 .collection-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 30px;
   color: var(--charcoal);
   margin: 0 0 4px 0;
@@ -1416,7 +1417,7 @@ h1, h2, h3, h4 {
 }
 
 .product-card h4 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 22px;
   color: var(--charcoal);
   margin: 8px 0;
@@ -1529,7 +1530,7 @@ h1, h2, h3, h4 {
 }
 
 .treats-section h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 28px;
   color: var(--charcoal);
   margin-bottom: 28px;
@@ -1653,7 +1654,7 @@ h1, h2, h3, h4 {
 }
 
 .cart-drawer-header h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 26px;
   color: var(--barn-red);
   margin: 0;
@@ -1758,7 +1759,7 @@ h1, h2, h3, h4 {
 }
 
 .checkout-form h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 34px;
   color: var(--charcoal);
   text-align: center;
@@ -1772,7 +1773,7 @@ h1, h2, h3, h4 {
 }
 
 .checkout-section h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 22px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -1840,7 +1841,7 @@ h1, h2, h3, h4 {
 }
 
 .checkout-summary h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 20px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -2059,7 +2060,7 @@ h1, h2, h3, h4 {
 }
 
 .order-success h1 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 40px;
   color: var(--forest-green);
   margin-bottom: 16px;
@@ -2081,7 +2082,7 @@ h1, h2, h3, h4 {
 }
 
 .auth-card h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 34px;
   text-align: center;
   color: var(--charcoal);
@@ -2138,7 +2139,7 @@ h1, h2, h3, h4 {
 }
 
 .product-detail-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 48px;
   color: var(--charcoal);
   margin-bottom: 16px;
@@ -2179,14 +2180,14 @@ h1, h2, h3, h4 {
 }
 
 .content-page h1 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 44px;
   color: var(--charcoal);
   margin-bottom: 32px;
 }
 
 .content-page h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 28px;
   color: var(--barn-red);
   margin: 40px 0 16px;
@@ -2265,7 +2266,7 @@ h1, h2, h3, h4 {
 }
 
 .contact-form-section h1 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 44px;
   color: var(--charcoal);
   margin-bottom: 16px;
@@ -2348,7 +2349,7 @@ h1, h2, h3, h4 {
 }
 
 .contact-success h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   color: var(--forest-green);
   margin-bottom: 12px;
 }
@@ -2370,7 +2371,7 @@ h1, h2, h3, h4 {
 }
 
 .contact-card h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 20px;
   color: var(--barn-red);
   margin-bottom: 20px;
@@ -2535,7 +2536,7 @@ h1, h2, h3, h4 {
 }
 
 .product-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 36px;
   color: var(--charcoal);
   margin: 0 0 8px 0;
@@ -2580,7 +2581,7 @@ h1, h2, h3, h4 {
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 20px;
   font-weight: 600;
   color: var(--charcoal);
@@ -2749,7 +2750,7 @@ h1, h2, h3, h4 {
 }
 
 .subscription-modal-header h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 24px;
   color: var(--barn-red);
   margin: 0;
@@ -2907,7 +2908,7 @@ h1, h2, h3, h4 {
 }
 
 .price-size {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 28px;
   font-weight: 700;
   color: var(--charcoal);
@@ -3094,7 +3095,7 @@ h1, h2, h3, h4 {
 }
 
 .about-hero h1 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(36px, 5vw, 52px);
   color: var(--text-inverse);
   margin: 0 0 32px 0;
@@ -3147,7 +3148,7 @@ h1, h2, h3, h4 {
 }
 
 .about-lead-text {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(22px, 3vw, 28px);
   color: var(--charcoal);
   text-align: center;
@@ -3188,7 +3189,7 @@ h1, h2, h3, h4 {
 }
 
 .about-story h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 24px;
@@ -3210,7 +3211,7 @@ h1, h2, h3, h4 {
 }
 
 .story-benefits span {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 24px;
   font-weight: 600;
   color: var(--barn-red);
@@ -3224,7 +3225,7 @@ h1, h2, h3, h4 {
 }
 
 .story-question {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 24px !important;
   font-style: italic;
   color: var(--barn-red) !important;
@@ -3305,7 +3306,7 @@ h1, h2, h3, h4 {
 }
 
 .about-farm-bowl h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 32px;
@@ -3369,7 +3370,7 @@ h1, h2, h3, h4 {
 }
 
 .about-why h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 24px;
@@ -3392,7 +3393,7 @@ h1, h2, h3, h4 {
 }
 
 .about-team-text h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 24px;
@@ -3406,7 +3407,7 @@ h1, h2, h3, h4 {
 }
 
 .team-standard {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 24px !important;
   font-weight: 600;
   color: var(--barn-red) !important;
@@ -3420,7 +3421,7 @@ h1, h2, h3, h4 {
 }
 
 .about-mission h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(28px, 4vw, 36px);
   color: var(--text-inverse);
   margin-bottom: 24px;
@@ -3434,7 +3435,7 @@ h1, h2, h3, h4 {
 }
 
 .mission-callout {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 22px !important;
   font-weight: 500;
   color: var(--khaki) !important;
@@ -3527,7 +3528,7 @@ h1, h2, h3, h4 {
 }
 
 .ntf-hero h1 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(36px, 5vw, 52px);
   color: var(--text-inverse);
   margin: 0 0 24px 0;
@@ -3558,7 +3559,7 @@ h1, h2, h3, h4 {
 }
 
 .ntf-section h2 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(28px, 4vw, 36px);
   color: var(--barn-red);
   margin-bottom: 24px;
@@ -3590,7 +3591,7 @@ h1, h2, h3, h4 {
 }
 
 .ntf-lead-question {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 20px !important;
   font-style: italic;
   color: var(--barn-red) !important;
@@ -3598,7 +3599,7 @@ h1, h2, h3, h4 {
 }
 
 .ntf-symptoms {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 20px !important;
   font-style: italic;
   color: var(--barn-red) !important;
@@ -3759,7 +3760,7 @@ h1, h2, h3, h4 {
 }
 
 .transition-option h3 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 24px;
   color: var(--charcoal);
   margin: 0 0 12px 0;
@@ -3920,7 +3921,7 @@ h1, h2, h3, h4 {
   background: var(--barn-red);
   color: var(--text-inverse);
   border-radius: 50%;
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 16px;

@@ -38,10 +38,7 @@ export const LandingPage = () => {
               <span className="hero-accent">Were Designed to Eat.</span>
             </h1>
             <p className="hero-subtitle">
-              Organic, human-grade raw pet food delivered across Ontario.
-            </p>
-            <p className="hero-subtitle" style={{ marginBottom: '12px' }}>
-              From our family farm to your pet's bowl within days
+              Organic, human-grade raw pet food delivered across Ontario. From our family farm to your pet's bowl.
             </p>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', marginBottom: '28px' }}>
               Delivered in as little as 3 days.
