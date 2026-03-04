@@ -8,21 +8,13 @@ export const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-inner" style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div 
+        <img 
+          src="https://customer-assets.emergentagent.com/job_b173aa98-8700-42d1-aca5-6a3b8220c855/artifacts/0fo0kwz0_fglogo.png" 
+          alt="FoeGuard" 
+          style={{ height: '56px', cursor: 'pointer' }}
           onClick={() => navigate('/')}
-          style={{ 
-            fontFamily: "'CS Gordon', serif",
-            fontSize: '28px',
-            fontWeight: 'normal',
-            color: 'white',
-            cursor: 'pointer',
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase'
-          }}
           data-testid="nav-logo"
-        >
-          FOEGUARD
-        </div>
+        />
         {/* Desktop Nav */}
         <div className="nav-desktop" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
           <button onClick={() => navigate('/build-box')} className="nav-link" data-testid="nav-order">Order</button>
