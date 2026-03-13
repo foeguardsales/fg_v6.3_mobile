@@ -575,10 +575,6 @@ export const LandingPage = () => {
               borderRadius: '16px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
             }}>
-              <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '24px', color: '#8B4513', textAlign: 'center' }}>
-                14-Day Happiness Guarantee: If your dog does not love their meal, we will switch any leftovers for a different protein at no extra cost.
-              </p>
-              
               <p style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', textAlign: 'center' }}>
                 All FoeGuard plans include:
               </p>
@@ -615,6 +611,10 @@ export const LandingPage = () => {
                   </div>
                 </div>
               </div>
+
+              <p style={{ fontSize: '17px', fontWeight: '600', marginTop: '24px', marginBottom: '0', color: '#8B4513', textAlign: 'center' }}>
+                14-Day Happiness Guarantee: If your dog does not love their meal, we will switch any leftovers for a different protein at no extra cost.
+              </p>
             </div>
           </div>
         </section>
