@@ -124,11 +124,11 @@ export const AboutPage = () => {
         {/* More than just healthy food plans */}
         <section className="about-section about-mission">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>More than just healthy food plans</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+            <h2 style={{ textTransform: 'none', textAlign: 'center' }}>More than just healthy food plans</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px', textAlign: 'center' }}>
               We want to raise the standard of what pet food should be by giving pet parents a trusted source for information, collaboration, and personalized farm-fresh pet food.
             </p>
-            <p className="mission-callout" style={{ fontSize: '17px', fontWeight: '600', marginBottom: '40px' }}>
+            <p className="mission-callout" style={{ fontSize: '17px', fontWeight: '600', marginBottom: '40px', textAlign: 'center' }}>
               If you believe pets deserve real food, you are already part of the mission.
             </p>
 
