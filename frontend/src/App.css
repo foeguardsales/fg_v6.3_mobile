@@ -312,7 +312,7 @@ h2, h3, h4 {
   color: var(--text-inverse);
   line-height: 1.15;
   margin: 0 0 20px 0;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
 }
 
