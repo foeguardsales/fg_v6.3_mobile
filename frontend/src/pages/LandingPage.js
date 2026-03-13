@@ -419,13 +419,20 @@ export const LandingPage = () => {
               Create a meal plan or order directly from our menu. Subscribe to save and never run out.
             </p>
             
-            <div style={{ textAlign: 'center', marginTop: '32px' }}>
+            <div style={{ textAlign: 'center', marginTop: '32px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button 
                 className="btn-primary" 
                 onClick={() => navigate('/build-box')}
                 style={{ borderRadius: '8px' }}
               >
                 Build Your Plan
+              </button>
+              <button 
+                className="btn-secondary" 
+                onClick={() => navigate('/build-box')}
+                style={{ borderRadius: '8px' }}
+              >
+                Order Menu
               </button>
             </div>
           </div>
