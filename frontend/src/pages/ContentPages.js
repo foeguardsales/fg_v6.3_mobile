@@ -667,36 +667,27 @@ export const NewToRawPage = () => {
           </div>
         </section>
 
-        {/* SECTION 9 — Ready to start simple */}
-        <section className="ntf-section ntf-start" style={{ background: 'white' }}>
-          <div className="ntf-container">
-            <h2 style={{ textTransform: 'none' }}>Ready to start simple?</h2>
-            <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center' }}>
-              Build your first box and see how your pet responds.
-            </p>
-            <div className="ntf-cta" style={{ textAlign: 'center' }}>
-              <button 
-                className="btn-primary"
-                onClick={() => navigate('/build-box')}
-                style={{ borderRadius: '8px' }}
-              >
-                Build Your Box
-              </button>
-            </div>
-          </div>
-        </section>
-
         {/* FINAL CTA */}
         <section className="ntf-section ntf-final-cta" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
-            <h2 style={{ textTransform: 'none' }}>Ready to make your dog's meal plan?</h2>
-            <div className="ntf-cta" style={{ textAlign: 'center', marginTop: '32px' }}>
+            <h2 style={{ textTransform: 'none', textAlign: 'center' }}>Ready to make your dog's meal plan?</h2>
+            <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center' }}>
+              Let us create your plan or build your own box.
+            </p>
+            <div className="ntf-cta" style={{ textAlign: 'center', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button 
                 className="btn-primary"
                 onClick={() => navigate('/build-box')}
                 style={{ borderRadius: '8px' }}
               >
                 Create Your Plan
+              </button>
+              <button 
+                className="btn-secondary"
+                onClick={() => navigate('/build-box')}
+                style={{ borderRadius: '8px' }}
+              >
+                Order Menu
               </button>
             </div>
           </div>
