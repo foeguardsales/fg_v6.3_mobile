@@ -296,7 +296,7 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none' }}>We put value where it matters most — into your dog's bowl.</h2>
             <p style={{ fontSize: '18px', marginBottom: '48px', textAlign: 'center', color: '#666' }}>
-              Here's what you wont find in your bowl...
+              Here's what you won't find in it.
             </p>
             <div style={{ 
               display: 'grid', 
