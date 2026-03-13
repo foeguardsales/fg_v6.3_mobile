@@ -37,13 +37,16 @@ export const LandingPage = () => {
               Feed the Way<br />
               <span className="hero-accent">Nature Intended.</span>
             </h1>
-            <p className="hero-subtitle">
+            <p className="hero-subtitle" style={{ marginBottom: '32px' }}>
               Human-grade, organic raw dog food delivery — from our farm to your bowl.
             </p>
             <button 
               className="btn-hero" 
               onClick={() => navigate('/build-box')}
               data-testid="hero-build-box-btn"
+              style={{
+                borderRadius: '8px'
+              }}
             >
               Create Your Plan
             </button>
@@ -420,6 +423,7 @@ export const LandingPage = () => {
               <button 
                 className="btn-primary" 
                 onClick={() => navigate('/build-box')}
+                style={{ borderRadius: '8px' }}
               >
                 Build Your Plan
               </button>
@@ -629,7 +633,7 @@ export const LandingPage = () => {
                 className="btn-hero" 
                 onClick={() => navigate('/build-box')}
                 data-testid="final-cta-btn"
-                style={{ width: '100%' }}
+                style={{ width: '100%', borderRadius: '8px' }}
               >
                 Create Your Plan
               </button>
@@ -645,7 +649,8 @@ export const LandingPage = () => {
                   width: '100%',
                   background: 'transparent',
                   border: '2px solid rgba(255,255,255,0.7)',
-                  color: 'white'
+                  color: 'white',
+                  borderRadius: '8px'
                 }}
               >
                 Order Menu
