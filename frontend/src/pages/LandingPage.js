@@ -294,7 +294,10 @@ export const LandingPage = () => {
         {/* ===== SECTION — WHAT YOU WILL NOT FIND ===== */}
         <section className="benefits-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>What you wont find in your bowl</h2>
+            <h2 className="section-title" style={{ textTransform: 'none' }}>We put value where it matters most — into your dog.</h2>
+            <p style={{ fontSize: '18px', marginBottom: '48px', textAlign: 'center', color: '#666' }}>
+              Here's what you wont find in your bowl...
+            </p>
             <div style={{ 
               display: 'grid', 
               gridTemplateColumns: 'repeat(2, 1fr)', 
@@ -367,10 +370,6 @@ export const LandingPage = () => {
                 <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Designed for marketing and to meet minimal guidelines, not carnivores.</p>
               </div>
             </div>
-            
-            <p style={{ textAlign: 'center', marginTop: '48px', fontSize: '18px', fontWeight: '600', color: '#8B4513' }}>
-              We put the value where it matters most — into our dogs.
-            </p>
           </div>
         </section>
 
