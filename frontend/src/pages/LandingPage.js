@@ -573,34 +573,36 @@ export const LandingPage = () => {
                 All FoeGuard plans include:
               </p>
               
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '400px', margin: '0 auto' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free 1-on-1 consultation</p>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Personalized, portioned meals</p>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free complete raw feeding guide</p>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Eco-friendly packaging</p>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Subscribe and save</p>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>FoeGuard delivery</p>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Lifetime support</p>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free 1-on-1 consultation</p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Personalized, portioned meals</p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free complete raw feeding guide</p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Eco-friendly packaging</p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Subscribe and save</p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>FoeGuard delivery</p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Lifetime support</p>
+                  </div>
                 </div>
               </div>
             </div>
