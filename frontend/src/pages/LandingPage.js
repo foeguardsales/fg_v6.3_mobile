@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { Check, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Home, CheckCircle, Scale, Beef, X, Flask, HelpCircle, Tag } from 'lucide-react';
 
 export const LandingPage = () => {
   const navigate = useNavigate();
@@ -181,80 +181,94 @@ export const LandingPage = () => {
         {/* ===== SECTION — BETTER FOOD ===== */}
         <section className="standard-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>Good food for dogs, raised right here in Ontario</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', color: 'white' }}>Good food for dogs, raised right here in Ontario</h2>
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-              gap: '40px',
-              maxWidth: '1000px',
-              margin: '0 auto'
+              gridTemplateColumns: 'repeat(2, 1fr)', 
+              gap: '48px',
+              maxWidth: '800px',
+              margin: '0 auto 48px'
             }}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
                   width: '80px', 
                   height: '80px', 
                   margin: '0 auto 20px', 
-                  background: '#E8DDD0', 
+                  border: '2px solid rgba(255,255,255,0.3)',
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '36px'
-                }}>🏡</div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>FoeGuard Farms</h3>
-                <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Raised with high welfare standards, natural feed, open pastures, and small-batch harvests.</p>
+                  justifyContent: 'center'
+                }}>
+                  <Home size={40} style={{ color: 'white' }} />
+                </div>
+                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>FoeGuard Farms</h3>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Raised with high welfare standards, natural feed, open pastures, and small-batch harvests.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
                   width: '80px', 
                   height: '80px', 
                   margin: '0 auto 20px', 
-                  background: '#E8DDD0', 
+                  border: '2px solid rgba(255,255,255,0.3)',
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '36px'
-                }}>✓</div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>Human-Grade & Organic</h3>
-                <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Whole ingredients raised to high quality and safety standards in Canada.</p>
+                  justifyContent: 'center'
+                }}>
+                  <CheckCircle size={40} style={{ color: 'white' }} />
+                </div>
+                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human-Grade & Organic</h3>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Whole ingredients raised to high quality and safety standards in Canada.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
                   width: '80px', 
                   height: '80px', 
                   margin: '0 auto 20px', 
-                  background: '#E8DDD0', 
+                  border: '2px solid rgba(255,255,255,0.3)',
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '36px'
-                }}>⚖️</div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>Professionally Balanced</h3>
-                <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Nutritionist-backed complete dinners formulated to exceed AAFCO standards.</p>
+                  justifyContent: 'center'
+                }}>
+                  <Scale size={40} style={{ color: 'white' }} />
+                </div>
+                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Professionally Balanced</h3>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Nutritionist-backed complete dinners formulated to exceed AAFCO standards.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
                   width: '80px', 
                   height: '80px', 
                   margin: '0 auto 20px', 
-                  background: '#E8DDD0', 
+                  border: '2px solid rgba(255,255,255,0.3)',
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '36px'
-                }}>🥩</div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px' }}>Prepared Fresh</h3>
-                <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Eight proteins, made to order and flash frozen to lock in flavour and nutritional integrity.</p>
+                  justifyContent: 'center'
+                }}>
+                  <Beef size={40} style={{ color: 'white' }} />
+                </div>
+                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Prepared Fresh</h3>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Eight proteins, made to order and flash frozen to lock in flavour and nutritional integrity.</p>
               </div>
             </div>
 
-            <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <div style={{ textAlign: 'center' }}>
               <button 
-                className="btn-primary" 
+                className="btn-hero" 
                 onClick={() => navigate('/build-box')}
+                style={{ 
+                  background: 'white',
+                  color: '#8B4513',
+                  border: 'none',
+                  padding: '14px 32px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  borderRadius: '8px',
+                  cursor: 'pointer'
+                }}
               >
                 Build Your Plan
               </button>
@@ -280,9 +294,9 @@ export const LandingPage = () => {
             <h2 className="section-title" style={{ textTransform: 'none' }}>What you wont find in your bowl</h2>
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-              gap: '40px',
-              maxWidth: '1000px',
+              gridTemplateColumns: 'repeat(2, 1fr)', 
+              gap: '48px',
+              maxWidth: '800px',
               margin: '0 auto'
             }}>
               <div style={{ textAlign: 'center' }}>
@@ -290,13 +304,14 @@ export const LandingPage = () => {
                   width: '80px', 
                   height: '80px', 
                   margin: '0 auto 20px', 
-                  background: '#f5f3ef', 
+                  border: '2px solid #E8DDD0', 
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '36px'
-                }}>🚫</div>
+                  justifyContent: 'center'
+                }}>
+                  <X size={40} style={{ color: '#8B4513' }} />
+                </div>
                 <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600', color: '#8B4513' }}>Low-Quality Fillers</h3>
                 <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>From meat scraps to GMOs, antibiotics, and hormones.</p>
               </div>
@@ -305,13 +320,14 @@ export const LandingPage = () => {
                   width: '80px', 
                   height: '80px', 
                   margin: '0 auto 20px', 
-                  background: '#f5f3ef', 
+                  border: '2px solid #E8DDD0', 
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '36px'
-                }}>⚗️</div>
+                  justifyContent: 'center'
+                }}>
+                  <Flask size={40} style={{ color: '#8B4513' }} />
+                </div>
                 <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600', color: '#8B4513' }}>Processed Ingredients</h3>
                 <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Made for shelf life, not for dogs.</p>
               </div>
@@ -320,13 +336,14 @@ export const LandingPage = () => {
                   width: '80px', 
                   height: '80px', 
                   margin: '0 auto 20px', 
-                  background: '#f5f3ef', 
+                  border: '2px solid #E8DDD0', 
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '36px'
-                }}>❓</div>
+                  justifyContent: 'center'
+                }}>
+                  <HelpCircle size={40} style={{ color: '#8B4513' }} />
+                </div>
                 <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600', color: '#8B4513' }}>Unclear Sourcing</h3>
                 <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Mass-produced without proper care for livestock or the environment.</p>
               </div>
@@ -335,13 +352,14 @@ export const LandingPage = () => {
                   width: '80px', 
                   height: '80px', 
                   margin: '0 auto 20px', 
-                  background: '#f5f3ef', 
+                  border: '2px solid #E8DDD0', 
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '36px'
-                }}>🏷️</div>
+                  justifyContent: 'center'
+                }}>
+                  <Tag size={40} style={{ color: '#8B4513' }} />
+                </div>
                 <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600', color: '#8B4513' }}>Misleading Labels</h3>
                 <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Designed for marketing and to meet minimal guidelines, not carnivores.</p>
               </div>
@@ -540,22 +558,22 @@ export const LandingPage = () => {
             <h2 className="section-title" style={{ textTransform: 'none' }}>Complete plans that give you more than real food benefits.</h2>
             
             <div style={{ 
-              maxWidth: '800px', 
+              maxWidth: '600px', 
               margin: '0 auto',
               background: 'white',
               padding: '32px',
               borderRadius: '16px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
             }}>
-              <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '24px', color: '#8B4513' }}>
+              <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '24px', color: '#8B4513', textAlign: 'center' }}>
                 14-Day Happiness Guarantee: If your dog does not love their meal, we will switch any leftovers for a different protein at no extra cost.
               </p>
               
-              <p style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>
+              <p style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', textAlign: 'center' }}>
                 All FoeGuard plans include:
               </p>
               
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
                   <p style={{ fontSize: '16px', margin: 0 }}>Free 1-on-1 consultation</p>
