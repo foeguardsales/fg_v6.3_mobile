@@ -416,9 +416,6 @@ export const ContactPage = () => {
   );
 };
 
-import { useNavigate } from 'react-router-dom';
-import { Navbar, Footer } from '../components/Layout';
-
 export const NewToRawPage = () => {
   const navigate = useNavigate();
 
