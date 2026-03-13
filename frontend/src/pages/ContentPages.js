@@ -26,7 +26,10 @@ export const AboutPage = () => {
         {/* Hero Section */}
         <section className="about-hero">
           <div className="about-hero-content">
-            <h1>About FoeGuard</h1>
+            <h1 style={{ textTransform: 'none' }}>Why FoeGuard?</h1>
+            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', marginTop: '20px' }}>
+              No fancy packaging, retail mark-ups, or empty marketing. Just what your dog was meant to eat — since forever.
+            </p>
           </div>
         </section>
 
@@ -37,42 +40,28 @@ export const AboutPage = () => {
           </div>
         </section>
 
-        {/* Complete Story Section */}
+        {/* Just because it's edible */}
         <section className="about-section about-story">
           <div className="about-container">
-            <h2>Welcome to FoeGuard.</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              FoeGuard began with a simple conviction:
-            </p>
-            <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '24px' }}>
-              If we wouldn't serve it at our own table, we won't put it in our pets' bowls.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '32px' }}>
-              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving. Sourcing, handling, and ingredient integrity aren't marketing points to us — they're standards.
+            <h2 style={{ textTransform: 'none' }}>Just because it's edible for your dog doesn't mean it's healthy for them.</h2>
+            <p style={{ fontSize: '17px', marginBottom: '24px', fontWeight: '600' }}>
+              We have become accustomed to commercial dog food that is "backed by science," but what do the results really show?
             </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              When we began feeding our own dogs fresh, responsibly raised, species-appropriate food, the difference was undeniable.
+              In recent years, pet parents have been faced with more health issues related to aging, digestion, allergies, and urinary health than ever before. Not only can this lower your dog's quality of life, but it can also create an unclear future filled with unexpected vet bills and prescription diets.
             </p>
-            <p style={{ fontSize: '17px', marginBottom: '24px' }}>
-              Stronger digestion.<br />
-              Healthier coats.<br />
-              Steady energy.<br />
-              Real vitality.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
-              It confirmed what nature already designed:
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '32px' }}>
-              Carnivores thrive on properly raised, minimally processed meat — not heavily manufactured alternatives with unclear origins.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
-              What started as a personal standard became something bigger.
-            </p>
+          </div>
+        </section>
+
+        {/* The FoeGuard Difference */}
+        <section className="about-section about-farm-bowl">
+          <div className="about-container">
+            <h2 style={{ textTransform: 'none' }}>The FoeGuard Difference</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Friends and neighbours began asking for the same meals we were preparing on our farm. Word spread. Demand grew.
+              For years, our own health practitioners have told us to eat as much fresh, locally sourced food as possible while reducing processed foods wherever we can. We believe the same logic applies to our beloved pets.
             </p>
-            <p style={{ fontSize: '17px' }}>
-              FoeGuard was born from that demand — and from a commitment to raise the standard of what pet food should be.
+            <p style={{ fontSize: '17px', marginBottom: '0' }}>
+              For dogs to live long, healthy, and happy lives, they need food that is fresh, locally sourced, and as close to what nature intended as possible through a biologically appropriate raw food diet.
             </p>
           </div>
         </section>
@@ -93,77 +82,54 @@ export const AboutPage = () => {
           </div>
         </section>
 
-        {/* From Our Farm Section */}
-        <section className="about-section about-farm-bowl">
-          <div className="about-container">
-            <h2>From Our Farm to Your Bowl</h2>
-            <div className="farm-statements">
-              <p className="statement-bold" style={{ fontSize: '17px' }}>We are not a distributor.</p>
-              <p className="statement-bold" style={{ fontSize: '17px' }}>We are not a white-label brand.</p>
-            </div>
-            <p style={{ fontSize: '17px', marginBottom: '24px' }}>
-              We work directly with trusted Ontario farms — including our own — to source ethically raised, human-grade meats.
-            </p>
-            <p className="sub-heading" style={{ fontSize: '17px', marginBottom: '16px' }}>Every meal is:</p>
-            <ul className="about-list" style={{ fontSize: '17px', lineHeight: '1.8' }}>
-              <li>Prepared in a government-inspected facility</li>
-              <li>Professionally formulated for complete, balanced nutrition</li>
-              <li>Free from antibiotics, hormones, fillers, and preservatives</li>
-              <li>Flash frozen at peak freshness</li>
-            </ul>
-            <p className="farm-conclusion" style={{ fontSize: '17px', marginTop: '24px' }}>
-              We oversee every step — from sourcing to preparation to delivery — so you never have to question what's in your pet's bowl.
-            </p>
-          </div>
-        </section>
-
-        {/* Why We Do This Section */}
+        {/* From our family to yours */}
         <section className="about-section about-why">
           <div className="about-container">
-            <h2>Why We Do This</h2>
+            <h2 style={{ textTransform: 'none' }}>From our family to yours</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Too many guardians feel overwhelmed by unclear labels, inconsistent sourcing, and highly processed options.
+              We are a family-run farm dedicated to raising livestock as nature intended.
             </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
-              Feeding your carnivore shouldn't feel confusing.
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving. That is why every FoeGuard product is made fresh using the same ingredients we use to feed our own family — with the same quality and care, but made for your pets.
             </p>
-            <p className="why-emphasis" style={{ fontSize: '17px', marginBottom: '24px' }}>
-              It should feel natural. Transparent. Grounded.
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              What started as a personal standard became something bigger when friends and neighbours began asking for the same meals we were preparing on our farm. We quickly realized that pet parents across Ontario need better access to healthy, transparent raw dog food.
             </p>
-            <p style={{ fontSize: '17px' }}>
-              Raw feeding isn't extreme — it's simply a return to biological design.
+            <p style={{ fontSize: '17px', fontWeight: '600' }}>
+              That is why we created FoeGuard: to raise the standard of what pet food should be.
             </p>
           </div>
         </section>
 
-        {/* Our Standard Section */}
+        {/* When we say farm-to-bowl */}
         <section className="about-section about-team-text">
           <div className="about-container">
-            <h2>Our Standard</h2>
+            <h2 style={{ textTransform: 'none' }}>When we say farm-to-bowl, we mean it.</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Behind FoeGuard is a network of Ontario farmers, nutrition professionals, and animal specialists committed to one principle:
+              We source our own ethically raised, human-grade meats. Each recipe is biologically appropriate and backed by science with support from a PhD biologist and a canine nutritionist. Every product is refined, tested, and fed to our own dogs before it ever reaches yours.
             </p>
-            <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '24px' }}>
-              Uncompromised care.
-            </p>
-            <p style={{ fontSize: '17px' }}>
-              Every recipe is refined, tested, and fed to real dogs and cats — including our own — before it ever reaches yours.
+            <p className="sub-heading" style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>Every meal is:</p>
+            <ul className="about-list" style={{ fontSize: '17px', lineHeight: '1.8' }}>
+              <li>Prepared in a government-inspected facility</li>
+              <li>Professionally formulated for complete, balanced nutrition that exceeds industry standards (AAFCO)</li>
+              <li>Free from antibiotics, hormones, fillers, and preservatives</li>
+              <li>Made to order and flash frozen at peak freshness</li>
+            </ul>
+            <p style={{ fontSize: '17px', marginTop: '24px' }}>
+              We do the preparation for you, so you never have to question what is in your dog's bowl.
             </p>
           </div>
         </section>
 
-        {/* Mission Section */}
+        {/* More than just healthy food plans */}
         <section className="about-section about-mission">
           <div className="about-container">
-            <h2>Our Mission</h2>
+            <h2 style={{ textTransform: 'none' }}>More than just healthy food plans</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              To provide responsible guardians with a transparent, trustworthy source for farm-fresh, biologically appropriate pet food.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '24px' }}>
-              To raise the standard of what pet food should be — real, accountable, and properly sourced.
+              We want to raise the standard of what pet food should be by giving pet parents a trusted source for information, collaboration, and personalized farm-fresh pet food.
             </p>
             <p className="mission-callout" style={{ fontSize: '17px', fontWeight: '600', marginBottom: '40px' }}>
-              If you believe pets deserve real food, you're already part of the mission.
+              If you believe pets deserve real food, you are already part of the mission.
             </p>
 
             {/* Email Signup */}
@@ -182,7 +148,7 @@ export const AboutPage = () => {
                     placeholder="Enter your email"
                     required
                   />
-                  <button type="submit" className="btn-primary" disabled={loading}>
+                  <button type="submit" className="btn-primary" disabled={loading} style={{ borderRadius: '8px' }}>
                     {loading ? 'Joining...' : 'Join the FoeGuard Pack'}
                   </button>
                 </form>
@@ -450,6 +416,9 @@ export const ContactPage = () => {
   );
 };
 
+import { useNavigate } from 'react-router-dom';
+import { Navbar, Footer } from '../components/Layout';
+
 export const NewToRawPage = () => {
   const navigate = useNavigate();
 
@@ -457,71 +426,84 @@ export const NewToRawPage = () => {
     <>
       <Navbar />
       <div className="new-to-fg-page">
-        {/* SECTION 1 — Emotional Entry */}
+        {/* SECTION 1 — Hero */}
         <section className="ntf-hero">
           <div className="ntf-hero-content">
-            <h1>New to FoeGuard?</h1>
+            <h1 style={{ textTransform: 'none' }}>New to FG</h1>
             <p className="ntf-hero-subtitle" style={{ fontWeight: '600', fontSize: '18px', marginBottom: '16px' }}>
-              Switching your pet's food doesn't have to feel complicated.
-            </p>
-            <p className="ntf-hero-text" style={{ fontSize: '18px', fontWeight: 'normal' }}>
-              Whether you're new to raw feeding or simply new to us, we make the transition simple, structured, and fully supported.
-            </p>
-            <p className="ntf-hero-text" style={{ fontSize: '18px', fontWeight: 'normal', marginTop: '16px' }}>
-              You don't have to figure this out alone.
+              No complicated prep. No added supplements required for complete dinners.
             </p>
           </div>
         </section>
 
-        {/* SECTION 2 — Keep It Simple */}
+        {/* SECTION 2 — Feel confident */}
         <section className="ntf-section ntf-easy" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
-            <h2 style={{ textAlign: 'center' }}>Feeding Raw Is Easier Than You Think</h2>
-            <div className="easy-steps">
-              <div className="easy-step">
-                <span className="step-number">1</span>
-                <p style={{ fontSize: '17px' }}>Store meals in your freezer</p>
-              </div>
-              <div className="easy-step">
-                <span className="step-number">2</span>
-                <p style={{ fontSize: '17px' }}>Thaw in the refrigerator</p>
-              </div>
-              <div className="easy-step">
-                <span className="step-number">3</span>
-                <p style={{ fontSize: '17px' }}>Serve and watch them thrive</p>
-              </div>
-            </div>
-            <p style={{ fontSize: '17px', textAlign: 'center', marginTop: '32px' }}>
-              No complicated prep. No added supplements for complete dinners. <strong>Just real food.</strong>
+            <h2 style={{ textAlign: 'center', textTransform: 'none' }}>Feel confident about switching to FoeGuard Raw.</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px', textAlign: 'center', fontWeight: '600' }}>
+              Dogs are biologically designed to thrive on raw food nutrition. Their powerful stomach acid, sharp teeth, and short digestive systems allow them to efficiently digest raw meat, organs, and bone.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '0', textAlign: 'center' }}>
+              FoeGuard was built to feed dogs the way nature intended. We use fresh, organic, whole-prey, human-grade ingredients that are made for your dog's anatomy to digest easily, maximize nutrient absorption, and support noticeable results.
             </p>
           </div>
         </section>
 
-        {/* SECTION 3 — Why FoeGuard Is Different */}
+        {/* SECTION 3 — How FoeGuard compares */}
         <section className="ntf-section ntf-safe" style={{ background: 'white' }}>
           <div className="ntf-container">
-            <h2>Why Guardians Feel Confident Switching to FoeGuard</h2>
-            <ul className="ntf-list" style={{ fontSize: '17px', lineHeight: '1.8' }}>
-              <li>Human-grade ingredients prepared in a government-inspected facility</li>
-              <li>Naturally raised meats — no fillers, antibiotics, hormones, or preservatives</li>
-              <li>Ethically sourced from our own farms and trusted Canadian partners</li>
-              <li>Professionally formulated for complete, balanced nutrition</li>
-              <li>Delivered directly across Ontario by our FoeGuard team</li>
-            </ul>
+            <h2 style={{ textTransform: 'none' }}>How FoeGuard compares</h2>
+            
+            <div style={{ marginBottom: '32px' }}>
+              <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Retail Raw</h3>
+              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
+                Retail raw food brands can offer a healthier alternative for pet owners, but they often lack transparent sourcing and clarity around what cuts of meat are being used or how the ingredients are raised. Livestock raised on antibiotics, hormones, or GMO feeds can have an immediate effect on your dog, while months-old, lower-quality cuts can become more problematic over time.
+              </p>
+            </div>
+
+            <div style={{ marginBottom: '32px' }}>
+              <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Gently Cooked</h3>
+              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
+                Gently cooked food is another option that can be better than kibble when balanced and prepared correctly, but it is not as nutritionally intact as raw in its natural form. The cooking process can reduce nutrient availability and change the integrity of the final product. Dogs are not humans — you do not need to taste-test their food to know what they are anatomically designed to eat.
+              </p>
+            </div>
+
+            <div style={{ marginBottom: '0' }}>
+              <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Kibble</h3>
+              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
+                Kibble is extremely processed, regardless of what ingredients are used or how fancy the packaging looks. It is cooked at high temperatures, which can destroy essential nutrients and make it harder for pets to digest. Minimal pet food regulations also allow for lower-quality meat, vague sourcing, and highly processed ingredients hidden behind marketing terms such as "natural," protein "meals," and "made with meat," even when only a small percentage is actually required to meet AAFCO standards.
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* SECTION 4 — Is Raw Safe? */}
-        <section className="ntf-section" style={{ background: '#F5F3EF' }}>
+        {/* SECTION 4 — Discover what really works */}
+        <section className="ntf-section ntf-problem" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
-            <h2>Is Raw Safe?</h2>
+            <h2 style={{ textTransform: 'none' }}>Discover what really works for your dog</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Get a clearer understanding of your dog's health and the flavours they truly enjoy.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Many guardians feel frustrated by unclear labels and inconsistent sourcing.
+            </p>
+            <p style={{ fontSize: '17px' }}>
+              While we cannot promise instant answers, switching to properly sourced, biologically appropriate food often removes one of the biggest unknowns when something is making your dog uncomfortable — their diet.
+            </p>
+          </div>
+        </section>
+
+        {/* SECTION 5 — Is Raw Safe? */}
+        <section className="ntf-section" style={{ background: 'white' }}>
+          <div className="ntf-container">
+            <h2 style={{ textTransform: 'none' }}>Is Raw food safe for my dog?</h2>
             <p style={{ fontSize: '17px', marginBottom: '24px' }}>
               When handled properly — yes.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Dogs and cats are biologically designed to digest raw meat, bone, and organ. The key is quality, formulation, and proper storage.
             </p>
-            <p className="ntf-emphasis" style={{ fontSize: '17px', marginBottom: '16px' }}>
+            <p className="ntf-emphasis" style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
               At FoeGuard, every meal is:
             </p>
             <ul className="ntf-list" style={{ fontSize: '17px', marginBottom: '24px' }}>
@@ -537,23 +519,10 @@ export const NewToRawPage = () => {
           </div>
         </section>
 
-        {/* SECTION 5 — When Diet Is the Missing Piece */}
-        <section className="ntf-section ntf-problem" style={{ background: 'white' }}>
-          <div className="ntf-container">
-            <h2>When Diet Is the Missing Piece</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Many guardians feel frustrated by unclear labels and inconsistent sourcing.
-            </p>
-            <p style={{ fontSize: '17px' }}>
-              While we can't promise instant answers, switching to properly sourced, biologically appropriate food often removes one of the biggest unknowns — their diet.
-            </p>
-          </div>
-        </section>
-
         {/* SECTION 6 — Transition Guide */}
         <section className="ntf-section ntf-transition" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
-            <h2>How Do I Transition My Pet?</h2>
+            <h2 style={{ textTransform: 'none' }}>How Do I Transition My Pet?</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Because our meals are nutrient-dense and minimally processed, a thoughtful transition helps avoid digestive upset.
             </p>
@@ -617,7 +586,7 @@ export const NewToRawPage = () => {
         {/* SECTION 7 — If They Won't Eat */}
         <section className="ntf-section ntf-wont-eat" style={{ background: 'white' }}>
           <div className="ntf-container">
-            <h2>What If My Dog or Cat Won't Eat Raw?</h2>
+            <h2 style={{ textTransform: 'none' }}>What If My Dog or Cat Won't Eat Raw?</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Transitioning to raw is often <strong>behavioural</strong> — not nutritional.
             </p>
@@ -644,29 +613,10 @@ export const NewToRawPage = () => {
           </div>
         </section>
 
-        {/* SECTION 8 — How Much to Feed */}
-        <section className="ntf-section ntf-amount" style={{ background: '#F5F3EF' }}>
+        {/* SECTION 8 — Comparison Table */}
+        <section className="ntf-section ntf-compare" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
-            <h2>How Much Should I Feed?</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>As a general guideline:</p>
-            <ul className="ntf-list" style={{ fontSize: '17px', marginBottom: '24px' }}>
-              <li><strong>Adult dogs:</strong> 2–3% of body weight daily</li>
-              <li><strong>Adult cats:</strong> 2.5–3.5% daily</li>
-              <li><strong>Puppies & kittens:</strong> require more depending on age</li>
-            </ul>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Body condition matters more than strict percentages — adjust as needed based on activity level, metabolism, and goals.
-            </p>
-            <p style={{ fontSize: '17px' }}>
-              If you're unsure, check out our <a href="/calculator" className="ntf-link">Feeding Calculator</a> or contact us directly, we're happy to guide you.
-            </p>
-          </div>
-        </section>
-
-        {/* SECTION 9 — Comparison Table (Simplified) */}
-        <section className="ntf-section ntf-compare" style={{ background: 'white' }}>
-          <div className="ntf-container">
-            <h2>Compare Us to Others</h2>
+            <h2 style={{ textTransform: 'none' }}>Compare us to others</h2>
             <div className="comparison-table-wrapper">
               <table className="comparison-table">
                 <thead>
@@ -720,22 +670,36 @@ export const NewToRawPage = () => {
           </div>
         </section>
 
-        {/* FINAL CTA */}
-        <section className="ntf-section ntf-start" style={{ background: '#F5F3EF' }}>
+        {/* SECTION 9 — Ready to start simple */}
+        <section className="ntf-section ntf-start" style={{ background: 'white' }}>
           <div className="ntf-container">
-            <h2>Ready to Start Simple?</h2>
+            <h2 style={{ textTransform: 'none' }}>Ready to start simple?</h2>
             <p style={{ fontSize: '17px', marginBottom: '32px', textAlign: 'center' }}>
               Build your first box and see how your pet responds.
             </p>
-            <p style={{ fontSize: '17px', fontWeight: '600', marginBottom: '32px', textAlign: 'center' }}>
-              Structured. Balanced. Farm-raised.
-            </p>
-            <div className="ntf-cta">
+            <div className="ntf-cta" style={{ textAlign: 'center' }}>
               <button 
                 className="btn-primary"
                 onClick={() => navigate('/build-box')}
+                style={{ borderRadius: '8px' }}
               >
                 Build Your Box
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section className="ntf-section ntf-final-cta" style={{ background: '#F5F3EF' }}>
+          <div className="ntf-container">
+            <h2 style={{ textTransform: 'none' }}>Ready to make your dog's meal plan?</h2>
+            <div className="ntf-cta" style={{ textAlign: 'center', marginTop: '32px' }}>
+              <button 
+                className="btn-primary"
+                onClick={() => navigate('/build-box')}
+                style={{ borderRadius: '8px' }}
+              >
+                Create Your Plan
               </button>
             </div>
           </div>
@@ -744,4 +708,3 @@ export const NewToRawPage = () => {
       <Footer />
     </>
   );
-};
