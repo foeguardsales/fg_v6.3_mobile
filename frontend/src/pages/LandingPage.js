@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { Check, ChevronLeft, ChevronRight, Home, CheckCircle, Scale, Beef, X, Flask, HelpCircle, Tag } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Home, CheckCircle, Scale, Beef, X, Beaker, HelpCircle, Tag } from 'lucide-react';
 
 export const LandingPage = () => {
   const navigate = useNavigate();
@@ -326,7 +326,7 @@ export const LandingPage = () => {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Flask size={40} style={{ color: '#8B4513' }} />
+                  <Beaker size={40} style={{ color: '#8B4513' }} />
                 </div>
                 <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600', color: '#8B4513' }}>Processed Ingredients</h3>
                 <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Made for shelf life, not for dogs.</p>
