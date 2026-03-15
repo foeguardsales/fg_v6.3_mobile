@@ -311,26 +311,32 @@ export const LandingPage = () => {
             <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '40px', color: '#666', maxWidth: '700px', margin: '0 auto 40px' }}>
               We put value where it matters most - towards your dog. It's time to get rid of:
             </p>
-            <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', padding: '16px', background: '#F8F6F4', borderRadius: '8px' }}>
-                <Beaker size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(3, 1fr)', 
+              gap: '24px',
+              maxWidth: '1100px',
+              margin: '0 auto'
+            }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '24px 16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
+                <Beaker size={32} style={{ color: '#8B4513', flexShrink: 0 }} />
                 <div>
-                  <h3 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600', color: '#8B4513' }}>Processed Ingredients</h3>
-                  <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>Made for longer shelf life, not for dogs.</p>
+                  <h3 style={{ fontSize: '16px', marginBottom: '8px', fontWeight: '600', color: '#8B4513' }}>Processed Ingredients</h3>
+                  <p style={{ fontSize: '14px', color: '#666', margin: 0, lineHeight: '1.5' }}>Made for longer shelf life, not for dogs.</p>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', padding: '16px', background: '#F8F6F4', borderRadius: '8px' }}>
-                <X size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '24px 16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
+                <X size={32} style={{ color: '#8B4513', flexShrink: 0 }} />
                 <div>
-                  <h3 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600', color: '#8B4513' }}>Low-Quality Fillers</h3>
-                  <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>No grain, scraps, GMOs, antibiotics or hormones.</p>
+                  <h3 style={{ fontSize: '16px', marginBottom: '8px', fontWeight: '600', color: '#8B4513' }}>Low-Quality Fillers</h3>
+                  <p style={{ fontSize: '14px', color: '#666', margin: 0, lineHeight: '1.5' }}>No grain, scraps, GMOs, antibiotics or hormones.</p>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', background: '#F8F6F4', borderRadius: '8px' }}>
-                <Tag size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '24px 16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
+                <Tag size={32} style={{ color: '#8B4513', flexShrink: 0 }} />
                 <div>
-                  <h3 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600', color: '#8B4513' }}>Misleading Labels</h3>
-                  <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>That meet minimum guidelines, not carnivores.</p>
+                  <h3 style={{ fontSize: '16px', marginBottom: '8px', fontWeight: '600', color: '#8B4513' }}>Misleading Labels</h3>
+                  <p style={{ fontSize: '14px', color: '#666', margin: 0, lineHeight: '1.5' }}>That meet minimum guidelines, not carnivores.</p>
                 </div>
               </div>
             </div>
