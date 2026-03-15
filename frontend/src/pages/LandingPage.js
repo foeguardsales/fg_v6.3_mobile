@@ -72,21 +72,21 @@ export const LandingPage = () => {
             <div className="testimonials-grid" style={{ marginBottom: '48px' }}>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
                 <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
-                  "Her digestion improved within weeks. I'll never go back to kibble."
+                  "Zeus is VERY impressed 😍❤️. Love the dinners because they're already a balanced meal making it easy ... he devours and makes sure he licks every little bit left in his bowl!"
                 </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>— Sarah M.</span>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@zeus.thedobie_</span>
               </div>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
                 <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
-                  "Finally a raw brand I trust."
+                  "I've been waiting to be woken up in the middle of the night for her to go washroom, but her stool has been consistent and perfect since I began introducing the raw food."
                 </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>— Daniel R.</span>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@fuji.pai02</span>
               </div>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
                 <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
-                  "Energy, coat, stools — everything changed."
+                  "Indigo is known to be pickier ... but had zero issue with this food and enjoyed every meal. Oliver also thoroughly enjoyed the food and his stools were perfect (...something that we have issues with)"
                 </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>— Melissa T.</span>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@canadian.farm.dogs</span>
               </div>
             </div>
 
