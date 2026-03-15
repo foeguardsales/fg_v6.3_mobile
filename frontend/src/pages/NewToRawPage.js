@@ -68,10 +68,10 @@ export const NewToRawPage = () => {
                       <span className="brand-name">FoeGuard</span>
                     </th>
                     <th className="brand-col">
-                      <span className="brand-name">Retail Raw</span>
+                      <span className="brand-name" style={{ color: '#2C2C2C' }}>Retail Raw</span>
                     </th>
                     <th className="brand-col">
-                      <span className="brand-name">Kibble</span>
+                      <span className="brand-name" style={{ color: '#2C2C2C' }}>Kibble</span>
                     </th>
                   </tr>
                 </thead>
