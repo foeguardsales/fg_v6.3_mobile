@@ -327,7 +327,7 @@ export const BoxBuilder = () => {
           {/* Header with cart button */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
             <div>
-              <h1 style={{ fontFamily: "'CS Gordon', serif", fontSize: '36px', marginBottom: '8px', color: '#2B2B2B' }}>
+              <h1 style={{ fontFamily: "'Helvetica Neue', Arial, sans-serif", fontSize: '40px', fontWeight: '700', marginBottom: '8px', color: '#2B2B2B' }}>
                 {petType === 'cat' ? 'Build Your Cat Box' : 'Build Your Box'}
               </h1>
               <p style={{ color: '#666' }}>
