@@ -33,7 +33,7 @@ export const LandingPage = () => {
         {/* ===== BANNER — HERO ===== */}
         <section className="hero-section" data-testid="hero-section" style={{
           position: 'relative',
-          minHeight: '450px',
+          minHeight: '380px',
           display: 'flex',
           alignItems: 'center',
           background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.85) 0%, rgba(115, 40, 39, 0.75) 100%)',
@@ -81,16 +81,16 @@ export const LandingPage = () => {
             zIndex: 2,
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: '60px 40px',
+            padding: '50px 40px',
             textAlign: 'left',
             width: '100%'
           }}>
             <div style={{ maxWidth: '550px' }}>
               <h1 className="hero-title" style={{ 
                 fontFamily: "'CS Gordon', serif",
-                fontSize: '52px',
+                fontSize: '44px',
                 lineHeight: '1.1',
-                marginBottom: '20px',
+                marginBottom: '16px',
                 color: '#FFFFFF',
                 textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
               }}>
@@ -98,8 +98,8 @@ export const LandingPage = () => {
                 <span className="hero-accent" style={{ color: '#E8DDD0' }}>Nature Intended</span>
               </h1>
               <p className="hero-subtitle" style={{ 
-                marginBottom: '28px',
-                fontSize: '18px',
+                marginBottom: '24px',
+                fontSize: '17px',
                 lineHeight: '1.6',
                 color: '#FFFFFF',
                 textShadow: '1px 1px 4px rgba(0,0,0,0.5)'
@@ -112,8 +112,8 @@ export const LandingPage = () => {
                 data-testid="hero-build-box-btn"
                 style={{
                   borderRadius: '8px',
-                  padding: '16px 40px',
-                  fontSize: '17px',
+                  padding: '14px 36px',
+                  fontSize: '16px',
                   fontWeight: '600',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
                   transition: 'transform 0.2s',
