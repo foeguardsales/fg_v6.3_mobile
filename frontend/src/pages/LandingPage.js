@@ -35,10 +35,10 @@ export const LandingPage = () => {
           <div className="hero-content">
             <h1 className="hero-title" style={{ fontFamily: "'CS Gordon', serif" }}>
               Feed the Way<br />
-              <span className="hero-accent">Nature Intended.</span>
+              <span className="hero-accent">Nature Intended</span>
             </h1>
             <p className="hero-subtitle" style={{ marginBottom: '32px' }}>
-              Human-grade, organic raw dog food delivery — from our farm to your bowl.
+              Human-grade, organic raw dog food delivery
             </p>
             <button 
               className="btn-hero" 
@@ -59,16 +59,13 @@ export const LandingPage = () => {
             <h2 className="section-title" style={{ textTransform: 'none' }}>From our farm to your bowl</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
               <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-                What began with a simple realization — that pets deserve the same honest food we put on our own tables — turned into a commitment to serve pet parents across Ontario with the same fresh, clean ingredients we use ourselves.
+                Our love for pets and heritage in farming help us understand the food chain from soil to serving.
               </p>
               <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-                As a family-run operation, we oversee every step of the supply chain, from sourcing ingredients to preparing meals to delivering directly to your door.
-              </p>
-              <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-                We produce in small batches so your dog gets the freshest ingredients possible, while also supporting humane farming practices and minimizing waste.
+                FoeGuard was built to feed the way nature intended, using the same ingredients we use to feed our own family — with the same quality and care – but made for your dog!
               </p>
               <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                If you ever need guidance or support with raw feeding, we are always an email or phone call away. We are here for you and your dog every step of the way.
+                Our farm-to-bowl service delivers fresh, healthy ingredients that are made for your dog's anatomy to digest easily, maximize nutrient absorption, and support noticeable results.
               </p>
             </div>
           </div>
@@ -184,7 +181,10 @@ export const LandingPage = () => {
         {/* ===== SECTION — BETTER FOOD ===== */}
         <section className="standard-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', color: 'white' }}>Good food for dogs, raised right here in Ontario</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', color: 'white' }}>Real food for dogs, raised right in Ontario</h2>
+            <p style={{ fontSize: '17px', marginBottom: '48px', textAlign: 'center', color: 'rgba(255,255,255,0.9)' }}>
+              Skip the labels, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and put value where it matters most: towards your dog.
+            </p>
             <div style={{ 
               display: 'grid', 
               gridTemplateColumns: 'repeat(2, 1fr)', 
@@ -206,7 +206,7 @@ export const LandingPage = () => {
                   <Home size={40} style={{ color: 'white' }} />
                 </div>
                 <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>FoeGuard Farms</h3>
-                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Raised with high welfare standards, natural feed, open pastures, and small-batch harvests.</p>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Raised right on natural feed, open pastures, and small-batch harvests.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -221,8 +221,8 @@ export const LandingPage = () => {
                 }}>
                   <CheckCircle size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human-Grade & Organic</h3>
-                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Whole ingredients raised to high quality and safety standards in Canada.</p>
+                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human-Grade and Organic</h3>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Made with the highest quality and safety standards in Canada.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -237,8 +237,8 @@ export const LandingPage = () => {
                 }}>
                   <Scale size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Professionally Balanced</h3>
-                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Nutritionist-backed complete dinners formulated to exceed AAFCO standards.</p>
+                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Complete and Balanced</h3>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Dog-approved recipes formulated to exceed AAFCO standards.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -253,8 +253,8 @@ export const LandingPage = () => {
                 }}>
                   <Beef size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Prepared Fresh</h3>
-                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Eight proteins, made to order and flash frozen to lock in flavour and nutritional integrity.</p>
+                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Always Farm Fresh</h3>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>For better flavour and nutrition. Choose from 8+ proteins.</p>
               </div>
             </div>
 
@@ -279,95 +279,60 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* ===== SECTION — REDEFINE PET FOOD ===== */}
-        <section className="problem-section" style={{ background: '#F8F6F4' }}>
+        {/* ===== SECTION — 8 PROTEINS ===== */}
+        <section className="proteins-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>Let's redefine what we consider pet food.</h2>
-            <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
-              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
-                Skip the endless labels, preservatives, and retail markups. By delivering directly from the farm, we can invest in honest ingredients that are personalized for your dog — quality you will not find in store.
-              </p>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+              gap: '24px',
+              maxWidth: '1200px',
+              margin: '0 auto'
+            }}>
+              {[...Array(8)].map((_, i) => (
+                <div 
+                  key={i}
+                  style={{
+                    aspectRatio: '1',
+                    background: '#E8DDD0',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <span style={{ color: '#8B4513', fontSize: '14px' }}>Protein {i + 1}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* ===== SECTION — WHAT YOU WILL NOT FIND ===== */}
-        <section className="benefits-section">
+        {/* ===== SECTION — REDEFINE PET FOOD ===== */}
+        <section className="problem-section" style={{ background: 'white', padding: '60px 20px' }}>
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none' }}>We put value where it matters most — into your dog's bowl.</h2>
-            <p style={{ fontSize: '18px', marginBottom: '48px', textAlign: 'center', color: '#666' }}>
-              Here's what you won't find in it.
-            </p>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(2, 1fr)', 
-              gap: '48px',
-              maxWidth: '800px',
-              margin: '0 auto'
-            }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  width: '80px', 
-                  height: '80px', 
-                  margin: '0 auto 20px', 
-                  border: '2px solid #E8DDD0', 
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <X size={40} style={{ color: '#8B4513' }} />
+            <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', padding: '16px', background: '#F8F6F4', borderRadius: '8px' }}>
+                <Beaker size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                <div>
+                  <h3 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600', color: '#8B4513' }}>Processed Ingredients</h3>
+                  <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>Made for longer shelf life, not for dogs.</p>
                 </div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600', color: '#8B4513' }}>Low-Quality Fillers</h3>
-                <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>From meat scraps to GMOs, antibiotics, and hormones.</p>
               </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  width: '80px', 
-                  height: '80px', 
-                  margin: '0 auto 20px', 
-                  border: '2px solid #E8DDD0', 
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Beaker size={40} style={{ color: '#8B4513' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', padding: '16px', background: '#F8F6F4', borderRadius: '8px' }}>
+                <X size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                <div>
+                  <h3 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600', color: '#8B4513' }}>Low-Quality Fillers</h3>
+                  <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>No grain, scraps, GMOs, antibiotics or hormones.</p>
                 </div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600', color: '#8B4513' }}>Processed Ingredients</h3>
-                <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Made for shelf life, not for dogs.</p>
               </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  width: '80px', 
-                  height: '80px', 
-                  margin: '0 auto 20px', 
-                  border: '2px solid #E8DDD0', 
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <HelpCircle size={40} style={{ color: '#8B4513' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', background: '#F8F6F4', borderRadius: '8px' }}>
+                <Tag size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                <div>
+                  <h3 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600', color: '#8B4513' }}>Misleading Labels</h3>
+                  <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>That meet minimum guidelines, not carnivores.</p>
                 </div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600', color: '#8B4513' }}>Unclear Sourcing</h3>
-                <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Mass-produced without proper care for livestock or the environment.</p>
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  width: '80px', 
-                  height: '80px', 
-                  margin: '0 auto 20px', 
-                  border: '2px solid #E8DDD0', 
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Tag size={40} style={{ color: '#8B4513' }} />
-                </div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px', fontWeight: '600', color: '#8B4513' }}>Misleading Labels</h3>
-                <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>Designed for marketing and to meet minimal guidelines, not carnivores.</p>
               </div>
             </div>
           </div>
@@ -389,7 +354,7 @@ export const LandingPage = () => {
                 </div>
                 <h3>Choose Your Pet Food</h3>
                 <p style={{ fontSize: '15px', color: '#666' }}>
-                  We will create a meal plan tailored to your dog, or you can build your own box from our menu.
+                  Create your dog's meal plan or build your own box.
                 </p>
               </div>
               <div className="step-card">
@@ -414,8 +379,8 @@ export const LandingPage = () => {
               </div>
             </div>
             
-            <p style={{ textAlign: 'center', marginTop: '32px', fontSize: '15px', color: '#666' }}>
-              Create a meal plan or order directly from our menu. Subscribe to save and never run out.
+            <p style={{ textAlign: 'center', marginTop: '32px', fontSize: '15px', color: '#666', fontStyle: 'italic' }}>
+              Subscribe to save and never run out.
             </p>
             
             <div style={{ textAlign: 'center', marginTop: '32px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -565,7 +530,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — COMPLETE PLANS ===== */}
         <section className="new-to-raw-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>Complete plans that give you more than real food benefits.</h2>
+            <h2 className="section-title" style={{ textTransform: 'none' }}>Complete plans that give you more than just real food benefits.</h2>
             
             <div style={{ 
               maxWidth: '600px', 
@@ -615,6 +580,26 @@ export const LandingPage = () => {
               <p style={{ fontSize: '17px', fontWeight: '600', marginTop: '24px', marginBottom: '0', color: '#8B4513', textAlign: 'center' }}>
                 14-Day Happiness Guarantee: If your dog does not love their meal, we will switch any leftovers for a different protein at no extra cost.
               </p>
+            </div>
+
+            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+              <button 
+                className="btn-primary" 
+                onClick={() => navigate('/build-box')}
+                style={{ marginBottom: '16px', borderRadius: '8px' }}
+              >
+                Build My Plan
+              </button>
+              <p style={{ fontSize: '15px', color: '#666', marginBottom: '12px' }}>
+                Or order direct from the Menu
+              </p>
+              <button 
+                className="btn-secondary" 
+                onClick={() => navigate('/build-box')}
+                style={{ borderRadius: '8px' }}
+              >
+                Shop Menu
+              </button>
             </div>
           </div>
         </section>
