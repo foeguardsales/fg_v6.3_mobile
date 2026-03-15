@@ -234,7 +234,7 @@ export const BoxBuilder = () => {
               }}>
                 <span style={{
                   fontFamily: "'CS Gordon', serif",
-                  fontSize: '32px',
+                  fontSize: '26px',
                   fontWeight: 'normal',
                   color: '#FFFFFF',
                   textShadow: '0 2px 8px rgba(0,0,0,0.3)',
@@ -293,7 +293,7 @@ export const BoxBuilder = () => {
               }}>
                 <span style={{
                   fontFamily: "'CS Gordon', serif",
-                  fontSize: '32px',
+                  fontSize: '26px',
                   fontWeight: 'normal',
                   color: '#FFFFFF',
                   textShadow: '0 2px 8px rgba(0,0,0,0.3)',
