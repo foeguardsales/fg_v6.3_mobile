@@ -177,7 +177,7 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none', color: 'white' }}>Real food for dogs, raised right in Ontario</h2>
             <p style={{ fontSize: '17px', marginBottom: '48px', textAlign: 'center', color: 'rgba(255,255,255,0.9)' }}>
-              Skip the labels, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and ethical sourcing - quality you wont find in store.
+              Skip the labels, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and ethical sourcing - quality you wont find in a store.
             </p>
             <div style={{ 
               display: 'grid', 
