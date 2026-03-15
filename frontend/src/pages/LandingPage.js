@@ -132,7 +132,7 @@ export const LandingPage = () => {
             <h2 className="section-title" style={{ textTransform: 'none' }}>From our farm to your bowl</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
               <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                At FoeGuard, our passion for pets and heritage in farming help us understand the food chain from soil-to-serving. Thats why we created FoeGuard - a farm-to-bowl service that delivers fresh raw meals that are balanced for your dog's anatomy to digest easily, maximize nutrient absorption, and support noticeable results. Our recipes use the same ingredients we use for our own family, with the same quality and care - but made for your dog!
+                At FoeGuard, our passion for pets and our heritage in farming help us understand the food chain from soil to serving. That's why we created a farm-to-bowl service that delivers fresh, raw food balanced for your dog's anatomy — making it easier to digest, maximizing nutrient absorption, and supporting noticeable results. Our recipes use the same ingredients we choose for our own family, held to the same standards of quality and care — thoughtfully prepared for your dog.
               </p>
             </div>
           </div>
