@@ -4113,3 +4113,28 @@ h2, h3, h4 {
     padding: 24px;
   }
 }
+
+
+/* Mobile Hero Adjustments */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 28px !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 15px !important;
+  }
+  
+  .hero-section {
+    min-height: 320px !important;
+  }
+  
+  .hero-content {
+    padding: 40px 24px !important;
+  }
+  
+  .btn-hero {
+    padding: 12px 32px !important;
+    font-size: 15px !important;
+  }
+}
