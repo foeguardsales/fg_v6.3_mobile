@@ -72,6 +72,12 @@ export const LandingPage = () => {
             <div className="testimonials-grid" style={{ marginBottom: '48px' }}>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
                 <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
+                  "Indigo is known to be pickier ... but had zero issue with this food and enjoyed every meal. Oliver also thoroughly enjoyed the food and his stools were perfect (...something that we have issues with)"
+                </p>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@canadian.farm.dogs</span>
+              </div>
+              <div className="testimonial-card" style={{ textAlign: 'center' }}>
+                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
                   "Zeus is VERY impressed 😍❤️. Love the dinners because they're already a balanced meal making it easy ... he devours and makes sure he licks every little bit left in his bowl!"
                 </p>
                 <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@zeus.thedobie_</span>
@@ -81,12 +87,6 @@ export const LandingPage = () => {
                   "I've been waiting to be woken up in the middle of the night for her to go washroom, but her stool has been consistent and perfect since I began introducing the raw food."
                 </p>
                 <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@fuji.pai02</span>
-              </div>
-              <div className="testimonial-card" style={{ textAlign: 'center' }}>
-                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
-                  "Indigo is known to be pickier ... but had zero issue with this food and enjoyed every meal. Oliver also thoroughly enjoyed the food and his stools were perfect (...something that we have issues with)"
-                </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@canadian.farm.dogs</span>
               </div>
             </div>
 
@@ -506,9 +506,9 @@ export const LandingPage = () => {
                   textAlign: 'center'
                 }}>
                   <p style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
-                    "Raw feeding, when done correctly with proper nutrition, can provide excellent health benefits for dogs."
+                    "When I began to suggest the feeding of raw meat I found animals becoming more healthy [against diseases] even without other treatment."
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>— Dr. Sarah Thompson, DVM</p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Dr. Richard Pitcairn, Veterinarian & author of Complete Guide to Natural Health for Dogs & Cats</p>
                 </div>
                 <div style={{ 
                   background: 'white', 
@@ -518,9 +518,9 @@ export const LandingPage = () => {
                   textAlign: 'center'
                 }}>
                   <p style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
-                    "I've seen remarkable improvements in my patients who switched to quality raw diets."
+                    "My nutritional goals for my patients: to make the diet as species-appropriate as possible, which is low-carb, high-moisture and unprocessed."
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>— Dr. James Chen, DVM</p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Dr. Karen Becker, Veterinarian & author of The Forever Dog</p>
                 </div>
                 <div style={{ 
                   background: 'white', 
@@ -530,9 +530,9 @@ export const LandingPage = () => {
                   textAlign: 'center'
                 }}>
                   <p style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
-                    "Species-appropriate nutrition is key. Raw feeding aligns with canine biology."
+                    "Our dogs' disease problems are increasing on a par with their increasing consumption of processed and cooked foods"
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>— Dr. Emily Patterson, DVM</p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Dr. Ian Billinghurst, Veterinarian & author of Give Your Dog a Bone</p>
                 </div>
               </div>
             </div>
