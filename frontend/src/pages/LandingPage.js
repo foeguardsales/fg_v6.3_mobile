@@ -604,7 +604,7 @@ export const LandingPage = () => {
                   </div>
                 </div>
 
-                <p style={{ fontSize: '17px', fontWeight: '600', marginTop: '24px', marginBottom: '0', color: '#8B4513', textAlign: 'center' }}>
+                <p style={{ fontSize: '16px', fontWeight: '600', marginTop: '24px', marginBottom: '0', color: '#8B4513', textAlign: 'center' }}>
                   14-Day Happiness Guarantee: If your dog does not love their meal, we will switch any leftovers for a different protein at no extra cost.
                 </p>
               </div>

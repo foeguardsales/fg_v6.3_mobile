@@ -12,7 +12,7 @@ export const NewToRawPage = () => {
         {/* SECTION 1 — Hero */}
         <section className="ntf-hero">
           <div className="ntf-hero-content">
-            <h1 style={{ textTransform: 'none' }}>New to FG?</h1>
+            <h1 style={{ textTransform: 'none', fontFamily: "'CS Gordon', serif" }}>New to FG?</h1>
             <p className="ntf-hero-subtitle" style={{ fontWeight: '600', fontSize: '18px', marginBottom: '16px' }}>
               No complicated prep. No added supplements required for complete dinners.
             </p>
@@ -51,11 +51,63 @@ export const NewToRawPage = () => {
               </p>
             </div>
 
-            <div style={{ marginBottom: '0' }}>
+            <div style={{ marginBottom: '32px' }}>
               <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Kibble</h3>
               <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
                 Kibble is extremely processed, regardless of what ingredients are used or how fancy the packaging looks. It is cooked at high temperatures, which can destroy essential nutrients and make it harder for pets to digest. Minimal pet food regulations also allow for lower-quality meat, vague sourcing, and highly processed ingredients hidden behind marketing terms such as "natural," protein "meals," and "made with meat," even when only a small percentage is actually required to meet AAFCO standards.
               </p>
+            </div>
+
+            {/* Comparison Table - Moved here */}
+            <div className="comparison-table-wrapper" style={{ marginTop: '48px' }}>
+              <table className="comparison-table">
+                <thead>
+                  <tr>
+                    <th className="feature-col"></th>
+                    <th className="brand-col foeguard-col">
+                      <span className="brand-name">Us</span>
+                    </th>
+                    <th className="brand-col">
+                      <span className="brand-name">Retail Raw</span>
+                    </th>
+                    <th className="brand-col">
+                      <span className="brand-name">Kibble</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="feature-cell">Human-Grade Ingredients</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Organic & Non-GMO</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Farm Fresh</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Transparent Sourcing</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Ethically Raised in Small Batches</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
@@ -76,34 +128,8 @@ export const NewToRawPage = () => {
           </div>
         </section>
 
-        {/* SECTION 5 — Is Raw Safe? */}
-        <section className="ntf-section" style={{ background: 'white' }}>
-          <div className="ntf-container">
-            <h2 style={{ textTransform: 'none' }}>Is raw food safe for my dog?</h2>
-            <p style={{ fontSize: '17px', marginBottom: '24px' }}>
-              When handled properly — yes.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Dogs and cats are biologically designed to digest raw meat, bone, and organ. The key is quality, formulation, and proper storage.
-            </p>
-            <p className="ntf-emphasis" style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
-              At FoeGuard, every meal is:
-            </p>
-            <ul className="ntf-list" style={{ fontSize: '17px', marginBottom: '24px' }}>
-              <li>Professionally balanced</li>
-              <li>Prepared in a government-inspected facility</li>
-              <li>Flash frozen immediately</li>
-              <li>Handled with the same standards you would use for your own food</li>
-            </ul>
-            <p style={{ fontSize: '17px' }}>
-              Raw feeding isn't extreme.<br />
-              It's simply a return to biological design.
-            </p>
-          </div>
-        </section>
-
-        {/* SECTION 6 — Transition Guide */}
-        <section className="ntf-section ntf-transition" style={{ background: '#F5F3EF' }}>
+        {/* SECTION 5 — Transition Guide */}
+        <section className="ntf-section ntf-transition" style={{ background: 'white' }}>
           <div className="ntf-container">
             <h2 style={{ textTransform: 'none' }}>How do I transition my pet?</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
@@ -166,6 +192,32 @@ export const NewToRawPage = () => {
           </div>
         </section>
 
+        {/* SECTION 6 — Is Raw Safe? (Moved here after transition) */}
+        <section className="ntf-section" style={{ background: '#F5F3EF' }}>
+          <div className="ntf-container">
+            <h2 style={{ textTransform: 'none' }}>Is raw food safe for my dog?</h2>
+            <p style={{ fontSize: '17px', marginBottom: '24px' }}>
+              When handled properly — yes.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Dogs and cats are biologically designed to digest raw meat, bone, and organ. The key is quality, formulation, and proper storage.
+            </p>
+            <p className="ntf-emphasis" style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
+              At FoeGuard, every meal is:
+            </p>
+            <ul className="ntf-list" style={{ fontSize: '17px', marginBottom: '24px' }}>
+              <li>Professionally balanced</li>
+              <li>Prepared in a government-inspected facility</li>
+              <li>Flash frozen immediately</li>
+              <li>Handled with the same standards you would use for your own food</li>
+            </ul>
+            <p style={{ fontSize: '17px' }}>
+              Raw feeding isn't extreme.<br />
+              It's simply a return to biological design.
+            </p>
+          </div>
+        </section>
+
         {/* SECTION 7 — If They Won't Eat */}
         <section className="ntf-section ntf-wont-eat" style={{ background: 'white' }}>
           <div className="ntf-container">
@@ -193,63 +245,6 @@ export const NewToRawPage = () => {
             <p className="conclusion-text" style={{ fontSize: '17px' }}>
               With patience and consistency, most pets adapt quickly — and thrive.
             </p>
-          </div>
-        </section>
-
-        {/* SECTION 8 — Comparison Table */}
-        <section className="ntf-section ntf-compare" style={{ background: '#F5F3EF' }}>
-          <div className="ntf-container">
-            <h2 style={{ textTransform: 'none' }}>Compare us to others</h2>
-            <div className="comparison-table-wrapper">
-              <table className="comparison-table">
-                <thead>
-                  <tr>
-                    <th className="feature-col"></th>
-                    <th className="brand-col foeguard-col">
-                      <span className="brand-name">FoeGuard</span>
-                    </th>
-                    <th className="brand-col">
-                      <span className="brand-name">Retail Raw</span>
-                    </th>
-                    <th className="brand-col">
-                      <span className="brand-name">Kibble</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="feature-cell">Human-Grade Ingredients</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Organic & Non-GMO</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Farm Fresh</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Transparent Sourcing</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Ethically Raised in Small Batches</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         </section>
 
