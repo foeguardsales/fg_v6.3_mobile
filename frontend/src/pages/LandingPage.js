@@ -177,7 +177,7 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none', color: 'white' }}>Real food for dogs, raised right in Ontario</h2>
             <p style={{ fontSize: '17px', marginBottom: '48px', textAlign: 'center', color: 'rgba(255,255,255,0.9)' }}>
-              Skip the labels, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and ethical sourcing - quality you wont find in a store.
+              Skip the fillers, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and ethical sourcing - quality you wont find in a store.
             </p>
             <div style={{ 
               display: 'grid', 
@@ -609,6 +609,19 @@ export const LandingPage = () => {
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ===== SECTION — OUR STORY ===== */}
+        <section className="about-section" style={{ background: 'white', padding: '80px 20px' }}>
+          <div className="section-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B' }}>Our story ... is your story?</h2>
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
+              Overwhelmed by the health challenges caused by processed foods, our family turned to our farm to grow real, wholesome ingredients. The transformation was life-changing: more energy, better digestion, clearer minds, and even glowing skin.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7', color: '#333' }}>
+              Inspired by these results, we decided to feed our dogs the same way—natural, fresh, and just like family. The change was incredible! Their energy soared, their coats shone, and their health improved, proving one simple truth—they're carnivores. What started as a personal journey soon became a mission to help others. We began preparing meals for friends and neighbours, and that passion grew into profession - FoeGuard was born!
+            </p>
           </div>
         </section>
 
