@@ -12,7 +12,7 @@ export const NewToRawPage = () => {
         {/* SECTION 1 — Hero */}
         <section className="ntf-hero">
           <div className="ntf-hero-content">
-            <h1 style={{ textTransform: 'none', fontFamily: "'CS Gordon', serif" }}>New to FG?</h1>
+            <h1 style={{ textTransform: 'none', fontFamily: "'CS Gordon', serif" }}>New to FG</h1>
             <p className="ntf-hero-subtitle" style={{ fontWeight: '600', fontSize: '18px', marginBottom: '16px' }}>
               No complicated prep. No added supplements required for complete dinners.
             </p>
