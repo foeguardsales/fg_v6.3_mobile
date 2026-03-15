@@ -72,21 +72,21 @@ export const LandingPage = () => {
             <div className="testimonials-grid" style={{ marginBottom: '48px' }}>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
                 <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
-                  "Indigo is known to be pickier ... but had zero issue with this food and enjoyed every meal. Oliver also thoroughly enjoyed the food and his stools were perfect (...something that we have issues with)"
+                  "If you show your dog's professionally FG may be your secret weapon"
                 </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@canadian.farm.dogs</span>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>Muhammad S. (Dog Breeder)</span>
               </div>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
                 <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
-                  "Zeus is VERY impressed 😍❤️. Love the dinners because they're already a balanced meal making it easy ... he devours and makes sure he licks every little bit left in his bowl!"
+                  "Ever since switching to their raw food her allergies have disappeared"
                 </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@zeus.thedobie_</span>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>Prianth P.</span>
               </div>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
                 <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
-                  "I've been waiting to be woken up in the middle of the night for her to go washroom, but her stool has been consistent and perfect since I began introducing the raw food."
+                  "Milans sensitive tummy was causing us constant worry until we switched to FoeGuard."
                 </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>@fuji.pai02</span>
+                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>Oliver H.</span>
               </div>
             </div>
 
@@ -451,9 +451,9 @@ export const LandingPage = () => {
                     marginBottom: '16px' 
                   }}></div>
                   <p style={{ fontSize: '15px', fontStyle: 'italic', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "My dog's coat is so much shinier now. Worth every penny!"
+                    "Indigo is known to be pickier ... but had zero issue with this food and enjoyed every meal. Oliver also thoroughly enjoyed the food and his stools were perfect (...something that we have issues with)"
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>— Jennifer L.</p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@canadian.farm.dogs</p>
                 </div>
                 <div style={{ 
                   background: 'white', 
@@ -469,9 +469,9 @@ export const LandingPage = () => {
                     marginBottom: '16px' 
                   }}></div>
                   <p style={{ fontSize: '15px', fontStyle: 'italic', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "Switching to FoeGuard was the best decision for our pup's health."
+                    "Zeus is VERY impressed 😍❤️. Love the dinners because they're already a balanced meal making it easy ... he devours and makes sure he licks every little bit left in his bowl!"
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>— Michael K.</p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@zeus.thedobie_</p>
                 </div>
                 <div style={{ 
                   background: 'white', 
@@ -487,9 +487,9 @@ export const LandingPage = () => {
                     marginBottom: '16px' 
                   }}></div>
                   <p style={{ fontSize: '15px', fontStyle: 'italic', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "I love knowing exactly what my dog is eating. Real ingredients!"
+                    "I've been waiting to be woken up in the middle of the night for her to go washroom, but her stool has been consistent and perfect since I began introducing the raw food."
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>— Amanda R.</p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@fuji.pai02</p>
                 </div>
               </div>
             </div>
