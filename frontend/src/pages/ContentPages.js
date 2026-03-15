@@ -28,7 +28,7 @@ export const AboutPage = () => {
           <div className="about-hero-content">
             <h1 style={{ textTransform: 'none' }}>Why FoeGuard?</h1>
             <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', marginTop: '20px' }}>
-              No fancy packaging, retail mark-ups, or empty marketing. Just what your dog was meant to eat — since forever.
+              No fancy packaging, retail markups, or empty marketing. Just what your dog was meant to eat — since forever.
             </p>
           </div>
         </section>
@@ -43,7 +43,7 @@ export const AboutPage = () => {
         {/* Just because it's edible */}
         <section className="about-section about-story">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>Just because it's edible for your dog doesn't mean it's healthy for them.</h2>
+            <h2 style={{ textTransform: 'none' }}>Just because it's edible for your dog doesn't mean it's healthy for them</h2>
             <p style={{ fontSize: '17px', marginBottom: '24px', fontWeight: '600' }}>
               We have become accustomed to commercial dog food that is "backed by science," but what do the results really show?
             </p>
@@ -56,7 +56,7 @@ export const AboutPage = () => {
         {/* The FoeGuard Difference */}
         <section className="about-section about-farm-bowl">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>The FoeGuard Difference</h2>
+            <h2 style={{ textTransform: 'none' }}>The FoeGuard difference</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               For years, our own health practitioners have told us to eat as much fresh, locally sourced food as possible while reducing processed foods wherever we can. We believe the same logic applies to our beloved pets.
             </p>
@@ -104,7 +104,7 @@ export const AboutPage = () => {
         {/* When we say farm-to-bowl */}
         <section className="about-section about-team-text">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>When we say farm-to-bowl, we mean it.</h2>
+            <h2 style={{ textTransform: 'none' }}>When we say farm-to-bowl, we mean it</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               We source our own ethically raised, human-grade meats. Each recipe is biologically appropriate and backed by science with support from a PhD biologist and a canine nutritionist. Every product is refined, tested, and fed to our own dogs before it ever reaches yours.
             </p>
@@ -426,7 +426,7 @@ export const NewToRawPage = () => {
         {/* SECTION 1 — Hero */}
         <section className="ntf-hero">
           <div className="ntf-hero-content">
-            <h1 style={{ textTransform: 'none' }}>New to FG</h1>
+            <h1 style={{ textTransform: 'none' }}>New to FG?</h1>
             <p className="ntf-hero-subtitle" style={{ fontWeight: '600', fontSize: '18px', marginBottom: '16px' }}>
               No complicated prep. No added supplements required for complete dinners.
             </p>
@@ -436,7 +436,7 @@ export const NewToRawPage = () => {
         {/* SECTION 2 — Feel confident */}
         <section className="ntf-section ntf-easy" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
-            <h2 style={{ textAlign: 'center', textTransform: 'none' }}>Feel confident about switching to FoeGuard Raw.</h2>
+            <h2 style={{ textAlign: 'center', textTransform: 'none' }}>Feel confident about switching to FoeGuard raw</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px', textAlign: 'center', fontWeight: '600' }}>
               Dogs are biologically designed to thrive on raw food nutrition. Their powerful stomach acid, sharp teeth, and short digestive systems allow them to efficiently digest raw meat, organs, and bone.
             </p>
@@ -493,7 +493,7 @@ export const NewToRawPage = () => {
         {/* SECTION 5 — Is Raw Safe? */}
         <section className="ntf-section" style={{ background: 'white' }}>
           <div className="ntf-container">
-            <h2 style={{ textTransform: 'none' }}>Is Raw food safe for my dog?</h2>
+            <h2 style={{ textTransform: 'none' }}>Is raw food safe for my dog?</h2>
             <p style={{ fontSize: '17px', marginBottom: '24px' }}>
               When handled properly — yes.
             </p>
@@ -519,7 +519,7 @@ export const NewToRawPage = () => {
         {/* SECTION 6 — Transition Guide */}
         <section className="ntf-section ntf-transition" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
-            <h2 style={{ textTransform: 'none' }}>How Do I Transition My Pet?</h2>
+            <h2 style={{ textTransform: 'none' }}>How do I transition my pet?</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Because our meals are nutrient-dense and minimally processed, a thoughtful transition helps avoid digestive upset.
             </p>
@@ -583,7 +583,7 @@ export const NewToRawPage = () => {
         {/* SECTION 7 — If They Won't Eat */}
         <section className="ntf-section ntf-wont-eat" style={{ background: 'white' }}>
           <div className="ntf-container">
-            <h2 style={{ textTransform: 'none' }}>What If My Dog or Cat Won't Eat Raw?</h2>
+            <h2 style={{ textTransform: 'none' }}>What if my dog or cat won't eat raw?</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Transitioning to raw is often <strong>behavioural</strong> — not nutritional.
             </p>

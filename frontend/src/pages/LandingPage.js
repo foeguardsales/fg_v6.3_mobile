@@ -58,14 +58,8 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none' }}>From our farm to your bowl</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
-              <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-                Our love for pets and heritage in farming help us understand the food chain from soil to serving.
-              </p>
-              <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-                FoeGuard was built to feed the way nature intended, using the same ingredients we use to feed our own family — with the same quality and care – but made for your dog!
-              </p>
               <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                Our farm-to-bowl service delivers fresh, healthy ingredients that are made for your dog's anatomy to digest easily, maximize nutrient absorption, and support noticeable results.
+                Our passion for dogs and roots to farming help us understand the food chain from soil to serving. That's why we created FoeGuard, to help you feed the way nature intended, using the same ingredients we use to feed our own family, with the same quality and care – but made for your dog! Our farm-to-bowl service delivers fresh, healthy ingredients that are made for your dog's anatomy to digest easily, maximize nutrient absorption, and support noticeable results.
               </p>
             </div>
           </div>
@@ -183,7 +177,7 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none', color: 'white' }}>Real food for dogs, raised right in Ontario</h2>
             <p style={{ fontSize: '17px', marginBottom: '48px', textAlign: 'center', color: 'rgba(255,255,255,0.9)' }}>
-              Skip the labels, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and put value where it matters most: towards your dog.
+              Skip the labels, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and ethical farming practises - quality you wont find in store.
             </p>
             <div style={{ 
               display: 'grid', 
@@ -283,16 +277,18 @@ export const LandingPage = () => {
         <section className="proteins-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
           <div className="section-container">
             <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+              display: 'flex',
+              flexWrap: 'wrap',
               gap: '24px',
               maxWidth: '1200px',
-              margin: '0 auto'
+              margin: '0 auto',
+              justifyContent: 'center'
             }}>
               {[...Array(8)].map((_, i) => (
                 <div 
                   key={i}
                   style={{
+                    width: 'calc((100% - 96px) / 5)',
                     aspectRatio: '1',
                     background: '#E8DDD0',
                     borderRadius: '12px',
@@ -311,23 +307,26 @@ export const LandingPage = () => {
         {/* ===== SECTION — REDEFINE PET FOOD ===== */}
         <section className="problem-section" style={{ background: 'white', padding: '60px 20px' }}>
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>We put value where it matters most — into your dog's bowl.</h2>
+            <h2 className="section-title" style={{ textTransform: 'none' }}>What you won't find in the bowl</h2>
+            <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '40px', color: '#666', maxWidth: '700px', margin: '0 auto 40px' }}>
+              We put value where it matters most - towards your dog's. It's time to get rid of:
+            </p>
             <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', padding: '16px', background: '#F8F6F4', borderRadius: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '20px', padding: '16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
                 <Beaker size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
                 <div>
                   <h3 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600', color: '#8B4513' }}>Processed Ingredients</h3>
                   <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>Made for longer shelf life, not for dogs.</p>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', padding: '16px', background: '#F8F6F4', borderRadius: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '20px', padding: '16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
                 <X size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
                 <div>
                   <h3 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600', color: '#8B4513' }}>Low-Quality Fillers</h3>
                   <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>No grain, scraps, GMOs, antibiotics or hormones.</p>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', background: '#F8F6F4', borderRadius: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', padding: '16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
                 <Tag size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
                 <div>
                   <h3 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600', color: '#8B4513' }}>Misleading Labels</h3>
@@ -405,20 +404,27 @@ export const LandingPage = () => {
         {/* ===== SECTION — BENEFITS ===== */}
         <section className="problem-section" style={{ background: '#F8F6F4' }}>
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>Benefits you can see, and they can feel.</h2>
-            <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
-              <p style={{ fontSize: '18px', marginBottom: '24px', lineHeight: '1.7', fontWeight: '600', color: '#8B4513' }}>
-                Good health is priceless.
-              </p>
-              <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-                Feed a species-appropriate raw diet that supports long-term health and lasting nutrition.
-              </p>
-              <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-                You may notice a shinier coat, more energy, cleaner teeth, fewer sensitivities, and even more excitement at mealtime. With fewer unnecessary vet visits, both you and your dog can feel the difference.
-              </p>
-              <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                Do not just take our word for it. See what happy dog parents and veterinary professionals have to say, or see the difference for yourself.
-              </p>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '40px' }}>Benefits you can see, and they can feel.</h2>
+            
+            <div style={{ display: 'flex', gap: '48px', maxWidth: '1100px', margin: '0 auto', alignItems: 'center', flexWrap: 'wrap' }}>
+              <div style={{ flex: '1', minWidth: '300px' }}>
+                <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
+                  <strong style={{ color: '#8B4513', fontSize: '18px' }}>Good health is priceless.</strong> Feed a species-appropriate raw diet that supports long-term health and lasting nutrition. You may notice a shinier coat, more energy, cleaner teeth, fewer sensitivities, and even more excitement at mealtime. With fewer unnecessary vet visits, both you and your dog can feel the difference. Do not just take our word for it. See what happy dog parents and veterinary professionals have to say, or see the difference for yourself.
+                </p>
+              </div>
+              <div style={{ 
+                flex: '0 0 400px', 
+                height: '350px', 
+                background: '#E8DDD0', 
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#8B4513',
+                fontSize: '14px'
+              }}>
+                Image Placeholder
+              </div>
             </div>
 
             {/* Recent Reviews with Images */}
@@ -530,56 +536,72 @@ export const LandingPage = () => {
         {/* ===== SECTION — COMPLETE PLANS ===== */}
         <section className="new-to-raw-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>Complete plans that give you more than just real food benefits.</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '40px' }}>Our meal plans deliver more than just good food benefits</h2>
             
-            <div style={{ 
-              maxWidth: '600px', 
-              margin: '0 auto',
-              background: 'white',
-              padding: '32px',
-              borderRadius: '16px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-            }}>
-              <p style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', textAlign: 'center' }}>
-                All FoeGuard plans include:
-              </p>
+            <div style={{ display: 'flex', gap: '48px', maxWidth: '1100px', margin: '0 auto', alignItems: 'center', flexWrap: 'wrap' }}>
+              <div style={{ 
+                flex: '0 0 400px', 
+                height: '450px', 
+                background: '#E8DDD0', 
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#8B4513',
+                fontSize: '14px'
+              }}>
+                Image Placeholder
+              </div>
               
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free 1-on-1 consultation</p>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Personalized, portioned meals</p>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free complete raw feeding guide</p>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Eco-friendly packaging</p>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Subscribe and save</p>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>FoeGuard delivery</p>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Lifetime support</p>
+              <div style={{ 
+                flex: '1', 
+                minWidth: '300px',
+                background: 'white',
+                padding: '32px',
+                borderRadius: '16px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+              }}>
+                <p style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', textAlign: 'center' }}>
+                  All FoeGuard plans include:
+                </p>
+                
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free 1-on-1 consultation</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Personalized, portioned meals</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free complete raw feeding guide</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Eco-friendly packaging</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Subscribe and save</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>FoeGuard delivery</p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
+                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Lifetime support</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <p style={{ fontSize: '17px', fontWeight: '600', marginTop: '24px', marginBottom: '0', color: '#8B4513', textAlign: 'center' }}>
-                14-Day Happiness Guarantee: If your dog does not love their meal, we will switch any leftovers for a different protein at no extra cost.
-              </p>
+                <p style={{ fontSize: '17px', fontWeight: '600', marginTop: '24px', marginBottom: '0', color: '#8B4513', textAlign: 'center' }}>
+                  14-Day Happiness Guarantee: If your dog does not love their meal, we will switch any leftovers for a different protein at no extra cost.
+                </p>
+              </div>
             </div>
 
             <div style={{ textAlign: 'center', marginTop: '40px' }}>
