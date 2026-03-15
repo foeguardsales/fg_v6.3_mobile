@@ -38,7 +38,7 @@ export const LandingPage = () => {
               <span className="hero-accent">Nature Intended</span>
             </h1>
             <p className="hero-subtitle" style={{ marginBottom: '32px' }}>
-              Human-grade, organic raw dog food delivery
+              Human-grade, organic raw dog food delivery. Farm-to-Bowl in just 3 days.
             </p>
             <button 
               className="btn-hero" 
@@ -542,7 +542,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — COMPLETE PLANS ===== */}
         <section className="new-to-raw-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '40px' }}>Our meal plans deliver more than just good food benefits</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '40px' }}>Start to see a healthier, more energetic dog within days.</h2>
             
             <div style={{ display: 'flex', gap: '48px', maxWidth: '1100px', margin: '0 auto', alignItems: 'center', flexWrap: 'wrap' }}>
               <div style={{ 
@@ -608,26 +608,6 @@ export const LandingPage = () => {
                   14-Day Happiness Guarantee: If your dog does not love their meal, we will switch any leftovers for a different protein at no extra cost.
                 </p>
               </div>
-            </div>
-
-            <div style={{ textAlign: 'center', marginTop: '40px' }}>
-              <button 
-                className="btn-primary" 
-                onClick={() => navigate('/build-box')}
-                style={{ marginBottom: '16px', borderRadius: '8px' }}
-              >
-                Build My Plan
-              </button>
-              <p style={{ fontSize: '15px', color: '#666', marginBottom: '12px' }}>
-                Or order direct from the Menu
-              </p>
-              <button 
-                className="btn-secondary" 
-                onClick={() => navigate('/build-box')}
-                style={{ borderRadius: '8px' }}
-              >
-                Shop Menu
-              </button>
             </div>
           </div>
         </section>
