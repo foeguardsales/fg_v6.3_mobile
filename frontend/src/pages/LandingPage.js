@@ -167,7 +167,7 @@ export const LandingPage = () => {
             </div>
 
             <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '15px', color: '#666' }}>
-              Real dogs. Real cats. Real guardians choosing better.
+              93% of owners surveyed reported positive changes in digestion, coat, and/or energy.
             </p>
           </div>
         </section>
