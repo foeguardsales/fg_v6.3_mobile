@@ -277,7 +277,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             margin: 0,
             maxWidth: '450px',
             lineHeight: '1.5'
-          }}><strong>For:</strong> {isDog ? 'Dogs' : 'Cats'} of all life stages. Ideal for treats, enrichment, or dental support.</p>
+          }}>Ideal for treats, enrichment, or dental support.</p>
         </div>
       </div>
 

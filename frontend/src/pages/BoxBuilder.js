@@ -428,23 +428,16 @@ export const BoxBuilder = () => {
                         color: 'rgba(255,255,255,0.95)',
                         fontSize: '15px',
                         margin: '0 0 16px 0',
-                        maxWidth: '420px',
+                        maxWidth: '600px',
                         lineHeight: '1.6'
-                      }}>Complete and balanced raw dinners made from ethically raised, human-grade meat.</p>
-                      <p style={{
-                        color: 'rgba(255,255,255,0.85)',
-                        fontSize: '13px',
-                        margin: '0 0 8px 0',
-                        maxWidth: '420px',
-                        lineHeight: '1.5'
-                      }}><strong>Recipe:</strong> 70% meat, 10% bone, 10% organ, 8% fruits & vegetables, 2% supplements</p>
+                      }}>Complete and balanced raw dinners made to AAFCO standards using 70% meat, 10% bone, 10% organ, 8% fruits & vegetables, 2% supplements.</p>
                       <p style={{
                         color: 'rgba(255,255,255,0.85)',
                         fontSize: '13px',
                         margin: 0,
-                        maxWidth: '420px',
+                        maxWidth: '600px',
                         lineHeight: '1.5'
-                      }}><strong>For:</strong> Daily feeding for dogs of all life stages. Ready to serve, no additions required.</p>
+                      }}><strong>For:</strong> Ready to serve for dogs of all-life stages, no extra supplements needed.</p>
                     </div>
                   </div>
                   
@@ -503,21 +496,14 @@ export const BoxBuilder = () => {
                         color: 'rgba(255,255,255,0.95)',
                         fontSize: '15px',
                         margin: '0 0 16px 0',
-                        maxWidth: '420px',
+                        maxWidth: '600px',
                         lineHeight: '1.6'
-                      }}>Farm-fresh whole prey raw food designed for customizable feeding.</p>
-                      <p style={{
-                        color: 'rgba(255,255,255,0.85)',
-                        fontSize: '13px',
-                        margin: '0 0 8px 0',
-                        maxWidth: '420px',
-                        lineHeight: '1.5'
-                      }}><strong>Recipe:</strong> 80% meat, 10% bone, 10% organ (Prey Model Raw ratio)</p>
+                      }}>Farm-fresh whole prey raw food made with 80% meat, 10% bone, 10% organ (Prey Model Raw ratio) designed for customizable feeding.</p>
                       <p style={{
                         color: 'rgba(255,255,255,0.85)',
                         fontSize: '13px',
                         margin: 0,
-                        maxWidth: '420px',
+                        maxWidth: '600px',
                         lineHeight: '1.5'
                       }}><strong>For:</strong> DIY raw feeding, rotation, toppers, or supplementation. Not complete on its own.</p>
                     </div>
@@ -588,23 +574,16 @@ export const BoxBuilder = () => {
                         color: 'rgba(255,255,255,0.95)',
                         fontSize: '15px',
                         margin: '0 0 16px 0',
-                        maxWidth: '420px',
+                        maxWidth: '600px',
                         lineHeight: '1.6'
-                      }}>Complete and balanced raw meals crafted for your cat's carnivorous biology.</p>
-                      <p style={{
-                        color: 'rgba(255,255,255,0.85)',
-                        fontSize: '13px',
-                        margin: '0 0 8px 0',
-                        maxWidth: '420px',
-                        lineHeight: '1.5'
-                      }}><strong>Recipe:</strong> 95% meat, organs & bone, 3% fruits & vegetables, 2% supplements</p>
+                      }}>Complete and balanced raw meals crafted for your cat's carnivorous biology using 95% meat, organs & bone, 3% fruits & vegetables, 2% supplements.</p>
                       <p style={{
                         color: 'rgba(255,255,255,0.85)',
                         fontSize: '13px',
                         margin: 0,
-                        maxWidth: '420px',
+                        maxWidth: '600px',
                         lineHeight: '1.5'
-                      }}><strong>For:</strong> Daily feeding for cats of all life stages. Supports lean muscle, digestion & coat health.</p>
+                      }}><strong>For:</strong> Daily feeding for cats of all life stages. Supports lean muscle, digestion & coat health. Additional supplements welcome.</p>
                     </div>
                   </div>
                   
