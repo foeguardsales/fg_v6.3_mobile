@@ -33,7 +33,7 @@ export const LandingPage = () => {
         {/* ===== BANNER — HERO ===== */}
         <section className="hero-section" data-testid="hero-section" style={{
           position: 'relative',
-          minHeight: '600px',
+          minHeight: '450px',
           display: 'flex',
           alignItems: 'center',
           background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.85) 0%, rgba(115, 40, 39, 0.75) 100%)',
@@ -81,16 +81,16 @@ export const LandingPage = () => {
             zIndex: 2,
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: '80px 40px',
+            padding: '60px 40px',
             textAlign: 'left',
             width: '100%'
           }}>
-            <div style={{ maxWidth: '600px' }}>
+            <div style={{ maxWidth: '550px' }}>
               <h1 className="hero-title" style={{ 
                 fontFamily: "'CS Gordon', serif",
-                fontSize: '72px',
+                fontSize: '52px',
                 lineHeight: '1.1',
-                marginBottom: '24px',
+                marginBottom: '20px',
                 color: '#FFFFFF',
                 textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
               }}>
@@ -98,8 +98,8 @@ export const LandingPage = () => {
                 <span className="hero-accent" style={{ color: '#E8DDD0' }}>Nature Intended</span>
               </h1>
               <p className="hero-subtitle" style={{ 
-                marginBottom: '32px',
-                fontSize: '20px',
+                marginBottom: '28px',
+                fontSize: '18px',
                 lineHeight: '1.6',
                 color: '#FFFFFF',
                 textShadow: '1px 1px 4px rgba(0,0,0,0.5)'
@@ -112,8 +112,8 @@ export const LandingPage = () => {
                 data-testid="hero-build-box-btn"
                 style={{
                   borderRadius: '8px',
-                  padding: '18px 48px',
-                  fontSize: '18px',
+                  padding: '16px 40px',
+                  fontSize: '17px',
                   fontWeight: '600',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
                   transition: 'transform 0.2s',
