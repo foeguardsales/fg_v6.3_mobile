@@ -31,25 +31,98 @@ export const LandingPage = () => {
       <div className="landing-page">
         
         {/* ===== BANNER — HERO ===== */}
-        <section className="hero-section" data-testid="hero-section">
-          <div className="hero-content">
-            <h1 className="hero-title" style={{ fontFamily: "'CS Gordon', serif" }}>
-              Feed the Way<br />
-              <span className="hero-accent">Nature Intended</span>
-            </h1>
-            <p className="hero-subtitle" style={{ marginBottom: '32px' }}>
-              Human-grade, organic raw dog food delivery. Farm-to-bowl in just 3 days.
-            </p>
-            <button 
-              className="btn-hero" 
-              onClick={() => navigate('/build-box')}
-              data-testid="hero-build-box-btn"
-              style={{
-                borderRadius: '8px'
-              }}
-            >
-              Create Your Plan
-            </button>
+        <section className="hero-section" data-testid="hero-section" style={{
+          position: 'relative',
+          minHeight: '600px',
+          display: 'flex',
+          alignItems: 'center',
+          background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.85) 0%, rgba(115, 40, 39, 0.75) 100%)',
+          overflow: 'hidden'
+        }}>
+          {/* Background Image Placeholder */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: '#8B4513',
+            zIndex: 0
+          }}>
+            {/* Farm image will go here as background-image */}
+            <div style={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'rgba(255,255,255,0.3)',
+              fontSize: '18px',
+              fontWeight: '600'
+            }}>
+              FARM IMAGE BACKGROUND
+            </div>
+          </div>
+          
+          {/* Dark Overlay for text readability */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'linear-gradient(90deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)',
+            zIndex: 1
+          }}></div>
+
+          {/* Text Content - Left Aligned */}
+          <div className="hero-content" style={{
+            position: 'relative',
+            zIndex: 2,
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '80px 40px',
+            textAlign: 'left',
+            width: '100%'
+          }}>
+            <div style={{ maxWidth: '600px' }}>
+              <h1 className="hero-title" style={{ 
+                fontFamily: "'CS Gordon', serif",
+                fontSize: '72px',
+                lineHeight: '1.1',
+                marginBottom: '24px',
+                color: '#FFFFFF',
+                textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
+              }}>
+                Feed the Way<br />
+                <span className="hero-accent" style={{ color: '#E8DDD0' }}>Nature Intended</span>
+              </h1>
+              <p className="hero-subtitle" style={{ 
+                marginBottom: '32px',
+                fontSize: '20px',
+                lineHeight: '1.6',
+                color: '#FFFFFF',
+                textShadow: '1px 1px 4px rgba(0,0,0,0.5)'
+              }}>
+                Human-grade, organic raw dog food delivery. Farm-to-bowl in just 3 days.
+              </p>
+              <button 
+                className="btn-hero" 
+                onClick={() => navigate('/build-box')}
+                data-testid="hero-build-box-btn"
+                style={{
+                  borderRadius: '8px',
+                  padding: '18px 48px',
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                  transition: 'transform 0.2s',
+                  cursor: 'pointer'
+                }}
+              >
+                Create Your Plan
+              </button>
+            </div>
           </div>
         </section>
 
