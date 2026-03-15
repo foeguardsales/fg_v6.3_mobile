@@ -327,7 +327,7 @@ export const BoxBuilder = () => {
           {/* Header with cart button */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
             <div>
-              <h1 style={{ fontFamily: "'Helvetica Neue', Arial, sans-serif", fontSize: '40px', fontWeight: '700', marginBottom: '8px', color: '#2B2B2B' }}>
+              <h1 style={{ fontFamily: "'Helvetica Neue', Arial, sans-serif", fontSize: '32px', fontWeight: '700', marginBottom: '8px', color: '#2B2B2B', textTransform: 'none' }}>
                 {petType === 'cat' ? 'Build Your Cat Box' : 'Build Your Box'}
               </h1>
               <p style={{ color: '#666' }}>
@@ -415,19 +415,6 @@ export const BoxBuilder = () => {
                       justifyContent: 'center',
                       padding: '32px 40px'
                     }}>
-                      <span style={{
-                        display: 'inline-block',
-                        background: '#5F7C5A',
-                        color: '#fff',
-                        fontSize: '11px',
-                        fontWeight: '600',
-                        padding: '4px 12px',
-                        borderRadius: '20px',
-                        marginBottom: '12px',
-                        width: 'fit-content',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
-                      }}>Complete & Balanced</span>
                       <h3 style={{
                         fontFamily: "'CS Gordon', serif",
                         fontSize: '36px',
@@ -503,19 +490,6 @@ export const BoxBuilder = () => {
                       justifyContent: 'center',
                       padding: '32px 40px'
                     }}>
-                      <span style={{
-                        display: 'inline-block',
-                        background: '#732827',
-                        color: '#fff',
-                        fontSize: '11px',
-                        fontWeight: '600',
-                        padding: '4px 12px',
-                        borderRadius: '20px',
-                        marginBottom: '12px',
-                        width: 'fit-content',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
-                      }}>80/10/10 Base</span>
                       <h3 style={{
                         fontFamily: "'CS Gordon', serif",
                         fontSize: '36px',
@@ -601,19 +575,6 @@ export const BoxBuilder = () => {
                       justifyContent: 'center',
                       padding: '32px 40px'
                     }}>
-                      <span style={{
-                        display: 'inline-block',
-                        background: '#5e4b73',
-                        color: '#fff',
-                        fontSize: '11px',
-                        fontWeight: '600',
-                        padding: '4px 12px',
-                        borderRadius: '20px',
-                        marginBottom: '12px',
-                        width: 'fit-content',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
-                      }}>Complete & Balanced</span>
                       <h3 style={{
                         fontFamily: "'CS Gordon', serif",
                         fontSize: '36px',
