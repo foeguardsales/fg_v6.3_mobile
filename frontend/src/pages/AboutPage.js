@@ -40,6 +40,13 @@ export const AboutPage = () => {
           </div>
         </section>
 
+        {/* Farm Image Section */}
+        <section className="about-farm-image">
+          <div className="farm-image-placeholder">
+            <span>Farm Image</span>
+          </div>
+        </section>
+
         {/* From our family to yours */}
         <section className="about-section about-why">
           <div className="about-container">
@@ -53,6 +60,22 @@ export const AboutPage = () => {
             <p style={{ fontSize: '17px', fontWeight: '600' }}>
               That is why we started FoeGuard: to help raise the standard of what pet food should be.
             </p>
+          </div>
+        </section>
+
+        {/* Team Images */}
+        <section className="about-team-images-grid">
+          <div className="team-grid">
+            <div className="team-image-card"><span>Image 1</span></div>
+            <div className="team-image-card"><span>Image 2</span></div>
+            <div className="team-image-card"><span>Image 3</span></div>
+          </div>
+          <div className="team-carousel">
+            <div className="team-carousel-track">
+              <div className="team-image-card"><span>Image 1</span></div>
+              <div className="team-image-card"><span>Image 2</span></div>
+              <div className="team-image-card"><span>Image 3</span></div>
+            </div>
           </div>
         </section>
 

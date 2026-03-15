@@ -59,13 +59,13 @@ export const NewToRawPage = () => {
             </div>
 
             {/* Comparison Table - Moved here */}
-            <div className="comparison-table-wrapper" style={{ marginTop: '48px' }}>
+            <div className="comparison-table-wrapper" style={{ marginTop: '48px', border: '2px solid #E8DDD0', borderRadius: '12px', padding: '24px' }}>
               <table className="comparison-table">
                 <thead>
                   <tr>
                     <th className="feature-col"></th>
                     <th className="brand-col foeguard-col">
-                      <span className="brand-name">Us</span>
+                      <span className="brand-name">FoeGuard</span>
                     </th>
                     <th className="brand-col">
                       <span className="brand-name">Retail Raw</span>
