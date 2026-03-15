@@ -26,57 +26,17 @@ export const AboutPage = () => {
           <div className="about-hero-content">
             <h1 style={{ textTransform: 'none', fontFamily: "'CS Gordon', serif" }}>Why FoeGuard?</h1>
             <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', marginTop: '20px' }}>
-              No fancy packaging, retail markups, or empty marketing. Just what your dog was meant to eat — since forever.
+              No stores, pricing mark-ups and empty marketing. Just what your dog was meant to eat – since forever.
             </p>
           </div>
         </section>
 
-        {/* Farm Image Section */}
-        <section className="about-farm-image">
-          <div className="farm-image-placeholder">
-            <span>Farm Image</span>
-          </div>
-        </section>
-
-        {/* Just because it's edible */}
+        {/* Introduction Section */}
         <section className="about-section about-story">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>Just because it's edible for your dog doesn't mean it's healthy for them</h2>
-            <p style={{ fontSize: '17px', marginBottom: '24px', fontWeight: '600' }}>
-              We have become accustomed to commercial dog food that is "backed by science," but what do the results really show?
+            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
+              Dogs are biologically designed to thrive on raw food nutrition. Their powerful stomach acid, sharp teeth, and short digestive systems allow them to efficiently digest raw meat, organs, and bone. FoeGuard was built to feed dogs the way nature intended, to help them look and feel a little more like themselves. Our meals are made with uncompromised care, using fresh, organic, whole-prey, human-grade ingredients that are made for your dog's anatomy.
             </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              In recent years, pet parents have been faced with more health issues related to aging, digestion, allergies, and urinary health than ever before. Not only can this lower your dog's quality of life, but it can also create an unclear future filled with unexpected vet bills and prescription diets.
-            </p>
-          </div>
-        </section>
-
-        {/* The FoeGuard Difference */}
-        <section className="about-section about-farm-bowl">
-          <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>The FoeGuard difference</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              For years, our own health practitioners have told us to eat as much fresh, locally sourced food as possible while reducing processed foods wherever we can. We believe the same logic applies to our beloved pets.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '0' }}>
-              For dogs to live long, healthy, and happy lives, they need food that is fresh, locally sourced, and as close to what nature intended as possible through a biologically appropriate raw food diet.
-            </p>
-          </div>
-        </section>
-
-        {/* Team Images */}
-        <section className="about-team-images-grid">
-          <div className="team-grid">
-            <div className="team-image-card"><span>Image 1</span></div>
-            <div className="team-image-card"><span>Image 2</span></div>
-            <div className="team-image-card"><span>Image 3</span></div>
-          </div>
-          <div className="team-carousel">
-            <div className="team-carousel-track">
-              <div className="team-image-card"><span>Image 1</span></div>
-              <div className="team-image-card"><span>Image 2</span></div>
-              <div className="team-image-card"><span>Image 3</span></div>
-            </div>
           </div>
         </section>
 
@@ -85,16 +45,13 @@ export const AboutPage = () => {
           <div className="about-container">
             <h2 style={{ textTransform: 'none' }}>From our family to yours</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              We are a family-run farm dedicated to raising livestock as nature intended.
+              We are a family-run farm dedicated to raising animals as nature intended.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              With roots in Ontario farming and meat processing, we understand the food chain from soil to serving. That is why every FoeGuard product is made fresh using the same ingredients we use to feed our own family — with the same quality and care, but made for your pets.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              What started as a personal standard became something bigger when friends and neighbours began asking for the same meals we were preparing on our farm. We quickly realized that pet parents across Ontario need better access to healthy, transparent raw dog food.
+              With roots in Ontario farming and meat processing, we understand the food chain from farm to bowl. What started as a personal standard became something bigger when friends and neighbours began asking for the same meals we were preparing on our farm. We quickly realized that pet parents in Ontario wanted better access to healthy, transparent raw dog food.
             </p>
             <p style={{ fontSize: '17px', fontWeight: '600' }}>
-              That is why we created FoeGuard: to raise the standard of what pet food should be.
+              That is why we started FoeGuard: to help raise the standard of what pet food should be.
             </p>
           </div>
         </section>
@@ -102,11 +59,11 @@ export const AboutPage = () => {
         {/* When we say farm-to-bowl */}
         <section className="about-section about-team-text">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>When we say farm-to-bowl, we mean it</h2>
+            <h2 style={{ textTransform: 'none' }}>When we say farm-to-bowl, we mean it.</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              We source our own ethically raised, human-grade meats. Each recipe is biologically appropriate and backed by science with support from a PhD biologist and a canine nutritionist. Every product is refined, tested, and fed to our own dogs before it ever reaches yours.
+              We raise our own human-grade ingredients in small batches. Each recipe is biologically appropriate and backed by science with support from a PhD biologist and a canine nutritionist. Every product is refined, tested, and fed to our own dogs before it ever reaches yours.
             </p>
-            <p className="sub-heading" style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>Every meal is:</p>
+            <p className="sub-heading" style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>Every FoeGuard meal is:</p>
             <ul className="about-list" style={{ fontSize: '17px', lineHeight: '1.8' }}>
               <li>Prepared in a government-inspected facility</li>
               <li>Professionally formulated for complete, balanced nutrition that exceeds industry standards (AAFCO)</li>
@@ -119,15 +76,31 @@ export const AboutPage = () => {
           </div>
         </section>
 
+        {/* Just because it's edible */}
+        <section className="about-section about-farm-bowl">
+          <div className="about-container">
+            <h2 style={{ textTransform: 'none' }}>Just because it's edible, doesn't mean it's healthy for them.</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
+              In recent times, low quality foods have caused dog owners to face more health issues related to aging, digestion, allergies, gastrointestinal and urinary health than ever before. Not only can this lower your dog's quality of life, but it can also create an unclear future filled with unexpected vet bills and strict diets.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              For years, our own health practitioners have told us to eat as much fresh, locally sourced food as possible while reducing processed foods wherever we can. We believe the same logic applies to our beloved pets.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '0' }}>
+              For dogs to live long, healthy, and happy lives, they need food that is fresh, locally sourced, and as close to a biologically appropriate raw food diet that carnivores were designed to eat.
+            </p>
+          </div>
+        </section>
+
         {/* More than just healthy food plans */}
         <section className="about-section about-mission">
           <div className="about-container">
             <h2 style={{ textTransform: 'none', textAlign: 'center' }}>More than just healthy food plans</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px', textAlign: 'center' }}>
-              We want to raise the standard of what pet food should be by giving pet parents a trusted source for information, collaboration, and personalized farm-fresh pet food.
+              We want to raise the standard of what pet food should be by giving pet parents a trusted source for information, collaboration, and farm-fresh pet food.
             </p>
             <p className="mission-callout" style={{ fontSize: '17px', fontWeight: '600', marginBottom: '40px', textAlign: 'center' }}>
-              If you believe pets deserve real food, you are already part of the mission.
+              If you believe pets deserve real food, you are already part of the mission!
             </p>
 
             {/* Email Signup */}
