@@ -38,7 +38,7 @@ export const LandingPage = () => {
               <span className="hero-accent">Nature Intended</span>
             </h1>
             <p className="hero-subtitle" style={{ marginBottom: '32px' }}>
-              Human-grade, organic raw dog food delivery. Farm-to-Bowl in just 3 days.
+              Human-grade, organic raw dog food delivery. Farm-to-bowl in just 3 days.
             </p>
             <button 
               className="btn-hero" 
