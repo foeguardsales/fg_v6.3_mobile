@@ -88,7 +88,7 @@ export const LandingPage = () => {
             <div style={{ maxWidth: '550px' }}>
               <h1 className="hero-title" style={{ 
                 fontFamily: "'CS Gordon', serif",
-                fontSize: '44px',
+                fontSize: '38px',
                 lineHeight: '1.1',
                 marginBottom: '16px',
                 color: '#FFFFFF',
