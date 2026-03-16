@@ -132,7 +132,7 @@ export const LandingPage = () => {
             <h2 className="section-title" style={{ textTransform: 'none' }}>From our farm to your bowl</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
               <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                At FoeGuard, our passion for pets and our heritage in farming help us understand the food chain from soil to serving. That's why we created a farm-to-bowl service that delivers fresh, raw food balanced for your dog's anatomy — making it easier to digest, maximizing nutrient absorption, and supporting noticeable results. Our recipes use the same ingredients we choose for our own family, held to the same standards of quality and care — thoughtfully prepared for your dog.
+                Our love for dogs and heritage in farming help us understand food from soil to serving. That's why we created FoeGuard, a farm-to-bowl service that delivers balanced raw dog food crafted with farm fresh, nutrient-rich ingredients. We make it easier for your dog to digest, maximize nutrient absorption, and support a vibrant, healthy life for your dog.
               </p>
             </div>
           </div>
@@ -288,7 +288,7 @@ export const LandingPage = () => {
                 }}>
                   <CheckCircle size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human-Grade and Organic</h3>
+                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human Grade</h3>
                 <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Made with the highest quality and safety standards in Canada.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
@@ -305,7 +305,7 @@ export const LandingPage = () => {
                   <Scale size={40} style={{ color: 'white' }} />
                 </div>
                 <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Complete and Balanced</h3>
-                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Dog-approved recipes formulated to exceed AAFCO standards.</p>
+                <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Whole food recipes formulated to exceed AAFCO standards.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -320,7 +320,7 @@ export const LandingPage = () => {
                 }}>
                   <Beef size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Always Farm Fresh</h3>
+                <h3 style={{ fontSize: '18px', marginBottom: '12px', color: 'white' }}>Freshly Made</h3>
                 <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>For better flavour and nutrition. Choose from 8+ proteins.</p>
               </div>
             </div>
