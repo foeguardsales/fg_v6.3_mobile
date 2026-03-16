@@ -147,19 +147,19 @@ export const LandingPage = () => {
             {/* Testimonials - 3 Short Quotes */}
             <div className="testimonials-grid" style={{ marginBottom: '48px' }}>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
-                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
+                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '12px' }}>
                   "If you show your dog's professionally FG may be your secret weapon"
                 </p>
                 <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>Muhammad S. (Dog Breeder)</span>
               </div>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
-                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
+                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '12px' }}>
                   "Ever since switching to their raw food her allergies have disappeared"
                 </p>
                 <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>Prianth P.</span>
               </div>
               <div className="testimonial-card" style={{ textAlign: 'center' }}>
-                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '12px' }}>
+                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '12px' }}>
                   "Milans sensitive tummy was causing us constant worry until we switched to FoeGuard."
                 </p>
                 <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>Oliver H.</span>
