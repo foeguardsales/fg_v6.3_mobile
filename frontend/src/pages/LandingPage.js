@@ -292,7 +292,7 @@ export const LandingPage = () => {
                   <CheckCircle size={40} style={{ color: 'white' }} />
                 </div>
                 <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '800', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human Grade & Organic</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Made with the highest quality and safety standards in Canada.</p>
+                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Made in Canada to high quality and safety standards — non-GMO, no antibiotics or hormones.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -405,7 +405,7 @@ export const LandingPage = () => {
                 <X size={32} style={{ color: '#8B4513', flexShrink: 0 }} />
                 <div>
                   <h3 style={{ fontSize: '16px', marginBottom: '8px', fontWeight: '600', color: '#8B4513' }}>Low-Quality Fillers</h3>
-                  <p style={{ fontSize: '14px', color: '#666', margin: 0, lineHeight: '1.5' }}>No grain, scraps, GMOs, antibiotics or hormones.</p>
+                  <p style={{ fontSize: '14px', color: '#666', margin: 0, lineHeight: '1.5' }}>Without grain, byproducts or months-old meat.</p>
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '24px 16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
