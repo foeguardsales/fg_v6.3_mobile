@@ -526,7 +526,7 @@ export const LandingPage = () => {
                     borderRadius: '8px', 
                     marginBottom: '16px' 
                   }}></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'italic', marginBottom: '12px', lineHeight: '1.6' }}>
+                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
                     "Indigo is known to be pickier ... but had zero issue with this food and enjoyed every meal. Oliver also thoroughly enjoyed the food and his stools were perfect (...something that we have issues with)"
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@canadian.farm.dogs</p>
@@ -544,7 +544,7 @@ export const LandingPage = () => {
                     borderRadius: '8px', 
                     marginBottom: '16px' 
                   }}></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'italic', marginBottom: '12px', lineHeight: '1.6' }}>
+                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
                     "Zeus is VERY impressed 😍❤️. Love the dinners because they're already a balanced meal making it easy ... he devours and makes sure he licks every little bit left in his bowl!"
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@zeus.thedobie_</p>
@@ -562,7 +562,7 @@ export const LandingPage = () => {
                     borderRadius: '8px', 
                     marginBottom: '16px' 
                   }}></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'italic', marginBottom: '12px', lineHeight: '1.6' }}>
+                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
                     "I've been waiting to be woken up in the middle of the night for her to go washroom, but her stool has been consistent and perfect since I began introducing the raw food."
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@fuji.pai02</p>
@@ -581,7 +581,7 @@ export const LandingPage = () => {
                   boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                   textAlign: 'center'
                 }}>
-                  <p style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
+                  <p style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
                     "When I began to suggest the feeding of raw meat I found animals becoming more healthy [against diseases] even without other treatment."
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Dr. Richard Pitcairn, Veterinarian & author of Complete Guide to Natural Health for Dogs & Cats</p>
@@ -593,7 +593,7 @@ export const LandingPage = () => {
                   boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                   textAlign: 'center'
                 }}>
-                  <p style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
+                  <p style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
                     "My nutritional goals for my patients: to make the diet as species-appropriate as possible, which is low-carb, high-moisture and unprocessed."
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Dr. Karen Becker, Veterinarian & author of The Forever Dog</p>
@@ -605,7 +605,7 @@ export const LandingPage = () => {
                   boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                   textAlign: 'center'
                 }}>
-                  <p style={{ fontSize: '16px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
+                  <p style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
                     "Our dogs' disease problems are increasing on a par with their increasing consumption of processed and cooked foods"
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Dr. Ian Billinghurst, Veterinarian & author of Give Your Dog a Bone</p>
