@@ -13,22 +13,9 @@ export const NewToRawPage = () => {
         <section className="ntf-hero">
           <div className="ntf-hero-content">
             <h1 style={{ textTransform: 'none', fontFamily: "'CS Gordon', serif" }}>New to FG</h1>
-            <p className="ntf-hero-subtitle" style={{ fontWeight: '600', fontSize: '18px', marginBottom: '16px' }}>
-              No complicated prep. No added supplements required for complete dinners.
-            </p>
-          </div>
-        </section>
-
-        {/* SECTION 2 — Feel confident */}
-        <section className="ntf-section ntf-easy" style={{ background: '#F5F3EF' }}>
-          <div className="ntf-container">
-            <h2 style={{ textAlign: 'center', textTransform: 'none' }}>Feel confident about switching to FoeGuard raw</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px', textAlign: 'center', fontWeight: '600' }}>
-              Dogs are biologically designed to thrive on raw food nutrition. Their powerful stomach acid, sharp teeth, and short digestive systems allow them to efficiently digest raw meat, organs, and bone.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '0', textAlign: 'center' }}>
-              FoeGuard was built to feed dogs the way nature intended. We use fresh, organic, whole-prey, human-grade ingredients that are made for your dog's anatomy to digest easily, maximize nutrient absorption, and support noticeable results.
-            </p>
+            <h3 className="ntf-hero-subtitle" style={{ fontWeight: '600', fontSize: '18px', marginBottom: '16px' }}>
+              Feel confident about switching to FoeGuard raw
+            </h3>
           </div>
         </section>
 

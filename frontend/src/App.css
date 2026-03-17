@@ -4140,3 +4140,15 @@ h2, h3, h4 {
     font-size: 15px !important;
   }
 }
+
+
+
+/* Hide scrollbar for reviews carousel */
+.reviews-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.reviews-scroll-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

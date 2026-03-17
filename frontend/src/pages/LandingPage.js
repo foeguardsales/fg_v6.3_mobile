@@ -8,6 +8,7 @@ export const LandingPage = () => {
   const [email, setEmail] = useState('');
   const [emailSubmitted, setEmailSubmitted] = useState('');
   const photoScrollRef = useRef(null);
+  const reviewsScrollRef = useRef(null);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +20,16 @@ export const LandingPage = () => {
     if (photoScrollRef.current) {
       const scrollAmount = 300;
       photoScrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const scrollReviews = (direction) => {
+    if (reviewsScrollRef.current) {
+      const scrollAmount = 300;
+      reviewsScrollRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
       });
@@ -132,10 +143,10 @@ export const LandingPage = () => {
         {/* ===== SECTION — FROM OUR FARM TO YOUR BOWL ===== */}
         <section className="problem-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>From our farm to your bowl</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>From our farm to your bowl</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                Our love for dogs and heritage in farming help us understand food from soil to serving. That's why we created FoeGuard — a farm-to-bowl service delivering balanced raw dog food crafted with farm-fresh, nutrient-rich ingredients. Each meal is designed to support easy digestion, maximize nutrient absorption, and help your dog live a vibrant, healthy life.
+                Our love for dogs and heritage in farming help us understand food from soil to serving. That's why we created FoeGuard — a farm-to-bowl service delivering balanced raw meals crafted with farm-fresh, nutrient-rich ingredients. Each meal is designed to support digestion, maximize nutrient absorption, and help support a vibrant, healthy life.
               </p>
             </div>
           </div>
@@ -229,7 +240,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — BETTER FOOD ===== */}
         <section className="standard-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', color: 'white' }}>Real food for dogs, raised right in Ontario</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', color: 'white', fontWeight: '600' }}>Real food for dogs, raised right in Ontario</h2>
             <p style={{ fontSize: '17px', marginBottom: '48px', textAlign: 'center', color: 'rgba(255,255,255,0.9)' }}>
               Skip the fillers, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and ethical sourcing - quality you wont find in a store.
             </p>
@@ -285,8 +296,8 @@ export const LandingPage = () => {
                 }}>
                   <Scale size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Complete & Balanced</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Vet-approved, whole food recipes that exceed AAFCO standards.</p>
+                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Nutritionist-Approved</h3>
+                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Complete & balanced, whole food recipes that exceed AAFCO standards.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -324,8 +335,47 @@ export const LandingPage = () => {
                 Build Meal Plan
               </button>
               <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.85)', margin: '12px 0 0' }}>
-                → Build Your Box
+                or <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/build-box')}>Build Your Box</span>
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ===== SECTION — BENEFITS ===== */}
+        <section className="problem-section" style={{ background: '#F8F6F4' }}>
+          <div className="section-container">
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '24px', fontWeight: '600' }}>Benefits you can see, and they can feel.</h2>
+            
+            <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+              <p style={{ fontSize: '17px', marginBottom: '32px', color: '#666', lineHeight: '1.7' }}>
+                Your days of stressing over ingredients and unplanned vet visits are over. A complete raw diet provides the foundation for a longer, healthy life for your dog. It directly supports:
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '48px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>More energy and happiness</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Better digestion and healthy poops</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Fresher breath and cleaner teeth</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Fewer allergic reactions</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Healthy weight management</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Stronger immune system</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -364,7 +414,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — REDEFINE PET FOOD ===== */}
         <section className="problem-section" style={{ background: 'white', padding: '60px 20px' }}>
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>What you won't find in the bowl</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>What you won't find in the bowl</h2>
             <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '40px', color: '#666', maxWidth: '700px', margin: '0 auto 40px' }}>
               We put value where it matters most - towards your dog. It's time to get rid of:
             </p>
@@ -403,7 +453,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — HOW IT WORKS ===== */}
         <section className="how-it-works-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none' }}>How it works</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>How it works</h2>
             <p style={{ textAlign: 'center', fontSize: '18px', marginBottom: '48px', color: '#666' }}>
               Feeding raw is simpler than you think.
             </p>
@@ -445,7 +495,7 @@ export const LandingPage = () => {
               Subscribe to save and never run out.
             </p>
             
-            <div style={{ textAlign: 'center', marginTop: '32px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
+            <div style={{ textAlign: 'center', marginTop: '32px', display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
               <button 
                 className="btn-primary" 
                 onClick={() => navigate('/build-box')}
@@ -453,118 +503,64 @@ export const LandingPage = () => {
               >
                 Build Meal Plan
               </button>
-              <span style={{ fontSize: '14px', color: '#666', cursor: 'pointer' }} onClick={() => navigate('/build-box')}>
-                → Build Your Box
+              <span style={{ fontSize: '14px', color: '#666' }}>or</span>
+              <span style={{ fontSize: '14px', color: '#666', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/build-box')}>
+                Build Your Box
               </span>
             </div>
           </div>
         </section>
 
-        {/* ===== SECTION — BENEFITS ===== */}
-        <section className="problem-section" style={{ background: '#F8F6F4' }}>
+        {/* ===== SECTION — REVIEWS ===== */}
+        <section className="problem-section" style={{ background: 'white' }}>
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '40px' }}>Benefits you can see, and they can feel.</h2>
+            <h3 style={{ textAlign: 'center', fontSize: '18px', marginBottom: '48px', textTransform: 'none', fontWeight: '600', color: '#666' }}>Trusted by dog owners in the Greater Toronto Area</h3>
             
-            <div style={{ display: 'flex', gap: '48px', maxWidth: '1100px', margin: '0 auto 48px', alignItems: 'center', flexWrap: 'wrap' }}>
-              <div style={{ flex: '1', minWidth: '300px' }}>
-                <h3 style={{ fontSize: '20px', marginBottom: '24px', color: '#8B4513', fontWeight: '600' }}>Changes Our Customers Notice Early On:</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <span style={{ fontSize: '17px', color: '#333' }}>More Energy</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <span style={{ fontSize: '17px', color: '#333' }}>Better Digestion</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <span style={{ fontSize: '17px', color: '#333' }}>No Allergies</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                    <span style={{ fontSize: '17px', color: '#333' }}>Healthy Stools</span>
-                  </div>
-                </div>
-              </div>
-              <div style={{ 
-                flex: '0 0 400px', 
-                height: '350px', 
-                background: '#E8DDD0', 
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#8B4513',
-                fontSize: '14px'
-              }}>
-                Image Placeholder
-              </div>
-            </div>
-
-            {/* Recent Reviews with Images */}
-            <div style={{ marginTop: '60px' }}>
-              <h3 style={{ textAlign: 'center', fontSize: '18px', marginBottom: '32px', textTransform: 'none', fontWeight: '600', color: '#666' }}>Trusted by dog owners in the Greater Toronto Area</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
+            {/* Scrollable Reviews Carousel */}
+            <div style={{ position: 'relative', maxWidth: '1000px', margin: '0 auto' }}>
+              <button
+                onClick={() => scrollReviews('left')}
+                style={{
+                  position: 'absolute',
+                  left: '-20px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'white',
+                  border: '2px solid #E8DDD0',
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  zIndex: 10,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              
+              <div 
+                ref={reviewsScrollRef}
+                style={{
+                  display: 'flex',
+                  gap: '24px',
+                  overflowX: 'auto',
+                  scrollBehavior: 'smooth',
+                  paddingBottom: '16px',
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none'
+                }}
+                className="reviews-scroll-container"
+              >
                 <div style={{ 
                   background: 'white', 
-                  padding: '24px', 
+                  padding: '24px',
+                  minWidth: '320px',
                   borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)' 
-                }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    background: '#E8DDD0', 
-                    borderRadius: '8px', 
-                    marginBottom: '16px' 
-                  }}></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "If you show your dog's professionally FG may be your secret weapon"
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Muhammad S. (Dog Breeder)</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '24px', 
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)' 
-                }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    background: '#E8DDD0', 
-                    borderRadius: '8px', 
-                    marginBottom: '16px' 
-                  }}></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "Ever since switching to their raw food her allergies have disappeared"
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Prianth P.</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '24px', 
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)' 
-                }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    background: '#E8DDD0', 
-                    borderRadius: '8px', 
-                    marginBottom: '16px' 
-                  }}></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "Milans sensitive tummy was causing us constant worry until we switched to FoeGuard."
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Oliver H.</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '24px', 
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)' 
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  border: '1px solid #E8DDD0'
                 }}>
                   <div style={{ 
                     width: '100%', 
@@ -580,9 +576,11 @@ export const LandingPage = () => {
                 </div>
                 <div style={{ 
                   background: 'white', 
-                  padding: '24px', 
+                  padding: '24px',
+                  minWidth: '320px',
                   borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)' 
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  border: '1px solid #E8DDD0'
                 }}>
                   <div style={{ 
                     width: '100%', 
@@ -598,9 +596,11 @@ export const LandingPage = () => {
                 </div>
                 <div style={{ 
                   background: 'white', 
-                  padding: '24px', 
+                  padding: '24px',
+                  minWidth: '320px',
                   borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)' 
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  border: '1px solid #E8DDD0'
                 }}>
                   <div style={{ 
                     width: '100%', 
@@ -614,11 +614,98 @@ export const LandingPage = () => {
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@fuji.pai02</p>
                 </div>
+                <div style={{ 
+                  background: 'white', 
+                  padding: '24px',
+                  minWidth: '320px',
+                  borderRadius: '12px', 
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  border: '1px solid #E8DDD0'
+                }}>
+                  <div style={{ 
+                    width: '100%', 
+                    height: '200px', 
+                    background: '#E8DDD0', 
+                    borderRadius: '8px', 
+                    marginBottom: '16px' 
+                  }}></div>
+                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
+                    "If you show your dog's professionally FG may be your secret weapon"
+                  </p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Muhammad S. (Dog Breeder)</p>
+                </div>
+                <div style={{ 
+                  background: 'white', 
+                  padding: '24px',
+                  minWidth: '320px',
+                  borderRadius: '12px', 
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  border: '1px solid #E8DDD0'
+                }}>
+                  <div style={{ 
+                    width: '100%', 
+                    height: '200px', 
+                    background: '#E8DDD0', 
+                    borderRadius: '8px', 
+                    marginBottom: '16px' 
+                  }}></div>
+                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
+                    "Ever since switching to their raw food her allergies have disappeared"
+                  </p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Prianth P.</p>
+                </div>
+                <div style={{ 
+                  background: 'white', 
+                  padding: '24px',
+                  minWidth: '320px',
+                  borderRadius: '12px', 
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  border: '1px solid #E8DDD0'
+                }}>
+                  <div style={{ 
+                    width: '100%', 
+                    height: '200px', 
+                    background: '#E8DDD0', 
+                    borderRadius: '8px', 
+                    marginBottom: '16px' 
+                  }}></div>
+                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
+                    "Milans sensitive tummy was causing us constant worry until we switched to FoeGuard."
+                  </p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Oliver H.</p>
+                </div>
               </div>
-            </div>
 
-            {/* Insights from Veterinarians */}
-            <div style={{ marginTop: '60px' }}>
+              <button
+                onClick={() => scrollReviews('right')}
+                style={{
+                  position: 'absolute',
+                  right: '-20px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'white',
+                  border: '2px solid #E8DDD0',
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  zIndex: 10,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                }}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* ===== SECTION — VET INSIGHTS ===== */}
+        <section className="problem-section" style={{ background: '#F8F6F4' }}>
+          <div className="section-container">
+            <div style={{ marginTop: '0' }}>
               <h3 style={{ textAlign: 'center', fontSize: '24px', marginBottom: '32px', textTransform: 'none' }}>Insights from veterinarians</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
                 <div style={{ 
@@ -665,7 +752,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — COMPLETE PLANS ===== */}
         <section className="new-to-raw-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '40px' }}>Start to see a healthier, more energetic dog within days.</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '40px', fontWeight: '600' }}>Start to see a healthier, more energetic dog within days.</h2>
             
             <div style={{ display: 'flex', gap: '48px', maxWidth: '1100px', margin: '0 auto', alignItems: 'center', flexWrap: 'wrap' }}>
               <div style={{ 
@@ -738,7 +825,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — OUR STORY ===== */}
         <section className="about-section" style={{ background: 'white', padding: '80px 20px' }}>
           <div className="section-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B' }}>Our story ... is your story?</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B', fontWeight: '600' }}>Our story ... is your story?</h2>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
               Overwhelmed by the health challenges caused by processed foods, our family turned to our farm to grow real, wholesome ingredients. The transformation was life-changing: more energy, better digestion, clearer minds, and even glowing skin.
             </p>
@@ -751,7 +838,7 @@ export const LandingPage = () => {
         {/* ===== FINAL CTA ===== */}
         <section className="final-cta-section">
           <div className="section-container">
-            <h2 className="section-title-white" style={{ fontSize: '36px', marginBottom: '24px', textTransform: 'none' }}>
+            <h2 className="section-title-white" style={{ fontSize: '36px', marginBottom: '24px', textTransform: 'none', fontWeight: '600' }}>
               Ready to see your dog thrive?
             </h2>
             
@@ -763,7 +850,7 @@ export const LandingPage = () => {
               Get 40% off your first 2 weeks.
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', maxWidth: '400px', margin: '0 auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', maxWidth: '400px', margin: '0 auto' }}>
               <button 
                 className="btn-hero" 
                 onClick={() => navigate('/build-box')}
@@ -773,12 +860,15 @@ export const LandingPage = () => {
                 Create Meal Plan
               </button>
               
-              <span 
-                onClick={() => navigate('/build-box')}
-                style={{ fontSize: '14px', color: 'rgba(255,255,255,0.85)', margin: '8px 0', cursor: 'pointer' }}
-              >
-                → Build Your Box
-              </span>
+              <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.85)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span>or</span>
+                <span 
+                  onClick={() => navigate('/build-box')}
+                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  Build Your Box
+                </span>
+              </div>
             </div>
           </div>
         </section>

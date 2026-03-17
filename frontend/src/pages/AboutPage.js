@@ -34,8 +34,14 @@ export const AboutPage = () => {
         {/* Introduction Section */}
         <section className="about-section about-story">
           <div className="about-container">
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
+              Dogs are naturally built to thrive on raw nutrition. Their strong stomach acid, sharp teeth, and short digestive systems are designed to break down meat, organs, and bone with ease.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
+              Yet much of today's pet food is made for convenience and shelf life — not with that biology in mind. Because it's classified as feed, it follows a different standard than the food we eat, from ingredient quality to how it's processed.
+            </p>
             <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-              Dogs are biologically designed to thrive on raw food nutrition. Their powerful stomach acid, sharp teeth, and short digestive systems allow them to efficiently digest raw meat, organs, and bone. FoeGuard was built to feed dogs the way nature intended, to help them look and feel a little more like themselves. Our meals are made with uncompromised care, using fresh, organic, whole-prey, human-grade ingredients that are made for your dog's anatomy.
+              At FoeGuard, we believe they deserve better. That's why we created meals that follow nature's blueprint — made with fresh, organic, whole-prey, human-grade ingredients, prepared with uncompromised care and designed to support digestion, nutrient absorption, and overall health.
             </p>
           </div>
         </section>
@@ -95,22 +101,6 @@ export const AboutPage = () => {
             </ul>
             <p style={{ fontSize: '17px', marginTop: '24px' }}>
               We do the preparation for you, so you never have to question what is in your dog's bowl.
-            </p>
-          </div>
-        </section>
-
-        {/* Just because it's edible */}
-        <section className="about-section about-farm-bowl">
-          <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>Just because it's edible, doesn't mean it's healthy for them.</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>
-              In recent times, low quality foods have caused dog owners to face more health issues related to aging, digestion, allergies, gastrointestinal and urinary health than ever before. Not only can this lower your dog's quality of life, but it can also create an unclear future filled with unexpected vet bills and strict diets.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              For years, our own health practitioners have told us to eat as much fresh, locally sourced food as possible while reducing processed foods wherever we can. We believe the same logic applies to our beloved pets.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '0' }}>
-              For dogs to live long, healthy, and happy lives, they need food that is fresh, locally sourced, and as close to a biologically appropriate raw food diet that carnivores were designed to eat.
             </p>
           </div>
         </section>
