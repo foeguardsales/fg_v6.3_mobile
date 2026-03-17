@@ -88,7 +88,7 @@ export const LandingPage = () => {
             <div style={{ maxWidth: '550px' }}>
               <h1 className="hero-title" style={{ 
                 fontFamily: "'Rubik', sans-serif",
-                fontWeight: '800',
+                fontWeight: '600',
                 fontSize: '34px',
                 lineHeight: '1.1',
                 marginBottom: '16px',
@@ -144,28 +144,6 @@ export const LandingPage = () => {
         {/* ===== CUSTOMER REVIEWS & PHOTOS ===== */}
         <section className="community-section" style={{ background: '#F8F6F4' }}>
           <div className="section-container">
-            {/* Testimonials - 3 Short Quotes */}
-            <div className="testimonials-grid" style={{ marginBottom: '48px' }}>
-              <div className="testimonial-card" style={{ textAlign: 'center' }}>
-                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '12px' }}>
-                  "If you show your dog's professionally FG may be your secret weapon"
-                </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>Muhammad S. (Dog Breeder)</span>
-              </div>
-              <div className="testimonial-card" style={{ textAlign: 'center' }}>
-                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '12px' }}>
-                  "Ever since switching to their raw food her allergies have disappeared"
-                </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>Prianth P.</span>
-              </div>
-              <div className="testimonial-card" style={{ textAlign: 'center' }}>
-                <p className="testimonial-text" style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '12px' }}>
-                  "Milans sensitive tummy was causing us constant worry until we switched to FoeGuard."
-                </p>
-                <span className="testimonial-author" style={{ fontWeight: '600', color: '#8B4513' }}>Oliver H.</span>
-              </div>
-            </div>
-
             {/* Swipeable Customer Photo Grid - 12 photos */}
             <div style={{ position: 'relative' }}>
               <button
@@ -273,10 +251,10 @@ export const LandingPage = () => {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Home size={40} style={{ color: 'white' }} />
+                  <Beef size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '800', fontSize: '18px', marginBottom: '12px', color: 'white' }}>FoeGuard Farms</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Raised right on natural feed, open pastures, and small-batch harvests.</p>
+                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Organic Raw Food</h3>
+                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Nutrient-rich meat and veggies, raised without GMOs, antibiotics or hormones.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -291,8 +269,8 @@ export const LandingPage = () => {
                 }}>
                   <CheckCircle size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '800', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human Grade & Organic</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Made in Canada to high quality and safety standards — non-GMO, no antibiotics or hormones.</p>
+                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human Grade Safety</h3>
+                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>The highest quality and safety food standards in Canada - for your dog.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -307,8 +285,8 @@ export const LandingPage = () => {
                 }}>
                   <Scale size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '800', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Complete & Balanced</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Whole protein recipes formulated to exceed AAFCO standards.</p>
+                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Complete & Balanced</h3>
+                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Vet-approved, whole food recipes that exceed AAFCO standards.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -321,10 +299,10 @@ export const LandingPage = () => {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Beef size={40} style={{ color: 'white' }} />
+                  <Home size={40} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '800', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Freshly Made</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>For better flavour and nutrition. Choose from 8+ proteins.</p>
+                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>FoeGuard Farms</h3>
+                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Humanely raised on organic feed, open pastures, and small-batch harvests.</p>
               </div>
             </div>
 
@@ -343,8 +321,11 @@ export const LandingPage = () => {
                   cursor: 'pointer'
                 }}
               >
-                Build Your Plan
+                Build Meal Plan
               </button>
+              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.85)', margin: '12px 0 0' }}>
+                → Build Your Box
+              </p>
             </div>
           </div>
         </section>
@@ -433,9 +414,9 @@ export const LandingPage = () => {
                   <div className="step-image-placeholder"></div>
                   <div className="step-number-overlay">1</div>
                 </div>
-                <h3>Choose Your Pet Food</h3>
+                <h3>Choose Your Plan</h3>
                 <p style={{ fontSize: '15px', color: '#666' }}>
-                  Create your dog's meal plan or build your own box.
+                  Create a personalized meal plan or build your own box.
                 </p>
               </div>
               <div className="step-card">
@@ -443,9 +424,9 @@ export const LandingPage = () => {
                   <div className="step-image-placeholder"></div>
                   <div className="step-number-overlay">2</div>
                 </div>
-                <h3>We Prepare Fresh and Deliver</h3>
+                <h3>Receive Your Delivery</h3>
                 <p style={{ fontSize: '15px', color: '#666' }}>
-                  Flash frozen for safe travel from a certified, human-grade facility.
+                  Meals arrive safely frozen for freshness, ready for storage and portioning.
                 </p>
               </div>
               <div className="step-card">
@@ -455,7 +436,7 @@ export const LandingPage = () => {
                 </div>
                 <h3>Feed with Confidence</h3>
                 <p style={{ fontSize: '15px', color: '#666' }}>
-                  Delivered to your door in just 3–5 business days. Just thaw and feed.
+                  Just thaw, serve, and watch your dog thrive.
                 </p>
               </div>
             </div>
@@ -464,21 +445,17 @@ export const LandingPage = () => {
               Subscribe to save and never run out.
             </p>
             
-            <div style={{ textAlign: 'center', marginTop: '32px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div style={{ textAlign: 'center', marginTop: '32px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
               <button 
                 className="btn-primary" 
                 onClick={() => navigate('/build-box')}
-                style={{ borderRadius: '8px' }}
+                style={{ borderRadius: '8px', padding: '14px 32px', fontSize: '16px' }}
               >
-                Build Your Plan
+                Build Meal Plan
               </button>
-              <button 
-                className="btn-secondary" 
-                onClick={() => navigate('/build-box')}
-                style={{ borderRadius: '8px' }}
-              >
-                Order Menu
-              </button>
+              <span style={{ fontSize: '14px', color: '#666', cursor: 'pointer' }} onClick={() => navigate('/build-box')}>
+                → Build Your Box
+              </span>
             </div>
           </div>
         </section>
@@ -488,11 +465,27 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '40px' }}>Benefits you can see, and they can feel.</h2>
             
-            <div style={{ display: 'flex', gap: '48px', maxWidth: '1100px', margin: '0 auto', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '48px', maxWidth: '1100px', margin: '0 auto 48px', alignItems: 'center', flexWrap: 'wrap' }}>
               <div style={{ flex: '1', minWidth: '300px' }}>
-                <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                  <strong style={{ color: '#8B4513', fontSize: '18px' }}>Good health is priceless.</strong> Feed a species-appropriate raw diet that supports long-term health and lasting nutrition. You may notice a shinier coat, more energy, cleaner teeth, fewer sensitivities, and even more excitement at mealtime. With fewer unnecessary vet visits, both you and your dog can feel the difference. Do not just take our word for it. See what happy dog parents and veterinary professionals have to say, or see the difference for yourself.
-                </p>
+                <h3 style={{ fontSize: '20px', marginBottom: '24px', color: '#8B4513', fontWeight: '600' }}>Changes Our Customers Notice Early On:</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <span style={{ fontSize: '17px', color: '#333' }}>More Energy</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <span style={{ fontSize: '17px', color: '#333' }}>Better Digestion</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <span style={{ fontSize: '17px', color: '#333' }}>No Allergies</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                    <span style={{ fontSize: '17px', color: '#333' }}>Healthy Stools</span>
+                  </div>
+                </div>
               </div>
               <div style={{ 
                 flex: '0 0 400px', 
@@ -511,8 +504,62 @@ export const LandingPage = () => {
 
             {/* Recent Reviews with Images */}
             <div style={{ marginTop: '60px' }}>
-              <h3 style={{ textAlign: 'center', fontSize: '24px', marginBottom: '32px', textTransform: 'none' }}>Recent reviews</h3>
+              <h3 style={{ textAlign: 'center', fontSize: '18px', marginBottom: '32px', textTransform: 'none', fontWeight: '600', color: '#666' }}>Trusted by dog owners in the Greater Toronto Area</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
+                <div style={{ 
+                  background: 'white', 
+                  padding: '24px', 
+                  borderRadius: '12px', 
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)' 
+                }}>
+                  <div style={{ 
+                    width: '100%', 
+                    height: '200px', 
+                    background: '#E8DDD0', 
+                    borderRadius: '8px', 
+                    marginBottom: '16px' 
+                  }}></div>
+                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
+                    "If you show your dog's professionally FG may be your secret weapon"
+                  </p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Muhammad S. (Dog Breeder)</p>
+                </div>
+                <div style={{ 
+                  background: 'white', 
+                  padding: '24px', 
+                  borderRadius: '12px', 
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)' 
+                }}>
+                  <div style={{ 
+                    width: '100%', 
+                    height: '200px', 
+                    background: '#E8DDD0', 
+                    borderRadius: '8px', 
+                    marginBottom: '16px' 
+                  }}></div>
+                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
+                    "Ever since switching to their raw food her allergies have disappeared"
+                  </p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Prianth P.</p>
+                </div>
+                <div style={{ 
+                  background: 'white', 
+                  padding: '24px', 
+                  borderRadius: '12px', 
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)' 
+                }}>
+                  <div style={{ 
+                    width: '100%', 
+                    height: '200px', 
+                    background: '#E8DDD0', 
+                    borderRadius: '8px', 
+                    marginBottom: '16px' 
+                  }}></div>
+                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
+                    "Milans sensitive tummy was causing us constant worry until we switched to FoeGuard."
+                  </p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Oliver H.</p>
+                </div>
                 <div style={{ 
                   background: 'white', 
                   padding: '24px', 
@@ -721,28 +768,17 @@ export const LandingPage = () => {
                 className="btn-hero" 
                 onClick={() => navigate('/build-box')}
                 data-testid="final-cta-btn"
-                style={{ width: '100%', borderRadius: '8px' }}
+                style={{ width: '100%', borderRadius: '8px', padding: '14px 32px', fontSize: '16px' }}
               >
-                Create Your Plan
+                Create Meal Plan
               </button>
               
-              <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.85)', margin: '8px 0' }}>
-                Or order direct from the Menu
-              </p>
-              
-              <button 
-                className="btn-secondary" 
+              <span 
                 onClick={() => navigate('/build-box')}
-                style={{ 
-                  width: '100%',
-                  background: 'transparent',
-                  border: '2px solid rgba(255,255,255,0.7)',
-                  color: 'white',
-                  borderRadius: '8px'
-                }}
+                style={{ fontSize: '14px', color: 'rgba(255,255,255,0.85)', margin: '8px 0', cursor: 'pointer' }}
               >
-                Order Menu
-              </button>
+                → Build Your Box
+              </span>
             </div>
           </div>
         </section>
