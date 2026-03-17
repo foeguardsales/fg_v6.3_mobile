@@ -19,98 +19,18 @@ export const NewToRawPage = () => {
           </div>
         </section>
 
-        {/* SECTION 3 — How FoeGuard compares */}
-        <section className="ntf-section ntf-safe" style={{ background: 'white' }}>
-          <div className="ntf-container">
-            <h2 style={{ textTransform: 'none' }}>How FoeGuard compares</h2>
-            
-            <div style={{ marginBottom: '32px' }}>
-              <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Retail Raw</h3>
-              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
-                Retail raw food brands can offer a healthier alternative for pet owners, but they often lack transparent sourcing and clarity around what cuts of meat are being used or how the ingredients are raised. Livestock raised on antibiotics, hormones, or GMO feeds can have an immediate effect on your dog, while months-old, lower-quality cuts can become more problematic over time.
-              </p>
-            </div>
-
-            <div style={{ marginBottom: '32px' }}>
-              <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Gently Cooked</h3>
-              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
-                Gently cooked food is another option that can be better than kibble when balanced and prepared correctly, but it is not as nutritionally intact as raw in its natural form. The cooking process can reduce nutrient availability and change the integrity of the final product. Dogs are not humans — you do not need to taste-test their food to know what they are anatomically designed to eat.
-              </p>
-            </div>
-
-            <div style={{ marginBottom: '32px' }}>
-              <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Kibble</h3>
-              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
-                Kibble is extremely processed, regardless of what ingredients are used or how fancy the packaging looks. It is cooked at high temperatures, which can destroy essential nutrients and make it harder for pets to digest. Minimal pet food regulations also allow for lower-quality meat, vague sourcing, and highly processed ingredients hidden behind marketing terms such as "natural," protein "meals," and "made with meat," even when only a small percentage is actually required to meet AAFCO standards.
-              </p>
-            </div>
-
-            {/* Comparison Table - Moved here */}
-            <div className="comparison-table-wrapper" style={{ marginTop: '48px', border: '2px solid #E8DDD0', borderRadius: '12px', padding: '24px' }}>
-              <table className="comparison-table">
-                <thead style={{ background: '#C4B5A0' }}>
-                  <tr>
-                    <th className="feature-col"></th>
-                    <th className="brand-col foeguard-col">
-                      <span className="brand-name">FoeGuard</span>
-                    </th>
-                    <th className="brand-col">
-                      <span className="brand-name" style={{ color: '#2C2C2C' }}>Retail Raw</span>
-                    </th>
-                    <th className="brand-col">
-                      <span className="brand-name" style={{ color: '#2C2C2C' }}>Kibble</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="feature-cell">Human-Grade Ingredients</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Organic & Non-GMO</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Farm Fresh</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Transparent Sourcing</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                  <tr>
-                    <td className="feature-cell">Ethically Raised in Small Batches</td>
-                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                    <td className="check-cell"><span className="x-icon">✗</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
         {/* SECTION 4 — Discover what really works */}
         <section className="ntf-section ntf-problem" style={{ background: '#F5F3EF' }}>
           <div className="ntf-container">
             <h2 style={{ textTransform: 'none' }}>Discover what really works for your dog</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Get a clearer understanding of your dog's health and the flavours they truly enjoy.
+              Could it be their food, the environment, or something at home?
             </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Many guardians feel frustrated by unclear labels and inconsistent sourcing.
+              Many pet parents feel frustrated by unclear labels, poor sourcing, and inconsistent quality in traditional pet food. While we cannot promise instant answers, switching to a clean, biologically appropriate diet can help remove one of the biggest unknowns — their food.
             </p>
             <p style={{ fontSize: '17px' }}>
-              While we cannot promise instant answers, switching to properly sourced, biologically appropriate food often removes one of the biggest unknowns when something is making your dog uncomfortable — their diet.
+              Feeding naturally raised raw meals is a simple way to observe how your pet responds to different proteins while giving them fresh, nutrient-dense food designed for easier digestion and long-term health. We make feeding better feel simple, clear, and stress-free.
             </p>
           </div>
         </section>
@@ -175,6 +95,86 @@ export const NewToRawPage = () => {
                   <li>Feed one or two meals per day.</li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 3 — How FoeGuard compares */}
+        <section className="ntf-section ntf-safe" style={{ background: '#F5F3EF' }}>
+          <div className="ntf-container">
+            <h2 style={{ textTransform: 'none' }}>How FoeGuard compares</h2>
+            
+            <div style={{ marginBottom: '32px' }}>
+              <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Retail Raw</h3>
+              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
+                Retail raw food brands can offer a healthier alternative for pet owners, but they often lack transparent sourcing and clarity around what cuts of meat are being used or how the ingredients are raised. Livestock raised on antibiotics, hormones, or GMO feeds can have an immediate effect on your dog, while months-old, lower-quality cuts can become more problematic over time.
+              </p>
+            </div>
+
+            <div style={{ marginBottom: '32px' }}>
+              <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Gently Cooked</h3>
+              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
+                Gently cooked food is another option that can be better than kibble when balanced and prepared correctly, but it is not as nutritionally intact as raw in its natural form. The cooking process can reduce nutrient availability and change the integrity of the final product. Dogs are not humans — you do not need to taste-test their food to know what they are anatomically designed to eat.
+              </p>
+            </div>
+
+            <div style={{ marginBottom: '32px' }}>
+              <h3 style={{ fontSize: '20px', marginBottom: '12px', fontWeight: '600' }}>Kibble</h3>
+              <p style={{ fontSize: '17px', lineHeight: '1.7' }}>
+                Kibble is extremely processed, regardless of what ingredients are used or how fancy the packaging looks. It is cooked at high temperatures, which can destroy essential nutrients and make it harder for pets to digest. Minimal pet food regulations also allow for lower-quality meat, vague sourcing, and highly processed ingredients hidden behind marketing terms such as "natural," protein "meals," and "made with meat," even when only a small percentage is actually required to meet AAFCO standards.
+              </p>
+            </div>
+
+            {/* Comparison Table */}
+            <div className="comparison-table-wrapper" style={{ marginTop: '48px', border: '2px solid #E8DDD0', borderRadius: '12px', padding: '24px' }}>
+              <table className="comparison-table">
+                <thead style={{ background: '#C4B5A0' }}>
+                  <tr>
+                    <th className="feature-col"></th>
+                    <th className="brand-col foeguard-col">
+                      <span className="brand-name">FoeGuard</span>
+                    </th>
+                    <th className="brand-col">
+                      <span className="brand-name" style={{ color: '#2C2C2C' }}>Retail Raw</span>
+                    </th>
+                    <th className="brand-col">
+                      <span className="brand-name" style={{ color: '#2C2C2C' }}>Kibble</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="feature-cell">Human-Grade Ingredients</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Organic & Non-GMO</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Farm Fresh</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Transparent Sourcing</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                  <tr>
+                    <td className="feature-cell">Ethically Raised in Small Batches</td>
+                    <td className="check-cell foeguard-cell"><span className="check-icon">✓</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                    <td className="check-cell"><span className="x-icon">✗</span></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>

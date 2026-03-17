@@ -26,7 +26,7 @@ export const AboutPage = () => {
           <div className="about-hero-content">
             <h1 style={{ textTransform: 'none', fontFamily: "'CS Gordon', serif" }}>Why FoeGuard</h1>
             <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', marginTop: '20px' }}>
-              No stores, pricing mark-ups and empty marketing. Just what your dog was meant to eat – since forever.
+              Happy, healthy, dogs start here.
             </p>
           </div>
         </section>
@@ -35,13 +35,13 @@ export const AboutPage = () => {
         <section className="about-section about-story">
           <div className="about-container">
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-              Dogs are naturally built to thrive on raw nutrition. Their strong stomach acid, sharp teeth, and short digestive systems are designed to break down meat, organs, and bone with ease.
+              Dogs are built to thrive on raw food. Their strong stomach acid, sharp teeth, and short digestive systems are designed to break down meat, organs, and bone with ease.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-              Yet much of today's pet food is made for convenience and shelf life — not with that biology in mind. Because it's classified as feed, it follows a different standard than the food we eat, from ingredient quality to how it's processed.
+              But much of today's pet food is made for convenience and shelf life — not for your dog's biology. It follows a very different standard than the food we eat, from ingredient quality to how it is processed.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-              At FoeGuard, we believe they deserve better. That's why we created meals that follow nature's blueprint — made with fresh, organic, whole-prey, human-grade ingredients, prepared with uncompromised care and designed to support digestion, nutrient absorption, and overall health.
+              At FoeGuard, we believe your dogs deserve better. That is why we make fresh, organic, human-grade raw meals that are locally sourced and aligned with nature.
             </p>
           </div>
         </section>
@@ -88,7 +88,7 @@ export const AboutPage = () => {
         {/* When we say farm-to-bowl */}
         <section className="about-section about-team-text">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>When we say farm-to-bowl, we mean it.</h2>
+            <h2 style={{ textTransform: 'none' }}>See the FoeGuard Difference</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               We raise our own human-grade ingredients in small batches. Each recipe is biologically appropriate and backed by science with support from a PhD biologist and a canine nutritionist. Every product is refined, tested, and fed to our own dogs before it ever reaches yours.
             </p>

@@ -383,6 +383,10 @@ export const LandingPage = () => {
         {/* ===== SECTION — 8 PROTEINS ===== */}
         <section className="proteins-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
           <div className="section-container">
+            <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '16px', textTransform: 'none', fontWeight: '600' }}>Choose your pets favourites</h2>
+            <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '48px', color: '#666', maxWidth: '900px', margin: '0 auto 48px' }}>
+              We give pet parents a variety of stress-free, affordable options to feed the way nature intended—so you can support your pet's cravings and local Canadian farms, all at retail cost.
+            </p>
             <div style={{ 
               display: 'flex',
               flexWrap: 'wrap',
