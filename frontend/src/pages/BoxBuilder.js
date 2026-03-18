@@ -348,7 +348,7 @@ export const BoxBuilder = () => {
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -379,7 +379,7 @@ export const BoxBuilder = () => {
                   cursor: 'pointer',
                   transition: 'transform 0.2s, box-shadow 0.2s',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                  background: 'linear-gradient(135deg, #D9C8B3 0%, #C4B5A0 100%)'
+                  background: 'linear-gradient(135deg, #C4B5A0 0%, #A89784 100%)'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-2px)';
@@ -393,23 +393,23 @@ export const BoxBuilder = () => {
                 <div style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.05) 100%)',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: '20px'
                 }}>
-                  <ClipboardList size={36} style={{ color: '#2B2B2B', marginBottom: '8px' }} />
+                  <ClipboardList size={36} style={{ color: '#FDFCFA', marginBottom: '8px' }} />
                   <span style={{
                     fontFamily: "'Rubik', sans-serif",
                     fontSize: '18px',
                     fontWeight: '800',
-                    color: '#2B2B2B',
-                    textShadow: '0 1px 2px rgba(255,255,255,0.3)',
+                    color: '#FDFCFA',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.3)',
                     textAlign: 'center',
                     letterSpacing: '0.05em'
-                  }}>Create Your Meal Plan</span>
+                  }}>Create Meal Plan</span>
                 </div>
               </div>
             </div>

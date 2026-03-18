@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 export const FeedingCalculator = ({ onComplete }) => {
+  const navigate = useNavigate();
   const [pets, setPets] = useState([{
     id: 1,
     name: '',
@@ -105,8 +108,40 @@ export const FeedingCalculator = ({ onComplete }) => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
-      <h2 style={{ fontSize: '36px', textAlign: 'center', marginBottom: '16px' }}>Feeding Calculator</h2>
-      <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px' }}>
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '10px 20px',
+          background: 'white',
+          border: '2px solid #E8DDD0',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          fontSize: '15px',
+          fontWeight: '600',
+          color: '#8B4513',
+          marginBottom: '32px',
+          transition: 'all 0.2s',
+          fontFamily: "'Rubik', sans-serif"
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = '#F8F6F4';
+          e.currentTarget.style.borderColor = '#8B4513';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'white';
+          e.currentTarget.style.borderColor = '#E8DDD0';
+        }}
+      >
+        <ArrowLeft size={20} />
+        Back
+      </button>
+
+      <h2 style={{ fontSize: '36px', textAlign: 'center', marginBottom: '16px', fontFamily: "'Rubik', sans-serif", fontWeight: '700' }}>Feeding Calculator</h2>
+      <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontFamily: "'Rubik', sans-serif" }}>
         Tell us about your pet(s) to get personalized feeding recommendations
       </p>
 
