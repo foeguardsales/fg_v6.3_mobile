@@ -202,7 +202,7 @@ export const BoxBuilder = () => {
       <div className="box-builder">
         {/* Pet Type Selector - Dog vs Cat with Mini Action Cards */}
         <div className="pet-selector" style={{ marginBottom: '40px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 0.5fr 0.5fr', gap: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 0.5fr', gap: '20px', maxWidth: '1200px', margin: '0 auto' }}>
             <button 
               className={`pet-selector-btn ${petType === 'dog' ? 'active' : ''}`}
               onClick={() => handlePetTypeChange('dog')}
@@ -241,7 +241,7 @@ export const BoxBuilder = () => {
                   textShadow: '0 2px 8px rgba(0,0,0,0.3)',
                   textTransform: 'none',
                   letterSpacing: '0.05em'
-                }}>Raw dog food</span>
+                }}>Raw Dog Food</span>
               </div>
               {petType === 'dog' && (
                 <div style={{
@@ -300,7 +300,7 @@ export const BoxBuilder = () => {
                   textShadow: '0 2px 8px rgba(0,0,0,0.3)',
                   textTransform: 'none',
                   letterSpacing: '0.05em'
-                }}>Raw cat food</span>
+                }}>Raw Cat Food</span>
               </div>
               {petType === 'cat' && (
                 <div style={{
@@ -321,64 +321,97 @@ export const BoxBuilder = () => {
               )}
             </button>
 
-            {/* Mini Action Card - Calculator */}
-            <div 
-              onClick={() => navigate('/calculator')}
-              style={{
-                background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
-                borderRadius: '16px',
-                padding: '20px',
-                cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                transition: 'transform 0.2s, box-shadow 0.2s',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                height: '280px'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-              }}
-            >
-              <Calculator size={48} style={{ marginBottom: '16px' }} />
-              <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0, textAlign: 'center' }}>Feeding Calculator</h3>
-            </div>
+            {/* Mini Action Cards Stacked */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {/* Calculator Card */}
+              <div 
+                onClick={() => navigate('/calculator')}
+                style={{
+                  position: 'relative',
+                  height: '130px',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                }}
+              >
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '20px'
+                }}>
+                  <Calculator size={36} style={{ color: '#FDFCFA', marginBottom: '8px' }} />
+                  <span style={{
+                    fontFamily: "'Rubik', sans-serif",
+                    fontSize: '18px',
+                    fontWeight: '800',
+                    color: '#FDFCFA',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                    textAlign: 'center',
+                    letterSpacing: '0.05em'
+                  }}>Feeding Calculator</span>
+                </div>
+              </div>
 
-            {/* Mini Action Card - Meal Plan */}
-            <div 
-              onClick={() => navigate('/build-box')}
-              style={{
-                background: 'linear-gradient(135deg, #D9C8B3 0%, #C4B5A0 100%)',
-                borderRadius: '16px',
-                padding: '20px',
-                cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                transition: 'transform 0.2s, box-shadow 0.2s',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#2B2B2B',
-                height: '280px'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-              }}
-            >
-              <ClipboardList size={48} style={{ marginBottom: '16px' }} />
-              <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0, textAlign: 'center' }}>Create Your Meal Plan</h3>
+              {/* Meal Plan Card */}
+              <div 
+                onClick={() => navigate('/build-box')}
+                style={{
+                  position: 'relative',
+                  height: '130px',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  background: 'linear-gradient(135deg, #D9C8B3 0%, #C4B5A0 100%)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                }}
+              >
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '20px'
+                }}>
+                  <ClipboardList size={36} style={{ color: '#2B2B2B', marginBottom: '8px' }} />
+                  <span style={{
+                    fontFamily: "'Rubik', sans-serif",
+                    fontSize: '18px',
+                    fontWeight: '800',
+                    color: '#2B2B2B',
+                    textShadow: '0 1px 2px rgba(255,255,255,0.3)',
+                    textAlign: 'center',
+                    letterSpacing: '0.05em'
+                  }}>Create Your Meal Plan</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

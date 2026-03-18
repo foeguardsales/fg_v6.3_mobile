@@ -598,7 +598,7 @@ export const LandingPage = () => {
                   <div className="step-image-placeholder"></div>
                   <div className="step-number-overlay">1</div>
                 </div>
-                <h3>Choose Your Plan</h3>
+                <h3>Choose Your<br />Plan</h3>
                 <p style={{ fontSize: '15px', color: '#666' }}>
                   Create a personalized meal plan or build your own box.
                 </p>
