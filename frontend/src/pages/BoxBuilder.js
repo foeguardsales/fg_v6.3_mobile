@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
+import { Calculator, ClipboardList } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -199,9 +200,9 @@ export const BoxBuilder = () => {
     <>
       <Navbar />
       <div className="box-builder">
-        {/* Pet Type Selector - Dog vs Cat */}
+        {/* Pet Type Selector - Dog vs Cat with Mini Action Cards */}
         <div className="pet-selector" style={{ marginBottom: '40px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', maxWidth: '900px', margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 0.5fr 0.5fr', gap: '20px', maxWidth: '1200px', margin: '0 auto' }}>
             <button 
               className={`pet-selector-btn ${petType === 'dog' ? 'active' : ''}`}
               onClick={() => handlePetTypeChange('dog')}
@@ -238,9 +239,9 @@ export const BoxBuilder = () => {
                   fontWeight: '800',
                   color: '#FFFFFF',
                   textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                  textTransform: 'uppercase',
+                  textTransform: 'none',
                   letterSpacing: '0.05em'
-                }}>Raw Dog Food</span>
+                }}>Raw dog food</span>
               </div>
               {petType === 'dog' && (
                 <div style={{
@@ -297,9 +298,9 @@ export const BoxBuilder = () => {
                   fontWeight: '800',
                   color: '#FFFFFF',
                   textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                  textTransform: 'uppercase',
+                  textTransform: 'none',
                   letterSpacing: '0.05em'
-                }}>Raw Cat Food</span>
+                }}>Raw cat food</span>
               </div>
               {petType === 'cat' && (
                 <div style={{
@@ -319,67 +320,66 @@ export const BoxBuilder = () => {
                 }}>✓</div>
               )}
             </button>
-          </div>
-        </div>
 
-        {/* Mini Action Cards */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: '1fr 1fr', 
-          gap: '20px', 
-          maxWidth: '900px',
-          margin: '0 auto 40px'
-        }}>
-          <div 
-            onClick={() => navigate('/calculator')}
-            style={{
-              background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
-              borderRadius: '16px',
-              padding: '24px',
-              cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              textAlign: 'center',
-              color: 'white'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-            }}
-          >
-            <div style={{ fontSize: '32px', marginBottom: '8px' }}>🧮</div>
-            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>Feeding Calculator</h3>
-            <p style={{ fontSize: '14px', opacity: 0.9, margin: 0 }}>Calculate ideal portions for your pet</p>
-          </div>
+            {/* Mini Action Card - Calculator */}
+            <div 
+              onClick={() => navigate('/calculator')}
+              style={{
+                background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
+                borderRadius: '16px',
+                padding: '20px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                height: '280px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+              }}
+            >
+              <Calculator size={48} style={{ marginBottom: '16px' }} />
+              <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0, textAlign: 'center' }}>Feeding Calculator</h3>
+            </div>
 
-          <div 
-            onClick={() => navigate('/build-box')}
-            style={{
-              background: 'linear-gradient(135deg, #D9C8B3 0%, #C4B5A0 100%)',
-              borderRadius: '16px',
-              padding: '24px',
-              cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              textAlign: 'center',
-              color: '#2B2B2B'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-            }}
-          >
-            <div style={{ fontSize: '32px', marginBottom: '8px' }}>📋</div>
-            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>Create Your Meal Plan</h3>
-            <p style={{ fontSize: '14px', opacity: 0.8, margin: 0 }}>Build a custom plan for your dog</p>
+            {/* Mini Action Card - Meal Plan */}
+            <div 
+              onClick={() => navigate('/build-box')}
+              style={{
+                background: 'linear-gradient(135deg, #D9C8B3 0%, #C4B5A0 100%)',
+                borderRadius: '16px',
+                padding: '20px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#2B2B2B',
+                height: '280px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+              }}
+            >
+              <ClipboardList size={48} style={{ marginBottom: '16px' }} />
+              <h3 style={{ fontSize: '16px', fontWeight: '600', margin: 0, textAlign: 'center' }}>Create Your Meal Plan</h3>
+            </div>
           </div>
         </div>
 
@@ -389,7 +389,7 @@ export const BoxBuilder = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
             <div>
               <h1 style={{ fontFamily: "'Rubik', sans-serif", fontSize: '32px', fontWeight: '800', marginBottom: '8px', color: '#2B2B2B', textTransform: 'none' }}>
-                {petType === 'cat' ? 'Build Your Cat Box' : 'Build Your Box'}
+                {petType === 'cat' ? 'Build your cat box' : 'Build your box'}
               </h1>
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', color: '#666' }}>
                 {petType === 'cat' 
