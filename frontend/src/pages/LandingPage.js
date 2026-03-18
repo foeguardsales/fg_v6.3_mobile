@@ -631,7 +631,7 @@ export const LandingPage = () => {
               <p style={{ fontSize: '17px', marginBottom: '32px', color: '#666', lineHeight: '1.7', textAlign: 'center' }}>
                 Your days of stressing over ingredients and unplanned vet visits are over. A complete raw diet provides the foundation for a longer, healthy life for your dog. It directly supports:
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '48px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '48px', justifyItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
                   <span style={{ fontSize: '17px', color: '#333' }}>More energy and happiness</span>
