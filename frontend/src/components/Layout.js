@@ -5,6 +5,11 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   
+  const handleNavigate = (path) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+  
   return (
     <nav className="navbar">
       <div className="navbar-inner" style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -12,18 +17,43 @@ export const Navbar = () => {
           src="https://customer-assets.emergentagent.com/job_b173aa98-8700-42d1-aca5-6a3b8220c855/artifacts/0fo0kwz0_fglogo.png" 
           alt="FoeGuard" 
           style={{ height: '56px', cursor: 'pointer' }}
-          onClick={() => navigate('/')}
+          onClick={() => handleNavigate('/')}
           data-testid="nav-logo"
         />
         {/* Desktop Nav */}
         <div className="nav-desktop" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-          <button onClick={() => navigate('/build-box')} className="nav-link" data-testid="nav-order">Order</button>
-          <button onClick={() => navigate('/about')} className="nav-link" data-testid="nav-about">Why FoeGuard</button>
-          <button onClick={() => navigate('/new-to-raw')} className="nav-link" data-testid="nav-new-to-raw">New to FG</button>
-          <button onClick={() => navigate('/blog')} className="nav-link" data-testid="nav-blog">Blog</button>
-          <button onClick={() => navigate('/calculator')} className="nav-link" data-testid="nav-calculator">Calculator</button>
-          <button onClick={() => navigate('/contact')} className="nav-link" data-testid="nav-contact">Contact Us</button>
-          <button onClick={() => navigate('/account')} className="nav-link" data-testid="nav-account">Account</button>
+          <button onClick={() => handleNavigate('/about')} className="nav-link" data-testid="nav-about">Why FoeGuard</button>
+          <button onClick={() => handleNavigate('/new-to-raw')} className="nav-link" data-testid="nav-new-to-raw">New to FG</button>
+          <button onClick={() => handleNavigate('/contact')} className="nav-link" data-testid="nav-contact">Contact Us</button>
+          <button onClick={() => handleNavigate('/account')} className="nav-link" data-testid="nav-account">Account</button>
+          <button 
+            onClick={() => handleNavigate('/build-box')} 
+            className="nav-order-btn" 
+            data-testid="nav-order"
+            style={{
+              background: 'linear-gradient(135deg, #A41E34 0%, #8B1A2E 100%)',
+              color: '#FFFFFF',
+              padding: '12px 28px',
+              borderRadius: '25px',
+              border: 'none',
+              fontWeight: '600',
+              fontSize: '15px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(164, 30, 52, 0.3)',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              fontFamily: "'Rubik', sans-serif"
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(164, 30, 52, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(164, 30, 52, 0.3)';
+            }}
+          >
+            Order
+          </button>
         </div>
         {/* Mobile Menu Button */}
         <button 
@@ -38,13 +68,11 @@ export const Navbar = () => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="nav-mobile-menu" data-testid="nav-mobile-menu">
-          <button onClick={() => { navigate('/build-box'); setMenuOpen(false); }} className="nav-mobile-link">Order</button>
-          <button onClick={() => { navigate('/about'); setMenuOpen(false); }} className="nav-mobile-link">Why FoeGuard</button>
-          <button onClick={() => { navigate('/new-to-raw'); setMenuOpen(false); }} className="nav-mobile-link">New to FG</button>
-          <button onClick={() => { navigate('/blog'); setMenuOpen(false); }} className="nav-mobile-link">Blog</button>
-          <button onClick={() => { navigate('/calculator'); setMenuOpen(false); }} className="nav-mobile-link">Calculator</button>
-          <button onClick={() => { navigate('/contact'); setMenuOpen(false); }} className="nav-mobile-link">Contact Us</button>
-          <button onClick={() => { navigate('/account'); setMenuOpen(false); }} className="nav-mobile-link">Account</button>
+          <button onClick={() => { handleNavigate('/build-box'); setMenuOpen(false); }} className="nav-mobile-link">Order</button>
+          <button onClick={() => { handleNavigate('/about'); setMenuOpen(false); }} className="nav-mobile-link">Why FoeGuard</button>
+          <button onClick={() => { handleNavigate('/new-to-raw'); setMenuOpen(false); }} className="nav-mobile-link">New to FG</button>
+          <button onClick={() => { handleNavigate('/contact'); setMenuOpen(false); }} className="nav-mobile-link">Contact Us</button>
+          <button onClick={() => { handleNavigate('/account'); setMenuOpen(false); }} className="nav-mobile-link">Account</button>
         </div>
       )}
     </nav>
