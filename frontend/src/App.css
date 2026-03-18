@@ -4152,3 +4152,13 @@ h2, h3, h4 {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Hide scrollbar for protein carousel */
+.protein-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.protein-scroll-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

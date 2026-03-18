@@ -9,6 +9,7 @@ export const LandingPage = () => {
   const [emailSubmitted, setEmailSubmitted] = useState('');
   const photoScrollRef = useRef(null);
   const reviewsScrollRef = useRef(null);
+  const proteinScrollRef = useRef(null);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -35,6 +36,51 @@ export const LandingPage = () => {
       });
     }
   };
+
+  const scrollProteins = (direction) => {
+    if (proteinScrollRef.current) {
+      const scrollAmount = 350;
+      proteinScrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const proteins = [
+    {
+      name: 'Chicken',
+      description: 'Lean protein that supports muscle development and provides essential amino acids for overall health.'
+    },
+    {
+      name: 'Beef',
+      description: 'Rich in iron and zinc, beef supports energy levels, immune function, and healthy blood cells.'
+    },
+    {
+      name: 'Turkey',
+      description: 'Low-fat protein packed with nutrients that promote lean muscle mass and digestive health.'
+    },
+    {
+      name: 'Duck',
+      description: 'Nutrient-dense protein with omega fatty acids that support skin, coat, and joint health.'
+    },
+    {
+      name: 'Salmon',
+      description: 'Omega-3 rich fish that promotes brain function, reduces inflammation, and supports a shiny coat.'
+    },
+    {
+      name: 'Lamb',
+      description: 'Easily digestible protein with B vitamins that support energy metabolism and muscle health.'
+    },
+    {
+      name: 'Goat',
+      description: 'Novel protein that is gentle on sensitive stomachs and provides essential nutrients for overall wellness.'
+    },
+    {
+      name: 'Rabbit',
+      description: 'Hypoallergenic lean protein ideal for dogs with food sensitivities, supporting digestion and vitality.'
+    }
+  ];
   
   return (
     <>
@@ -134,7 +180,7 @@ export const LandingPage = () => {
                   cursor: 'pointer'
                 }}
               >
-                Create Your Plan
+                Create Your<br />Plan
               </button>
             </div>
           </div>
@@ -146,7 +192,7 @@ export const LandingPage = () => {
             <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>From our farm to your bowl</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                Our love for dogs and heritage in farming help us understand food from soil to serving. That's why we created FoeGuard — a farm-to-bowl service delivering balanced raw meals crafted with farm-fresh, nutrient-rich ingredients. Each meal is designed to support digestion, maximize nutrient absorption, and help support a vibrant, healthy life.
+                Our love for dogs and heritage in farming help us understand food from soil to serving. That's why we created FoeGuard — a farm-to-bowl service delivering balanced raw meals crafted with fresh, nutrient-rich ingredients. Each meal is designed to support digestion, maximize nutrient absorption, and help support a vibrant, healthy life for your dog.
               </p>
             </div>
           </div>
@@ -387,30 +433,113 @@ export const LandingPage = () => {
             <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '48px', color: '#666', maxWidth: '900px', margin: '0 auto 48px' }}>
               We give pet parents a variety of stress-free, affordable options to feed the way nature intended—so you can support your pet's cravings and local Canadian farms, all at retail cost.
             </p>
-            <div style={{ 
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '24px',
-              maxWidth: '1200px',
-              margin: '0 auto',
-              justifyContent: 'center'
-            }}>
-              {[...Array(8)].map((_, i) => (
-                <div 
-                  key={i}
-                  style={{
-                    width: 'calc((100% - 96px) / 5)',
-                    aspectRatio: '1',
-                    background: '#E8DDD0',
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <span style={{ color: '#8B4513', fontSize: '14px' }}>Protein {i + 1}</span>
-                </div>
-              ))}
+            
+            {/* Proteins Carousel */}
+            <div style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto' }}>
+              <button
+                onClick={() => scrollProteins('left')}
+                style={{
+                  position: 'absolute',
+                  left: '-20px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'white',
+                  border: '2px solid #E8DDD0',
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  zIndex: 10,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+              
+              <div 
+                ref={proteinScrollRef}
+                style={{
+                  display: 'flex',
+                  gap: '24px',
+                  overflowX: 'auto',
+                  scrollBehavior: 'smooth',
+                  paddingBottom: '16px',
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none'
+                }}
+                className="protein-scroll-container"
+              >
+                {proteins.map((protein, i) => (
+                  <div 
+                    key={i}
+                    style={{
+                      minWidth: '280px',
+                      background: 'white',
+                      borderRadius: '12px',
+                      padding: '20px',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                      border: '1px solid #E8DDD0'
+                    }}
+                  >
+                    <div style={{
+                      width: '100%',
+                      height: '180px',
+                      background: '#E8DDD0',
+                      borderRadius: '8px',
+                      marginBottom: '16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#8B4513',
+                      fontSize: '14px'
+                    }}>
+                      {protein.name} Image
+                    </div>
+                    <h3 style={{ 
+                      fontSize: '20px', 
+                      fontWeight: '600', 
+                      marginBottom: '12px',
+                      color: '#8B4513'
+                    }}>
+                      {protein.name}
+                    </h3>
+                    <p style={{ 
+                      fontSize: '15px', 
+                      color: '#666',
+                      lineHeight: '1.6',
+                      margin: 0
+                    }}>
+                      {protein.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                onClick={() => scrollProteins('right')}
+                style={{
+                  position: 'absolute',
+                  right: '-20px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'white',
+                  border: '2px solid #E8DDD0',
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  zIndex: 10,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                }}
+              >
+                <ChevronRight size={20} />
+              </button>
             </div>
           </div>
         </section>

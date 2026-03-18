@@ -13,7 +13,7 @@ export const NewToRawPage = () => {
         <section className="ntf-hero">
           <div className="ntf-hero-content">
             <h1 style={{ textTransform: 'none', fontFamily: "'CS Gordon', serif" }}>New to FG</h1>
-            <h3 className="ntf-hero-subtitle" style={{ fontWeight: '600', fontSize: '18px', marginBottom: '16px' }}>
+            <h3 className="ntf-hero-subtitle" style={{ fontWeight: '400', fontSize: '18px', marginBottom: '16px' }}>
               Feel confident about switching to FoeGuard raw
             </h3>
           </div>
@@ -24,10 +24,10 @@ export const NewToRawPage = () => {
           <div className="ntf-container">
             <h2 style={{ textTransform: 'none' }}>Discover what really works for your dog</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Could it be their food, the environment, or something at home?
+              From constant itching to problems with digestion, it's hard to tell whats causing your dog discomfort. Could it be their food, the environment, or something at home?
             </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Many pet parents feel frustrated by unclear labels, poor sourcing, and inconsistent quality in traditional pet food. While we cannot promise instant answers, switching to a clean, biologically appropriate diet can help remove one of the biggest unknowns — their food.
+              Many pet parents feel frustrated by the lack of quality and transparency in traditional pet food. Switching to a clean, biologically appropriate diet can help remove one of the biggest unknowns — their food.
             </p>
             <p style={{ fontSize: '17px' }}>
               Feeding naturally raised raw meals is a simple way to observe how your pet responds to different proteins while giving them fresh, nutrient-dense food designed for easier digestion and long-term health. We make feeding better feel simple, clear, and stress-free.

@@ -25,8 +25,8 @@ export const AboutPage = () => {
         <section className="about-hero">
           <div className="about-hero-content">
             <h1 style={{ textTransform: 'none', fontFamily: "'CS Gordon', serif" }}>Why FoeGuard</h1>
-            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', marginTop: '20px' }}>
-              Happy, healthy, dogs start here.
+            <p style={{ fontSize: '18px', color: '#D9C8B3', marginTop: '20px' }}>
+              Happy, healthy dogs start here.
             </p>
           </div>
         </section>
