@@ -1,96 +1,43 @@
-# FoeGuard E-Commerce Platform - PRD
+# FoeGuard - Raw Pet Food Website
 
 ## Original Problem Statement
-Build a modern e-commerce website for FoeGuard, a raw pet food company selling farm-fresh meals for dogs and cats in Ontario.
+Build a website for "FoeGuard," a raw dog/cat food company. The site features a landing page, About Us (Why FoeGuard), New to Raw page, Blog, Product Detail pages, Treat Detail pages, and a Box Builder page for customers to select products.
 
 ## Core Requirements
-- Modern farmhouse aesthetic with Fraunces/Inter fonts
-- Color palette: barn red (#88302F), burgundy (#732827), cream (#f5f3ef), khaki (#D9C8B3)
-- 9-section homepage with specific copy
-- Dog and Cat food product lines
-- Build-a-Box customization
-- Stripe payment integration
-- Google Places address autocomplete
-- Brevo email integration
+1. Add photos to fill all placeholder images across the site
+2. Update product information (descriptions, ingredients, nutrition) in the database
+3. Implement a dog survey to automate customer meal plans
+4. Various UI/UX and content edits across all pages
 
----
+## Tech Stack
+- **Frontend**: React, React Router, TailwindCSS
+- **Backend**: FastAPI (Python)
+- **Database**: MongoDB
+- **Process Management**: Supervisor
 
-## What's Been Implemented (Dec 2025)
+## Key DB Schema
+- **products**: `{ product_id, product_line, protein_type, name, description, short_description, highlights, ingredients, recipe_breakdown, nutrition/nutrition_facts, pet_type, pricing, inventory_status, feeding_guide, product_info, is_complete_balanced }`
+- **treats**: `{ treat_id, name, price, quantity_description, pet_type, description, feeding_guide, product_information }`
 
-### Homepage (9 Sections) ✅
-1. Hero with "See a Happier, Healthier Pet In Just 14 Days"
-2. Why Guardians Switch (3 icons)
-3. The Problem section
-4. Our Standards (3 pillars with header)
-5. How It Works (3 steps - concise)
-6. Real Food Real Results (6 benefits + AAFCO)
-7. From Farm to Bowl (8 proteins, testimonials)
-8. New to FoeGuard section
-9. Final CTA with promise list
+## What's Been Implemented
+### Completed (Previous Sessions)
+- Full UI/UX overhaul: Homepage, Box Builder, Navbar, About, New to Raw, Blog pages
+- Carousels for reviews and proteins on homepage
+- Box Builder redesign with banner carousel
+- ScrollToTop component
+- Global font and styling consistency
 
-### Pages ✅
-- Landing Page (complete with all 9 sections)
-- Build-a-Box (dog/cat selector, image banners)
-- Product Detail (redesigned, collapsible sections)
-- Contact Us
-- About Us
-- Calculator
-- Account/Login
-- New to Raw (placeholder)
+### Completed (Current Session - Feb 18, 2026)
+- **Database Update Complete**: All 24 products (Comfort Dinner x8, Primal Feast x8, Royal Paws x8) and all 18 treats updated with correct descriptions, ingredients, nutrition, feeding guides, and product information
+- Treats verified rendering correctly on frontend with description, feeding guide, and product information sections
 
-### Integrations ✅
-- Stripe payments (test key)
-- Google Places autocomplete
-- Brevo email (configured)
+## Prioritized Backlog
+### P0 (High Priority)
+- Add real photos/images to replace all ~65 placeholders across the site (user will provide after DB update)
 
-### Checkout Features ✅
-- Biweekly/Monthly subscription choice
-- Delivery instructions textarea
-- "Delivery Address" labeling
+### P1 (Medium Priority)
+- Implement dog survey feature for automated meal plan creation
 
----
-
-## Pending Tasks
-
-### P1 - High Priority
-- [x] Complete "About Us / Why FoeGuard" page (user copy implemented)
-- [x] Expand "New to FoeGuard" page (user copy implemented with comparison table)
-- [ ] Test Royal Paws cat food line on Build-a-Box
-- [ ] Verify cart calculations for cat food
-- [ ] Fix errors (pending user feedback)
-
-### P2 - Medium Priority
-- [ ] Complete subscription swap functionality
-- [ ] End-to-end checkout testing
-
-### Backlog
-- [ ] Quick Reorder feature
-- [ ] Blog page
-- [ ] Marketing email automation
-- [ ] Rewards/loyalty program
-- [ ] Admin dashboard enhancements
-
----
-
-## Image Placeholders Needed
-- 3 icons for "Why Guardians Switch"
-- Farm sourcing banner
-- 8 protein images (Chicken, Beef, Duck, Fish, Lamb, Turkey, Goat, Rabbit)
-- 3 testimonial photos
-- 12 customer photo grid
-- AAFCO logo
-
----
-
-## Technical Stack
-- Frontend: React + TailwindCSS (craco)
-- Backend: FastAPI + Python
-- Database: MongoDB
-- Styling: CSS variables, Fraunces/Inter fonts
-
-## Key Files
-- `/app/frontend/src/pages/LandingPage.js` - Homepage
-- `/app/frontend/src/App.css` - Main styles
-- `/app/frontend/src/pages/BoxBuilder.js` - Build-a-box
-- `/app/backend/server.py` - API endpoints
-- `/app/backend/seed_data.py` - Product data
+### P2 (Low Priority)
+- Full testing pass across all pages
+- Additional UI/UX refinements as requested
