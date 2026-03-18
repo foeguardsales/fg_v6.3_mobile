@@ -387,45 +387,6 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* ===== SECTION — BENEFITS ===== */}
-        <section className="problem-section" style={{ background: '#F8F6F4' }}>
-          <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '24px', fontWeight: '600' }}>Benefits you can see, and they can feel.</h2>
-            
-            <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-              <p style={{ fontSize: '17px', marginBottom: '32px', color: '#666', lineHeight: '1.7' }}>
-                Your days of stressing over ingredients and unplanned vet visits are over. A complete raw diet provides the foundation for a longer, healthy life for your dog. It directly supports:
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '48px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>More energy and happiness</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Better digestion and healthy poops</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Fresher breath and cleaner teeth</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Fewer allergic reactions</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Healthy weight management</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Stronger immune system</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ===== SECTION — 8 PROTEINS ===== */}
         <section className="proteins-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
           <div className="section-container">
@@ -661,11 +622,43 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* ===== SECTION — REVIEWS ===== */}
+        {/* ===== SECTION — BENEFITS ===== */}
         <section className="problem-section" style={{ background: 'white' }}>
           <div className="section-container">
-            <h3 style={{ textAlign: 'center', fontSize: '18px', marginBottom: '48px', textTransform: 'none', fontWeight: '600', color: '#666' }}>Trusted by dog owners in the Greater Toronto Area</h3>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '24px', fontWeight: '600' }}>Benefits you can see, and they can feel.</h2>
             
+            <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+              <p style={{ fontSize: '17px', marginBottom: '32px', color: '#666', lineHeight: '1.7' }}>
+                Your days of stressing over ingredients and unplanned vet visits are over. A complete raw diet provides the foundation for a longer, healthy life for your dog. It directly supports:
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '48px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>More energy and happiness</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Better digestion and healthy poops</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Fresher breath and cleaner teeth</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Fewer allergic reactions</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Healthy weight management</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
+                  <span style={{ fontSize: '17px', color: '#333' }}>Stronger immune system</span>
+                </div>
+              </div>
+            </div>
+
             {/* Scrollable Reviews Carousel */}
             <div style={{ position: 'relative', maxWidth: '1000px', margin: '0 auto' }}>
               <button
