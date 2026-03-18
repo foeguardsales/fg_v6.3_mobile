@@ -45,13 +45,14 @@ export const BlogListPage = () => {
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
             <h1 style={{ 
               fontSize: '48px', 
-              fontFamily: 'Crimson Pro, Georgia, serif',
+              fontFamily: "'CS Gordon', serif",
               color: '#2B2B2B',
-              marginBottom: '16px'
+              marginBottom: '16px',
+              textTransform: 'none'
             }}>
               FoeGuard Blog
             </h1>
-            <p style={{ fontSize: '18px', color: '#666', maxWidth: '600px', margin: '0 auto' }}>
+            <p style={{ fontSize: '18px', color: '#666', maxWidth: '600px', margin: '0 auto', fontFamily: "'Rubik', sans-serif" }}>
               Expert tips, nutrition guides, and stories about raw pet food
             </p>
           </div>
@@ -120,7 +121,8 @@ export const BlogListPage = () => {
                   <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <h2 style={{
                       fontSize: '24px',
-                      fontFamily: 'Crimson Pro, Georgia, serif',
+                      fontFamily: "'Rubik', sans-serif",
+                      fontWeight: '600',
                       color: '#2B2B2B',
                       marginBottom: '12px',
                       lineHeight: '1.3'
@@ -130,6 +132,7 @@ export const BlogListPage = () => {
 
                     <p style={{
                       fontSize: '15px',
+                      fontFamily: "'Rubik', sans-serif",
                       color: '#666',
                       lineHeight: '1.6',
                       marginBottom: '16px',
@@ -143,6 +146,7 @@ export const BlogListPage = () => {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       fontSize: '13px',
+                      fontFamily: "'Rubik', sans-serif",
                       color: '#999',
                       paddingTop: '16px',
                       borderTop: '1px solid #E8DDD0'
@@ -291,10 +295,11 @@ export const BlogDetailPage = () => {
           {/* Title & Meta */}
           <h1 style={{
             fontSize: '48px',
-            fontFamily: 'Crimson Pro, Georgia, serif',
+            fontFamily: "'CS Gordon', serif",
             color: '#2B2B2B',
             marginBottom: '16px',
-            lineHeight: '1.2'
+            lineHeight: '1.2',
+            textTransform: 'none'
           }}>
             {blog.title}
           </h1>
@@ -303,6 +308,7 @@ export const BlogDetailPage = () => {
             display: 'flex',
             gap: '20px',
             fontSize: '14px',
+            fontFamily: "'Rubik', sans-serif",
             color: '#999',
             paddingBottom: '24px',
             marginBottom: '32px',
@@ -320,7 +326,8 @@ export const BlogDetailPage = () => {
           {/* Blog Body */}
           <div
             style={{
-              fontSize: '18px',
+              fontSize: '17px',
+              fontFamily: "'Rubik', sans-serif",
               lineHeight: '1.8',
               color: '#2C2C2C',
               background: 'white',
