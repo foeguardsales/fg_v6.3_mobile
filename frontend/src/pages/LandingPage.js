@@ -628,7 +628,7 @@ export const LandingPage = () => {
             <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '24px', fontWeight: '600' }}>Benefits you can see, and they can feel.</h2>
             
             <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-              <p style={{ fontSize: '17px', marginBottom: '32px', color: '#666', lineHeight: '1.7' }}>
+              <p style={{ fontSize: '17px', marginBottom: '32px', color: '#666', lineHeight: '1.7', textAlign: 'center' }}>
                 Your days of stressing over ingredients and unplanned vet visits are over. A complete raw diet provides the foundation for a longer, healthy life for your dog. It directly supports:
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '48px' }}>
