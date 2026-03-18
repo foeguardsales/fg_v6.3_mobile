@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
-import { Calculator, ClipboardList } from 'lucide-react';
+import { Calculator, ClipboardList, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -58,6 +58,7 @@ export const BoxBuilder = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [loading, setLoading] = useState(true);
+  const carouselRef = useRef(null);
 
   // Get current discount rates and box options based on pet type
   const DISCOUNT_RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
@@ -100,6 +101,50 @@ export const BoxBuilder = () => {
     // Set default box size for new pet type
     setBoxSize(newPetType === 'cat' ? 6 : 18);
   };
+
+  const scrollCarousel = (direction) => {
+    const container = carouselRef.current;
+    if (!container) return;
+    
+    const cardWidth = container.offsetWidth * 0.7;
+    const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
+    
+    container.scrollBy({
+      left: scrollAmount,
+      behavior: 'smooth'
+    });
+  };
+
+  const bannerCards = [
+    {
+      id: 'meal-plan',
+      title: 'Create Meal Plan',
+      icon: <ClipboardList size={48} />,
+      gradient: 'linear-gradient(135deg, #D9C8B3 0%, #B8A89A 100%)',
+      onClick: () => navigate('/build-box')
+    },
+    {
+      id: 'dog',
+      title: 'Raw Dog Food',
+      image: COLLECTION_IMAGES.dog,
+      selected: petType === 'dog',
+      onClick: () => handlePetTypeChange('dog')
+    },
+    {
+      id: 'cat',
+      title: 'Raw Cat Food',
+      image: COLLECTION_IMAGES.cat,
+      selected: petType === 'cat',
+      onClick: () => handlePetTypeChange('cat')
+    },
+    {
+      id: 'calculator',
+      title: 'Feeding Calculator',
+      icon: <Calculator size={48} />,
+      gradient: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
+      onClick: () => navigate('/calculator')
+    }
+  ];
 
   // Calculate price for 6lb based on box size discount
   const getDiscountedPrice = (basePrice) => {
@@ -200,232 +245,191 @@ export const BoxBuilder = () => {
     <>
       <Navbar />
       <div className="box-builder">
-        {/* Pet Type Selector - Dog vs Cat with Mini Action Cards */}
-        <div className="pet-selector" style={{ marginBottom: '40px' }}>
-          {/* Main Grid - Dog and Cat Food */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', maxWidth: '1200px', margin: '0 auto 20px' }}>
-            <button 
-              className={`pet-selector-btn ${petType === 'dog' ? 'active' : ''}`}
-              onClick={() => handlePetTypeChange('dog')}
-              data-testid="pet-selector-dog"
-              style={{
-                position: 'relative',
-                height: '280px',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                border: petType === 'dog' ? '4px solid #A41E34' : '4px solid transparent',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                padding: 0,
-                background: 'none'
-              }}
-            >
-              <img 
-                src={COLLECTION_IMAGES.dog} 
-                alt="Raw Dog Food"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%)',
-                display: 'flex',
-                alignItems: 'flex-end',
-                justifyContent: 'center',
-                padding: '30px'
-              }}>
-                <span style={{
-                  fontFamily: "'Rubik', sans-serif",
-                  fontSize: '26px',
-                  fontWeight: '800',
-                  color: '#FFFFFF',
-                  textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                  textTransform: 'none',
-                  letterSpacing: '0.05em'
-                }}>Raw Dog Food</span>
-              </div>
-              {petType === 'dog' && (
+        {/* Banner Carousel Selector */}
+        <div style={{ marginBottom: '50px', position: 'relative' }}>
+          {/* Navigation Arrows */}
+          <button
+            onClick={() => scrollCarousel('left')}
+            style={{
+              position: 'absolute',
+              left: '10px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 10,
+              background: 'rgba(255,255,255,0.95)',
+              border: '2px solid #E8DDD0',
+              borderRadius: '50%',
+              width: '48px',
+              height: '48px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'white';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.95)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            <ChevronLeft size={24} style={{ color: '#8B4513' }} />
+          </button>
+
+          <button
+            onClick={() => scrollCarousel('right')}
+            style={{
+              position: 'absolute',
+              right: '10px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 10,
+              background: 'rgba(255,255,255,0.95)',
+              border: '2px solid #E8DDD0',
+              borderRadius: '50%',
+              width: '48px',
+              height: '48px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'white';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.95)';
+              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+            }}
+          >
+            <ChevronRight size={24} style={{ color: '#8B4513' }} />
+          </button>
+
+          {/* Carousel Container */}
+          <div
+            ref={carouselRef}
+            style={{
+              display: 'flex',
+              gap: '20px',
+              overflowX: 'auto',
+              scrollBehavior: 'smooth',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              padding: '10px 20px',
+              WebkitOverflowScrolling: 'touch'
+            }}
+            className="banner-carousel"
+          >
+            {bannerCards.map((card) => (
+              <div
+                key={card.id}
+                onClick={card.onClick}
+                style={{
+                  position: 'relative',
+                  minWidth: '70%',
+                  maxWidth: '70%',
+                  height: '280px',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  flexShrink: 0,
+                  border: card.selected ? '4px solid #A41E34' : '4px solid transparent',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px)';
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.18)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                }}
+              >
+                {/* Background - Image or Gradient */}
+                {card.image ? (
+                  <img 
+                    src={card.image} 
+                    alt={card.title}
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'cover',
+                      position: 'absolute',
+                      inset: 0
+                    }}
+                  />
+                ) : (
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: card.gradient
+                  }} />
+                )}
+
+                {/* Overlay */}
                 <div style={{
                   position: 'absolute',
-                  top: '16px',
-                  right: '16px',
-                  background: '#A41E34',
-                  color: '#FFFFFF',
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
+                  inset: 0,
+                  background: card.image 
+                    ? 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)'
+                    : 'linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%)',
                   display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '18px',
-                  fontWeight: '700'
-                }}>✓</div>
-              )}
-            </button>
+                  padding: '40px',
+                  gap: '16px'
+                }}>
+                  {card.icon && (
+                    <div style={{ color: '#FDFCFA' }}>
+                      {card.icon}
+                    </div>
+                  )}
+                  <span style={{
+                    fontFamily: "'Rubik', sans-serif",
+                    fontSize: '32px',
+                    fontWeight: '800',
+                    color: '#FDFCFA',
+                    textShadow: '0 3px 12px rgba(0,0,0,0.4)',
+                    textAlign: 'center',
+                    letterSpacing: '0.02em',
+                    lineHeight: '1.2'
+                  }}>
+                    {card.title}
+                  </span>
+                </div>
 
-            <button 
-              className={`pet-selector-btn ${petType === 'cat' ? 'active' : ''}`}
-              onClick={() => handlePetTypeChange('cat')}
-              data-testid="pet-selector-cat"
-              style={{
-                position: 'relative',
-                height: '280px',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                border: petType === 'cat' ? '4px solid #A41E34' : '4px solid transparent',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                padding: 0,
-                background: 'none'
-              }}
-            >
-              <img 
-                src={COLLECTION_IMAGES.cat} 
-                alt="Raw Cat Food"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%)',
-                display: 'flex',
-                alignItems: 'flex-end',
-                justifyContent: 'center',
-                padding: '30px'
-              }}>
-                <span style={{
-                  fontFamily: "'Rubik', sans-serif",
-                  fontSize: '26px',
-                  fontWeight: '800',
-                  color: '#FFFFFF',
-                  textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                  textTransform: 'none',
-                  letterSpacing: '0.05em'
-                }}>Raw Cat Food</span>
+                {/* Selected Indicator */}
+                {card.selected && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '20px',
+                    right: '20px',
+                    background: '#A41E34',
+                    color: '#FFFFFF',
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '24px',
+                    fontWeight: '700',
+                    boxShadow: '0 4px 12px rgba(164, 30, 52, 0.4)'
+                  }}>
+                    ✓
+                  </div>
+                )}
               </div>
-              {petType === 'cat' && (
-                <div style={{
-                  position: 'absolute',
-                  top: '16px',
-                  right: '16px',
-                  background: '#A41E34',
-                  color: '#FFFFFF',
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '18px',
-                  fontWeight: '700'
-                }}>✓</div>
-              )}
-            </button>
-          </div>
-
-          {/* Mini Action Cards - Responsive Grid */}
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', 
-            gap: '20px', 
-            maxWidth: '1200px',
-            margin: '0 auto'
-          }}>
-            {/* Calculator Card */}
-            <div 
-              onClick={() => navigate('/calculator')}
-              style={{
-                position: 'relative',
-                minHeight: '100px',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
-                background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
-                border: '2px solid rgba(255,255,255,0.1)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.18)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)';
-              }}
-            >
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '24px 16px',
-                gap: '12px'
-              }}>
-                <Calculator size={40} style={{ color: '#FDFCFA', flexShrink: 0 }} />
-                <span style={{
-                  fontFamily: "'Rubik', sans-serif",
-                  fontSize: '17px',
-                  fontWeight: '700',
-                  color: '#FDFCFA',
-                  textShadow: '0 2px 8px rgba(0,0,0,0.4)',
-                  textAlign: 'center',
-                  letterSpacing: '0.02em',
-                  lineHeight: '1.3'
-                }}>Feeding<br />Calculator</span>
-              </div>
-            </div>
-
-            {/* Meal Plan Card */}
-            <div 
-              onClick={() => navigate('/build-box')}
-              style={{
-                position: 'relative',
-                minHeight: '100px',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
-                background: 'linear-gradient(135deg, #D9C8B3 0%, #B8A89A 100%)',
-                border: '2px solid rgba(255,255,255,0.2)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.18)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)';
-              }}
-            >
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(135deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 100%)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '24px 16px',
-                gap: '12px'
-              }}>
-                <ClipboardList size={40} style={{ color: '#FDFCFA', flexShrink: 0 }} />
-                <span style={{
-                  fontFamily: "'Rubik', sans-serif",
-                  fontSize: '17px',
-                  fontWeight: '700',
-                  color: '#FDFCFA',
-                  textShadow: '0 2px 8px rgba(0,0,0,0.4)',
-                  textAlign: 'center',
-                  letterSpacing: '0.02em',
-                  lineHeight: '1.3'
-                }}>Create<br />Meal Plan</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
