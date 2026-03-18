@@ -172,7 +172,7 @@ export const LandingPage = () => {
                 data-testid="hero-build-box-btn"
                 style={{
                   borderRadius: '8px',
-                  padding: '14px 36px',
+                  padding: '14px 42px',
                   fontSize: '16px',
                   fontWeight: '600',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
@@ -180,7 +180,7 @@ export const LandingPage = () => {
                   cursor: 'pointer'
                 }}
               >
-                Create Your<br />Plan
+                Create Your Plan
               </button>
             </div>
           </div>
@@ -481,7 +481,8 @@ export const LandingPage = () => {
                       borderRadius: '12px',
                       padding: '20px',
                       boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                      border: '1px solid #E8DDD0'
+                      border: '1px solid #E8DDD0',
+                      textAlign: 'center'
                     }}
                   >
                     <div style={{
@@ -641,6 +642,22 @@ export const LandingPage = () => {
                 Build Your Box
               </span>
             </div>
+          </div>
+        </section>
+
+        {/* ===== SECTION — OUR STORY ===== */}
+        <section className="about-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
+          <div className="section-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B', fontWeight: '600' }}>Our story ... is your story?</h2>
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
+              Overwhelmed by the health challenges caused by processed foods, our family turned to our farm to grow real, wholesome ingredients. The transformation was life-changing: more energy, better digestion, clearer minds, and even glowing skin.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
+              Inspired by these results, we decided to feed our dogs the same way—natural, fresh, and just like family. The change was incredible! Their energy soared, their coats shone, and their health improved, proving one simple truth—they're carnivores. What started as a personal journey soon became a mission to help others. We began preparing meals for friends and neighbours, and that passion grew into profession - FoeGuard was born!
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7', color: '#333' }}>
+              We've worked tirelessly over the last 10 years with professional nutritionists, veterinarians, biologists and dog behaviourists to ensure your pets are given care without compromise - with the same quality and safety we use at our own table at home.
+            </p>
           </div>
         </section>
 
@@ -952,19 +969,6 @@ export const LandingPage = () => {
                 </p>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* ===== SECTION — OUR STORY ===== */}
-        <section className="about-section" style={{ background: 'white', padding: '80px 20px' }}>
-          <div className="section-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B', fontWeight: '600' }}>Our story ... is your story?</h2>
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
-              Overwhelmed by the health challenges caused by processed foods, our family turned to our farm to grow real, wholesome ingredients. The transformation was life-changing: more energy, better digestion, clearer minds, and even glowing skin.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7', color: '#333' }}>
-              Inspired by these results, we decided to feed our dogs the same way—natural, fresh, and just like family. The change was incredible! Their energy soared, their coats shone, and their health improved, proving one simple truth—they're carnivores. What started as a personal journey soon became a mission to help others. We began preparing meals for friends and neighbours, and that passion grew into profession - FoeGuard was born!
-            </p>
           </div>
         </section>
 

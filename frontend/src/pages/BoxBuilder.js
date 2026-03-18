@@ -322,6 +322,67 @@ export const BoxBuilder = () => {
           </div>
         </div>
 
+        {/* Mini Action Cards */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: '1fr 1fr', 
+          gap: '20px', 
+          maxWidth: '900px',
+          margin: '0 auto 40px'
+        }}>
+          <div 
+            onClick={() => navigate('/calculator')}
+            style={{
+              background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
+              borderRadius: '16px',
+              padding: '24px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              textAlign: 'center',
+              color: 'white'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+            }}
+          >
+            <div style={{ fontSize: '32px', marginBottom: '8px' }}>🧮</div>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>Feeding Calculator</h3>
+            <p style={{ fontSize: '14px', opacity: 0.9, margin: 0 }}>Calculate ideal portions for your pet</p>
+          </div>
+
+          <div 
+            onClick={() => navigate('/build-box')}
+            style={{
+              background: 'linear-gradient(135deg, #D9C8B3 0%, #C4B5A0 100%)',
+              borderRadius: '16px',
+              padding: '24px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              textAlign: 'center',
+              color: '#2B2B2B'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+            }}
+          >
+            <div style={{ fontSize: '32px', marginBottom: '8px' }}>📋</div>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>Create Your Meal Plan</h3>
+            <p style={{ fontSize: '14px', opacity: 0.8, margin: 0 }}>Build a custom plan for your dog</p>
+          </div>
+        </div>
+
         {/* Main Content - Dog or Cat */}
         <>
           {/* Header with cart button */}
