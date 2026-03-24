@@ -292,12 +292,12 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             {/* Treat Image */}
             {treat.image && (
               <div style={{
-                width: '80px',
-                height: '80px',
+                width: '100px',
+                height: '100px',
                 borderRadius: '8px',
                 overflow: 'hidden',
                 flexShrink: 0,
-                backgroundColor: '#f5f5f5'
+                backgroundColor: '#fff'
               }}>
                 <img 
                   src={treat.image} 
@@ -328,7 +328,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                 display: 'flex', 
                 flexDirection: 'column', 
                 alignItems: 'center', 
-                gap: '10px',
+                gap: '16px',
                 width: '85px'
               }}>
                 <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
@@ -356,7 +356,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                       whiteSpace: 'nowrap'
                     }}
                   >
-                    Learn More
+                    See More
                   </button>
                 )}
               </div>

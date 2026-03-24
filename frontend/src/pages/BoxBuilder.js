@@ -72,6 +72,15 @@ export const BoxBuilder = () => {
     } else if (step === 'success') {
       setOrderComplete(true);
     }
+    
+    // Restore scroll position if coming back from product/treat detail
+    const savedPosition = sessionStorage.getItem('menuScrollPosition');
+    if (savedPosition) {
+      setTimeout(() => {
+        window.scrollTo(0, parseInt(savedPosition, 10));
+        sessionStorage.removeItem('menuScrollPosition');
+      }, 100);
+    }
   }, []);
 
   useEffect(() => {
@@ -846,7 +855,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         }}
         data-testid={`learn-more-${product.product_id}`}
       >
-        Learn More
+        See More
       </button>
     </div>
   );

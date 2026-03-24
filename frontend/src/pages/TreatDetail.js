@@ -152,17 +152,18 @@ export const TreatDetailPage = () => {
             <div>
               {/* Main Image */}
               <div className="product-hero-image" style={{
-                background: '#F5F1EB',
+                background: '#fff',
                 borderRadius: '16px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minHeight: '400px',
-                padding: '20px',
-                marginBottom: images.length > 1 ? '16px' : '0'
+                aspectRatio: '1/1',
+                padding: '0',
+                marginBottom: images.length > 1 ? '16px' : '0',
+                overflow: 'hidden'
               }}>
                 {currentImage ? (
-                  <img src={currentImage} alt={treat.name} style={{ width: '100%', height: '360px', objectFit: 'contain' }} />
+                  <img src={currentImage} alt={treat.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   <div style={{ textAlign: 'center', color: '#999' }}>
                     <div style={{ fontSize: '80px', marginBottom: '16px' }}>🦴</div>
