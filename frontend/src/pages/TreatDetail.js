@@ -307,9 +307,9 @@ export const TreatDetailPage = () => {
                         width: '36px',
                         height: '36px',
                         borderRadius: '50%',
-                        border: '2px solid #A41E34',
+                        border: '2px solid #88302F',
                         background: '#fff',
-                        color: '#A41E34',
+                        color: '#88302F',
                         fontSize: '20px',
                         cursor: 'pointer',
                         display: 'flex',
@@ -334,9 +334,9 @@ export const TreatDetailPage = () => {
                         width: '36px',
                         height: '36px',
                         borderRadius: '50%',
-                        border: '2px solid #A41E34',
+                        border: '2px solid #88302F',
                         background: '#fff',
-                        color: '#A41E34',
+                        color: '#88302F',
                         fontSize: '20px',
                         cursor: 'pointer',
                         display: 'flex',
@@ -353,7 +353,7 @@ export const TreatDetailPage = () => {
                   style={{
                     width: '100%',
                     padding: '14px 24px',
-                    background: '#A41E34',
+                    background: '#88302F',
                     color: '#fff',
                     border: 'none',
                     borderRadius: '8px',
@@ -362,8 +362,8 @@ export const TreatDetailPage = () => {
                     cursor: 'pointer',
                     transition: 'background 0.2s'
                   }}
-                  onMouseEnter={(e) => e.target.style.background = '#8B1528'}
-                  onMouseLeave={(e) => e.target.style.background = '#A41E34'}
+                  onMouseEnter={(e) => e.target.style.background = '#732827'}
+                  onMouseLeave={(e) => e.target.style.background = '#88302F'}
                 >
                   Add to Box
                 </button>

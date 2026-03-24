@@ -147,6 +147,35 @@ HOW_TO_USE = {
     "primal_feast": "Thaw in refrigerator for 24 hours. Serve at room temperature or slightly warmed. Feed 2-3% of your dog's body weight daily, split into two meals. Monitor your pet's condition and adjust as needed. Keep frozen until use. Refrigerate after thawing and use within 3-4 days."
 }
 
+# Standard feeding guides and product info for products
+PRODUCT_FEEDING_GUIDE = {
+    "feeding": "Feed as a complete meal or mix with your dog's current food to transition. Always supervise your pet during feeding. Start with smaller portions for first-time raw feeders and gradually increase over 7-10 days.",
+    "handling": "Keep frozen until ready to use. Thaw in refrigerator for 12-24 hours before serving. Once thawed, use within 3-4 days. Always handle with clean hands and clean surfaces. Store at 0°F (-18°C) or below."
+}
+
+CAT_PRODUCT_FEEDING_GUIDE = {
+    "feeding": "Feed as a complete meal for your cat. Always supervise your cat during feeding. Introduce gradually for cats new to raw feeding over 5-7 days, mixing with current food.",
+    "handling": "Keep frozen until ready to use. Thaw in refrigerator for 8-12 hours before serving. Once thawed, use within 2-3 days. Always handle with clean hands and clean surfaces. Store at 0°F (-18°C) or below."
+}
+
+PRODUCT_INFORMATION = """Our raw pet food is sourced from trusted family farms across Ontario and processed in USDA-inspected facilities. Each recipe is carefully formulated to provide complete and balanced nutrition following AAFCO guidelines.
+
+What makes our food special:
+• Flash-frozen to lock in freshness and nutrients
+• No artificial preservatives, colors, or flavors
+• Human-grade ingredients
+• Made in small batches for quality control
+• Third-party tested for safety
+
+Perfect for:
+• Dogs and cats of all life stages
+• Pets with food sensitivities
+• Supporting optimal health and vitality
+• Improving coat, skin, and digestion
+• Boosting energy and immune function
+
+Always consult your veterinarian before changing your pet's diet, especially for puppies, kittens, pregnant/nursing animals, or pets with health conditions."""
+
 COMFORT_DINNER_PRODUCTS = [
     {
         "product_id": "cd-chicken",
@@ -158,6 +187,8 @@ COMFORT_DINNER_PRODUCTS = [
         "ingredients": BASE_INGREDIENTS["chicken"],
         "nutrition_facts": NUTRITION_FACTS["chicken"],
         "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "feeding_guide": PRODUCT_FEEDING_GUIDE,
+        "product_information": PRODUCT_INFORMATION,
         "pricing": [
             {"size_lb": 6, "price": 26.99, "price_per_lb": 4.50, "savings_percent": 0},
             {"size_lb": 12, "price": 48.60, "price_per_lb": 4.05, "savings_percent": 10},

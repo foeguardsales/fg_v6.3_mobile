@@ -124,13 +124,19 @@ export const ProductDetailPage = () => {
   };
   
   const handleAddToCart = () => {
+    // Calculate current total in box
+    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+    const spaceLeft = boxSize - currentTotal;
+    
+    // Don't add if no space
+    if (spaceLeft <= 0) return;
+    
     // Add product to cart
     const updatedProteins = { ...selectedProteins };
     const currentQty = updatedProteins[product.product_id]?.qty || 0;
     
-    // Cap quantity at box size
-    const maxAllowed = boxSize - Object.values(updatedProteins).reduce((sum, p) => p.product_id !== product.product_id ? sum + p.qty : sum, 0);
-    const addQty = Math.min(quantity, maxAllowed);
+    // Cap quantity at remaining space
+    const addQty = Math.min(quantity, spaceLeft);
     
     updatedProteins[product.product_id] = {
       qty: currentQty + addQty,
@@ -292,18 +298,20 @@ export const ProductDetailPage = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <button
                       onClick={() => quantity > 6 && setQuantity(quantity - 6)}
+                      disabled={quantity <= 6}
                       style={{
                         width: '36px',
                         height: '36px',
                         borderRadius: '50%',
-                        border: '2px solid #A41E34',
+                        border: '2px solid #88302F',
                         background: '#fff',
-                        color: '#A41E34',
+                        color: '#88302F',
                         fontSize: '20px',
-                        cursor: 'pointer',
+                        cursor: quantity <= 6 ? 'not-allowed' : 'pointer',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        opacity: quantity <= 6 ? 0.4 : 1
                       }}
                     >
                       −
@@ -318,19 +326,39 @@ export const ProductDetailPage = () => {
                       {quantity}
                     </span>
                     <button
-                      onClick={() => quantity < boxSize && setQuantity(quantity + 6)}
+                      onClick={() => {
+                        const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                        const spaceLeft = boxSize - currentTotal;
+                        if (quantity + 6 <= spaceLeft) {
+                          setQuantity(quantity + 6);
+                        }
+                      }}
+                      disabled={(() => {
+                        const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                        const spaceLeft = boxSize - currentTotal;
+                        return quantity + 6 > spaceLeft;
+                      })()}
                       style={{
                         width: '36px',
                         height: '36px',
                         borderRadius: '50%',
-                        border: '2px solid #A41E34',
+                        border: '2px solid #88302F',
                         background: '#fff',
-                        color: '#A41E34',
+                        color: '#88302F',
                         fontSize: '20px',
-                        cursor: 'pointer',
+                        cursor: (() => {
+                          const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                          const spaceLeft = boxSize - currentTotal;
+                          return quantity + 6 > spaceLeft ? 'not-allowed' : 'pointer';
+                        })(),
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        opacity: (() => {
+                          const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                          const spaceLeft = boxSize - currentTotal;
+                          return quantity + 6 > spaceLeft ? 0.4 : 1;
+                        })()
                       }}
                     >
                       +
@@ -339,22 +367,45 @@ export const ProductDetailPage = () => {
                 </div>
                 <button
                   onClick={handleAddToCart}
+                  disabled={(() => {
+                    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                    return currentTotal >= boxSize;
+                  })()}
                   style={{
                     width: '100%',
                     padding: '14px 24px',
-                    background: '#A41E34',
+                    background: (() => {
+                      const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                      return currentTotal >= boxSize ? '#ccc' : '#88302F';
+                    })(),
                     color: '#fff',
                     border: 'none',
                     borderRadius: '8px',
                     fontSize: '16px',
                     fontWeight: '600',
-                    cursor: 'pointer',
+                    cursor: (() => {
+                      const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                      return currentTotal >= boxSize ? 'not-allowed' : 'pointer';
+                    })(),
                     transition: 'background 0.2s'
                   }}
-                  onMouseEnter={(e) => e.target.style.background = '#8B1528'}
-                  onMouseLeave={(e) => e.target.style.background = '#A41E34'}
+                  onMouseEnter={(e) => {
+                    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                    if (currentTotal < boxSize) {
+                      e.target.style.background = '#732827';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                    if (currentTotal < boxSize) {
+                      e.target.style.background = '#88302F';
+                    }
+                  }}
                 >
-                  Add to Box
+                  {(() => {
+                    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+                    return currentTotal >= boxSize ? 'Box Full' : 'Add to Box';
+                  })()}
                 </button>
               </div>
               
