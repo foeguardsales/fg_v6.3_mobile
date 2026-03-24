@@ -155,7 +155,7 @@ export const TreatDetailPage = () => {
 
             <div className="product-hero-info" style={{ padding: '32px' }}>
               <h1 style={{
-                fontFamily: "'CS Gordon', serif",
+                fontFamily: "'Rubik', sans-serif",
                 fontSize: '36px',
                 color: '#2B2B2B',
                 margin: '0 0 20px 0',

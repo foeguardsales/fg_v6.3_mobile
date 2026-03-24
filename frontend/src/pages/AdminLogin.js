@@ -53,7 +53,7 @@ export const AdminLogin = () => {
       }}>
         <h1 style={{
           fontSize: '32px',
-          fontFamily: "'CS Gordon', serif",
+          fontFamily: "'Rubik', sans-serif",
           marginBottom: '8px',
           textAlign: 'center',
           color: '#2B2B2B'

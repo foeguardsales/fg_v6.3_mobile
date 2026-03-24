@@ -45,7 +45,7 @@ export const BlogListPage = () => {
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
             <h1 style={{ 
               fontSize: '48px', 
-              fontFamily: "'CS Gordon', serif",
+              fontFamily: "'Rubik', sans-serif",
               color: '#2B2B2B',
               marginBottom: '16px',
               textTransform: 'none'
@@ -295,7 +295,7 @@ export const BlogDetailPage = () => {
           {/* Title & Meta */}
           <h1 style={{
             fontSize: '48px',
-            fontFamily: "'CS Gordon', serif",
+            fontFamily: "'Rubik', sans-serif",
             color: '#2B2B2B',
             marginBottom: '16px',
             lineHeight: '1.2',
