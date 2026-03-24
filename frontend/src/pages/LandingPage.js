@@ -272,7 +272,8 @@ export const LandingPage = () => {
                   'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/uci3qgmq_customer%20image%208.jpg',
                   'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/aphigyw1_customer%20image%209.jpg',
                   'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/2kgbxhaf_customer%20image%2010.jpg',
-                  null, null
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/pk34xhh5_customer%20image%2011.jpg',
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/nsfx800g_customer%20image%2012.jpg'
                 ].map((url, i) => (
                   <div 
                     key={i}
@@ -285,7 +286,7 @@ export const LandingPage = () => {
                       flexShrink: 0
                     }}
                   >
-                    {url && <img src={url} alt={`Customer photo ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                    <img src={url} alt={`Customer photo ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                 ))}
               </div>
@@ -363,7 +364,7 @@ export const LandingPage = () => {
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    transform: 'scale(1.45)'
+                    transform: 'scale(1.15)'
                   }}
                 />
                 {/* FoeGuard meat (clipped by slider) */}
@@ -383,7 +384,7 @@ export const LandingPage = () => {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      transform: 'scale(1.45)'
+                      transform: 'scale(1.15)'
                     }}
                   />
                 </div>
