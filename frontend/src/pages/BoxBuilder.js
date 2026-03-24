@@ -72,15 +72,6 @@ export const BoxBuilder = () => {
     } else if (step === 'success') {
       setOrderComplete(true);
     }
-    
-    // Restore scroll position if coming back from product/treat detail
-    const savedPosition = sessionStorage.getItem('menuScrollPosition');
-    if (savedPosition) {
-      setTimeout(() => {
-        window.scrollTo(0, parseInt(savedPosition, 10));
-        sessionStorage.removeItem('menuScrollPosition');
-      }, 100);
-    }
   }, []);
 
   useEffect(() => {
@@ -97,6 +88,15 @@ export const BoxBuilder = () => {
         console.error('Failed to load data:', error);
       } finally {
         setLoading(false);
+        
+        // Restore scroll position after data is loaded
+        const savedPosition = sessionStorage.getItem('menuScrollPosition');
+        if (savedPosition) {
+          setTimeout(() => {
+            window.scrollTo(0, parseInt(savedPosition, 10));
+            sessionStorage.removeItem('menuScrollPosition');
+          }, 150);
+        }
       }
     };
     loadData();
@@ -855,7 +855,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         }}
         data-testid={`learn-more-${product.product_id}`}
       >
-        See More
+        See more
       </button>
     </div>
   );

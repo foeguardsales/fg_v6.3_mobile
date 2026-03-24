@@ -356,7 +356,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                       whiteSpace: 'nowrap'
                     }}
                   >
-                    See More
+                    See more
                   </button>
                 )}
               </div>
