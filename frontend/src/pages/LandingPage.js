@@ -939,12 +939,13 @@ export const LandingPage = () => {
                     height: '200px', 
                     background: '#E8DDD0', 
                     borderRadius: '8px', 
-                    marginBottom: '16px'
-                  }}></div>
+                    marginBottom: '16px',
+                    overflow: 'hidden'
+                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/k1ijugp9_leo_review.jpg" alt="Leo review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
                   <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
                     "Milans sensitive tummy was causing us constant worry until we switched to FoeGuard."
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Oliver H.</p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@leo.thegsd</p>
                 </div>
               </div>
 
@@ -1030,15 +1031,10 @@ export const LandingPage = () => {
               <div style={{ 
                 flex: '0 0 400px', 
                 height: '450px', 
-                background: '#E8DDD0', 
                 borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#8B4513',
-                fontSize: '14px'
+                overflow: 'hidden'
               }}>
-                Image Placeholder
+                <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/jec541v5_product%20bowl.png" alt="FoeGuard raw food bowl with fresh ingredients" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               </div>
               
               <div style={{ 
