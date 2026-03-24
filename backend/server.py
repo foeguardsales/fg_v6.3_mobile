@@ -54,21 +54,27 @@ api_router = APIRouter(prefix="/api")
 # Seed database on startup
 @app.on_event("startup")
 async def seed_database():
-    existing = await db.products.find_one({})
-    if not existing:
-        logger.info("Seeding products...")
-        await db.products.insert_many(ALL_PRODUCTS)
-        await db.treats.insert_many(ALL_TREATS)
-        logger.info("Database seeded successfully")
-    else:
-        # Check if cat products exist, if not add them
-        cat_product = await db.products.find_one({"product_line": "royal_paws"})
-        if not cat_product:
-            logger.info("Adding cat products...")
-            from seed_data import ROYAL_PAWS_PRODUCTS, CAT_TREATS
-            await db.products.insert_many(ROYAL_PAWS_PRODUCTS)
-            await db.treats.insert_many(CAT_TREATS)
-            logger.info("Cat products added successfully")
+    # Always update products to ensure latest data (names, descriptions, etc.)
+    logger.info("Updating products with latest data...")
+    
+    # Use bulk operations to update or insert
+    from seed_data import ALL_PRODUCTS, ALL_TREATS
+    
+    for product in ALL_PRODUCTS:
+        await db.products.update_one(
+            {"product_id": product["product_id"]},
+            {"$set": product},
+            upsert=True
+        )
+    
+    for treat in ALL_TREATS:
+        await db.treats.update_one(
+            {"treat_id": treat["treat_id"]},
+            {"$set": treat},
+            upsert=True
+        )
+    
+    logger.info("Database updated successfully")
 
 # Auth helpers
 def hash_password(password: str) -> str:
