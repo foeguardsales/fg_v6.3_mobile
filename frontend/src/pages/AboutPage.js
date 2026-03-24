@@ -31,6 +31,11 @@ export const AboutPage = () => {
           </div>
         </section>
 
+        {/* Header Image */}
+        <div style={{ width: '100%', maxHeight: '400px', overflow: 'hidden' }}>
+          <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/cohsros6_header.png" alt="Fresh raw dog food ingredients" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </div>
+
         {/* Introduction Section */}
         <section className="about-section about-story">
           <div className="about-container">
@@ -48,8 +53,8 @@ export const AboutPage = () => {
 
         {/* Farm Image Section */}
         <section className="about-farm-image">
-          <div className="farm-image-placeholder">
-            <span>Farm Image</span>
+          <div style={{ width: '100%', overflow: 'hidden', borderRadius: '12px' }}>
+            <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/l0xcyf5b_farm.png" alt="FoeGuard farm with cows grazing" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           </div>
         </section>
 
@@ -72,15 +77,15 @@ export const AboutPage = () => {
         {/* Team Images */}
         <section className="about-team-images-grid">
           <div className="team-grid">
-            <div className="team-image-card"><span>Image 1</span></div>
-            <div className="team-image-card"><span>Image 2</span></div>
-            <div className="team-image-card"><span>Image 3</span></div>
+            <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/kalssi9a_farm_image1.jpg" alt="Goats grazing on pasture" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+            <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/jbtl1zq1_farm_image2.png" alt="FoeGuard produce storage facility" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+            <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/rsur7vju_farm_image3.jpg" alt="Free-range chickens on farm" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
           </div>
           <div className="team-carousel">
             <div className="team-carousel-track">
-              <div className="team-image-card"><span>Image 1</span></div>
-              <div className="team-image-card"><span>Image 2</span></div>
-              <div className="team-image-card"><span>Image 3</span></div>
+              <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/kalssi9a_farm_image1.jpg" alt="Goats grazing on pasture" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+              <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/jbtl1zq1_farm_image2.png" alt="FoeGuard produce storage facility" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+              <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/rsur7vju_farm_image3.jpg" alt="Free-range chickens on farm" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
             </div>
           </div>
         </section>
