@@ -91,11 +91,35 @@ export const TreatDetailPage = () => {
     if (savedProteins) setSelectedProteins(JSON.parse(savedProteins));
     if (savedTreats) setSelectedTreats(JSON.parse(savedTreats));
     
+    // Load all products for pricing
+    axios.get(`${BACKEND_URL}/api/products`)
+      .then(res => setProducts(res.data))
+      .catch(err => console.error('Error loading products:', err));
+    
     fetchTreat();
   }, [treatId]);
 
   const handleBackToMenu = () => {
     navigate('/build-box');
+  };
+  
+  // Discount rates by box size
+  const DISCOUNT_RATES = {
+    12: 0,
+    18: 0.05,
+    24: 0.10,
+    30: 0.15
+  };
+  
+  const getBasePrice = (prod) => {
+    const pricing = prod.pricing.find(p => p.size_lb === 6);
+    return pricing ? pricing.price : 0;
+  };
+  
+  const getDiscountedPrice = (prod) => {
+    const basePrice = getBasePrice(prod);
+    const discount = DISCOUNT_RATES[boxSize] || 0;
+    return basePrice * (1 - discount);
   };
   
   const handleAddToCart = () => {
@@ -116,6 +140,7 @@ export const TreatDetailPage = () => {
     
     setSelectedTreats(updatedTreats);
     sessionStorage.setItem('selectedTreats', JSON.stringify(updatedTreats));
+    sessionStorage.setItem('boxSize', boxSize.toString());
     
     // Open cart drawer
     setCartOpen(true);
@@ -160,8 +185,8 @@ export const TreatDetailPage = () => {
         selectedTreats={selectedTreats}
         products={products}
         onProceed={() => navigate('/build-box')}
-        getDiscountedPrice={() => 0}
-        getBasePrice={() => 0}
+        getDiscountedPrice={getDiscountedPrice}
+        getBasePrice={getBasePrice}
       />
       <div className="product-detail-page" style={{ background: '#FDFCFA', minHeight: '100vh', paddingTop: '80px' }}>
         <div className="product-detail-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
@@ -268,10 +293,7 @@ export const TreatDetailPage = () => {
 
               {/* Quantity Selector and Add to Cart */}
               <div style={{ 
-                marginTop: '24px', 
-                padding: '20px', 
-                background: '#FAF8F5', 
-                borderRadius: '12px',
+                marginTop: '32px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '16px'

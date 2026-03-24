@@ -89,6 +89,11 @@ export const ProductDetailPage = () => {
     if (savedProteins) setSelectedProteins(JSON.parse(savedProteins));
     if (savedTreats) setSelectedTreats(JSON.parse(savedTreats));
     
+    // Load all products for pricing
+    axios.get(`${API}/products`)
+      .then(res => setProducts(res.data))
+      .catch(err => console.error('Error loading products:', err));
+    
     axios.get(`${API}/products/${productId}`)
       .then(res => setProduct(res.data))
       .catch(err => console.error(err))
@@ -97,6 +102,25 @@ export const ProductDetailPage = () => {
 
   const handleBackToMenu = () => {
     navigate('/build-box');
+  };
+  
+  // Discount rates by box size
+  const DISCOUNT_RATES = {
+    12: 0,
+    18: 0.05,
+    24: 0.10,
+    30: 0.15
+  };
+  
+  const getBasePrice = (prod) => {
+    const pricing = prod.pricing.find(p => p.size_lb === 6);
+    return pricing ? pricing.price : 0;
+  };
+  
+  const getDiscountedPrice = (prod) => {
+    const basePrice = getBasePrice(prod);
+    const discount = DISCOUNT_RATES[boxSize] || 0;
+    return basePrice * (1 - discount);
   };
   
   const handleAddToCart = () => {
@@ -115,6 +139,7 @@ export const ProductDetailPage = () => {
     
     setSelectedProteins(updatedProteins);
     sessionStorage.setItem('selectedProteins', JSON.stringify(updatedProteins));
+    sessionStorage.setItem('boxSize', boxSize.toString());
     
     // Open cart drawer
     setCartOpen(true);
@@ -174,8 +199,8 @@ export const ProductDetailPage = () => {
         selectedTreats={selectedTreats}
         products={products}
         onProceed={() => navigate('/build-box')}
-        getDiscountedPrice={() => 0}
-        getBasePrice={() => 0}
+        getDiscountedPrice={getDiscountedPrice}
+        getBasePrice={getBasePrice}
       />
       <div className="product-detail-page" style={{ background: '#F2F4F3', minHeight: '100vh', padding: '0 0 80px' }}>
         <div className="product-detail-wrapper" style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 24px' }}>
@@ -247,16 +272,23 @@ export const ProductDetailPage = () => {
               
               {/* Quantity Selector and Add to Cart */}
               <div style={{ 
-                marginTop: '24px', 
-                padding: '20px', 
-                background: '#FAF8F5', 
-                borderRadius: '12px',
+                marginTop: '32px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '16px'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B' }}>Quantity (lbs)</span>
+                  <div>
+                    <span style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B', display: 'block', marginBottom: '4px' }}>Quantity (lbs)</span>
+                    <span style={{ fontSize: '14px', color: '#666' }}>
+                      ${getDiscountedPrice(product).toFixed(2)} per 6lb
+                      {DISCOUNT_RATES[boxSize] > 0 && (
+                        <span style={{ color: '#5F7C5A', marginLeft: '8px', fontWeight: '600' }}>
+                          ({DISCOUNT_RATES[boxSize] * 100}% off)
+                        </span>
+                      )}
+                    </span>
+                  </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <button
                       onClick={() => quantity > 6 && setQuantity(quantity - 6)}
