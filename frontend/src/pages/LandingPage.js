@@ -267,7 +267,12 @@ export const LandingPage = () => {
                   'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0chc5rd7_customer%20image%203.jpg',
                   'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ztqi7osh_customer%20image%204.jpg',
                   'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/mdrqjiyi_customer%20image%205.jpg',
-                  null, null, null, null, null, null, null
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/fd4zxuc8_customer%20image%206.jpg',
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/bntscfuc_customer%20image%207.jpg',
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/uci3qgmq_customer%20image%208.jpg',
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/aphigyw1_customer%20image%209.jpg',
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/2kgbxhaf_customer%20image%2010.jpg',
+                  null, null
                 ].map((url, i) => (
                   <div 
                     key={i}
@@ -342,7 +347,8 @@ export const LandingPage = () => {
                   userSelect: 'none',
                   touchAction: 'none',
                   boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-                  background: '#732827'
+                  background: '#732827',
+                  border: '4px solid #732827'
                 }}
               >
                 {/* Competition meat (full background) */}
@@ -356,7 +362,8 @@ export const LandingPage = () => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain'
+                    objectFit: 'cover',
+                    transform: 'scale(1.45)'
                   }}
                 />
                 {/* FoeGuard meat (clipped by slider) */}
@@ -375,7 +382,8 @@ export const LandingPage = () => {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'contain'
+                      objectFit: 'cover',
+                      transform: 'scale(1.45)'
                     }}
                   />
                 </div>
