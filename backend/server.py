@@ -67,6 +67,12 @@ async def seed_database():
             upsert=True
         )
     
+    # Get valid treat IDs from seed data
+    valid_treat_ids = [t["treat_id"] for t in ALL_TREATS]
+    
+    # Remove treats that are no longer in the seed data
+    await db.treats.delete_many({"treat_id": {"$nin": valid_treat_ids}})
+    
     for treat in ALL_TREATS:
         await db.treats.update_one(
             {"treat_id": treat["treat_id"]},

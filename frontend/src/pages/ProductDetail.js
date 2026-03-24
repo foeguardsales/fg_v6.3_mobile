@@ -78,6 +78,17 @@ export const ProductDetailPage = () => {
       .finally(() => setLoading(false));
   }, [productId]);
 
+  const handleBackToMenu = () => {
+    const savedPosition = sessionStorage.getItem('menuScrollPosition');
+    navigate('/build-box');
+    if (savedPosition) {
+      setTimeout(() => {
+        window.scrollTo(0, parseInt(savedPosition, 10));
+        sessionStorage.removeItem('menuScrollPosition');
+      }, 100);
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -97,7 +108,7 @@ export const ProductDetailPage = () => {
         <Navbar />
         <div className="product-detail-not-found">
           <h2>Product not found</h2>
-          <button className="btn-primary" onClick={() => navigate('/build-box')}>
+          <button className="btn-primary" onClick={handleBackToMenu}>
             Back to Menu
           </button>
         </div>
@@ -127,7 +138,7 @@ export const ProductDetailPage = () => {
       <div className="product-detail-page" style={{ background: '#F2F4F3', minHeight: '100vh', padding: '0 0 80px' }}>
         <div className="product-detail-wrapper" style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 24px' }}>
           {/* Back Button */}
-          <button className="product-back-btn" onClick={() => navigate('/build-box')} style={{
+          <button className="product-back-btn" onClick={handleBackToMenu} style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',

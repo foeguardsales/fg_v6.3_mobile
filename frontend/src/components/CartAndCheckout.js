@@ -287,12 +287,33 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             key={treat.treat_id} 
             className={`treat-item ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'selected' : ''}`}
             data-testid={`treat-${treat.treat_id}`}
-            style={{ position: 'relative', paddingRight: '110px' }}
+            style={{ position: 'relative', paddingRight: '110px', display: 'flex', alignItems: 'center', gap: '16px' }}
           >
+            {/* Treat Image */}
+            {treat.image && (
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                flexShrink: 0,
+                backgroundColor: '#f5f5f5'
+              }}>
+                <img 
+                  src={treat.image} 
+                  alt={treat.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
+              </div>
+            )}
             <div 
               className="treat-clickable"
               onClick={() => onToggleTreat(treat)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: 'pointer', flex: 1 }}
             >
               <div className="treat-info">
                 <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>
@@ -318,6 +339,8 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                     className="btn-learn-more-treat"
                     onClick={(e) => {
                       e.stopPropagation();
+                      // Save scroll position before navigating
+                      sessionStorage.setItem('menuScrollPosition', window.scrollY.toString());
                       navigate(`/treat/${treat.treat_id}`);
                     }}
                     style={{

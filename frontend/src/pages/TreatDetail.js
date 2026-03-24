@@ -54,6 +54,7 @@ export const TreatDetailPage = () => {
   const navigate = useNavigate();
   const [treat, setTreat] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   useEffect(() => {
     const root = document.getElementById('root');
@@ -72,6 +73,17 @@ export const TreatDetailPage = () => {
     fetchTreat();
   }, [treatId]);
 
+  const handleBackToMenu = () => {
+    const savedPosition = sessionStorage.getItem('menuScrollPosition');
+    navigate('/build-box');
+    if (savedPosition) {
+      setTimeout(() => {
+        window.scrollTo(0, parseInt(savedPosition, 10));
+        sessionStorage.removeItem('menuScrollPosition');
+      }, 100);
+    }
+  };
+
   if (loading) {
     return (
       <>
@@ -88,7 +100,7 @@ export const TreatDetailPage = () => {
         <Navbar />
         <div style={{ padding: '60px 20px', textAlign: 'center' }}>
           <h2>Treat not found</h2>
-          <button onClick={() => navigate('/build-box')} style={{ marginTop: '20px', padding: '12px 24px', background: '#A41E34', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+          <button onClick={handleBackToMenu} style={{ marginTop: '20px', padding: '12px 24px', background: '#A41E34', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
             Back to Menu
           </button>
         </div>
@@ -97,13 +109,16 @@ export const TreatDetailPage = () => {
     );
   }
 
+  const images = treat.images || (treat.image ? [treat.image] : []);
+  const currentImage = images[selectedImageIndex] || treat.image;
+
   return (
     <>
       <Navbar />
       <div className="product-detail-page" style={{ background: '#FDFCFA', minHeight: '100vh', paddingTop: '80px' }}>
         <div className="product-detail-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
           <button
-            onClick={() => navigate('/build-box')}
+            onClick={handleBackToMenu}
             style={{
               background: 'transparent',
               border: '2px solid #A41E34',
@@ -134,21 +149,50 @@ export const TreatDetailPage = () => {
             gap: '40px',
             marginBottom: '60px'
           }}>
-            <div className="product-hero-image" style={{
-              background: '#F5F1EB',
-              borderRadius: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '400px',
-              padding: '40px'
-            }}>
-              {treat.image_url ? (
-                <img src={treat.image_url} alt={treat.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
-              ) : (
-                <div style={{ textAlign: 'center', color: '#999' }}>
-                  <div style={{ fontSize: '80px', marginBottom: '16px' }}>🦴</div>
-                  <p style={{ fontSize: '18px', color: '#999' }}>Image coming soon</p>
+            <div>
+              {/* Main Image */}
+              <div className="product-hero-image" style={{
+                background: '#F5F1EB',
+                borderRadius: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '400px',
+                padding: '40px',
+                marginBottom: images.length > 1 ? '16px' : '0'
+              }}>
+                {currentImage ? (
+                  <img src={currentImage} alt={treat.name} style={{ maxWidth: '100%', maxHeight: '350px', objectFit: 'contain' }} />
+                ) : (
+                  <div style={{ textAlign: 'center', color: '#999' }}>
+                    <div style={{ fontSize: '80px', marginBottom: '16px' }}>🦴</div>
+                    <p style={{ fontSize: '18px', color: '#999' }}>Image coming soon</p>
+                  </div>
+                )}
+              </div>
+              
+              {/* Image Thumbnails */}
+              {images.length > 1 && (
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                  {images.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImageIndex(index)}
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        border: selectedImageIndex === index ? '3px solid #A41E34' : '2px solid #E8DDD0',
+                        padding: '4px',
+                        background: '#F5F1EB',
+                        cursor: 'pointer',
+                        transition: 'border-color 0.2s'
+                      }}
+                    >
+                      <img src={img} alt={`${treat.name} ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} />
+                    </button>
+                  ))}
                 </div>
               )}
             </div>

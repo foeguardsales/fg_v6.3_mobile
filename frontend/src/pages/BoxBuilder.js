@@ -840,7 +840,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       
       <button 
         className="btn-learn-more"
-        onClick={() => navigate(`/product/${product.product_id}`)}
+        onClick={() => {
+          sessionStorage.setItem('menuScrollPosition', window.scrollY.toString());
+          navigate(`/product/${product.product_id}`);
+        }}
         data-testid={`learn-more-${product.product_id}`}
       >
         Learn More
