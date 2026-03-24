@@ -101,15 +101,18 @@ export const LandingPage = () => {
     },
     {
       name: 'Lamb',
-      description: 'Easily digestible protein with B vitamins that support energy metabolism and muscle health.'
+      description: 'Easily digestible protein with B vitamins that support energy metabolism and muscle health.',
+      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/pgajdkxv_lamb.png'
     },
     {
       name: 'Goat',
-      description: 'Novel protein that is gentle on sensitive stomachs and provides essential nutrients for overall wellness.'
+      description: 'Novel protein that is gentle on sensitive stomachs and provides essential nutrients for overall wellness.',
+      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0u52lnr0_goat.png'
     },
     {
       name: 'Rabbit',
-      description: 'Hypoallergenic lean protein ideal for dogs with food sensitivities, supporting digestion and vitality.'
+      description: 'Hypoallergenic lean protein ideal for dogs with food sensitivities, supporting digestion and vitality.',
+      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ptl7se73_rabbit.png'
     }
   ];
   
