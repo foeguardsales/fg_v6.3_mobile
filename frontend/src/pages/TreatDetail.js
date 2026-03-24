@@ -158,11 +158,11 @@ export const TreatDetailPage = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 minHeight: '400px',
-                padding: '40px',
+                padding: '20px',
                 marginBottom: images.length > 1 ? '16px' : '0'
               }}>
                 {currentImage ? (
-                  <img src={currentImage} alt={treat.name} style={{ maxWidth: '100%', maxHeight: '350px', objectFit: 'contain' }} />
+                  <img src={currentImage} alt={treat.name} style={{ width: '100%', height: '360px', objectFit: 'contain' }} />
                 ) : (
                   <div style={{ textAlign: 'center', color: '#999' }}>
                     <div style={{ fontSize: '80px', marginBottom: '16px' }}>🦴</div>

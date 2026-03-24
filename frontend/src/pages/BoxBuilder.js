@@ -333,8 +333,8 @@ export const BoxBuilder = () => {
                 onClick={card.onClick}
                 style={{
                   position: 'relative',
-                  minWidth: '70%',
-                  maxWidth: '70%',
+                  minWidth: '45%',
+                  maxWidth: '45%',
                   height: '280px',
                   borderRadius: '20px',
                   overflow: 'hidden',

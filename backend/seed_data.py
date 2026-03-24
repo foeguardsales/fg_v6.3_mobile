@@ -494,8 +494,9 @@ TREATS = [
         "price": 9.99, 
         "quantity_description": "1lb", 
         "pet_type": "dog",
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/nsrwf34s_Beef_rib_bone_pack.png",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png",
         "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png",
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/nsrwf34s_Beef_rib_bone_pack.png"
         ]
     },
