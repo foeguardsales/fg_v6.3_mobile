@@ -314,7 +314,7 @@ export const LandingPage = () => {
             </p>
 
             {/* Before/After Slider Comparison */}
-            <div style={{ maxWidth: '500px', margin: '0 auto 48px', textAlign: 'center' }}>
+            <div style={{ maxWidth: '350px', margin: '0 auto 48px', textAlign: 'center' }}>
               <div
                 ref={sliderRef}
                 data-testid="food-comparison-slider"
@@ -331,7 +331,8 @@ export const LandingPage = () => {
                   cursor: 'ew-resize',
                   userSelect: 'none',
                   touchAction: 'none',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+                  background: '#732827'
                 }}
               >
                 {/* Competition meat (full background) */}
