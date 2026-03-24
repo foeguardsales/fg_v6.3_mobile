@@ -70,8 +70,8 @@ export const ProductDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
+    const root = document.getElementById('root');
+    if (root) root.scrollTop = 0;
     axios.get(`${API}/products/${productId}`)
       .then(res => setProduct(res.data))
       .catch(err => console.error(err))

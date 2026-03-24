@@ -56,8 +56,8 @@ export const TreatDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
+    const root = document.getElementById('root');
+    if (root) root.scrollTop = 0;
     const fetchTreat = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/api/treats`);
