@@ -218,7 +218,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
   if (treats.length === 0) return null;
 
   const isDog = petType !== 'cat';
-  const treatColor = isDog ? '#A41E34' : '#6B5B73';
+  const treatColor = isDog ? '#88302F' : '#6B5B73';
 
   return (
     <div className="treats-section">
