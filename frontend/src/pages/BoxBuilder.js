@@ -789,7 +789,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         fontSize: '18px', 
         margin: '0 0 8px 0', 
         textTransform: 'none',
-        fontWeight: '600'
+        fontWeight: '400'
       }}>
         {product.name}
       </h4>
