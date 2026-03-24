@@ -26,7 +26,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           cursor: 'pointer',
-          fontFamily: 'Source Sans 3, sans-serif',
+          fontFamily: "'Rubik', sans-serif",
           fontSize: '18px',
           fontWeight: '600',
           color: '#2B2B2B',
@@ -56,6 +56,8 @@ export const TreatDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
     const fetchTreat = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/api/treats`);
@@ -153,7 +155,7 @@ export const TreatDetailPage = () => {
 
             <div className="product-hero-info" style={{ padding: '32px' }}>
               <h1 style={{
-                fontFamily: 'Crimson Pro, Georgia, serif',
+                fontFamily: "'CS Gordon', serif",
                 fontSize: '36px',
                 color: '#2B2B2B',
                 margin: '0 0 20px 0',

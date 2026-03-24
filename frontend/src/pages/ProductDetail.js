@@ -40,7 +40,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           background: isOpen ? '#FAF8F5' : 'transparent',
           border: 'none',
           cursor: 'pointer',
-          fontFamily: 'Crimson Pro, Georgia, serif',
+          fontFamily: "'Rubik', sans-serif",
           fontSize: '20px',
           fontWeight: '600',
           color: '#2B2B2B',
@@ -70,6 +70,8 @@ export const ProductDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
     axios.get(`${API}/products/${productId}`)
       .then(res => setProduct(res.data))
       .catch(err => console.error(err))
@@ -132,7 +134,7 @@ export const ProductDetailPage = () => {
             background: 'none',
             border: 'none',
             color: lineColor,
-            fontFamily: 'Source Sans 3, sans-serif',
+            fontFamily: "'Rubik', sans-serif",
             fontSize: '15px',
             fontWeight: '600',
             cursor: 'pointer',
@@ -166,7 +168,7 @@ export const ProductDetailPage = () => {
                 color: '#FFFFFF',
                 padding: '8px 20px',
                 borderRadius: '100px',
-                fontFamily: 'Source Sans 3, sans-serif',
+                fontFamily: "'Rubik', sans-serif",
                 fontSize: '13px',
                 fontWeight: '700',
                 textTransform: 'uppercase',
@@ -176,7 +178,7 @@ export const ProductDetailPage = () => {
             
             <div className="product-hero-info" style={{ padding: '32px' }}>
               <h1 style={{
-                fontFamily: 'Crimson Pro, Georgia, serif',
+                fontFamily: "'CS Gordon', serif",
                 fontSize: '36px',
                 color: '#2B2B2B',
                 margin: '0 0 20px 0',
