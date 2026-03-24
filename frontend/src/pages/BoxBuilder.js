@@ -89,24 +89,27 @@ export const BoxBuilder = () => {
         console.error('Failed to load data:', error);
       } finally {
         setLoading(false);
-        
-        // Restore scroll position after data is loaded
-        const scrollFromState = location.state?.scrollPosition;
-        const scrollFromStorage = sessionStorage.getItem('menuScrollPosition');
-        const savedPosition = scrollFromState || (scrollFromStorage ? parseInt(scrollFromStorage, 10) : null);
-        
-        if (savedPosition) {
-          setTimeout(() => {
-            window.scrollTo({ top: savedPosition, behavior: 'instant' });
-            sessionStorage.removeItem('menuScrollPosition');
-            // Clear the state to prevent re-scrolling on refresh
-            window.history.replaceState({}, document.title);
-          }, 200);
-        }
       }
     };
     loadData();
-  }, [petType, location.state]);
+  }, [petType]);
+
+  // Restore scroll position after loading completes
+  useEffect(() => {
+    if (!loading && products.length > 0) {
+      const savedPosition = sessionStorage.getItem('menuScrollPosition');
+      if (savedPosition) {
+        const scrollTo = parseInt(savedPosition, 10);
+        // Use requestAnimationFrame to ensure DOM is painted
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            window.scrollTo(0, scrollTo);
+            sessionStorage.removeItem('menuScrollPosition');
+          });
+        });
+      }
+    }
+  }, [loading, products.length]);
 
   // Reset selections when pet type changes
   const handlePetTypeChange = (newPetType) => {

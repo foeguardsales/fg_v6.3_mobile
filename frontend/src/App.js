@@ -26,11 +26,16 @@ const API = `${BACKEND_URL}/api`;
 
 let stripePromise = null;
 
-// Scroll to top on route change
+// Scroll to top on route change (except when returning to build-box with saved position)
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   
   useEffect(() => {
+    // Skip scroll-to-top for build-box if there's a saved scroll position
+    if (pathname === '/build-box' && sessionStorage.getItem('menuScrollPosition')) {
+      return;
+    }
+    
     const root = document.getElementById('root');
     if (root) root.scrollTop = 0;
     window.scrollTo(0, 0);

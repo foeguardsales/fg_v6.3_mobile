@@ -74,8 +74,7 @@ export const TreatDetailPage = () => {
   }, [treatId]);
 
   const handleBackToMenu = () => {
-    const savedPosition = sessionStorage.getItem('menuScrollPosition');
-    navigate('/build-box', { state: { scrollPosition: savedPosition ? parseInt(savedPosition, 10) : 0 } });
+    navigate('/build-box');
   };
 
   if (loading) {
