@@ -276,6 +276,43 @@ export const ProductDetailPage = () => {
                 whiteSpace: 'pre-line'
               }}>{product.description}</p>
               
+              {/* Box Size Selector */}
+              <div style={{ marginTop: '24px' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B', marginBottom: '12px' }}>Choose Box Size</h3>
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                  {[12, 18, 24, 30].map(size => (
+                    <button
+                      key={size}
+                      onClick={() => {
+                        setBoxSize(size);
+                        sessionStorage.setItem('boxSize', size.toString());
+                        // Reset quantity to 6 when box size changes
+                        setQuantity(6);
+                      }}
+                      style={{
+                        padding: '12px 24px',
+                        borderRadius: '8px',
+                        border: boxSize === size ? '2px solid #88302F' : '2px solid #E8DDD0',
+                        background: boxSize === size ? '#FAF8F5' : '#fff',
+                        color: boxSize === size ? '#88302F' : '#5A5A5A',
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        minWidth: '80px'
+                      }}
+                    >
+                      {size}lb
+                      {DISCOUNT_RATES[size] > 0 && (
+                        <div style={{ fontSize: '12px', fontWeight: '500', color: '#5F7C5A', marginTop: '2px' }}>
+                          {DISCOUNT_RATES[size] * 100}% off
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
               {/* Quantity Selector and Add to Cart */}
               <div style={{ 
                 marginTop: '32px',
