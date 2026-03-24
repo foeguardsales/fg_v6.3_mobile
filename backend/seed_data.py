@@ -487,6 +487,72 @@ TREATS = [
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png"
         ]
+    },
+    {
+        "treat_id": "treat-beef-rib", 
+        "name": "Beef Flat Rib Bones", 
+        "price": 9.99, 
+        "quantity_description": "1lb", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/nsrwf34s_Beef_rib_bone_pack.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/nsrwf34s_Beef_rib_bone_pack.png"
+        ]
+    },
+    {
+        "treat_id": "treat-chicken-carcass", 
+        "name": "Chicken Carcass", 
+        "price": 24.99, 
+        "quantity_description": "2 Pack", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5wb6yow_chicken_carcass.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5wb6yow_chicken_carcass.png"
+        ]
+    },
+    {
+        "treat_id": "treat-chicken-necks-2lb", 
+        "name": "Whole Chicken Necks", 
+        "price": 8.99, 
+        "quantity_description": "2lb", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png"
+        ]
+    },
+    {
+        "treat_id": "treat-chicken-necks-5lb", 
+        "name": "Whole Chicken Necks", 
+        "price": 19.99, 
+        "quantity_description": "5lb", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png"
+        ]
+    },
+    {
+        "treat_id": "treat-duck-feet", 
+        "name": "Duck Feet", 
+        "price": 9.99, 
+        "quantity_description": "1lb", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png"
+        ]
+    },
+    {
+        "treat_id": "treat-beef-neck", 
+        "name": "Beef Neck Bones", 
+        "price": 9.99, 
+        "quantity_description": "1 Pack", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wmt1d4vz_beef_neck_bones.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wmt1d4vz_beef_neck_bones.png"
+        ]
     }
 ]
 
