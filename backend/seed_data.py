@@ -441,6 +441,22 @@ PRIMAL_FEAST_PRODUCTS = [
     }
 ]
 
+# Standard feeding guides for treats
+TREAT_FEEDING_GUIDE = {
+    "feeding": "Feed as a treat, meal topper, or for enrichment. Always supervise your pet while enjoying treats. Suitable for dogs of all sizes. Start with smaller portions for first-time feeders.",
+    "handling": "Keep frozen until ready to use. Thaw in refrigerator before serving (4-6 hours). Once thawed, use within 3-4 days. Always handle with clean hands and clean surfaces."
+}
+
+TREAT_PRODUCT_INFO = """Our treats are sourced from trusted family farms and processed in USDA-inspected facilities. Each treat is individually flash-frozen to lock in freshness and nutrients. No artificial preservatives, colors, or flavors added. 
+
+Perfect for:
+• Training and rewards
+• Dental health and natural chewing
+• Mental stimulation and enrichment  
+• Supporting jaw strength and clean teeth
+
+Always supervise your pet when feeding treats. Not suitable for puppies under 12 weeks old."""
+
 TREATS = [
     {
         "treat_id": "treat-turkey-feet", 
@@ -448,6 +464,10 @@ TREATS = [
         "price": 9.99, 
         "quantity_description": "2 Pack", 
         "pet_type": "dog",
+        "description": "Whole raw turkey feet naturally rich in glucosamine and chondroitin to support joint health. These natural treats provide hours of chewing satisfaction while promoting dental health through mechanical cleaning action. Perfect for dogs who love to chew and crunch.",
+        "ingredients": "100% turkey feet. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png",
@@ -460,6 +480,10 @@ TREATS = [
         "price": 9.99, 
         "quantity_description": "5 Pack", 
         "pet_type": "dog",
+        "description": "Whole duck heads offer a complete, nutrient-dense chewing experience. Rich in natural fats, protein, and essential nutrients including brain matter which provides omega-3 fatty acids. The crunchy texture helps clean teeth naturally while providing mental enrichment.",
+        "ingredients": "100% whole duck heads. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
@@ -472,6 +496,10 @@ TREATS = [
         "price": 12.99, 
         "quantity_description": "1 Pack", 
         "pet_type": "dog",
+        "description": "Premium whole lamb head provides the ultimate whole prey feeding experience. Packed with nutrient-dense organs, brain matter, and bone content. This treat offers complete nutrition, mental stimulation, and hours of satisfying chewing. Ideal for medium to large dogs.",
+        "ingredients": "100% whole lamb head. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png"
@@ -483,6 +511,10 @@ TREATS = [
         "price": 19.99, 
         "quantity_description": "2 Pack", 
         "pet_type": "dog",
+        "description": "Premium whole lamb heads (2-pack) provide the ultimate whole prey feeding experience. Packed with nutrient-dense organs, brain matter, and bone content. These treats offer complete nutrition, mental stimulation, and hours of satisfying chewing. Ideal for medium to large dogs or multi-dog households.",
+        "ingredients": "100% whole lamb heads. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png"
@@ -494,6 +526,10 @@ TREATS = [
         "price": 9.99, 
         "quantity_description": "1lb", 
         "pet_type": "dog",
+        "description": "Meaty beef flat rib bones perfect for recreational chewing. These bones feature tender meat still attached to the rib, providing both nutrition and dental benefits. The flat shape makes them easier to hold and chew. Excellent for aggressive chewers who need a durable, long-lasting option.",
+        "ingredients": "100% beef rib bones. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png",
@@ -506,6 +542,10 @@ TREATS = [
         "price": 24.99, 
         "quantity_description": "2 Pack", 
         "pet_type": "dog",
+        "description": "Whole chicken carcass provides complete whole prey nutrition with bones, cartilage, and remaining meat. Perfect for larger dogs or as a complete meal replacement. Offers hours of enrichment while delivering balanced nutrition from multiple parts of the animal.",
+        "ingredients": "100% whole chicken carcass. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5wb6yow_chicken_carcass.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5wb6yow_chicken_carcass.png"
@@ -517,6 +557,10 @@ TREATS = [
         "price": 8.99, 
         "quantity_description": "2lb", 
         "pet_type": "dog",
+        "description": "Whole chicken necks are a customer favorite! These meaty, bone-in treats are perfect for dogs of all sizes. High in glucosamine and chondroitin for joint support, with the perfect ratio of meat to bone. Easily digestible and great for daily feeding or as a crunchy treat.",
+        "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png"
@@ -528,6 +572,10 @@ TREATS = [
         "price": 19.99, 
         "quantity_description": "5lb", 
         "pet_type": "dog",
+        "description": "Bulk pack of whole chicken necks perfect for multi-dog households or frequent feeders. These meaty, bone-in treats are high in glucosamine and chondroitin for joint support. The perfect ratio of meat to bone makes them easily digestible and great for daily feeding or as a crunchy treat.",
+        "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png"
@@ -539,6 +587,10 @@ TREATS = [
         "price": 9.99, 
         "quantity_description": "1lb", 
         "pet_type": "dog",
+        "description": "Crunchy duck feet are packed with glucosamine and chondroitin to support joint health. These treats provide satisfying crunch and are naturally rich in collagen for skin and coat health. The perfect size for dogs of all breeds, from small to large.",
+        "ingredients": "100% duck feet. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png"
@@ -550,6 +602,10 @@ TREATS = [
         "price": 9.99, 
         "quantity_description": "1 Pack", 
         "pet_type": "dog",
+        "description": "Meaty beef neck bones are perfect for powerful chewers. These dense bones feature substantial meat coverage and marrow content. Excellent for dental health, jaw strengthening, and providing hours of satisfying chewing activity. Best suited for medium to large dogs.",
+        "ingredients": "100% beef neck bones. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wmt1d4vz_beef_neck_bones.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wmt1d4vz_beef_neck_bones.png"
@@ -561,6 +617,10 @@ TREATS = [
         "price": 9.99, 
         "quantity_description": "10 Pack", 
         "pet_type": "dog",
+        "description": "Whole chicken heads are a nutrient powerhouse! Rich in brain matter providing omega-3 fatty acids, plus eyes, combs, and bone content for complete nutrition. These treats offer mental enrichment and dental benefits while delivering highly bioavailable nutrients. Perfect for all dog sizes.",
+        "ingredients": "100% whole chicken heads. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5zyp5xk_chicken%20head.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5zyp5xk_chicken%20head.png"
@@ -572,6 +632,10 @@ TREATS = [
         "price": 9.99, 
         "quantity_description": "1 Pack", 
         "pet_type": "dog",
+        "description": "Premium beef marrow bones are the gold standard of recreational chewing. These bones are filled with nutrient-rich marrow that dogs absolutely love. The dense bone structure provides long-lasting chewing satisfaction while promoting dental health. Perfect for medium to large dogs who love to chew.",
+        "ingredients": "100% beef marrow bones. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": TREAT_FEEDING_GUIDE,
+        "product_information": TREAT_PRODUCT_INFO,
         "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/u6yxsxr8_beef_marrow_bone.png",
         "images": [
             "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/u6yxsxr8_beef_marrow_bone.png",
@@ -799,8 +863,101 @@ ROYAL_PAWS_PRODUCTS = [
     }
 ]
 
-# Cat treats - empty for now (no images provided)
-CAT_TREATS = []
+# Cat treats feeding guide
+CAT_TREAT_FEEDING_GUIDE = {
+    "feeding": "Feed as a treat or for enrichment. Always supervise your cat while enjoying treats. Perfect for satisfying natural hunting instincts. Introduce gradually for first-time feeders.",
+    "handling": "Keep frozen until ready to use. Thaw in refrigerator before serving (2-4 hours). Once thawed, use within 2-3 days. Always handle with clean hands and clean surfaces."
+}
+
+CAT_TREAT_PRODUCT_INFO = """Our cat treats are sourced from trusted family farms and processed in USDA-inspected facilities. Each treat is individually frozen to lock in freshness. No artificial preservatives, colors, or flavors added.
+
+Perfect for:
+• Satisfying natural hunting instincts
+• Dental health and jaw exercise
+• Mental stimulation and enrichment
+• High-protein supplemental feeding
+
+Always supervise your cat when feeding treats. Not suitable for kittens under 12 weeks old."""
+
+# Cat treats - 5 specific treats as per requirements
+CAT_TREATS = [
+    {
+        "treat_id": "treat-cat-chicken-heads",
+        "name": "Whole Chicken Heads",
+        "price": 8.99,
+        "quantity_description": "4 Pack",
+        "pet_type": "cat",
+        "description": "Whole chicken heads perfectly sized for cats. Rich in brain matter providing omega-3 fatty acids and taurine. These treats satisfy your cat's natural hunting instinct while providing complete prey nutrition. The crunchy texture helps clean teeth naturally.",
+        "ingredients": "100% whole chicken heads. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
+        "product_information": CAT_TREAT_PRODUCT_INFO,
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5zyp5xk_chicken%20head.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5zyp5xk_chicken%20head.png"
+        ]
+    },
+    {
+        "treat_id": "treat-cat-chicken-necks",
+        "name": "Whole Chicken Necks Pack",
+        "price": 6.99,
+        "quantity_description": "8oz",
+        "pet_type": "cat",
+        "description": "Chicken necks sized perfectly for cats. These meaty, bone-in treats are rich in glucosamine for joint support and calcium for bone health. The ideal ratio of meat to bone makes them easily digestible. Perfect for cats who enjoy crunchy, natural treats.",
+        "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
+        "product_information": CAT_TREAT_PRODUCT_INFO,
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png"
+        ]
+    },
+    {
+        "treat_id": "treat-cat-chicken-feet",
+        "name": "Chicken Feet",
+        "price": 5.99,
+        "quantity_description": "6 Pack",
+        "pet_type": "cat",
+        "description": "Crunchy chicken feet provide natural glucosamine and chondroitin for joint support. These cat-sized treats offer satisfying texture and are rich in collagen for skin and coat health. Perfect for cats who love to crunch and chew.",
+        "ingredients": "100% chicken feet. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
+        "product_information": CAT_TREAT_PRODUCT_INFO,
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png"
+        ]
+    },
+    {
+        "treat_id": "treat-cat-duck-heads",
+        "name": "Whole Duck Heads",
+        "price": 10.99,
+        "quantity_description": "3 Pack",
+        "pet_type": "cat",
+        "description": "Whole duck heads sized for cats. Nutrient-dense with brain matter rich in omega-3 fatty acids and taurine. These treats provide mental enrichment and satisfy hunting instincts while delivering complete prey nutrition.",
+        "ingredients": "100% whole duck heads. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
+        "product_information": CAT_TREAT_PRODUCT_INFO,
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/csqdjqs3_Whole_duck_heads_pack.png"
+        ]
+    },
+    {
+        "treat_id": "treat-cat-duck-feet",
+        "name": "Duck Feet",
+        "price": 7.99,
+        "quantity_description": "6 Pack",
+        "pet_type": "cat",
+        "description": "Duck feet perfectly sized for cats. Packed with glucosamine, chondroitin, and natural collagen. These crunchy treats support joint health while providing natural dental benefits. Cats love the satisfying texture and natural flavor.",
+        "ingredients": "100% duck feet. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
+        "product_information": CAT_TREAT_PRODUCT_INFO,
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png"
+        ]
+    }
+]
 
 ALL_PRODUCTS = COMFORT_DINNER_PRODUCTS + PRIMAL_FEAST_PRODUCTS + ROYAL_PAWS_PRODUCTS
 ALL_TREATS = TREATS + CAT_TREATS

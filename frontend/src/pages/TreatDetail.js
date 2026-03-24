@@ -307,66 +307,6 @@ export const TreatDetailPage = () => {
               </div>
             </div>
           </div>
-                      fontWeight: '700',
-                      color: '#2B2B2B'
-                    }}>
-                      {sessionStorage.getItem(`treat_qty_${treat.treat_id}`) || '1'}
-                    </span>
-                    <button
-                      onClick={() => {
-                        const current = parseInt(sessionStorage.getItem(`treat_qty_${treat.treat_id}`) || '1');
-                        sessionStorage.setItem(`treat_qty_${treat.treat_id}`, (current + 1).toString());
-                        window.dispatchEvent(new Event('storage'));
-                      }}
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        border: '2px solid #A41E34',
-                        background: '#fff',
-                        color: '#A41E34',
-                        fontSize: '20px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    const qty = parseInt(sessionStorage.getItem(`treat_qty_${treat.treat_id}`) || '1');
-                    sessionStorage.setItem('addTreatToBox', JSON.stringify({
-                      treat_id: treat.treat_id,
-                      name: treat.name,
-                      price: treat.price,
-                      quantity: qty
-                    }));
-                    navigate('/build-box');
-                  }}
-                  style={{
-                    width: '100%',
-                    padding: '14px 24px',
-                    background: '#A41E34',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '16px',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    transition: 'background 0.2s'
-                  }}
-                  onMouseEnter={(e) => e.target.style.background = '#8B1528'}
-                  onMouseLeave={(e) => e.target.style.background = '#A41E34'}
-                >
-                  Add to Box
-                </button>
-              </div>
-            </div>
-          </div>
 
           {/* Collapsible Sections */}
           <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
