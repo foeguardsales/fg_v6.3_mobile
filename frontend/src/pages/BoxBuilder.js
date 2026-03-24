@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
 import { Calculator, ClipboardList, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -48,6 +48,7 @@ const COLLECTION_IMAGES = {
 export const BoxBuilder = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
   const [boxSize, setBoxSize] = useState(18); // Default to 18lb for dog
   const [products, setProducts] = useState([]);
@@ -90,17 +91,22 @@ export const BoxBuilder = () => {
         setLoading(false);
         
         // Restore scroll position after data is loaded
-        const savedPosition = sessionStorage.getItem('menuScrollPosition');
+        const scrollFromState = location.state?.scrollPosition;
+        const scrollFromStorage = sessionStorage.getItem('menuScrollPosition');
+        const savedPosition = scrollFromState || (scrollFromStorage ? parseInt(scrollFromStorage, 10) : null);
+        
         if (savedPosition) {
           setTimeout(() => {
-            window.scrollTo(0, parseInt(savedPosition, 10));
+            window.scrollTo({ top: savedPosition, behavior: 'instant' });
             sessionStorage.removeItem('menuScrollPosition');
-          }, 150);
+            // Clear the state to prevent re-scrolling on refresh
+            window.history.replaceState({}, document.title);
+          }, 200);
         }
       }
     };
     loadData();
-  }, [petType]);
+  }, [petType, location.state]);
 
   // Reset selections when pet type changes
   const handlePetTypeChange = (newPetType) => {
