@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { Check, ChevronLeft, ChevronRight, Home, CheckCircle, Scale, Beef, X, Package, HelpCircle, Tag } from 'lucide-react';
@@ -10,6 +10,32 @@ export const LandingPage = () => {
   const photoScrollRef = useRef(null);
   const reviewsScrollRef = useRef(null);
   const proteinScrollRef = useRef(null);
+  const [sliderPos, setSliderPos] = useState(50);
+  const sliderRef = useRef(null);
+  const isDragging = useRef(false);
+
+  const handleSliderMove = useCallback((clientX) => {
+    if (!sliderRef.current) return;
+    const rect = sliderRef.current.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    setSliderPos(pct);
+  }, []);
+
+  const onPointerDown = useCallback((e) => {
+    isDragging.current = true;
+    handleSliderMove(e.clientX);
+    e.preventDefault();
+  }, [handleSliderMove]);
+
+  const onPointerMove = useCallback((e) => {
+    if (!isDragging.current) return;
+    handleSliderMove(e.clientX);
+  }, [handleSliderMove]);
+
+  const onPointerUp = useCallback(() => {
+    isDragging.current = false;
+  }, []);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -96,29 +122,25 @@ export const LandingPage = () => {
           background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.85) 0%, rgba(115, 40, 39, 0.75) 100%)',
           overflow: 'hidden'
         }}>
-          {/* Background Image Placeholder */}
+          {/* Background Image */}
           <div style={{
             position: 'absolute',
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            background: '#8B4513',
             zIndex: 0
           }}>
-            {/* Farm image will go here as background-image */}
-            <div style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'rgba(255,255,255,0.3)',
-              fontSize: '18px',
-              fontWeight: '600'
-            }}>
-              FARM IMAGE BACKGROUND
-            </div>
+            <img 
+              src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/wrk60ygg_Home%20Header%20Image.png"
+              alt="Happy dog running in field"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center 30%'
+              }}
+            />
           </div>
           
           {/* Dark Overlay for text readability */}
@@ -290,6 +312,126 @@ export const LandingPage = () => {
             <p style={{ fontSize: '17px', marginBottom: '48px', textAlign: 'center', color: 'rgba(255,255,255,0.9)' }}>
               Skip the fillers, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and ethical sourcing - quality you wont find in a store.
             </p>
+
+            {/* Before/After Slider Comparison */}
+            <div style={{ maxWidth: '500px', margin: '0 auto 48px', textAlign: 'center' }}>
+              <div
+                ref={sliderRef}
+                data-testid="food-comparison-slider"
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerLeave={onPointerUp}
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  aspectRatio: '1 / 1',
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  cursor: 'ew-resize',
+                  userSelect: 'none',
+                  touchAction: 'none',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+                }}
+              >
+                {/* Competition meat (full background) */}
+                <img
+                  src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/jtirzx2v_competition_meat.png"
+                  alt="Competition processed dog food"
+                  draggable={false}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
+                {/* FoeGuard meat (clipped by slider) */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  clipPath: `inset(0 ${100 - sliderPos}% 0 0)`
+                }}>
+                  <img
+                    src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/krlzk3m3_fg_meat.png"
+                    alt="FoeGuard fresh raw dog food"
+                    draggable={false}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                  />
+                </div>
+                {/* Slider handle */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: `${sliderPos}%`,
+                  transform: 'translateX(-50%)',
+                  width: '3px',
+                  height: '100%',
+                  background: 'white',
+                  boxShadow: '0 0 8px rgba(0,0,0,0.4)',
+                  zIndex: 2
+                }}>
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '40px',
+                    height: '40px',
+                    background: 'white',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                    fontSize: '16px',
+                    color: '#666',
+                    fontWeight: '700'
+                  }}>
+                    <ChevronLeft size={14} style={{ marginRight: '-4px' }} />
+                    <ChevronRight size={14} style={{ marginLeft: '-4px' }} />
+                  </div>
+                </div>
+                {/* Labels */}
+                <div style={{
+                  position: 'absolute',
+                  top: '16px',
+                  left: '16px',
+                  background: 'rgba(0,0,0,0.6)',
+                  color: 'white',
+                  padding: '6px 14px',
+                  borderRadius: '20px',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  zIndex: 3,
+                  pointerEvents: 'none'
+                }}>FoeGuard</div>
+                <div style={{
+                  position: 'absolute',
+                  top: '16px',
+                  right: '16px',
+                  background: 'rgba(0,0,0,0.6)',
+                  color: 'white',
+                  padding: '6px 14px',
+                  borderRadius: '20px',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  zIndex: 3,
+                  pointerEvents: 'none'
+                }}>Competition</div>
+              </div>
+              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', marginTop: '16px' }}>Drag to compare</p>
+            </div>
+
             <div style={{ 
               display: 'grid', 
               gridTemplateColumns: 'repeat(2, 1fr)', 
