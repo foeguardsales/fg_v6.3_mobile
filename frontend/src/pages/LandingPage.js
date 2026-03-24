@@ -834,8 +834,9 @@ export const LandingPage = () => {
                     height: '200px', 
                     background: '#E8DDD0', 
                     borderRadius: '8px', 
-                    marginBottom: '16px' 
-                  }}></div>
+                    marginBottom: '16px',
+                    overflow: 'hidden'
+                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/tigvcdhx_canadianfarmdogs_review.jpg" alt="Canadian Farm Dogs review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
                   <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
                     "Indigo is known to be pickier ... but had zero issue with this food and enjoyed every meal. Oliver also thoroughly enjoyed the food and his stools were perfect (...something that we have issues with)"
                   </p>
@@ -854,10 +855,11 @@ export const LandingPage = () => {
                     height: '200px', 
                     background: '#E8DDD0', 
                     borderRadius: '8px', 
-                    marginBottom: '16px' 
-                  }}></div>
+                    marginBottom: '16px',
+                    overflow: 'hidden'
+                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/u1n2212w_zeus_review.jpg" alt="Zeus review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
                   <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "Zeus is VERY impressed 😍❤️. Love the dinners because they're already a balanced meal making it easy ... he devours and makes sure he licks every little bit left in his bowl!"
+                    "Zeus is VERY impressed. Love the dinners because they're already a balanced meal making it easy ... he devours and makes sure he licks every little bit left in his bowl!"
                   </p>
                   <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@zeus.thedobie_</p>
                 </div>
@@ -874,8 +876,9 @@ export const LandingPage = () => {
                     height: '200px', 
                     background: '#E8DDD0', 
                     borderRadius: '8px', 
-                    marginBottom: '16px' 
-                  }}></div>
+                    marginBottom: '16px',
+                    overflow: 'hidden'
+                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/t7k8yiyo_fuji_review.jpg" alt="Fuji review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
                   <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
                     "I've been waiting to be woken up in the middle of the night for her to go washroom, but her stool has been consistent and perfect since I began introducing the raw food."
                   </p>
@@ -894,12 +897,13 @@ export const LandingPage = () => {
                     height: '200px', 
                     background: '#E8DDD0', 
                     borderRadius: '8px', 
-                    marginBottom: '16px' 
-                  }}></div>
+                    marginBottom: '16px',
+                    overflow: 'hidden'
+                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/oogtcds4_Bane_review%20.jpg" alt="Bane review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
                   <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
                     "If you show your dog's professionally FG may be your secret weapon"
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Muhammad S. (Dog Breeder)</p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@bane.thebully</p>
                 </div>
                 <div style={{ 
                   background: 'white', 
@@ -914,12 +918,13 @@ export const LandingPage = () => {
                     height: '200px', 
                     background: '#E8DDD0', 
                     borderRadius: '8px', 
-                    marginBottom: '16px' 
-                  }}></div>
+                    marginBottom: '16px',
+                    overflow: 'hidden'
+                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/q6am4khg_tyson_review.jpg" alt="Tyson review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
                   <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
                     "Ever since switching to their raw food her allergies have disappeared"
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Prianth P.</p>
+                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@tyson.blacklabb</p>
                 </div>
                 <div style={{ 
                   background: 'white', 
@@ -934,7 +939,7 @@ export const LandingPage = () => {
                     height: '200px', 
                     background: '#E8DDD0', 
                     borderRadius: '8px', 
-                    marginBottom: '16px' 
+                    marginBottom: '16px'
                   }}></div>
                   <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
                     "Milans sensitive tummy was causing us constant worry until we switched to FoeGuard."
