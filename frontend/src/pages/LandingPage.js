@@ -132,7 +132,7 @@ export const LandingPage = () => {
             zIndex: 0
           }}>
             <img 
-              src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/wrk60ygg_Home%20Header%20Image.png"
+              src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/qcsibcsf_header.png"
               alt="Happy dog running in field"
               style={{
                 width: '100%',
@@ -342,10 +342,10 @@ export const LandingPage = () => {
                   draggable={false}
                   style={{
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
+                    top: '-10%',
+                    left: '-10%',
+                    width: '120%',
+                    height: '120%',
                     objectFit: 'cover'
                   }}
                 />
@@ -363,8 +363,11 @@ export const LandingPage = () => {
                     alt="FoeGuard fresh raw dog food"
                     draggable={false}
                     style={{
-                      width: '100%',
-                      height: '100%',
+                      position: 'absolute',
+                      top: '-10%',
+                      left: '-10%',
+                      width: '120%',
+                      height: '120%',
                       objectFit: 'cover'
                     }}
                   />
@@ -402,33 +405,6 @@ export const LandingPage = () => {
                     <ChevronRight size={14} style={{ marginLeft: '-4px' }} />
                   </div>
                 </div>
-                {/* Labels */}
-                <div style={{
-                  position: 'absolute',
-                  top: '16px',
-                  left: '16px',
-                  background: 'rgba(0,0,0,0.6)',
-                  color: 'white',
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  zIndex: 3,
-                  pointerEvents: 'none'
-                }}>FoeGuard</div>
-                <div style={{
-                  position: 'absolute',
-                  top: '16px',
-                  right: '16px',
-                  background: 'rgba(0,0,0,0.6)',
-                  color: 'white',
-                  padding: '6px 14px',
-                  borderRadius: '20px',
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  zIndex: 3,
-                  pointerEvents: 'none'
-                }}>Competition</div>
               </div>
               <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', marginTop: '16px' }}>Drag to compare</p>
             </div>
@@ -770,36 +746,12 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '24px', fontWeight: '600' }}>Benefits you can see, and they can feel.</h2>
             
-            <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-              <p style={{ fontSize: '17px', marginBottom: '32px', color: '#666', lineHeight: '1.7', textAlign: 'center' }}>
-                Your days of stressing over ingredients and unplanned vet visits are over. A complete raw diet provides the foundation for a longer, healthy life for your dog. It directly supports:
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '48px', maxWidth: '700px', margin: '0 auto 48px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>More energy and happiness</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Better digestion and healthy poops</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Fresher breath and cleaner teeth</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Fewer allergic reactions</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Healthy weight management</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Check size={24} style={{ color: '#8B4513', flexShrink: 0 }} />
-                  <span style={{ fontSize: '17px', color: '#333' }}>Stronger immune system</span>
-                </div>
-              </div>
+            <div style={{ maxWidth: '900px', margin: '0 auto 48px' }}>
+              <img 
+                src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/fleo929y_benefits.png"
+                alt="Dog with benefits labeled - Fresh Breath, Less Allergies, Better Digestion, More Energy, Healthy Weight"
+                style={{ width: '100%', borderRadius: '16px', display: 'block' }}
+              />
             </div>
 
             {/* Scrollable Reviews Carousel */}
