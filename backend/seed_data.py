@@ -442,19 +442,52 @@ PRIMAL_FEAST_PRODUCTS = [
 ]
 
 TREATS = [
-    {"treat_id": "treat-chicken-carcass", "name": "Chicken Carcass", "price": 24.99, "quantity_description": "2 Pack", "pet_type": "dog"},
-    {"treat_id": "treat-chicken-heads", "name": "Whole Chicken Heads", "price": 9.99, "quantity_description": "10 Pack", "pet_type": "dog"},
-    {"treat_id": "treat-chicken-necks-2lb", "name": "Whole Chicken Necks", "price": 8.99, "quantity_description": "2lb", "pet_type": "dog"},
-    {"treat_id": "treat-chicken-necks-5lb", "name": "Whole Chicken Necks", "price": 19.99, "quantity_description": "5lb", "pet_type": "dog"},
-    {"treat_id": "treat-chicken-feet", "name": "Chicken Feet", "price": 5.99, "quantity_description": "1lb", "pet_type": "dog"},
-    {"treat_id": "treat-duck-feet", "name": "Duck Feet", "price": 9.99, "quantity_description": "1lb", "pet_type": "dog"},
-    {"treat_id": "treat-turkey-feet", "name": "Turkey Feet", "price": 9.99, "quantity_description": "2 Pack", "pet_type": "dog"},
-    {"treat_id": "treat-duck-heads", "name": "Whole Duck Heads", "price": 9.99, "quantity_description": "5 Pack", "pet_type": "dog"},
-    {"treat_id": "treat-lamb-head-1", "name": "Whole Lamb Head", "price": 12.99, "quantity_description": "1 Pack", "pet_type": "dog"},
-    {"treat_id": "treat-lamb-head-2", "name": "Whole Lamb Head", "price": 19.99, "quantity_description": "2 Pack", "pet_type": "dog"},
-    {"treat_id": "treat-beef-marrow", "name": "Beef Marrow Bones", "price": 9.99, "quantity_description": "1 Pack", "pet_type": "dog"},
-    {"treat_id": "treat-beef-neck", "name": "Beef Neck Bones", "price": 9.99, "quantity_description": "1 Pack", "pet_type": "dog"},
-    {"treat_id": "treat-beef-rib", "name": "Beef Flat Rib Bones", "price": 9.99, "quantity_description": "1lb", "pet_type": "dog"}
+    {
+        "treat_id": "treat-turkey-feet", 
+        "name": "Turkey Feet", 
+        "price": 9.99, 
+        "quantity_description": "2 Pack", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png",
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/bbbktuws_turkey_feet_image_2.png"
+        ]
+    },
+    {
+        "treat_id": "treat-duck-heads", 
+        "name": "Whole Duck Heads", 
+        "price": 9.99, 
+        "quantity_description": "5 Pack", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/csqdjqs3_Whole_duck_heads_pack.png"
+        ]
+    },
+    {
+        "treat_id": "treat-lamb-head-1", 
+        "name": "Whole Lamb Head", 
+        "price": 12.99, 
+        "quantity_description": "1 Pack", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png"
+        ]
+    },
+    {
+        "treat_id": "treat-lamb-head-2", 
+        "name": "Whole Lamb Head", 
+        "price": 19.99, 
+        "quantity_description": "2 Pack", 
+        "pet_type": "dog",
+        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png",
+        "images": [
+            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png"
+        ]
+    }
 ]
 
 # Cat-specific ingredients (smaller portions, taurine-enriched)
