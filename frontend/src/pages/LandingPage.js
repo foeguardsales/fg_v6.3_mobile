@@ -704,7 +704,7 @@ export const LandingPage = () => {
             <div className="steps-grid">
               <div className="step-card">
                 <div className="step-image-container">
-                  <div className="step-image-placeholder"></div>
+                  <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/o4ctb4hs_step%201.png" alt="Choose your plan" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
                   <div className="step-number-overlay">1</div>
                 </div>
                 <h3>Choose Your<br />Plan</h3>
@@ -714,7 +714,7 @@ export const LandingPage = () => {
               </div>
               <div className="step-card">
                 <div className="step-image-container">
-                  <div className="step-image-placeholder"></div>
+                  <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ms6gxgag_step%202.png" alt="Receive your delivery" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
                   <div className="step-number-overlay">2</div>
                 </div>
                 <h3>Receive Your Delivery</h3>
@@ -724,7 +724,7 @@ export const LandingPage = () => {
               </div>
               <div className="step-card">
                 <div className="step-image-container">
-                  <div className="step-image-placeholder"></div>
+                  <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/wov418dt_step%203.png" alt="Feed with confidence" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
                   <div className="step-number-overlay">3</div>
                 </div>
                 <h3>Feed with Confidence</h3>
