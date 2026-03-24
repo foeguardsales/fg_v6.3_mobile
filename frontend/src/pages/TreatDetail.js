@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
+import { ChevronLeft } from 'lucide-react';
+import { CartDrawer } from '../components/CartAndCheckout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
@@ -13,7 +15,9 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
       border: '1px solid #E8DDD0',
       borderRadius: '12px',
       overflow: 'hidden',
-      background: '#fff'
+      background: '#fff',
+      position: 'relative',
+      zIndex: 1
     }}>
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -56,10 +60,16 @@ export const TreatDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [boxSize, setBoxSize] = useState(18);
+  const [selectedProteins, setSelectedProteins] = useState({});
+  const [selectedTreats, setSelectedTreats] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const root = document.getElementById('root');
     if (root) root.scrollTop = 0;
+    
     const fetchTreat = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/api/treats`);
@@ -71,11 +81,44 @@ export const TreatDetailPage = () => {
         setLoading(false);
       }
     };
+    
+    // Load cart state from sessionStorage
+    const savedBoxSize = sessionStorage.getItem('boxSize');
+    const savedProteins = sessionStorage.getItem('selectedProteins');
+    const savedTreats = sessionStorage.getItem('selectedTreats');
+    
+    if (savedBoxSize) setBoxSize(parseInt(savedBoxSize));
+    if (savedProteins) setSelectedProteins(JSON.parse(savedProteins));
+    if (savedTreats) setSelectedTreats(JSON.parse(savedTreats));
+    
     fetchTreat();
   }, [treatId]);
 
   const handleBackToMenu = () => {
     navigate('/build-box');
+  };
+  
+  const handleAddToCart = () => {
+    // Add treat to cart
+    const updatedTreats = [...selectedTreats];
+    const existingIndex = updatedTreats.findIndex(t => t.treat_id === treat.treat_id);
+    
+    if (existingIndex >= 0) {
+      updatedTreats[existingIndex].quantity = quantity;
+    } else {
+      updatedTreats.push({
+        treat_id: treat.treat_id,
+        name: treat.name,
+        price: treat.price,
+        quantity: quantity
+      });
+    }
+    
+    setSelectedTreats(updatedTreats);
+    sessionStorage.setItem('selectedTreats', JSON.stringify(updatedTreats));
+    
+    // Open cart drawer
+    setCartOpen(true);
   };
 
   if (loading) {
@@ -109,32 +152,38 @@ export const TreatDetailPage = () => {
   return (
     <>
       <Navbar />
+      <CartDrawer
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        boxSize={boxSize}
+        selectedProteins={selectedProteins}
+        selectedTreats={selectedTreats}
+        products={products}
+        onProceed={() => navigate('/build-box')}
+        getDiscountedPrice={() => 0}
+        getBasePrice={() => 0}
+      />
       <div className="product-detail-page" style={{ background: '#FDFCFA', minHeight: '100vh', paddingTop: '80px' }}>
         <div className="product-detail-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
           <button
             onClick={handleBackToMenu}
             style={{
-              background: 'transparent',
-              border: '2px solid #A41E34',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: 'none',
+              border: 'none',
               color: '#A41E34',
-              padding: '10px 20px',
-              borderRadius: '8px',
-              cursor: 'pointer',
+              fontFamily: "'Rubik', sans-serif",
               fontSize: '15px',
               fontWeight: '600',
-              marginBottom: '24px',
-              transition: 'all 0.2s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = '#A41E34';
-              e.target.style.color = '#fff';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = 'transparent';
-              e.target.style.color = '#A41E34';
+              cursor: 'pointer',
+              padding: '12px 0',
+              marginBottom: '24px'
             }}
           >
-            ← Back to Menu
+            <ChevronLeft size={20} />
+            <span>Back to Menu</span>
           </button>
 
           <div className="product-detail-content" style={{
@@ -202,7 +251,7 @@ export const TreatDetailPage = () => {
               }}>{treat.name}</h1>
               
               <div style={{ marginBottom: '24px' }}>
-                <span style={{ fontSize: '32px', fontWeight: '700', color: '#A41E34' }}>${treat.price.toFixed(2)}</span>
+                <span style={{ fontSize: '32px', fontWeight: '600', color: '#A41E34' }}>${treat.price.toFixed(2)}</span>
                 <p style={{ fontSize: '15px', color: '#666', margin: '8px 0 0 0' }}>{treat.quantity_description}</p>
               </div>
 
@@ -252,7 +301,7 @@ export const TreatDetailPage = () => {
                       minWidth: '40px', 
                       textAlign: 'center', 
                       fontSize: '20px', 
-                      fontWeight: '700',
+                      fontWeight: '600',
                       color: '#2B2B2B'
                     }}>
                       {quantity}
@@ -278,15 +327,7 @@ export const TreatDetailPage = () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => {
-                    sessionStorage.setItem('addTreatToBox', JSON.stringify({
-                      treat_id: treat.treat_id,
-                      name: treat.name,
-                      price: treat.price,
-                      quantity: quantity
-                    }));
-                    navigate('/build-box');
-                  }}
+                  onClick={handleAddToCart}
                   style={{
                     width: '100%',
                     padding: '14px 24px',
@@ -295,7 +336,7 @@ export const TreatDetailPage = () => {
                     border: 'none',
                     borderRadius: '8px',
                     fontSize: '16px',
-                    fontWeight: '700',
+                    fontWeight: '600',
                     cursor: 'pointer',
                     transition: 'background 0.2s'
                   }}
@@ -331,13 +372,13 @@ export const TreatDetailPage = () => {
             <CollapsibleSection title="Feeding Guide">
               <div className="feeding-guide">
                 <div style={{ marginBottom: '20px' }}>
-                  <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Feeding Instructions</h4>
+                  <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B', margin: '0 0 8px 0' }}>Feeding Instructions</h4>
                   <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
                     {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet while enjoying treats.'}
                   </p>
                 </div>
                 <div style={{ marginBottom: '20px' }}>
-                  <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Handling Instructions</h4>
+                  <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B', margin: '0 0 8px 0' }}>Handling Instructions</h4>
                   <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
                     {treat.feeding_guide?.handling || 'Keep frozen until ready to use. Thaw in refrigerator before serving. Use within 3 days of thawing.'}
                   </p>

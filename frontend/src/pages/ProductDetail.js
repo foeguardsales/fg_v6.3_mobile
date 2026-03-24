@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
+import { CartDrawer } from '../components/CartAndCheckout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -69,10 +70,25 @@ export const ProductDetailPage = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(6);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [boxSize, setBoxSize] = useState(18);
+  const [selectedProteins, setSelectedProteins] = useState({});
+  const [selectedTreats, setSelectedTreats] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const root = document.getElementById('root');
     if (root) root.scrollTop = 0;
+    
+    // Load cart state
+    const savedBoxSize = sessionStorage.getItem('boxSize');
+    const savedProteins = sessionStorage.getItem('selectedProteins');
+    const savedTreats = sessionStorage.getItem('selectedTreats');
+    
+    if (savedBoxSize) setBoxSize(parseInt(savedBoxSize));
+    if (savedProteins) setSelectedProteins(JSON.parse(savedProteins));
+    if (savedTreats) setSelectedTreats(JSON.parse(savedTreats));
+    
     axios.get(`${API}/products/${productId}`)
       .then(res => setProduct(res.data))
       .catch(err => console.error(err))
@@ -81,6 +97,27 @@ export const ProductDetailPage = () => {
 
   const handleBackToMenu = () => {
     navigate('/build-box');
+  };
+  
+  const handleAddToCart = () => {
+    // Add product to cart
+    const updatedProteins = { ...selectedProteins };
+    const currentQty = updatedProteins[product.product_id]?.qty || 0;
+    
+    // Cap quantity at box size
+    const maxAllowed = boxSize - Object.values(updatedProteins).reduce((sum, p) => p.product_id !== product.product_id ? sum + p.qty : sum, 0);
+    const addQty = Math.min(quantity, maxAllowed);
+    
+    updatedProteins[product.product_id] = {
+      qty: currentQty + addQty,
+      name: product.name
+    };
+    
+    setSelectedProteins(updatedProteins);
+    sessionStorage.setItem('selectedProteins', JSON.stringify(updatedProteins));
+    
+    // Open cart drawer
+    setCartOpen(true);
   };
 
   if (loading) {
@@ -129,6 +166,17 @@ export const ProductDetailPage = () => {
   return (
     <>
       <Navbar />
+      <CartDrawer
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        boxSize={boxSize}
+        selectedProteins={selectedProteins}
+        selectedTreats={selectedTreats}
+        products={products}
+        onProceed={() => navigate('/build-box')}
+        getDiscountedPrice={() => 0}
+        getBasePrice={() => 0}
+      />
       <div className="product-detail-page" style={{ background: '#F2F4F3', minHeight: '100vh', padding: '0 0 80px' }}>
         <div className="product-detail-wrapper" style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 24px' }}>
           {/* Back Button */}
@@ -138,7 +186,7 @@ export const ProductDetailPage = () => {
             gap: '6px',
             background: 'none',
             border: 'none',
-            color: lineColor,
+            color: '#A41E34',
             fontFamily: "'Rubik', sans-serif",
             fontSize: '15px',
             fontWeight: '600',
@@ -175,7 +223,7 @@ export const ProductDetailPage = () => {
                 borderRadius: '100px',
                 fontFamily: "'Rubik', sans-serif",
                 fontSize: '13px',
-                fontWeight: '700',
+                fontWeight: '600',
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em'
               }}>{lineName}</span>
@@ -232,13 +280,13 @@ export const ProductDetailPage = () => {
                       minWidth: '40px', 
                       textAlign: 'center', 
                       fontSize: '20px', 
-                      fontWeight: '700',
+                      fontWeight: '600',
                       color: '#2B2B2B'
                     }}>
                       {quantity}
                     </span>
                     <button
-                      onClick={() => quantity < 24 && setQuantity(quantity + 6)}
+                      onClick={() => quantity < boxSize && setQuantity(quantity + 6)}
                       style={{
                         width: '36px',
                         height: '36px',
@@ -258,14 +306,7 @@ export const ProductDetailPage = () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => {
-                    sessionStorage.setItem('addToBox', JSON.stringify({
-                      product_id: product.product_id,
-                      name: product.name,
-                      qty: quantity
-                    }));
-                    navigate('/build-box');
-                  }}
+                  onClick={handleAddToCart}
                   style={{
                     width: '100%',
                     padding: '14px 24px',
@@ -274,7 +315,7 @@ export const ProductDetailPage = () => {
                     border: 'none',
                     borderRadius: '8px',
                     fontSize: '16px',
-                    fontWeight: '700',
+                    fontWeight: '600',
                     cursor: 'pointer',
                     transition: 'background 0.2s'
                   }}

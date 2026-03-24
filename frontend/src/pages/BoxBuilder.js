@@ -528,7 +528,7 @@ export const BoxBuilder = () => {
               onClick={() => setCartOpen(true)}
               data-testid="cart-button"
             >
-              <span style={{ filter: 'brightness(0) invert(1)' }}>🛒</span> {getTotalSelectedLbs()}/{boxSize}lb
+              Checkout {getTotalSelectedLbs()}/{boxSize}lb
               {isBoxComplete && (
                 <span className="cart-complete-badge">✓</span>
               )}
