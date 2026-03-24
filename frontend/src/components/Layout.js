@@ -34,7 +34,7 @@ export const Navbar = () => {
             style={{
               background: 'linear-gradient(135deg, #FDFCFA 0%, #E8DDD0 100%)',
               color: '#8B1A2E',
-              padding: '12px 28px',
+              padding: '8px 40px',
               borderRadius: '25px',
               border: '2px solid #E8DDD0',
               fontWeight: '700',
