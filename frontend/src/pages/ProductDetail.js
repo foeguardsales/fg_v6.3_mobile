@@ -68,6 +68,7 @@ export const ProductDetailPage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(6);
 
   useEffect(() => {
     const root = document.getElementById('root');
@@ -195,6 +196,94 @@ export const ProductDetailPage = () => {
                 margin: '0 0 20px 0',
                 whiteSpace: 'pre-line'
               }}>{product.description}</p>
+              
+              {/* Quantity Selector and Add to Cart */}
+              <div style={{ 
+                marginTop: '24px', 
+                padding: '20px', 
+                background: '#FAF8F5', 
+                borderRadius: '12px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B' }}>Quantity (lbs)</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <button
+                      onClick={() => quantity > 6 && setQuantity(quantity - 6)}
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        border: '2px solid #A41E34',
+                        background: '#fff',
+                        color: '#A41E34',
+                        fontSize: '20px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      −
+                    </button>
+                    <span style={{ 
+                      minWidth: '40px', 
+                      textAlign: 'center', 
+                      fontSize: '20px', 
+                      fontWeight: '700',
+                      color: '#2B2B2B'
+                    }}>
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => quantity < 24 && setQuantity(quantity + 6)}
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        border: '2px solid #A41E34',
+                        background: '#fff',
+                        color: '#A41E34',
+                        fontSize: '20px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    sessionStorage.setItem('addToBox', JSON.stringify({
+                      product_id: product.product_id,
+                      name: product.name,
+                      qty: quantity
+                    }));
+                    navigate('/build-box');
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '14px 24px',
+                    background: '#A41E34',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontSize: '16px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = '#8B1528'}
+                  onMouseLeave={(e) => e.target.style.background = '#A41E34'}
+                >
+                  Add to Box
+                </button>
+              </div>
               
               {product.highlights && product.highlights.length > 0 && (
                 <div style={{ marginTop: '20px' }}>

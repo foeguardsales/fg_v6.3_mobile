@@ -282,12 +282,16 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
       </div>
 
       <div className="treats-grid">
-        {treats.map(treat => (
+        {treats.map(treat => {
+          const selectedTreat = selectedTreats.find(t => t.treat_id === treat.treat_id);
+          const quantity = selectedTreat ? selectedTreat.quantity : 0;
+          
+          return (
           <div 
             key={treat.treat_id} 
-            className={`treat-item ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'selected' : ''}`}
+            className={`treat-item ${quantity > 0 ? 'selected' : ''}`}
             data-testid={`treat-${treat.treat_id}`}
-            style={{ position: 'relative', paddingRight: '110px', display: 'flex', alignItems: 'center', gap: '16px' }}
+            style={{ position: 'relative', paddingRight: '130px', display: 'flex', alignItems: 'center', gap: '16px' }}
           >
             {/* Treat Image */}
             {treat.image && (
@@ -310,59 +314,116 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                 />
               </div>
             )}
-            <div 
-              className="treat-clickable"
-              onClick={() => onToggleTreat(treat)}
-              style={{ cursor: 'pointer', flex: 1 }}
-            >
+            <div style={{ flex: 1 }}>
               <div className="treat-info">
                 <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>
                 <p style={{ color: '#666', fontSize: '13px', margin: '0 0 8px 0' }}>{treat.quantity_description}</p>
                 <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513', display: 'block' }}>${treat.price.toFixed(2)}</span>
               </div>
-              <div style={{ 
-                position: 'absolute',
-                right: '16px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center', 
-                gap: '16px',
-                width: '85px'
+            </div>
+            <div style={{ 
+              position: 'absolute',
+              right: '16px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              gap: '12px',
+              width: '100px'
+            }}>
+              {/* Quantity Selector */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: quantity > 0 ? treatColor : '#f0f0f0',
+                borderRadius: '20px',
+                padding: '4px 8px'
               }}>
-                <div className={`treat-checkbox ${selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'checked' : ''}`}>
-                  {selectedTreats.some(t => t.treat_id === treat.treat_id) && '✓'}
-                </div>
-                {navigate && (
-                  <button 
-                    className="btn-learn-more-treat"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Save scroll position before navigating
-                      sessionStorage.setItem('menuScrollPosition', window.scrollY.toString());
-                      navigate(`/treat/${treat.treat_id}`);
-                    }}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: treatColor,
-                      fontSize: '13px',
-                      fontWeight: '600',
-                      cursor: 'pointer',
-                      padding: '0',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '3px',
-                      whiteSpace: 'nowrap'
-                    }}
-                  >
-                    See more
-                  </button>
-                )}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (quantity > 0) {
+                      onToggleTreat(treat, quantity - 1);
+                    }
+                  }}
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: quantity > 0 ? 'rgba(255,255,255,0.3)' : '#ddd',
+                    color: quantity > 0 ? '#fff' : '#666',
+                    fontSize: '18px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  −
+                </button>
+                <span style={{
+                  minWidth: '24px',
+                  textAlign: 'center',
+                  fontWeight: '700',
+                  fontSize: '16px',
+                  color: quantity > 0 ? '#fff' : '#333'
+                }}>
+                  {quantity}
+                </span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleTreat(treat, quantity + 1);
+                  }}
+                  style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: quantity > 0 ? 'rgba(255,255,255,0.3)' : '#ddd',
+                    color: quantity > 0 ? '#fff' : '#666',
+                    fontSize: '18px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  +
+                </button>
               </div>
+              {navigate && (
+                <button 
+                  className="btn-learn-more-treat"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const root = document.getElementById('root');
+                    const scrollPos = root ? root.scrollTop : window.scrollY;
+                    sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
+                    navigate(`/treat/${treat.treat_id}`);
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: treatColor,
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    padding: '0',
+                    textDecoration: 'underline',
+                    textUnderlineOffset: '3px',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  See more
+                </button>
+              )}
             </div>
           </div>
-        ))}
+        )})}
       </div>
     </div>
   );

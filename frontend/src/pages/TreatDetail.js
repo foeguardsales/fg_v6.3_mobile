@@ -55,6 +55,7 @@ export const TreatDetailPage = () => {
   const [treat, setTreat] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const root = document.getElementById('root');
@@ -215,39 +216,205 @@ export const TreatDetailPage = () => {
                   }}>{treat.description}</p>
                 </div>
               )}
+
+              {/* Quantity Selector and Add to Cart */}
+              <div style={{ 
+                marginTop: '24px', 
+                padding: '20px', 
+                background: '#FAF8F5', 
+                borderRadius: '12px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B' }}>Quantity</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <button
+                      onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        border: '2px solid #A41E34',
+                        background: '#fff',
+                        color: '#A41E34',
+                        fontSize: '20px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      −
+                    </button>
+                    <span style={{ 
+                      minWidth: '40px', 
+                      textAlign: 'center', 
+                      fontSize: '20px', 
+                      fontWeight: '700',
+                      color: '#2B2B2B'
+                    }}>
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        border: '2px solid #A41E34',
+                        background: '#fff',
+                        color: '#A41E34',
+                        fontSize: '20px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    sessionStorage.setItem('addTreatToBox', JSON.stringify({
+                      treat_id: treat.treat_id,
+                      name: treat.name,
+                      price: treat.price,
+                      quantity: quantity
+                    }));
+                    navigate('/build-box');
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '14px 24px',
+                    background: '#A41E34',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontSize: '16px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = '#8B1528'}
+                  onMouseLeave={(e) => e.target.style.background = '#A41E34'}
+                >
+                  Add to Box
+                </button>
+              </div>
+            </div>
+          </div>
+                      fontWeight: '700',
+                      color: '#2B2B2B'
+                    }}>
+                      {sessionStorage.getItem(`treat_qty_${treat.treat_id}`) || '1'}
+                    </span>
+                    <button
+                      onClick={() => {
+                        const current = parseInt(sessionStorage.getItem(`treat_qty_${treat.treat_id}`) || '1');
+                        sessionStorage.setItem(`treat_qty_${treat.treat_id}`, (current + 1).toString());
+                        window.dispatchEvent(new Event('storage'));
+                      }}
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        border: '2px solid #A41E34',
+                        background: '#fff',
+                        color: '#A41E34',
+                        fontSize: '20px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    const qty = parseInt(sessionStorage.getItem(`treat_qty_${treat.treat_id}`) || '1');
+                    sessionStorage.setItem('addTreatToBox', JSON.stringify({
+                      treat_id: treat.treat_id,
+                      name: treat.name,
+                      price: treat.price,
+                      quantity: qty
+                    }));
+                    navigate('/build-box');
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '14px 24px',
+                    background: '#A41E34',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontSize: '16px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = '#8B1528'}
+                  onMouseLeave={(e) => e.target.style.background = '#A41E34'}
+                >
+                  Add to Box
+                </button>
+              </div>
             </div>
           </div>
 
+          {/* Collapsible Sections */}
           <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {treat.feeding_guide && (
-              <CollapsibleSection title="Feeding Guide" defaultOpen={true}>
-                <div className="feeding-guide">
-                  <div style={{ marginBottom: '20px' }}>
-                    <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Feeding Instructions</h4>
-                    <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{treat.feeding_guide.feeding}</p>
-                  </div>
-                  <div style={{ marginBottom: '20px' }}>
-                    <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Handling Instructions</h4>
-                    <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{treat.feeding_guide.handling}</p>
-                  </div>
-                  {treat.feeding_guide.note && (
-                    <div style={{ background: '#FAF8F5', padding: '16px', borderRadius: '12px' }}>
-                      <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0 }}>
-                        <a href="/calculator" style={{ color: '#A41E34', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </CollapsibleSection>
-            )}
-
-            {treat.product_information && (
-              <CollapsibleSection title="Product Information">
-                <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
-                  {treat.product_information}
+            {treat.ingredients && (
+              <CollapsibleSection title="Ingredients" defaultOpen={true}>
+                <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
+                  {typeof treat.ingredients === 'string' ? treat.ingredients : (treat.ingredients || []).join(', ')}
                 </p>
               </CollapsibleSection>
             )}
+
+            {treat.benefits && treat.benefits.length > 0 && (
+              <CollapsibleSection title="Benefits">
+                <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {treat.benefits.map((benefit, i) => (
+                    <li key={i} style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.6' }}>{benefit}</li>
+                  ))}
+                </ul>
+              </CollapsibleSection>
+            )}
+
+            <CollapsibleSection title="Feeding Guide">
+              <div className="feeding-guide">
+                <div style={{ marginBottom: '20px' }}>
+                  <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Feeding Instructions</h4>
+                  <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
+                    {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet while enjoying treats.'}
+                  </p>
+                </div>
+                <div style={{ marginBottom: '20px' }}>
+                  <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Handling Instructions</h4>
+                  <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
+                    {treat.feeding_guide?.handling || 'Keep frozen until ready to use. Thaw in refrigerator before serving. Use within 3 days of thawing.'}
+                  </p>
+                </div>
+                <div style={{ background: '#FAF8F5', padding: '16px', borderRadius: '12px' }}>
+                  <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0 }}>
+                    <a href="/calculator" style={{ color: '#A41E34', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
+                  </p>
+                </div>
+              </div>
+            </CollapsibleSection>
+
+            <CollapsibleSection title="Product Information">
+              <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
+                {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes. Rich in nutrients and highly palatable, these treats are ideal for training, enrichment, or as a special reward. Always supervise your pet when feeding treats.`}
+              </p>
+            </CollapsibleSection>
           </div>
         </div>
       </div>

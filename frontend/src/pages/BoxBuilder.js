@@ -100,13 +100,55 @@ export const BoxBuilder = () => {
       const savedPosition = sessionStorage.getItem('menuScrollPosition');
       if (savedPosition) {
         const scrollTo = parseInt(savedPosition, 10);
+        const root = document.getElementById('root');
         // Use requestAnimationFrame to ensure DOM is painted
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
+            if (root) {
+              root.scrollTop = scrollTo;
+            }
             window.scrollTo(0, scrollTo);
+            document.documentElement.scrollTop = scrollTo;
             sessionStorage.removeItem('menuScrollPosition');
           });
         });
+      }
+      
+      // Check if there's a product to add from product detail page
+      const addToBox = sessionStorage.getItem('addToBox');
+      if (addToBox) {
+        const productData = JSON.parse(addToBox);
+        setSelectedProteins(prev => ({
+          ...prev,
+          [productData.product_id]: {
+            name: productData.name,
+            qty: productData.qty
+          }
+        }));
+        sessionStorage.removeItem('addToBox');
+      }
+      
+      // Check if there's a treat to add from treat detail page
+      const addTreatToBox = sessionStorage.getItem('addTreatToBox');
+      if (addTreatToBox) {
+        const treatData = JSON.parse(addTreatToBox);
+        setSelectedTreats(prev => {
+          const existing = prev.find(t => t.treat_id === treatData.treat_id);
+          if (existing) {
+            return prev.map(t => t.treat_id === treatData.treat_id 
+              ? { ...t, quantity: (t.quantity || 1) + treatData.quantity }
+              : t
+            );
+          } else {
+            return [...prev, { 
+              treat_id: treatData.treat_id, 
+              name: treatData.name, 
+              price: treatData.price, 
+              quantity: treatData.quantity 
+            }];
+          }
+        });
+        sessionStorage.removeItem('addTreatToBox');
       }
     }
   }, [loading, products.length]);
@@ -198,12 +240,28 @@ export const BoxBuilder = () => {
     }));
   };
 
-  const handleToggleTreat = (treat) => {
-    setSelectedTreats(prev => 
-      prev.some(t => t.treat_id === treat.treat_id)
-        ? prev.filter(t => t.treat_id !== treat.treat_id)
-        : [...prev, treat]
-    );
+  const handleToggleTreat = (treat, newQuantity) => {
+    if (newQuantity === undefined) {
+      // Old toggle behavior for backwards compatibility
+      setSelectedTreats(prev => 
+        prev.some(t => t.treat_id === treat.treat_id)
+          ? prev.filter(t => t.treat_id !== treat.treat_id)
+          : [...prev, { ...treat, quantity: 1 }]
+      );
+    } else if (newQuantity === 0) {
+      // Remove treat
+      setSelectedTreats(prev => prev.filter(t => t.treat_id !== treat.treat_id));
+    } else {
+      // Update quantity
+      setSelectedTreats(prev => {
+        const existing = prev.find(t => t.treat_id === treat.treat_id);
+        if (existing) {
+          return prev.map(t => t.treat_id === treat.treat_id ? { ...t, quantity: newQuantity } : t);
+        } else {
+          return [...prev, { ...treat, quantity: newQuantity }];
+        }
+      });
+    }
   };
 
   const canAdd = (productId) => {
@@ -859,7 +917,9 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       <button 
         className="btn-learn-more"
         onClick={() => {
-          sessionStorage.setItem('menuScrollPosition', window.scrollY.toString());
+          const root = document.getElementById('root');
+          const scrollPos = root ? root.scrollTop : window.scrollY;
+          sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
           navigate(`/product/${product.product_id}`);
         }}
         data-testid={`learn-more-${product.product_id}`}
