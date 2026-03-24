@@ -31,11 +31,6 @@ export const AboutPage = () => {
           </div>
         </section>
 
-        {/* Header Image */}
-        <div style={{ width: '100%', maxHeight: '400px', overflow: 'hidden' }}>
-          <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/cohsros6_header.png" alt="Fresh raw dog food ingredients" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </div>
-
         {/* Introduction Section */}
         <section className="about-section about-story">
           <div className="about-container">
