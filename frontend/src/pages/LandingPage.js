@@ -76,23 +76,28 @@ export const LandingPage = () => {
   const proteins = [
     {
       name: 'Chicken',
-      description: 'Lean protein that supports muscle development and provides essential amino acids for overall health.'
+      description: 'Lean protein that supports muscle development and provides essential amino acids for overall health.',
+      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/dksu613b_chicken.png'
     },
     {
       name: 'Beef',
-      description: 'Rich in iron and zinc, beef supports energy levels, immune function, and healthy blood cells.'
+      description: 'Rich in iron and zinc, beef supports energy levels, immune function, and healthy blood cells.',
+      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/262n9jvl_beef.png'
     },
     {
       name: 'Turkey',
-      description: 'Low-fat protein packed with nutrients that promote lean muscle mass and digestive health.'
+      description: 'Low-fat protein packed with nutrients that promote lean muscle mass and digestive health.',
+      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/j6yxejew_turkey.png'
     },
     {
       name: 'Duck',
-      description: 'Nutrient-dense protein with omega fatty acids that support skin, coat, and joint health.'
+      description: 'Nutrient-dense protein with omega fatty acids that support skin, coat, and joint health.',
+      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/s3okrgsw_duck.png'
     },
     {
       name: 'Salmon',
-      description: 'Omega-3 rich fish that promotes brain function, reduces inflammation, and supports a shiny coat.'
+      description: 'Omega-3 rich fish that promotes brain function, reduces inflammation, and supports a shiny coat.',
+      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/l6i3vb5d_salmon.png'
     },
     {
       name: 'Lamb',
@@ -434,8 +439,8 @@ export const LandingPage = () => {
             }}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
-                  width: '80px', 
-                  height: '80px', 
+                  width: '56px', 
+                  height: '56px', 
                   margin: '0 auto 20px', 
                   border: '2px solid rgba(255,255,255,0.3)',
                   borderRadius: '50%',
@@ -443,15 +448,15 @@ export const LandingPage = () => {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Beef size={40} style={{ color: 'white' }} />
+                  <Beef size={28} style={{ color: 'white' }} />
                 </div>
                 <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Organic Raw Food</h3>
                 <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Nutrient-rich meat and veggies, raised without GMOs, antibiotics or hormones.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
-                  width: '80px', 
-                  height: '80px', 
+                  width: '56px', 
+                  height: '56px', 
                   margin: '0 auto 20px', 
                   border: '2px solid rgba(255,255,255,0.3)',
                   borderRadius: '50%',
@@ -459,15 +464,15 @@ export const LandingPage = () => {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <CheckCircle size={40} style={{ color: 'white' }} />
+                  <CheckCircle size={28} style={{ color: 'white' }} />
                 </div>
                 <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human Grade Safety</h3>
                 <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>The highest quality and safety food standards in Canada - for your dog.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
-                  width: '80px', 
-                  height: '80px', 
+                  width: '56px', 
+                  height: '56px', 
                   margin: '0 auto 20px', 
                   border: '2px solid rgba(255,255,255,0.3)',
                   borderRadius: '50%',
@@ -475,15 +480,15 @@ export const LandingPage = () => {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Scale size={40} style={{ color: 'white' }} />
+                  <Scale size={28} style={{ color: 'white' }} />
                 </div>
                 <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Nutritionist-Approved</h3>
                 <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Complete & balanced, whole food recipes that exceed AAFCO standards.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
-                  width: '80px', 
-                  height: '80px', 
+                  width: '56px', 
+                  height: '56px', 
                   margin: '0 auto 20px', 
                   border: '2px solid rgba(255,255,255,0.3)',
                   borderRadius: '50%',
@@ -491,7 +496,7 @@ export const LandingPage = () => {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  <Home size={40} style={{ color: 'white' }} />
+                  <Home size={28} style={{ color: 'white' }} />
                 </div>
                 <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>FoeGuard Farms</h3>
                 <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Humanely raised on organic feed, open pastures, and small-batch harvests.</p>
@@ -587,13 +592,18 @@ export const LandingPage = () => {
                       background: '#E8DDD0',
                       borderRadius: '8px',
                       marginBottom: '16px',
+                      overflow: 'hidden',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       color: '#8B4513',
                       fontSize: '14px'
                     }}>
-                      {protein.name} Image
+                      {protein.image ? (
+                        <img src={protein.image} alt={protein.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        `${protein.name} Image`
+                      )}
                     </div>
                     <h3 style={{ 
                       fontSize: '20px', 
