@@ -1387,7 +1387,7 @@ h2, h3, h4 {
   display: block;
   font-family: var(--font-body);
   font-size: 26px;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--barn-red);
   margin-bottom: 8px;
 }
