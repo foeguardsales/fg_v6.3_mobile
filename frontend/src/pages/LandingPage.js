@@ -261,17 +261,27 @@ export const LandingPage = () => {
                 }}
                 className="photo-scroll-container"
               >
-                {[...Array(12)].map((_, i) => (
+                {[
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/skuox6lk_customer%20image%201.jpg',
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/i8unoyzf_customer%20image%202.jpg',
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0chc5rd7_customer%20image%203.jpg',
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ztqi7osh_customer%20image%204.jpg',
+                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/mdrqjiyi_customer%20image%205.jpg',
+                  null, null, null, null, null, null, null
+                ].map((url, i) => (
                   <div 
                     key={i}
-                    className="customer-photo-placeholder"
                     style={{
                       minWidth: '250px',
                       height: '250px',
                       borderRadius: '12px',
-                      background: '#E8DDD0'
+                      background: '#E8DDD0',
+                      overflow: 'hidden',
+                      flexShrink: 0
                     }}
-                  ></div>
+                  >
+                    {url && <img src={url} alt={`Customer photo ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                  </div>
                 ))}
               </div>
 
@@ -342,11 +352,11 @@ export const LandingPage = () => {
                   draggable={false}
                   style={{
                     position: 'absolute',
-                    top: '-10%',
-                    left: '-10%',
-                    width: '120%',
-                    height: '120%',
-                    objectFit: 'cover'
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain'
                   }}
                 />
                 {/* FoeGuard meat (clipped by slider) */}
@@ -363,12 +373,9 @@ export const LandingPage = () => {
                     alt="FoeGuard fresh raw dog food"
                     draggable={false}
                     style={{
-                      position: 'absolute',
-                      top: '-10%',
-                      left: '-10%',
-                      width: '120%',
-                      height: '120%',
-                      objectFit: 'cover'
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain'
                     }}
                   />
                 </div>
