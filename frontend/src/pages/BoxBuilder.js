@@ -786,11 +786,12 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   return (
     <div className="product-card" data-testid={`product-${product.product_id}`}>
       <h4 style={{ 
-        fontSize: '20px', 
+        fontSize: '18px', 
         margin: '0 0 8px 0', 
-        textTransform: 'capitalize'
+        textTransform: 'none',
+        fontWeight: '600'
       }}>
-        {product.protein_type}
+        {product.name}
       </h4>
       <p style={{ 
         fontSize: '13px', 
