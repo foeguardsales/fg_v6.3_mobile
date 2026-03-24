@@ -100,8 +100,10 @@ export const NewToRawPage = () => {
         </section>
 
         {/* Header Image */}
-        <div style={{ width: '100%', maxHeight: '400px', overflow: 'hidden' }}>
-          <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/cohsros6_header.png" alt="Fresh raw dog food ingredients" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 20px' }}>
+          <div style={{ width: '100%', height: '350px', overflow: 'hidden', borderRadius: '16px' }}>
+            <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/cohsros6_header.png" alt="Fresh raw dog food ingredients" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }} />
+          </div>
         </div>
 
         {/* SECTION 3 — How FoeGuard compares */}
