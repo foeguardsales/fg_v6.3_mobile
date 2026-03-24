@@ -107,7 +107,7 @@ export const NewToRawPage = () => {
         </div>
 
         {/* SECTION 3 — How FoeGuard compares */}
-        <section className="ntf-section ntf-safe" style={{ background: '#F5F3EF' }}>
+        <section className="ntf-section ntf-safe" style={{ background: 'white' }}>
           <div className="ntf-container">
             <h2 style={{ textTransform: 'none' }}>How FoeGuard compares</h2>
             
