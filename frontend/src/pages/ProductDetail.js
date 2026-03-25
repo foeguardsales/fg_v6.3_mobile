@@ -69,25 +69,22 @@ export const ProductDetailPage = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  // Initialize from sessionStorage immediately
+  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
+  const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+  const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+  
   const [quantity, setQuantity] = useState(6);
   const [cartOpen, setCartOpen] = useState(false);
-  const [boxSize, setBoxSize] = useState(18);
-  const [selectedProteins, setSelectedProteins] = useState({});
-  const [selectedTreats, setSelectedTreats] = useState([]);
+  const [boxSize, setBoxSize] = useState(initialBoxSize);
+  const [selectedProteins, setSelectedProteins] = useState(initialProteins);
+  const [selectedTreats, setSelectedTreats] = useState(initialTreats);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const root = document.getElementById('root');
     if (root) root.scrollTop = 0;
-    
-    // Load cart state
-    const savedBoxSize = sessionStorage.getItem('boxSize');
-    const savedProteins = sessionStorage.getItem('selectedProteins');
-    const savedTreats = sessionStorage.getItem('selectedTreats');
-    
-    if (savedBoxSize) setBoxSize(parseInt(savedBoxSize));
-    if (savedProteins) setSelectedProteins(JSON.parse(savedProteins));
-    if (savedTreats) setSelectedTreats(JSON.parse(savedTreats));
     
     // Load all products for pricing
     axios.get(`${API}/products`)
