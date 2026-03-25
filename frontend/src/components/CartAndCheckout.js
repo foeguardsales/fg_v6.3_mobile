@@ -15,7 +15,7 @@ const DISCOUNT_RATES = {
 };
 
 // Cart Drawer Component (slide-in from right)
-export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice }) => {
+export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat }) => {
   const [promoCode, setPromoCode] = useState('');
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [specialInstructions, setSpecialInstructions] = useState('');
@@ -88,17 +88,55 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             const itemTotal = pricePerSixLb * quantity;
             
             return (
-              <div key={productId} className="cart-item" data-testid={`cart-item-${productId}`}>
+              <div key={productId} className="cart-item" data-testid={`cart-item-${productId}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span>{data.name} ({data.qty}lb)</span>
-                <span>${itemTotal.toFixed(2)}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span>${itemTotal.toFixed(2)}</span>
+                  {onRemoveProtein && (
+                    <button
+                      onClick={() => onRemoveProtein(productId)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#A41E34',
+                        cursor: 'pointer',
+                        fontSize: '18px',
+                        padding: '4px 8px',
+                        lineHeight: 1
+                      }}
+                      title="Remove"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
               </div>
             );
           })}
           
           {selectedTreats.map(treat => (
-            <div key={treat.treat_id} className="cart-item" data-testid={`cart-treat-${treat.treat_id}`}>
-              <span>{treat.name}</span>
-              <span>${treat.price.toFixed(2)}</span>
+            <div key={treat.treat_id} className="cart-item" data-testid={`cart-treat-${treat.treat_id}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>{treat.name} (x{treat.quantity || 1})</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span>${(treat.price * (treat.quantity || 1)).toFixed(2)}</span>
+                {onRemoveTreat && (
+                  <button
+                    onClick={() => onRemoveTreat(treat.treat_id)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#A41E34',
+                      cursor: 'pointer',
+                      fontSize: '18px',
+                      padding: '4px 8px',
+                      lineHeight: 1
+                    }}
+                    title="Remove"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
             </div>
           ))}
           

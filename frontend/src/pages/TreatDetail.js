@@ -187,6 +187,21 @@ export const TreatDetailPage = () => {
         onProceed={() => navigate('/build-box')}
         getDiscountedPrice={getDiscountedPrice}
         getBasePrice={getBasePrice}
+        onRemoveProtein={(productId) => {
+          setSelectedProteins(prev => {
+            const updated = { ...prev };
+            delete updated[productId];
+            sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+            return updated;
+          });
+        }}
+        onRemoveTreat={(treatId) => {
+          setSelectedTreats(prev => {
+            const updated = prev.filter(t => t.treat_id !== treatId);
+            sessionStorage.setItem('selectedTreats', JSON.stringify(updated));
+            return updated;
+          });
+        }}
       />
       
       {/* Floating Cart Button */}

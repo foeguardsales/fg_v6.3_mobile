@@ -50,11 +50,17 @@ export const BoxBuilder = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
-  const [boxSize, setBoxSize] = useState(18); // Default to 18lb for dog
+  
+  // Load from sessionStorage on mount
+  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
+  const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+  const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+  
+  const [boxSize, setBoxSize] = useState(initialBoxSize);
   const [products, setProducts] = useState([]);
   const [treats, setTreats] = useState([]);
-  const [selectedProteins, setSelectedProteins] = useState({});
-  const [selectedTreats, setSelectedTreats] = useState([]);
+  const [selectedProteins, setSelectedProteins] = useState(initialProteins);
+  const [selectedTreats, setSelectedTreats] = useState(initialTreats);
   const [orderComplete, setOrderComplete] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
@@ -235,10 +241,14 @@ export const BoxBuilder = () => {
   };
 
   const handleUpdateProtein = (productId, productName, quantity) => {
-    setSelectedProteins(prev => ({ 
-      ...prev, 
-      [productId]: { qty: quantity, name: productName }
-    }));
+    setSelectedProteins(prev => {
+      const updated = { 
+        ...prev, 
+        [productId]: { qty: quantity, name: productName }
+      };
+      sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   const handleToggleTreat = (treat, newQuantity) => {
@@ -825,6 +835,21 @@ export const BoxBuilder = () => {
               }}
               getDiscountedPrice={getDiscountedPrice}
               getBasePrice={getBasePrice}
+              onRemoveProtein={(productId) => {
+                setSelectedProteins(prev => {
+                  const updated = { ...prev };
+                  delete updated[productId];
+                  sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                  return updated;
+                });
+              }}
+              onRemoveTreat={(treatId) => {
+                setSelectedTreats(prev => {
+                  const updated = prev.filter(t => t.treat_id !== treatId);
+                  sessionStorage.setItem('selectedTreats', JSON.stringify(updated));
+                  return updated;
+                });
+              }}
             />
         </>
       </div>
