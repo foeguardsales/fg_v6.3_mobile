@@ -86,6 +86,21 @@ export const ProductDetailPage = () => {
     const root = document.getElementById('root');
     if (root) root.scrollTop = 0;
     
+    // Sync with sessionStorage whenever the page becomes visible
+    const syncFromStorage = () => {
+      const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
+      const savedProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+      const savedTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+      
+      if (savedBoxSize && savedBoxSize !== boxSize) setBoxSize(savedBoxSize);
+      setSelectedProteins(savedProteins);
+      setSelectedTreats(savedTreats);
+    };
+    
+    // Sync on mount and when window regains focus
+    syncFromStorage();
+    window.addEventListener('focus', syncFromStorage);
+    
     // Load all products for pricing
     axios.get(`${API}/products`)
       .then(res => setProducts(res.data))
@@ -95,6 +110,10 @@ export const ProductDetailPage = () => {
       .then(res => setProduct(res.data))
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
+    
+    return () => {
+      window.removeEventListener('focus', syncFromStorage);
+    };
   }, [productId]);
 
   const handleBackToMenu = () => {

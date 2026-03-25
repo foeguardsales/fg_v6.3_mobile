@@ -61,14 +61,35 @@ export const TreatDetailPage = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [cartOpen, setCartOpen] = useState(false);
-  const [boxSize, setBoxSize] = useState(18);
-  const [selectedProteins, setSelectedProteins] = useState({});
-  const [selectedTreats, setSelectedTreats] = useState([]);
+  
+  // Initialize from sessionStorage immediately
+  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
+  const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+  const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+  
+  const [boxSize, setBoxSize] = useState(initialBoxSize);
+  const [selectedProteins, setSelectedProteins] = useState(initialProteins);
+  const [selectedTreats, setSelectedTreats] = useState(initialTreats);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const root = document.getElementById('root');
     if (root) root.scrollTop = 0;
+    
+    // Sync with sessionStorage whenever the page becomes visible
+    const syncFromStorage = () => {
+      const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
+      const savedProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+      const savedTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+      
+      if (savedBoxSize && savedBoxSize !== boxSize) setBoxSize(savedBoxSize);
+      setSelectedProteins(savedProteins);
+      setSelectedTreats(savedTreats);
+    };
+    
+    // Sync on mount and when window regains focus
+    syncFromStorage();
+    window.addEventListener('focus', syncFromStorage);
     
     const fetchTreat = async () => {
       try {
@@ -82,21 +103,16 @@ export const TreatDetailPage = () => {
       }
     };
     
-    // Load cart state from sessionStorage
-    const savedBoxSize = sessionStorage.getItem('boxSize');
-    const savedProteins = sessionStorage.getItem('selectedProteins');
-    const savedTreats = sessionStorage.getItem('selectedTreats');
-    
-    if (savedBoxSize) setBoxSize(parseInt(savedBoxSize));
-    if (savedProteins) setSelectedProteins(JSON.parse(savedProteins));
-    if (savedTreats) setSelectedTreats(JSON.parse(savedTreats));
-    
     // Load all products for pricing
     axios.get(`${BACKEND_URL}/api/products`)
       .then(res => setProducts(res.data))
       .catch(err => console.error('Error loading products:', err));
     
     fetchTreat();
+    
+    return () => {
+      window.removeEventListener('focus', syncFromStorage);
+    };
   }, [treatId]);
 
   const handleBackToMenu = () => {

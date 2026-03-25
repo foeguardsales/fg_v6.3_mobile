@@ -120,10 +120,27 @@ export const BoxBuilder = () => {
         });
       }
       
-      // Sync boxSize from sessionStorage when returning to menu
+      // Sync all cart state from sessionStorage when returning to menu
       const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
+      const savedProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+      const savedTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+      
       if (savedBoxSize && savedBoxSize !== boxSize) {
         setBoxSize(savedBoxSize);
+      }
+      
+      // Update selectedProteins if different
+      const currentProteinsStr = JSON.stringify(selectedProteins);
+      const savedProteinsStr = JSON.stringify(savedProteins);
+      if (currentProteinsStr !== savedProteinsStr) {
+        setSelectedProteins(savedProteins);
+      }
+      
+      // Update selectedTreats if different
+      const currentTreatsStr = JSON.stringify(selectedTreats);
+      const savedTreatsStr = JSON.stringify(savedTreats);
+      if (currentTreatsStr !== savedTreatsStr) {
+        setSelectedTreats(savedTreats);
       }
       
       // Check if there's a product to add from product detail page
