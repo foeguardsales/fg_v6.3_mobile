@@ -187,6 +187,16 @@ export const TreatDetailPage = () => {
         onProceed={() => navigate('/build-box')}
         getDiscountedPrice={getDiscountedPrice}
         getBasePrice={getBasePrice}
+        onAdjustProtein={(productId, productName, newQty) => {
+          setSelectedProteins(prev => {
+            const updated = { 
+              ...prev, 
+              [productId]: { qty: newQty, name: productName }
+            };
+            sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+            return updated;
+          });
+        }}
         onRemoveProtein={(productId) => {
           setSelectedProteins(prev => {
             const updated = { ...prev };

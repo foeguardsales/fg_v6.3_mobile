@@ -120,6 +120,12 @@ export const BoxBuilder = () => {
         });
       }
       
+      // Sync boxSize from sessionStorage when returning to menu
+      const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
+      if (savedBoxSize && savedBoxSize !== boxSize) {
+        setBoxSize(savedBoxSize);
+      }
+      
       // Check if there's a product to add from product detail page
       const addToBox = sessionStorage.getItem('addToBox');
       if (addToBox) {
@@ -835,6 +841,16 @@ export const BoxBuilder = () => {
               }}
               getDiscountedPrice={getDiscountedPrice}
               getBasePrice={getBasePrice}
+              onAdjustProtein={(productId, productName, newQty) => {
+                setSelectedProteins(prev => {
+                  const updated = { 
+                    ...prev, 
+                    [productId]: { qty: newQty, name: productName }
+                  };
+                  sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                  return updated;
+                });
+              }}
               onRemoveProtein={(productId) => {
                 setSelectedProteins(prev => {
                   const updated = { ...prev };

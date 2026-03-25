@@ -15,7 +15,7 @@ const DISCOUNT_RATES = {
 };
 
 // Cart Drawer Component (slide-in from right)
-export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat }) => {
+export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein }) => {
   const [promoCode, setPromoCode] = useState('');
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [specialInstructions, setSpecialInstructions] = useState('');
@@ -88,10 +88,70 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             const itemTotal = pricePerSixLb * quantity;
             
             return (
-              <div key={productId} className="cart-item" data-testid={`cart-item-${productId}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>{data.name} ({data.qty}lb)</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span>${itemTotal.toFixed(2)}</span>
+              <div key={productId} className="cart-item" data-testid={`cart-item-${productId}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0' }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>{data.name}</div>
+                  <div style={{ fontSize: '14px', color: '#666' }}>${itemTotal.toFixed(2)}</div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {onAdjustProtein && (
+                    <>
+                      <button
+                        onClick={() => {
+                          const newQty = Math.max(0, data.qty - 6);
+                          if (newQty === 0) {
+                            onRemoveProtein(productId);
+                          } else {
+                            onAdjustProtein(productId, product.name, newQty);
+                          }
+                        }}
+                        style={{
+                          width: '28px',
+                          height: '28px',
+                          borderRadius: '50%',
+                          border: '1px solid #88302F',
+                          background: '#fff',
+                          color: '#88302F',
+                          fontSize: '16px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        −
+                      </button>
+                      <span style={{ minWidth: '50px', textAlign: 'center', fontSize: '14px', fontWeight: '600' }}>
+                        {data.qty} lb
+                      </span>
+                      <button
+                        onClick={() => {
+                          const currentTotal = Object.values(selectedProteins).reduce((sum, d) => sum + d.qty, 0);
+                          const spaceLeft = boxSize - currentTotal;
+                          if (spaceLeft >= 6) {
+                            onAdjustProtein(productId, product.name, data.qty + 6);
+                          }
+                        }}
+                        disabled={Object.values(selectedProteins).reduce((sum, d) => sum + d.qty, 0) + 6 > boxSize}
+                        style={{
+                          width: '28px',
+                          height: '28px',
+                          borderRadius: '50%',
+                          border: '1px solid #88302F',
+                          background: '#fff',
+                          color: '#88302F',
+                          fontSize: '16px',
+                          cursor: Object.values(selectedProteins).reduce((sum, d) => sum + d.qty, 0) + 6 > boxSize ? 'not-allowed' : 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          opacity: Object.values(selectedProteins).reduce((sum, d) => sum + d.qty, 0) + 6 > boxSize ? 0.4 : 1
+                        }}
+                      >
+                        +
+                      </button>
+                    </>
+                  )}
                   {onRemoveProtein && (
                     <button
                       onClick={() => onRemoveProtein(productId)}
@@ -100,9 +160,10 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                         border: 'none',
                         color: '#A41E34',
                         cursor: 'pointer',
-                        fontSize: '18px',
+                        fontSize: '20px',
                         padding: '4px 8px',
-                        lineHeight: 1
+                        lineHeight: 1,
+                        marginLeft: '4px'
                       }}
                       title="Remove"
                     >
