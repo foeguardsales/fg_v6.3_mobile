@@ -390,7 +390,7 @@ export const ProductDetailPage = () => {
                       fontWeight: '600',
                       color: '#2B2B2B'
                     }}>
-                      {quantity}
+                      {quantity} lb
                     </span>
                     <button
                       onClick={() => {

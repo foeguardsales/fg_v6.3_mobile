@@ -231,6 +231,7 @@ export const BoxBuilder = () => {
       setSelectedProteins({});
     }
     setBoxSize(newSize);
+    sessionStorage.setItem('boxSize', newSize.toString());
   };
 
   const handleUpdateProtein = (productId, productName, quantity) => {
