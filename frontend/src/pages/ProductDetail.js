@@ -208,6 +208,46 @@ export const ProductDetailPage = () => {
         getDiscountedPrice={getDiscountedPrice}
         getBasePrice={getBasePrice}
       />
+      
+      {/* Floating Cart Button */}
+      <button
+        onClick={() => setCartOpen(true)}
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          background: '#88302F',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '50px',
+          padding: '16px 24px',
+          fontSize: '16px',
+          fontWeight: '600',
+          cursor: 'pointer',
+          boxShadow: '0 4px 12px rgba(136, 48, 47, 0.3)',
+          zIndex: 999,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          transition: 'all 0.2s'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.background = '#732827';
+          e.target.style.transform = 'translateY(-2px)';
+          e.target.style.boxShadow = '0 6px 16px rgba(136, 48, 47, 0.4)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.background = '#88302F';
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.boxShadow = '0 4px 12px rgba(136, 48, 47, 0.3)';
+        }}
+      >
+        <span style={{ fontSize: '20px' }}>🛒</span>
+        <span>
+          {Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0)}/{boxSize}lb
+        </span>
+      </button>
+      
       <div className="product-detail-page" style={{ background: '#F2F4F3', minHeight: '100vh', padding: '0 0 80px' }}>
         <div className="product-detail-wrapper" style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 24px' }}>
           {/* Back Button */}
@@ -275,43 +315,6 @@ export const ProductDetailPage = () => {
                 margin: '0 0 20px 0',
                 whiteSpace: 'pre-line'
               }}>{product.description}</p>
-              
-              {/* Box Size Selector */}
-              <div style={{ marginTop: '24px' }}>
-                <h3 style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B', marginBottom: '12px' }}>Choose Box Size</h3>
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                  {[12, 18, 24, 30].map(size => (
-                    <button
-                      key={size}
-                      onClick={() => {
-                        setBoxSize(size);
-                        sessionStorage.setItem('boxSize', size.toString());
-                        // Reset quantity to 6 when box size changes
-                        setQuantity(6);
-                      }}
-                      style={{
-                        padding: '12px 24px',
-                        borderRadius: '8px',
-                        border: boxSize === size ? '2px solid #88302F' : '2px solid #E8DDD0',
-                        background: boxSize === size ? '#FAF8F5' : '#fff',
-                        color: boxSize === size ? '#88302F' : '#5A5A5A',
-                        fontSize: '15px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        minWidth: '80px'
-                      }}
-                    >
-                      {size}lb
-                      {DISCOUNT_RATES[size] > 0 && (
-                        <div style={{ fontSize: '12px', fontWeight: '500', color: '#5F7C5A', marginTop: '2px' }}>
-                          {DISCOUNT_RATES[size] * 100}% off
-                        </div>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
               
               {/* Quantity Selector and Add to Cart */}
               <div style={{ 

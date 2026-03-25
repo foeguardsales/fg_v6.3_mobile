@@ -188,6 +188,46 @@ export const TreatDetailPage = () => {
         getDiscountedPrice={getDiscountedPrice}
         getBasePrice={getBasePrice}
       />
+      
+      {/* Floating Cart Button */}
+      <button
+        onClick={() => setCartOpen(true)}
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          background: '#88302F',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '50px',
+          padding: '16px 24px',
+          fontSize: '16px',
+          fontWeight: '600',
+          cursor: 'pointer',
+          boxShadow: '0 4px 12px rgba(136, 48, 47, 0.3)',
+          zIndex: 999,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          transition: 'all 0.2s'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.background = '#732827';
+          e.target.style.transform = 'translateY(-2px)';
+          e.target.style.boxShadow = '0 6px 16px rgba(136, 48, 47, 0.4)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.background = '#88302F';
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.boxShadow = '0 4px 12px rgba(136, 48, 47, 0.3)';
+        }}
+      >
+        <span style={{ fontSize: '20px' }}>🛒</span>
+        <span>
+          {Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0)}/{boxSize}lb
+        </span>
+      </button>
+      
       <div className="product-detail-page" style={{ background: '#FDFCFA', minHeight: '100vh', paddingTop: '80px' }}>
         <div className="product-detail-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
           <button
