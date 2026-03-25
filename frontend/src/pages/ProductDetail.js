@@ -246,6 +246,7 @@ export const ProductDetailPage = () => {
         <span>
           {Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0)}/{boxSize}lb
         </span>
+        <span style={{ fontSize: '18px' }}>→</span>
       </button>
       
       <div className="product-detail-page" style={{ background: '#F2F4F3', minHeight: '100vh', padding: '0 0 80px' }}>
@@ -315,6 +316,60 @@ export const ProductDetailPage = () => {
                 margin: '0 0 20px 0',
                 whiteSpace: 'pre-line'
               }}>{product.description}</p>
+              
+              {/* Box Size Selector - Compact */}
+              <div style={{ marginTop: '24px', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B' }}>Box Size:</span>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <div style={{
+                      padding: '10px 20px',
+                      borderRadius: '8px',
+                      border: '2px solid #88302F',
+                      background: '#FAF8F5',
+                      color: '#88302F',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
+                    }}>
+                      <span>{boxSize}lb</span>
+                      {DISCOUNT_RATES[boxSize] > 0 && (
+                        <span style={{ fontSize: '13px', color: '#5F7C5A' }}>
+                          ({DISCOUNT_RATES[boxSize] * 100}% off)
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => {
+                        // Cycle through box sizes
+                        const sizes = [12, 18, 24, 30];
+                        const currentIndex = sizes.indexOf(boxSize);
+                        const nextSize = sizes[(currentIndex + 1) % sizes.length];
+                        setBoxSize(nextSize);
+                        sessionStorage.setItem('boxSize', nextSize.toString());
+                        setQuantity(6);
+                      }}
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: '6px',
+                        border: '1px solid #E8DDD0',
+                        background: '#fff',
+                        color: '#88302F',
+                        fontSize: '13px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                      onMouseEnter={(e) => e.target.style.background = '#FAF8F5'}
+                      onMouseLeave={(e) => e.target.style.background = '#fff'}
+                    >
+                      Change
+                    </button>
+                  </div>
+                </div>
+              </div>
               
               {/* Quantity Selector and Add to Cart */}
               <div style={{ 

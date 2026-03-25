@@ -532,6 +532,7 @@ export const BoxBuilder = () => {
               {isBoxComplete && (
                 <span className="cart-complete-badge">✓</span>
               )}
+              <span style={{ marginLeft: '8px', fontSize: '18px' }}>→</span>
             </button>
           </div>
 

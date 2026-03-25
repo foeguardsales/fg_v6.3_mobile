@@ -226,6 +226,7 @@ export const TreatDetailPage = () => {
         <span>
           {Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0)}/{boxSize}lb
         </span>
+        <span style={{ fontSize: '18px' }}>→</span>
       </button>
       
       <div className="product-detail-page" style={{ background: '#FDFCFA', minHeight: '100vh', paddingTop: '80px' }}>
