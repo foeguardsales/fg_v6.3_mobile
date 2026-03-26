@@ -194,7 +194,7 @@ export const LandingPage = () => {
                 color: '#FFFFFF',
                 textShadow: '1px 1px 4px rgba(0,0,0,0.5)'
               }}>
-                Human-grade, organic raw dog food delivery. Farm-to-bowl in just 3 days.
+                Human-grade, organic raw dog food delivery — ready at your door in just 3 days.
               </p>
               <button 
                 className="btn-hero" 
@@ -219,10 +219,13 @@ export const LandingPage = () => {
         {/* ===== SECTION — FROM OUR FARM TO YOUR BOWL ===== */}
         <section className="problem-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>From our farm to your bowl</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>From our farm to your bowl.</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                Our love for dogs and heritage in farming help us understand food from soil to serving. That's why we created FoeGuard — a farm-to-bowl service delivering balanced raw meals crafted with fresh, nutrient-rich ingredients. Each meal is designed to support digestion, maximize nutrient absorption, and help support a vibrant, healthy life for your dog.
+                With roots in Ontario farming and a deep love for dogs, we understand that real nutrition starts long before the bowl — with how food is raised, handled, and prepared.
+              </p>
+              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
+                That's why we built FoeGuard: to deliver fresh, professionally balanced raw meals using organic, human-grade ingredients we raise and source right here in Ontario. So your dog gets food made with the same care and standards we expect for our own family.
               </p>
             </div>
           </div>
@@ -332,9 +335,9 @@ export const LandingPage = () => {
         {/* ===== SECTION — BETTER FOOD ===== */}
         <section className="standard-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', color: 'white', fontWeight: '600' }}>Real food for dogs, raised right in Ontario</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', color: 'white', fontWeight: '600' }}>Real food for dogs, raised right in Ontario.</h2>
             <p style={{ fontSize: '17px', marginBottom: '48px', textAlign: 'center', color: 'rgba(255,255,255,0.9)' }}>
-              Skip the fillers, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and ethical sourcing - quality you wont find in a store.
+              Skip the fillers, preservatives, and retail markups. By delivering directly from our farm, we invest in better ingredients and ethical sourcing — quality you won't find in store.
             </p>
 
             {/* Before/After Slider Comparison */}
@@ -454,7 +457,7 @@ export const LandingPage = () => {
                   <Beef size={28} style={{ color: 'white' }} />
                 </div>
                 <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Organic Raw Food</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Nutrient-rich meat and veggies, raised without GMOs, antibiotics or hormones.</p>
+                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Nutrient-rich meat and vegetables, raised without GMOs, antibiotics, or hormones.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -469,8 +472,8 @@ export const LandingPage = () => {
                 }}>
                   <CheckCircle size={28} style={{ color: 'white' }} />
                 </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human Grade Safety</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>The highest quality and safety food standards in Canada - for your dog.</p>
+                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human-Grade Safety</h3>
+                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Made to the highest food quality and safety standards in Canada.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -486,7 +489,7 @@ export const LandingPage = () => {
                   <Scale size={28} style={{ color: 'white' }} />
                 </div>
                 <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Nutritionist-Approved</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Complete & balanced, whole food recipes that exceed AAFCO standards.</p>
+                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Complete and balanced whole food recipes that exceed AAFCO standards.</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ 
@@ -535,7 +538,7 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '16px', textTransform: 'none', fontWeight: '600' }}>Choose your pets favourites</h2>
             <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '48px', color: '#666', maxWidth: '900px', margin: '0 auto 48px' }}>
-              We give pet parents a variety of stress-free, affordable options to feed the way nature intended—so you can support your pet's cravings and local Canadian farms, all at retail cost.
+              Introduce your dog to their own raw food cuisine. We offer a variety of protein options and blends to suit their unique dietary needs and the flavours they love.
             </p>
             
             {/* Proteins Carousel */}
@@ -757,15 +760,18 @@ export const LandingPage = () => {
         {/* ===== SECTION — OUR STORY ===== */}
         <section className="about-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
           <div className="section-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B', fontWeight: '600' }}>Our story ... is your story?</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B', fontWeight: '600' }}>Our story</h2>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
-              Overwhelmed by the health challenges caused by processed foods, our family turned to our farm to grow real, wholesome ingredients. The transformation was life-changing: more energy, better digestion, clearer minds, and even glowing skin.
+              Like many pet parents, we trusted the labels. We fed what the stores recommended. But when our own family started struggling with health issues linked to processed food, we turned to our farm and started growing real, wholesome ingredients ourselves. The difference changed everything for us.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
-              Inspired by these results, we decided to feed our dogs the same way—natural, fresh, and just like family. The change was incredible! Their energy soared, their coats shone, and their health improved, proving one simple truth—they're carnivores. What started as a personal journey soon became a mission to help others. We began preparing meals for friends and neighbours, and that passion grew into profession - FoeGuard was born!
+              So we asked a simple question: why should our dogs eat any differently?
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
+              We started feeding them the same way — fresh, natural, raised with care. The results confirmed what we already believed. Dogs are carnivores, and they thrive when they eat like it.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7', color: '#333' }}>
-              We've worked tirelessly over the last 10 years with professional nutritionists, veterinarians, biologists and dog behaviourists to ensure your pets are given care without compromise - with the same quality and safety we use at our own table at home.
+              What began as meals for our own dogs, then friends and neighbours, has grown over the past 10 years into FoeGuard. Along the way, we've worked closely with canine nutritionists, biologists, and behaviourists to make sure every recipe meets one standard: if it's not good enough for our table, it's not going in your dog's bowl.
             </p>
           </div>
         </section>
