@@ -762,7 +762,7 @@ export const LandingPage = () => {
           <div className="section-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
             <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B', fontWeight: '600' }}>Our story</h2>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
-              Like many pet parents, we trusted the labels. We fed what the stores recommended. But when our own family started struggling with health issues linked to processed food, we turned to our farm and started growing real, wholesome ingredients ourselves. The difference changed everything for us.
+              Like many pet parents, we trusted the labels and fed what the stores recommended. But when our own family started struggling with health issues linked to processed food, we turned to our farm and began growing real, wholesome ingredients ourselves — and the difference changed everything for us.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
               So we asked a simple question: why should our dogs eat any differently?
