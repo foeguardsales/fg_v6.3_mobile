@@ -227,6 +227,9 @@ export const LandingPage = () => {
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
                 That's why we built FoeGuard: to deliver fresh, professionally balanced raw meals using organic, human-grade ingredients we raise and source right here in Ontario. So your dog gets food made with the same care and standards we expect for our own family.
               </p>
+              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
+                We make raw feeding simple, exciting, and tailored to your dog's needs.
+              </p>
             </div>
           </div>
         </section>
