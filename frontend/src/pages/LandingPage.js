@@ -222,10 +222,7 @@ export const LandingPage = () => {
             <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>From our farm to your bowl.</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                With roots in Ontario farming and a deep love for dogs, we understand that real nutrition starts long before the bowl — with how food is raised, handled, and prepared.
-              </p>
-              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
-                That's why we built FoeGuard: to deliver fresh, professionally balanced raw meals using organic, human-grade ingredients we raise and source right here in Ontario. So your dog gets food made with the same care and standards we expect for our own family.
+                Good food starts before the bowl, with how ingredients are raised, handled, and prepared. As an Ontario family-run farm, we make fresh raw meals so your dog gets food that supports a healthier, more vibrant life — made with the same care you would expect at your own table.
               </p>
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
                 We make raw feeding simple, exciting, and tailored to what your dog needs.
