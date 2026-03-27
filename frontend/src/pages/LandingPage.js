@@ -219,7 +219,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — FROM OUR FARM TO YOUR BOWL ===== */}
         <section className="problem-section">
           <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>From our farm to your bowl.</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>Ontario's farm-fresh raw dog food — delivered to your door in just 3 days.</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
                 Good food starts before the bowl, with how ingredients are raised, handled, and prepared. As an Ontario family-run farm, we make fresh raw meals so your dog gets food that supports a healthier, more vibrant life — made with the same care you would expect at your own table.
