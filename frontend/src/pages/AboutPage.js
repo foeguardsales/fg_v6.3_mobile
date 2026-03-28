@@ -67,7 +67,7 @@ export const AboutPage = () => {
               Since we are small run operation, unlike big pet food manufacturers we rely on our community of FoeGuardians for support.
             </p>
             <p style={{ fontSize: '17px' }}>
-              All of our ingredients are humanely raised in small batches at our farm and local partnered farms in Ontario.
+              All of our ingredients are humanely raised in small batch harvests at our farm and local partnered farms in Ontario.
             </p>
           </div>
         </section>
