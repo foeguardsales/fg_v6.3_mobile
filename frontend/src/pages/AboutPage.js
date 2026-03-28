@@ -99,7 +99,7 @@ export const AboutPage = () => {
               We give pet parents a variety of stress-free, affordable options to feed the way nature intended—so you can support your pet's cravings and local Canadian farms, all at retail cost.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '0' }}>
-              Unlike most manufacturers, we handle every step in-house to ensure a refined farm-to-bowl experience that provides customers with unmatched quality, convenience, and personal service.
+              Unlike most manufacturers, we handle every step in-house to ensure a consistent delivery service that provides you with unmatched quality, convenience, and personal service.
             </p>
           </div>
         </section>
