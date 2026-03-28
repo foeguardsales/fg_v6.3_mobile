@@ -140,8 +140,8 @@ export const LandingPage = () => {
             zIndex: 0
           }}>
             <img 
-              src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/qcsibcsf_header.png"
-              alt="Happy dog running in field"
+              src="https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/q9no77mv_site%20banner%20images_fg26%27.png"
+              alt="Happy dog on farm path"
               style={{
                 width: '100%',
                 height: '100%',
