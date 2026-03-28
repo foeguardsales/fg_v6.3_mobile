@@ -109,7 +109,7 @@ export const AboutPage = () => {
           <div className="about-container">
             <h2 style={{ textTransform: 'none' }}>Nature Nurtured by Science</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Our complete and balanced raw dog food meals are nutritionist approved and biologically appropriate raw food (BARF) recipes crafted to exceed industry standards (AAFCO) with fresh meat, fruits, veggies, superfoods and supplementation. We have fresh dinners for dogs and puppies.
+              Our complete and balanced meals are nutritionist approved and biologically appropriate raw food (BARF) recipes crafted to exceed industry standards (AAFCO) with fresh meat, fruits, veggies, superfoods and supplementation. We have fresh dinners for dogs and puppies.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               With decades of farming, meat processing, and nutrition expertise as a PHD in biology, we have worked with canine nutritionists, animal behaviourists and pet owners like yourself to develop the FoeGuard products you see today.
