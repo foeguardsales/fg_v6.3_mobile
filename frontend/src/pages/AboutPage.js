@@ -66,8 +66,8 @@ export const AboutPage = () => {
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Since we are small run operation, unlike big pet food manufacturers we rely on our community of FoeGuardians for support.
             </p>
-            <p style={{ fontSize: '17px', fontWeight: '600' }}>
-              All of our ingredients are humanely raised at our farm and local partnered farms in Ontario.
+            <p style={{ fontSize: '17px' }}>
+              All of our ingredients are humanely raised in small batches at our farm and local partnered farms in Ontario.
             </p>
           </div>
         </section>
