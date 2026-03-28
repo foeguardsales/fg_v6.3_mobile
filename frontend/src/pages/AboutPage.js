@@ -24,9 +24,9 @@ export const AboutPage = () => {
         {/* Hero Section */}
         <section className="about-hero">
           <div className="about-hero-content">
-            <h1 style={{ textTransform: 'none', fontFamily: "'Rubik', sans-serif" }}>Why FoeGuard</h1>
+            <h1 style={{ textTransform: 'none', fontFamily: "'Rubik', sans-serif" }}>Why FoeGuard?</h1>
             <p style={{ fontSize: '18px', color: '#D9C8B3', marginTop: '20px' }}>
-              Happy, healthy dogs start here.
+              Feed your dog the diet they were always meant to eat - without stressing over labels or what's right for them.
             </p>
           </div>
         </section>
@@ -35,13 +35,16 @@ export const AboutPage = () => {
         <section className="about-section about-story">
           <div className="about-container">
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-              Dogs are built to thrive on raw food. Their strong stomach acid, sharp teeth, and short digestive systems are designed to break down meat, organs, and bone with ease.
+              Dogs are designed by nature to break down real meat and bones - yet in recent times, we've been feeding our carnivores processed foods made with vague ingredients, questionable meats, and unethical sourcing.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-              But much of today's pet food is made for convenience and shelf life — not for your dog's biology. It follows a very different standard than the food we eat, from ingredient quality to how it is processed.
+              For decades, doctors have told us to eat fresh, local, minimally processed foods, so why should our pets be any different?
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
+              At FoeGuard, we believe dogs deserve food that's fresh, locally sourced, and aligned with nature. Everything a biologically-appropriate raw diet needs to support longevity, vitality, and true well-being.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-              At FoeGuard, we believe your dogs deserve better. That is why we make fresh, organic, human-grade raw meals that are locally sourced and aligned with nature.
+              You can see it in the details: a glossier coat, cleaner teeth, brighter eyes, and energy that feels youthful again. Real food doesn't just nourish—it deepens the bond we share with our pets.
             </p>
           </div>
         </section>
@@ -53,18 +56,18 @@ export const AboutPage = () => {
           </div>
         </section>
 
-        {/* From our family to yours */}
+        {/* From Our Family to Yours */}
         <section className="about-section about-why">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>From our family to yours</h2>
+            <h2 style={{ textTransform: 'none' }}>From Our Family to Yours</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              We are a family-run farm dedicated to raising animals as nature intended.
+              We are your direct and local connection to farm fresh raw pet food raised without the use of any antibiotics, hormones or any animals by-products in our feed ... we offer naturally raised meats from our farm to your bowl. Every FoeGuard product is made fresh using the same ingredients we use to feed our own family - with the same quality and finish, but made for your pets! If it's not good enough for our family then it's not good enough for yours!
             </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              With roots in Ontario farming and meat processing, we understand the food chain from farm to bowl. What started as a personal standard became something bigger when friends and neighbours began asking for the same meals we were preparing on our farm. We quickly realized that pet parents in Ontario wanted better access to healthy, transparent raw dog food.
+              Since we are small run operation, unlike big pet food manufacturers we rely on our community of FoeGuardians for support.
             </p>
             <p style={{ fontSize: '17px', fontWeight: '600' }}>
-              That is why we started FoeGuard: to help raise the standard of what pet food should be.
+              All of our ingredients are humanely raised at our farm and local partnered farms in Ontario.
             </p>
           </div>
         </section>
@@ -85,28 +88,56 @@ export const AboutPage = () => {
           </div>
         </section>
 
-        {/* When we say farm-to-bowl */}
+        {/* See the FoeGuard Difference */}
         <section className="about-section about-team-text">
           <div className="about-container">
             <h2 style={{ textTransform: 'none' }}>See the FoeGuard Difference</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              We raise our own human-grade ingredients in small batches. Each recipe is biologically appropriate and backed by science with support from a PhD biologist and a canine nutritionist. Every product is refined, tested, and fed to our own dogs before it ever reaches yours.
+              Get a crystal-clear understanding of your pet's health and what flavours they actually love.
             </p>
-            <p className="sub-heading" style={{ fontSize: '17px', marginBottom: '16px', fontWeight: '600' }}>Every FoeGuard meal is:</p>
-            <ul className="about-list" style={{ fontSize: '17px', lineHeight: '1.8' }}>
-              <li>Prepared in a government-inspected facility</li>
-              <li>Professionally formulated for complete, balanced nutrition that exceeds industry standards (AAFCO)</li>
-              <li>Free from antibiotics, hormones, fillers, and preservatives</li>
-              <li>Made to order and flash frozen at peak freshness</li>
-            </ul>
-            <p style={{ fontSize: '17px', marginTop: '24px' }}>
-              We do the preparation for you, so you never have to question what is in your dog's bowl.
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              We give pet parents a variety of stress-free, affordable options to feed the way nature intended—so you can support your pet's cravings and local Canadian farms, all at retail cost.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '0' }}>
+              Unlike most manufacturers, we handle every step in-house to ensure a refined farm-to-bowl experience that provides customers with unmatched quality, convenience, and personal service.
+            </p>
+          </div>
+        </section>
+
+        {/* Nature Nurtured by Science - NEW SECTION */}
+        <section className="about-section about-science" style={{ background: '#F5F3EF' }}>
+          <div className="about-container">
+            <h2 style={{ textTransform: 'none' }}>Nature Nurtured by Science</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Our complete and balanced raw dog food meals are nutritionist approved and biologically appropriate raw food (BARF) recipes crafted to exceed industry standards (AAFCO) with fresh meat, fruits, veggies, superfoods and supplementation. We have delicious dinners for dogs and puppies.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              With decades of farming, meat processing, and nutrition expertise as a PHD in biology, we have worked with canine nutritionists, animal behaviourists and pet owners like yourself to develop the FoeGuard products you see today.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '0' }}>
+              Feel free to customize any of our recipes or let us create a special meal tailored to your dog or homemade dish. We feed all carnivores!
+            </p>
+          </div>
+        </section>
+
+        {/* Meet Team FG - NEW SECTION */}
+        <section className="about-section about-team-fg">
+          <div className="about-container">
+            <h2 style={{ textTransform: 'none' }}>Meet Team FG</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              At FoeGuard, we don't just focus on what's in the bowl—we bring expertise and care to every step of the process.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
+              Our team includes a diverse range of professionals, from local Ontario farmers and nutritional experts like our on-site biologist, to pet specialists such as a canine behaviourist, dedicated drivers and partnered breeders.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '0' }}>
+              Every FoeGuard product meets rigorous human-grade safety standards and is crafted for species-appropriate dog nutrition. Our recipes are thoroughly tested and tried by dozens of dogs and cats to ensure consistent, premium quality, so you can trust that your pet is getting the very best every time.
             </p>
           </div>
         </section>
 
         {/* More than just healthy food plans */}
-        <section className="about-section about-mission">
+        <section className="about-section about-mission" style={{ background: '#F5F3EF' }}>
           <div className="about-container">
             <h2 style={{ textTransform: 'none', textAlign: 'center' }}>More than just healthy food plans</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px', textAlign: 'center' }}>
