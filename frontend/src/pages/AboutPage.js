@@ -61,7 +61,7 @@ export const AboutPage = () => {
           <div className="about-container">
             <h2 style={{ textTransform: 'none' }}>From Our Family to Yours</h2>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              We are your direct and local connection to farm fresh raw pet food raised without the use of any antibiotics, hormones or any animals by-products in our feed ... we offer naturally raised meats from our farm to your bowl. Every FoeGuard product is made fresh using the same ingredients we use to feed our own family - with the same quality and finish, but made for your pets! If it's not good enough for our family then it's not good enough for yours!
+              We are your direct and local connection to farm fresh raw pet food raised without the use of any antibiotics, hormones or any animals by-products in our feed ... we offer naturally raised meats from our farm to your bowl. Every FoeGuard product is made fresh using the same ingredients we use to feed our own family - with the same quality and finish, but made for your pets. If it's not good enough for our family then it's not good enough for yours!
             </p>
             <p style={{ fontSize: '17px', marginBottom: '16px' }}>
               Since we are small run operation, unlike big pet food manufacturers we rely on our community of FoeGuardians for support.
