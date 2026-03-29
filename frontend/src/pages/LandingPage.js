@@ -740,10 +740,6 @@ export const LandingPage = () => {
               </div>
             </div>
             
-            <p style={{ textAlign: 'center', marginTop: '32px', fontSize: '15px', color: '#666', fontStyle: 'italic' }}>
-              Subscribe to save and never run out.
-            </p>
-            
             <div style={{ textAlign: 'center', marginTop: '32px' }}>
               <button 
                 className="btn-primary" 
