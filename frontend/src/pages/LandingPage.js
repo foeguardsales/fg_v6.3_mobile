@@ -698,7 +698,7 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>How it works</h2>
             <p style={{ textAlign: 'center', fontSize: '18px', marginBottom: '48px', color: '#666' }}>
-              Feeding fresh is simpler than you think.
+              Your personal source for real, transparent raw dog food. Feeding fresh is simpler than you think.
             </p>
             
             <div className="steps-grid">
@@ -709,7 +709,7 @@ export const LandingPage = () => {
                 </div>
                 <h3>Made Fresh to Order</h3>
                 <p style={{ fontSize: '15px', color: '#666' }}>
-                  Create a meal plan or build your own box from our fresh raw menu.
+                  Create a meal plan or build your own box from our raw food menu.
                 </p>
               </div>
               <div className="step-card">
