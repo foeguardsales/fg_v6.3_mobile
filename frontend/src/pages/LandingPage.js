@@ -536,7 +536,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — 8 PROTEINS ===== */}
         <section className="proteins-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
           <div className="section-container">
-            <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '16px', textTransform: 'none', fontWeight: '600' }}>Choose their favourites</h2>
+            <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '16px', textTransform: 'none', fontWeight: '600' }}>Choose your dogs favourites</h2>
             <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '48px', color: '#666', maxWidth: '900px', margin: '0 auto 48px' }}>
               Introduce your dog to their own raw food cuisine. We offer a variety of protein options and blends to suit their unique dietary needs and the flavours they love.
             </p>
