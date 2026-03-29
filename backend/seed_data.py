@@ -1,3 +1,34 @@
+"""
+=============================================================================
+FOEGUARD PRODUCT DATABASE - MASTER DATA FILE
+=============================================================================
+
+This file contains ALL product and treat data for the FoeGuard website.
+It is the SINGLE SOURCE OF TRUTH for all product information.
+
+HOW IT WORKS:
+- On every server startup, the database is automatically seeded/updated
+  with the data from this file (see server.py seed_database function)
+- The seeding uses replace_one() which FULLY REPLACES each document,
+  ensuring the database always matches this file exactly
+- Any changes to product descriptions, ingredients, nutrition facts, 
+  pricing, etc. should be made HERE, not directly in the database
+
+TO UPDATE PRODUCTS:
+1. Edit the product data in this file
+2. Commit to GitHub and deploy to Emergent
+3. The server will automatically update the database on startup
+
+PRODUCT STRUCTURE:
+- COMFORT_DINNER_PRODUCTS: Complete & balanced meals (70/10/10/8/2 ratio)
+- PRIMAL_FEAST_PRODUCTS: 80/10/10 base meals (not complete & balanced)
+- ROYAL_PAWS_PRODUCTS: Cat food (95% meat, complete & balanced)
+- TREATS: Dog treats (bones, feet, heads, etc.)
+- CAT_TREATS: Cat-specific treats
+
+=============================================================================
+"""
+
 # Product Information shared across all products
 PRODUCT_INFO = "This product is processed and packaged in a government-regulated facility to ensure human-grade quality standards. It's freshly made, then flash-frozen to preserve all nutrients. Best consumed by pets within 12 months from the purchase date.\nSince our products are 100% natural, slight variations from the pictured product may occur."
 
