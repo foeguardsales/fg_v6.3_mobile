@@ -698,7 +698,7 @@ export const LandingPage = () => {
           <div className="section-container">
             <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>How it works</h2>
             <p style={{ textAlign: 'center', fontSize: '18px', marginBottom: '48px', color: '#666' }}>
-              Feeding raw is simpler than you think.
+              Feeding fresh is simpler than you think.
             </p>
             
             <div className="steps-grid">
@@ -707,9 +707,9 @@ export const LandingPage = () => {
                   <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/o4ctb4hs_step%201.png" alt="Choose your plan" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
                   <div className="step-number-overlay">1</div>
                 </div>
-                <h3>Choose Your<br />Plan</h3>
+                <h3>Made Fresh to Order</h3>
                 <p style={{ fontSize: '15px', color: '#666' }}>
-                  Create a personalized meal plan or build your own box.
+                  Create a meal plan or build your own box from our fresh raw menu.
                 </p>
               </div>
               <div className="step-card">
@@ -719,7 +719,7 @@ export const LandingPage = () => {
                 </div>
                 <h3>Receive Your Delivery</h3>
                 <p style={{ fontSize: '15px', color: '#666' }}>
-                  Meals arrive safely frozen for freshness, ready for storage and portioning.
+                  Meals arrive safely frozen from our certified facility in just 3–5 days.
                 </p>
               </div>
               <div className="step-card">
@@ -729,7 +729,7 @@ export const LandingPage = () => {
                 </div>
                 <h3>Feed with Confidence</h3>
                 <p style={{ fontSize: '15px', color: '#666' }}>
-                  Just thaw, serve, and watch your dog thrive.
+                  Just thaw, serve, and see the difference real food makes.
                 </p>
               </div>
             </div>

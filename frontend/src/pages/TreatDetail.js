@@ -297,9 +297,11 @@ export const TreatDetailPage = () => {
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '40px',
-            marginBottom: '60px'
+            marginBottom: '60px',
+            position: 'relative',
+            zIndex: 1
           }}>
-            <div>
+            <div style={{ position: 'relative', zIndex: 2 }}>
               {/* Main Image */}
               <div className="product-hero-image" style={{
                 background: '#fff',
@@ -310,7 +312,9 @@ export const TreatDetailPage = () => {
                 aspectRatio: '1/1',
                 padding: '0',
                 marginBottom: images.length > 1 ? '16px' : '0',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                position: 'relative',
+                zIndex: 2
               }}>
                 {currentImage ? (
                   <img src={currentImage} alt={treat.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -324,7 +328,7 @@ export const TreatDetailPage = () => {
               
               {/* Image Thumbnails */}
               {images.length > 1 && (
-                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', position: 'relative', zIndex: 2 }}>
                   {images.map((img, index) => (
                     <button
                       key={index}
