@@ -1,194 +1,27 @@
-# Base ingredients for each protein
-BASE_INGREDIENTS = {
-    "chicken": [
-        "Ground chicken with bone",
-        "Chicken liver",
-        "Chicken heart",
-        "Organic kale",
-        "Organic spinach",
-        "Organic carrots",
-        "Wild blueberries",
-        "Kelp powder",
-        "Fish oil (omega-3)"
-    ],
-    "beef": [
-        "Grass-fed ground beef",
-        "Beef liver",
-        "Beef kidney",
-        "Beef heart",
-        "Organic broccoli",
-        "Organic sweet potato",
-        "Pumpkin",
-        "Kelp powder",
-        "Fish oil (omega-3)"
-    ],
-    "duck": [
-        "Ground duck with bone",
-        "Duck liver",
-        "Duck heart",
-        "Organic chard",
-        "Organic celery",
-        "Cranberries",
-        "Kelp powder",
-        "Fish oil (omega-3)"
-    ],
-    "fish": [
-        "Wild-caught salmon",
-        "Wild-caught mackerel",
-        "Salmon oil",
-        "Organic green beans",
-        "Organic zucchini",
-        "Organic berries",
-        "Kelp powder"
-    ],
-    "goat": [
-        "Ground goat meat",
-        "Goat liver",
-        "Goat heart",
-        "Organic kale",
-        "Organic carrots",
-        "Organic apples",
-        "Kelp powder",
-        "Fish oil (omega-3)"
-    ],
-    "lamb": [
-        "Ground lamb",
-        "Lamb liver",
-        "Lamb kidney",
-        "Organic spinach",
-        "Organic pumpkin",
-        "Blueberries",
-        "Kelp powder",
-        "Fish oil (omega-3)"
-    ],
-    "rabbit": [
-        "Ground rabbit with bone",
-        "Rabbit liver",
-        "Rabbit heart",
-        "Organic kale",
-        "Organic carrots",
-        "Cranberries",
-        "Kelp powder",
-        "Fish oil (omega-3)"
-    ],
-    "turkey": [
-        "Ground turkey with bone",
-        "Turkey liver",
-        "Turkey heart",
-        "Organic sweet potato",
-        "Organic green beans",
-        "Blueberries",
-        "Kelp powder",
-        "Fish oil (omega-3)"
-    ]
+# Product Information shared across all products
+PRODUCT_INFO = "This product is processed and packaged in a government-regulated facility to ensure human-grade quality standards. It's freshly made, then flash-frozen to preserve all nutrients. Best consumed by pets within 12 months from the purchase date.\nSince our products are 100% natural, slight variations from the pictured product may occur."
+
+FEEDING_GUIDE = {
+    "handling": "After handling raw meat and poultry, wash your hands, utensils, and surfaces with hot, soapy water to prevent cross-contamination. Keep raw foods separate from other items.",
+    "feeding": "Thaw in the fridge or in cold water. Once defrosted, keep refrigerated and use within 3-4 days. Some change in meat colour due to oxidation is normal and safe. Do not thaw in the microwave. Not for human consumption.",
+    "note": "See our feeding calculator to see how much to feed your pet."
 }
 
-NUTRITION_FACTS = {
-    "chicken": {
-        "protein": "18%",
-        "fat": "12%",
-        "fiber": "2%",
-        "moisture": "68%",
-        "calories": "150 kcal per 100g"
-    },
-    "beef": {
-        "protein": "20%",
-        "fat": "15%",
-        "fiber": "2%",
-        "moisture": "65%",
-        "calories": "180 kcal per 100g"
-    },
-    "duck": {
-        "protein": "19%",
-        "fat": "16%",
-        "fiber": "2%",
-        "moisture": "64%",
-        "calories": "190 kcal per 100g"
-    },
-    "fish": {
-        "protein": "22%",
-        "fat": "14%",
-        "fiber": "1.5%",
-        "moisture": "66%",
-        "calories": "170 kcal per 100g"
-    },
-    "goat": {
-        "protein": "21%",
-        "fat": "13%",
-        "fiber": "2%",
-        "moisture": "67%",
-        "calories": "165 kcal per 100g"
-    },
-    "lamb": {
-        "protein": "20%",
-        "fat": "17%",
-        "fiber": "2%",
-        "moisture": "64%",
-        "calories": "195 kcal per 100g"
-    },
-    "rabbit": {
-        "protein": "23%",
-        "fat": "11%",
-        "fiber": "2%",
-        "moisture": "68%",
-        "calories": "155 kcal per 100g"
-    },
-    "turkey": {
-        "protein": "19%",
-        "fat": "12%",
-        "fiber": "2%",
-        "moisture": "68%",
-        "calories": "150 kcal per 100g"
-    }
-}
-
-HOW_TO_USE = {
-    "comfort_dinner": "Thaw in refrigerator for 24 hours. Serve at room temperature. Feed 2-3% of your dog's body weight daily, divided into two meals. Adjust portions based on activity level and weight goals. Store frozen until ready to use. Once thawed, use within 3-4 days.",
-    "primal_feast": "Thaw in refrigerator for 24 hours. Serve at room temperature or slightly warmed. Feed 2-3% of your dog's body weight daily, split into two meals. Monitor your pet's condition and adjust as needed. Keep frozen until use. Refrigerate after thawing and use within 3-4 days."
-}
-
-# Standard feeding guides and product info for products
-PRODUCT_FEEDING_GUIDE = {
-    "feeding": "Feed as a complete meal or mix with your dog's current food to transition. Always supervise your pet during feeding. Start with smaller portions for first-time raw feeders and gradually increase over 7-10 days.",
-    "handling": "Keep frozen until ready to use. Thaw in refrigerator for 12-24 hours before serving. Once thawed, use within 3-4 days. Always handle with clean hands and clean surfaces. Store at 0°F (-18°C) or below."
-}
-
-CAT_PRODUCT_FEEDING_GUIDE = {
-    "feeding": "Feed as a complete meal for your cat. Always supervise your cat during feeding. Introduce gradually for cats new to raw feeding over 5-7 days, mixing with current food.",
-    "handling": "Keep frozen until ready to use. Thaw in refrigerator for 8-12 hours before serving. Once thawed, use within 2-3 days. Always handle with clean hands and clean surfaces. Store at 0°F (-18°C) or below."
-}
-
-PRODUCT_INFORMATION = """Our raw pet food is sourced from trusted family farms across Ontario and processed in USDA-inspected facilities. Each recipe is carefully formulated to provide complete and balanced nutrition following AAFCO guidelines.
-
-What makes our food special:
-• Flash-frozen to lock in freshness and nutrients
-• No artificial preservatives, colors, or flavors
-• Human-grade ingredients
-• Made in small batches for quality control
-• Third-party tested for safety
-
-Perfect for:
-• Dogs and cats of all life stages
-• Pets with food sensitivities
-• Supporting optimal health and vitality
-• Improving coat, skin, and digestion
-• Boosting energy and immune function
-
-Always consult your veterinarian before changing your pet's diet, especially for puppies, kittens, pregnant/nursing animals, or pets with health conditions."""
-
+# Comfort Dinner Products - Complete & Balanced
 COMFORT_DINNER_PRODUCTS = [
     {
         "product_id": "cd-chicken",
         "product_line": "comfort_dinner",
         "protein_type": "chicken",
         "name": "Comfort Chicken",
-        "mini_description": "Provides a light meal that supports digestion and everyday vitality for dogs of all life stages.",
-        "description": "Farm-fresh chicken, perfect for sensitive stomachs. Our Comfort Dinner line is gently prepared to support digestive health while providing complete, balanced nutrition. Ideal for dogs transitioning to raw or those with food sensitivities.",
-        "ingredients": BASE_INGREDIENTS["chicken"],
-        "nutrition_facts": NUTRITION_FACTS["chicken"],
-        "how_to_use": HOW_TO_USE["comfort_dinner"],
-        "feeding_guide": PRODUCT_FEEDING_GUIDE,
-        "product_information": PRODUCT_INFORMATION,
+        "mini_description": "Mild, familiar, and easy-to-digest chicken meal for daily feeding and steady nutrition.",
+        "description": "Comfort Dinner Chicken provides a light, complete and balanced meal that supports digestion and everyday vitality for dogs of all life stages. Its familiar profile makes it an ideal choice for consistent feeding, smooth dietary rotation, and a mild introduction to raw.",
+        "highlights": ["Ethically raised, free-range Canadian chicken (drug-free, omega-3 fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "Free-range chicken muscle meat, chicken bone, and chicken organ with alfalfa, broccoli, carrots, celery, apples, kelp, turmeric, flax seeds, Atlantic herring fish oil, prebiotics/probiotics, copper proteinate, DL-methionine, glucosamine sulfate, L-lysine, L. acidophilus, manganese, zinc proteinate, methionine, MSM, omega-3, omega-6, omega-9, selenium, vitamin and mineral complex, vitamin E, vitamin C, yeast culture, and enzymes.",
+        "recipe_breakdown": "70% muscle meat, 10% bone, 10% organ, 8% fruits & veggies, 2% supplements",
+        "nutrition_facts": {"protein_min": "16.8%", "fat_min": "14.8%", "moisture_max": "65.4%", "fiber_max": "0.2%", "calcium_min": "1.15%", "phosphorus_min": "0.65%", "ash": "4%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 26.99, "price_per_lb": 4.50, "savings_percent": 0},
             {"size_lb": 12, "price": 48.60, "price_per_lb": 4.05, "savings_percent": 10},
@@ -202,11 +35,14 @@ COMFORT_DINNER_PRODUCTS = [
         "product_line": "comfort_dinner",
         "protein_type": "beef",
         "name": "Comfort Beef",
-        "mini_description": "Grass-fed Ontario beef rich in iron and B vitamins, supporting muscle development and sustained energy.",
-        "description": "Grass-fed Ontario beef, rich in nutrients. Packed with iron and B vitamins, our beef formula supports muscle development and energy. Sourced from local farms committed to sustainable practices.",
-        "ingredients": BASE_INGREDIENTS["beef"],
-        "nutrition_facts": NUTRITION_FACTS["beef"],
-        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "mini_description": "Hearty, protein-rich beef for active dogs or those needing consistent energy.",
+        "description": "Comfort Dinner Beef provides a hearty, nourishing, complete and balanced meal that supports strength, energy, and digestive comfort in dogs of all life stages. Its steady fuel profile makes it ideal for active dogs and well suited for daily feeding or balanced rotation.",
+        "highlights": ["Ethically raised, pasture-raised Canadian beef (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "Pasture-raised beef muscle meat, beef bone, and beef organ with alfalfa, broccoli, carrots, celery, apples, kelp, turmeric, flax seeds, Atlantic herring fish oil, prebiotics/probiotics, copper proteinate, DL-methionine, glucosamine sulfate, L-lysine, L. acidophilus, manganese, zinc proteinate, methionine, MSM, omega-3, omega-6, omega-9, selenium, vitamin and mineral complex, vitamin E, vitamin C, yeast culture, and enzymes.",
+        "recipe_breakdown": "70% muscle meat, 10% bone, 10% organ, 8% fruits & veggies, 2% supplements",
+        "nutrition_facts": {"protein_min": "16.5%", "fat_min": "7.5%", "moisture_max": "73.4%", "fiber_max": "0.22%", "calcium_min": "0.22%", "phosphorus_min": "0.17%", "ash": "3.5%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
             {"size_lb": 12, "price": 69.97, "price_per_lb": 5.83, "savings_percent": 12},
@@ -220,11 +56,14 @@ COMFORT_DINNER_PRODUCTS = [
         "product_line": "comfort_dinner",
         "protein_type": "duck",
         "name": "Comfort Duck",
-        "mini_description": "A novel protein rich in iron and selenium, ideal for dogs with common protein sensitivities.",
-        "description": "Premium duck, great for food sensitivities. Duck is naturally rich in iron and selenium, supporting immune health. A novel protein option for dogs with common protein allergies.",
-        "ingredients": BASE_INGREDIENTS["duck"],
-        "nutrition_facts": NUTRITION_FACTS["duck"],
-        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "mini_description": "Novel protein with skin & coat benefits; perfect for dietary rotation.",
+        "description": "Comfort Dinner Duck provides a novel, complete and balanced meal designed to support digestive comfort and variety for dogs of all life stages. Its unique profile makes it a useful option for dogs needing skin or coat support and dietary diversity.",
+        "highlights": ["Ethically raised, free-range Canadian duck (drug-free, omega-3 fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "Free-range duck muscle meat, duck bone, and duck organ with alfalfa, broccoli, carrots, celery, apples, kelp, turmeric, flax seeds, Atlantic herring fish oil, prebiotics/probiotics, copper proteinate, DL-methionine, glucosamine sulfate, L-lysine, L. acidophilus, manganese, zinc proteinate, methionine, MSM, omega-3, omega-6 omega-9, selenium, vitamin and mineral complex, vitamin E, vitamin C, yeast culture, and enzymes.",
+        "recipe_breakdown": "70% muscle meat, 10% bone, 10% organ, 8% fruits & veggies, 2% supplements",
+        "nutrition_facts": {"protein_min": "12.09%", "fat_min": "13.15%", "moisture_max": "70.2%", "fiber_max": "1.87%", "calcium_min": "0.6%", "phosphorus_min": "0.3%", "ash": "3.09%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
             {"size_lb": 12, "price": 69.97, "price_per_lb": 5.83, "savings_percent": 12},
@@ -234,15 +73,39 @@ COMFORT_DINNER_PRODUCTS = [
         "inventory_status": "available"
     },
     {
+        "product_id": "cd-turkey",
+        "product_line": "comfort_dinner",
+        "protein_type": "turkey",
+        "name": "Comfort Turkey",
+        "mini_description": "Gentle turkey meal supporting sensitive digestion and steady energy.",
+        "description": "Comfort Dinner Turkey provides a gentle, complete and balanced meal designed to support steady energy and easy digestion in dogs of all life stages. Its mild profile makes it a reliable everyday option, especially for dogs that benefit from consistency or digestive support.",
+        "highlights": ["Ethically raised, free-range Canadian turkey (drug-free, omega-3 fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "Free-range turkey muscle meat, turkey bone, and turkey organ with alfalfa, broccoli, carrots, celery, apples, kelp, turmeric, flax seeds, Atlantic herring fish oil, prebiotics/probiotics, copper proteinate, DL-methionine, glucosamine sulfate, L-lysine, L. acidophilus, manganese, zinc proteinate, methionine, MSM, omega-3, omega-6 omega-9, selenium, vitamin and mineral complex, vitamin E, vitamin C, yeast culture, and enzymes.",
+        "recipe_breakdown": "70% muscle meat, 10% bone, 10% organ, 8% fruits & veggies, 2% supplements",
+        "nutrition_facts": {"protein_min": "16.2%", "fat_min": "12.8%", "moisture_max": "70.8%", "fiber_max": "0.7%", "calcium_min": "0.92%", "phosphorus_min": "0.8%", "ash": "3%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 69.94, "price_per_lb": 5.83, "savings_percent": 13},
+            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
+            {"size_lb": 24, "price": 143.86, "price_per_lb": 5.99, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
         "product_id": "cd-fish",
         "product_line": "comfort_dinner",
         "protein_type": "fish",
-        "name": "Comfort Fish",
-        "mini_description": "Wild-caught fish rich in omega-3s, supporting healthy skin, coat, and cognitive function.",
-        "description": "Wild-caught fish, omega-3 rich. Supports healthy skin, coat, and cognitive function. Sustainably sourced from cold Canadian waters for maximum freshness and nutritional value.",
-        "ingredients": BASE_INGREDIENTS["fish"],
-        "nutrition_facts": NUTRITION_FACTS["fish"],
-        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "name": "Comfort Salmon",
+        "mini_description": "Omega-rich fish for skin, coat, and overall vitality.",
+        "description": "Comfort Dinner Salmon provides a flavourful, omega-rich, complete and balanced meal that supports digestion, skin, and coat health in dogs of all life stages.",
+        "highlights": ["Ethically raised, wild-caught Canadian salmon (drug-free)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "Wild-caught fish muscle meat, fish bone, and fish organ with alfalfa, broccoli, carrots, celery, apples, kelp, turmeric, flax seeds, Atlantic herring fish oil, prebiotics/probiotics, copper proteinate, DL-methionine, glucosamine sulfate, L-lysine, L. acidophilus, manganese, zinc proteinate, methionine, MSM, omega-3, omega-6, omega-9, selenium, vitamin and mineral complex, vitamin E, vitamin C, yeast culture, and enzymes.",
+        "recipe_breakdown": "70% muscle meat, 10% bone, 10% organ, 8% fruits & veggies, 2% supplements",
+        "nutrition_facts": {"protein_min": "11%", "fat_min": "12%", "moisture_max": "66%", "fiber_max": "0.46%", "calcium_min": "0.8%", "phosphorus_min": "0.38%", "ash": "2.68%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 44.95, "price_per_lb": 7.49, "savings_percent": 0},
             {"size_lb": 12, "price": 80.95, "price_per_lb": 6.75, "savings_percent": 10},
@@ -256,11 +119,14 @@ COMFORT_DINNER_PRODUCTS = [
         "product_line": "comfort_dinner",
         "protein_type": "goat",
         "name": "Comfort Goat",
-        "mini_description": "Lean and highly digestible, excellent for dogs with allergies or weight management needs.",
-        "description": "Lean goat protein, novel protein option. Highly digestible and lower in fat than traditional proteins. Excellent for dogs with allergies or weight management needs.",
-        "ingredients": BASE_INGREDIENTS["goat"],
-        "nutrition_facts": NUTRITION_FACTS["goat"],
-        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "mini_description": "Lean, digestible protein for dogs with sensitive stomachs or food variety needs.",
+        "description": "Comfort Dinner Goat provides a lean, digestible, complete and balanced meal designed to support gentle digestion and steady energy in dogs of all life stages.",
+        "highlights": ["Ethically raised, pasture-raised Canadian goat (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "Pasture-raised goat muscle meat, goat bone, and goat organ with alfalfa, broccoli, carrots, celery, apples, kelp, turmeric, flax seeds, Atlantic herring fish oil, prebiotics/probiotics, copper proteinate, DL-methionine, glucosamine sulfate, L-lysine, L. acidophilus, manganese, zinc proteinate, methionine, MSM, omega-3, omega-6, omega-9, selenium, vitamin and mineral complex, vitamin E, vitamin C, yeast culture, and enzymes.",
+        "recipe_breakdown": "70% muscle meat, 10% bone, 10% organ, 8% fruits & veggies, 2% supplements",
+        "nutrition_facts": {"protein_min": "16.6%", "fat_min": "7.6%", "moisture_max": "73.3%", "fiber_max": "1.67%", "calcium_min": "0.7%", "phosphorus_min": "0.26%", "ash": "0.1%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
             {"size_lb": 12, "price": 107.88, "price_per_lb": 8.99, "savings_percent": 10},
@@ -274,11 +140,14 @@ COMFORT_DINNER_PRODUCTS = [
         "product_line": "comfort_dinner",
         "protein_type": "lamb",
         "name": "Comfort Lamb",
-        "mini_description": "Grass-fed lamb rich in zinc and B vitamins, supporting immune function and metabolism.",
-        "description": "Premium lamb, highly digestible. Rich in zinc and B vitamins, supporting immune function and metabolism. Grass-fed for superior flavor and nutrition.",
-        "ingredients": BASE_INGREDIENTS["lamb"],
-        "nutrition_facts": NUTRITION_FACTS["lamb"],
-        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "mini_description": "Rich, flavorful protein supporting strength and coat health.",
+        "description": "Comfort Dinner Lamb provides a rich yet gentle, complete and balanced meal for dogs of all life stages.",
+        "highlights": ["Ethically raised, pasture-raised Canadian lamb (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "Pasture-raised lamb muscle meat, lamb bone, and lamb organ with alfalfa, broccoli, carrots, celery, apples, kelp, turmeric, flax seeds, Atlantic herring fish oil, prebiotics/probiotics, copper proteinate, DL-methionine, glucosamine sulfate, L-lysine, L. acidophilus, manganese, zinc proteinate, methionine, MSM, omega-3, omega-6, omega-9, selenium, vitamin and mineral complex, vitamin E, vitamin C, yeast culture, and enzymes.",
+        "recipe_breakdown": "70% muscle meat, 10% bone, 10% organ, 8% fruits & veggies, 2% supplements",
+        "nutrition_facts": {"protein_min": "14.9%", "fat_min": "14.6%", "moisture_max": "72.82%", "fiber_max": "1.78%", "calcium_min": "0.67%", "phosphorus_min": "0.39%", "ash": "1.9%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
             {"size_lb": 12, "price": 107.88, "price_per_lb": 8.99, "savings_percent": 10},
@@ -292,11 +161,14 @@ COMFORT_DINNER_PRODUCTS = [
         "product_line": "comfort_dinner",
         "protein_type": "rabbit",
         "name": "Comfort Rabbit",
-        "mini_description": "One of the leanest proteins available, perfect for elimination diets. High in B12 and selenium.",
-        "description": "Exotic rabbit protein, hypoallergenic. One of the leanest proteins available, perfect for elimination diets. High in B12 and selenium for optimal health.",
-        "ingredients": BASE_INGREDIENTS["rabbit"],
-        "nutrition_facts": NUTRITION_FACTS["rabbit"],
-        "how_to_use": HOW_TO_USE["comfort_dinner"],
+        "mini_description": "Ultra-lean, simple protein for digestive comfort and variety.",
+        "description": "Comfort Dinner Rabbit provides an ultra-lean, complete and balanced meal designed to support digestive ease and dietary simplicity for dogs of all life stages.",
+        "highlights": ["Ethically raised, cage-free Canadian rabbit (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "Cage-free rabbit muscle meat, rabbit bone, and rabbit organ with alfalfa, broccoli, carrots, celery, apples, kelp, turmeric, flax seeds, Atlantic herring fish oil, prebiotics/probiotics, copper proteinate, DL-methionine, glucosamine sulfate, L-lysine, L. acidophilus, manganese, zinc proteinate, methionine, MSM, omega-3, omega-6, omega-9, selenium, vitamin and mineral complex, vitamin E, vitamin C, yeast culture, and enzymes.",
+        "recipe_breakdown": "70% muscle meat, 10% bone, 10% organ, 8% fruits & veggies, 2% supplements",
+        "nutrition_facts": {"protein_min": "15.5%", "fat_min": "7.4%", "moisture_max": "73.5%", "fiber_max": "0.67%", "calcium_min": "0.1%", "phosphorus_min": "0.4%", "ash": "2.68%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 86.28, "price_per_lb": 14.38, "savings_percent": 0},
             {"size_lb": 12, "price": 155.30, "price_per_lb": 12.94, "savings_percent": 10},
@@ -304,38 +176,24 @@ COMFORT_DINNER_PRODUCTS = [
             {"size_lb": 24, "price": 310.27, "price_per_lb": 12.93, "savings_percent": 10}
         ],
         "inventory_status": "available"
-    },
-    {
-        "product_id": "cd-turkey",
-        "product_line": "comfort_dinner",
-        "protein_type": "turkey",
-        "name": "Comfort Turkey",
-        "mini_description": "High in protein and low in fat, ideal for maintaining healthy weight with calm, sustained energy.",
-        "description": "Lean turkey, low-fat option. High in protein and low in fat, ideal for maintaining healthy weight. Rich in tryptophan for calm, balanced energy.",
-        "ingredients": BASE_INGREDIENTS["turkey"],
-        "nutrition_facts": NUTRITION_FACTS["turkey"],
-        "how_to_use": HOW_TO_USE["comfort_dinner"],
-        "pricing": [
-            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
-            {"size_lb": 12, "price": 69.94, "price_per_lb": 5.83, "savings_percent": 13},
-            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
-            {"size_lb": 24, "price": 143.86, "price_per_lb": 5.99, "savings_percent": 10}
-        ],
-        "inventory_status": "available"
     }
 ]
 
+# Primal Feast Products - 80/10/10 Base (Not Complete & Balanced)
 PRIMAL_FEAST_PRODUCTS = [
     {
         "product_id": "pf-chicken",
         "product_line": "primal_feast",
         "protein_type": "chicken",
         "name": "Primal Chicken",
-        "mini_description": "Species-appropriate raw nutrition with maximum nutrient retention through minimal processing.",
-        "description": "Raw chicken feast, species-appropriate nutrition. Our Primal Feast line delivers raw, biologically appropriate meals that mirror what carnivores eat in nature. Maximum nutrient retention through minimal processing.",
-        "ingredients": BASE_INGREDIENTS["chicken"],
-        "nutrition_facts": NUTRITION_FACTS["chicken"],
-        "how_to_use": HOW_TO_USE["primal_feast"],
+        "mini_description": "Lean chicken protein for easy digestion and versatile feeding.",
+        "description": "Primal Feast Chicken offers lean, highly digestible protein in a classic 80/10/10 ratio — ideal as a foundational base for raw feeders who prefer to customize their pet's meals or rotate proteins. Made with single-source chicken, it's a simple and versatile option many pets love.\n\nPrimal Feast meals are designed as a base ingredient and are not complete & balanced for everyday feeding. Pet parents may add their own toppers or supplements to meet individual needs.",
+        "highlights": ["Ethically raised, free-range Canadian chicken (drug-free, omega-3 fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "80% Free-range chicken muscle meat, 10% chicken bone, 10% chicken organ.",
+        "recipe_breakdown": "80% muscle meat, 10% bone, 10% organ",
+        "nutrition_facts": {"protein_min": "18%", "fat_min": "16%", "moisture_max": "65%", "fiber_max": "0.1%", "calcium_min": "1.1%", "phosphorus_min": "0.8%", "ash": "3.7%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 26.99, "price_per_lb": 4.50, "savings_percent": 0},
             {"size_lb": 12, "price": 48.60, "price_per_lb": 4.05, "savings_percent": 10},
@@ -349,14 +207,17 @@ PRIMAL_FEAST_PRODUCTS = [
         "product_line": "primal_feast",
         "protein_type": "beef",
         "name": "Primal Beef",
-        "mini_description": "Muscle meat, organ meats, and ground bone provide a rich, satisfying flavor dogs instinctively crave.",
-        "description": "Raw beef, protein-packed. Muscle meat, organ meats, and ground bone provide complete nutrition. Rich, satisfying flavor dogs instinctively crave.",
-        "ingredients": BASE_INGREDIENTS["beef"],
-        "nutrition_facts": NUTRITION_FACTS["beef"],
-        "how_to_use": HOW_TO_USE["primal_feast"],
+        "mini_description": "Rich beef protein to fuel active dogs and rotational meals.",
+        "description": "Primal Feast Beef delivers rich, calorie-dense nutrition in a classic 80/10/10 ratio — often chosen by active dogs or those who thrive on heartier, energizing proteins.\n\nDesigned as a foundational base for raw feeders who prefer to customize, rotate proteins, or add their own toppers. Not a complete & balanced diet for everyday feeding.",
+        "highlights": ["Ethically raised, pasture-raised Canadian beef (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "80% Pasture-raised beef muscle meat, 10% beef bone, 10% beef organ.",
+        "recipe_breakdown": "80% muscle meat, 10% bone, 10% organ",
+        "nutrition_facts": {"protein_min": "19.8%", "fat_min": "9.36%", "moisture_max": "68%", "fiber_max": "0.1%", "calcium_min": "0.12%", "phosphorus_min": "0.19%", "ash": "1%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
-            {"size_lb": 12, "price": 69.97, "price_per_lb": 5.83, "savings_percent": 12},
+            {"size_lb": 12, "price": 71.94, "price_per_lb": 5.995, "savings_percent": 10},
             {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
             {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
         ],
@@ -367,16 +228,40 @@ PRIMAL_FEAST_PRODUCTS = [
         "product_line": "primal_feast",
         "protein_type": "duck",
         "name": "Primal Duck",
-        "mini_description": "Natural fatty acids support skin and coat health with wild game nutrition for the domestic dog.",
-        "description": "Raw duck, rich flavor. Naturally fatty acids support skin and coat health. Wild game nutrition for the domestic dog.",
-        "ingredients": BASE_INGREDIENTS["duck"],
-        "nutrition_facts": NUTRITION_FACTS["duck"],
-        "how_to_use": HOW_TO_USE["primal_feast"],
+        "mini_description": "Flavorful duck protein supporting skin and coat health.",
+        "description": "Primal Feast Duck offers a nourishing protein in a classic 80/10/10 ratio — a popular choice for pets needing extra energy, skin and coat support, or as a novel alternative to common meats.\n\nCrafted as a rotational base for raw feeders looking to personalize meals. Not complete & balanced for everyday feeding.",
+        "highlights": ["Ethically raised, free-range Canadian duck (drug-free, omega-3 fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "80% Free-range duck muscle meat, 10% duck bone, 10% duck organ.",
+        "recipe_breakdown": "80% muscle meat, 10% bone, 10% organ",
+        "nutrition_facts": {"protein_min": "12.01%", "fat_min": "11.6%", "moisture_max": "71.82%", "fiber_max": "0.87%", "calcium_min": "1.2%", "phosphorus_min": "0.6%", "ash": "1.9%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
-            {"size_lb": 12, "price": 69.97, "price_per_lb": 5.83, "savings_percent": 12},
+            {"size_lb": 12, "price": 71.94, "price_per_lb": 5.995, "savings_percent": 10},
             {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
             {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
+        ],
+        "inventory_status": "available"
+    },
+    {
+        "product_id": "pf-turkey",
+        "product_line": "primal_feast",
+        "protein_type": "turkey",
+        "name": "Primal Turkey",
+        "mini_description": "Gentle turkey protein for sensitive dogs or rotation.",
+        "description": "Primal Feast Turkey provides lean, easily digestible protein in a classic 80/10/10 ratio — ideal for dogs who do well on lighter proteins or as part of a varied raw rotation.\n\nUsed as a foundational base for customized feeding. Not complete & balanced for everyday feeding.",
+        "highlights": ["Ethically raised, free-range Canadian turkey (drug-free, omega-3 fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "80% Free-range turkey muscle meat, 10% turkey bone, 10% turkey organ.",
+        "recipe_breakdown": "80% muscle meat, 10% bone, 10% organ",
+        "nutrition_facts": {"protein_min": "12%", "fat_min": "11.6%", "moisture_max": "71.82%", "fiber_max": "0.87%", "calcium_min": "1.2%", "phosphorus_min": "0.86%", "ash": "1.9%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "pricing": [
+            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
+            {"size_lb": 12, "price": 69.94, "price_per_lb": 5.83, "savings_percent": 13},
+            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
+            {"size_lb": 24, "price": 143.86, "price_per_lb": 5.99, "savings_percent": 10}
         ],
         "inventory_status": "available"
     },
@@ -384,12 +269,15 @@ PRIMAL_FEAST_PRODUCTS = [
         "product_id": "pf-fish",
         "product_line": "primal_feast",
         "protein_type": "fish",
-        "name": "Primal Fish",
-        "mini_description": "Cold-water fish provide EPA and DHA for brain and heart health from a clean, sustainable source.",
-        "description": "Raw fish, omega-rich. Cold-water fish provide EPA and DHA for brain and heart health. Clean, sustainable protein source.",
-        "ingredients": BASE_INGREDIENTS["fish"],
-        "nutrition_facts": NUTRITION_FACTS["fish"],
-        "how_to_use": HOW_TO_USE["primal_feast"],
+        "name": "Primal Salmon",
+        "mini_description": "Omega-rich salmon protein for vitality and coat shine.",
+        "description": "Primal Feast Salmon delivers omega-rich nutrition in an 80/10/10 ratio — supporting skin, coat, and overall vitality.\n\nDesigned as a foundational base for raw feeders who prefer to control balance through rotation or added ingredients. Not a complete & balanced diet for everyday feeding.",
+        "highlights": ["Ethically raised, wild-caught Canadian salmon (drug-free)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "80% Wild-caught salmon muscle meat, 10% salmon bone, 10% salmon organ.",
+        "recipe_breakdown": "80% muscle meat, 10% bone, 10% organ",
+        "nutrition_facts": {"protein_min": "12.01%", "fat_min": "11.6%", "moisture_max": "71.82%", "fiber_max": "0.87%", "calcium_min": "1.2%", "phosphorus_min": "0.6%", "ash": "1.9%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 44.95, "price_per_lb": 7.49, "savings_percent": 0},
             {"size_lb": 12, "price": 80.95, "price_per_lb": 6.75, "savings_percent": 10},
@@ -403,11 +291,14 @@ PRIMAL_FEAST_PRODUCTS = [
         "product_line": "primal_feast",
         "protein_type": "goat",
         "name": "Primal Goat",
-        "mini_description": "Lean and easily digestible with a unique flavor profile, perfect for sensitive systems.",
-        "description": "Raw goat, novel protein. Lean and easily digestible, perfect for sensitive systems. Unique flavor profile for variety.",
-        "ingredients": BASE_INGREDIENTS["goat"],
-        "nutrition_facts": NUTRITION_FACTS["goat"],
-        "how_to_use": HOW_TO_USE["primal_feast"],
+        "mini_description": "Lean, hypoallergenic goat protein for sensitive dogs.",
+        "description": "Primal Feast Goat provides a hypoallergenic, lean protein in a classic 80/10/10 ratio — often chosen for pets with sensitivities.\n\nUsed as a foundational base for personalized feeding. Not complete & balanced for everyday feeding.",
+        "highlights": ["Ethically raised, pasture-raised Canadian goat (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "80% Pasture-raised goat muscle meat, 10% goat bone, 10% goat organ.",
+        "recipe_breakdown": "80% muscle meat, 10% bone, 10% organ",
+        "nutrition_facts": {"protein_min": "17.9%", "fat_min": "9.6%", "moisture_max": "69.82%", "fiber_max": "1.1%", "calcium_min": "1.3%", "phosphorus_min": "0.8%", "ash": "0.7%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
             {"size_lb": 12, "price": 107.88, "price_per_lb": 8.99, "savings_percent": 10},
@@ -421,11 +312,14 @@ PRIMAL_FEAST_PRODUCTS = [
         "product_line": "primal_feast",
         "protein_type": "lamb",
         "name": "Primal Lamb",
-        "mini_description": "Grass-fed lamb delivers CLA and omega-3s with a rich taste and amino acid profile.",
-        "description": "Raw lamb, premium quality. Grass-fed lamb delivers CLA and omega-3s. Rich taste and complete amino acid profile.",
-        "ingredients": BASE_INGREDIENTS["lamb"],
-        "nutrition_facts": NUTRITION_FACTS["lamb"],
-        "how_to_use": HOW_TO_USE["primal_feast"],
+        "mini_description": "Savoury lamb protein for energy and variety.",
+        "description": "Primal Feast Lamb provides a rich red meat protein in a classic 80/10/10 ratio — commonly selected for pets with sensitivities or active pets needing calorie-dense meals.\n\nUsed as a foundational base for raw feeders who rotate proteins or add custom ingredients. Not complete & balanced for everyday feeding.",
+        "highlights": ["Ethically raised, pasture-raised Canadian lamb (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "80% Pasture-raised lamb muscle meat, 10% lamb bone, 10% lamb organ.",
+        "recipe_breakdown": "80% muscle meat, 10% bone, 10% organ",
+        "nutrition_facts": {"protein_min": "17%", "fat_min": "8.1%", "moisture_max": "74.32%", "fiber_max": "0.7%", "calcium_min": "1%", "phosphorus_min": "0.7%", "ash": "0.9%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
             {"size_lb": 12, "price": 107.88, "price_per_lb": 8.99, "savings_percent": 10},
@@ -439,11 +333,14 @@ PRIMAL_FEAST_PRODUCTS = [
         "product_line": "primal_feast",
         "protein_type": "rabbit",
         "name": "Primal Rabbit",
-        "mini_description": "Ultra-lean protein for weight management, naturally hypoallergenic and highly digestible.",
-        "description": "Raw rabbit, exotic choice. Ultra-lean protein for weight management. Naturally hypoallergenic and highly digestible.",
-        "ingredients": BASE_INGREDIENTS["rabbit"],
-        "nutrition_facts": NUTRITION_FACTS["rabbit"],
-        "how_to_use": HOW_TO_USE["primal_feast"],
+        "mini_description": "Ultra-lean rabbit protein for digestive ease and rotation.",
+        "description": "Primal Feast Rabbit delivers a naturally lean, novel protein in a classic 80/10/10 ratio — often selected for sensitive pets or rotational feeding.\n\nUsed as a foundational base for raw feeders who prefer full control over ingredients. Not complete & balanced for everyday feeding.",
+        "highlights": ["Ethically raised, cage-free Canadian rabbit (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "80% Cage-free rabbit muscle meat, 10% rabbit bone, 10% rabbit organ.",
+        "recipe_breakdown": "80% muscle meat, 10% bone, 10% organ",
+        "nutrition_facts": {"protein_min": "10.5%", "fat_min": "18.9%", "moisture_max": "66.8%", "fiber_max": "0.9%", "calcium_min": "1.6%", "phosphorus_min": "0.6%", "ash": "2.2%"},
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 86.28, "price_per_lb": 14.38, "savings_percent": 0},
             {"size_lb": 12, "price": 155.30, "price_per_lb": 12.94, "savings_percent": 10},
@@ -451,310 +348,10 @@ PRIMAL_FEAST_PRODUCTS = [
             {"size_lb": 24, "price": 310.27, "price_per_lb": 12.93, "savings_percent": 10}
         ],
         "inventory_status": "available"
-    },
-    {
-        "product_id": "pf-turkey",
-        "product_line": "primal_feast",
-        "protein_type": "turkey",
-        "name": "Primal Turkey",
-        "mini_description": "Low-fat, high-protein option for active dogs with organ meats and bone for nutrition.",
-        "description": "Raw turkey, lean protein. Low-fat, high-protein option for active dogs. Complete with organ meats and bone for balanced nutrition.",
-        "ingredients": BASE_INGREDIENTS["turkey"],
-        "nutrition_facts": NUTRITION_FACTS["turkey"],
-        "how_to_use": HOW_TO_USE["primal_feast"],
-        "pricing": [
-            {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
-            {"size_lb": 12, "price": 69.94, "price_per_lb": 5.83, "savings_percent": 13},
-            {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
-            {"size_lb": 24, "price": 143.86, "price_per_lb": 5.99, "savings_percent": 10}
-        ],
-        "inventory_status": "available"
     }
 ]
 
-# Standard feeding guides for treats
-TREAT_FEEDING_GUIDE = {
-    "feeding": "Feed as a treat, meal topper, or for enrichment. Always supervise your pet while enjoying treats. Suitable for dogs of all sizes. Start with smaller portions for first-time feeders.",
-    "handling": "Keep frozen until ready to use. Thaw in refrigerator before serving (4-6 hours). Once thawed, use within 3-4 days. Always handle with clean hands and clean surfaces."
-}
-
-TREAT_PRODUCT_INFO = """Our treats are sourced from trusted family farms and processed in USDA-inspected facilities. Each treat is individually flash-frozen to lock in freshness and nutrients. No artificial preservatives, colors, or flavors added. 
-
-Perfect for:
-• Training and rewards
-• Dental health and natural chewing
-• Mental stimulation and enrichment  
-• Supporting jaw strength and clean teeth
-
-Always supervise your pet when feeding treats. Not suitable for puppies under 12 weeks old."""
-
-TREATS = [
-    {
-        "treat_id": "treat-turkey-feet", 
-        "name": "Turkey Feet", 
-        "price": 9.99, 
-        "quantity_description": "2 Pack", 
-        "pet_type": "dog",
-        "description": "Whole raw turkey feet naturally rich in glucosamine and chondroitin to support joint health. These natural treats provide hours of chewing satisfaction while promoting dental health through mechanical cleaning action. Perfect for dogs who love to chew and crunch.",
-        "ingredients": "100% turkey feet. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png",
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/bbbktuws_turkey_feet_image_2.png"
-        ]
-    },
-    {
-        "treat_id": "treat-duck-heads", 
-        "name": "Whole Duck Heads", 
-        "price": 9.99, 
-        "quantity_description": "5 Pack", 
-        "pet_type": "dog",
-        "description": "Whole duck heads offer a complete, nutrient-dense chewing experience. Rich in natural fats, protein, and essential nutrients including brain matter which provides omega-3 fatty acids. The crunchy texture helps clean teeth naturally while providing mental enrichment.",
-        "ingredients": "100% whole duck heads. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/csqdjqs3_Whole_duck_heads_pack.png"
-        ]
-    },
-    {
-        "treat_id": "treat-lamb-head-1", 
-        "name": "Whole Lamb Head", 
-        "price": 12.99, 
-        "quantity_description": "1 Pack", 
-        "pet_type": "dog",
-        "description": "Premium whole lamb head provides the ultimate whole prey feeding experience. Packed with nutrient-dense organs, brain matter, and bone content. This treat offers complete nutrition, mental stimulation, and hours of satisfying chewing. Ideal for medium to large dogs.",
-        "ingredients": "100% whole lamb head. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png"
-        ]
-    },
-    {
-        "treat_id": "treat-lamb-head-2", 
-        "name": "Whole Lamb Head", 
-        "price": 19.99, 
-        "quantity_description": "2 Pack", 
-        "pet_type": "dog",
-        "description": "Premium whole lamb heads (2-pack) provide the ultimate whole prey feeding experience. Packed with nutrient-dense organs, brain matter, and bone content. These treats offer complete nutrition, mental stimulation, and hours of satisfying chewing. Ideal for medium to large dogs or multi-dog households.",
-        "ingredients": "100% whole lamb heads. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xt4j406k_Whole_Lamb_Head.png"
-        ]
-    },
-    {
-        "treat_id": "treat-beef-rib", 
-        "name": "Beef Flat Rib Bones", 
-        "price": 9.99, 
-        "quantity_description": "1lb", 
-        "pet_type": "dog",
-        "description": "Meaty beef flat rib bones perfect for recreational chewing. These bones feature tender meat still attached to the rib, providing both nutrition and dental benefits. The flat shape makes them easier to hold and chew. Excellent for aggressive chewers who need a durable, long-lasting option.",
-        "ingredients": "100% beef rib bones. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png",
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/nsrwf34s_Beef_rib_bone_pack.png"
-        ]
-    },
-    {
-        "treat_id": "treat-chicken-carcass", 
-        "name": "Chicken Carcass", 
-        "price": 24.99, 
-        "quantity_description": "2 Pack", 
-        "pet_type": "dog",
-        "description": "Whole chicken carcass provides complete whole prey nutrition with bones, cartilage, and remaining meat. Perfect for larger dogs or as a complete meal replacement. Offers hours of enrichment while delivering balanced nutrition from multiple parts of the animal.",
-        "ingredients": "100% whole chicken carcass. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5wb6yow_chicken_carcass.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5wb6yow_chicken_carcass.png"
-        ]
-    },
-    {
-        "treat_id": "treat-chicken-necks-2lb", 
-        "name": "Whole Chicken Necks", 
-        "price": 8.99, 
-        "quantity_description": "2lb", 
-        "pet_type": "dog",
-        "description": "Whole chicken necks are a customer favorite! These meaty, bone-in treats are perfect for dogs of all sizes. High in glucosamine and chondroitin for joint support, with the perfect ratio of meat to bone. Easily digestible and great for daily feeding or as a crunchy treat.",
-        "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png"
-        ]
-    },
-    {
-        "treat_id": "treat-chicken-necks-5lb", 
-        "name": "Whole Chicken Necks", 
-        "price": 19.99, 
-        "quantity_description": "5lb", 
-        "pet_type": "dog",
-        "description": "Bulk pack of whole chicken necks perfect for multi-dog households or frequent feeders. These meaty, bone-in treats are high in glucosamine and chondroitin for joint support. The perfect ratio of meat to bone makes them easily digestible and great for daily feeding or as a crunchy treat.",
-        "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png"
-        ]
-    },
-    {
-        "treat_id": "treat-duck-feet", 
-        "name": "Duck Feet", 
-        "price": 9.99, 
-        "quantity_description": "1lb", 
-        "pet_type": "dog",
-        "description": "Crunchy duck feet are packed with glucosamine and chondroitin to support joint health. These treats provide satisfying crunch and are naturally rich in collagen for skin and coat health. The perfect size for dogs of all breeds, from small to large.",
-        "ingredients": "100% duck feet. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png"
-        ]
-    },
-    {
-        "treat_id": "treat-beef-neck", 
-        "name": "Beef Neck Bones", 
-        "price": 9.99, 
-        "quantity_description": "1 Pack", 
-        "pet_type": "dog",
-        "description": "Meaty beef neck bones are perfect for powerful chewers. These dense bones feature substantial meat coverage and marrow content. Excellent for dental health, jaw strengthening, and providing hours of satisfying chewing activity. Best suited for medium to large dogs.",
-        "ingredients": "100% beef neck bones. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wmt1d4vz_beef_neck_bones.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wmt1d4vz_beef_neck_bones.png"
-        ]
-    },
-    {
-        "treat_id": "treat-chicken-heads", 
-        "name": "Whole Chicken Heads", 
-        "price": 9.99, 
-        "quantity_description": "10 Pack", 
-        "pet_type": "dog",
-        "description": "Whole chicken heads are a nutrient powerhouse! Rich in brain matter providing omega-3 fatty acids, plus eyes, combs, and bone content for complete nutrition. These treats offer mental enrichment and dental benefits while delivering highly bioavailable nutrients. Perfect for all dog sizes.",
-        "ingredients": "100% whole chicken heads. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5zyp5xk_chicken%20head.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5zyp5xk_chicken%20head.png"
-        ]
-    },
-    {
-        "treat_id": "treat-beef-marrow", 
-        "name": "Beef Marrow Bones", 
-        "price": 9.99, 
-        "quantity_description": "1 Pack", 
-        "pet_type": "dog",
-        "description": "Premium beef marrow bones are the gold standard of recreational chewing. These bones are filled with nutrient-rich marrow that dogs absolutely love. The dense bone structure provides long-lasting chewing satisfaction while promoting dental health. Perfect for medium to large dogs who love to chew.",
-        "ingredients": "100% beef marrow bones. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": TREAT_FEEDING_GUIDE,
-        "product_information": TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/u6yxsxr8_beef_marrow_bone.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/u6yxsxr8_beef_marrow_bone.png",
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/19lh9gsg_beef_marrow_image_2.png"
-        ]
-    }
-]
-
-# Cat-specific ingredients (smaller portions, taurine-enriched)
-CAT_INGREDIENTS = {
-    "chicken": [
-        "Ground chicken with bone",
-        "Chicken liver",
-        "Chicken heart",
-        "Taurine supplement",
-        "Salmon oil (omega-3)",
-        "Kelp powder"
-    ],
-    "beef": [
-        "Grass-fed ground beef",
-        "Beef liver",
-        "Beef heart",
-        "Taurine supplement",
-        "Fish oil (omega-3)",
-        "Kelp powder"
-    ],
-    "duck": [
-        "Ground duck with bone",
-        "Duck liver",
-        "Duck heart",
-        "Taurine supplement",
-        "Fish oil (omega-3)",
-        "Kelp powder"
-    ],
-    "turkey": [
-        "Ground turkey with bone",
-        "Turkey liver",
-        "Turkey heart",
-        "Taurine supplement",
-        "Fish oil (omega-3)",
-        "Kelp powder"
-    ],
-    "fish": [
-        "Wild-caught salmon",
-        "Wild-caught mackerel",
-        "Salmon oil",
-        "Taurine supplement",
-        "Kelp powder"
-    ],
-    "goat": [
-        "Ground goat meat",
-        "Goat liver",
-        "Goat heart",
-        "Taurine supplement",
-        "Fish oil (omega-3)",
-        "Kelp powder"
-    ],
-    "lamb": [
-        "Ground lamb",
-        "Lamb liver",
-        "Lamb heart",
-        "Taurine supplement",
-        "Fish oil (omega-3)",
-        "Kelp powder"
-    ],
-    "rabbit": [
-        "Ground rabbit with bone",
-        "Rabbit liver",
-        "Rabbit heart",
-        "Taurine supplement",
-        "Fish oil (omega-3)",
-        "Kelp powder"
-    ]
-}
-
-CAT_NUTRITION_FACTS = {
-    "chicken": {"protein": "20%", "fat": "14%", "fiber": "0.5%", "moisture": "70%", "taurine": "0.15%", "calories": "160 kcal per 100g"},
-    "beef": {"protein": "22%", "fat": "16%", "fiber": "0.5%", "moisture": "66%", "taurine": "0.15%", "calories": "190 kcal per 100g"},
-    "duck": {"protein": "21%", "fat": "18%", "fiber": "0.5%", "moisture": "64%", "taurine": "0.15%", "calories": "200 kcal per 100g"},
-    "turkey": {"protein": "21%", "fat": "13%", "fiber": "0.5%", "moisture": "70%", "taurine": "0.15%", "calories": "155 kcal per 100g"},
-    "fish": {"protein": "24%", "fat": "15%", "fiber": "0.5%", "moisture": "66%", "taurine": "0.18%", "calories": "175 kcal per 100g"},
-    "goat": {"protein": "23%", "fat": "14%", "fiber": "0.5%", "moisture": "68%", "taurine": "0.15%", "calories": "170 kcal per 100g"},
-    "lamb": {"protein": "22%", "fat": "18%", "fiber": "0.5%", "moisture": "65%", "taurine": "0.15%", "calories": "200 kcal per 100g"},
-    "rabbit": {"protein": "25%", "fat": "12%", "fiber": "0.5%", "moisture": "68%", "taurine": "0.15%", "calories": "160 kcal per 100g"}
-}
-
-HOW_TO_USE_CAT = "Thaw in refrigerator for 12-24 hours. Serve at room temperature. Feed 2-4% of your cat's body weight daily, divided into 2-3 meals. Cats prefer smaller, more frequent meals. Store frozen until ready to use. Once thawed, use within 3 days."
-
+# Royal Paws Products - Cat Food (95% meat, Complete & Balanced)
 ROYAL_PAWS_PRODUCTS = [
     {
         "product_id": "rp-chicken",
@@ -762,11 +359,14 @@ ROYAL_PAWS_PRODUCTS = [
         "pet_type": "cat",
         "protein_type": "chicken",
         "name": "Royal Chicken",
-        "mini_description": "Premium chicken crafted specifically for cats. Rich in taurine and essential amino acids for heart health and vision. Perfect for feline obligate carnivores.",
-        "description": "Premium chicken recipe crafted specifically for cats. Rich in taurine and essential amino acids for heart health and vision. Perfect for feline obligate carnivores.",
-        "ingredients": CAT_INGREDIENTS["chicken"],
-        "nutrition_facts": CAT_NUTRITION_FACTS["chicken"],
-        "how_to_use": HOW_TO_USE_CAT,
+        "mini_description": "Tender chicken for digestible, everyday feline nutrition.",
+        "description": "Royal Paws Chicken Dinner provides a lean, highly digestible complete and balanced meal with your cat's required 95% raw protein content. Its reliable flavour and nutrition make it an ideal everyday choice, especially for felines needing weight management.",
+        "highlights": ["Ethically raised, free-range Canadian chicken (drug-free, omega-3 fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "95% meat, 3% fruits & veggies, 2% supplements. Free-range chicken muscle meat, chicken heart, and chicken liver with carrots, kelp, flax seeds, fish oil, and brewers yeast.",
+        "recipe_breakdown": "95% meat, organs & bone, 3% fruits & veggies, 2% supplements",
+        "nutrition_notes": "Complete & balanced to meet AAFCO and NRC recommended nutrient profiles for cats of all life stages. For optimal health, taurine supplements are recommended, as well as oils like fish, salmon, hemp, or krill oil for Omega-3, -6, and -9 fatty acids.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 26.99, "price_per_lb": 4.50, "savings_percent": 0},
             {"size_lb": 12, "price": 51.28, "price_per_lb": 4.27, "savings_percent": 5}
@@ -779,11 +379,14 @@ ROYAL_PAWS_PRODUCTS = [
         "pet_type": "cat",
         "protein_type": "beef",
         "name": "Royal Beef",
-        "mini_description": "Grass-fed beef packed with iron and B vitamins. High-protein formula for active cats. Essential taurine added for optimal feline nutrition.",
-        "description": "Grass-fed beef packed with iron and B vitamins. High-protein formula for active cats. Essential taurine added for optimal feline nutrition.",
-        "ingredients": CAT_INGREDIENTS["beef"],
-        "nutrition_facts": CAT_NUTRITION_FACTS["beef"],
-        "how_to_use": HOW_TO_USE_CAT,
+        "mini_description": "Hearty beef protein for active or growing cats.",
+        "description": "Royal Paws Beef Dinner provides a rich, protein-dense complete and balanced meal with your cat's required 95% raw protein content. Its hearty flavour and energy support make it ideal for active cats or those needing added strength and condition.",
+        "highlights": ["Ethically raised, pasture-raised Canadian beef (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "95% meat, 3% fruits & veggies, 2% supplements. Pasture-raised beef muscle meat, beef heart, and beef liver with carrots, kelp, flax seeds, fish oil, and brewers yeast.",
+        "recipe_breakdown": "95% meat, organs & bone, 3% fruits & veggies, 2% supplements",
+        "nutrition_notes": "Complete & balanced to meet AAFCO and NRC recommended nutrient profiles for cats of all life stages. Taurine and Omega-rich oils are recommended.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
             {"size_lb": 12, "price": 75.94, "price_per_lb": 6.33, "savings_percent": 5}
@@ -796,11 +399,14 @@ ROYAL_PAWS_PRODUCTS = [
         "pet_type": "cat",
         "protein_type": "duck",
         "name": "Royal Duck",
-        "mini_description": "Novel protein perfect for cats with sensitivities. Rich, flavorful duck with natural fatty acids for healthy skin and coat.",
-        "description": "Novel protein perfect for cats with sensitivities. Rich, flavorful duck with natural fatty acids for healthy skin and coat.",
-        "ingredients": CAT_INGREDIENTS["duck"],
-        "nutrition_facts": CAT_NUTRITION_FACTS["duck"],
-        "how_to_use": HOW_TO_USE_CAT,
+        "mini_description": "Rich duck protein for sensitive or picky cats.",
+        "description": "Royal Paws Duck Dinner provides a flavourful, easily digestible complete and balanced meal with your cat's required 95% raw protein content. Its novel profile makes it a strong everyday option for cats with sensitivities or picky appetites.",
+        "highlights": ["Ethically raised, free-range Canadian duck (drug-free, omega-3 fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "95% meat, 3% fruits & veggies, 2% supplements. Free-range duck muscle meat, duck heart, and duck liver with carrots, kelp, flax seeds, fish oil, and brewers yeast.",
+        "recipe_breakdown": "95% meat, organs & bone, 3% fruits & veggies, 2% supplements",
+        "nutrition_notes": "Complete & balanced to meet AAFCO and NRC recommended nutrient profiles for cats of all life stages. Taurine and Omega-rich oils are recommended.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
             {"size_lb": 12, "price": 75.94, "price_per_lb": 6.33, "savings_percent": 5}
@@ -813,11 +419,14 @@ ROYAL_PAWS_PRODUCTS = [
         "pet_type": "cat",
         "protein_type": "turkey",
         "name": "Royal Turkey",
-        "mini_description": "Lean turkey for weight-conscious cats. Low fat, high protein with essential amino acids. Gentle on sensitive stomachs.",
-        "description": "Lean turkey for weight-conscious cats. Low fat, high protein with essential amino acids. Gentle on sensitive stomachs.",
-        "ingredients": CAT_INGREDIENTS["turkey"],
-        "nutrition_facts": CAT_NUTRITION_FACTS["turkey"],
-        "how_to_use": HOW_TO_USE_CAT,
+        "mini_description": "Lean turkey protein for gentle digestion and rotation.",
+        "description": "Royal Paws Turkey Dinner provides a lean, gentle complete and balanced meal with your cat's required 95% raw protein content. Its clean nutrition makes it well suited for daily feeding, allergy reduction, food sensitivities, and weight-conscious felines.",
+        "highlights": ["Ethically raised, free-range Canadian turkey (drug-free, omega-3 fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "95% meat, 3% fruits & veggies, 2% supplements. Free-range turkey muscle meat, turkey heart, and turkey liver with carrots, kelp, flax seeds, fish oil, and brewers yeast.",
+        "recipe_breakdown": "95% meat, organs & bone, 3% fruits & veggies, 2% supplements",
+        "nutrition_notes": "Complete & balanced to meet AAFCO and NRC recommended nutrient profiles for cats of all life stages. Taurine and Omega-rich oils are recommended.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
             {"size_lb": 12, "price": 75.94, "price_per_lb": 6.33, "savings_percent": 5}
@@ -829,12 +438,15 @@ ROYAL_PAWS_PRODUCTS = [
         "product_line": "royal_paws",
         "pet_type": "cat",
         "protein_type": "fish",
-        "name": "Royal Fish",
-        "mini_description": "Wild-caught fish cats naturally crave. Omega-3 rich for healthy brain function and shiny coat. Natural taurine from fish sources.",
-        "description": "Wild-caught fish cats naturally crave. Omega-3 rich for healthy brain function and shiny coat. Natural taurine from fish sources.",
-        "ingredients": CAT_INGREDIENTS["fish"],
-        "nutrition_facts": CAT_NUTRITION_FACTS["fish"],
-        "how_to_use": HOW_TO_USE_CAT,
+        "name": "Royal Salmon",
+        "mini_description": "Omega-rich salmon for skin, coat, and vitality.",
+        "description": "Royal Paws Salmon Dinner provides an omega-rich, flavourful complete and balanced meal with your cat's required 95% raw protein content. Its natural fatty acids support skin, coat, and overall vitality making it a great rotational dinner.",
+        "highlights": ["Ethically raised, wild-caught Canadian salmon (drug-free)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "95% meat, 3% fruits & veggies, 2% supplements. Wild-caught salmon muscle meat, fish heart, and fish liver with carrots, kelp, flax seeds, fish oil, and brewers yeast.",
+        "recipe_breakdown": "95% meat, organs & bone, 3% fruits & veggies, 2% supplements",
+        "nutrition_notes": "Complete & balanced to meet AAFCO and NRC recommended nutrient profiles for cats of all life stages. Taurine and Omega-rich oils are recommended.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 44.95, "price_per_lb": 7.49, "savings_percent": 0},
             {"size_lb": 12, "price": 85.41, "price_per_lb": 7.12, "savings_percent": 5}
@@ -847,14 +459,17 @@ ROYAL_PAWS_PRODUCTS = [
         "pet_type": "cat",
         "protein_type": "goat",
         "name": "Royal Goat",
-        "mini_description": "Exotic goat protein for cats with allergies. Highly digestible and lean. Perfect for elimination diets and sensitive cats.",
-        "description": "Exotic goat protein for cats with allergies. Highly digestible and lean. Perfect for elimination diets and sensitive cats.",
-        "ingredients": CAT_INGREDIENTS["goat"],
-        "nutrition_facts": CAT_NUTRITION_FACTS["goat"],
-        "how_to_use": HOW_TO_USE_CAT,
+        "mini_description": "Light, digestible goat protein for sensitive cats.",
+        "description": "Royal Paws Goat Dinner provides a light, highly digestible complete and balanced meal with your cat's required 95% raw protein content. Its novel protein profile makes it suitable for rotational feeding and sensitive cats.",
+        "highlights": ["Ethically raised, pasture-raised Canadian goat (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "95% meat, 3% fruits & veggies, 2% supplements. Pasture-raised goat muscle meat, goat heart, and goat liver with carrots, kelp, flax seeds, fish oil, and brewers yeast.",
+        "recipe_breakdown": "95% meat, organs & bone, 3% fruits & veggies, 2% supplements",
+        "nutrition_notes": "Complete & balanced to meet AAFCO and NRC recommended nutrient profiles for cats of all life stages. Taurine and Omega-rich oils are recommended.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
-            {"size_lb": 12, "price": 113.88, "price_per_lb": 9.49, "savings_percent": 5}
+            {"size_lb": 12, "price": 113.89, "price_per_lb": 9.49, "savings_percent": 5}
         ],
         "inventory_status": "available"
     },
@@ -864,14 +479,17 @@ ROYAL_PAWS_PRODUCTS = [
         "pet_type": "cat",
         "protein_type": "lamb",
         "name": "Royal Lamb",
-        "mini_description": "Premium grass-fed lamb for discerning cats. Rich in zinc and B vitamins. Satisfying flavor even picky eaters love.",
-        "description": "Premium grass-fed lamb for discerning cats. Rich in zinc and B vitamins. Satisfying flavor even picky eaters love.",
-        "ingredients": CAT_INGREDIENTS["lamb"],
-        "nutrition_facts": CAT_NUTRITION_FACTS["lamb"],
-        "how_to_use": HOW_TO_USE_CAT,
+        "mini_description": "Savory lamb protein for energy and coat support.",
+        "description": "Royal Paws Lamb Dinner provides a savoury, calorie-dense complete and balanced meal with your cat's required 95% raw protein content. Its rich profile makes it ideal for cats needing a rotational meal that provides extra energy, allergy relief, and weight support.",
+        "highlights": ["Ethically raised, pasture-raised Canadian lamb (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "95% meat, 3% fruits & veggies, 2% supplements. Pasture-raised lamb muscle meat, lamb heart, and lamb liver with carrots, kelp, flax seeds, fish oil, and brewers yeast.",
+        "recipe_breakdown": "95% meat, organs & bone, 3% fruits & veggies, 2% supplements",
+        "nutrition_notes": "Complete & balanced to meet AAFCO and NRC recommended nutrient profiles for cats of all life stages. Taurine and Omega-rich oils are recommended.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
-            {"size_lb": 12, "price": 113.88, "price_per_lb": 9.49, "savings_percent": 5}
+            {"size_lb": 12, "price": 113.89, "price_per_lb": 9.49, "savings_percent": 5}
         ],
         "inventory_status": "available"
     },
@@ -881,11 +499,14 @@ ROYAL_PAWS_PRODUCTS = [
         "pet_type": "cat",
         "protein_type": "rabbit",
         "name": "Royal Rabbit",
-        "mini_description": "Ultra-lean rabbit for cats. Naturally hypoallergenic with high protein content. Ideal for cats with multiple food sensitivities.",
-        "description": "Ultra-lean rabbit for cats. Naturally hypoallergenic with high protein content. Ideal for cats with multiple food sensitivities.",
-        "ingredients": CAT_INGREDIENTS["rabbit"],
-        "nutrition_facts": CAT_NUTRITION_FACTS["rabbit"],
-        "how_to_use": HOW_TO_USE_CAT,
+        "mini_description": "Lean rabbit protein for food-sensitive or rotational feeding.",
+        "description": "Royal Paws Rabbit Dinner provides an ultra-lean complete and balanced meal with your cat's required 95% raw protein content. Its novel protein source makes it ideal for cats with food sensitivities, allergies, or weight management.",
+        "highlights": ["Ethically raised, cage-free Canadian rabbit (drug-free, grass-fed)", "All-natural ingredients (non-GMO, no additives, preservatives, or fillers)", "Certified human-grade (no by-products, trims, or old meat)", "Prepared fresh and flash-frozen for safe delivery"],
+        "ingredients": "95% meat, 3% fruits & veggies, 2% supplements. Cage-free rabbit muscle meat, rabbit heart, and rabbit liver with carrots, kelp, flax seeds, fish oil, and brewers yeast.",
+        "recipe_breakdown": "95% meat, organs & bone, 3% fruits & veggies, 2% supplements",
+        "nutrition_notes": "Complete & balanced to meet AAFCO and NRC recommended nutrient profiles for cats of all life stages. Taurine and Omega-rich oils are recommended.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
         "pricing": [
             {"size_lb": 6, "price": 86.28, "price_per_lb": 14.38, "savings_percent": 0},
             {"size_lb": 12, "price": 163.93, "price_per_lb": 13.66, "savings_percent": 5}
@@ -894,101 +515,218 @@ ROYAL_PAWS_PRODUCTS = [
     }
 ]
 
-# Cat treats feeding guide
-CAT_TREAT_FEEDING_GUIDE = {
-    "feeding": "Feed as a treat or for enrichment. Always supervise your cat while enjoying treats. Perfect for satisfying natural hunting instincts. Introduce gradually for first-time feeders.",
-    "handling": "Keep frozen until ready to use. Thaw in refrigerator before serving (2-4 hours). Once thawed, use within 2-3 days. Always handle with clean hands and clean surfaces."
-}
+# Dog Treats
+TREATS = [
+    {
+        "treat_id": "treat-turkey-feet",
+        "name": "Turkey Feet",
+        "pet_type": "dog",
+        "price": 10.99,
+        "quantity_description": "6 Pack",
+        "description": "Free-range Turkey Feet are protein-rich, low-fat, and packed with skin, tendons, bones, muscle, ligaments, and claws. Supports teeth, joints, and digestion.\n• Supervise your dog when feeding any bone treats.\n• Suitable for dogs, cats & puppies\n• Can be fed 3 times per week\n• 100% natural, human-grade",
+        "ingredients": "100% turkey feet. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/qlkcb3el_turkey_feet.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/e34lwp9r_Turkey_feet_pack.png"]
+    },
+    {
+        "treat_id": "treat-duck-heads",
+        "name": "Whole Duck Heads",
+        "pet_type": "dog",
+        "price": 12.99,
+        "quantity_description": "3 Pack",
+        "description": "Free-range Canadian Duck Heads provide a natural, nutrient-rich chew. Packed with protein, collagen, and essential vitamins for skin, coat, bones, joints, and gut health. Supports dental health and mental stimulation.\n• Supervise your dog when feeding any bone treats.\n• Suitable for adult dogs, cats, puppies & kittens\n• Can be fed 3 times per week",
+        "ingredients": "100% duck heads. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/5aaxlrlf_duck_heads.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/yq3q59no_Duck_head_pack.png"]
+    },
+    {
+        "treat_id": "treat-lamb-head-1",
+        "name": "Whole Lamb Head",
+        "pet_type": "dog",
+        "price": 14.99,
+        "quantity_description": "1 Pack",
+        "description": "Grass-fed Canadian Lamb Heads are a tasty, stimulating natural dog treat. Excellent source of protein and minerals. Perfect as chew or meal replacement.\n• Supervise your dog when feeding any bone treats.\n• For dogs & puppies 12 weeks and older\n• Can be fed 2–3 times per week",
+        "ingredients": "100% lamb head. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/5h7j12gy_lamb_head.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/c9wwt5dx_Lamb_head_pack.png"]
+    },
+    {
+        "treat_id": "treat-lamb-head-2",
+        "name": "Whole Lamb Head",
+        "pet_type": "dog",
+        "price": 27.99,
+        "quantity_description": "2 Pack",
+        "description": "Grass-fed Canadian Lamb Heads are a tasty, stimulating natural dog treat. Excellent source of protein and minerals. Perfect as chew or meal replacement.\n• Supervise your dog when feeding any bone treats.\n• For dogs & puppies 12 weeks and older\n• Can be fed 2–3 times per week",
+        "ingredients": "100% lamb head. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/5h7j12gy_lamb_head.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/c9wwt5dx_Lamb_head_pack.png"]
+    },
+    {
+        "treat_id": "treat-beef-rib",
+        "name": "Beef Flat Rib Bones",
+        "pet_type": "dog",
+        "price": 11.99,
+        "quantity_description": "2-3 Ribs",
+        "description": "Pasture-raised beef flat ribs are meaty chews perfect for dental hygiene, mental stimulation, or meal replacement.\n• Supervise your dog when feeding any bone treats.\n• Suitable for dogs & puppies\n• Can be fed 2–3 times per week",
+        "ingredients": "100% beef rib bones. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/nsrwf34s_Beef_rib_bone_pack.png"]
+    },
+    {
+        "treat_id": "treat-chicken-carcass",
+        "name": "Chicken Carcass",
+        "pet_type": "dog",
+        "price": 24.99,
+        "quantity_description": "2 Pack (4-5 lb each)",
+        "description": "This pair of raw Chicken Carcasses averages around 4–5 lb each, giving you great value and top-notch quality for a natural dog treat.\nContains Omega-3-rich, farm-fresh, free-range Canadian chicken carcass with organ meat. A natural source of calcium, while organs provide essential vitamins & minerals.\n• Supervise your pet when feeding any bone treats.\n• Suitable for dogs of all life stages and adult cats\n• Can be fed 3 times per week",
+        "ingredients": "100% chicken carcass with organ meat. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/90pvdhnp_chicken_carcass.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/zwnzxp3r_Chicken_carcass_pack.png"]
+    },
+    {
+        "treat_id": "treat-chicken-necks-2lb",
+        "name": "Whole Chicken Necks",
+        "pet_type": "dog",
+        "price": 11.99,
+        "quantity_description": "2 lb Pack",
+        "description": "Free-range Canadian Chicken Necks are a tasty raw chew for treats, toppers, mental stimulation, or meal replacement. High in protein and easily digestible.\n• Supervise your dog when feeding any bone treats.\n• Suitable for adult dogs, cats, puppies & kittens\n• Can be fed 3 times per week",
+        "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/zwnzj4xj_chicken_necks.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/j3l3hs38_Chicken_neck_pack.png"]
+    },
+    {
+        "treat_id": "treat-chicken-necks-5lb",
+        "name": "Whole Chicken Necks",
+        "pet_type": "dog",
+        "price": 24.99,
+        "quantity_description": "5 lb Pack",
+        "description": "Free-range Canadian Chicken Necks are a tasty raw chew for treats, toppers, mental stimulation, or meal replacement. High in protein and easily digestible.\n• Supervise your dog when feeding any bone treats.\n• Suitable for adult dogs, cats, puppies & kittens\n• Can be fed 3 times per week",
+        "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/zwnzj4xj_chicken_necks.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/j3l3hs38_Chicken_neck_pack.png"]
+    },
+    {
+        "treat_id": "treat-duck-feet",
+        "name": "Duck Feet",
+        "pet_type": "dog",
+        "price": 9.99,
+        "quantity_description": "6 Pack",
+        "description": "Free-range Canadian Duck Feet provide a crunchy Omega-3 snack. Natural glucosamine and chondroitin support joint and muscle health. Protein-packed with no fillers.\n• Supervise your dog when feeding any bone treats.\n• Suitable for adult dogs, adult cats & puppies\n• Can be fed 3 times per week",
+        "ingredients": "100% duck feet. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/0ojtfshy_duck_feet.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wqavqvqj_Duck_feet_pack.png"]
+    },
+    {
+        "treat_id": "treat-beef-neck",
+        "name": "Beef Neck Bones",
+        "pet_type": "dog",
+        "price": 13.99,
+        "quantity_description": "2-3 Bones",
+        "description": "Pasture-raised Canadian Beef Neck Bones are packed with protein and essential fatty acids. Helps keep teeth plaque-free.\n• Supervise your dog when feeding any bone treats.\n• Suitable for dogs, puppies, cats & kittens\n• Can be fed 3 times per week",
+        "ingredients": "100% beef neck bones. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/3t2kx8f9_beef_neck_bones.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/9f04z1ms_Beef_neck_pack.png"]
+    },
+    {
+        "treat_id": "treat-chicken-heads",
+        "name": "Whole Chicken Heads",
+        "pet_type": "dog",
+        "price": 8.99,
+        "quantity_description": "4 Pack",
+        "description": "Free-range Canadian raw Whole Chicken Heads make a meaty & crunchy snack. Packed with vitamins, minerals, and collagen for healthy skin, coat, bones, joints, and digestive health. Supports dental health.\n• Supervise your pet when feeding any bone treats.\n• Suitable for dogs, puppies, cats & kittens\n• Can be fed 3 times per week",
+        "ingredients": "100% chicken heads. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/guwbcnle_chicken_heads.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/z0s2jgtf_Chicken_head_pack.png"]
+    },
+    {
+        "treat_id": "treat-beef-marrow",
+        "name": "Beef Marrow Bones",
+        "pet_type": "dog",
+        "price": 12.99,
+        "quantity_description": "2-3 Bones",
+        "description": "Pasture-raised Beef Bone Marrow is a natural dog chew. Important source of calcium, helps clean teeth, and provides relaxation.\n• Supervise your dog when feeding any bone treats.\n• Suitable for dogs & puppies\n• Can be fed 3 times per week",
+        "ingredients": "100% beef marrow bones. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/bfvjsqvf_beef_marrow_bones.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/8k2x6x6n_Beef_marrow_pack.png"]
+    }
+]
 
-CAT_TREAT_PRODUCT_INFO = """Our cat treats are sourced from trusted family farms and processed in USDA-inspected facilities. Each treat is individually frozen to lock in freshness. No artificial preservatives, colors, or flavors added.
-
-Perfect for:
-• Satisfying natural hunting instincts
-• Dental health and jaw exercise
-• Mental stimulation and enrichment
-• High-protein supplemental feeding
-
-Always supervise your cat when feeding treats. Not suitable for kittens under 12 weeks old."""
-
-# Cat treats - 5 specific treats as per requirements
+# Cat Treats
 CAT_TREATS = [
     {
         "treat_id": "treat-cat-chicken-heads",
         "name": "Whole Chicken Heads",
+        "pet_type": "cat",
         "price": 8.99,
         "quantity_description": "4 Pack",
-        "pet_type": "cat",
-        "description": "Whole chicken heads perfectly sized for cats. Rich in brain matter providing omega-3 fatty acids and taurine. These treats satisfy your cat's natural hunting instinct while providing complete prey nutrition. The crunchy texture helps clean teeth naturally.",
-        "ingredients": "100% whole chicken heads. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
-        "product_information": CAT_TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5zyp5xk_chicken%20head.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/p5zyp5xk_chicken%20head.png"
-        ]
+        "description": "Free-range Canadian raw Whole Chicken Heads make a meaty & crunchy snack. Packed with vitamins, minerals, and collagen for healthy skin, coat, bones, joints, and digestive health. Supports dental health.\n• Supervise your pet when feeding any bone treats.\n• Suitable for dogs, puppies, cats & kittens\n• Can be fed 3 times per week",
+        "ingredients": "100% chicken heads. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/guwbcnle_chicken_heads.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/z0s2jgtf_Chicken_head_pack.png"]
     },
     {
         "treat_id": "treat-cat-chicken-necks",
         "name": "Whole Chicken Necks Pack",
-        "price": 6.99,
-        "quantity_description": "8oz",
         "pet_type": "cat",
-        "description": "Chicken necks sized perfectly for cats. These meaty, bone-in treats are rich in glucosamine for joint support and calcium for bone health. The ideal ratio of meat to bone makes them easily digestible. Perfect for cats who enjoy crunchy, natural treats.",
+        "price": 6.99,
+        "quantity_description": "8 oz",
+        "description": "Free-range Canadian Chicken Necks are a tasty raw chew for treats, toppers, mental stimulation, or meal replacement. High in protein and easily digestible.\n• Supervise your dog when feeding any bone treats.\n• Suitable for adult dogs, cats, puppies & kittens\n• Can be fed 3 times per week",
         "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
-        "product_information": CAT_TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/ev805vwe_chicken_necks.png"
-        ]
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/zwnzj4xj_chicken_necks.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/j3l3hs38_Chicken_neck_pack.png"]
     },
     {
         "treat_id": "treat-cat-chicken-feet",
         "name": "Chicken Feet",
+        "pet_type": "cat",
         "price": 5.99,
         "quantity_description": "6 Pack",
-        "pet_type": "cat",
-        "description": "Crunchy chicken feet provide natural glucosamine and chondroitin for joint support. These cat-sized treats offer satisfying texture and are rich in collagen for skin and coat health. Perfect for cats who love to crunch and chew.",
+        "description": "Ontario fresh, free-range Chicken Feet are crunchy treats with natural proteins, calcium, phosphorus, and amino acids. Great as a treat, meal replacement, or topper.\n• Supervise your dog when feeding any bone treats.\n• Suitable for dogs, cats, puppies & kittens\n• Can be fed 3 times per week",
         "ingredients": "100% chicken feet. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
-        "product_information": CAT_TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/sj79kpoz_turkey_feet.png"
-        ]
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/90pvdhnp_chicken_carcass.png"]
     },
     {
         "treat_id": "treat-cat-duck-heads",
         "name": "Whole Duck Heads",
+        "pet_type": "cat",
         "price": 10.99,
         "quantity_description": "3 Pack",
-        "pet_type": "cat",
-        "description": "Whole duck heads sized for cats. Nutrient-dense with brain matter rich in omega-3 fatty acids and taurine. These treats provide mental enrichment and satisfy hunting instincts while delivering complete prey nutrition.",
-        "ingredients": "100% whole duck heads. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
-        "product_information": CAT_TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/68isxfvj_whole_duck_head.png",
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/csqdjqs3_Whole_duck_heads_pack.png"
-        ]
+        "description": "Free-range Canadian Duck Heads provide a natural, nutrient-rich chew. Packed with protein, collagen, and essential vitamins for skin, coat, bones, joints, and gut health. Supports dental health and mental stimulation.\n• Supervise your dog when feeding any bone treats.\n• Suitable for adult dogs, cats, puppies & kittens\n• Can be fed 3 times per week",
+        "ingredients": "100% duck heads. No additives, preservatives, or artificial ingredients.",
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/5aaxlrlf_duck_heads.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/yq3q59no_Duck_head_pack.png"]
     },
     {
         "treat_id": "treat-cat-duck-feet",
         "name": "Duck Feet",
+        "pet_type": "cat",
         "price": 7.99,
         "quantity_description": "6 Pack",
-        "pet_type": "cat",
-        "description": "Duck feet perfectly sized for cats. Packed with glucosamine, chondroitin, and natural collagen. These crunchy treats support joint health while providing natural dental benefits. Cats love the satisfying texture and natural flavor.",
+        "description": "Free-range Canadian Duck Feet provide a crunchy Omega-3 snack. Natural glucosamine and chondroitin support joint and muscle health. Protein-packed with no fillers.\n• Supervise your dog when feeding any bone treats.\n• Suitable for adult dogs, adult cats & puppies\n• Can be fed 3 times per week",
         "ingredients": "100% duck feet. No additives, preservatives, or artificial ingredients.",
-        "feeding_guide": CAT_TREAT_FEEDING_GUIDE,
-        "product_information": CAT_TREAT_PRODUCT_INFO,
-        "image": "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png",
-        "images": [
-            "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/xnn3vv4v_DuckFeet.png"
-        ]
+        "feeding_guide": FEEDING_GUIDE,
+        "product_information": PRODUCT_INFO,
+        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/0ojtfshy_duck_feet.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wqavqvqj_Duck_feet_pack.png"]
     }
 ]
 
+# Combined lists for export
 ALL_PRODUCTS = COMFORT_DINNER_PRODUCTS + PRIMAL_FEAST_PRODUCTS + ROYAL_PAWS_PRODUCTS
 ALL_TREATS = TREATS + CAT_TREATS
