@@ -210,7 +210,7 @@ export const LandingPage = () => {
                   cursor: 'pointer'
                 }}
               >
-                Create Your Plan
+                Order Now
               </button>
             </div>
           </div>
@@ -524,11 +524,8 @@ export const LandingPage = () => {
                   cursor: 'pointer'
                 }}
               >
-                Build Meal Plan
+                Order Now
               </button>
-              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.85)', margin: '12px 0 0' }}>
-                or <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/build-box')}>Build Your Box</span>
-              </p>
             </div>
           </div>
         </section>
@@ -741,18 +738,14 @@ export const LandingPage = () => {
               Subscribe to save and never run out.
             </p>
             
-            <div style={{ textAlign: 'center', marginTop: '32px', display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', alignItems: 'center' }}>
+            <div style={{ textAlign: 'center', marginTop: '32px' }}>
               <button 
                 className="btn-primary" 
                 onClick={() => navigate('/build-box')}
                 style={{ borderRadius: '8px', padding: '14px 32px', fontSize: '16px' }}
               >
-                Build Meal Plan
+                Order Now
               </button>
-              <span style={{ fontSize: '14px', color: '#666' }}>or</span>
-              <span style={{ fontSize: '14px', color: '#666', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/build-box')}>
-                Build Your Box
-              </span>
             </div>
           </div>
         </section>
@@ -1118,18 +1111,8 @@ export const LandingPage = () => {
                 data-testid="final-cta-btn"
                 style={{ width: '100%', borderRadius: '8px', padding: '14px 32px', fontSize: '16px' }}
               >
-                Create Meal Plan
+                Order Now
               </button>
-              
-              <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.85)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span>or</span>
-                <span 
-                  onClick={() => navigate('/build-box')}
-                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                >
-                  Build Your Box
-                </span>
-              </div>
             </div>
           </div>
         </section>
