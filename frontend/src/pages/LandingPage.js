@@ -222,7 +222,13 @@ export const LandingPage = () => {
             <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>From our farm to your bowl.</h2>
             <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                Good food starts before the bowl, with how ingredients are raised, handled, and prepared. As an Ontario family-run farm, we make fresh raw meals so your dog gets food that supports a healthier, more vibrant life — made with the same care you would expect at your own table.
+                Good food starts before the bowl, with how ingredients are raised, handled, and prepared.
+              </p>
+              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
+                Many pet parents feel stuck dealing with allergies, digestive issues, or simply trying to find food their dog actually enjoys — without knowing if what they're feeding is part of the problem or the solution. The truth is, the right ingredients can make all the difference, but finding them shouldn't feel overwhelming.
+              </p>
+              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
+                That's where we come in. As an Ontario family-run farm, we handle the sourcing, balancing, and preparation so your dog gets fresh raw meals that support a healthier, more vibrant life — made with the same care you would expect at your own table.
               </p>
               <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
                 We make raw feeding simple, exciting, and tailored to what your dog needs.
