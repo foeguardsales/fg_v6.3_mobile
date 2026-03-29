@@ -536,7 +536,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — 8 PROTEINS ===== */}
         <section className="proteins-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
           <div className="section-container">
-            <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '16px', textTransform: 'none', fontWeight: '600' }}>Choose your pets favourites</h2>
+            <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '16px', textTransform: 'none', fontWeight: '600' }}>Choose their favourites</h2>
             <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '48px', color: '#666', maxWidth: '900px', margin: '0 auto 48px' }}>
               Introduce your dog to their own raw food cuisine. We offer a variety of protein options and blends to suit their unique dietary needs and the flavours they love.
             </p>
@@ -760,7 +760,7 @@ export const LandingPage = () => {
         {/* ===== SECTION — OUR STORY ===== */}
         <section className="about-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
           <div className="section-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B', fontWeight: '600' }}>Our story is your story.</h2>
+            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B', fontWeight: '600' }}>How it all started</h2>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
               Like many pet parents, we trusted the labels and fed what the stores recommended. But when our own family started struggling with health issues linked to processed food, we turned to our farm and began growing real, wholesome ingredients ourselves — and the difference changed everything for us.
             </p>
