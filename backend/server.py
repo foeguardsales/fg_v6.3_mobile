@@ -60,10 +60,15 @@ async def seed_database():
     # Use bulk operations to update or insert
     from seed_data import ALL_PRODUCTS, ALL_TREATS
     
+    # Get valid product IDs from seed data and remove any that no longer exist
+    valid_product_ids = [p["product_id"] for p in ALL_PRODUCTS]
+    await db.products.delete_many({"product_id": {"$nin": valid_product_ids}})
+    
     for product in ALL_PRODUCTS:
-        await db.products.update_one(
+        # Use replace_one to fully replace the document, not just update fields
+        await db.products.replace_one(
             {"product_id": product["product_id"]},
-            {"$set": product},
+            product,
             upsert=True
         )
     
@@ -74,13 +79,14 @@ async def seed_database():
     await db.treats.delete_many({"treat_id": {"$nin": valid_treat_ids}})
     
     for treat in ALL_TREATS:
-        await db.treats.update_one(
+        # Use replace_one to fully replace the document
+        await db.treats.replace_one(
             {"treat_id": treat["treat_id"]},
-            {"$set": treat},
+            treat,
             upsert=True
         )
     
-    logger.info("Database updated successfully")
+    logger.info(f"Database updated successfully: {len(ALL_PRODUCTS)} products, {len(ALL_TREATS)} treats")
 
 # Auth helpers
 def hash_password(password: str) -> str:
