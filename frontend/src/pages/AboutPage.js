@@ -102,7 +102,7 @@ export const AboutPage = () => {
               Unlike most manufacturers, we handle every step in-house to ensure a consistent delivery service that provides you with unmatched quality, convenience, and personal service.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '0' }}>
-              Skip the fillers, preservatives, and retail markups. By delivering directly from the farm, we can invest in better ingredients and sourcing - quality you won't find in store.
+              Skip the fillers, preservatives, and retail markups. By delivering directly from our farm, we invest in better ingredients and ethical sourcing — quality you won't find in store.
             </p>
           </div>
         </section>
