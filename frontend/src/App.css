@@ -1641,7 +1641,9 @@ h2, h3, h4 {
 
 .treat-item.selected {
   border-color: var(--barn-red);
+  border-width: 3px;
   background: var(--cream);
+  box-shadow: 0 4px 16px rgba(164, 30, 52, 0.2);
 }
 
 .treat-info h4 {

@@ -400,7 +400,10 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                 borderRadius: '8px',
                 overflow: 'hidden',
                 flexShrink: 0,
-                backgroundColor: '#fff'
+                backgroundColor: '#f5f5f5',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}>
                 <img 
                   src={treat.images[0]} 
@@ -409,6 +412,10 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover'
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.parentElement.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center;">Image<br/>Coming Soon</div>';
                   }}
                 />
               </div>

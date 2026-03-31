@@ -834,7 +834,15 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const isSelected = selectedQty > 0;
   
   return (
-    <div className="product-card" data-testid={`product-${product.product_id}`}>
+    <div 
+      className="product-card" 
+      data-testid={`product-${product.product_id}`}
+      style={{
+        border: isSelected ? '3px solid #A41E34' : '3px solid transparent',
+        boxShadow: isSelected ? '0 4px 20px rgba(164, 30, 52, 0.25)' : undefined,
+        transition: 'all 0.2s ease'
+      }}
+    >
       {/* Product Image */}
       <div style={{
         width: '100%',
