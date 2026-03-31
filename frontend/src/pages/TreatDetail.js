@@ -305,10 +305,14 @@ export const TreatDetailPage = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                aspectRatio: '1/1',
+                width: '100%',
+                maxWidth: '600px',
+                height: '600px',
+                maxHeight: '600px',
                 padding: '0',
                 marginBottom: images.length > 1 ? '24px' : '0',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                margin: '0 auto'
               }}>
                 {currentImage ? (
                   <img src={currentImage} alt={treat.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

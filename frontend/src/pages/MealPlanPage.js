@@ -530,12 +530,15 @@ export const MealPlanPage = () => {
                       borderRadius: '12px',
                       overflow: 'hidden',
                       marginBottom: '16px',
-                      background: '#f5f5f5'
+                      background: '#f5f5f5',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
                     }}>
                       <img 
                         src="https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg"
                         alt={product.name}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                       />
                     </div>
                     
