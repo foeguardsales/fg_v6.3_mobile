@@ -295,9 +295,9 @@ export const TreatDetailPage = () => {
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '40px',
-            marginBottom: '60px'
+            marginBottom: '80px'
           }}>
-            <div>
+            <div style={{ marginBottom: '20px' }}>
               {/* Main Image */}
               <div className="product-hero-image" style={{
                 background: '#fff',
@@ -307,7 +307,7 @@ export const TreatDetailPage = () => {
                 justifyContent: 'center',
                 aspectRatio: '1/1',
                 padding: '0',
-                marginBottom: images.length > 1 ? '16px' : '0',
+                marginBottom: images.length > 1 ? '20px' : '0',
                 overflow: 'hidden'
               }}>
                 {currentImage ? (

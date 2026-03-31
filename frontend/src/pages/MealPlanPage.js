@@ -108,7 +108,7 @@ export const MealPlanPage = () => {
     document.body.scrollTop = 0;
   }, [step, showResults]);
 
-  // Save state to sessionStorage whenever it changes
+  // Save state to sessionStorage whenever it changes (but not products/treats - those are fetched)
   useEffect(() => {
     const state = {
       step,
@@ -344,7 +344,7 @@ export const MealPlanPage = () => {
       case 2:
         return formData.weight && formData.bodyCondition && formData.activityLevel;
       case 3:
-        return formData.currentDiet && formData.healthConcerns.length > 0 && products.length > 0;
+        return formData.currentDiet && formData.healthConcerns.length > 0;
       default:
         return true;
     }
@@ -378,34 +378,15 @@ export const MealPlanPage = () => {
 
   // Filter available products based on allergies and ensure minimum 2-3 products
   const getAvailableProducts = () => {
-    if (!results) return products;
+    const comfortProducts = products.filter(p => p.product_line === 'comfort_dinner');
     
-    // First, get products not in allergy list
-    let availableProducts = products.filter(p => {
-      const proteinType = p.protein_type;
-      return !formData.allergies.includes(proteinType);
-    });
-    
-    // If we have less than 2 products, show at least 2-3 products anyway (unless user is allergic to everything)
-    if (availableProducts.length < 2 && formData.allergies.length < products.length - 1) {
-      // Add products that are not in the severe allergy list, prioritizing recommended
-      const recommended = products.find(p => p.product_id === `cd-${results.recommendedProtein.id}`);
-      if (recommended && !availableProducts.includes(recommended)) {
-        availableProducts.push(recommended);
-      }
-      
-      // Add more products up to 3
-      while (availableProducts.length < 3 && availableProducts.length < products.length) {
-        const nextProduct = products.find(p => !availableProducts.includes(p));
-        if (nextProduct) {
-          availableProducts.push(nextProduct);
-        } else {
-          break;
-        }
-      }
+    // If products haven't loaded yet, return empty (component will re-render when they load)
+    if (comfortProducts.length === 0) {
+      return [];
     }
     
-    return availableProducts;
+    // Return all Comfort Dinner products (up to 8)
+    return comfortProducts.slice(0, 8);
   };
 
   // Results Screen - Mini Menu Style
@@ -513,7 +494,12 @@ export const MealPlanPage = () => {
               gap: '20px',
               marginBottom: '48px'
             }}>
-              {availableProducts.map(product => {
+              {availableProducts.length === 0 ? (
+                <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#666' }}>
+                  <p>Loading products... (Products: {products.length}, Available: {availableProducts.length})</p>
+                </div>
+              ) : (
+                availableProducts.map(product => {
                 const selected = selectedProteins[product.product_id];
                 const qty = selected?.qty || 0;
                 const isRecommended = product.product_id === `cd-${results.recommendedProtein.id}`;
@@ -650,7 +636,8 @@ export const MealPlanPage = () => {
                     </button>
                   </div>
                 );
-              })}
+              })
+              )}
             </div>
 
             {/* Treats Section */}
