@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronLeft, ChevronRight, Check, AlertCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Plus, Minus } from 'lucide-react';
 import axios from 'axios';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001/api';
+
+// Discount rates by box size
+const DISCOUNT_RATES = {
+  12: 0,
+  18: 0.05,
+  24: 0.10,
+  30: 0.15,
+  36: 0.15
+};
 
 // Dog breeds list
 const DOG_BREEDS = [
@@ -28,14 +37,14 @@ const DOG_BREEDS = [
 
 // Protein options
 const PROTEINS = [
-  { id: 'chicken', name: 'Chicken', traits: ['light', 'digestible', 'common'] },
-  { id: 'beef', name: 'Beef', traits: ['rich', 'flavorful', 'energy'] },
-  { id: 'turkey', name: 'Turkey', traits: ['light', 'digestible', 'lean'] },
-  { id: 'duck', name: 'Duck', traits: ['omega', 'skin-coat', 'novel'] },
-  { id: 'lamb', name: 'Lamb', traits: ['rich', 'flavorful', 'novel'] },
-  { id: 'fish', name: 'Fish/Salmon', traits: ['omega', 'skin-coat', 'joint'] },
-  { id: 'goat', name: 'Goat', traits: ['lean', 'hypoallergenic', 'novel'] },
-  { id: 'rabbit', name: 'Rabbit', traits: ['lean', 'hypoallergenic', 'novel'] }
+  { id: 'chicken', name: 'Chicken', productId: 'cd-chicken', traits: ['light', 'digestible', 'common'], pricePerLb: 4.50 },
+  { id: 'beef', name: 'Beef', productId: 'cd-beef', traits: ['rich', 'flavorful', 'energy'], pricePerLb: 6.66 },
+  { id: 'turkey', name: 'Turkey', productId: 'cd-turkey', traits: ['light', 'digestible', 'lean'], pricePerLb: 6.66 },
+  { id: 'duck', name: 'Duck', productId: 'cd-duck', traits: ['omega', 'skin-coat', 'novel'], pricePerLb: 6.66 },
+  { id: 'lamb', name: 'Lamb', productId: 'cd-lamb', traits: ['rich', 'flavorful', 'novel'], pricePerLb: 9.99 },
+  { id: 'fish', name: 'Salmon', productId: 'cd-fish', traits: ['omega', 'skin-coat', 'joint'], pricePerLb: 7.49 },
+  { id: 'goat', name: 'Goat', productId: 'cd-goat', traits: ['lean', 'hypoallergenic', 'novel'], pricePerLb: 9.99 },
+  { id: 'rabbit', name: 'Rabbit', productId: 'cd-rabbit', traits: ['lean', 'hypoallergenic', 'novel'], pricePerLb: 14.38 }
 ];
 
 // Health concerns
@@ -54,7 +63,9 @@ export const MealPlanPage = () => {
   const [step, setStep] = useState(1);
   const [showResults, setShowResults] = useState(false);
   const [treats, setTreats] = useState([]);
-  const [selectedTreats, setSelectedTreats] = useState([]);
+  const [selectedTreats, setSelectedTreats] = useState({});
+  const [products, setProducts] = useState([]);
+  const [selectedProteins, setSelectedProteins] = useState({});
   
   // Form data
   const [formData, setFormData] = useState({
@@ -74,17 +85,21 @@ export const MealPlanPage = () => {
   // Calculated results
   const [results, setResults] = useState(null);
 
-  // Load treats for the results page
+  // Load treats and products
   useEffect(() => {
-    const loadTreats = async () => {
+    const loadData = async () => {
       try {
-        const { data } = await axios.get(`${API}/treats`);
-        setTreats(data.filter(t => t.pet_type === 'dog'));
+        const [treatsRes, productsRes] = await Promise.all([
+          axios.get(`${API}/treats`),
+          axios.get(`${API}/products`)
+        ]);
+        setTreats(treatsRes.data.filter(t => t.pet_type === 'dog'));
+        setProducts(productsRes.data.filter(p => p.product_line === 'comfort_dinner'));
       } catch (error) {
-        console.error('Failed to load treats:', error);
+        console.error('Failed to load data:', error);
       }
     };
-    loadTreats();
+    loadData();
   }, []);
 
   const updateForm = (field, value) => {
@@ -126,9 +141,9 @@ export const MealPlanPage = () => {
     const weightKg = weightLbs / 2.205;
 
     // Base percentage of body weight
-    let basePercent = 0.025; // 2.5% default for adult
-    if (lifeStage === 'puppy') basePercent = 0.075; // 7.5% for puppies
-    else if (lifeStage === 'senior') basePercent = 0.022; // 2.2% for seniors
+    let basePercent = 0.025;
+    if (lifeStage === 'puppy') basePercent = 0.075;
+    else if (lifeStage === 'senior') basePercent = 0.022;
 
     // Adjust for body condition
     if (bodyCondition === 'underweight') basePercent += 0.005;
@@ -139,17 +154,25 @@ export const MealPlanPage = () => {
     if (activityLevel === 'low') basePercent -= 0.003;
     else if (activityLevel === 'high') basePercent += 0.005;
 
-    // Calculate daily portion in grams
+    // Calculate daily portion
     const dailyGrams = Math.round(weightKg * 1000 * basePercent);
     const dailyLbs = (dailyGrams / 453.592).toFixed(2);
     const monthlyLbs = Math.ceil((dailyGrams * 30) / 453.592);
+
+    // Determine recommended box size (biweekly)
+    const biweeklyLbs = Math.ceil(parseFloat(dailyLbs) * 14);
+    let recommendedBoxSize = 12;
+    if (biweeklyLbs <= 12) recommendedBoxSize = 12;
+    else if (biweeklyLbs <= 18) recommendedBoxSize = 18;
+    else if (biweeklyLbs <= 24) recommendedBoxSize = 24;
+    else if (biweeklyLbs <= 30) recommendedBoxSize = 30;
+    else recommendedBoxSize = 36;
 
     // Protein recommendation logic
     let availableProteins = PROTEINS.filter(p => !allergies.includes(p.id));
     let recommendedProtein = null;
     let recommendationReason = '';
 
-    // Priority order based on health concerns
     if (healthConcerns.includes('digestive')) {
       recommendedProtein = availableProteins.find(p => p.traits.includes('digestible'));
       recommendationReason = 'Easy to digest and gentle on sensitive stomachs';
@@ -167,7 +190,6 @@ export const MealPlanPage = () => {
       recommendationReason = 'Rich, appealing flavor that picky eaters love';
     }
 
-    // Check favorites
     if (favorites.length > 0) {
       const favProtein = availableProteins.find(p => favorites.includes(p.id));
       if (favProtein && !recommendedProtein) {
@@ -176,30 +198,20 @@ export const MealPlanPage = () => {
       }
     }
 
-    // Default to chicken if no specific recommendation
     if (!recommendedProtein) {
       recommendedProtein = availableProteins.find(p => p.id === 'chicken') || availableProteins[0];
       recommendationReason = 'A great all-around protein to start with';
     }
 
-    // Alternative proteins
+    // Get cheapest available protein for cost calculation
+    const cheapestProtein = [...availableProteins].sort((a, b) => a.pricePerLb - b.pricePerLb)[0];
+    const discount = DISCOUNT_RATES[recommendedBoxSize] || 0;
+    const dailyCost = (parseFloat(dailyLbs) * cheapestProtein.pricePerLb * (1 - discount)).toFixed(2);
+
+    // Alternative proteins (top 3, excluding recommended)
     const alternativeProteins = availableProteins
       .filter(p => p.id !== recommendedProtein.id)
       .slice(0, 3);
-
-    // Estimated monthly cost (using Comfort Dinner pricing)
-    const pricePerLb = 4.50; // Base chicken price
-    const monthlyCost = (monthlyLbs * pricePerLb).toFixed(2);
-
-    // Transition guidance
-    let transitionGuide = '';
-    if (formData.currentDiet === 'raw-other' || formData.currentDiet === 'homemade') {
-      transitionGuide = 'Since ' + name + ' is already eating raw, you can transition immediately or over 2-3 days.';
-    } else if (formData.currentDiet === 'fresh') {
-      transitionGuide = 'Transition over 5-7 days, gradually increasing raw while decreasing current food.';
-    } else {
-      transitionGuide = 'Transition slowly over 7-10 days. Start with 25% raw and increase gradually.';
-    }
 
     setResults({
       name,
@@ -210,30 +222,82 @@ export const MealPlanPage = () => {
       dailyGrams,
       dailyLbs,
       monthlyLbs,
+      recommendedBoxSize,
+      discount,
       recommendedProtein,
       recommendationReason,
       alternativeProteins,
-      monthlyCost,
-      transitionGuide
+      availableProteins,
+      dailyCost,
+      cheapestProtein
     });
     
+    // Initialize selected proteins with recommended
+    const initialProteins = {};
+    initialProteins[`cd-${recommendedProtein.id}`] = {
+      name: `Comfort ${recommendedProtein.name}`,
+      qty: Math.min(recommendedBoxSize, 6)
+    };
+    setSelectedProteins(initialProteins);
+    
     setShowResults(true);
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleProteinUpdate = (productId, name, qty) => {
+    setSelectedProteins(prev => {
+      if (qty === 0) {
+        const updated = { ...prev };
+        delete updated[productId];
+        return updated;
+      }
+      return { ...prev, [productId]: { name, qty } };
+    });
   };
 
   const handleTreatToggle = (treat) => {
     setSelectedTreats(prev => {
-      const existing = prev.find(t => t.treat_id === treat.treat_id);
-      if (existing) {
-        return prev.filter(t => t.treat_id !== treat.treat_id);
+      if (prev[treat.treat_id]) {
+        const updated = { ...prev };
+        delete updated[treat.treat_id];
+        return updated;
       }
-      return [...prev, { ...treat, quantity: 1 }];
+      return { ...prev, [treat.treat_id]: { ...treat, quantity: 1 } };
     });
   };
 
+  const getTotalProteinLbs = () => {
+    return Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+  };
+
+  const getSubtotal = () => {
+    let total = 0;
+    const discount = results ? DISCOUNT_RATES[results.recommendedBoxSize] || 0 : 0;
+    
+    // Proteins
+    Object.entries(selectedProteins).forEach(([productId, data]) => {
+      const product = products.find(p => p.product_id === productId);
+      if (product) {
+        const basePrice = product.pricing.find(p => p.size_lb === 6)?.price || 26.99;
+        const pricePerSixLb = basePrice * (1 - discount);
+        total += pricePerSixLb * (data.qty / 6);
+      }
+    });
+    
+    // Treats
+    Object.values(selectedTreats).forEach(treat => {
+      total += treat.price * (treat.quantity || 1);
+    });
+    
+    return total;
+  };
+
   const startPlan = () => {
-    // Save meal plan to session storage for checkout
     const mealPlan = {
       ...results,
+      selectedProteins,
       selectedTreats,
       formData
     };
@@ -270,239 +334,344 @@ export const MealPlanPage = () => {
     }
   };
 
-  // Results Screen
+  // Filter available products based on allergies
+  const getAvailableProducts = () => {
+    if (!results) return products;
+    return products.filter(p => {
+      const proteinType = p.protein_type;
+      return !formData.allergies.includes(proteinType);
+    });
+  };
+
+  // Results Screen - Mini Menu Style
   if (showResults && results) {
+    const availableProducts = getAvailableProducts();
+    const boxSize = results.recommendedBoxSize;
+    const discount = results.discount;
+    const totalSelected = getTotalProteinLbs();
+    const canAddMore = totalSelected < boxSize;
+
     return (
       <>
         <Navbar />
-        <div className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '40px 20px' }}>
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            {/* Back Button */}
-            <button 
-              onClick={prevStep}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: 'none',
-                border: 'none',
-                color: '#666',
-                fontSize: '15px',
-                cursor: 'pointer',
-                marginBottom: '24px'
-              }}
-            >
-              <ChevronLeft size={20} /> Adjust My Plan
-            </button>
-
-            {/* Results Header */}
-            <div style={{
-              background: 'linear-gradient(135deg, #5F7C5A 0%, #4A6347 100%)',
-              borderRadius: '20px',
-              padding: '40px',
-              color: 'white',
-              marginBottom: '32px'
-            }}>
-              <h1 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '12px', fontFamily: "'Rubik', sans-serif" }}>
-                {results.name}'s meal plan is ready!
-              </h1>
-              <p style={{ fontSize: '16px', opacity: 0.9 }}>
-                Built around {results.name}'s breed, age, weight, activity level, and dietary needs.
-              </p>
-            </div>
-
-            {/* Recommended Protein */}
-            <div style={{
-              background: 'white',
-              borderRadius: '16px',
-              padding: '32px',
-              marginBottom: '24px',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
-            }}>
-              <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '16px', color: '#2B2B2B' }}>
-                Recommended Protein
-              </h2>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '20px',
-                padding: '20px',
-                background: '#F5F3EF',
-                borderRadius: '12px',
-                marginBottom: '16px'
-              }}>
-                <div style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: '50%',
-                  background: '#5F7C5A',
+        <div className="meal-plan-results" style={{ minHeight: '100vh', background: '#F5F3EF' }}>
+          {/* Header */}
+          <div style={{
+            background: 'linear-gradient(135deg, #5F7C5A 0%, #4A6347 100%)',
+            padding: '40px 20px',
+            color: 'white'
+          }}>
+            <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+              <button 
+                onClick={prevStep}
+                style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Check size={28} color="white" />
+                  gap: '8px',
+                  background: 'rgba(255,255,255,0.2)',
+                  border: 'none',
+                  color: 'white',
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  marginBottom: '20px'
+                }}
+              >
+                <ChevronLeft size={18} /> Adjust Plan
+              </button>
+              
+              <h1 style={{ 
+                fontSize: 'clamp(28px, 5vw, 36px)', 
+                fontWeight: '700', 
+                marginBottom: '8px', 
+                fontFamily: "'Rubik', sans-serif",
+                color: 'white'
+              }}>
+                {results.name}'s meal plan is ready!
+              </h1>
+              
+              <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap', marginTop: '24px' }}>
+                <div>
+                  <p style={{ fontSize: '14px', opacity: 0.8, marginBottom: '4px' }}>Daily Requirement</p>
+                  <p style={{ fontSize: '28px', fontWeight: '700' }}>{results.dailyGrams}g <span style={{ fontSize: '16px', opacity: 0.8 }}>({results.dailyLbs} lbs)</span></p>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '24px', fontWeight: '700', color: '#2B2B2B', marginBottom: '4px' }}>
-                    Comfort {results.recommendedProtein.name}
-                  </h3>
-                  <p style={{ color: '#666', fontSize: '15px' }}>{results.recommendationReason}</p>
+                  <p style={{ fontSize: '14px', opacity: 0.8, marginBottom: '4px' }}>Starting at</p>
+                  <p style={{ fontSize: '28px', fontWeight: '700' }}>${results.dailyCost}<span style={{ fontSize: '16px', opacity: 0.8 }}>/day</span></p>
+                </div>
+                <div>
+                  <p style={{ fontSize: '14px', opacity: 0.8, marginBottom: '4px' }}>Recommended Box</p>
+                  <p style={{ fontSize: '28px', fontWeight: '700' }}>{boxSize}lb {discount > 0 && <span style={{ fontSize: '16px', background: 'rgba(255,255,255,0.2)', padding: '4px 10px', borderRadius: '12px', marginLeft: '8px' }}>{discount * 100}% off</span>}</p>
                 </div>
               </div>
-              <div>
-                <p style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>Alternative options:</p>
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                  {results.alternativeProteins.map(p => (
-                    <span key={p.id} style={{
-                      padding: '8px 16px',
-                      background: '#E8E4DC',
-                      borderRadius: '20px',
-                      fontSize: '14px',
-                      color: '#555'
+            </div>
+          </div>
+
+          {/* Box Progress Bar */}
+          <div style={{ 
+            background: 'white', 
+            padding: '20px',
+            borderBottom: '1px solid #E8E4DC',
+            position: 'sticky',
+            top: 0,
+            zIndex: 100
+          }}>
+            <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <span style={{ fontWeight: '600', color: '#2B2B2B' }}>{boxSize}lb Box</span>
+                <span style={{ color: '#666' }}>{totalSelected}lb / {boxSize}lb selected</span>
+              </div>
+              <div style={{ background: '#E8E4DC', borderRadius: '8px', height: '8px', overflow: 'hidden' }}>
+                <div style={{ 
+                  background: totalSelected === boxSize ? '#5F7C5A' : '#8B4513', 
+                  height: '100%', 
+                  width: `${Math.min((totalSelected / boxSize) * 100, 100)}%`,
+                  transition: 'width 0.3s ease'
+                }} />
+              </div>
+            </div>
+          </div>
+
+          {/* Products Grid */}
+          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '40px 20px' }}>
+            <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+              Choose Your Proteins
+            </h2>
+            <p style={{ color: '#666', marginBottom: '24px' }}>
+              We recommend <strong>Comfort {results.recommendedProtein.name}</strong> — {results.recommendationReason.toLowerCase()}
+            </p>
+
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', 
+              gap: '20px',
+              marginBottom: '48px'
+            }}>
+              {availableProducts.map(product => {
+                const selected = selectedProteins[product.product_id];
+                const qty = selected?.qty || 0;
+                const isRecommended = product.product_id === `cd-${results.recommendedProtein.id}`;
+                const basePrice = product.pricing.find(p => p.size_lb === 6)?.price || 26.99;
+                const discountedPrice = (basePrice * (1 - discount)).toFixed(2);
+
+                return (
+                  <div 
+                    key={product.product_id}
+                    style={{
+                      background: 'white',
+                      borderRadius: '16px',
+                      padding: '20px',
+                      border: qty > 0 ? '3px solid #5F7C5A' : '3px solid transparent',
+                      boxShadow: qty > 0 ? '0 4px 20px rgba(95, 124, 90, 0.2)' : '0 2px 12px rgba(0,0,0,0.06)',
+                      transition: 'all 0.2s',
+                      position: 'relative'
+                    }}
+                  >
+                    {isRecommended && (
+                      <div style={{
+                        position: 'absolute',
+                        top: '12px',
+                        right: '12px',
+                        background: '#5F7C5A',
+                        color: 'white',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '11px',
+                        fontWeight: '600'
+                      }}>
+                        RECOMMENDED
+                      </div>
+                    )}
+                    
+                    <div style={{
+                      width: '100%',
+                      height: '140px',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      marginBottom: '16px',
+                      background: '#f5f5f5'
                     }}>
-                      {p.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
+                      <img 
+                        src="https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg"
+                        alt={product.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    </div>
+                    
+                    <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>{product.name}</h3>
+                    <p style={{ fontSize: '13px', color: '#666', marginBottom: '16px', lineHeight: '1.4' }}>
+                      {product.mini_description || product.description?.split('.')[0]}
+                    </p>
+                    
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div>
+                        {discount > 0 && (
+                          <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '14px', marginRight: '8px' }}>
+                            ${basePrice.toFixed(2)}
+                          </span>
+                        )}
+                        <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513' }}>${discountedPrice}</span>
+                        <span style={{ fontSize: '13px', color: '#666' }}> / 6lb</span>
+                      </div>
+                      
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <button
+                          onClick={() => handleProteinUpdate(product.product_id, product.name, Math.max(0, qty - 6))}
+                          disabled={qty === 0}
+                          style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            border: '2px solid #E8E4DC',
+                            background: 'white',
+                            cursor: qty === 0 ? 'not-allowed' : 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            opacity: qty === 0 ? 0.5 : 1
+                          }}
+                        >
+                          <Minus size={16} color="#666" />
+                        </button>
+                        <span style={{ minWidth: '40px', textAlign: 'center', fontWeight: '600' }}>{qty}lb</span>
+                        <button
+                          onClick={() => handleProteinUpdate(product.product_id, product.name, qty + 6)}
+                          disabled={!canAddMore}
+                          style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            border: '2px solid #5F7C5A',
+                            background: canAddMore ? '#5F7C5A' : '#E8E4DC',
+                            cursor: canAddMore ? 'pointer' : 'not-allowed',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          <Plus size={16} color="white" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
-            {/* Portions & Cost */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            {/* Treats Section */}
+            <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+              Add Some Treats
+            </h2>
+            <p style={{ color: '#666', marginBottom: '24px' }}>
+              Raw treats for dental health, mental stimulation, and natural chewing.
+            </p>
+
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
               gap: '16px',
-              marginBottom: '24px'
+              marginBottom: '48px'
             }}>
-              <div style={{
-                background: 'white',
-                borderRadius: '16px',
-                padding: '24px',
-                textAlign: 'center',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
-              }}>
-                <p style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>Daily Portion</p>
-                <p style={{ fontSize: '28px', fontWeight: '700', color: '#2B2B2B' }}>{results.dailyGrams}g</p>
-                <p style={{ fontSize: '13px', color: '#999' }}>({results.dailyLbs} lbs)</p>
-              </div>
-              <div style={{
-                background: 'white',
-                borderRadius: '16px',
-                padding: '24px',
-                textAlign: 'center',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
-              }}>
-                <p style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>Monthly Requirement</p>
-                <p style={{ fontSize: '28px', fontWeight: '700', color: '#2B2B2B' }}>{results.monthlyLbs} lbs</p>
-              </div>
-              <div style={{
-                background: 'white',
-                borderRadius: '16px',
-                padding: '24px',
-                textAlign: 'center',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
-              }}>
-                <p style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>Estimated Monthly Cost</p>
-                <p style={{ fontSize: '28px', fontWeight: '700', color: '#5F7C5A' }}>${results.monthlyCost}</p>
-              </div>
+              {treats.map(treat => {
+                const isSelected = !!selectedTreats[treat.treat_id];
+                return (
+                  <div 
+                    key={treat.treat_id}
+                    onClick={() => handleTreatToggle(treat)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '16px',
+                      padding: '16px 20px',
+                      background: isSelected ? '#F5F9F5' : 'white',
+                      borderRadius: '12px',
+                      border: isSelected ? '2px solid #5F7C5A' : '2px solid #E8E4DC',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    <div style={{
+                      width: '70px',
+                      height: '70px',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      background: '#f5f5f5',
+                      flexShrink: 0
+                    }}>
+                      {treat.images && treat.images[0] ? (
+                        <img 
+                          src={treat.images[0]} 
+                          alt={treat.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: '10px', textAlign: 'center' }}>
+                          Image<br/>Soon
+                        </div>
+                      )}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <h4 style={{ fontSize: '15px', fontWeight: '600', marginBottom: '4px' }}>{treat.name}</h4>
+                      <p style={{ fontSize: '12px', color: '#666' }}>{treat.quantity_description}</p>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <p style={{ fontWeight: '700', color: '#8B4513', marginBottom: '4px' }}>${treat.price?.toFixed(2)}</p>
+                      <div style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        background: isSelected ? '#5F7C5A' : '#E8E4DC',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginLeft: 'auto'
+                      }}>
+                        {isSelected && <Check size={14} color="white" />}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
-            {/* Transition Guide */}
-            <div style={{
-              background: 'white',
-              borderRadius: '16px',
-              padding: '24px',
-              marginBottom: '32px',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '16px'
-            }}>
-              <AlertCircle size={24} color="#8B4513" style={{ flexShrink: 0, marginTop: '2px' }} />
-              <div>
-                <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                  Transition Guidance
-                </h3>
-                <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6' }}>
-                  {results.transitionGuide}
-                </p>
-              </div>
-            </div>
-
-            {/* Add Treats Section */}
+            {/* Order Summary & CTA */}
             <div style={{
               background: 'white',
               borderRadius: '16px',
               padding: '32px',
-              marginBottom: '32px',
               boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
             }}>
-              <h2 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                Add Treats to Your Plan
-              </h2>
-              <p style={{ color: '#666', fontSize: '15px', marginBottom: '24px' }}>
-                Raw treats for dental health, mental stimulation, and natural chewing.
-              </p>
-              
-              <div style={{ display: 'grid', gap: '12px' }}>
-                {treats.slice(0, 6).map(treat => {
-                  const isSelected = selectedTreats.some(t => t.treat_id === treat.treat_id);
-                  return (
-                    <div 
-                      key={treat.treat_id}
-                      onClick={() => handleTreatToggle(treat)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '16px 20px',
-                        background: isSelected ? '#F5F3EF' : '#FAFAFA',
-                        borderRadius: '12px',
-                        border: isSelected ? '2px solid #5F7C5A' : '2px solid transparent',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      <div>
-                        <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '4px' }}>{treat.name}</h4>
-                        <p style={{ fontSize: '13px', color: '#666' }}>{treat.quantity_description}</p>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                        <span style={{ fontWeight: '700', color: '#8B4513' }}>${treat.price.toFixed(2)}</span>
-                        <div style={{
-                          width: '24px',
-                          height: '24px',
-                          borderRadius: '50%',
-                          background: isSelected ? '#5F7C5A' : '#E0E0E0',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}>
-                          {isSelected && <Check size={14} color="white" />}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <div>
+                  <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '4px' }}>Order Summary</h3>
+                  <p style={{ color: '#666', fontSize: '14px' }}>{boxSize}lb Box • {Object.keys(selectedProteins).length} protein(s) • {Object.keys(selectedTreats).length} treat(s)</p>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ fontSize: '14px', color: '#666' }}>Subtotal</p>
+                  <p style={{ fontSize: '28px', fontWeight: '700', color: '#8B4513' }}>${getSubtotal().toFixed(2)}</p>
+                </div>
               </div>
-            </div>
-
-            {/* CTA Buttons */}
-            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+              
               <button
                 onClick={startPlan}
+                disabled={totalSelected === 0}
                 style={{
-                  background: '#8B4513',
+                  width: '100%',
+                  background: totalSelected > 0 ? '#8B4513' : '#CCC',
                   color: 'white',
                   border: 'none',
-                  padding: '16px 40px',
+                  padding: '18px',
                   borderRadius: '8px',
                   fontSize: '17px',
                   fontWeight: '600',
-                  cursor: 'pointer'
+                  cursor: totalSelected > 0 ? 'pointer' : 'not-allowed'
                 }}
               >
-                Start My Plan
+                Continue to Checkout
               </button>
             </div>
           </div>
@@ -559,7 +728,8 @@ export const MealPlanPage = () => {
                       borderRadius: '8px',
                       border: '2px solid #E8E4DC',
                       fontSize: '16px',
-                      outline: 'none'
+                      outline: 'none',
+                      boxSizing: 'border-box'
                     }}
                   />
                 </div>
@@ -578,7 +748,8 @@ export const MealPlanPage = () => {
                       borderRadius: '8px',
                       border: '2px solid #E8E4DC',
                       fontSize: '16px',
-                      outline: 'none'
+                      outline: 'none',
+                      boxSizing: 'border-box'
                     }}
                   />
                 </div>
@@ -597,7 +768,8 @@ export const MealPlanPage = () => {
                       border: '2px solid #E8E4DC',
                       fontSize: '16px',
                       outline: 'none',
-                      background: 'white'
+                      background: 'white',
+                      boxSizing: 'border-box'
                     }}
                   >
                     <option value="">Select breed</option>
