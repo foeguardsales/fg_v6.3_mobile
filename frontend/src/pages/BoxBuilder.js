@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
-import { Calculator, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calculator } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -65,7 +65,6 @@ export const BoxBuilder = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [loading, setLoading] = useState(true);
-  const carouselRef = useRef(null);
 
   // Get current discount rates and box options based on pet type
   const DISCOUNT_RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
@@ -189,19 +188,6 @@ export const BoxBuilder = () => {
     setSelectedTreats([]);
     // Set default box size for new pet type
     setBoxSize(newPetType === 'cat' ? 6 : 18);
-  };
-
-  const scrollCarousel = (direction) => {
-    const container = carouselRef.current;
-    if (!container) return;
-    
-    const cardWidth = container.offsetWidth * 0.7;
-    const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
-    
-    container.scrollBy({
-      left: scrollAmount,
-      behavior: 'smooth'
-    });
   };
 
   const bannerCards = [
@@ -348,85 +334,16 @@ export const BoxBuilder = () => {
     <>
       <Navbar />
       <div className="box-builder">
-        {/* Banner Carousel Selector */}
+        {/* Banner Cards Selector */}
         <div style={{ marginBottom: '50px', position: 'relative' }}>
-          {/* Navigation Arrows */}
-          <button
-            onClick={() => scrollCarousel('left')}
-            style={{
-              position: 'absolute',
-              left: '10px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: 10,
-              background: 'rgba(255,255,255,0.95)',
-              border: '2px solid #E8DDD0',
-              borderRadius: '50%',
-              width: '48px',
-              height: '48px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              transition: 'all 0.2s'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'white';
-              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255,255,255,0.95)';
-              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-            }}
-          >
-            <ChevronLeft size={24} style={{ color: '#8B4513' }} />
-          </button>
-
-          <button
-            onClick={() => scrollCarousel('right')}
-            style={{
-              position: 'absolute',
-              right: '10px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: 10,
-              background: 'rgba(255,255,255,0.95)',
-              border: '2px solid #E8DDD0',
-              borderRadius: '50%',
-              width: '48px',
-              height: '48px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              transition: 'all 0.2s'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'white';
-              e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255,255,255,0.95)';
-              e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-            }}
-          >
-            <ChevronRight size={24} style={{ color: '#8B4513' }} />
-          </button>
-
-          {/* Carousel Container */}
+          {/* Cards Container */}
           <div
-            ref={carouselRef}
             style={{
               display: 'flex',
               gap: '20px',
-              overflowX: 'auto',
-              scrollBehavior: 'smooth',
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
+              justifyContent: 'center',
               padding: '10px 20px',
-              WebkitOverflowScrolling: 'touch'
+              flexWrap: 'wrap'
             }}
             className="banner-carousel"
           >
@@ -436,8 +353,9 @@ export const BoxBuilder = () => {
                 onClick={card.onClick}
                 style={{
                   position: 'relative',
-                  minWidth: '220px',
-                  maxWidth: '220px',
+                  flex: '1 1 0',
+                  minWidth: '280px',
+                  maxWidth: '350px',
                   height: '180px',
                   borderRadius: '16px',
                   overflow: 'hidden',
