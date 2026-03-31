@@ -82,8 +82,8 @@ export const Navbar = () => {
       
       {/* Delivery Banner */}
       <div style={{
-        background: 'linear-gradient(135deg, #5F7C5A 0%, #4A6347 100%)',
-        color: 'white',
+        background: 'linear-gradient(135deg, #E8DDD0 0%, #D4C4B0 100%)',
+        color: '#5A4A3A',
         textAlign: 'center',
         padding: '8px 20px',
         fontSize: '14px',

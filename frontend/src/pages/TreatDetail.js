@@ -295,9 +295,9 @@ export const TreatDetailPage = () => {
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '40px',
-            marginBottom: '120px'
+            marginBottom: '48px'
           }}>
-            <div style={{ marginBottom: '40px' }}>
+            <div style={{ marginBottom: '0' }}>
               {/* Main Image */}
               <div className="product-hero-image" style={{
                 background: '#fff',
@@ -310,7 +310,7 @@ export const TreatDetailPage = () => {
                 height: '600px',
                 maxHeight: '600px',
                 padding: '0',
-                marginBottom: images.length > 1 ? '24px' : '0',
+                marginBottom: images.length > 1 ? '16px' : '0',
                 overflow: 'hidden',
                 margin: '0 auto'
               }}>
