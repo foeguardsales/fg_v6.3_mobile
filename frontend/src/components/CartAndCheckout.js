@@ -393,28 +393,26 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             style={{ position: 'relative', paddingRight: '130px', display: 'flex', alignItems: 'center', gap: '16px' }}
           >
             {/* Treat Image */}
-            <div style={{
-              width: '100px',
-              height: '100px',
-              borderRadius: '8px',
-              overflow: 'hidden',
-              flexShrink: 0,
-              backgroundColor: '#fff'
-            }}>
-              <img 
-                src={treat.images && treat.images.length > 0 ? treat.images[0] : 'https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png'} 
-                alt={treat.name}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover'
-                }}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = 'https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png';
-                }}
-              />
-            </div>
+            {treat.images && treat.images.length > 0 && (
+              <div style={{
+                width: '100px',
+                height: '100px',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                flexShrink: 0,
+                backgroundColor: '#fff'
+              }}>
+                <img 
+                  src={treat.images[0]} 
+                  alt={treat.name}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                />
+              </div>
+            )}
             <div style={{ flex: 1 }}>
               <div className="treat-info">
                 <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>

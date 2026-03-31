@@ -436,9 +436,9 @@ export const BoxBuilder = () => {
                 onClick={card.onClick}
                 style={{
                   position: 'relative',
-                  minWidth: '45%',
-                  maxWidth: '45%',
-                  height: '280px',
+                  minWidth: '30%',
+                  maxWidth: '30%',
+                  height: '240px',
                   borderRadius: '20px',
                   overflow: 'hidden',
                   cursor: 'pointer',
@@ -498,7 +498,7 @@ export const BoxBuilder = () => {
                   )}
                   <span style={{
                     fontFamily: "'Rubik', sans-serif",
-                    fontSize: '32px',
+                    fontSize: '24px',
                     fontWeight: '800',
                     color: '#FDFCFA',
                     textShadow: '0 3px 12px rgba(0,0,0,0.4)',
