@@ -222,7 +222,7 @@ export const BoxBuilder = () => {
     {
       id: 'calculator',
       title: 'Feeding Calculator',
-      icon: <Calculator size={48} />,
+      icon: <Calculator size={36} />,
       gradient: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
       onClick: () => navigate('/calculator')
     }
@@ -436,24 +436,24 @@ export const BoxBuilder = () => {
                 onClick={card.onClick}
                 style={{
                   position: 'relative',
-                  minWidth: '30%',
-                  maxWidth: '30%',
-                  height: '240px',
-                  borderRadius: '20px',
+                  minWidth: '220px',
+                  maxWidth: '220px',
+                  height: '180px',
+                  borderRadius: '16px',
                   overflow: 'hidden',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   flexShrink: 0,
-                  border: card.selected ? '4px solid #A41E34' : '4px solid transparent',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)'
+                  border: card.selected ? '3px solid #A41E34' : '3px solid transparent',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.12)'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-8px)';
-                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.18)';
+                  e.currentTarget.style.transform = 'translateY(-6px)';
+                  e.currentTarget.style.boxShadow = '0 10px 28px rgba(0,0,0,0.18)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.12)';
                 }}
               >
                 {/* Background - Image or Gradient */}
@@ -498,10 +498,10 @@ export const BoxBuilder = () => {
                   )}
                   <span style={{
                     fontFamily: "'Rubik', sans-serif",
-                    fontSize: '24px',
-                    fontWeight: '800',
+                    fontSize: '18px',
+                    fontWeight: '700',
                     color: '#FDFCFA',
-                    textShadow: '0 3px 12px rgba(0,0,0,0.4)',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.4)',
                     textAlign: 'center',
                     letterSpacing: '0.02em',
                     lineHeight: '1.2'

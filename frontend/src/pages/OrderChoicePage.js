@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { ClipboardList, Package } from 'lucide-react';
 
 export const OrderChoicePage = () => {
   const navigate = useNavigate();
@@ -41,144 +40,166 @@ export const OrderChoicePage = () => {
 
         <div style={{
           display: 'flex',
-          gap: '32px',
+          gap: '24px',
           flexWrap: 'wrap',
           justifyContent: 'center',
           maxWidth: '900px'
         }}>
-          {/* Create Meal Plan Option */}
+          {/* Create Meal Plan Option - Cinematic Image Card */}
           <div 
             onClick={() => navigate('/meal-plan')}
             style={{
-              background: 'white',
+              position: 'relative',
+              width: '380px',
+              height: '320px',
               borderRadius: '20px',
-              padding: '48px 40px',
-              width: '340px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+              overflow: 'hidden',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
-              border: '2px solid transparent',
-              textAlign: 'center'
+              boxShadow: '0 8px 32px rgba(0,0,0,0.15)'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-8px)';
-              e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.15)';
-              e.currentTarget.style.borderColor = '#8B4513';
+              e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.25)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
-              e.currentTarget.style.borderColor = 'transparent';
+              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.15)';
             }}
           >
+            {/* Background Image */}
+            <img 
+              src="https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/a5bhlhqi_5.png"
+              alt="Meal Plan"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                position: 'absolute',
+                inset: 0
+              }}
+            />
+            {/* Dark Overlay with Text */}
             <div style={{
-              width: '100px',
-              height: '100px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #D9C8B3 0%, #B8A89A 100%)',
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%)',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 24px'
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              padding: '32px'
             }}>
-              <ClipboardList size={48} color="#fff" />
-            </div>
-            <h2 style={{
-              fontFamily: "'Rubik', sans-serif",
-              fontSize: '24px',
-              fontWeight: '600',
-              color: '#2B2B2B',
-              marginBottom: '12px'
-            }}>
-              Create Meal Plan
-            </h2>
-            <p style={{
-              fontFamily: "'Rubik', sans-serif",
-              fontSize: '15px',
-              color: '#666',
-              lineHeight: '1.6',
-              marginBottom: '24px'
-            }}>
-              Tell us about your dog and we'll create a personalized feeding plan with the right portions and proteins.
-            </p>
-            <div style={{
-              background: '#8B4513',
-              color: 'white',
-              padding: '14px 32px',
-              borderRadius: '8px',
-              fontFamily: "'Rubik', sans-serif",
-              fontWeight: '600',
-              fontSize: '16px'
-            }}>
-              Get Started
+              <h2 style={{
+                fontFamily: "'Rubik', sans-serif",
+                fontSize: '28px',
+                fontWeight: '700',
+                color: '#fff',
+                marginBottom: '8px',
+                textShadow: '0 2px 8px rgba(0,0,0,0.5)'
+              }}>
+                Create Meal Plan
+              </h2>
+              <p style={{
+                fontFamily: "'Rubik', sans-serif",
+                fontSize: '14px',
+                color: 'rgba(255,255,255,0.9)',
+                lineHeight: '1.5',
+                marginBottom: '16px'
+              }}>
+                Personalized portions based on your dog's needs
+              </p>
+              <div style={{
+                background: '#fff',
+                color: '#8B4513',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                fontFamily: "'Rubik', sans-serif",
+                fontWeight: '600',
+                fontSize: '15px',
+                textAlign: 'center',
+                width: 'fit-content'
+              }}>
+                Get Started
+              </div>
             </div>
           </div>
 
-          {/* Build Your Box Option */}
+          {/* Build Your Box Option - Cinematic Image Card */}
           <div 
             onClick={() => navigate('/build-box')}
             style={{
-              background: 'white',
+              position: 'relative',
+              width: '380px',
+              height: '320px',
               borderRadius: '20px',
-              padding: '48px 40px',
-              width: '340px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+              overflow: 'hidden',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
-              border: '2px solid transparent',
-              textAlign: 'center'
+              boxShadow: '0 8px 32px rgba(0,0,0,0.15)'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-8px)';
-              e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.15)';
-              e.currentTarget.style.borderColor = '#8B4513';
+              e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.25)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
-              e.currentTarget.style.borderColor = 'transparent';
+              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.15)';
             }}
           >
+            {/* Background Image */}
+            <img 
+              src="https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/1olxgtz6_3.png"
+              alt="Build Your Box"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                position: 'absolute',
+                inset: 0
+              }}
+            />
+            {/* Dark Overlay with Text */}
             <div style={{
-              width: '100px',
-              height: '100px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%)',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 24px'
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              padding: '32px'
             }}>
-              <Package size={48} color="#fff" />
-            </div>
-            <h2 style={{
-              fontFamily: "'Rubik', sans-serif",
-              fontSize: '24px',
-              fontWeight: '600',
-              color: '#2B2B2B',
-              marginBottom: '12px'
-            }}>
-              Build Your Box
-            </h2>
-            <p style={{
-              fontFamily: "'Rubik', sans-serif",
-              fontSize: '15px',
-              color: '#666',
-              lineHeight: '1.6',
-              marginBottom: '24px'
-            }}>
-              Browse our full menu and customize your own box with the proteins and treats your pet loves.
-            </p>
-            <div style={{
-              background: '#8B4513',
-              color: 'white',
-              padding: '14px 32px',
-              borderRadius: '8px',
-              fontFamily: "'Rubik', sans-serif",
-              fontWeight: '600',
-              fontSize: '16px'
-            }}>
-              Start Building
+              <h2 style={{
+                fontFamily: "'Rubik', sans-serif",
+                fontSize: '28px',
+                fontWeight: '700',
+                color: '#fff',
+                marginBottom: '8px',
+                textShadow: '0 2px 8px rgba(0,0,0,0.5)'
+              }}>
+                Build Your Box
+              </h2>
+              <p style={{
+                fontFamily: "'Rubik', sans-serif",
+                fontSize: '14px',
+                color: 'rgba(255,255,255,0.9)',
+                lineHeight: '1.5',
+                marginBottom: '16px'
+              }}>
+                Choose your own proteins and treats
+              </p>
+              <div style={{
+                background: '#fff',
+                color: '#8B4513',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                fontFamily: "'Rubik', sans-serif",
+                fontWeight: '600',
+                fontSize: '15px',
+                textAlign: 'center',
+                width: 'fit-content'
+              }}>
+                Start Building
+              </div>
             </div>
           </div>
         </div>
