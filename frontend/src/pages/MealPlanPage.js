@@ -5,7 +5,8 @@ import { TreatsSection } from '../components/CartAndCheckout';
 import { ChevronLeft, ChevronRight, Check, Plus, Minus } from 'lucide-react';
 import axios from 'axios';
 
-const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001/api';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+const API = `${BACKEND_URL}/api`;
 
 // Discount rates by box size
 const DISCOUNT_RATES = {
@@ -129,6 +130,7 @@ export const MealPlanPage = () => {
           axios.get(`${API}/treats`),
           axios.get(`${API}/products`)
         ]);
+        
         setTreats(treatsRes.data.filter(t => t.pet_type === 'dog'));
         setProducts(productsRes.data.filter(p => p.product_line === 'comfort_dinner'));
       } catch (error) {
@@ -376,17 +378,9 @@ export const MealPlanPage = () => {
     }
   };
 
-  // Filter available products based on allergies and ensure minimum 2-3 products
+  // Filter available products - show all Comfort Dinner products
   const getAvailableProducts = () => {
-    const comfortProducts = products.filter(p => p.product_line === 'comfort_dinner');
-    
-    // If products haven't loaded yet, return empty (component will re-render when they load)
-    if (comfortProducts.length === 0) {
-      return [];
-    }
-    
-    // Return all Comfort Dinner products (up to 8)
-    return comfortProducts.slice(0, 8);
+    return products.filter(p => p.product_line === 'comfort_dinner');
   };
 
   // Results Screen - Mini Menu Style
@@ -494,12 +488,7 @@ export const MealPlanPage = () => {
               gap: '20px',
               marginBottom: '48px'
             }}>
-              {availableProducts.length === 0 ? (
-                <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px', color: '#666' }}>
-                  <p>Loading products... (Products: {products.length}, Available: {availableProducts.length})</p>
-                </div>
-              ) : (
-                availableProducts.map(product => {
+              {availableProducts.map(product => {
                 const selected = selectedProteins[product.product_id];
                 const qty = selected?.qty || 0;
                 const isRecommended = product.product_id === `cd-${results.recommendedProtein.id}`;
@@ -636,8 +625,7 @@ export const MealPlanPage = () => {
                     </button>
                   </div>
                 );
-              })
-              )}
+              })}
             </div>
 
             {/* Treats Section */}
