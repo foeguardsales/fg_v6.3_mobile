@@ -555,8 +555,8 @@ export const MealPlanPage = () => {
 
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', 
-              gap: '20px',
+              gridTemplateColumns: 'repeat(4, 1fr)', 
+              gap: '24px',
               marginBottom: '48px'
             }}>
               {availableProducts.map(product => {
