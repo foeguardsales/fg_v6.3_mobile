@@ -7,6 +7,8 @@ import './App.css';
 
 import { LandingPage } from './pages/LandingPage';
 import { BoxBuilder } from './pages/BoxBuilder';
+import { OrderChoicePage } from './pages/OrderChoicePage';
+import { MealPlanPage } from './pages/MealPlanPage';
 import { ProductDetailPage } from './pages/ProductDetail';
 import { TreatDetailPage } from './pages/TreatDetail';
 import { AboutPage } from './pages/AboutPage';
@@ -72,6 +74,8 @@ function App() {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/order" element={<OrderChoicePage />} />
+          <Route path="/meal-plan" element={<MealPlanPage />} />
           <Route path="/build-box" element={<BoxBuilder />} />
           <Route path="/product/:productId" element={<ProductDetailPage />} />
           <Route path="/treat/:treatId" element={<TreatDetailPage />} />

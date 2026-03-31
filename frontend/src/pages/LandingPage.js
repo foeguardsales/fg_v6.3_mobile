@@ -198,7 +198,7 @@ export const LandingPage = () => {
               </p>
               <button 
                 className="btn-hero" 
-                onClick={() => navigate('/build-box')}
+                onClick={() => navigate('/order')}
                 data-testid="hero-build-box-btn"
                 style={{
                   borderRadius: '8px',
@@ -518,7 +518,7 @@ export const LandingPage = () => {
             <div style={{ textAlign: 'center' }}>
               <button 
                 className="btn-hero" 
-                onClick={() => navigate('/build-box')}
+                onClick={() => navigate('/order')}
                 style={{ 
                   background: 'white',
                   color: '#8B4513',
@@ -743,7 +743,7 @@ export const LandingPage = () => {
             <div style={{ textAlign: 'center', marginTop: '32px' }}>
               <button 
                 className="btn-primary" 
-                onClick={() => navigate('/build-box')}
+                onClick={() => navigate('/order')}
                 style={{ borderRadius: '8px', padding: '14px 32px', fontSize: '16px' }}
               >
                 Order Now
@@ -1109,7 +1109,7 @@ export const LandingPage = () => {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', maxWidth: '400px', margin: '0 auto' }}>
               <button 
                 className="btn-hero" 
-                onClick={() => navigate('/build-box')}
+                onClick={() => navigate('/order')}
                 data-testid="final-cta-btn"
                 style={{ width: '100%', borderRadius: '8px', padding: '14px 32px', fontSize: '16px' }}
               >

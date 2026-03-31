@@ -393,7 +393,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             style={{ position: 'relative', paddingRight: '130px', display: 'flex', alignItems: 'center', gap: '16px' }}
           >
             {/* Treat Image */}
-            {treat.image && (
+            {treat.images && treat.images.length > 0 && (
               <div style={{
                 width: '100px',
                 height: '100px',
@@ -403,7 +403,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                 backgroundColor: '#fff'
               }}>
                 <img 
-                  src={treat.image} 
+                  src={treat.images[0]} 
                   alt={treat.name}
                   style={{
                     width: '100%',

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
-import { Calculator, ClipboardList, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calculator, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -205,13 +205,6 @@ export const BoxBuilder = () => {
   };
 
   const bannerCards = [
-    {
-      id: 'meal-plan',
-      title: 'Create Meal Plan',
-      icon: <ClipboardList size={48} />,
-      gradient: 'linear-gradient(135deg, #D9C8B3 0%, #B8A89A 100%)',
-      onClick: () => navigate('/build-box')
-    },
     {
       id: 'dog',
       title: 'Raw Dog Food',
@@ -897,6 +890,9 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const discountedPrice = getDiscountedPrice(basePrice);
   const hasDiscount = boxSize > 12;
   
+  // Product image URL - use the uploaded comfort dinner image for all products
+  const productImage = 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';
+  
   // Get collection color based on product line
   const getCollectionColor = () => {
     switch(product.product_line) {
@@ -921,6 +917,26 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   
   return (
     <div className="product-card" data-testid={`product-${product.product_id}`}>
+      {/* Product Image */}
+      <div style={{
+        width: '100%',
+        height: '180px',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        marginBottom: '16px',
+        background: '#f5f5f5'
+      }}>
+        <img 
+          src={productImage}
+          alt={product.name}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover'
+          }}
+        />
+      </div>
+      
       <h4 style={{ 
         fontSize: '18px', 
         margin: '0 0 8px 0', 
