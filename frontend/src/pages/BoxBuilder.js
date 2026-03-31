@@ -354,9 +354,9 @@ export const BoxBuilder = () => {
                 style={{
                   position: 'relative',
                   flex: '1 1 0',
-                  minWidth: '280px',
-                  maxWidth: '350px',
-                  height: '180px',
+                  minWidth: '320px',
+                  maxWidth: '400px',
+                  height: '200px',
                   borderRadius: '16px',
                   overflow: 'hidden',
                   cursor: 'pointer',
