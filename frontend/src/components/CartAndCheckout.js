@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
+import { Trash2, Edit2 } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -20,6 +21,23 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [promoError, setPromoError] = useState('');
+  const [savedPets, setSavedPets] = useState([]);
+  const navigate = useNavigate();
+
+  // Load saved pets from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('foeguard_saved_pets');
+    if (saved) {
+      setSavedPets(JSON.parse(saved));
+    }
+  }, [isOpen]);
+
+  const clearSavedPets = () => {
+    localStorage.removeItem('foeguard_saved_pets');
+    sessionStorage.removeItem('foeguard_calculator_pets');
+    sessionStorage.removeItem('foeguard_calculator_recommendation');
+    setSavedPets([]);
+  };
 
   const applyPromo = async () => {
     try {
@@ -70,6 +88,56 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
         </div>
         
         <div className="cart-drawer-content">
+          {/* Saved Pets Info */}
+          {savedPets.length > 0 && (
+            <div style={{
+              background: '#F5F9F5',
+              border: '1px solid #C8E6C9',
+              borderRadius: '12px',
+              padding: '16px',
+              marginBottom: '20px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <h4 style={{ margin: 0, fontSize: '14px', color: '#2E7D32', fontWeight: '600' }}>
+                  Saved Pet Info
+                </h4>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button 
+                    onClick={() => navigate('/calculator')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#666',
+                      cursor: 'pointer',
+                      padding: '4px'
+                    }}
+                    title="Edit"
+                  >
+                    <Edit2 size={14} />
+                  </button>
+                  <button 
+                    onClick={clearSavedPets}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#666',
+                      cursor: 'pointer',
+                      padding: '4px'
+                    }}
+                    title="Remove"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              </div>
+              {savedPets.map((pet, idx) => (
+                <div key={idx} style={{ fontSize: '13px', color: '#555', marginBottom: '4px' }}>
+                  <strong>{pet.name}</strong> • {pet.weight} lbs • {pet.activity} activity
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="cart-box-info">
             <span className="cart-box-size">{boxSize}lb Box</span>
             <span className="cart-box-progress">({getTotalProteins()}lb selected)</span>

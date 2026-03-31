@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Save, Check, Trash2, Edit2 } from 'lucide-react';
 
 export const FeedingCalculator = ({ onComplete }) => {
   const navigate = useNavigate();
@@ -12,6 +12,21 @@ export const FeedingCalculator = ({ onComplete }) => {
     weight: '',
     activity: 'moderate'
   }]);
+  const [savedPets, setSavedPets] = useState([]);
+  const [showSaveSuccess, setShowSaveSuccess] = useState(false);
+
+  // Load saved pets from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('foeguard_saved_pets');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setSavedPets(parsed);
+      // If we have saved pets, load the first one
+      if (parsed.length > 0) {
+        setPets(parsed);
+      }
+    }
+  }, []);
 
   const addPet = () => {
     setPets([...pets, {
@@ -100,11 +115,43 @@ export const FeedingCalculator = ({ onComplete }) => {
   };
 
   const handleComplete = (recommendedSize, petsData) => {
+    // Also save to sessionStorage for sticky checkout
+    sessionStorage.setItem('foeguard_calculator_pets', JSON.stringify(petsData || pets));
+    sessionStorage.setItem('foeguard_calculator_recommendation', JSON.stringify(recommendation));
     onComplete(recommendedSize, petsData || pets);
+  };
+
+  const savePets = () => {
+    const petsToSave = pets.filter(p => p.name && p.age_months && p.weight);
+    if (petsToSave.length > 0) {
+      localStorage.setItem('foeguard_saved_pets', JSON.stringify(petsToSave));
+      setSavedPets(petsToSave);
+      // Also save to sessionStorage for sticky checkout
+      sessionStorage.setItem('foeguard_calculator_pets', JSON.stringify(petsToSave));
+      sessionStorage.setItem('foeguard_calculator_recommendation', JSON.stringify(recommendation));
+      setShowSaveSuccess(true);
+      setTimeout(() => setShowSaveSuccess(false), 2000);
+    }
+  };
+
+  const clearSavedPets = () => {
+    localStorage.removeItem('foeguard_saved_pets');
+    sessionStorage.removeItem('foeguard_calculator_pets');
+    sessionStorage.removeItem('foeguard_calculator_recommendation');
+    setSavedPets([]);
+    setPets([{
+      id: 1,
+      name: '',
+      species: 'dog',
+      age_months: '',
+      weight: '',
+      activity: 'moderate'
+    }]);
   };
 
   const recommendation = getTotalRecommendation();
   const isComplete = pets.every(p => p.name && p.age_months && p.weight);
+  const hasSavedPets = savedPets.length > 0;
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
@@ -308,6 +355,81 @@ export const FeedingCalculator = ({ onComplete }) => {
             <p style={{ fontSize: '18px', fontWeight: '600', margin: 0 }}>
               We recommend a <strong>{recommendation.recommendedSize}lb box</strong> every 2 weeks
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* Save Button */}
+      {isComplete && (
+        <div style={{ 
+          display: 'flex', 
+          gap: '16px', 
+          justifyContent: 'center', 
+          marginBottom: '24px',
+          flexWrap: 'wrap'
+        }}>
+          <button 
+            onClick={savePets}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '14px 28px',
+              background: showSaveSuccess ? '#4CAF50' : 'white',
+              border: '2px solid',
+              borderColor: showSaveSuccess ? '#4CAF50' : '#8B4513',
+              borderRadius: '8px',
+              color: showSaveSuccess ? 'white' : '#8B4513',
+              fontSize: '16px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+          >
+            {showSaveSuccess ? <Check size={20} /> : <Save size={20} />}
+            {showSaveSuccess ? 'Saved!' : 'Save Pet Info'}
+          </button>
+          
+          {hasSavedPets && (
+            <button 
+              onClick={clearSavedPets}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '14px 28px',
+                background: 'white',
+                border: '2px solid #E8DDD0',
+                borderRadius: '8px',
+                color: '#666',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer'
+              }}
+            >
+              <Trash2 size={18} /> Clear Saved
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Saved Pets Indicator */}
+      {hasSavedPets && !showSaveSuccess && (
+        <div style={{
+          background: '#E8F5E9',
+          border: '2px solid #4CAF50',
+          borderRadius: '12px',
+          padding: '16px 20px',
+          marginBottom: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Check size={20} color="#4CAF50" />
+            <span style={{ color: '#2E7D32', fontWeight: '500' }}>
+              Pet info saved! Your data will be remembered for future orders.
+            </span>
           </div>
         </div>
       )}
