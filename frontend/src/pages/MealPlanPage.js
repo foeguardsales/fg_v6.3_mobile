@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { TreatsSection } from '../components/CartAndCheckout';
+import { TreatsSection, CartDrawer, CheckoutForm, OrderSuccess } from '../components/CartAndCheckout';
 import { ChevronLeft, ChevronRight, Check, Plus, Minus } from 'lucide-react';
 import axios from 'axios';
 
@@ -93,6 +93,9 @@ export const MealPlanPage = () => {
   const [selectedTreats, setSelectedTreats] = useState(initialState.selectedTreats);
   const [products, setProducts] = useState([]);
   const [selectedProteins, setSelectedProteins] = useState(initialState.selectedProteins);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [orderComplete, setOrderComplete] = useState(false);
   
   // Form data
   const [formData, setFormData] = useState(initialState.formData);
@@ -328,15 +331,17 @@ export const MealPlanPage = () => {
     return total;
   };
 
+  const getDiscountedPrice = (basePrice) => {
+    const discount = results ? DISCOUNT_RATES[results.recommendedBoxSize] || 0 : 0;
+    return basePrice * (1 - discount);
+  };
+
+  const getBasePrice = (product) => {
+    return product.pricing.find(p => p.size_lb === 6)?.price || 26.99;
+  };
+
   const startPlan = () => {
-    const mealPlan = {
-      ...results,
-      selectedProteins,
-      selectedTreats,
-      formData
-    };
-    sessionStorage.setItem('mealPlan', JSON.stringify(mealPlan));
-    navigate('/build-box', { state: { mealPlan } });
+    setCartOpen(true);
   };
 
   const canProceed = () => {
@@ -391,9 +396,75 @@ export const MealPlanPage = () => {
     const totalSelected = getTotalProteinLbs();
     const canAddMore = totalSelected < boxSize;
 
+    // Show order success
+    if (orderComplete) {
+      return (
+        <>
+          <Navbar />
+          <OrderSuccess />
+          <Footer />
+        </>
+      );
+    }
+
+    // Show checkout form
+    if (showCheckout) {
+      return (
+        <>
+          <Navbar />
+          <CheckoutForm 
+            boxSize={boxSize}
+            selectedProteins={selectedProteins}
+            selectedTreats={selectedTreats}
+            products={products}
+            getDiscountedPrice={getDiscountedPrice}
+            getBasePrice={getBasePrice}
+            onSuccess={() => {
+              setOrderComplete(true);
+              sessionStorage.removeItem('mealPlanState');
+            }}
+            onBack={() => {
+              setShowCheckout(false);
+            }}
+          />
+          <Footer />
+        </>
+      );
+    }
+
     return (
       <>
         <Navbar />
+        
+        {/* Floating Cart Button */}
+        <button 
+          className="btn-cart-floating"
+          onClick={() => setCartOpen(true)}
+          style={{
+            position: 'fixed',
+            top: '100px',
+            right: '20px',
+            background: '#88302F',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '50px',
+            padding: '16px 24px',
+            fontSize: '16px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(136, 48, 47, 0.3)',
+            zIndex: 999,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'all 0.2s'
+          }}
+        >
+          <span style={{ fontSize: '20px' }}>🛒</span>
+          <span>{totalSelected}/{boxSize}lb</span>
+          <span style={{ fontSize: '18px' }}>→</span>
+        </button>
+
         <div ref={topRef} className="meal-plan-results" style={{ minHeight: '100vh', background: '#F5F3EF' }}>
           {/* Header */}
           <div style={{
@@ -651,46 +722,46 @@ export const MealPlanPage = () => {
               petType="dog"
               navigate={navigate}
             />
-
-            {/* Order Summary & CTA */}
-            <div style={{
-              background: 'white',
-              borderRadius: '16px',
-              padding: '32px',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-              marginTop: '60px'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                <div>
-                  <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '4px' }}>Order Summary</h3>
-                  <p style={{ color: '#666', fontSize: '14px' }}>{boxSize}lb Box • {Object.keys(selectedProteins).length} protein(s) • {selectedTreats.length} treat(s)</p>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontSize: '14px', color: '#666' }}>Subtotal</p>
-                  <p style={{ fontSize: '28px', fontWeight: '700', color: '#8B4513' }}>${getSubtotal().toFixed(2)}</p>
-                </div>
-              </div>
-              
-              <button
-                onClick={startPlan}
-                disabled={totalSelected === 0}
-                style={{
-                  width: '100%',
-                  background: totalSelected > 0 ? '#8B4513' : '#CCC',
-                  color: 'white',
-                  border: 'none',
-                  padding: '18px',
-                  borderRadius: '8px',
-                  fontSize: '17px',
-                  fontWeight: '600',
-                  cursor: totalSelected > 0 ? 'pointer' : 'not-allowed'
-                }}
-              >
-                Continue to Checkout
-              </button>
-            </div>
           </div>
         </div>
+
+        {/* Cart Drawer */}
+        <CartDrawer 
+          isOpen={cartOpen}
+          onClose={() => setCartOpen(false)}
+          boxSize={boxSize}
+          selectedProteins={selectedProteins}
+          selectedTreats={selectedTreats}
+          products={products}
+          onProceed={() => { 
+            setCartOpen(false); 
+            setShowCheckout(true);
+          }}
+          getDiscountedPrice={getDiscountedPrice}
+          getBasePrice={getBasePrice}
+          onAdjustProtein={(productId, productName, newQty) => {
+            setSelectedProteins(prev => ({
+              ...prev,
+              [productId]: { qty: newQty, name: productName }
+            }));
+          }}
+          onRemoveProtein={(productId) => {
+            setSelectedProteins(prev => {
+              const updated = { ...prev };
+              delete updated[productId];
+              return updated;
+            });
+          }}
+          onRemoveTreat={(treatId) => {
+            setSelectedTreats(prev => prev.filter(t => t.treat_id !== treatId));
+          }}
+          onAdjustTreat={(treatId, newQuantity) => {
+            setSelectedTreats(prev => prev.map(t => 
+              t.treat_id === treatId ? { ...t, quantity: newQuantity } : t
+            ));
+          }}
+        />
+
         <Footer />
       </>
     );
