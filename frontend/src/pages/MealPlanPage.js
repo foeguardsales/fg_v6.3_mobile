@@ -62,30 +62,42 @@ const HEALTH_CONCERNS = [
 export const MealPlanPage = () => {
   const navigate = useNavigate();
   const topRef = useRef(null);
-  const [step, setStep] = useState(1);
-  const [showResults, setShowResults] = useState(false);
+  
+  // Load saved state from sessionStorage
+  const savedState = sessionStorage.getItem('mealPlanState');
+  const initialState = savedState ? JSON.parse(savedState) : {
+    step: 1,
+    showResults: false,
+    formData: {
+      name: '',
+      dateOfBirth: '',
+      breed: '',
+      weight: '',
+      weightUnit: 'lbs',
+      bodyCondition: '',
+      activityLevel: '',
+      currentDiet: '',
+      healthConcerns: [],
+      allergies: [],
+      favorites: []
+    },
+    results: null,
+    selectedProteins: {},
+    selectedTreats: []
+  };
+  
+  const [step, setStep] = useState(initialState.step);
+  const [showResults, setShowResults] = useState(initialState.showResults);
   const [treats, setTreats] = useState([]);
-  const [selectedTreats, setSelectedTreats] = useState([]);
+  const [selectedTreats, setSelectedTreats] = useState(initialState.selectedTreats);
   const [products, setProducts] = useState([]);
-  const [selectedProteins, setSelectedProteins] = useState({});
+  const [selectedProteins, setSelectedProteins] = useState(initialState.selectedProteins);
   
   // Form data
-  const [formData, setFormData] = useState({
-    name: '',
-    dateOfBirth: '',
-    breed: '',
-    weight: '',
-    weightUnit: 'lbs',
-    bodyCondition: '',
-    activityLevel: '',
-    currentDiet: '',
-    healthConcerns: [],
-    allergies: [],
-    favorites: []
-  });
+  const [formData, setFormData] = useState(initialState.formData);
 
   // Calculated results
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState(initialState.results);
 
   // Scroll to top when step changes
   useEffect(() => {
@@ -95,6 +107,19 @@ export const MealPlanPage = () => {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }, [step, showResults]);
+
+  // Save state to sessionStorage whenever it changes
+  useEffect(() => {
+    const state = {
+      step,
+      showResults,
+      formData,
+      results,
+      selectedProteins,
+      selectedTreats
+    };
+    sessionStorage.setItem('mealPlanState', JSON.stringify(state));
+  }, [step, showResults, formData, results, selectedProteins, selectedTreats]);
 
   // Load treats and products
   useEffect(() => {
@@ -240,7 +265,8 @@ export const MealPlanPage = () => {
       alternativeProteins,
       availableProteins,
       dailyCost,
-      cheapestProtein
+      cheapestProtein,
+      monthlyAmount: recommendedBoxSize
     });
     
     // Initialize with empty - let customer choose freely
@@ -318,7 +344,7 @@ export const MealPlanPage = () => {
       case 2:
         return formData.weight && formData.bodyCondition && formData.activityLevel;
       case 3:
-        return formData.currentDiet && formData.healthConcerns.length > 0;
+        return formData.currentDiet && formData.healthConcerns.length > 0 && products.length > 0;
       default:
         return true;
     }
@@ -350,13 +376,36 @@ export const MealPlanPage = () => {
     }
   };
 
-  // Filter available products based on allergies
+  // Filter available products based on allergies and ensure minimum 2-3 products
   const getAvailableProducts = () => {
     if (!results) return products;
-    return products.filter(p => {
+    
+    // First, get products not in allergy list
+    let availableProducts = products.filter(p => {
       const proteinType = p.protein_type;
       return !formData.allergies.includes(proteinType);
     });
+    
+    // If we have less than 2 products, show at least 2-3 products anyway (unless user is allergic to everything)
+    if (availableProducts.length < 2 && formData.allergies.length < products.length - 1) {
+      // Add products that are not in the severe allergy list, prioritizing recommended
+      const recommended = products.find(p => p.product_id === `cd-${results.recommendedProtein.id}`);
+      if (recommended && !availableProducts.includes(recommended)) {
+        availableProducts.push(recommended);
+      }
+      
+      // Add more products up to 3
+      while (availableProducts.length < 3 && availableProducts.length < products.length) {
+        const nextProduct = products.find(p => !availableProducts.includes(p));
+        if (nextProduct) {
+          availableProducts.push(nextProduct);
+        } else {
+          break;
+        }
+      }
+    }
+    
+    return availableProducts;
   };
 
   // Results Screen - Mini Menu Style
@@ -630,7 +679,8 @@ export const MealPlanPage = () => {
               background: 'white',
               borderRadius: '16px',
               padding: '32px',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
+              boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+              marginTop: '60px'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 <div>
