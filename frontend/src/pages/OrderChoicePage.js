@@ -45,13 +45,13 @@ export const OrderChoicePage = () => {
           justifyContent: 'center',
           maxWidth: '900px'
         }}>
-          {/* Create Meal Plan Option - Cinematic Image Card */}
+          {/* Create Meal Plan Option */}
           <div 
             onClick={() => navigate('/meal-plan')}
             style={{
               position: 'relative',
               width: '380px',
-              height: '320px',
+              height: '280px',
               borderRadius: '20px',
               overflow: 'hidden',
               cursor: 'pointer',
@@ -67,7 +67,6 @@ export const OrderChoicePage = () => {
               e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.15)';
             }}
           >
-            {/* Background Image */}
             <img 
               src="https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/a5bhlhqi_5.png"
               alt="Meal Plan"
@@ -79,7 +78,6 @@ export const OrderChoicePage = () => {
                 inset: 0
               }}
             />
-            {/* Dark Overlay with Text */}
             <div style={{
               position: 'absolute',
               inset: 0,
@@ -87,50 +85,39 @@ export const OrderChoicePage = () => {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-end',
-              padding: '32px'
+              padding: '28px'
             }}>
-              <h2 style={{
-                fontFamily: "'Rubik', sans-serif",
-                fontSize: '28px',
-                fontWeight: '700',
-                color: '#fff',
-                marginBottom: '8px',
-                textShadow: '0 2px 8px rgba(0,0,0,0.5)'
-              }}>
-                Create Meal Plan
-              </h2>
               <p style={{
                 fontFamily: "'Rubik', sans-serif",
                 fontSize: '14px',
                 color: 'rgba(255,255,255,0.9)',
-                lineHeight: '1.5',
-                marginBottom: '16px'
+                marginBottom: '12px'
               }}>
-                Personalized portions based on your dog's needs
+                Personalized portions for your dog
               </p>
               <div style={{
                 background: '#fff',
                 color: '#8B4513',
-                padding: '12px 24px',
+                padding: '14px 28px',
                 borderRadius: '8px',
                 fontFamily: "'Rubik', sans-serif",
-                fontWeight: '600',
-                fontSize: '15px',
+                fontWeight: '700',
+                fontSize: '17px',
                 textAlign: 'center',
                 width: 'fit-content'
               }}>
-                Get Started
+                Create Meal Plan
               </div>
             </div>
           </div>
 
-          {/* Build Your Box Option - Cinematic Image Card */}
+          {/* Build Your Box Option */}
           <div 
             onClick={() => navigate('/build-box')}
             style={{
               position: 'relative',
               width: '380px',
-              height: '320px',
+              height: '280px',
               borderRadius: '20px',
               overflow: 'hidden',
               cursor: 'pointer',
@@ -146,7 +133,6 @@ export const OrderChoicePage = () => {
               e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.15)';
             }}
           >
-            {/* Background Image */}
             <img 
               src="https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/1olxgtz6_3.png"
               alt="Build Your Box"
@@ -158,7 +144,6 @@ export const OrderChoicePage = () => {
                 inset: 0
               }}
             />
-            {/* Dark Overlay with Text */}
             <div style={{
               position: 'absolute',
               inset: 0,
@@ -166,39 +151,28 @@ export const OrderChoicePage = () => {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-end',
-              padding: '32px'
+              padding: '28px'
             }}>
-              <h2 style={{
-                fontFamily: "'Rubik', sans-serif",
-                fontSize: '28px',
-                fontWeight: '700',
-                color: '#fff',
-                marginBottom: '8px',
-                textShadow: '0 2px 8px rgba(0,0,0,0.5)'
-              }}>
-                Build Your Box
-              </h2>
               <p style={{
                 fontFamily: "'Rubik', sans-serif",
                 fontSize: '14px',
                 color: 'rgba(255,255,255,0.9)',
-                lineHeight: '1.5',
-                marginBottom: '16px'
+                marginBottom: '12px'
               }}>
                 Choose your own proteins and treats
               </p>
               <div style={{
                 background: '#fff',
                 color: '#8B4513',
-                padding: '12px 24px',
+                padding: '14px 28px',
                 borderRadius: '8px',
                 fontFamily: "'Rubik', sans-serif",
-                fontWeight: '600',
-                fontSize: '15px',
+                fontWeight: '700',
+                fontSize: '17px',
                 textAlign: 'center',
                 width: 'fit-content'
               }}>
-                Start Building
+                Build Your Box
               </div>
             </div>
           </div>
