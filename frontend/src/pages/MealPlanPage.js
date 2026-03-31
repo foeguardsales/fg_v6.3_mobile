@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronRight, Check, Plus, Minus } from 'lucide-react';
@@ -60,6 +60,7 @@ const HEALTH_CONCERNS = [
 
 export const MealPlanPage = () => {
   const navigate = useNavigate();
+  const topRef = useRef(null);
   const [step, setStep] = useState(1);
   const [showResults, setShowResults] = useState(false);
   const [treats, setTreats] = useState([]);
@@ -87,7 +88,11 @@ export const MealPlanPage = () => {
 
   // Scroll to top when step changes
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'instant', block: 'start' });
+    }
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [step, showResults]);
 
   // Load treats and products
@@ -364,7 +369,7 @@ export const MealPlanPage = () => {
     return (
       <>
         <Navbar />
-        <div className="meal-plan-results" style={{ minHeight: '100vh', background: '#F5F3EF' }}>
+        <div ref={topRef} className="meal-plan-results" style={{ minHeight: '100vh', background: '#F5F3EF' }}>
           {/* Header */}
           <div style={{
             background: 'linear-gradient(135deg, #5F7C5A 0%, #4A6347 100%)',
@@ -695,7 +700,7 @@ export const MealPlanPage = () => {
   return (
     <>
       <Navbar />
-      <div className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '40px 20px' }}>
+      <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '40px 20px' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           {/* Progress */}
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '40px' }}>
@@ -982,6 +987,7 @@ export const MealPlanPage = () => {
                     <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
                       Is {formData.name} allergic or sensitive to any proteins?
                     </label>
+                    <p style={{ fontSize: '13px', color: '#666', marginBottom: '12px' }}>Select all that apply</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                       {PROTEINS.map(protein => (
                         <button
@@ -1000,6 +1006,20 @@ export const MealPlanPage = () => {
                           {protein.name}
                         </button>
                       ))}
+                      <button
+                        onClick={() => updateForm('allergies', ['not-sure'])}
+                        style={{
+                          padding: '10px 18px',
+                          borderRadius: '20px',
+                          border: formData.allergies.includes('not-sure') ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                          background: formData.allergies.includes('not-sure') ? '#FDF8F3' : 'white',
+                          cursor: 'pointer',
+                          fontSize: '14px',
+                          color: '#2B2B2B'
+                        }}
+                      >
+                        Not sure
+                      </button>
                     </div>
                   </div>
                 )}
