@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
+import { TreatsSection } from '../components/CartAndCheckout';
 import { ChevronLeft, ChevronRight, Check, Plus, Minus } from 'lucide-react';
 import axios from 'axios';
 
@@ -64,7 +65,7 @@ export const MealPlanPage = () => {
   const [step, setStep] = useState(1);
   const [showResults, setShowResults] = useState(false);
   const [treats, setTreats] = useState([]);
-  const [selectedTreats, setSelectedTreats] = useState({});
+  const [selectedTreats, setSelectedTreats] = useState([]);
   const [products, setProducts] = useState([]);
   const [selectedProteins, setSelectedProteins] = useState({});
   
@@ -292,7 +293,7 @@ export const MealPlanPage = () => {
     });
     
     // Treats
-    Object.values(selectedTreats).forEach(treat => {
+    selectedTreats.forEach(treat => {
       total += treat.price * (treat.quantity || 1);
     });
     
@@ -477,8 +478,8 @@ export const MealPlanPage = () => {
                       background: 'white',
                       borderRadius: '16px',
                       padding: '20px',
-                      border: qty > 0 ? '3px solid #5F7C5A' : '3px solid transparent',
-                      boxShadow: qty > 0 ? '0 4px 20px rgba(95, 124, 90, 0.2)' : '0 2px 12px rgba(0,0,0,0.06)',
+                      border: qty > 0 ? '3px solid #A41E34' : '3px solid transparent',
+                      boxShadow: qty > 0 ? '0 4px 20px rgba(164, 30, 52, 0.25)' : '0 2px 12px rgba(0,0,0,0.06)',
                       transition: 'all 0.2s',
                       position: 'relative'
                     }}
@@ -501,7 +502,7 @@ export const MealPlanPage = () => {
                     
                     <div style={{
                       width: '100%',
-                      height: '140px',
+                      height: '180px',
                       borderRadius: '12px',
                       overflow: 'hidden',
                       marginBottom: '16px',
@@ -514,12 +515,12 @@ export const MealPlanPage = () => {
                       />
                     </div>
                     
-                    <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>{product.name}</h3>
+                    <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px', textTransform: 'none' }}>{product.name}</h3>
                     <p style={{ fontSize: '13px', color: '#666', marginBottom: '16px', lineHeight: '1.4' }}>
                       {product.mini_description || product.description?.split('.')[0]}
                     </p>
                     
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                       <div>
                         {discount > 0 && (
                           <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '14px', marginRight: '8px' }}>
@@ -569,89 +570,60 @@ export const MealPlanPage = () => {
                         </button>
                       </div>
                     </div>
+                    
+                    <button
+                      onClick={() => {
+                        sessionStorage.setItem('menuScrollPosition', window.scrollY.toString());
+                        navigate(`/product/${product.product_id}`);
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '10px',
+                        background: 'none',
+                        border: '2px solid #5F7C5A',
+                        borderRadius: '8px',
+                        color: '#5F7C5A',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = '#5F7C5A';
+                        e.currentTarget.style.color = 'white';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'none';
+                        e.currentTarget.style.color = '#5F7C5A';
+                      }}
+                    >
+                      See more
+                    </button>
                   </div>
                 );
               })}
             </div>
 
             {/* Treats Section */}
-            <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-              Add Some Treats
-            </h2>
-            <p style={{ color: '#666', marginBottom: '24px' }}>
-              Raw treats for dental health, mental stimulation, and natural chewing.
-            </p>
-
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
-              gap: '16px',
-              marginBottom: '48px'
-            }}>
-              {treats.map(treat => {
-                const isSelected = !!selectedTreats[treat.treat_id];
-                return (
-                  <div 
-                    key={treat.treat_id}
-                    onClick={() => handleTreatToggle(treat)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '16px',
-                      padding: '16px 20px',
-                      background: isSelected ? '#F5F9F5' : 'white',
-                      borderRadius: '12px',
-                      border: isSelected ? '2px solid #5F7C5A' : '2px solid #E8E4DC',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}
-                  >
-                    <div style={{
-                      width: '70px',
-                      height: '70px',
-                      borderRadius: '8px',
-                      overflow: 'hidden',
-                      background: '#f5f5f5',
-                      flexShrink: 0
-                    }}>
-                      {treat.images && treat.images[0] ? (
-                        <img 
-                          src={treat.images[0]} 
-                          alt={treat.name}
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                          }}
-                        />
-                      ) : (
-                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: '10px', textAlign: 'center' }}>
-                          Image<br/>Soon
-                        </div>
-                      )}
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <h4 style={{ fontSize: '15px', fontWeight: '600', marginBottom: '4px' }}>{treat.name}</h4>
-                      <p style={{ fontSize: '12px', color: '#666' }}>{treat.quantity_description}</p>
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <p style={{ fontWeight: '700', color: '#8B4513', marginBottom: '4px' }}>${treat.price?.toFixed(2)}</p>
-                      <div style={{
-                        width: '24px',
-                        height: '24px',
-                        borderRadius: '50%',
-                        background: isSelected ? '#5F7C5A' : '#E8E4DC',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginLeft: 'auto'
-                      }}>
-                        {isSelected && <Check size={14} color="white" />}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <TreatsSection 
+              selectedTreats={selectedTreats.map(t => ({ ...t, quantity: t.quantity || 1 }))}
+              onToggleTreat={(treat, newQuantity) => {
+                if (newQuantity === 0) {
+                  setSelectedTreats(prev => prev.filter(t => t.treat_id !== treat.treat_id));
+                } else {
+                  setSelectedTreats(prev => {
+                    const existing = prev.find(t => t.treat_id === treat.treat_id);
+                    if (existing) {
+                      return prev.map(t => t.treat_id === treat.treat_id ? { ...t, quantity: newQuantity } : t);
+                    } else {
+                      return [...prev, { ...treat, quantity: newQuantity }];
+                    }
+                  });
+                }
+              }}
+              petType="dog"
+              navigate={navigate}
+            />
 
             {/* Order Summary & CTA */}
             <div style={{
@@ -663,7 +635,7 @@ export const MealPlanPage = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 <div>
                   <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '4px' }}>Order Summary</h3>
-                  <p style={{ color: '#666', fontSize: '14px' }}>{boxSize}lb Box • {Object.keys(selectedProteins).length} protein(s) • {Object.keys(selectedTreats).length} treat(s)</p>
+                  <p style={{ color: '#666', fontSize: '14px' }}>{boxSize}lb Box • {Object.keys(selectedProteins).length} protein(s) • {selectedTreats.length} treat(s)</p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <p style={{ fontSize: '14px', color: '#666' }}>Subtotal</p>
@@ -982,47 +954,45 @@ export const MealPlanPage = () => {
                   </div>
                 </div>
 
-                {formData.healthConcerns.includes('allergies') && (
-                  <div style={{ marginBottom: '28px' }}>
-                    <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                      Is {formData.name} allergic or sensitive to any proteins?
-                    </label>
-                    <p style={{ fontSize: '13px', color: '#666', marginBottom: '12px' }}>Select all that apply</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                      {PROTEINS.map(protein => (
-                        <button
-                          key={protein.id}
-                          onClick={() => toggleArrayItem('allergies', protein.id)}
-                          style={{
-                            padding: '10px 18px',
-                            borderRadius: '20px',
-                            border: formData.allergies.includes(protein.id) ? '2px solid #D32F2F' : '2px solid #E8E4DC',
-                            background: formData.allergies.includes(protein.id) ? '#FFEBEE' : 'white',
-                            cursor: 'pointer',
-                            fontSize: '14px',
-                            color: formData.allergies.includes(protein.id) ? '#D32F2F' : '#2B2B2B'
-                          }}
-                        >
-                          {protein.name}
-                        </button>
-                      ))}
+                <div style={{ marginBottom: '28px' }}>
+                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
+                    Any proteins to avoid?
+                  </label>
+                  <p style={{ fontSize: '13px', color: '#666', marginBottom: '12px' }}>Select all that apply</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                    {PROTEINS.map(protein => (
                       <button
-                        onClick={() => updateForm('allergies', ['not-sure'])}
+                        key={protein.id}
+                        onClick={() => toggleArrayItem('allergies', protein.id)}
                         style={{
                           padding: '10px 18px',
                           borderRadius: '20px',
-                          border: formData.allergies.includes('not-sure') ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                          background: formData.allergies.includes('not-sure') ? '#FDF8F3' : 'white',
+                          border: formData.allergies.includes(protein.id) ? '2px solid #D32F2F' : '2px solid #E8E4DC',
+                          background: formData.allergies.includes(protein.id) ? '#FFEBEE' : 'white',
                           cursor: 'pointer',
                           fontSize: '14px',
-                          color: '#2B2B2B'
+                          color: formData.allergies.includes(protein.id) ? '#D32F2F' : '#2B2B2B'
                         }}
                       >
-                        Not sure
+                        {protein.name}
                       </button>
-                    </div>
+                    ))}
+                    <button
+                      onClick={() => updateForm('allergies', [])}
+                      style={{
+                        padding: '10px 18px',
+                        borderRadius: '20px',
+                        border: formData.allergies.length === 0 ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                        background: formData.allergies.length === 0 ? '#FDF8F3' : 'white',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        color: '#2B2B2B'
+                      }}
+                    >
+                      None
+                    </button>
                   </div>
-                )}
+                </div>
 
                 <div>
                   <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
