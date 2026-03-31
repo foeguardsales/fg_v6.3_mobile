@@ -232,13 +232,8 @@ export const MealPlanPage = () => {
       cheapestProtein
     });
     
-    // Initialize selected proteins with recommended
-    const initialProteins = {};
-    initialProteins[`cd-${recommendedProtein.id}`] = {
-      name: `Comfort ${recommendedProtein.name}`,
-      qty: Math.min(recommendedBoxSize, 6)
-    };
-    setSelectedProteins(initialProteins);
+    // Initialize with empty - let customer choose freely
+    setSelectedProteins({});
     
     setShowResults(true);
     
@@ -321,6 +316,7 @@ export const MealPlanPage = () => {
   const nextStep = () => {
     if (step < 3) {
       setStep(step + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       calculateResults();
     }
@@ -329,8 +325,10 @@ export const MealPlanPage = () => {
   const prevStep = () => {
     if (showResults) {
       setShowResults(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (step > 1) {
       setStep(step - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
