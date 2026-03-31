@@ -171,7 +171,7 @@ h2, h3, h4 {
   color: var(--text-inverse);
   font-family: var(--font-body);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400;
   cursor: pointer;
   padding: 8px 4px;
   position: relative;
