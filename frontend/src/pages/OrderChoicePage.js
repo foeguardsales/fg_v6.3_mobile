@@ -23,7 +23,8 @@ export const OrderChoicePage = () => {
           fontWeight: '600',
           color: '#2B2B2B',
           marginBottom: '16px',
-          textAlign: 'center'
+          textAlign: 'center',
+          textTransform: 'none'
         }}>
           How would you like to order?
         </h1>
