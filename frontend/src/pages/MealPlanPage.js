@@ -85,6 +85,11 @@ export const MealPlanPage = () => {
   // Calculated results
   const [results, setResults] = useState(null);
 
+  // Scroll to top when step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [step, showResults]);
+
   // Load treats and products
   useEffect(() => {
     const loadData = async () => {
@@ -316,7 +321,10 @@ export const MealPlanPage = () => {
   const nextStep = () => {
     if (step < 3) {
       setStep(step + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Use setTimeout to ensure scroll happens after render
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, 0);
     } else {
       calculateResults();
     }
@@ -325,10 +333,14 @@ export const MealPlanPage = () => {
   const prevStep = () => {
     if (showResults) {
       setShowResults(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, 0);
     } else if (step > 1) {
       setStep(step - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, 0);
     }
   };
 
