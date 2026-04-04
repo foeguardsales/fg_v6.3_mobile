@@ -606,7 +606,7 @@ TREATS = [
         "ingredients": "100% beef rib bones. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/as9igo6v_beef_rib_bones.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/nsrwf34s_Beef_rib_bone_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/5x1gimfh_Beef_rib_bone_pack.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/5x1gimfh_Beef_rib_bone_pack.png"]
     },
     {
         "treat_id": "treat-chicken-carcass",
@@ -666,7 +666,7 @@ TREATS = [
         "ingredients": "100% beef neck bones. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/3t2kx8f9_beef_neck_bones.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/9f04z1ms_Beef_neck_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9z16u3bs_beef_neck_bones.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9z16u3bs_beef_neck_bones.png"]
     },
     {
         "treat_id": "treat-chicken-heads",
@@ -678,7 +678,7 @@ TREATS = [
         "ingredients": "100% chicken heads. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/guwbcnle_chicken_heads.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/z0s2jgtf_Chicken_head_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j9h9vmdh_chicken%20head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j9h9vmdh_chicken%20head.png"]
     },
     {
         "treat_id": "treat-beef-marrow",
@@ -690,7 +690,7 @@ TREATS = [
         "ingredients": "100% beef marrow bones. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/bfvjsqvf_beef_marrow_bones.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/8k2x6x6n_Beef_marrow_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/qr11w1lx_beef_marrow_bone.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/xzj3om55_beef_marrow_image_2.png"]
     }
 ]
 
@@ -706,7 +706,7 @@ CAT_TREATS = [
         "ingredients": "100% chicken heads. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/guwbcnle_chicken_heads.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/z0s2jgtf_Chicken_head_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j9h9vmdh_chicken%20head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j9h9vmdh_chicken%20head.png"]
     },
     {
         "treat_id": "treat-cat-chicken-necks",
