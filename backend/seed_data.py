@@ -570,7 +570,7 @@ TREATS = [
         "ingredients": "100% duck heads. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/5aaxlrlf_duck_heads.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/yq3q59no_Duck_head_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/k29spzfm_whole_duck_head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/p30yi720_Whole_duck_heads_pack.png"]
     },
     {
         "treat_id": "treat-lamb-head-1",
@@ -582,7 +582,7 @@ TREATS = [
         "ingredients": "100% lamb head. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/5h7j12gy_lamb_head.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/c9wwt5dx_Lamb_head_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/pz4h3l5n_Whole_Lamb_Head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/pz4h3l5n_Whole_Lamb_Head.png"]
     },
     {
         "treat_id": "treat-lamb-head-2",
@@ -594,7 +594,7 @@ TREATS = [
         "ingredients": "100% lamb head. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/5h7j12gy_lamb_head.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/c9wwt5dx_Lamb_head_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/pz4h3l5n_Whole_Lamb_Head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/pz4h3l5n_Whole_Lamb_Head.png"]
     },
     {
         "treat_id": "treat-beef-rib",
@@ -606,7 +606,7 @@ TREATS = [
         "ingredients": "100% beef rib bones. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/5x1gimfh_Beef_rib_bone_pack.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/5x1gimfh_Beef_rib_bone_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/8rjroort_beef_rib_bones.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/5x1gimfh_Beef_rib_bone_pack.png"]
     },
     {
         "treat_id": "treat-chicken-carcass",
