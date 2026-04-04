@@ -558,7 +558,7 @@ TREATS = [
         "ingredients": "100% turkey feet. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/qlkcb3el_turkey_feet.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/e34lwp9r_Turkey_feet_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/b87cuxlx_turkey_feet.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j1thh9jz_turkey_feet_image_2.png"]
     },
     {
         "treat_id": "treat-duck-heads",
@@ -618,7 +618,7 @@ TREATS = [
         "ingredients": "100% chicken carcass with organ meat. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/90pvdhnp_chicken_carcass.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/zwnzxp3r_Chicken_carcass_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/g30fkeau_chicken_carcass.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/g30fkeau_chicken_carcass.png"]
     },
     {
         "treat_id": "treat-chicken-necks-2lb",
@@ -630,7 +630,7 @@ TREATS = [
         "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/zwnzj4xj_chicken_necks.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/j3l3hs38_Chicken_neck_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png"]
     },
     {
         "treat_id": "treat-chicken-necks-5lb",
@@ -642,7 +642,7 @@ TREATS = [
         "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/zwnzj4xj_chicken_necks.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/j3l3hs38_Chicken_neck_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png"]
     },
     {
         "treat_id": "treat-duck-feet",
@@ -654,7 +654,7 @@ TREATS = [
         "ingredients": "100% duck feet. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/0ojtfshy_duck_feet.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wqavqvqj_Duck_feet_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9tv7a0mh_DuckFeet.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9tv7a0mh_DuckFeet.png"]
     },
     {
         "treat_id": "treat-beef-neck",
@@ -718,7 +718,7 @@ CAT_TREATS = [
         "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/zwnzj4xj_chicken_necks.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/j3l3hs38_Chicken_neck_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png"]
     },
     {
         "treat_id": "treat-cat-chicken-feet",
@@ -730,7 +730,7 @@ CAT_TREATS = [
         "ingredients": "100% chicken feet. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/90pvdhnp_chicken_carcass.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/g30fkeau_chicken_carcass.png"]
     },
     {
         "treat_id": "treat-cat-duck-heads",
@@ -742,7 +742,7 @@ CAT_TREATS = [
         "ingredients": "100% duck heads. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/5aaxlrlf_duck_heads.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/yq3q59no_Duck_head_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/k29spzfm_whole_duck_head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/p30yi720_Whole_duck_heads_pack.png"]
     },
     {
         "treat_id": "treat-cat-duck-feet",
@@ -754,7 +754,7 @@ CAT_TREATS = [
         "ingredients": "100% duck feet. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
-        "images": ["https://customer-assets.emergentagent.com/job_file-access-17/artifacts/0ojtfshy_duck_feet.png", "https://customer-assets.emergentagent.com/job_file-access-17/artifacts/wqavqvqj_Duck_feet_pack.png"]
+        "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9tv7a0mh_DuckFeet.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9tv7a0mh_DuckFeet.png"]
     }
 ]
 
