@@ -65,6 +65,7 @@ export const BoxBuilder = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [subscriptionPlan, setSubscriptionPlan] = useState(null); // null, 'biweekly', 'monthly'
 
   // Get current discount rates and box options based on pet type
   const DISCOUNT_RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
@@ -520,6 +521,114 @@ export const BoxBuilder = () => {
             </span>
           </div>
 
+          {/* Subscription Selector */}
+          <div style={{
+            background: 'linear-gradient(135deg, #FDF8F3 0%, #F5F1EB 100%)',
+            borderRadius: '16px',
+            padding: '24px',
+            marginBottom: '32px',
+            border: '2px solid #E8DDD0'
+          }}>
+            <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+              {/* Left: Subscription Options */}
+              <div style={{ flex: 1 }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '4px', color: '#2B2B2B' }}>
+                  Subscribe & Save
+                </h3>
+                <p style={{ fontSize: '13px', color: '#666', marginBottom: '16px' }}>
+                  Get automatic deliveries and exclusive perks
+                </p>
+                
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                  {/* Biweekly */}
+                  <button
+                    onClick={() => setSubscriptionPlan('biweekly')}
+                    style={{
+                      flex: '1 1 160px',
+                      padding: '16px 20px',
+                      borderRadius: '12px',
+                      border: subscriptionPlan === 'biweekly' ? '3px solid #5F7C5A' : '2px solid #E8DDD0',
+                      background: subscriptionPlan === 'biweekly' ? '#E8F5E9' : 'white',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      boxShadow: subscriptionPlan === 'biweekly' ? '0 4px 12px rgba(95, 124, 90, 0.2)' : 'none'
+                    }}
+                  >
+                    <div style={{ fontSize: '16px', fontWeight: '700', color: subscriptionPlan === 'biweekly' ? '#5F7C5A' : '#2B2B2B', marginBottom: '4px' }}>
+                      Every 2 Weeks
+                    </div>
+                    <div style={{ fontSize: '12px', color: '#666' }}>Most Popular</div>
+                  </button>
+
+                  {/* Monthly */}
+                  <button
+                    onClick={() => setSubscriptionPlan('monthly')}
+                    style={{
+                      flex: '1 1 160px',
+                      padding: '16px 20px',
+                      borderRadius: '12px',
+                      border: subscriptionPlan === 'monthly' ? '3px solid #5F7C5A' : '2px solid #E8DDD0',
+                      background: subscriptionPlan === 'monthly' ? '#E8F5E9' : 'white',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      boxShadow: subscriptionPlan === 'monthly' ? '0 4px 12px rgba(95, 124, 90, 0.2)' : 'none'
+                    }}
+                  >
+                    <div style={{ fontSize: '16px', fontWeight: '700', color: subscriptionPlan === 'monthly' ? '#5F7C5A' : '#2B2B2B', marginBottom: '4px' }}>
+                      Monthly
+                    </div>
+                    <div style={{ fontSize: '12px', color: '#666' }}>Flexible</div>
+                  </button>
+
+                  {/* No Subscription */}
+                  <button
+                    onClick={() => setSubscriptionPlan(null)}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      background: 'transparent',
+                      cursor: 'pointer',
+                      fontSize: '13px',
+                      color: subscriptionPlan === null ? '#A41E34' : '#999',
+                      textDecoration: subscriptionPlan === null ? 'underline' : 'none',
+                      fontWeight: subscriptionPlan === null ? '600' : '400'
+                    }}
+                  >
+                    One-time purchase
+                  </button>
+                </div>
+              </div>
+
+              {/* Right: Benefits */}
+              <div style={{
+                background: 'white',
+                borderRadius: '12px',
+                padding: '16px 20px',
+                minWidth: '220px',
+                border: '1px solid #E8DDD0'
+              }}>
+                <div style={{ fontSize: '14px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
+                  Subscriber Perks:
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: '#5F7C5A', fontSize: '16px' }}>✓</span>
+                    <span style={{ fontSize: '13px', color: '#2B2B2B' }}>Free Delivery</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: '#5F7C5A', fontSize: '16px' }}>✓</span>
+                    <span style={{ fontSize: '13px', color: '#2B2B2B' }}>10% Off Meals</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: '#5F7C5A', fontSize: '16px' }}>✓</span>
+                    <span style={{ fontSize: '13px', color: '#2B2B2B' }}>15% Off Treats</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
             {loading ? (
               <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
             ) : petType === 'dog' ? (
@@ -769,6 +878,8 @@ export const BoxBuilder = () => {
               }}
               getDiscountedPrice={getDiscountedPrice}
               getBasePrice={getBasePrice}
+              subscriptionPlan={subscriptionPlan}
+              onSubscriptionChange={setSubscriptionPlan}
               onAdjustProtein={(productId, productName, newQty) => {
                 setSelectedProteins(prev => {
                   const updated = { 
