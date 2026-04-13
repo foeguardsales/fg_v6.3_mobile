@@ -241,15 +241,73 @@ frontend:
           - Learn More button below treat info
           Customers can select multiple quantities of each treat directly in the menu.
 
+  - task: "Subscription feature on /build-box page"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/BoxBuilder.js, /app/frontend/src/components/CartAndCheckout.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: |
+          ✅ SUBSCRIPTION FEATURE FULLY TESTED AND WORKING PERFECTLY
+          
+          **Subscribe & Save Section (BoxBuilder.js lines 508-614):**
+          - ✓ "Subscribe & Save" heading visible
+          - ✓ Subtitle "Get automatic deliveries and exclusive perks" visible
+          - ✓ "Every 2 Weeks" button with "Most Popular" label visible
+          - ✓ "Monthly" button with "Flexible" label visible
+          - ✓ "One-time purchase" link visible
+          - ✓ Subscriber Perks section showing all 3 perks:
+            • Free Delivery
+            • 5% Off Every Order
+            • Pause or Cancel anytime
+          
+          **Subscription Selection:**
+          - ✓ Clicking "Every 2 Weeks" shows selected state (green border/background)
+          - ✓ Clicking "Monthly" shows selected state
+          - ✓ Clicking "One-time purchase" deselects subscription
+          - ✓ Selection state persists when opening cart
+          
+          **Cart Drawer Integration (CartAndCheckout.js lines 154-199, 330-335):**
+          - ✓ Subscription badge displays correctly: "Subscription: Every 2 Weeks"
+          - ✓ Badge shows "5% discount applied • Free delivery"
+          - ✓ Subscription discount line item visible: "Subscription Discount (5%)"
+          - ✓ Discount amount correctly calculated and displayed as negative: -$5.08
+          - ✓ Total reflects 5% discount: Subtotal $101.58 → Total $109.05 (after tax and discount)
+          
+          **Switching Between Options:**
+          - ✓ Switching to "Monthly" updates cart badge to "Subscription: Monthly"
+          - ✓ Switching to "One-time purchase" removes subscription badge
+          - ✓ Switching to "One-time purchase" removes discount line item
+          
+          **Test Flow Completed:**
+          1. Navigated to /build-box ✓
+          2. Verified all Subscribe & Save elements visible ✓
+          3. Selected "Every 2 Weeks" subscription ✓
+          4. Added 3 products (18lb total) ✓
+          5. Opened cart drawer ✓
+          6. Verified subscription badge and 5% discount ✓
+          7. Tested switching to Monthly ✓
+          8. Tested one-time purchase (no subscription) ✓
+          
+          **No Issues Found:**
+          - No console errors
+          - No network failures (only Cloudflare analytics)
+          - All functionality working as expected
+          - Discount calculations accurate
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 2
+  test_sequence: 3
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Comprehensive pre-launch testing completed"
+    - "Subscription feature testing completed"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -447,3 +505,38 @@ agent_communication:
       Website is production-ready! All critical user flows working correctly across desktop and mobile.
       Cat treats fix is perfect. Contact page desktop layout is exactly as specified.
       No major issues found.
+  
+  - agent: "testing"
+    message: |
+      ✅ SUBSCRIPTION FEATURE TESTING COMPLETED - ALL TESTS PASSED
+      
+      Tested the new subscription feature on /build-box page as requested.
+      
+      **What Was Tested:**
+      1. Subscribe & Save section visibility and layout
+      2. Subscription option selection (Every 2 Weeks, Monthly, One-time)
+      3. Visual feedback for selected subscription
+      4. Cart drawer subscription badge display
+      5. 5% subscription discount calculation and display
+      6. Switching between subscription options
+      
+      **Test Results:**
+      - All UI elements present and visible ✓
+      - Subscription selection works correctly ✓
+      - Selected state shows green border/background ✓
+      - Cart displays subscription badge with plan details ✓
+      - 5% discount correctly calculated and applied ✓
+      - Discount shown as negative value in cart ✓
+      - Switching between plans updates cart correctly ✓
+      - One-time purchase removes subscription elements ✓
+      
+      **Verified Calculations:**
+      - Subtotal: $101.58
+      - Subscription Discount (5%): -$5.08
+      - Tax (13%): Applied to discounted subtotal
+      - Total: $109.05 (correctly reflects discount)
+      
+      **No Issues Found:**
+      - Feature is production-ready
+      - All requirements from review request met
+      - No console errors or network failures

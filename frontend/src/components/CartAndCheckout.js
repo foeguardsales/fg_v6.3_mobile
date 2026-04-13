@@ -15,6 +15,9 @@ const DISCOUNT_RATES = {
   30: 0.15
 };
 
+// Subscription discount rate
+const SUBSCRIPTION_DISCOUNT = 0.05; // 5% off
+
 // Cart Drawer Component (slide-in from right)
 export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein, subscriptionPlan, onSubscriptionChange }) => {
   const [promoCode, setPromoCode] = useState('');
@@ -72,8 +75,10 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
   };
 
   const subtotal = calculateSubtotal();
-  const tax = subtotal * 0.13;
-  const total = subtotal + tax;
+  const subscriptionDiscount = subscriptionPlan ? subtotal * SUBSCRIPTION_DISCOUNT : 0;
+  const discountedSubtotal = subtotal - subscriptionDiscount;
+  const tax = discountedSubtotal * 0.13;
+  const total = discountedSubtotal + tax;
   const getTotalProteins = () => Object.values(selectedProteins).reduce((sum, data) => sum + data.qty, 0);
   const isBoxComplete = getTotalProteins() === boxSize;
   const discount = DISCOUNT_RATES[boxSize] || 0;
@@ -145,6 +150,53 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
               <span className="cart-discount-badge">{discount * 100}% off</span>
             )}
           </div>
+
+          {/* Subscription Badge */}
+          {subscriptionPlan && (
+            <div style={{
+              background: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)',
+              borderRadius: '12px',
+              padding: '12px 16px',
+              marginBottom: '16px',
+              border: '2px solid #5F7C5A',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}>
+              <div>
+                <div style={{ 
+                  fontSize: '14px', 
+                  fontWeight: '700', 
+                  color: '#2E7D32',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}>
+                  <span style={{ fontSize: '16px' }}>✓</span>
+                  Subscription: {subscriptionPlan === 'biweekly' ? 'Every 2 Weeks' : 'Monthly'}
+                </div>
+                <div style={{ fontSize: '12px', color: '#5F7C5A', marginTop: '2px' }}>
+                  5% discount applied • Free delivery
+                </div>
+              </div>
+              {onSubscriptionChange && (
+                <button
+                  onClick={() => onSubscriptionChange(null)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#666',
+                    fontSize: '18px',
+                    cursor: 'pointer',
+                    padding: '4px'
+                  }}
+                  title="Remove subscription"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          )}
           
           {Object.entries(selectedProteins).map(([productId, data]) => {
             if (data.qty === 0) return null;
@@ -275,6 +327,12 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             <span>Subtotal</span>
             <span data-testid="cart-subtotal">${subtotal.toFixed(2)}</span>
           </div>
+          {subscriptionPlan && subscriptionDiscount > 0 && (
+            <div className="cart-item" style={{ color: '#2E7D32' }}>
+              <span>Subscription Discount (5%)</span>
+              <span>-${subscriptionDiscount.toFixed(2)}</span>
+            </div>
+          )}
           {promoDiscount > 0 && (
             <div className="cart-item" style={{ color: '#228B22' }}>
               <span>Promo Discount</span>
@@ -738,7 +796,7 @@ const stripeElementStyle = {
   },
 };
 
-export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, products, onSuccess }) => {
+export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, products, onSuccess, subscriptionPlan: initialSubscriptionPlan }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -761,8 +819,9 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
   
   // Other fields
   const [deliveryDate, setDeliveryDate] = useState('');
-  const [isSubscription, setIsSubscription] = useState(false);
-  const [subscriptionFrequency, setSubscriptionFrequency] = useState('monthly');
+  // Use subscription plan from cart if provided, otherwise allow toggling
+  const [isSubscription, setIsSubscription] = useState(!!initialSubscriptionPlan);
+  const [subscriptionFrequency, setSubscriptionFrequency] = useState(initialSubscriptionPlan || 'monthly');
   const [orderNotes, setOrderNotes] = useState('');
 
   const discount = DISCOUNT_RATES[boxSize] || 0;
@@ -900,8 +959,9 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
       const tax = subtotal * 0.13;
       let total = subtotal + tax;
       
+      // Apply 5% subscription discount
       if (isSubscription) {
-        total = total * 0.9;
+        total = total * (1 - SUBSCRIPTION_DISCOUNT);
       }
 
       const fullAddress = `${streetAddress}${unit ? ', ' + unit : ''}, ${city}, ${province} ${postalCode}, ${country}`;
@@ -990,7 +1050,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
   const subtotal = calculateSubtotal();
   const tax = subtotal * 0.13;
   let total = subtotal + tax;
-  if (isSubscription) total = total * 0.9;
+  if (isSubscription) total = total * (1 - SUBSCRIPTION_DISCOUNT);
 
   // Canadian Provinces
   const provinces = [
@@ -1023,8 +1083,8 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
         </div>
         {isSubscription && (
           <div className="checkout-summary-row discount">
-            <span>Subscription Discount (10%)</span>
-            <span>-${((subtotal + tax) * 0.1).toFixed(2)}</span>
+            <span>Subscription Discount (5%)</span>
+            <span>-${((subtotal + tax) * SUBSCRIPTION_DISCOUNT).toFixed(2)}</span>
           </div>
         )}
         <div className="checkout-summary-total">
@@ -1171,8 +1231,8 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
             data-testid="subscription-toggle"
           />
           <div className="subscription-info" style={{ marginLeft: '12px' }}>
-            <strong>Subscribe & Save 10%</strong>
-            <p style={{ marginTop: '4px' }}>Get recurring deliveries. Pause or cancel anytime.</p>
+            <strong>Subscribe & Save 5%</strong>
+            <p style={{ marginTop: '4px' }}>Get recurring deliveries with free shipping. Pause or cancel anytime.</p>
           </div>
         </label>
         

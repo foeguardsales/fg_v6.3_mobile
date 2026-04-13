@@ -316,6 +316,7 @@ export const BoxBuilder = () => {
             selectedProteins={selectedProteins}
             selectedTreats={selectedTreats}
             products={products}
+            subscriptionPlan={subscriptionPlan}
             onSuccess={() => {
               setOrderComplete(true);
               setSearchParams({ step: 'success' });
@@ -601,15 +602,11 @@ export const BoxBuilder = () => {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ color: '#5F7C5A', fontSize: '16px' }}>✓</span>
-                    <span style={{ fontSize: '13px', color: '#2B2B2B' }}>10% Off Meals</span>
+                    <span style={{ fontSize: '13px', color: '#2B2B2B', fontWeight: '600' }}>5% Off Every Order</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ color: '#5F7C5A', fontSize: '16px' }}>✓</span>
-                    <span style={{ fontSize: '13px', color: '#2B2B2B' }}>15% Off Treats</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#5F7C5A', fontSize: '16px' }}>✓</span>
-                    <span style={{ fontSize: '13px', color: '#2B2B2B' }}>Cancel anytime</span>
+                    <span style={{ fontSize: '13px', color: '#2B2B2B' }}>Pause or Cancel anytime</span>
                   </div>
                 </div>
               </div>
