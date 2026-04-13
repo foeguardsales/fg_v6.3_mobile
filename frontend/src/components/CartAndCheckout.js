@@ -16,7 +16,7 @@ const DISCOUNT_RATES = {
 };
 
 // Cart Drawer Component (slide-in from right)
-export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein }) => {
+export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein, subscriptionPlan, onSubscriptionChange }) => {
   const [promoCode, setPromoCode] = useState('');
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [specialInstructions, setSpecialInstructions] = useState('');
