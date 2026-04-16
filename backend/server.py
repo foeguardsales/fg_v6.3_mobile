@@ -181,6 +181,7 @@ async def create_or_update_profile(data: dict):
     """Create or update a user profile with dog information"""
     email = data.get("email")
     phone = data.get("phone")
+    postal_code = data.get("postal_code")
     dogs = data.get("dogs", [])
     
     if not email:
@@ -212,6 +213,7 @@ async def create_or_update_profile(data: dict):
             {
                 "$set": {
                     "phone": phone,
+                    "postal_code": postal_code,
                     "dogs": dogs,
                     "needs_consultation": needs_consultation,
                     "updated_at": now
@@ -226,6 +228,7 @@ async def create_or_update_profile(data: dict):
             "profile_id": profile_id,
             "email": email,
             "phone": phone,
+            "postal_code": postal_code,
             "dogs": dogs,
             "needs_consultation": needs_consultation,
             "created_at": now,

@@ -20,6 +20,7 @@ class UserProfile(BaseModel):
     profile_id: str
     email: str
     phone: Optional[str] = None
+    postal_code: Optional[str] = None
     dogs: List[DogProfile] = []
     needs_consultation: bool = False  # True if health issues selected
     created_at: str
@@ -28,6 +29,7 @@ class UserProfile(BaseModel):
 class CreateProfileRequest(BaseModel):
     email: str
     phone: Optional[str] = None
+    postal_code: Optional[str] = None
     dogs: List[DogProfile]
 
 class PromoCode(BaseModel):

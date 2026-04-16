@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronLeft, ChevronRight, Check, Plus, Trash2, Dog } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Plus, Trash2 } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
@@ -26,14 +26,6 @@ const DOG_BREEDS = [
   "Bull Terrier", "Alaskan Malamute", "Irish Setter", "Miniature Pinscher",
   "Chinese Shar-Pei", "Giant Schnauzer", "Old English Sheepdog", "Other"
 ].sort();
-
-// Canadian Provinces
-const PROVINCES = [
-  "Alberta", "British Columbia", "Manitoba", "New Brunswick", 
-  "Newfoundland and Labrador", "Nova Scotia", "Ontario", 
-  "Prince Edward Island", "Quebec", "Saskatchewan",
-  "Northwest Territories", "Nunavut", "Yukon"
-];
 
 // Health issues checklist
 const HEALTH_ISSUES = [
@@ -65,7 +57,6 @@ const CONSULTATION_ISSUES = ['allergies', 'diabetes', 'constipation', 'diarrhea'
 const createEmptyDog = (index) => ({
   dog_id: `dog-${Date.now()}-${index}`,
   name: '',
-  location: '',
   gender: '',
   is_neutered: null,
   breed: '',
@@ -76,29 +67,44 @@ const createEmptyDog = (index) => ({
   health_issues: []
 });
 
+// Capitalize first letter of name
+const capitalizeName = (name) => {
+  if (!name) return '';
+  return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+};
+
+// Format dog names for display in titles
+const formatDogNames = (dogs) => {
+  const names = dogs.map(d => capitalizeName(d.name)).filter(n => n);
+  if (names.length === 0) return 'your dogs';
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
+};
+
 export const MealPlanPage = () => {
   const navigate = useNavigate();
   const topRef = useRef(null);
   
-  // Steps: 1=How many dogs, 2=Dog details (name/location/gender), 3=Neutered/Breed, 
-  // 4=Birthday, 5=Body Condition, 6=Weight/Lifestyle, 7=Health Issues, 8=Save Profile
+  // 8 Steps Total:
+  // 1 = How many dogs + Names
+  // 2 = Where do they live (postal code)
+  // 3 = Gender & Neutered for ALL dogs
+  // 4 = Breed & Birthday for ALL dogs
+  // 5 = Body Condition for ALL dogs
+  // 6 = Weight & Lifestyle for ALL dogs
+  // 7 = Health Issues for ALL dogs
+  // 8 = Save Profile
   const [step, setStep] = useState(1);
-  const [currentDogIndex, setCurrentDogIndex] = useState(0);
   const [dogs, setDogs] = useState([createEmptyDog(0)]);
+  const [postalCode, setPostalCode] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [profileSaved, setProfileSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const [existingProfile, setExistingProfile] = useState(null);
 
-  // Total steps for each dog: 6 steps per dog (name/location/gender, neutered/breed, birthday, condition, weight/lifestyle, health)
-  // Plus step 1 (how many dogs) and final step (save profile)
-  const STEPS_PER_DOG = 6;
-  const getTotalSteps = () => 1 + (dogs.length * STEPS_PER_DOG) + 1;
-  
-  // Current dog being edited
-  const currentDog = dogs[currentDogIndex] || dogs[0];
+  const TOTAL_STEPS = 8;
 
   // Scroll to top when step changes
   useEffect(() => {
@@ -109,20 +115,20 @@ export const MealPlanPage = () => {
     document.body.scrollTop = 0;
   }, [step]);
 
-  // Update a dog's field
-  const updateDog = (field, value) => {
+  // Update a specific dog's field
+  const updateDog = (index, field, value) => {
     setDogs(prev => {
       const updated = [...prev];
-      updated[currentDogIndex] = { ...updated[currentDogIndex], [field]: value };
+      updated[index] = { ...updated[index], [field]: value };
       return updated;
     });
   };
 
-  // Toggle health issue
-  const toggleHealthIssue = (issueId) => {
+  // Toggle health issue for a specific dog
+  const toggleHealthIssue = (dogIndex, issueId) => {
     setDogs(prev => {
       const updated = [...prev];
-      const dog = updated[currentDogIndex];
+      const dog = updated[dogIndex];
       let issues = [...(dog.health_issues || [])];
       
       if (issueId === 'none') {
@@ -136,7 +142,7 @@ export const MealPlanPage = () => {
         }
       }
       
-      updated[currentDogIndex] = { ...dog, health_issues: issues };
+      updated[dogIndex] = { ...dog, health_issues: issues };
       return updated;
     });
   };
@@ -150,34 +156,28 @@ export const MealPlanPage = () => {
   const removeDog = (index) => {
     if (dogs.length > 1) {
       setDogs(prev => prev.filter((_, i) => i !== index));
-      if (currentDogIndex >= index && currentDogIndex > 0) {
-        setCurrentDogIndex(prev => prev - 1);
-      }
     }
   };
 
   // Check if current step can proceed
   const canProceed = () => {
-    if (step === 1) {
-      return dogs.length > 0;
-    }
-    
-    // Calculate which dog and which sub-step we're on
-    const dogStep = (step - 2) % STEPS_PER_DOG + 1;
-    
-    switch (dogStep) {
-      case 1: // Name, Location, Gender
-        return currentDog.name && currentDog.gender;
-      case 2: // Neutered, Breed
-        return currentDog.is_neutered !== null && currentDog.breed;
-      case 3: // Birthday
-        return currentDog.birthday;
-      case 4: // Body Condition
-        return currentDog.body_condition;
-      case 5: // Weight, Lifestyle
-        return currentDog.weight_lbs && currentDog.lifestyle;
-      case 6: // Health Issues
-        return currentDog.health_issues.length > 0;
+    switch (step) {
+      case 1: // Names
+        return dogs.every(dog => dog.name && dog.name.trim() !== '');
+      case 2: // Postal code
+        return postalCode && postalCode.trim().length >= 3;
+      case 3: // Gender & Neutered
+        return dogs.every(dog => dog.gender && dog.is_neutered !== null);
+      case 4: // Breed & Birthday
+        return dogs.every(dog => dog.breed && dog.birthday);
+      case 5: // Body Condition
+        return dogs.every(dog => dog.body_condition);
+      case 6: // Weight & Lifestyle
+        return dogs.every(dog => dog.weight_lbs && dog.lifestyle);
+      case 7: // Health Issues
+        return dogs.every(dog => dog.health_issues.length > 0);
+      case 8: // Save
+        return true;
       default:
         return true;
     }
@@ -204,13 +204,14 @@ export const MealPlanPage = () => {
       const response = await axios.post(`${API}/profiles`, {
         email,
         phone,
+        postal_code: postalCode,
         dogs: dogs.map(dog => ({
           ...dog,
+          name: capitalizeName(dog.name),
           weight_lbs: parseFloat(dog.weight_lbs) || 0
         }))
       });
       
-      setExistingProfile(response.data);
       setProfileSaved(true);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to save profile. Please try again.');
@@ -221,55 +222,25 @@ export const MealPlanPage = () => {
 
   // Navigate steps
   const nextStep = () => {
-    const totalSteps = getTotalSteps();
-    
-    if (step < totalSteps) {
-      // If we're in dog details steps, track which dog we're editing
-      if (step >= 2 && step < totalSteps - 1) {
-        const dogStep = (step - 2) % STEPS_PER_DOG + 1;
-        
-        // If finishing a dog's last step, move to next dog or save step
-        if (dogStep === STEPS_PER_DOG) {
-          if (currentDogIndex < dogs.length - 1) {
-            setCurrentDogIndex(prev => prev + 1);
-          }
-        }
-      }
-      
+    if (step < TOTAL_STEPS) {
       setStep(step + 1);
     }
   };
 
   const prevStep = () => {
     if (step > 1) {
-      // If we're in dog details steps, track which dog we're editing
-      if (step >= 3 && step <= getTotalSteps() - 1) {
-        const dogStep = (step - 2) % STEPS_PER_DOG + 1;
-        
-        // If going back from a dog's first step, go to previous dog
-        if (dogStep === 1 && currentDogIndex > 0) {
-          setCurrentDogIndex(prev => prev - 1);
-        }
-      }
-      
       setStep(step - 1);
     }
   };
 
   // Calculate progress
   const getProgress = () => {
-    return (step / getTotalSteps()) * 100;
-  };
-
-  // Get current dog step (1-6) for display
-  const getCurrentDogStep = () => {
-    if (step === 1 || step === getTotalSteps()) return null;
-    return (step - 2) % STEPS_PER_DOG + 1;
+    return (step / TOTAL_STEPS) * 100;
   };
 
   // Render step content
   const renderStepContent = () => {
-    // Step 1: How many dogs
+    // Step 1: How many dogs + Names
     if (step === 1) {
       return (
         <div>
@@ -277,7 +248,7 @@ export const MealPlanPage = () => {
             How many dogs do you have?
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
-            We'll create a personalized profile for each of your dogs.
+            Add each of your dogs and give them a name.
           </p>
 
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
@@ -288,31 +259,43 @@ export const MealPlanPage = () => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    gap: '12px',
                     padding: '16px 20px',
                     background: '#F8F6F3',
                     borderRadius: '12px',
                     border: '2px solid #E8E4DC'
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: '50%',
-                      background: '#8B4513',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontWeight: '600'
-                    }}>
-                      {index + 1}
-                    </div>
-                    <span style={{ fontSize: '16px', fontWeight: '500' }}>
-                      {dog.name || `Dog ${index + 1}`}
-                    </span>
+                  <div style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: '#8B4513',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: '600',
+                    flexShrink: 0
+                  }}>
+                    {index + 1}
                   </div>
+                  <input
+                    type="text"
+                    value={dog.name}
+                    onChange={(e) => updateDog(index, 'name', e.target.value)}
+                    placeholder="Dog's name"
+                    style={{
+                      flex: 1,
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      border: '2px solid #E8E4DC',
+                      fontSize: '16px',
+                      outline: 'none',
+                      background: 'white',
+                      textTransform: 'capitalize'
+                    }}
+                  />
                   {dogs.length > 1 && (
                     <button
                       onClick={() => removeDog(index)}
@@ -321,7 +304,8 @@ export const MealPlanPage = () => {
                         border: 'none',
                         color: '#999',
                         cursor: 'pointer',
-                        padding: '8px'
+                        padding: '8px',
+                        flexShrink: 0
                       }}
                     >
                       <Trash2 size={18} />
@@ -364,8 +348,411 @@ export const MealPlanPage = () => {
       );
     }
 
-    // Final step: Save Profile
-    if (step === getTotalSteps()) {
+    // Step 2: Where do they live (Postal Code)
+    if (step === 2) {
+      return (
+        <div>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Where {dogs.length === 1 ? `does ${capitalizeName(dogs[0].name)}` : `do ${formatDogNames(dogs)}`} live?
+          </h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
+            Enter your postal code so we can deliver to you.
+          </p>
+
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                Postal Code
+              </label>
+              <input
+                type="text"
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value.toUpperCase())}
+                placeholder="e.g., M5V 1A1"
+                maxLength={7}
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '8px',
+                  border: '2px solid #E8E4DC',
+                  fontSize: '18px',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px'
+                }}
+              />
+              <p style={{ fontSize: '13px', color: '#666', marginTop: '8px' }}>
+                This helps us check if we deliver to your area and customize recommendations.
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Step 3: Gender & Neutered for ALL dogs
+    if (step === 3) {
+      return (
+        <div>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Tell us about {formatDogNames(dogs)}
+          </h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
+            Let's get to know {dogs.length === 1 ? 'your pup' : 'your pups'} a little better.
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {dogs.map((dog, index) => {
+              const name = capitalizeName(dog.name);
+              return (
+                <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px', color: '#8B4513' }}>
+                    {name}
+                  </h3>
+                  
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '10px', color: '#2B2B2B' }}>
+                      Is {name} male or female?
+                    </label>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                      {['male', 'female'].map(gender => (
+                        <button
+                          key={gender}
+                          onClick={() => updateDog(index, 'gender', gender)}
+                          style={{
+                            padding: '12px 16px',
+                            borderRadius: '8px',
+                            border: dog.gender === gender ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                            background: dog.gender === gender ? '#FDF8F3' : 'white',
+                            cursor: 'pointer',
+                            fontSize: '15px',
+                            fontWeight: '500',
+                            color: '#2B2B2B',
+                            textTransform: 'capitalize'
+                          }}
+                        >
+                          {gender}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '10px', color: '#2B2B2B' }}>
+                      Is {name} neutered/spayed?
+                    </label>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                      {[{ value: true, label: 'Yes' }, { value: false, label: 'No' }].map(option => (
+                        <button
+                          key={String(option.value)}
+                          onClick={() => updateDog(index, 'is_neutered', option.value)}
+                          style={{
+                            padding: '12px 16px',
+                            borderRadius: '8px',
+                            border: dog.is_neutered === option.value ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                            background: dog.is_neutered === option.value ? '#FDF8F3' : 'white',
+                            cursor: 'pointer',
+                            fontSize: '15px',
+                            fontWeight: '500',
+                            color: '#2B2B2B'
+                          }}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // Step 4: Breed & Birthday for ALL dogs
+    if (step === 4) {
+      return (
+        <div>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            What breed {dogs.length === 1 ? `is ${capitalizeName(dogs[0].name)}` : `are ${formatDogNames(dogs)}`}?
+          </h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
+            This helps us recommend the right portions.
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {dogs.map((dog, index) => {
+              const name = capitalizeName(dog.name);
+              return (
+                <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px', color: '#8B4513' }}>
+                    {name}
+                  </h3>
+                  
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                      Breed
+                    </label>
+                    <select
+                      value={dog.breed}
+                      onChange={(e) => updateDog(index, 'breed', e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '12px 16px',
+                        borderRadius: '8px',
+                        border: '2px solid #E8E4DC',
+                        fontSize: '15px',
+                        outline: 'none',
+                        background: 'white',
+                        boxSizing: 'border-box'
+                      }}
+                    >
+                      <option value="">Select breed</option>
+                      {DOG_BREEDS.map(breed => (
+                        <option key={breed} value={breed}>{breed}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                      When is {name}'s birthday?
+                    </label>
+                    <input
+                      type="date"
+                      value={dog.birthday}
+                      onChange={(e) => updateDog(index, 'birthday', e.target.value)}
+                      max={new Date().toISOString().split('T')[0]}
+                      style={{
+                        width: '100%',
+                        padding: '12px 16px',
+                        borderRadius: '8px',
+                        border: '2px solid #E8E4DC',
+                        fontSize: '15px',
+                        outline: 'none',
+                        boxSizing: 'border-box'
+                      }}
+                    />
+                    <p style={{ fontSize: '12px', color: '#666', marginTop: '6px' }}>
+                      An estimate is fine if you don't know the exact date.
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // Step 5: Body Condition for ALL dogs
+    if (step === 5) {
+      return (
+        <div>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Describe {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s` : 'their'} body condition
+          </h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
+            This helps us calculate the right calorie intake.
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {dogs.map((dog, index) => {
+              const name = capitalizeName(dog.name);
+              return (
+                <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#8B4513' }}>
+                    {name}
+                  </h3>
+                  
+                  <div style={{ display: 'grid', gap: '10px' }}>
+                    {[
+                      { id: 'underweight', label: 'Underweight', desc: 'Ribs are visible' },
+                      { id: 'fit', label: 'Fit', desc: 'Ribs can be felt but not seen' },
+                      { id: 'overweight', label: 'Overweight', desc: 'Ribs can\'t be felt or seen' }
+                    ].map(option => (
+                      <button
+                        key={option.id}
+                        onClick={() => updateDog(index, 'body_condition', option.id)}
+                        style={{
+                          padding: '14px 16px',
+                          borderRadius: '10px',
+                          border: dog.body_condition === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                          background: dog.body_condition === option.id ? '#FDF8F3' : 'white',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <div>
+                          <div style={{ fontWeight: '600', fontSize: '15px', color: '#2B2B2B' }}>
+                            {option.label}
+                          </div>
+                          <div style={{ fontSize: '13px', color: '#666', marginTop: '2px' }}>
+                            {option.desc}
+                          </div>
+                        </div>
+                        {dog.body_condition === option.id && <Check size={18} color="#8B4513" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // Step 6: Weight & Lifestyle for ALL dogs
+    if (step === 6) {
+      return (
+        <div>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Weight & lifestyle
+          </h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
+            Help us calculate the perfect portion sizes.
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {dogs.map((dog, index) => {
+              const name = capitalizeName(dog.name);
+              return (
+                <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px', color: '#8B4513' }}>
+                    {name}
+                  </h3>
+                  
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                      How much does {name} weigh?
+                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <input
+                        type="number"
+                        value={dog.weight_lbs}
+                        onChange={(e) => updateDog(index, 'weight_lbs', e.target.value)}
+                        placeholder="0"
+                        style={{
+                          flex: 1,
+                          padding: '12px 16px',
+                          borderRadius: '8px',
+                          border: '2px solid #E8E4DC',
+                          fontSize: '15px',
+                          outline: 'none'
+                        }}
+                      />
+                      <span style={{ fontSize: '15px', fontWeight: '500', color: '#666' }}>lbs</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '10px', color: '#2B2B2B' }}>
+                      What is {name}'s lifestyle?
+                    </label>
+                    <div style={{ display: 'grid', gap: '8px' }}>
+                      {[
+                        { id: 'lower_energy', label: 'Lower Energy', desc: 'Mostly resting' },
+                        { id: 'active', label: 'Active', desc: 'Daily walks' },
+                        { id: 'high_energy', label: 'High Energy', desc: 'Very active' }
+                      ].map(option => (
+                        <button
+                          key={option.id}
+                          onClick={() => updateDog(index, 'lifestyle', option.id)}
+                          style={{
+                            padding: '12px 16px',
+                            borderRadius: '8px',
+                            border: dog.lifestyle === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                            background: dog.lifestyle === option.id ? '#FDF8F3' : 'white',
+                            cursor: 'pointer',
+                            textAlign: 'left',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <span style={{ fontWeight: '500', fontSize: '14px', color: '#2B2B2B' }}>
+                            {option.label} <span style={{ color: '#666', fontWeight: '400' }}>– {option.desc}</span>
+                          </span>
+                          {dog.lifestyle === option.id && <Check size={16} color="#8B4513" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // Step 7: Health Issues for ALL dogs
+    if (step === 7) {
+      return (
+        <div>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Any health issues or dietary needs?
+          </h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
+            Select all that apply for each dog.
+          </p>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {dogs.map((dog, dogIndex) => {
+              const name = capitalizeName(dog.name);
+              return (
+                <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#8B4513' }}>
+                    {name}
+                  </h3>
+                  
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                    {HEALTH_ISSUES.map(issue => {
+                      const isSelected = dog.health_issues.includes(issue.id);
+                      const isNone = issue.id === 'none';
+                      
+                      return (
+                        <button
+                          key={issue.id}
+                          onClick={() => toggleHealthIssue(dogIndex, issue.id)}
+                          style={{
+                            padding: '10px 14px',
+                            borderRadius: '8px',
+                            border: isSelected ? `2px solid ${isNone ? '#5F7C5A' : '#8B4513'}` : '2px solid #E8E4DC',
+                            background: isSelected ? (isNone ? '#E8F5E9' : '#FDF8F3') : 'white',
+                            cursor: 'pointer',
+                            textAlign: 'left',
+                            fontSize: '13px',
+                            fontWeight: '500',
+                            color: '#2B2B2B',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gridColumn: isNone ? 'span 2' : 'auto'
+                          }}
+                        >
+                          {issue.label}
+                          {isSelected && <Check size={14} color={isNone ? '#5F7C5A' : '#8B4513'} />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // Step 8: Save Profile
+    if (step === 8) {
       if (profileSaved) {
         const showConsultationMessage = needsConsultation();
         
@@ -404,7 +791,7 @@ export const MealPlanPage = () => {
                   We'll Contact You Personally
                 </h3>
                 <p style={{ color: '#5D4037', lineHeight: '1.6' }}>
-                  Based on the health conditions you've shared, one of our pet nutrition specialists will reach out to you within 24-48 hours to discuss {dogs.length === 1 ? `${dogs[0].name}'s` : "your dogs'"} specific needs and create a customized meal plan.
+                  Based on the health conditions you've shared, one of our pet nutrition specialists will reach out to you within 24-48 hours to discuss {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s` : "your dogs'"} specific needs and create a customized meal plan.
                 </p>
               </div>
             )}
@@ -418,9 +805,9 @@ export const MealPlanPage = () => {
                   borderRadius: '12px',
                   marginBottom: index < dogs.length - 1 ? '12px' : '0'
                 }}>
-                  <div style={{ fontWeight: '600', fontSize: '16px', marginBottom: '8px' }}>{dog.name}</div>
+                  <div style={{ fontWeight: '600', fontSize: '16px', marginBottom: '8px' }}>{capitalizeName(dog.name)}</div>
                   <div style={{ fontSize: '14px', color: '#666' }}>
-                    {dog.breed} • {dog.weight_lbs} lbs • {dog.lifestyle.replace('_', ' ')}
+                    {dog.breed} • {dog.weight_lbs} lbs • {dog.lifestyle?.replace('_', ' ')}
                   </div>
                 </div>
               ))}
@@ -470,7 +857,7 @@ export const MealPlanPage = () => {
             Save Your Profile
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
-            Enter your email to save {dogs.length === 1 ? `${dogs[0].name}'s` : "your dogs'"} profile. You can edit it anytime from your account.
+            Enter your email to save {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s` : "your dogs'"} profile.
           </p>
 
           <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
@@ -565,433 +952,6 @@ export const MealPlanPage = () => {
       );
     }
 
-    // Dog detail steps
-    const dogStep = getCurrentDogStep();
-    const dogName = currentDog.name || `Dog ${currentDogIndex + 1}`;
-
-    // Step: Name, Location, Gender
-    if (dogStep === 1) {
-      return (
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-            <span style={{
-              display: 'inline-block',
-              background: '#8B4513',
-              color: 'white',
-              fontSize: '12px',
-              fontWeight: '600',
-              padding: '4px 12px',
-              borderRadius: '20px'
-            }}>
-              Dog {currentDogIndex + 1} of {dogs.length}
-            </span>
-          </div>
-          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
-            Let's start with the basics
-          </h1>
-
-          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                What's your dog's name?
-              </label>
-              <input
-                type="text"
-                value={currentDog.name}
-                onChange={(e) => updateDog('name', e.target.value)}
-                placeholder="e.g., Max"
-                style={{
-                  width: '100%',
-                  padding: '14px 16px',
-                  borderRadius: '8px',
-                  border: '2px solid #E8E4DC',
-                  fontSize: '16px',
-                  outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </div>
-
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                Where does {currentDog.name || 'your dog'} live?
-              </label>
-              <select
-                value={currentDog.location}
-                onChange={(e) => updateDog('location', e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '14px 16px',
-                  borderRadius: '8px',
-                  border: '2px solid #E8E4DC',
-                  fontSize: '16px',
-                  outline: 'none',
-                  background: 'white',
-                  boxSizing: 'border-box'
-                }}
-              >
-                <option value="">Select province</option>
-                {PROVINCES.map(p => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                Is {currentDog.name || 'your dog'} male or female?
-              </label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                {['male', 'female'].map(gender => (
-                  <button
-                    key={gender}
-                    onClick={() => updateDog('gender', gender)}
-                    style={{
-                      padding: '16px 20px',
-                      borderRadius: '8px',
-                      border: currentDog.gender === gender ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                      background: currentDog.gender === gender ? '#FDF8F3' : 'white',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      color: '#2B2B2B',
-                      textTransform: 'capitalize'
-                    }}
-                  >
-                    {gender}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Step: Neutered, Breed
-    if (dogStep === 2) {
-      return (
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-            <span style={{
-              display: 'inline-block',
-              background: '#8B4513',
-              color: 'white',
-              fontSize: '12px',
-              fontWeight: '600',
-              padding: '4px 12px',
-              borderRadius: '20px'
-            }}>
-              Dog {currentDogIndex + 1} of {dogs.length}
-            </span>
-          </div>
-          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
-            Tell us more about {dogName}
-          </h1>
-
-          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                Is {dogName} neutered/spayed?
-              </label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                {[{ value: true, label: 'Yes' }, { value: false, label: 'No' }].map(option => (
-                  <button
-                    key={String(option.value)}
-                    onClick={() => updateDog('is_neutered', option.value)}
-                    style={{
-                      padding: '16px 20px',
-                      borderRadius: '8px',
-                      border: currentDog.is_neutered === option.value ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                      background: currentDog.is_neutered === option.value ? '#FDF8F3' : 'white',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      color: '#2B2B2B'
-                    }}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                What breed is {dogName}?
-              </label>
-              <select
-                value={currentDog.breed}
-                onChange={(e) => updateDog('breed', e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '14px 16px',
-                  borderRadius: '8px',
-                  border: '2px solid #E8E4DC',
-                  fontSize: '16px',
-                  outline: 'none',
-                  background: 'white',
-                  boxSizing: 'border-box'
-                }}
-              >
-                <option value="">Select breed</option>
-                {DOG_BREEDS.map(breed => (
-                  <option key={breed} value={breed}>{breed}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Step: Birthday
-    if (dogStep === 3) {
-      return (
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-            <span style={{
-              display: 'inline-block',
-              background: '#8B4513',
-              color: 'white',
-              fontSize: '12px',
-              fontWeight: '600',
-              padding: '4px 12px',
-              borderRadius: '20px'
-            }}>
-              Dog {currentDogIndex + 1} of {dogs.length}
-            </span>
-          </div>
-          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
-            When is {dogName}'s birthday?
-          </h1>
-
-          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                Date of Birth
-              </label>
-              <input
-                type="date"
-                value={currentDog.birthday}
-                onChange={(e) => updateDog('birthday', e.target.value)}
-                max={new Date().toISOString().split('T')[0]}
-                style={{
-                  width: '100%',
-                  padding: '14px 16px',
-                  borderRadius: '8px',
-                  border: '2px solid #E8E4DC',
-                  fontSize: '16px',
-                  outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
-              <p style={{ fontSize: '13px', color: '#666', marginTop: '8px' }}>
-                If you don't know the exact date, an estimate is fine!
-              </p>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Step: Body Condition
-    if (dogStep === 4) {
-      return (
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-            <span style={{
-              display: 'inline-block',
-              background: '#8B4513',
-              color: 'white',
-              fontSize: '12px',
-              fontWeight: '600',
-              padding: '4px 12px',
-              borderRadius: '20px'
-            }}>
-              Dog {currentDogIndex + 1} of {dogs.length}
-            </span>
-          </div>
-          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
-            Describe {dogName}'s condition
-          </h1>
-
-          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <div style={{ display: 'grid', gap: '12px' }}>
-              {[
-                { id: 'underweight', label: 'Underweight', desc: 'Low muscle and fat, ribs are visible' },
-                { id: 'fit', label: 'Fit', desc: 'Regular muscle and fat, ribs can be felt but not seen' },
-                { id: 'overweight', label: 'Overweight', desc: 'Excessive fat, ribs can\'t be felt or seen' }
-              ].map(option => (
-                <button
-                  key={option.id}
-                  onClick={() => updateDog('body_condition', option.id)}
-                  style={{
-                    padding: '20px',
-                    borderRadius: '12px',
-                    border: currentDog.body_condition === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                    background: currentDog.body_condition === option.id ? '#FDF8F3' : 'white',
-                    cursor: 'pointer',
-                    textAlign: 'left'
-                  }}
-                >
-                  <div style={{ fontWeight: '600', fontSize: '16px', marginBottom: '4px', color: '#2B2B2B' }}>
-                    {option.label}
-                  </div>
-                  <div style={{ fontSize: '14px', color: '#666' }}>
-                    {option.desc}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Step: Weight, Lifestyle
-    if (dogStep === 5) {
-      return (
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-            <span style={{
-              display: 'inline-block',
-              background: '#8B4513',
-              color: 'white',
-              fontSize: '12px',
-              fontWeight: '600',
-              padding: '4px 12px',
-              borderRadius: '20px'
-            }}>
-              Dog {currentDogIndex + 1} of {dogs.length}
-            </span>
-          </div>
-          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
-            {dogName}'s weight & lifestyle
-          </h1>
-
-          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <div style={{ marginBottom: '28px' }}>
-              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                How much does {dogName} weigh?
-              </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <input
-                  type="number"
-                  value={currentDog.weight_lbs}
-                  onChange={(e) => updateDog('weight_lbs', e.target.value)}
-                  placeholder="0"
-                  style={{
-                    flex: 1,
-                    padding: '14px 16px',
-                    borderRadius: '8px',
-                    border: '2px solid #E8E4DC',
-                    fontSize: '16px',
-                    outline: 'none'
-                  }}
-                />
-                <span style={{ fontSize: '16px', fontWeight: '500', color: '#666' }}>lbs</span>
-              </div>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                What is {dogName}'s lifestyle?
-              </label>
-              <div style={{ display: 'grid', gap: '12px' }}>
-                {[
-                  { id: 'lower_energy', label: 'Lower Energy', desc: 'Mostly resting, short walks' },
-                  { id: 'active', label: 'Active', desc: 'Daily walks, regular play' },
-                  { id: 'high_energy', label: 'High Energy', desc: 'Long runs, working dog, very active' }
-                ].map(option => (
-                  <button
-                    key={option.id}
-                    onClick={() => updateDog('lifestyle', option.id)}
-                    style={{
-                      padding: '16px 20px',
-                      borderRadius: '8px',
-                      border: currentDog.lifestyle === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                      background: currentDog.lifestyle === option.id ? '#FDF8F3' : 'white',
-                      cursor: 'pointer',
-                      textAlign: 'left'
-                    }}
-                  >
-                    <div style={{ fontWeight: '600', fontSize: '15px', marginBottom: '2px', color: '#2B2B2B' }}>
-                      {option.label}
-                    </div>
-                    <div style={{ fontSize: '13px', color: '#666' }}>
-                      {option.desc}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    // Step: Health Issues
-    if (dogStep === 6) {
-      return (
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-            <span style={{
-              display: 'inline-block',
-              background: '#8B4513',
-              color: 'white',
-              fontSize: '12px',
-              fontWeight: '600',
-              padding: '4px 12px',
-              borderRadius: '20px'
-            }}>
-              Dog {currentDogIndex + 1} of {dogs.length}
-            </span>
-          </div>
-          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
-            Any health issues or dietary needs?
-          </h1>
-          <p style={{ textAlign: 'center', color: '#666', marginBottom: '32px', fontSize: '15px' }}>
-            Select all that apply to {dogName}
-          </p>
-
-          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-              {HEALTH_ISSUES.map(issue => {
-                const isSelected = currentDog.health_issues.includes(issue.id);
-                const isNone = issue.id === 'none';
-                
-                return (
-                  <button
-                    key={issue.id}
-                    onClick={() => toggleHealthIssue(issue.id)}
-                    style={{
-                      padding: '14px 16px',
-                      borderRadius: '8px',
-                      border: isSelected ? `2px solid ${isNone ? '#5F7C5A' : '#8B4513'}` : '2px solid #E8E4DC',
-                      background: isSelected ? (isNone ? '#E8F5E9' : '#FDF8F3') : 'white',
-                      cursor: 'pointer',
-                      textAlign: 'left',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      color: '#2B2B2B',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gridColumn: isNone ? 'span 2' : 'auto'
-                    }}
-                  >
-                    {issue.label}
-                    {isSelected && <Check size={16} color={isNone ? '#5F7C5A' : '#8B4513'} />}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     return null;
   };
 
@@ -1004,7 +964,7 @@ export const MealPlanPage = () => {
           {!profileSaved && (
             <div style={{ marginBottom: '40px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <span style={{ fontSize: '13px', color: '#666' }}>Step {step} of {getTotalSteps()}</span>
+                <span style={{ fontSize: '13px', color: '#666' }}>Step {step} of {TOTAL_STEPS}</span>
                 <span style={{ fontSize: '13px', color: '#666' }}>{Math.round(getProgress())}%</span>
               </div>
               <div style={{ background: '#E8E4DC', borderRadius: '4px', height: '6px', overflow: 'hidden' }}>
@@ -1022,7 +982,7 @@ export const MealPlanPage = () => {
           {renderStepContent()}
 
           {/* Navigation Buttons */}
-          {!profileSaved && step !== getTotalSteps() && (
+          {!profileSaved && step !== TOTAL_STEPS && (
             <div style={{ 
               display: 'flex', 
               justifyContent: step === 1 ? 'flex-end' : 'space-between',
