@@ -175,6 +175,92 @@ async def login(data: dict):
 async def get_me(current_user = Depends(get_current_user)):
     return current_user
 
+# Profile routes (Dog profiles for meal plan / user customization)
+@api_router.post("/profiles")
+async def create_or_update_profile(data: dict):
+    """Create or update a user profile with dog information"""
+    email = data.get("email")
+    phone = data.get("phone")
+    dogs = data.get("dogs", [])
+    
+    if not email:
+        raise HTTPException(status_code=400, detail="Email is required")
+    
+    if not dogs or len(dogs) == 0:
+        raise HTTPException(status_code=400, detail="At least one dog is required")
+    
+    # Check if any dog has health issues that need consultation
+    needs_consultation = False
+    consultation_issues = ['allergies', 'diabetes', 'constipation', 'diarrhea', 'kidney_disease', 
+                          'liver_disease', 'pancreatitis', 'cancer', 'seizures', 'heart_disease']
+    
+    for dog in dogs:
+        health_issues = dog.get("health_issues", [])
+        if any(issue in consultation_issues for issue in health_issues):
+            needs_consultation = True
+            break
+    
+    now = datetime.now(timezone.utc).isoformat()
+    
+    # Check if profile exists
+    existing = await db.profiles.find_one({"email": email})
+    
+    if existing:
+        # Update existing profile
+        await db.profiles.update_one(
+            {"email": email},
+            {
+                "$set": {
+                    "phone": phone,
+                    "dogs": dogs,
+                    "needs_consultation": needs_consultation,
+                    "updated_at": now
+                }
+            }
+        )
+        profile_id = existing.get("profile_id")
+    else:
+        # Create new profile
+        profile_id = str(uuid.uuid4())
+        profile_doc = {
+            "profile_id": profile_id,
+            "email": email,
+            "phone": phone,
+            "dogs": dogs,
+            "needs_consultation": needs_consultation,
+            "created_at": now,
+            "updated_at": now
+        }
+        await db.profiles.insert_one(profile_doc)
+    
+    # Return the profile
+    profile = await db.profiles.find_one({"profile_id": profile_id}, {"_id": 0})
+    return profile
+
+@api_router.get("/profiles/{email}")
+async def get_profile(email: str):
+    """Get a user profile by email"""
+    profile = await db.profiles.find_one({"email": email}, {"_id": 0})
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    return profile
+
+@api_router.get("/profiles/me")
+async def get_my_profile(current_user = Depends(get_current_user)):
+    """Get the current user's profile"""
+    profile = await db.profiles.find_one({"email": current_user["email"]}, {"_id": 0})
+    if not profile:
+        return None
+    return profile
+
+@api_router.delete("/profiles/{email}")
+async def delete_profile(email: str):
+    """Delete a user profile"""
+    result = await db.profiles.delete_one({"email": email})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    return {"message": "Profile deleted"}
+
 # Product routes
 @api_router.get("/")
 async def root():

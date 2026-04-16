@@ -2,6 +2,34 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Union
 from datetime import datetime
 
+# Dog Profile for Meal Plan / User Profile
+class DogProfile(BaseModel):
+    dog_id: str
+    name: str
+    location: Optional[str] = None
+    gender: str  # 'male' or 'female'
+    is_neutered: bool = False
+    breed: str
+    birthday: Optional[str] = None  # Date string YYYY-MM-DD
+    body_condition: str  # 'underweight', 'fit', 'overweight'
+    weight_lbs: float
+    lifestyle: str  # 'lower_energy', 'active', 'high_energy'
+    health_issues: List[str] = []  # List of issue IDs
+
+class UserProfile(BaseModel):
+    profile_id: str
+    email: str
+    phone: Optional[str] = None
+    dogs: List[DogProfile] = []
+    needs_consultation: bool = False  # True if health issues selected
+    created_at: str
+    updated_at: Optional[str] = None
+
+class CreateProfileRequest(BaseModel):
+    email: str
+    phone: Optional[str] = None
+    dogs: List[DogProfile]
+
 class PromoCode(BaseModel):
     code: str
     discount_type: str = "percentage"  # or "fixed"

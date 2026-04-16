@@ -1,21 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { TreatsSection, CartDrawer, CheckoutForm, OrderSuccess } from '../components/CartAndCheckout';
-import { ChevronLeft, ChevronRight, Check, Plus, Minus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Plus, Trash2, Dog } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
-
-// Discount rates by box size
-const DISCOUNT_RATES = {
-  12: 0,
-  18: 0.05,
-  24: 0.10,
-  30: 0.15,
-  36: 0.15
-};
 
 // Dog breeds list
 const DOG_BREEDS = [
@@ -37,71 +27,78 @@ const DOG_BREEDS = [
   "Chinese Shar-Pei", "Giant Schnauzer", "Old English Sheepdog", "Other"
 ].sort();
 
-// Protein options
-const PROTEINS = [
-  { id: 'chicken', name: 'Chicken', productId: 'cd-chicken', traits: ['light', 'digestible', 'common'], pricePerLb: 4.50 },
-  { id: 'beef', name: 'Beef', productId: 'cd-beef', traits: ['rich', 'flavorful', 'energy'], pricePerLb: 6.66 },
-  { id: 'turkey', name: 'Turkey', productId: 'cd-turkey', traits: ['light', 'digestible', 'lean'], pricePerLb: 6.66 },
-  { id: 'duck', name: 'Duck', productId: 'cd-duck', traits: ['omega', 'skin-coat', 'novel'], pricePerLb: 6.66 },
-  { id: 'lamb', name: 'Lamb', productId: 'cd-lamb', traits: ['rich', 'flavorful', 'novel'], pricePerLb: 9.99 },
-  { id: 'fish', name: 'Salmon', productId: 'cd-fish', traits: ['omega', 'skin-coat', 'joint'], pricePerLb: 7.49 },
-  { id: 'goat', name: 'Goat', productId: 'cd-goat', traits: ['lean', 'hypoallergenic', 'novel'], pricePerLb: 9.99 },
-  { id: 'rabbit', name: 'Rabbit', productId: 'cd-rabbit', traits: ['lean', 'hypoallergenic', 'novel'], pricePerLb: 14.38 }
+// Canadian Provinces
+const PROVINCES = [
+  "Alberta", "British Columbia", "Manitoba", "New Brunswick", 
+  "Newfoundland and Labrador", "Nova Scotia", "Ontario", 
+  "Prince Edward Island", "Quebec", "Saskatchewan",
+  "Northwest Territories", "Nunavut", "Yukon"
 ];
 
-// Health concerns
-const HEALTH_CONCERNS = [
-  { id: 'allergies', label: 'Allergies or sensitivities' },
-  { id: 'digestive', label: 'Digestive issues' },
-  { id: 'skin-coat', label: 'Skin or coat problems' },
-  { id: 'joint', label: 'Joint or mobility issues' },
-  { id: 'weight', label: 'Weight management' },
-  { id: 'picky', label: 'Picky eater' },
-  { id: 'none', label: 'None of the above' }
+// Health issues checklist
+const HEALTH_ISSUES = [
+  { id: 'allergies', label: 'Allergies' },
+  { id: 'diabetes', label: 'Diabetes' },
+  { id: 'constipation', label: 'Constipation' },
+  { id: 'diarrhea', label: 'Diarrhea' },
+  { id: 'itchy_skin', label: 'Itchy Skin' },
+  { id: 'dry_coat', label: 'Dry Coat' },
+  { id: 'obesity', label: 'Obesity' },
+  { id: 'hyperactive', label: 'Hyperactive' },
+  { id: 'joint_issues', label: 'Joint Issues' },
+  { id: 'digestive_issues', label: 'Digestive Issues' },
+  { id: 'kidney_disease', label: 'Kidney Disease' },
+  { id: 'liver_disease', label: 'Liver Disease' },
+  { id: 'pancreatitis', label: 'Pancreatitis' },
+  { id: 'cancer', label: 'Cancer' },
+  { id: 'seizures', label: 'Seizures' },
+  { id: 'heart_disease', label: 'Heart Disease' },
+  { id: 'picky_eater', label: 'Picky Eater' },
+  { id: 'none', label: 'None' }
 ];
+
+// Issues that require personal consultation
+const CONSULTATION_ISSUES = ['allergies', 'diabetes', 'constipation', 'diarrhea', 'kidney_disease', 
+                             'liver_disease', 'pancreatitis', 'cancer', 'seizures', 'heart_disease'];
+
+// Empty dog template
+const createEmptyDog = (index) => ({
+  dog_id: `dog-${Date.now()}-${index}`,
+  name: '',
+  location: '',
+  gender: '',
+  is_neutered: null,
+  breed: '',
+  birthday: '',
+  body_condition: '',
+  weight_lbs: '',
+  lifestyle: '',
+  health_issues: []
+});
 
 export const MealPlanPage = () => {
   const navigate = useNavigate();
   const topRef = useRef(null);
   
-  // Load saved state from sessionStorage
-  const savedState = sessionStorage.getItem('mealPlanState');
-  const initialState = savedState ? JSON.parse(savedState) : {
-    step: 1,
-    showResults: false,
-    formData: {
-      name: '',
-      dateOfBirth: '',
-      breed: '',
-      weight: '',
-      weightUnit: 'lbs',
-      bodyCondition: '',
-      activityLevel: '',
-      currentDiet: '',
-      healthConcerns: [],
-      allergies: [],
-      favorites: []
-    },
-    results: null,
-    selectedProteins: {},
-    selectedTreats: []
-  };
-  
-  const [step, setStep] = useState(initialState.step);
-  const [showResults, setShowResults] = useState(initialState.showResults);
-  const [treats, setTreats] = useState([]);
-  const [selectedTreats, setSelectedTreats] = useState(initialState.selectedTreats);
-  const [products, setProducts] = useState([]);
-  const [selectedProteins, setSelectedProteins] = useState(initialState.selectedProteins);
-  const [cartOpen, setCartOpen] = useState(false);
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [orderComplete, setOrderComplete] = useState(false);
-  
-  // Form data
-  const [formData, setFormData] = useState(initialState.formData);
+  // Steps: 1=How many dogs, 2=Dog details (name/location/gender), 3=Neutered/Breed, 
+  // 4=Birthday, 5=Body Condition, 6=Weight/Lifestyle, 7=Health Issues, 8=Save Profile
+  const [step, setStep] = useState(1);
+  const [currentDogIndex, setCurrentDogIndex] = useState(0);
+  const [dogs, setDogs] = useState([createEmptyDog(0)]);
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [existingProfile, setExistingProfile] = useState(null);
 
-  // Calculated results
-  const [results, setResults] = useState(initialState.results);
+  // Total steps for each dog: 6 steps per dog (name/location/gender, neutered/breed, birthday, condition, weight/lifestyle, health)
+  // Plus step 1 (how many dogs) and final step (save profile)
+  const STEPS_PER_DOG = 6;
+  const getTotalSteps = () => 1 + (dogs.length * STEPS_PER_DOG) + 1;
+  
+  // Current dog being edited
+  const currentDog = dogs[currentDogIndex] || dogs[0];
 
   // Scroll to top when step changes
   useEffect(() => {
@@ -110,1076 +107,967 @@ export const MealPlanPage = () => {
     }
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-  }, [step, showResults]);
+  }, [step]);
 
-  // Save state to sessionStorage whenever it changes (but not products/treats - those are fetched)
-  useEffect(() => {
-    const state = {
-      step,
-      showResults,
-      formData,
-      results,
-      selectedProteins,
-      selectedTreats
-    };
-    sessionStorage.setItem('mealPlanState', JSON.stringify(state));
-  }, [step, showResults, formData, results, selectedProteins, selectedTreats]);
-
-  // Load treats and products
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [treatsRes, productsRes] = await Promise.all([
-          axios.get(`${API}/treats`),
-          axios.get(`${API}/products`)
-        ]);
-        
-        setTreats(treatsRes.data.filter(t => t.pet_type === 'dog'));
-        setProducts(productsRes.data.filter(p => p.product_line === 'comfort_dinner'));
-      } catch (error) {
-        console.error('Failed to load data:', error);
-      }
-    };
-    loadData();
-  }, []);
-
-  const updateForm = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const toggleArrayItem = (field, item) => {
-    setFormData(prev => {
-      const arr = prev[field];
-      if (item === 'none' && field === 'healthConcerns') {
-        return { ...prev, [field]: arr.includes('none') ? [] : ['none'] };
-      }
-      if (arr.includes('none')) {
-        return { ...prev, [field]: [item] };
-      }
-      if (arr.includes(item)) {
-        return { ...prev, [field]: arr.filter(i => i !== item) };
-      }
-      return { ...prev, [field]: [...arr, item] };
+  // Update a dog's field
+  const updateDog = (field, value) => {
+    setDogs(prev => {
+      const updated = [...prev];
+      updated[currentDogIndex] = { ...updated[currentDogIndex], [field]: value };
+      return updated;
     });
   };
 
-  const calculateResults = () => {
-    const { name, dateOfBirth, weight, weightUnit, bodyCondition, activityLevel, healthConcerns, allergies, favorites } = formData;
-    
-    // Calculate age and life stage
-    const birthDate = new Date(dateOfBirth);
-    const today = new Date();
-    const ageMonths = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24 * 30));
-    const ageYears = Math.floor(ageMonths / 12);
-    
-    let lifeStage = 'adult';
-    if (ageMonths < 12) lifeStage = 'puppy';
-    else if (ageYears >= 7) lifeStage = 'senior';
+  // Toggle health issue
+  const toggleHealthIssue = (issueId) => {
+    setDogs(prev => {
+      const updated = [...prev];
+      const dog = updated[currentDogIndex];
+      let issues = [...(dog.health_issues || [])];
+      
+      if (issueId === 'none') {
+        issues = issues.includes('none') ? [] : ['none'];
+      } else {
+        issues = issues.filter(i => i !== 'none');
+        if (issues.includes(issueId)) {
+          issues = issues.filter(i => i !== issueId);
+        } else {
+          issues.push(issueId);
+        }
+      }
+      
+      updated[currentDogIndex] = { ...dog, health_issues: issues };
+      return updated;
+    });
+  };
 
-    // Convert weight to lbs if needed
-    let weightLbs = parseFloat(weight);
-    if (weightUnit === 'kg') weightLbs = weightLbs * 2.205;
-    const weightKg = weightLbs / 2.205;
+  // Add another dog
+  const addDog = () => {
+    setDogs(prev => [...prev, createEmptyDog(prev.length)]);
+  };
 
-    // Base percentage of body weight
-    let basePercent = 0.025;
-    if (lifeStage === 'puppy') basePercent = 0.075;
-    else if (lifeStage === 'senior') basePercent = 0.022;
-
-    // Adjust for body condition
-    if (bodyCondition === 'underweight') basePercent += 0.005;
-    else if (bodyCondition === 'slightly-overweight') basePercent -= 0.003;
-    else if (bodyCondition === 'overweight') basePercent -= 0.005;
-
-    // Adjust for activity
-    if (activityLevel === 'low') basePercent -= 0.003;
-    else if (activityLevel === 'high') basePercent += 0.005;
-
-    // Calculate daily portion
-    const dailyGrams = Math.round(weightKg * 1000 * basePercent);
-    const dailyLbs = (dailyGrams / 453.592).toFixed(2);
-    const monthlyLbs = Math.ceil((dailyGrams * 30) / 453.592);
-
-    // Determine recommended box size (biweekly)
-    const biweeklyLbs = Math.ceil(parseFloat(dailyLbs) * 14);
-    let recommendedBoxSize = 12;
-    if (biweeklyLbs <= 12) recommendedBoxSize = 12;
-    else if (biweeklyLbs <= 18) recommendedBoxSize = 18;
-    else if (biweeklyLbs <= 24) recommendedBoxSize = 24;
-    else if (biweeklyLbs <= 30) recommendedBoxSize = 30;
-    else recommendedBoxSize = 36;
-
-    // Protein recommendation logic
-    let availableProteins = PROTEINS.filter(p => !allergies.includes(p.id));
-    let recommendedProtein = null;
-    let recommendationReason = '';
-
-    if (healthConcerns.includes('digestive')) {
-      recommendedProtein = availableProteins.find(p => p.traits.includes('digestible'));
-      recommendationReason = 'Easy to digest and gentle on sensitive stomachs';
-    } else if (healthConcerns.includes('skin-coat')) {
-      recommendedProtein = availableProteins.find(p => p.traits.includes('omega'));
-      recommendationReason = 'Rich in omega fatty acids for skin and coat health';
-    } else if (healthConcerns.includes('joint')) {
-      recommendedProtein = availableProteins.find(p => p.traits.includes('lean'));
-      recommendationReason = 'Lean protein to support joint health and mobility';
-    } else if (healthConcerns.includes('weight')) {
-      recommendedProtein = availableProteins.find(p => p.traits.includes('lean'));
-      recommendationReason = 'Low-fat protein ideal for weight management';
-    } else if (healthConcerns.includes('picky')) {
-      recommendedProtein = availableProteins.find(p => p.traits.includes('flavorful'));
-      recommendationReason = 'Rich, appealing flavor that picky eaters love';
-    }
-
-    if (favorites.length > 0) {
-      const favProtein = availableProteins.find(p => favorites.includes(p.id));
-      if (favProtein && !recommendedProtein) {
-        recommendedProtein = favProtein;
-        recommendationReason = `One of ${name}'s favorite proteins`;
+  // Remove a dog
+  const removeDog = (index) => {
+    if (dogs.length > 1) {
+      setDogs(prev => prev.filter((_, i) => i !== index));
+      if (currentDogIndex >= index && currentDogIndex > 0) {
+        setCurrentDogIndex(prev => prev - 1);
       }
     }
-
-    if (!recommendedProtein) {
-      recommendedProtein = availableProteins.find(p => p.id === 'chicken') || availableProteins[0];
-      recommendationReason = 'A great all-around protein to start with';
-    }
-
-    // Get cheapest available protein for cost calculation
-    const cheapestProtein = [...availableProteins].sort((a, b) => a.pricePerLb - b.pricePerLb)[0];
-    const discount = DISCOUNT_RATES[recommendedBoxSize] || 0;
-    const dailyCost = (parseFloat(dailyLbs) * cheapestProtein.pricePerLb * (1 - discount)).toFixed(2);
-
-    // Alternative proteins (top 3, excluding recommended)
-    const alternativeProteins = availableProteins
-      .filter(p => p.id !== recommendedProtein.id)
-      .slice(0, 3);
-
-    setResults({
-      name,
-      lifeStage,
-      ageYears,
-      ageMonths: ageMonths % 12,
-      weightLbs: Math.round(weightLbs),
-      dailyGrams,
-      dailyLbs,
-      monthlyLbs,
-      recommendedBoxSize,
-      discount,
-      recommendedProtein,
-      recommendationReason,
-      alternativeProteins,
-      availableProteins,
-      dailyCost,
-      cheapestProtein,
-      monthlyAmount: recommendedBoxSize
-    });
-    
-    // Initialize with empty - let customer choose freely
-    setSelectedProteins({});
-    
-    setShowResults(true);
-    
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleProteinUpdate = (productId, name, qty) => {
-    setSelectedProteins(prev => {
-      if (qty === 0) {
-        const updated = { ...prev };
-        delete updated[productId];
-        return updated;
-      }
-      return { ...prev, [productId]: { name, qty } };
-    });
-  };
-
-  const handleTreatToggle = (treat) => {
-    setSelectedTreats(prev => {
-      if (prev[treat.treat_id]) {
-        const updated = { ...prev };
-        delete updated[treat.treat_id];
-        return updated;
-      }
-      return { ...prev, [treat.treat_id]: { ...treat, quantity: 1 } };
-    });
-  };
-
-  const getTotalProteinLbs = () => {
-    return Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-  };
-
-  const getSubtotal = () => {
-    let total = 0;
-    const discount = results ? DISCOUNT_RATES[results.recommendedBoxSize] || 0 : 0;
-    
-    // Proteins
-    Object.entries(selectedProteins).forEach(([productId, data]) => {
-      const product = products.find(p => p.product_id === productId);
-      if (product) {
-        const basePrice = product.pricing.find(p => p.size_lb === 6)?.price || 26.99;
-        const pricePerSixLb = basePrice * (1 - discount);
-        total += pricePerSixLb * (data.qty / 6);
-      }
-    });
-    
-    // Treats
-    selectedTreats.forEach(treat => {
-      total += treat.price * (treat.quantity || 1);
-    });
-    
-    return total;
-  };
-
-  const getDiscountedPrice = (basePrice) => {
-    const discount = results ? DISCOUNT_RATES[results.recommendedBoxSize] || 0 : 0;
-    return basePrice * (1 - discount);
-  };
-
-  const getBasePrice = (product) => {
-    return product.pricing.find(p => p.size_lb === 6)?.price || 26.99;
-  };
-
-  const startPlan = () => {
-    setCartOpen(true);
-  };
-
+  // Check if current step can proceed
   const canProceed = () => {
-    switch (step) {
-      case 1:
-        return formData.name && formData.dateOfBirth && formData.breed;
-      case 2:
-        return formData.weight && formData.bodyCondition && formData.activityLevel;
-      case 3:
-        return formData.currentDiet && formData.healthConcerns.length > 0;
+    if (step === 1) {
+      return dogs.length > 0;
+    }
+    
+    // Calculate which dog and which sub-step we're on
+    const dogStep = (step - 2) % STEPS_PER_DOG + 1;
+    
+    switch (dogStep) {
+      case 1: // Name, Location, Gender
+        return currentDog.name && currentDog.gender;
+      case 2: // Neutered, Breed
+        return currentDog.is_neutered !== null && currentDog.breed;
+      case 3: // Birthday
+        return currentDog.birthday;
+      case 4: // Body Condition
+        return currentDog.body_condition;
+      case 5: // Weight, Lifestyle
+        return currentDog.weight_lbs && currentDog.lifestyle;
+      case 6: // Health Issues
+        return currentDog.health_issues.length > 0;
       default:
         return true;
     }
   };
 
+  // Check if needs consultation
+  const needsConsultation = () => {
+    return dogs.some(dog => 
+      dog.health_issues.some(issue => CONSULTATION_ISSUES.includes(issue))
+    );
+  };
+
+  // Save profile
+  const saveProfile = async () => {
+    if (!email) {
+      setError('Email is required');
+      return;
+    }
+    
+    setSaving(true);
+    setError('');
+    
+    try {
+      const response = await axios.post(`${API}/profiles`, {
+        email,
+        phone,
+        dogs: dogs.map(dog => ({
+          ...dog,
+          weight_lbs: parseFloat(dog.weight_lbs) || 0
+        }))
+      });
+      
+      setExistingProfile(response.data);
+      setProfileSaved(true);
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Failed to save profile. Please try again.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Navigate steps
   const nextStep = () => {
-    if (step < 3) {
+    const totalSteps = getTotalSteps();
+    
+    if (step < totalSteps) {
+      // If we're in dog details steps, track which dog we're editing
+      if (step >= 2 && step < totalSteps - 1) {
+        const dogStep = (step - 2) % STEPS_PER_DOG + 1;
+        
+        // If finishing a dog's last step, move to next dog or save step
+        if (dogStep === STEPS_PER_DOG) {
+          if (currentDogIndex < dogs.length - 1) {
+            setCurrentDogIndex(prev => prev + 1);
+          }
+        }
+      }
+      
       setStep(step + 1);
-      // Use setTimeout to ensure scroll happens after render
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-      }, 0);
-    } else {
-      calculateResults();
     }
   };
 
   const prevStep = () => {
-    if (showResults) {
-      setShowResults(false);
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-      }, 0);
-    } else if (step > 1) {
-      setStep(step - 1);
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-      }, 0);
-    }
-  };
-
-  // Filter available products - show all Comfort Dinner products
-  const getAvailableProducts = () => {
-    return products.filter(p => p.product_line === 'comfort_dinner');
-  };
-
-  // Results Screen - Mini Menu Style
-  if (showResults && results) {
-    const availableProducts = getAvailableProducts();
-    const boxSize = results.recommendedBoxSize;
-    const discount = results.discount;
-    const totalSelected = getTotalProteinLbs();
-    const canAddMore = totalSelected < boxSize;
-
-    // Show order success
-    if (orderComplete) {
-      return (
-        <>
-          <Navbar />
-          <OrderSuccess />
-          <Footer />
-        </>
-      );
-    }
-
-    // Show checkout form
-    if (showCheckout) {
-      return (
-        <>
-          <Navbar />
-          <CheckoutForm 
-            boxSize={boxSize}
-            selectedProteins={selectedProteins}
-            selectedTreats={selectedTreats}
-            products={products}
-            getDiscountedPrice={getDiscountedPrice}
-            getBasePrice={getBasePrice}
-            onSuccess={() => {
-              setOrderComplete(true);
-              sessionStorage.removeItem('mealPlanState');
-            }}
-            onBack={() => {
-              setShowCheckout(false);
-            }}
-          />
-          <Footer />
-        </>
-      );
-    }
-
-    return (
-      <>
-        <Navbar />
+    if (step > 1) {
+      // If we're in dog details steps, track which dog we're editing
+      if (step >= 3 && step <= getTotalSteps() - 1) {
+        const dogStep = (step - 2) % STEPS_PER_DOG + 1;
         
-        {/* Floating Cart Button */}
-        <button 
-          className="btn-cart-floating"
-          onClick={() => setCartOpen(true)}
-          style={{
-            position: 'fixed',
-            top: '100px',
-            right: '20px',
-            background: '#88302F',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '50px',
-            padding: '16px 24px',
-            fontSize: '16px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(136, 48, 47, 0.3)',
-            zIndex: 999,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            transition: 'all 0.2s'
-          }}
-        >
-          <span style={{ fontSize: '20px' }}>🛒</span>
-          <span>{totalSelected}/{boxSize}lb</span>
-          <span style={{ fontSize: '18px' }}>→</span>
-        </button>
+        // If going back from a dog's first step, go to previous dog
+        if (dogStep === 1 && currentDogIndex > 0) {
+          setCurrentDogIndex(prev => prev - 1);
+        }
+      }
+      
+      setStep(step - 1);
+    }
+  };
 
-        <div ref={topRef} className="meal-plan-results" style={{ minHeight: '100vh', background: '#F5F3EF' }}>
-          {/* Header */}
-          <div style={{
-            background: 'linear-gradient(135deg, #5F7C5A 0%, #4A6347 100%)',
-            padding: '40px 20px',
-            color: 'white'
-          }}>
-            <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-              <button 
-                onClick={prevStep}
+  // Calculate progress
+  const getProgress = () => {
+    return (step / getTotalSteps()) * 100;
+  };
+
+  // Get current dog step (1-6) for display
+  const getCurrentDogStep = () => {
+    if (step === 1 || step === getTotalSteps()) return null;
+    return (step - 2) % STEPS_PER_DOG + 1;
+  };
+
+  // Render step content
+  const renderStepContent = () => {
+    // Step 1: How many dogs
+    if (step === 1) {
+      return (
+        <div>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            How many dogs do you have?
+          </h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
+            We'll create a personalized profile for each of your dogs.
+          </p>
+
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {dogs.map((dog, index) => (
+                <div 
+                  key={dog.dog_id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '16px 20px',
+                    background: '#F8F6F3',
+                    borderRadius: '12px',
+                    border: '2px solid #E8E4DC'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      background: '#8B4513',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'white',
+                      fontWeight: '600'
+                    }}>
+                      {index + 1}
+                    </div>
+                    <span style={{ fontSize: '16px', fontWeight: '500' }}>
+                      {dog.name || `Dog ${index + 1}`}
+                    </span>
+                  </div>
+                  {dogs.length > 1 && (
+                    <button
+                      onClick={() => removeDog(index)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#999',
+                        cursor: 'pointer',
+                        padding: '8px'
+                      }}
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  )}
+                </div>
+              ))}
+              
+              <button
+                onClick={addDog}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
+                  justifyContent: 'center',
                   gap: '8px',
-                  background: 'rgba(255,255,255,0.2)',
-                  border: 'none',
-                  color: 'white',
-                  fontSize: '14px',
+                  padding: '16px',
+                  background: 'none',
+                  border: '2px dashed #D9D9D9',
+                  borderRadius: '12px',
+                  color: '#666',
+                  fontSize: '15px',
+                  fontWeight: '500',
                   cursor: 'pointer',
-                  padding: '8px 16px',
-                  borderRadius: '20px',
-                  marginBottom: '20px'
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#8B4513';
+                  e.currentTarget.style.color = '#8B4513';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#D9D9D9';
+                  e.currentTarget.style.color = '#666';
                 }}
               >
-                <ChevronLeft size={18} /> Adjust Plan
+                <Plus size={20} /> Add another dog
               </button>
-              
-              <h1 style={{ 
-                fontSize: 'clamp(28px, 5vw, 36px)', 
-                fontWeight: '700', 
-                marginBottom: '8px', 
-                fontFamily: "'Rubik', sans-serif",
-                color: 'white'
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Final step: Save Profile
+    if (step === getTotalSteps()) {
+      if (profileSaved) {
+        const showConsultationMessage = needsConsultation();
+        
+        return (
+          <div>
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                background: '#E8F5E9',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 24px'
               }}>
-                {results.name}'s meal plan is ready!
+                <Check size={40} color="#2E7D32" />
+              </div>
+              <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+                Profile Saved!
               </h1>
-              
-              <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap', marginTop: '24px' }}>
-                <div>
-                  <p style={{ fontSize: '14px', opacity: 0.8, marginBottom: '4px' }}>Daily Requirement</p>
-                  <p style={{ fontSize: '28px', fontWeight: '700' }}>{results.dailyGrams}g <span style={{ fontSize: '16px', opacity: 0.8 }}>({results.dailyLbs} lbs)</span></p>
-                </div>
-                <div>
-                  <p style={{ fontSize: '14px', opacity: 0.8, marginBottom: '4px' }}>Starting at</p>
-                  <p style={{ fontSize: '28px', fontWeight: '700' }}>${results.dailyCost}<span style={{ fontSize: '16px', opacity: 0.8 }}>/day</span></p>
-                </div>
-                <div>
-                  <p style={{ fontSize: '14px', opacity: 0.8, marginBottom: '4px' }}>Recommended Box</p>
-                  <p style={{ fontSize: '28px', fontWeight: '700' }}>{boxSize}lb {discount > 0 && <span style={{ fontSize: '16px', background: 'rgba(255,255,255,0.2)', padding: '4px 10px', borderRadius: '12px', marginLeft: '8px' }}>{discount * 100}% off</span>}</p>
-                </div>
+              <p style={{ color: '#666', fontSize: '16px' }}>
+                Your profile has been saved successfully.
+              </p>
+            </div>
+
+            {showConsultationMessage && (
+              <div style={{
+                background: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)',
+                borderRadius: '16px',
+                padding: '24px',
+                marginBottom: '24px',
+                border: '2px solid #FFB74D'
+              }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#E65100' }}>
+                  We'll Contact You Personally
+                </h3>
+                <p style={{ color: '#5D4037', lineHeight: '1.6' }}>
+                  Based on the health conditions you've shared, one of our pet nutrition specialists will reach out to you within 24-48 hours to discuss {dogs.length === 1 ? `${dogs[0].name}'s` : "your dogs'"} specific needs and create a customized meal plan.
+                </p>
               </div>
+            )}
+
+            <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px' }}>Your Dogs</h3>
+              {dogs.map((dog, index) => (
+                <div key={dog.dog_id} style={{
+                  padding: '16px',
+                  background: '#F8F6F3',
+                  borderRadius: '12px',
+                  marginBottom: index < dogs.length - 1 ? '12px' : '0'
+                }}>
+                  <div style={{ fontWeight: '600', fontSize: '16px', marginBottom: '8px' }}>{dog.name}</div>
+                  <div style={{ fontSize: '14px', color: '#666' }}>
+                    {dog.breed} • {dog.weight_lbs} lbs • {dog.lifestyle.replace('_', ' ')}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', gap: '16px', marginTop: '32px' }}>
+              <button
+                onClick={() => navigate('/build-box')}
+                style={{
+                  flex: 1,
+                  padding: '16px 24px',
+                  background: '#8B4513',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                Build Your Box
+              </button>
+              <button
+                onClick={() => navigate('/account')}
+                style={{
+                  flex: 1,
+                  padding: '16px 24px',
+                  background: 'white',
+                  color: '#8B4513',
+                  border: '2px solid #8B4513',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                Go to My Account
+              </button>
             </div>
           </div>
+        );
+      }
 
-          {/* Box Progress Bar */}
-          <div style={{ 
-            background: 'white', 
-            padding: '20px',
-            borderBottom: '1px solid #E8E4DC',
-            position: 'sticky',
-            top: 0,
-            zIndex: 100
-          }}>
-            <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <span style={{ fontWeight: '600', color: '#2B2B2B' }}>{boxSize}lb Box</span>
-                <span style={{ color: '#666' }}>{totalSelected}lb / {boxSize}lb selected</span>
-              </div>
-              <div style={{ background: '#E8E4DC', borderRadius: '8px', height: '8px', overflow: 'hidden' }}>
-                <div style={{ 
-                  background: totalSelected === boxSize ? '#5F7C5A' : '#8B4513', 
-                  height: '100%', 
-                  width: `${Math.min((totalSelected / boxSize) * 100, 100)}%`,
-                  transition: 'width 0.3s ease'
-                }} />
-              </div>
+      return (
+        <div>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Save Your Profile
+          </h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
+            Enter your email to save {dogs.length === 1 ? `${dogs[0].name}'s` : "your dogs'"} profile. You can edit it anytime from your account.
+          </p>
+
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                Email *
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '8px',
+                  border: '2px solid #E8E4DC',
+                  fontSize: '16px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
             </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                Phone Number (Optional)
+              </label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+1 (555) 000-0000"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '8px',
+                  border: '2px solid #E8E4DC',
+                  fontSize: '16px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            {error && (
+              <div style={{
+                background: '#FFEBEE',
+                color: '#C62828',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                marginBottom: '16px',
+                fontSize: '14px'
+              }}>
+                {error}
+              </div>
+            )}
+
+            <button
+              onClick={saveProfile}
+              disabled={saving || !email}
+              style={{
+                width: '100%',
+                padding: '16px 24px',
+                background: email ? '#8B4513' : '#CCC',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: email ? 'pointer' : 'not-allowed'
+              }}
+            >
+              {saving ? 'Saving...' : 'Save Profile'}
+            </button>
           </div>
 
-          {/* Products Grid */}
-          <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '40px 20px' }}>
-            <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-              Choose Your Proteins
-            </h2>
-            <p style={{ color: '#666', marginBottom: '24px' }}>
-              We recommend <strong>Comfort {results.recommendedProtein.name}</strong> — {results.recommendationReason.toLowerCase()}
-            </p>
-
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(4, 1fr)', 
-              gap: '24px',
-              marginBottom: '48px'
+          {needsConsultation() && (
+            <div style={{
+              background: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)',
+              borderRadius: '16px',
+              padding: '20px',
+              marginTop: '24px',
+              border: '2px solid #FFB74D'
             }}>
-              {availableProducts.map(product => {
-                const selected = selectedProteins[product.product_id];
-                const qty = selected?.qty || 0;
-                const isRecommended = product.product_id === `cd-${results.recommendedProtein.id}`;
-                const basePrice = product.pricing.find(p => p.size_lb === 6)?.price || 26.99;
-                const discountedPrice = (basePrice * (1 - discount)).toFixed(2);
+              <p style={{ color: '#5D4037', fontSize: '14px', lineHeight: '1.5', margin: 0 }}>
+                <strong>Note:</strong> Based on the health conditions selected, we'll contact you personally to discuss a customized meal plan.
+              </p>
+            </div>
+          )}
+        </div>
+      );
+    }
 
-                return (
-                  <div 
-                    key={product.product_id}
+    // Dog detail steps
+    const dogStep = getCurrentDogStep();
+    const dogName = currentDog.name || `Dog ${currentDogIndex + 1}`;
+
+    // Step: Name, Location, Gender
+    if (dogStep === 1) {
+      return (
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <span style={{
+              display: 'inline-block',
+              background: '#8B4513',
+              color: 'white',
+              fontSize: '12px',
+              fontWeight: '600',
+              padding: '4px 12px',
+              borderRadius: '20px'
+            }}>
+              Dog {currentDogIndex + 1} of {dogs.length}
+            </span>
+          </div>
+          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Let's start with the basics
+          </h1>
+
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                What's your dog's name?
+              </label>
+              <input
+                type="text"
+                value={currentDog.name}
+                onChange={(e) => updateDog('name', e.target.value)}
+                placeholder="e.g., Max"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '8px',
+                  border: '2px solid #E8E4DC',
+                  fontSize: '16px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                Where does {currentDog.name || 'your dog'} live?
+              </label>
+              <select
+                value={currentDog.location}
+                onChange={(e) => updateDog('location', e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '8px',
+                  border: '2px solid #E8E4DC',
+                  fontSize: '16px',
+                  outline: 'none',
+                  background: 'white',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <option value="">Select province</option>
+                {PROVINCES.map(p => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
+                Is {currentDog.name || 'your dog'} male or female?
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                {['male', 'female'].map(gender => (
+                  <button
+                    key={gender}
+                    onClick={() => updateDog('gender', gender)}
                     style={{
-                      background: 'white',
-                      borderRadius: '16px',
-                      padding: '20px',
-                      border: qty > 0 ? '3px solid #A41E34' : '3px solid transparent',
-                      boxShadow: qty > 0 ? '0 4px 20px rgba(164, 30, 52, 0.25)' : '0 2px 12px rgba(0,0,0,0.06)',
-                      transition: 'all 0.2s',
-                      position: 'relative'
+                      padding: '16px 20px',
+                      borderRadius: '8px',
+                      border: currentDog.gender === gender ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                      background: currentDog.gender === gender ? '#FDF8F3' : 'white',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      color: '#2B2B2B',
+                      textTransform: 'capitalize'
                     }}
                   >
-                    {isRecommended && (
-                      <div style={{
-                        position: 'absolute',
-                        top: '12px',
-                        right: '12px',
-                        background: '#5F7C5A',
-                        color: 'white',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '11px',
-                        fontWeight: '600'
-                      }}>
-                        RECOMMENDED
-                      </div>
-                    )}
-                    
-                    <div style={{
-                      width: '100%',
-                      height: '180px',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      marginBottom: '16px',
-                      background: '#f5f5f5',
+                    {gender}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Step: Neutered, Breed
+    if (dogStep === 2) {
+      return (
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <span style={{
+              display: 'inline-block',
+              background: '#8B4513',
+              color: 'white',
+              fontSize: '12px',
+              fontWeight: '600',
+              padding: '4px 12px',
+              borderRadius: '20px'
+            }}>
+              Dog {currentDogIndex + 1} of {dogs.length}
+            </span>
+          </div>
+          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Tell us more about {dogName}
+          </h1>
+
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
+                Is {dogName} neutered/spayed?
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                {[{ value: true, label: 'Yes' }, { value: false, label: 'No' }].map(option => (
+                  <button
+                    key={String(option.value)}
+                    onClick={() => updateDog('is_neutered', option.value)}
+                    style={{
+                      padding: '16px 20px',
+                      borderRadius: '8px',
+                      border: currentDog.is_neutered === option.value ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                      background: currentDog.is_neutered === option.value ? '#FDF8F3' : 'white',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      color: '#2B2B2B'
+                    }}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                What breed is {dogName}?
+              </label>
+              <select
+                value={currentDog.breed}
+                onChange={(e) => updateDog('breed', e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '8px',
+                  border: '2px solid #E8E4DC',
+                  fontSize: '16px',
+                  outline: 'none',
+                  background: 'white',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <option value="">Select breed</option>
+                {DOG_BREEDS.map(breed => (
+                  <option key={breed} value={breed}>{breed}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Step: Birthday
+    if (dogStep === 3) {
+      return (
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <span style={{
+              display: 'inline-block',
+              background: '#8B4513',
+              color: 'white',
+              fontSize: '12px',
+              fontWeight: '600',
+              padding: '4px 12px',
+              borderRadius: '20px'
+            }}>
+              Dog {currentDogIndex + 1} of {dogs.length}
+            </span>
+          </div>
+          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            When is {dogName}'s birthday?
+          </h1>
+
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                value={currentDog.birthday}
+                onChange={(e) => updateDog('birthday', e.target.value)}
+                max={new Date().toISOString().split('T')[0]}
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '8px',
+                  border: '2px solid #E8E4DC',
+                  fontSize: '16px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
+              <p style={{ fontSize: '13px', color: '#666', marginTop: '8px' }}>
+                If you don't know the exact date, an estimate is fine!
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Step: Body Condition
+    if (dogStep === 4) {
+      return (
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <span style={{
+              display: 'inline-block',
+              background: '#8B4513',
+              color: 'white',
+              fontSize: '12px',
+              fontWeight: '600',
+              padding: '4px 12px',
+              borderRadius: '20px'
+            }}>
+              Dog {currentDogIndex + 1} of {dogs.length}
+            </span>
+          </div>
+          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Describe {dogName}'s condition
+          </h1>
+
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div style={{ display: 'grid', gap: '12px' }}>
+              {[
+                { id: 'underweight', label: 'Underweight', desc: 'Low muscle and fat, ribs are visible' },
+                { id: 'fit', label: 'Fit', desc: 'Regular muscle and fat, ribs can be felt but not seen' },
+                { id: 'overweight', label: 'Overweight', desc: 'Excessive fat, ribs can\'t be felt or seen' }
+              ].map(option => (
+                <button
+                  key={option.id}
+                  onClick={() => updateDog('body_condition', option.id)}
+                  style={{
+                    padding: '20px',
+                    borderRadius: '12px',
+                    border: currentDog.body_condition === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                    background: currentDog.body_condition === option.id ? '#FDF8F3' : 'white',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
+                >
+                  <div style={{ fontWeight: '600', fontSize: '16px', marginBottom: '4px', color: '#2B2B2B' }}>
+                    {option.label}
+                  </div>
+                  <div style={{ fontSize: '14px', color: '#666' }}>
+                    {option.desc}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Step: Weight, Lifestyle
+    if (dogStep === 5) {
+      return (
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <span style={{
+              display: 'inline-block',
+              background: '#8B4513',
+              color: 'white',
+              fontSize: '12px',
+              fontWeight: '600',
+              padding: '4px 12px',
+              borderRadius: '20px'
+            }}>
+              Dog {currentDogIndex + 1} of {dogs.length}
+            </span>
+          </div>
+          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            {dogName}'s weight & lifestyle
+          </h1>
+
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div style={{ marginBottom: '28px' }}>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                How much does {dogName} weigh?
+              </label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <input
+                  type="number"
+                  value={currentDog.weight_lbs}
+                  onChange={(e) => updateDog('weight_lbs', e.target.value)}
+                  placeholder="0"
+                  style={{
+                    flex: 1,
+                    padding: '14px 16px',
+                    borderRadius: '8px',
+                    border: '2px solid #E8E4DC',
+                    fontSize: '16px',
+                    outline: 'none'
+                  }}
+                />
+                <span style={{ fontSize: '16px', fontWeight: '500', color: '#666' }}>lbs</span>
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
+                What is {dogName}'s lifestyle?
+              </label>
+              <div style={{ display: 'grid', gap: '12px' }}>
+                {[
+                  { id: 'lower_energy', label: 'Lower Energy', desc: 'Mostly resting, short walks' },
+                  { id: 'active', label: 'Active', desc: 'Daily walks, regular play' },
+                  { id: 'high_energy', label: 'High Energy', desc: 'Long runs, working dog, very active' }
+                ].map(option => (
+                  <button
+                    key={option.id}
+                    onClick={() => updateDog('lifestyle', option.id)}
+                    style={{
+                      padding: '16px 20px',
+                      borderRadius: '8px',
+                      border: currentDog.lifestyle === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                      background: currentDog.lifestyle === option.id ? '#FDF8F3' : 'white',
+                      cursor: 'pointer',
+                      textAlign: 'left'
+                    }}
+                  >
+                    <div style={{ fontWeight: '600', fontSize: '15px', marginBottom: '2px', color: '#2B2B2B' }}>
+                      {option.label}
+                    </div>
+                    <div style={{ fontSize: '13px', color: '#666' }}>
+                      {option.desc}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Step: Health Issues
+    if (dogStep === 6) {
+      return (
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '8px' }}>
+            <span style={{
+              display: 'inline-block',
+              background: '#8B4513',
+              color: 'white',
+              fontSize: '12px',
+              fontWeight: '600',
+              padding: '4px 12px',
+              borderRadius: '20px'
+            }}>
+              Dog {currentDogIndex + 1} of {dogs.length}
+            </span>
+          </div>
+          <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
+            Any health issues or dietary needs?
+          </h1>
+          <p style={{ textAlign: 'center', color: '#666', marginBottom: '32px', fontSize: '15px' }}>
+            Select all that apply to {dogName}
+          </p>
+
+          <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+              {HEALTH_ISSUES.map(issue => {
+                const isSelected = currentDog.health_issues.includes(issue.id);
+                const isNone = issue.id === 'none';
+                
+                return (
+                  <button
+                    key={issue.id}
+                    onClick={() => toggleHealthIssue(issue.id)}
+                    style={{
+                      padding: '14px 16px',
+                      borderRadius: '8px',
+                      border: isSelected ? `2px solid ${isNone ? '#5F7C5A' : '#8B4513'}` : '2px solid #E8E4DC',
+                      background: isSelected ? (isNone ? '#E8F5E9' : '#FDF8F3') : 'white',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#2B2B2B',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      <img 
-                        src="https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg"
-                        alt={product.name}
-                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                      />
-                    </div>
-                    
-                    <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px', textTransform: 'none' }}>{product.name}</h3>
-                    <p style={{ fontSize: '13px', color: '#666', marginBottom: '16px', lineHeight: '1.4' }}>
-                      {product.mini_description || product.description?.split('.')[0]}
-                    </p>
-                    
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                      <div>
-                        {discount > 0 && (
-                          <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '14px', marginRight: '8px' }}>
-                            ${basePrice.toFixed(2)}
-                          </span>
-                        )}
-                        <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513' }}>${discountedPrice}</span>
-                        <span style={{ fontSize: '13px', color: '#666' }}> / 6lb</span>
-                      </div>
-                      
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <button
-                          onClick={() => handleProteinUpdate(product.product_id, product.name, Math.max(0, qty - 6))}
-                          disabled={qty === 0}
-                          style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '50%',
-                            border: '2px solid #E8E4DC',
-                            background: 'white',
-                            cursor: qty === 0 ? 'not-allowed' : 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            opacity: qty === 0 ? 0.5 : 1
-                          }}
-                        >
-                          <Minus size={16} color="#666" />
-                        </button>
-                        <span style={{ minWidth: '40px', textAlign: 'center', fontWeight: '600' }}>{qty}lb</span>
-                        <button
-                          onClick={() => handleProteinUpdate(product.product_id, product.name, qty + 6)}
-                          disabled={!canAddMore}
-                          style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '50%',
-                            border: '2px solid #5F7C5A',
-                            background: canAddMore ? '#5F7C5A' : '#E8E4DC',
-                            cursor: canAddMore ? 'pointer' : 'not-allowed',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}
-                        >
-                          <Plus size={16} color="white" />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <button
-                      onClick={() => {
-                        sessionStorage.setItem('menuScrollPosition', window.scrollY.toString());
-                        navigate(`/product/${product.product_id}`);
-                      }}
-                      style={{
-                        width: '100%',
-                        padding: '10px',
-                        background: 'none',
-                        border: '2px solid #5F7C5A',
-                        borderRadius: '8px',
-                        color: '#5F7C5A',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#5F7C5A';
-                        e.currentTarget.style.color = 'white';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'none';
-                        e.currentTarget.style.color = '#5F7C5A';
-                      }}
-                    >
-                      See more
-                    </button>
-                  </div>
+                      justifyContent: 'space-between',
+                      gridColumn: isNone ? 'span 2' : 'auto'
+                    }}
+                  >
+                    {issue.label}
+                    {isSelected && <Check size={16} color={isNone ? '#5F7C5A' : '#8B4513'} />}
+                  </button>
                 );
               })}
             </div>
-
-            {/* Treats Section */}
-            <TreatsSection 
-              selectedTreats={selectedTreats.map(t => ({ ...t, quantity: t.quantity || 1 }))}
-              onToggleTreat={(treat, newQuantity) => {
-                if (newQuantity === 0) {
-                  setSelectedTreats(prev => prev.filter(t => t.treat_id !== treat.treat_id));
-                } else {
-                  setSelectedTreats(prev => {
-                    const existing = prev.find(t => t.treat_id === treat.treat_id);
-                    if (existing) {
-                      return prev.map(t => t.treat_id === treat.treat_id ? { ...t, quantity: newQuantity } : t);
-                    } else {
-                      return [...prev, { ...treat, quantity: newQuantity }];
-                    }
-                  });
-                }
-              }}
-              petType="dog"
-              navigate={navigate}
-            />
           </div>
         </div>
+      );
+    }
 
-        {/* Cart Drawer */}
-        <CartDrawer 
-          isOpen={cartOpen}
-          onClose={() => setCartOpen(false)}
-          boxSize={boxSize}
-          selectedProteins={selectedProteins}
-          selectedTreats={selectedTreats}
-          products={products}
-          onProceed={() => { 
-            setCartOpen(false); 
-            setShowCheckout(true);
-          }}
-          getDiscountedPrice={getDiscountedPrice}
-          getBasePrice={getBasePrice}
-          onAdjustProtein={(productId, productName, newQty) => {
-            setSelectedProteins(prev => ({
-              ...prev,
-              [productId]: { qty: newQty, name: productName }
-            }));
-          }}
-          onRemoveProtein={(productId) => {
-            setSelectedProteins(prev => {
-              const updated = { ...prev };
-              delete updated[productId];
-              return updated;
-            });
-          }}
-          onRemoveTreat={(treatId) => {
-            setSelectedTreats(prev => prev.filter(t => t.treat_id !== treatId));
-          }}
-          onAdjustTreat={(treatId, newQuantity) => {
-            setSelectedTreats(prev => prev.map(t => 
-              t.treat_id === treatId ? { ...t, quantity: newQuantity } : t
-            ));
-          }}
-        />
+    return null;
+  };
 
-        <Footer />
-      </>
-    );
-  }
-
-  // Form Steps
   return (
     <>
       <Navbar />
       <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '40px 20px' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-          {/* Progress */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '40px' }}>
-            {[1, 2, 3].map(s => (
-              <div 
-                key={s}
-                style={{
-                  width: '60px',
-                  height: '4px',
-                  borderRadius: '2px',
-                  background: s <= step ? '#8B4513' : '#D9D9D9'
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Step 1: Welcome + Bio */}
-          {step === 1 && (
-            <div>
-              <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
-                Let's build your dog's meal plan.
-              </h1>
-              <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
-                Tell us a little about your dog and we'll recommend the right meals, portions, and proteins.
-              </p>
-
-              <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                <div style={{ marginBottom: '24px' }}>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => updateForm('name', e.target.value)}
-                    placeholder="Your dog's name"
-                    style={{
-                      width: '100%',
-                      padding: '14px 16px',
-                      borderRadius: '8px',
-                      border: '2px solid #E8E4DC',
-                      fontSize: '16px',
-                      outline: 'none',
-                      boxSizing: 'border-box'
-                    }}
-                  />
-                </div>
-
-                <div style={{ marginBottom: '24px' }}>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                    Date of Birth
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.dateOfBirth}
-                    onChange={(e) => updateForm('dateOfBirth', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '14px 16px',
-                      borderRadius: '8px',
-                      border: '2px solid #E8E4DC',
-                      fontSize: '16px',
-                      outline: 'none',
-                      boxSizing: 'border-box'
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                    Breed
-                  </label>
-                  <select
-                    value={formData.breed}
-                    onChange={(e) => updateForm('breed', e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '14px 16px',
-                      borderRadius: '8px',
-                      border: '2px solid #E8E4DC',
-                      fontSize: '16px',
-                      outline: 'none',
-                      background: 'white',
-                      boxSizing: 'border-box'
-                    }}
-                  >
-                    <option value="">Select breed</option>
-                    {DOG_BREEDS.map(breed => (
-                      <option key={breed} value={breed}>{breed}</option>
-                    ))}
-                  </select>
-                </div>
+          {/* Progress Bar */}
+          {!profileSaved && (
+            <div style={{ marginBottom: '40px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ fontSize: '13px', color: '#666' }}>Step {step} of {getTotalSteps()}</span>
+                <span style={{ fontSize: '13px', color: '#666' }}>{Math.round(getProgress())}%</span>
+              </div>
+              <div style={{ background: '#E8E4DC', borderRadius: '4px', height: '6px', overflow: 'hidden' }}>
+                <div style={{ 
+                  background: '#8B4513', 
+                  height: '100%', 
+                  width: `${getProgress()}%`,
+                  transition: 'width 0.3s ease'
+                }} />
               </div>
             </div>
           )}
 
-          {/* Step 2: Size + Activity */}
-          {step === 2 && (
-            <div>
-              <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
-                Tell us about {formData.name}
-              </h1>
-
-              <div style={{ background: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                <div style={{ marginBottom: '28px' }}>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                    How much does {formData.name} weigh?
-                  </label>
-                  <div style={{ display: 'flex', gap: '12px' }}>
-                    <input
-                      type="number"
-                      value={formData.weight}
-                      onChange={(e) => updateForm('weight', e.target.value)}
-                      placeholder="Weight"
-                      style={{
-                        flex: 1,
-                        padding: '14px 16px',
-                        borderRadius: '8px',
-                        border: '2px solid #E8E4DC',
-                        fontSize: '16px',
-                        outline: 'none'
-                      }}
-                    />
-                    <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: '2px solid #E8E4DC' }}>
-                      {['lbs', 'kg'].map(unit => (
-                        <button
-                          key={unit}
-                          onClick={() => updateForm('weightUnit', unit)}
-                          style={{
-                            padding: '14px 20px',
-                            border: 'none',
-                            background: formData.weightUnit === unit ? '#8B4513' : 'white',
-                            color: formData.weightUnit === unit ? 'white' : '#666',
-                            cursor: 'pointer',
-                            fontSize: '15px',
-                            fontWeight: '500'
-                          }}
-                        >
-                          {unit}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ marginBottom: '28px' }}>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                    How would you describe {formData.name}'s body condition?
-                  </label>
-                  <div style={{ display: 'grid', gap: '10px' }}>
-                    {[
-                      { id: 'underweight', label: 'Underweight' },
-                      { id: 'just-right', label: 'Just right' },
-                      { id: 'slightly-overweight', label: 'Slightly overweight' },
-                      { id: 'overweight', label: 'Overweight' }
-                    ].map(option => (
-                      <button
-                        key={option.id}
-                        onClick={() => updateForm('bodyCondition', option.id)}
-                        style={{
-                          padding: '14px 20px',
-                          borderRadius: '8px',
-                          border: formData.bodyCondition === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                          background: formData.bodyCondition === option.id ? '#FDF8F3' : 'white',
-                          cursor: 'pointer',
-                          textAlign: 'left',
-                          fontSize: '15px',
-                          color: '#2B2B2B'
-                        }}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                    How active is {formData.name}?
-                  </label>
-                  <div style={{ display: 'grid', gap: '10px' }}>
-                    {[
-                      { id: 'low', label: 'Low', desc: 'Mostly resting, short walks' },
-                      { id: 'moderate', label: 'Moderate', desc: 'Daily walks, some play' },
-                      { id: 'high', label: 'High', desc: 'Long runs, working dog, very active' }
-                    ].map(option => (
-                      <button
-                        key={option.id}
-                        onClick={() => updateForm('activityLevel', option.id)}
-                        style={{
-                          padding: '14px 20px',
-                          borderRadius: '8px',
-                          border: formData.activityLevel === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                          background: formData.activityLevel === option.id ? '#FDF8F3' : 'white',
-                          cursor: 'pointer',
-                          textAlign: 'left',
-                          fontSize: '15px',
-                          color: '#2B2B2B'
-                        }}
-                      >
-                        <div style={{ fontWeight: '500' }}>{option.label}</div>
-                        <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>{option.desc}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Step 3: Diet + Health */}
-          {step === 3 && (
-            <div>
-              <h1 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '40px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
-                {formData.name}'s diet & health
-              </h1>
-
-              <div style={{ background: 'white', borderRadius: '16px', padding: '32px', marginBottom: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                <div style={{ marginBottom: '28px' }}>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                    What is {formData.name} currently eating?
-                  </label>
-                  <div style={{ display: 'grid', gap: '10px' }}>
-                    {[
-                      { id: 'kibble', label: 'Kibble' },
-                      { id: 'fresh', label: 'Fresh or gently cooked' },
-                      { id: 'raw-other', label: 'Raw (another brand)' },
-                      { id: 'homemade', label: 'Homemade raw' },
-                      { id: 'mixed', label: 'Mixed' }
-                    ].map(option => (
-                      <button
-                        key={option.id}
-                        onClick={() => updateForm('currentDiet', option.id)}
-                        style={{
-                          padding: '14px 20px',
-                          borderRadius: '8px',
-                          border: formData.currentDiet === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                          background: formData.currentDiet === option.id ? '#FDF8F3' : 'white',
-                          cursor: 'pointer',
-                          textAlign: 'left',
-                          fontSize: '15px',
-                          color: '#2B2B2B'
-                        }}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{ marginBottom: '28px' }}>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                    Does {formData.name} have any of the following?
-                  </label>
-                  <p style={{ fontSize: '13px', color: '#666', marginBottom: '12px' }}>Select all that apply</p>
-                  <div style={{ display: 'grid', gap: '10px' }}>
-                    {HEALTH_CONCERNS.map(concern => (
-                      <button
-                        key={concern.id}
-                        onClick={() => toggleArrayItem('healthConcerns', concern.id)}
-                        style={{
-                          padding: '14px 20px',
-                          borderRadius: '8px',
-                          border: formData.healthConcerns.includes(concern.id) ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                          background: formData.healthConcerns.includes(concern.id) ? '#FDF8F3' : 'white',
-                          cursor: 'pointer',
-                          textAlign: 'left',
-                          fontSize: '15px',
-                          color: '#2B2B2B',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between'
-                        }}
-                      >
-                        {concern.label}
-                        {formData.healthConcerns.includes(concern.id) && <Check size={18} color="#8B4513" />}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{ marginBottom: '28px' }}>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                    Any proteins to avoid?
-                  </label>
-                  <p style={{ fontSize: '13px', color: '#666', marginBottom: '12px' }}>Select all that apply</p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    {PROTEINS.map(protein => (
-                      <button
-                        key={protein.id}
-                        onClick={() => toggleArrayItem('allergies', protein.id)}
-                        style={{
-                          padding: '10px 18px',
-                          borderRadius: '20px',
-                          border: formData.allergies.includes(protein.id) ? '2px solid #D32F2F' : '2px solid #E8E4DC',
-                          background: formData.allergies.includes(protein.id) ? '#FFEBEE' : 'white',
-                          cursor: 'pointer',
-                          fontSize: '14px',
-                          color: formData.allergies.includes(protein.id) ? '#D32F2F' : '#2B2B2B'
-                        }}
-                      >
-                        {protein.name}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => updateForm('allergies', [])}
-                      style={{
-                        padding: '10px 18px',
-                        borderRadius: '20px',
-                        border: formData.allergies.length === 0 ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                        background: formData.allergies.length === 0 ? '#FDF8F3' : 'white',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        color: '#2B2B2B'
-                      }}
-                    >
-                      None
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                    Does {formData.name} have any favourite proteins?
-                  </label>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                    {PROTEINS.filter(p => !formData.allergies.includes(p.id)).map(protein => (
-                      <button
-                        key={protein.id}
-                        onClick={() => toggleArrayItem('favorites', protein.id)}
-                        style={{
-                          padding: '10px 18px',
-                          borderRadius: '20px',
-                          border: formData.favorites.includes(protein.id) ? '2px solid #5F7C5A' : '2px solid #E8E4DC',
-                          background: formData.favorites.includes(protein.id) ? '#E8F5E9' : 'white',
-                          cursor: 'pointer',
-                          fontSize: '14px',
-                          color: formData.favorites.includes(protein.id) ? '#5F7C5A' : '#2B2B2B'
-                        }}
-                      >
-                        {protein.name}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => updateForm('favorites', [])}
-                      style={{
-                        padding: '10px 18px',
-                        borderRadius: '20px',
-                        border: formData.favorites.length === 0 ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                        background: formData.favorites.length === 0 ? '#FDF8F3' : 'white',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        color: '#2B2B2B'
-                      }}
-                    >
-                      Open to trying
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Step Content */}
+          {renderStepContent()}
 
           {/* Navigation Buttons */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: step === 1 ? 'flex-end' : 'space-between',
-            marginTop: '32px' 
-          }}>
-            {step > 1 && (
+          {!profileSaved && step !== getTotalSteps() && (
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: step === 1 ? 'flex-end' : 'space-between',
+              marginTop: '32px' 
+            }}>
+              {step > 1 && (
+                <button
+                  onClick={prevStep}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    background: 'white',
+                    border: '2px solid #E8E4DC',
+                    padding: '14px 28px',
+                    borderRadius: '8px',
+                    fontSize: '16px',
+                    cursor: 'pointer',
+                    color: '#666'
+                  }}
+                >
+                  <ChevronLeft size={20} /> Back
+                </button>
+              )}
               <button
-                onClick={prevStep}
+                onClick={nextStep}
+                disabled={!canProceed()}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  background: 'white',
-                  border: '2px solid #E8E4DC',
-                  padding: '14px 28px',
+                  background: canProceed() ? '#8B4513' : '#CCC',
+                  color: 'white',
+                  border: 'none',
+                  padding: '14px 32px',
                   borderRadius: '8px',
                   fontSize: '16px',
-                  cursor: 'pointer',
-                  color: '#666'
+                  fontWeight: '600',
+                  cursor: canProceed() ? 'pointer' : 'not-allowed'
                 }}
               >
-                <ChevronLeft size={20} /> Back
+                Continue <ChevronRight size={20} />
               </button>
-            )}
-            <button
-              onClick={nextStep}
-              disabled={!canProceed()}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: canProceed() ? '#8B4513' : '#CCC',
-                color: 'white',
-                border: 'none',
-                padding: '14px 32px',
-                borderRadius: '8px',
-                fontSize: '16px',
-                fontWeight: '600',
-                cursor: canProceed() ? 'pointer' : 'not-allowed'
-              }}
-            >
-              {step === 3 ? 'See My Plan' : 'Continue'} <ChevronRight size={20} />
-            </button>
-          </div>
+            </div>
+          )}
         </div>
       </div>
       <Footer />
