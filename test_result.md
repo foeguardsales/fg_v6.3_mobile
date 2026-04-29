@@ -156,6 +156,33 @@ backend:
           API verified: All treats return complete data including description, ingredients, feeding_guide, product_information
 
 frontend:
+  - task: "Menu-style ordering flow (/menu)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/MenuPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: |
+          VERIFIED ✓ Menu-style ordering flow fully functional:
+          - Menu page (/menu) displays hero with discount ladder (6 lbs → Base, 12 lbs → 5% off, 24 lbs → 10% off)
+          - All 4 menu items visible (Comfort Dinner, Primal Feast, Feeding Calculator, Meal Plan Creator)
+          - Pricing displays "from $X.XX/lb" for products
+          - Product line page (/menu/comfort-dinner) shows protein selector grid with 8 proteins
+          - Size toggle works (6, 12, 18, 24 lbs)
+          - Add to cart functionality works correctly
+          - Slide-in cart appears from right with correct item details
+          - Subscription checkbox "Subscribe & Save 5%" visible and functional
+          - Bulk discount progress bar shows "Add X more lbs to save Y%"
+          - Discount stacking works: 5% bulk + 5% subscription = 10% stacked
+          - "+ Add more items" button returns to product page
+          - Cart updates correctly with multiple items (tested 18 lbs total)
+          - Sticky order progress bar visible at bottom
+          - All calculations accurate (Subtotal $88.57, Discount -$8.86, Total $79.71)
+  
   - task: "Fix Learn More button layout for treats"
     implemented: true
     working: true
@@ -302,12 +329,12 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 3
+  test_sequence: 4
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Subscription feature testing completed"
+    - "Menu-style ordering flow testing completed"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -324,6 +351,65 @@ agent_communication:
       - Cat treats display correctly in BoxBuilder
       - Learn More buttons appear in correct position (under treats, not beside)
       - No duplicate or incorrect treats shown
+  
+  - agent: "testing"
+    message: |
+      ✅ MENU-STYLE ORDERING FLOW TESTING COMPLETED - ALL TESTS PASSED
+      
+      Tested the new menu-style ordering flow at /menu as requested.
+      
+      **Test Coverage:**
+      1. Menu Page (/menu)
+         ✓ Hero section with "Our Menu" heading
+         ✓ Discount ladder info (6 lbs → Base, 12 lbs → 5% off, 24 lbs → 10% off)
+         ✓ All 4 menu items visible (Comfort Dinner, Primal Feast, Feeding Calculator, Meal Plan Creator)
+         ✓ Pricing displays "from $X.XX/lb" for products
+      
+      2. Product Line Page (/menu/comfort-dinner)
+         ✓ "Back to Menu" button visible and functional
+         ✓ Protein selector grid with 8 proteins
+         ✓ Each protein shows "from $X.XX/lb" pricing
+         ✓ Product description changes when selecting different proteins
+         ✓ Size toggle with 4 options (6, 12, 18, 24 lbs)
+         ✓ "Add X lbs" button updates based on selected size
+      
+      3. Slide-in Cart
+         ✓ Cart slides in from right after adding item
+         ✓ Shows item details: "Comfort Dinner" with "Protein Name • X lbs"
+         ✓ Displays correct pricing
+         ✓ Quantity controls (+/-) work correctly
+      
+      4. Subscription & Discounts
+         ✓ "Subscribe & Save 5%" checkbox visible
+         ✓ Bulk discount progress bar shows "Add X more lbs to save Y%"
+         ✓ Discount stacking works: 5% bulk + 5% subscription = 10% stacked
+         ✓ Discount line shows "Discount (10% stacked)" when both apply
+      
+      5. Add More Items Flow
+         ✓ "+ Add more items" button returns to product page
+         ✓ Cart persists when navigating back
+         ✓ Can add multiple items with different proteins and sizes
+         ✓ Cart updates total lbs correctly (tested with 18 lbs total)
+      
+      6. Order Progress Bar
+         ✓ Sticky progress bar visible at bottom of page
+         ✓ Shows current lbs and discount tier
+         ✓ "Review Order • $X.XX" button functional
+      
+      **Test Results:**
+      - Added Comfort Chicken 12 lbs ($48.60)
+      - Added Comfort Beef 6 lbs ($39.97)
+      - Total: 18 lbs
+      - Subtotal: $88.57
+      - Discount (10% stacked): -$8.86
+      - Final Total: $79.71
+      
+      **No Issues Found:**
+      - All functionality working as expected
+      - No console errors
+      - No network failures
+      - Discount calculations accurate
+      - UI/UX smooth and intuitive
   
   - agent: "main"
     message: |

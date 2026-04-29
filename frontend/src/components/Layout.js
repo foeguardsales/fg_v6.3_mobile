@@ -29,7 +29,7 @@ export const Navbar = () => {
             <button onClick={() => handleNavigate('/contact')} className="nav-link" data-testid="nav-contact">Contact Us</button>
             <button onClick={() => handleNavigate('/account')} className="nav-link" data-testid="nav-account">Account</button>
             <button 
-              onClick={() => handleNavigate('/order')} 
+              onClick={() => handleNavigate('/menu')} 
               className="nav-order-btn" 
               data-testid="nav-order"
               style={{
@@ -70,7 +70,7 @@ export const Navbar = () => {
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="nav-mobile-menu" data-testid="nav-mobile-menu">
-            <button onClick={() => { handleNavigate('/order'); setMenuOpen(false); }} className="nav-mobile-link">Order</button>
+            <button onClick={() => { handleNavigate('/menu'); setMenuOpen(false); }} className="nav-mobile-link">Order</button>
             <button onClick={() => { handleNavigate('/about'); setMenuOpen(false); }} className="nav-mobile-link">Why FoeGuard</button>
             <button onClick={() => { handleNavigate('/new-to-raw'); setMenuOpen(false); }} className="nav-mobile-link">New to FG</button>
             <button onClick={() => { handleNavigate('/blog'); setMenuOpen(false); }} className="nav-mobile-link">Blog</button>

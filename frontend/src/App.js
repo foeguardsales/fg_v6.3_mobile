@@ -9,6 +9,7 @@ import { LandingPage } from './pages/LandingPage';
 import { BoxBuilder } from './pages/BoxBuilder';
 import { OrderChoicePage } from './pages/OrderChoicePage';
 import { MealPlanPage } from './pages/MealPlanPage';
+import { MenuPage, ProductLinePage, CartProvider, SlideCart } from './pages/MenuPage';
 import { ProductDetailPage } from './pages/ProductDetail';
 import { TreatDetailPage } from './pages/TreatDetail';
 import { AboutPage } from './pages/AboutPage';
@@ -70,28 +71,33 @@ function App() {
 
   return (
     <Elements stripe={stripePromise}>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/order" element={<OrderChoicePage />} />
-          <Route path="/meal-plan" element={<MealPlanPage />} />
-          <Route path="/build-box" element={<BoxBuilder />} />
-          <Route path="/product/:productId" element={<ProductDetailPage />} />
-          <Route path="/treat/:treatId" element={<TreatDetailPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/policies" element={<PoliciesPage />} />
-          <Route path="/terms" element={<TermsPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/new-to-raw" element={<NewToRawPage />} />
-          <Route path="/calculator" element={<CalculatorPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/blog" element={<BlogListPage />} />
-          <Route path="/blog/:blogId" element={<BlogDetailPage />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-        </Routes>
-      </BrowserRouter>
+      <CartProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/order" element={<OrderChoicePage />} />
+            <Route path="/menu" element={<MenuPage />} />
+            <Route path="/menu/comfort-dinner" element={<ProductLinePage productLine="comfort-dinner" />} />
+            <Route path="/menu/primal-feast" element={<ProductLinePage productLine="primal-feast" />} />
+            <Route path="/meal-plan" element={<MealPlanPage />} />
+            <Route path="/build-box" element={<BoxBuilder />} />
+            <Route path="/product/:productId" element={<ProductDetailPage />} />
+            <Route path="/treat/:treatId" element={<TreatDetailPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/policies" element={<PoliciesPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/new-to-raw" element={<NewToRawPage />} />
+            <Route path="/calculator" element={<CalculatorPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/blog" element={<BlogListPage />} />
+            <Route path="/blog/:blogId" element={<BlogDetailPage />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
     </Elements>
   );
 }
