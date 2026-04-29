@@ -1,40 +1,54 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronRight, Plus, Minus, X, Check, ShoppingBag, Calculator, ClipboardList } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, X, Check, ShoppingBag } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
 
-// Cart Context for global state
-const CartContext = createContext();
-
-export const useCart = () => useContext(CartContext);
-
-// Discount tiers - stacks with subscription
-const BULK_DISCOUNTS = {
-  6: 0,      // 0% at 6lbs
-  12: 0.05,  // 5% at 12lbs
-  24: 0.10   // 10% at 24lbs+
+// Product images mapping
+const PRODUCT_IMAGES = {
+  'cd-chicken': 'https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=400&h=400&fit=crop',
+  'cd-beef': 'https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=400&h=400&fit=crop',
+  'cd-duck': 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&h=400&fit=crop',
+  'cd-turkey': 'https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?w=400&h=400&fit=crop',
+  'cd-fish': 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=400&fit=crop',
+  'cd-goat': 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&h=400&fit=crop',
+  'cd-lamb': 'https://images.unsplash.com/photo-1603048676207-a5c2883f0f79?w=400&h=400&fit=crop',
+  'cd-rabbit': 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=400&h=400&fit=crop',
+  'pf-chicken': 'https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=400&h=400&fit=crop',
+  'pf-beef': 'https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=400&h=400&fit=crop',
+  'pf-duck': 'https://images.unsplash.com/photo-1518492104633-130d0cc84637?w=400&h=400&fit=crop',
+  'pf-turkey': 'https://images.unsplash.com/photo-1574672280600-4accfa5b6f98?w=400&h=400&fit=crop',
+  'pf-fish': 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=400&fit=crop',
+  'pf-goat': 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&h=400&fit=crop',
+  'pf-lamb': 'https://images.unsplash.com/photo-1603048676207-a5c2883f0f79?w=400&h=400&fit=crop',
+  'pf-rabbit': 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=400&h=400&fit=crop',
+  'default': 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop'
 };
 
-const SUBSCRIPTION_DISCOUNT = 0.05; // 5% subscription discount
+// Cart Context
+const CartContext = createContext();
+export const useCart = () => useContext(CartContext);
 
-// Get bulk discount based on total weight
+// Discount tiers
+const BULK_DISCOUNTS = { 6: 0, 12: 0.05, 24: 0.10 };
+const SUBSCRIPTION_DISCOUNT = 0.05;
+
 const getBulkDiscount = (totalLbs) => {
   if (totalLbs >= 24) return BULK_DISCOUNTS[24];
   if (totalLbs >= 12) return BULK_DISCOUNTS[12];
   return BULK_DISCOUNTS[6];
 };
 
-// Cart Provider Component
+// Cart Provider
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSubscription, setIsSubscription] = useState(false);
 
-  const totalLbs = cartItems.reduce((sum, item) => sum + item.lbs, 0);
+  const totalLbs = cartItems.reduce((sum, item) => sum + (item.lbs * item.quantity), 0);
   const bulkDiscount = getBulkDiscount(totalLbs);
   const totalDiscount = isSubscription ? bulkDiscount + SUBSCRIPTION_DISCOUNT : bulkDiscount;
   
@@ -44,9 +58,8 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (item) => {
     setCartItems(prev => {
-      // Check if same product + protein + size exists
       const existingIndex = prev.findIndex(
-        i => i.productId === item.productId && i.protein === item.protein && i.lbs === item.lbs
+        i => i.productId === item.productId && i.lbs === item.lbs
       );
       if (existingIndex >= 0) {
         const updated = [...prev];
@@ -59,17 +72,13 @@ export const CartProvider = ({ children }) => {
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (index) => {
-    setCartItems(prev => prev.filter((_, i) => i !== index));
-  };
-
+  const removeFromCart = (index) => setCartItems(prev => prev.filter((_, i) => i !== index));
+  
   const updateQuantity = (index, delta) => {
     setCartItems(prev => {
       const updated = [...prev];
       updated[index].quantity += delta;
-      if (updated[index].quantity <= 0) {
-        return prev.filter((_, i) => i !== index);
-      }
+      if (updated[index].quantity <= 0) return prev.filter((_, i) => i !== index);
       updated[index].price = updated[index].unitPrice * updated[index].quantity;
       return updated;
     });
@@ -88,7 +97,7 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-// Slide-in Cart Component
+// Slide-in Cart
 export const SlideCart = () => {
   const navigate = useNavigate();
   const {
@@ -104,350 +113,163 @@ export const SlideCart = () => {
 
   return (
     <>
-      {/* Backdrop */}
-      <div 
-        onClick={() => setIsCartOpen(false)}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(0,0,0,0.4)',
-          zIndex: 998
-        }}
-      />
+      <div onClick={() => setIsCartOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 998 }} />
       
-      {/* Cart Panel */}
       <div style={{
-        position: 'fixed',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        width: '100%',
-        maxWidth: '420px',
-        background: 'white',
-        zIndex: 999,
-        display: 'flex',
-        flexDirection: 'column',
-        boxShadow: '-4px 0 20px rgba(0,0,0,0.15)'
+        position: 'fixed', top: 0, right: 0, bottom: 0, width: '100%', maxWidth: '400px',
+        background: 'white', zIndex: 999, display: 'flex', flexDirection: 'column'
       }}>
         {/* Header */}
-        <div style={{
-          padding: '20px 24px',
-          borderBottom: '1px solid #E8E4DC',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}>
-          <div>
-            <h2 style={{ fontSize: '20px', fontWeight: '600', margin: 0 }}>Your Order</h2>
-            <p style={{ fontSize: '14px', color: '#666', margin: '4px 0 0' }}>{totalLbs} lbs total</p>
-          </div>
-          <button
-            onClick={() => setIsCartOpen(false)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px' }}
-          >
-            <X size={24} color="#666" />
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: '600', margin: 0 }}>Your Order</h2>
+          <button onClick={() => setIsCartOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+            <X size={24} />
           </button>
         </div>
 
-        {/* Bulk Discount Progress */}
-        {lbsToNextTier > 0 && (
-          <div style={{
-            padding: '16px 24px',
-            background: '#FFF8E1',
-            borderBottom: '1px solid #FFE082'
-          }}>
-            <p style={{ fontSize: '14px', color: '#F57C00', margin: 0, fontWeight: '500' }}>
-              Add {lbsToNextTier} more lbs to save {nextTierDiscount} on your whole order!
-            </p>
-            <div style={{
-              marginTop: '10px',
-              height: '6px',
-              background: '#FFE0B2',
-              borderRadius: '3px',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                width: `${(totalLbs / (totalLbs < 12 ? 12 : 24)) * 100}%`,
-                background: '#FF9800',
-                borderRadius: '3px',
-                transition: 'width 0.3s'
-              }} />
-            </div>
+        {/* Discount Progress */}
+        {lbsToNextTier > 0 && cartItems.length > 0 && (
+          <div style={{ padding: '12px 20px', background: '#FFF8E1', fontSize: '14px', color: '#E65100' }}>
+            Add {lbsToNextTier} more lbs to save {nextTierDiscount}!
           </div>
         )}
 
-        {/* Cart Items */}
-        <div style={{ flex: 1, overflow: 'auto', padding: '16px 24px' }}>
+        {/* Items */}
+        <div style={{ flex: 1, overflow: 'auto', padding: '16px 20px' }}>
           {cartItems.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#666' }}>
-              <ShoppingBag size={48} strokeWidth={1.5} style={{ marginBottom: '16px', opacity: 0.4 }} />
+            <div style={{ textAlign: 'center', padding: '40px 0', color: '#999' }}>
+              <ShoppingBag size={40} strokeWidth={1.5} style={{ marginBottom: '12px' }} />
               <p>Your cart is empty</p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {cartItems.map((item, index) => (
-                <div key={index} style={{
-                  display: 'flex',
-                  gap: '12px',
-                  padding: '12px',
-                  background: '#F8F6F3',
-                  borderRadius: '12px'
-                }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: '600', fontSize: '15px', marginBottom: '4px' }}>
-                      {item.name}
-                    </div>
-                    <div style={{ fontSize: '13px', color: '#666' }}>
-                      {item.protein} • {item.lbs} lbs
-                    </div>
-                    <div style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', marginTop: '8px' }}>
-                      ${item.price.toFixed(2)}
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <button
-                      onClick={() => updateQuantity(index, -1)}
-                      style={{
-                        width: '28px', height: '28px', borderRadius: '6px',
-                        border: '1px solid #E8E4DC', background: 'white',
-                        cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                      }}
-                    >
-                      <Minus size={14} />
-                    </button>
-                    <span style={{ minWidth: '20px', textAlign: 'center', fontWeight: '500' }}>
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQuantity(index, 1)}
-                      style={{
-                        width: '28px', height: '28px', borderRadius: '6px',
-                        border: '1px solid #E8E4DC', background: 'white',
-                        cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                      }}
-                    >
-                      <Plus size={14} />
-                    </button>
-                  </div>
+            cartItems.map((item, index) => (
+              <div key={index} style={{ display: 'flex', gap: '12px', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
+                <img src={item.image || PRODUCT_IMAGES.default} alt="" style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: '600', fontSize: '15px' }}>{item.name}</div>
+                  <div style={{ fontSize: '13px', color: '#666' }}>{item.lbs} lbs</div>
+                  <div style={{ fontWeight: '600', color: '#8B4513', marginTop: '4px' }}>${item.price.toFixed(2)}</div>
                 </div>
-              ))}
-            </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <button onClick={() => updateQuantity(index, -1)} style={{ width: '28px', height: '28px', borderRadius: '50%', border: '1px solid #ddd', background: 'white', cursor: 'pointer' }}>
+                    <Minus size={14} />
+                  </button>
+                  <span style={{ minWidth: '20px', textAlign: 'center' }}>{item.quantity}</span>
+                  <button onClick={() => updateQuantity(index, 1)} style={{ width: '28px', height: '28px', borderRadius: '50%', border: '1px solid #ddd', background: 'white', cursor: 'pointer' }}>
+                    <Plus size={14} />
+                  </button>
+                </div>
+              </div>
+            ))
           )}
         </div>
 
         {/* Subscribe Upsell */}
         {cartItems.length > 0 && (
-          <div style={{
-            padding: '16px 24px',
-            borderTop: '1px solid #E8E4DC',
-            background: isSubscription ? '#E8F5E9' : '#F8F6F3'
-          }}>
-            <label style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              cursor: 'pointer'
-            }}>
-              <input
-                type="checkbox"
-                checked={isSubscription}
-                onChange={(e) => setIsSubscription(e.target.checked)}
-                style={{ width: '20px', height: '20px', accentColor: '#5F7C5A' }}
-              />
+          <div style={{ padding: '16px 20px', borderTop: '1px solid #eee', background: isSubscription ? '#E8F5E9' : '#f9f9f9' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
+              <input type="checkbox" checked={isSubscription} onChange={(e) => setIsSubscription(e.target.checked)} style={{ width: '18px', height: '18px' }} />
               <div>
-                <div style={{ fontWeight: '600', fontSize: '14px', color: isSubscription ? '#2E7D32' : '#2B2B2B' }}>
-                  Subscribe & Save 5%
-                </div>
-                <div style={{ fontSize: '12px', color: '#666' }}>
-                  Never run out! Free delivery + pause anytime.
-                </div>
+                <div style={{ fontWeight: '600', fontSize: '14px' }}>Subscribe & Save 5%</div>
+                <div style={{ fontSize: '12px', color: '#666' }}>Never run out! Pause anytime.</div>
               </div>
             </label>
           </div>
         )}
 
-        {/* Totals */}
+        {/* Totals & Checkout */}
         {cartItems.length > 0 && (
-          <div style={{ padding: '16px 24px', borderTop: '1px solid #E8E4DC' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <span style={{ color: '#666' }}>Subtotal</span>
+          <div style={{ padding: '16px 20px', borderTop: '1px solid #eee' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px' }}>
+              <span>Subtotal ({totalLbs} lbs)</span>
               <span>${subtotal.toFixed(2)}</span>
             </div>
             {totalDiscount > 0 && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', color: '#2E7D32' }}>
-                <span>
-                  Discount ({Math.round(totalDiscount * 100)}%{isSubscription && bulkDiscount > 0 ? ' stacked' : ''})
-                </span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px', color: '#2E7D32' }}>
+                <span>Discount ({Math.round(totalDiscount * 100)}%)</span>
                 <span>-${discountAmount.toFixed(2)}</span>
               </div>
             )}
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: '700', fontSize: '18px', marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #E8E4DC' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: '700', fontSize: '18px', marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #eee' }}>
               <span>Total</span>
               <span>${total.toFixed(2)}</span>
             </div>
+            
+            <button onClick={() => { setIsCartOpen(false); navigate('/checkout'); }} style={{
+              width: '100%', marginTop: '16px', padding: '16px', background: '#8B4513', color: 'white',
+              border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: '600', cursor: 'pointer'
+            }}>
+              Checkout • ${total.toFixed(2)}
+            </button>
+            <button onClick={() => setIsCartOpen(false)} style={{
+              width: '100%', marginTop: '8px', padding: '12px', background: 'none', color: '#8B4513',
+              border: 'none', fontSize: '14px', cursor: 'pointer'
+            }}>
+              + Add more items
+            </button>
           </div>
         )}
-
-        {/* Checkout Button */}
-        <div style={{ padding: '16px 24px', borderTop: '1px solid #E8E4DC' }}>
-          <button
-            onClick={() => {
-              setIsCartOpen(false);
-              navigate('/checkout');
-            }}
-            disabled={cartItems.length === 0}
-            style={{
-              width: '100%',
-              padding: '16px',
-              background: cartItems.length > 0 ? '#8B4513' : '#CCC',
-              color: 'white',
-              border: 'none',
-              borderRadius: '10px',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: cartItems.length > 0 ? 'pointer' : 'not-allowed'
-            }}
-          >
-            Checkout • ${total.toFixed(2)}
-          </button>
-          <button
-            onClick={() => setIsCartOpen(false)}
-            style={{
-              width: '100%',
-              marginTop: '10px',
-              padding: '12px',
-              background: 'none',
-              color: '#8B4513',
-              border: 'none',
-              fontSize: '14px',
-              fontWeight: '500',
-              cursor: 'pointer'
-            }}
-          >
-            + Add more items
-          </button>
-        </div>
       </div>
     </>
   );
 };
 
-// Sticky Order Progress Bar
-const OrderProgressBar = () => {
-  const { totalLbs, bulkDiscount, isCartOpen, setIsCartOpen, total } = useCart();
+// Sticky Footer
+const StickyFooter = () => {
+  const { totalLbs, total, setIsCartOpen, cartItems } = useCart();
   
-  const lbsToNextTier = totalLbs < 12 ? 12 - totalLbs : totalLbs < 24 ? 24 - totalLbs : 0;
-  const nextTierDiscount = totalLbs < 12 ? '5%' : totalLbs < 24 ? '10%' : null;
-  const progress = totalLbs >= 24 ? 100 : totalLbs < 12 ? (totalLbs / 12) * 100 : ((totalLbs - 12) / 12) * 100 + 50;
-
-  if (totalLbs === 0) return null;
+  if (cartItems.length === 0) return null;
 
   return (
     <div style={{
-      position: 'fixed',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      background: 'white',
-      borderTop: '1px solid #E8E4DC',
-      padding: '12px 20px',
-      zIndex: 100,
-      boxShadow: '0 -2px 10px rgba(0,0,0,0.08)'
+      position: 'fixed', bottom: 0, left: 0, right: 0, background: '#F5F3EF',
+      borderTop: '1px solid #E8E4DC', padding: '12px 20px', zIndex: 100
     }}>
-      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-        {/* Progress info */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-          <div>
-            <span style={{ fontWeight: '600' }}>{totalLbs} lbs</span>
-            {bulkDiscount > 0 && (
-              <span style={{ color: '#2E7D32', fontWeight: '600', marginLeft: '8px' }}>
-                {Math.round(bulkDiscount * 100)}% off!
-              </span>
-            )}
-          </div>
-          {lbsToNextTier > 0 && (
-            <span style={{ fontSize: '13px', color: '#F57C00' }}>
-              +{lbsToNextTier} lbs for {nextTierDiscount} off
-            </span>
-          )}
-        </div>
-        
-        {/* Progress bar */}
-        <div style={{
-          height: '6px',
-          background: '#E8E4DC',
-          borderRadius: '3px',
-          marginBottom: '12px',
-          position: 'relative'
-        }}>
-          <div style={{
-            height: '100%',
-            width: `${Math.min(progress, 100)}%`,
-            background: bulkDiscount >= 0.10 ? '#2E7D32' : bulkDiscount >= 0.05 ? '#FF9800' : '#8B4513',
-            borderRadius: '3px',
-            transition: 'width 0.3s'
-          }} />
-          {/* Tier markers */}
-          <div style={{ position: 'absolute', left: '50%', top: '-4px', transform: 'translateX(-50%)', width: '2px', height: '14px', background: '#999' }} />
-        </div>
-        
-        {/* Review button */}
-        <button
-          onClick={() => setIsCartOpen(true)}
-          style={{
-            width: '100%',
-            padding: '14px',
-            background: '#8B4513',
-            color: 'white',
-            border: 'none',
-            borderRadius: '10px',
-            fontSize: '15px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px'
-          }}
-        >
-          <ShoppingBag size={18} />
-          Review Order • ${total.toFixed(2)}
-        </button>
-      </div>
+      <button onClick={() => setIsCartOpen(true)} style={{
+        width: '100%', maxWidth: '600px', margin: '0 auto', display: 'flex',
+        justifyContent: 'space-between', alignItems: 'center', padding: '14px 20px',
+        background: '#8B4513', color: 'white', border: 'none', borderRadius: '8px',
+        fontSize: '16px', fontWeight: '600', cursor: 'pointer'
+      }}>
+        <span>View Order ({totalLbs} lbs)</span>
+        <span>${total.toFixed(2)}</span>
+      </button>
     </div>
   );
 };
 
-// Menu Page Component
+// Menu Page - Clean Tim Hortons Style
 export const MenuPage = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [treats, setTreats] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { totalLbs } = useCart();
+  const { cartItems } = useCart();
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`${API}/products`);
-        setProducts(response.data);
+        const [productsRes, treatsRes] = await Promise.all([
+          axios.get(`${API}/products`),
+          axios.get(`${API}/treats`)
+        ]);
+        setProducts(productsRes.data);
+        setTreats(treatsRes.data);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
+    fetchData();
   }, []);
 
-  // Get lowest price per lb for each product line
   const getLowestPrice = (productLine) => {
     const lineProducts = products.filter(p => p.product_line === productLine);
     if (lineProducts.length === 0) return null;
-    
     let lowestPrice = Infinity;
     lineProducts.forEach(p => {
-      if (p.pricing && p.pricing.length > 0) {
+      if (p.pricing?.length) {
         const lowest = Math.min(...p.pricing.map(pr => pr.price_per_lb));
         if (lowest < lowestPrice) lowestPrice = lowest;
       }
@@ -458,214 +280,142 @@ export const MenuPage = () => {
   const comfortPrice = getLowestPrice('comfort_dinner');
   const primalPrice = getLowestPrice('primal_feast');
 
-  const menuItems = [
-    {
-      id: 'comfort_dinner',
-      name: 'Comfort Dinner',
-      description: 'Complete & balanced meals. 70/10/10/8/2 ratio with fruits, veggies & supplements.',
-      price: comfortPrice,
-      image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
-      link: '/menu/comfort-dinner'
-    },
-    {
-      id: 'primal_feast',
-      name: 'Primal Feast',
-      description: '80/10/10 raw meals. Pure meat, bone & organ for the raw purist.',
-      price: primalPrice,
-      image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=400&h=300&fit=crop',
-      link: '/menu/primal-feast'
-    },
-    {
-      id: 'calculator',
-      name: 'Feeding Calculator',
-      description: 'Find out exactly how much to feed your dog based on weight & activity.',
-      icon: Calculator,
-      link: '/calculator'
-    },
-    {
-      id: 'meal_plan',
-      name: 'Meal Plan Creator',
-      description: 'Create a personalized profile and get custom recommendations.',
-      icon: ClipboardList,
-      link: '/meal-plan'
-    }
-  ];
-
   return (
     <>
       <Navbar />
-      <div style={{ 
-        minHeight: '100vh', 
-        background: '#F5F3EF', 
-        paddingBottom: totalLbs > 0 ? '140px' : '40px'
-      }}>
-        {/* Hero */}
-        <div style={{
-          background: 'linear-gradient(135deg, #8B4513 0%, #6B3410 100%)',
-          padding: '60px 20px',
-          textAlign: 'center',
-          color: 'white'
-        }}>
-          <h1 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '12px', fontFamily: "'Rubik', sans-serif" }}>
-            Our Menu
-          </h1>
-          <p style={{ fontSize: '16px', opacity: 0.9, maxWidth: '400px', margin: '0 auto' }}>
-            Farm-to-bowl raw meals in 6lb increments. The more you add, the more you save.
+      <div style={{ minHeight: '100vh', background: 'white', paddingBottom: cartItems.length > 0 ? '80px' : '0' }}>
+        {/* Header */}
+        <div style={{ padding: '20px', borderBottom: '1px solid #eee' }}>
+          <h1 style={{ fontSize: '28px', fontWeight: '700', margin: 0 }}>Menu</h1>
+          <p style={{ fontSize: '14px', color: '#666', margin: '8px 0 0' }}>
+            Save 5% at 12 lbs • Save 10% at 24 lbs
           </p>
-          
-          {/* Discount Ladder Info */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '20px',
-            marginTop: '24px',
-            flexWrap: 'wrap'
-          }}>
-            {[
-              { lbs: '6 lbs', discount: 'Base' },
-              { lbs: '12 lbs', discount: '5% off' },
-              { lbs: '24 lbs', discount: '10% off' }
-            ].map((tier, i) => (
-              <div key={i} style={{
-                background: 'rgba(255,255,255,0.15)',
-                padding: '8px 16px',
-                borderRadius: '20px',
-                fontSize: '13px'
-              }}>
-                <strong>{tier.lbs}</strong> → {tier.discount}
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Menu Items */}
-        <div style={{ maxWidth: '600px', margin: '0 auto', padding: '24px 20px' }}>
-          {loading ? (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: '#666' }}>Loading menu...</div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {menuItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => navigate(item.link)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '16px',
-                    background: 'white',
-                    border: 'none',
-                    borderRadius: '16px',
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                    transition: 'transform 0.2s, box-shadow 0.2s'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-                  }}
-                >
-                  {/* Image or Icon */}
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      style={{
-                        width: '80px',
-                        height: '80px',
-                        borderRadius: '12px',
-                        objectFit: 'cover'
-                      }}
-                    />
-                  ) : (
-                    <div style={{
-                      width: '80px',
-                      height: '80px',
-                      borderRadius: '12px',
-                      background: '#F5F3EF',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      {item.icon && <item.icon size={32} color="#8B4513" />}
-                    </div>
-                  )}
-                  
-                  {/* Content */}
-                  <div style={{ flex: 1 }}>
-                    <div style={{ 
-                      fontWeight: '600', 
-                      fontSize: '18px', 
-                      color: '#2B2B2B',
-                      marginBottom: '4px'
-                    }}>
-                      {item.name}
-                    </div>
-                    <div style={{ 
-                      fontSize: '13px', 
-                      color: '#666',
-                      lineHeight: '1.4'
-                    }}>
-                      {item.description}
-                    </div>
-                    {item.price && (
-                      <div style={{
-                        marginTop: '8px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        color: '#8B4513'
-                      }}>
-                        from ${item.price.toFixed(2)}/lb
-                      </div>
-                    )}
-                  </div>
-                  
-                  <ChevronRight size={24} color="#CCC" />
-                </button>
-              ))}
+        {loading ? (
+          <div style={{ padding: '60px 20px', textAlign: 'center', color: '#999' }}>Loading...</div>
+        ) : (
+          <div>
+            {/* Meals Section */}
+            <div style={{ padding: '20px 20px 10px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: '600', margin: 0 }}>Meals</h2>
             </div>
-          )}
-        </div>
+            
+            {/* Comfort Dinner */}
+            <button onClick={() => navigate('/menu/comfort-dinner')} style={{
+              width: '100%', display: 'flex', alignItems: 'center', gap: '16px',
+              padding: '16px 20px', background: 'white', border: 'none', borderBottom: '1px solid #f0f0f0',
+              cursor: 'pointer', textAlign: 'left'
+            }}>
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200&h=200&fit=crop" alt="" style={{ width: '70px', height: '70px', borderRadius: '8px', objectFit: 'cover' }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: '600', fontSize: '17px', color: '#2B2B2B' }}>Comfort Dinner</div>
+                <div style={{ fontSize: '14px', color: '#666', marginTop: '2px' }}>
+                  {comfortPrice ? `$${comfortPrice.toFixed(2)}/lb` : ''} • Complete & balanced
+                </div>
+              </div>
+              <ChevronRight size={24} color="#ccc" />
+            </button>
+
+            {/* Primal Feast */}
+            <button onClick={() => navigate('/menu/primal-feast')} style={{
+              width: '100%', display: 'flex', alignItems: 'center', gap: '16px',
+              padding: '16px 20px', background: 'white', border: 'none', borderBottom: '1px solid #f0f0f0',
+              cursor: 'pointer', textAlign: 'left'
+            }}>
+              <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=200&h=200&fit=crop" alt="" style={{ width: '70px', height: '70px', borderRadius: '8px', objectFit: 'cover' }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: '600', fontSize: '17px', color: '#2B2B2B' }}>Primal Feast</div>
+                <div style={{ fontSize: '14px', color: '#666', marginTop: '2px' }}>
+                  {primalPrice ? `$${primalPrice.toFixed(2)}/lb` : ''} • 80/10/10 raw
+                </div>
+              </div>
+              <ChevronRight size={24} color="#ccc" />
+            </button>
+
+            {/* Treats Section */}
+            <div style={{ padding: '24px 20px 10px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: '600', margin: 0 }}>Treats & Bones</h2>
+            </div>
+            
+            <button onClick={() => navigate('/menu/treats')} style={{
+              width: '100%', display: 'flex', alignItems: 'center', gap: '16px',
+              padding: '16px 20px', background: 'white', border: 'none', borderBottom: '1px solid #f0f0f0',
+              cursor: 'pointer', textAlign: 'left'
+            }}>
+              <img src="https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=200&h=200&fit=crop" alt="" style={{ width: '70px', height: '70px', borderRadius: '8px', objectFit: 'cover' }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: '600', fontSize: '17px', color: '#2B2B2B' }}>Raw Treats & Bones</div>
+                <div style={{ fontSize: '14px', color: '#666', marginTop: '2px' }}>
+                  {treats.length} options available
+                </div>
+              </div>
+              <ChevronRight size={24} color="#ccc" />
+            </button>
+
+            {/* Tools Section */}
+            <div style={{ padding: '24px 20px 10px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: '600', margin: 0 }}>Tools</h2>
+            </div>
+            
+            <button onClick={() => navigate('/calculator')} style={{
+              width: '100%', display: 'flex', alignItems: 'center', gap: '16px',
+              padding: '16px 20px', background: 'white', border: 'none', borderBottom: '1px solid #f0f0f0',
+              cursor: 'pointer', textAlign: 'left'
+            }}>
+              <div style={{ width: '70px', height: '70px', borderRadius: '8px', background: '#F5F3EF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px' }}>🧮</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: '600', fontSize: '17px', color: '#2B2B2B' }}>Feeding Calculator</div>
+                <div style={{ fontSize: '14px', color: '#666', marginTop: '2px' }}>Find the right portions</div>
+              </div>
+              <ChevronRight size={24} color="#ccc" />
+            </button>
+
+            <button onClick={() => navigate('/meal-plan')} style={{
+              width: '100%', display: 'flex', alignItems: 'center', gap: '16px',
+              padding: '16px 20px', background: 'white', border: 'none', borderBottom: '1px solid #f0f0f0',
+              cursor: 'pointer', textAlign: 'left'
+            }}>
+              <div style={{ width: '70px', height: '70px', borderRadius: '8px', background: '#F5F3EF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px' }}>📋</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: '600', fontSize: '17px', color: '#2B2B2B' }}>Meal Plan Creator</div>
+                <div style={{ fontSize: '14px', color: '#666', marginTop: '2px' }}>Create your dog's profile</div>
+              </div>
+              <ChevronRight size={24} color="#ccc" />
+            </button>
+          </div>
+        )}
       </div>
       
-      <OrderProgressBar />
+      <StickyFooter />
       <SlideCart />
       <Footer />
     </>
   );
 };
 
-// Product Line Page (Comfort Dinner or Primal Feast)
+// Product Line Page - Clean Tim Hortons Style
 export const ProductLinePage = ({ productLine }) => {
   const navigate = useNavigate();
-  const { addToCart, totalLbs, setIsCartOpen } = useCart();
+  const { addToCart, cartItems } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProtein, setSelectedProtein] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedSize, setSelectedSize] = useState(6);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const lineId = productLine === 'comfort-dinner' ? 'comfort_dinner' : 'primal_feast';
   const lineName = productLine === 'comfort-dinner' ? 'Comfort Dinner' : 'Primal Feast';
-  const lineDescription = productLine === 'comfort-dinner' 
-    ? 'Complete & balanced meals with the perfect 70/10/10/8/2 ratio.'
-    : 'Pure 80/10/10 raw meals for the raw feeding purist.';
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${API}/products?line=${lineId}`);
+        const response = await axios.get(`${API}/products`);
         const lineProducts = response.data.filter(p => p.product_line === lineId);
         setProducts(lineProducts);
-        if (lineProducts.length > 0) {
-          setSelectedProtein(lineProducts[0]);
-        }
+        if (lineProducts.length > 0) setSelectedProduct(lineProducts[0]);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error:', error);
       } finally {
         setLoading(false);
       }
@@ -674,209 +424,270 @@ export const ProductLinePage = ({ productLine }) => {
   }, [lineId]);
 
   const handleAddToCart = () => {
-    if (!selectedProtein) return;
-    
-    const pricing = selectedProtein.pricing.find(p => p.size_lb === selectedSize);
+    if (!selectedProduct) return;
+    const pricing = selectedProduct.pricing.find(p => p.size_lb === selectedSize);
     if (!pricing) return;
 
     addToCart({
-      productId: selectedProtein.product_id,
-      name: lineName,
-      protein: selectedProtein.name,
+      productId: selectedProduct.product_id,
+      name: selectedProduct.name,
       lbs: selectedSize,
       price: pricing.price,
-      pricePerLb: pricing.price_per_lb
+      image: PRODUCT_IMAGES[selectedProduct.product_id] || PRODUCT_IMAGES.default
     });
   };
 
-  const selectedPricing = selectedProtein?.pricing?.find(p => p.size_lb === selectedSize);
+  const selectedPricing = selectedProduct?.pricing?.find(p => p.size_lb === selectedSize);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div style={{ padding: '60px 20px', textAlign: 'center', color: '#999' }}>Loading...</div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
       <Navbar />
-      <div style={{ 
-        minHeight: '100vh', 
-        background: '#F5F3EF',
-        paddingBottom: totalLbs > 0 ? '140px' : '40px'
-      }}>
+      <div style={{ minHeight: '100vh', background: 'white', paddingBottom: '180px' }}>
         {/* Header */}
-        <div style={{
-          background: 'linear-gradient(135deg, #8B4513 0%, #6B3410 100%)',
-          padding: '24px 20px',
-          color: 'white'
-        }}>
-          <button
-            onClick={() => navigate('/menu')}
-            style={{
-              background: 'rgba(255,255,255,0.2)',
-              border: 'none',
-              color: 'white',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              marginBottom: '16px'
-            }}
-          >
-            ← Back to Menu
+        <div style={{ display: 'flex', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid #eee' }}>
+          <button onClick={() => navigate('/menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#8B4513', fontWeight: '500' }}>
+            <ChevronLeft size={20} /> Menu
           </button>
-          <h1 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '8px' }}>{lineName}</h1>
-          <p style={{ fontSize: '14px', opacity: 0.9 }}>{lineDescription}</p>
         </div>
 
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#666' }}>Loading...</div>
-        ) : (
-          <div style={{ maxWidth: '600px', margin: '0 auto', padding: '24px 20px' }}>
-            {/* Protein Selector */}
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                Choose your protein
-              </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-                {products.map((product) => {
-                  const lowestPrice = Math.min(...product.pricing.map(p => p.price_per_lb));
-                  const isSelected = selectedProtein?.product_id === product.product_id;
-                  
-                  return (
-                    <button
-                      key={product.product_id}
-                      onClick={() => setSelectedProtein(product)}
-                      style={{
-                        padding: '14px 12px',
-                        background: isSelected ? '#FDF8F3' : 'white',
-                        border: isSelected ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                        borderRadius: '12px',
-                        cursor: 'pointer',
-                        textAlign: 'left',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      <div style={{ fontWeight: '600', fontSize: '15px', color: '#2B2B2B' }}>
-                        {product.name}
-                      </div>
-                      <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>
-                        from ${lowestPrice.toFixed(2)}/lb
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+        {/* Product Image */}
+        <div style={{ padding: '24px', textAlign: 'center' }}>
+          <img 
+            src={PRODUCT_IMAGES[selectedProduct?.product_id] || PRODUCT_IMAGES.default} 
+            alt={selectedProduct?.name}
+            style={{ width: '200px', height: '200px', borderRadius: '16px', objectFit: 'cover' }}
+          />
+        </div>
 
-            {/* Selected Product Details */}
-            {selectedProtein && (
-              <div style={{ background: 'white', borderRadius: '16px', padding: '24px', marginBottom: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-                <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '8px' }}>
-                  {selectedProtein.name}
-                </h3>
-                <p style={{ fontSize: '14px', color: '#666', lineHeight: '1.5', marginBottom: '16px' }}>
-                  {selectedProtein.mini_description}
-                </p>
-                
-                {/* Size Toggle */}
-                <div style={{ marginBottom: '20px' }}>
-                  <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '10px', color: '#2B2B2B' }}>
-                    Select size
-                  </label>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
-                    {[6, 12, 18, 24].map((size) => {
-                      const pricing = selectedProtein.pricing.find(p => p.size_lb === size);
-                      if (!pricing) return null;
-                      
-                      const isSelected = selectedSize === size;
-                      const discount = getBulkDiscount(size + totalLbs);
-                      
-                      return (
-                        <button
-                          key={size}
-                          onClick={() => setSelectedSize(size)}
-                          style={{
-                            padding: '12px 8px',
-                            background: isSelected ? '#8B4513' : 'white',
-                            color: isSelected ? 'white' : '#2B2B2B',
-                            border: isSelected ? '2px solid #8B4513' : '2px solid #E8E4DC',
-                            borderRadius: '10px',
-                            cursor: 'pointer',
-                            textAlign: 'center'
-                          }}
-                        >
-                          <div style={{ fontWeight: '600', fontSize: '16px' }}>{size} lbs</div>
-                          <div style={{ fontSize: '11px', opacity: 0.8 }}>
-                            ${pricing.price_per_lb.toFixed(2)}/lb
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+        {/* Product Info */}
+        <div style={{ padding: '0 20px', textAlign: 'center' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: '700', margin: '0 0 8px' }}>{selectedProduct?.name}</h1>
+          <p style={{ fontSize: '16px', color: '#666', margin: 0 }}>
+            ${selectedPricing?.price_per_lb.toFixed(2)}/lb • {lineName}
+          </p>
+        </div>
 
-                {/* Add to Cart Button */}
-                {selectedPricing && (
+        {/* Description */}
+        <div style={{ padding: '16px 20px' }}>
+          <p style={{ fontSize: '15px', color: '#444', lineHeight: '1.5', margin: 0 }}>
+            {selectedProduct?.description}
+          </p>
+        </div>
+
+        {/* Options */}
+        <div style={{ padding: '0 20px' }}>
+          {/* Protein Dropdown */}
+          <div style={{ borderTop: '1px solid #eee', borderBottom: '1px solid #eee' }}>
+            <button 
+              onClick={() => setShowDropdown(!showDropdown)}
+              style={{
+                width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                padding: '16px 0', background: 'none', border: 'none', cursor: 'pointer'
+              }}
+            >
+              <span style={{ fontWeight: '600', fontSize: '16px' }}>Protein</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#666' }}>
+                {selectedProduct?.name} <ChevronDown size={20} />
+              </span>
+            </button>
+            
+            {showDropdown && (
+              <div style={{ paddingBottom: '12px' }}>
+                {products.map(product => (
                   <button
-                    onClick={handleAddToCart}
+                    key={product.product_id}
+                    onClick={() => { setSelectedProduct(product); setShowDropdown(false); }}
                     style={{
-                      width: '100%',
-                      padding: '16px',
-                      background: '#8B4513',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '10px',
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
+                      width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      padding: '12px 16px', background: selectedProduct?.product_id === product.product_id ? '#F5F3EF' : 'white',
+                      border: 'none', borderRadius: '8px', cursor: 'pointer', marginBottom: '4px'
                     }}
                   >
-                    <Plus size={20} />
-                    Add {selectedSize} lbs • ${selectedPricing.price.toFixed(2)}
+                    <span style={{ fontWeight: selectedProduct?.product_id === product.product_id ? '600' : '400' }}>
+                      {product.name}
+                    </span>
+                    <span style={{ fontSize: '14px', color: '#666' }}>
+                      from ${Math.min(...product.pricing.map(p => p.price_per_lb)).toFixed(2)}/lb
+                    </span>
                   </button>
-                )}
-              </div>
-            )}
-
-            {/* Product Details Accordion */}
-            {selectedProtein && (
-              <div style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-                <details style={{ borderBottom: '1px solid #E8E4DC' }}>
-                  <summary style={{ padding: '16px 20px', cursor: 'pointer', fontWeight: '600', fontSize: '15px' }}>
-                    Ingredients
-                  </summary>
-                  <div style={{ padding: '0 20px 16px', fontSize: '14px', color: '#666', lineHeight: '1.6' }}>
-                    {selectedProtein.ingredients}
-                  </div>
-                </details>
-                <details style={{ borderBottom: '1px solid #E8E4DC' }}>
-                  <summary style={{ padding: '16px 20px', cursor: 'pointer', fontWeight: '600', fontSize: '15px' }}>
-                    Nutrition Facts
-                  </summary>
-                  <div style={{ padding: '0 20px 16px', fontSize: '14px', color: '#666' }}>
-                    {selectedProtein.nutrition_facts && Object.entries(selectedProtein.nutrition_facts).map(([key, value]) => (
-                      <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #F0F0F0' }}>
-                        <span style={{ textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
-                        <span style={{ fontWeight: '500' }}>{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </details>
-                <details>
-                  <summary style={{ padding: '16px 20px', cursor: 'pointer', fontWeight: '600', fontSize: '15px' }}>
-                    Why This Protein?
-                  </summary>
-                  <div style={{ padding: '0 20px 16px', fontSize: '14px', color: '#666', lineHeight: '1.6' }}>
-                    {selectedProtein.description}
-                  </div>
-                </details>
+                ))}
               </div>
             )}
           </div>
+
+          {/* Size Selector */}
+          <div style={{ borderBottom: '1px solid #eee', padding: '16px 0' }}>
+            <div style={{ fontWeight: '600', fontSize: '16px', marginBottom: '12px' }}>Size</div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {[6, 12, 18, 24].map(size => {
+                const pricing = selectedProduct?.pricing?.find(p => p.size_lb === size);
+                return (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    style={{
+                      flex: 1, padding: '12px 8px', borderRadius: '8px',
+                      border: selectedSize === size ? '2px solid #8B4513' : '1px solid #ddd',
+                      background: selectedSize === size ? '#FDF8F3' : 'white',
+                      cursor: 'pointer', textAlign: 'center'
+                    }}
+                  >
+                    <div style={{ fontWeight: '600', fontSize: '15px' }}>{size} lbs</div>
+                    <div style={{ fontSize: '12px', color: '#666' }}>${pricing?.price_per_lb.toFixed(2)}/lb</div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Product Details Accordion */}
+        <div style={{ padding: '0 20px' }}>
+          <details style={{ borderBottom: '1px solid #eee' }}>
+            <summary style={{ padding: '16px 0', cursor: 'pointer', fontWeight: '600', fontSize: '16px', listStyle: 'none', display: 'flex', justifyContent: 'space-between' }}>
+              Ingredients <ChevronDown size={18} />
+            </summary>
+            <p style={{ padding: '0 0 16px', fontSize: '14px', color: '#666', lineHeight: '1.6' }}>
+              {selectedProduct?.ingredients}
+            </p>
+          </details>
+          
+          <details style={{ borderBottom: '1px solid #eee' }}>
+            <summary style={{ padding: '16px 0', cursor: 'pointer', fontWeight: '600', fontSize: '16px', listStyle: 'none', display: 'flex', justifyContent: 'space-between' }}>
+              Nutrition Facts <ChevronDown size={18} />
+            </summary>
+            <div style={{ padding: '0 0 16px', fontSize: '14px', color: '#666' }}>
+              {selectedProduct?.nutrition_facts && Object.entries(selectedProduct.nutrition_facts).map(([key, value]) => (
+                <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
+                  <span style={{ textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
+                  <span>{value}</span>
+                </div>
+              ))}
+            </div>
+          </details>
+        </div>
+
+        {/* Sticky Add Button */}
+        <div style={{
+          position: 'fixed', bottom: cartItems.length > 0 ? '70px' : '0', left: 0, right: 0,
+          background: 'white', borderTop: '1px solid #eee', padding: '16px 20px'
+        }}>
+          <div style={{ maxWidth: '600px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <button style={{ width: '36px', height: '36px', borderRadius: '50%', border: '1px solid #ddd', background: 'white', cursor: 'pointer' }}>
+                <Minus size={16} />
+              </button>
+              <span style={{ fontSize: '18px', fontWeight: '600', minWidth: '24px', textAlign: 'center' }}>1</span>
+              <button style={{ width: '36px', height: '36px', borderRadius: '50%', border: '1px solid #ddd', background: 'white', cursor: 'pointer' }}>
+                <Plus size={16} />
+              </button>
+            </div>
+            <button onClick={handleAddToCart} style={{
+              flex: 1, padding: '14px 24px', background: '#8B4513', color: 'white',
+              border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: '600', cursor: 'pointer'
+            }}>
+              Add – ${selectedPricing?.price.toFixed(2)}
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <StickyFooter />
+      <SlideCart />
+    </>
+  );
+};
+
+// Treats Page
+export const TreatsPage = () => {
+  const navigate = useNavigate();
+  const { addToCart, cartItems } = useCart();
+  const [treats, setTreats] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTreats = async () => {
+      try {
+        const response = await axios.get(`${API}/treats`);
+        setTreats(response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTreats();
+  }, []);
+
+  const handleAddTreat = (treat) => {
+    addToCart({
+      productId: treat.treat_id,
+      name: treat.name,
+      lbs: treat.weight_lb || 1,
+      price: treat.price,
+      image: treat.images?.[0] || PRODUCT_IMAGES.default
+    });
+  };
+
+  return (
+    <>
+      <Navbar />
+      <div style={{ minHeight: '100vh', background: 'white', paddingBottom: cartItems.length > 0 ? '80px' : '0' }}>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid #eee' }}>
+          <button onClick={() => navigate('/menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#8B4513', fontWeight: '500' }}>
+            <ChevronLeft size={20} /> Menu
+          </button>
+        </div>
+
+        <div style={{ padding: '20px' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: '700', margin: '0 0 8px' }}>Treats & Bones</h1>
+          <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>Raw, natural treats for your pup</p>
+        </div>
+
+        {loading ? (
+          <div style={{ padding: '40px', textAlign: 'center', color: '#999' }}>Loading...</div>
+        ) : (
+          <div>
+            {treats.map(treat => (
+              <div key={treat.treat_id} style={{
+                display: 'flex', alignItems: 'center', gap: '16px',
+                padding: '16px 20px', borderBottom: '1px solid #f0f0f0'
+              }}>
+                <img 
+                  src={treat.images?.[0] || PRODUCT_IMAGES.default} 
+                  alt={treat.name}
+                  style={{ width: '70px', height: '70px', borderRadius: '8px', objectFit: 'cover' }}
+                />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: '600', fontSize: '16px', color: '#2B2B2B' }}>{treat.name}</div>
+                  <div style={{ fontSize: '14px', color: '#666', marginTop: '2px' }}>
+                    ${treat.price?.toFixed(2)} • {treat.weight_lb || 1} lb
+                  </div>
+                </div>
+                <button onClick={() => handleAddTreat(treat)} style={{
+                  padding: '10px 16px', background: '#8B4513', color: 'white',
+                  border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer'
+                }}>
+                  Add
+                </button>
+              </div>
+            ))}
+          </div>
         )}
       </div>
-
-      <OrderProgressBar />
+      
+      <StickyFooter />
       <SlideCart />
       <Footer />
     </>

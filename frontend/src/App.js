@@ -9,7 +9,7 @@ import { LandingPage } from './pages/LandingPage';
 import { BoxBuilder } from './pages/BoxBuilder';
 import { OrderChoicePage } from './pages/OrderChoicePage';
 import { MealPlanPage } from './pages/MealPlanPage';
-import { MenuPage, ProductLinePage, CartProvider, SlideCart } from './pages/MenuPage';
+import { MenuPage, ProductLinePage, TreatsPage, CartProvider, SlideCart } from './pages/MenuPage';
 import { ProductDetailPage } from './pages/ProductDetail';
 import { TreatDetailPage } from './pages/TreatDetail';
 import { AboutPage } from './pages/AboutPage';
@@ -23,6 +23,7 @@ import { AdminPage } from './pages/AdminPage';
 import { AdminLogin } from './pages/AdminLogin';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { BlogListPage, BlogDetailPage } from './pages/BlogPage';
+import { CheckoutPage } from './pages/CheckoutPage';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -80,6 +81,8 @@ function App() {
             <Route path="/menu" element={<MenuPage />} />
             <Route path="/menu/comfort-dinner" element={<ProductLinePage productLine="comfort-dinner" />} />
             <Route path="/menu/primal-feast" element={<ProductLinePage productLine="primal-feast" />} />
+            <Route path="/menu/treats" element={<TreatsPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/meal-plan" element={<MealPlanPage />} />
             <Route path="/build-box" element={<BoxBuilder />} />
             <Route path="/product/:productId" element={<ProductDetailPage />} />
