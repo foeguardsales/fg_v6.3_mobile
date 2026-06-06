@@ -16,11 +16,89 @@ const COLORS = {
   white: '#ffffff'
 };
 
+// Lifted Button Style (like Oma's - bordered with shadow on one side)
+const liftedButtonStyle = {
+  background: COLORS.red,
+  color: COLORS.white,
+  border: 'none',
+  padding: '16px 36px',
+  borderRadius: '8px',
+  fontSize: '15px',
+  fontWeight: '600',
+  cursor: 'pointer',
+  boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
+  transition: 'all 0.2s ease',
+  position: 'relative'
+};
+
+const liftedButtonHover = (e, isHover) => {
+  if (isHover) {
+    e.currentTarget.style.transform = 'translate(-2px, -2px)';
+    e.currentTarget.style.boxShadow = '6px 6px 0px rgba(0,0,0,0.25)';
+  } else {
+    e.currentTarget.style.transform = 'translate(0, 0)';
+    e.currentTarget.style.boxShadow = '4px 4px 0px rgba(0,0,0,0.2)';
+  }
+};
+
+// Outline Lifted Button
+const outlineButtonStyle = {
+  background: 'transparent',
+  color: COLORS.red,
+  border: `2px solid ${COLORS.red}`,
+  padding: '14px 32px',
+  borderRadius: '8px',
+  fontSize: '15px',
+  fontWeight: '600',
+  cursor: 'pointer',
+  boxShadow: '3px 3px 0px rgba(200,16,46,0.3)',
+  transition: 'all 0.2s ease'
+};
+
+// FoeGuard Logo Component
+const FoeGuardLogo = ({ size = 'default' }) => {
+  const sizes = {
+    small: { width: '120px' },
+    default: { width: '160px' },
+    large: { width: '200px' }
+  };
+  
+  return (
+    <img 
+      src="https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/qs79xq6w_FoeGuardLogo.png"
+      alt="FoeGuard"
+      style={{ 
+        ...sizes[size],
+        height: 'auto',
+        objectFit: 'contain'
+      }}
+    />
+  );
+};
+
 // Modern Navbar with centered logo
 const ModernNavbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
   const { cartItems, setIsCartOpen } = useCart();
+
+  const menuItems = [
+    { label: 'Shop Now', path: '/menu' },
+    { label: 'Why Raw', path: '/new-to-raw' },
+    { label: 'About Us', path: '/about' },
+    { 
+      label: 'Resources', 
+      isDropdown: true,
+      items: [
+        { label: 'FAQ', path: '/faq' },
+        { label: 'Delivery Information', path: '/delivery' },
+        { label: 'Blog', path: '/blog' }
+      ]
+    },
+    { label: 'Dog Food Calculator', path: '/calculator' },
+    { label: 'Contact Us', path: '/contact' }
+  ];
 
   return (
     <>
@@ -70,7 +148,7 @@ const ModernNavbar = () => {
             <Menu size={24} color={COLORS.charcoal} />
           </button>
 
-          {/* Center - Logo */}
+          {/* Center - Logo Image */}
           <button
             onClick={() => navigate('/')}
             style={{
@@ -80,16 +158,7 @@ const ModernNavbar = () => {
               padding: '0'
             }}
           >
-            <h1 style={{
-              fontSize: '28px',
-              fontWeight: '800',
-              color: COLORS.red,
-              margin: 0,
-              fontFamily: "'Rubik', sans-serif",
-              letterSpacing: '-0.5px'
-            }}>
-              FoeGuard
-            </h1>
+            <FoeGuardLogo size="default" />
           </button>
 
           {/* Right - Cart & Profile */}
@@ -164,41 +233,92 @@ const ModernNavbar = () => {
             overflowY: 'auto'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
-              <h2 style={{ fontSize: '24px', fontWeight: '700', color: COLORS.red, margin: 0 }}>FoeGuard</h2>
+              <FoeGuardLogo size="small" />
               <button onClick={() => setMenuOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                 <X size={24} color={COLORS.charcoal} />
               </button>
             </div>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {[
-                { label: 'Shop Menu', path: '/menu' },
-                { label: 'Build Meal Plan', path: '/meal-plan' },
-                { label: 'Feeding Calculator', path: '/calculator' },
-                { label: 'Why Raw?', path: '/new-to-raw' },
-                { label: 'About Us', path: '/about' },
-                { label: 'Contact', path: '/contact' }
-              ].map(item => (
-                <button
-                  key={item.path}
-                  onClick={() => { navigate(item.path); setMenuOpen(false); }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '16px 0',
-                    background: 'none',
-                    border: 'none',
-                    borderBottom: `1px solid ${COLORS.khaki}`,
-                    cursor: 'pointer',
-                    fontSize: '16px',
-                    fontWeight: '500',
-                    color: COLORS.charcoal
-                  }}
-                >
-                  {item.label}
-                  <ChevronRight size={20} color={COLORS.khaki} />
-                </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+              {menuItems.map((item, idx) => (
+                <div key={idx}>
+                  {item.isDropdown ? (
+                    <>
+                      <button
+                        onClick={() => setResourcesOpen(!resourcesOpen)}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                          padding: '16px 0',
+                          background: 'none',
+                          border: 'none',
+                          borderBottom: `1px solid ${COLORS.khaki}`,
+                          cursor: 'pointer',
+                          fontSize: '16px',
+                          fontWeight: '500',
+                          color: COLORS.charcoal
+                        }}
+                      >
+                        {item.label}
+                        <ChevronDown 
+                          size={20} 
+                          color={COLORS.khaki}
+                          style={{ transform: resourcesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}
+                        />
+                      </button>
+                      {resourcesOpen && (
+                        <div style={{ paddingLeft: '16px', background: COLORS.softBg }}>
+                          {item.items.map((subItem, subIdx) => (
+                            <button
+                              key={subIdx}
+                              onClick={() => { navigate(subItem.path); setMenuOpen(false); }}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                padding: '14px 0',
+                                background: 'none',
+                                border: 'none',
+                                borderBottom: `1px solid ${COLORS.khaki}`,
+                                cursor: 'pointer',
+                                fontSize: '15px',
+                                fontWeight: '400',
+                                color: COLORS.charcoal
+                              }}
+                            >
+                              {subItem.label}
+                              <ChevronRight size={18} color={COLORS.khaki} />
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => { navigate(item.path); setMenuOpen(false); }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        padding: '16px 0',
+                        background: 'none',
+                        border: 'none',
+                        borderBottom: `1px solid ${COLORS.khaki}`,
+                        cursor: 'pointer',
+                        fontSize: '16px',
+                        fontWeight: '500',
+                        color: COLORS.charcoal
+                      }}
+                    >
+                      {item.label}
+                      <ChevronRight size={20} color={COLORS.khaki} />
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
 
@@ -286,9 +406,11 @@ const ModernFooter = () => {
       }}>
         {/* Brand column */}
         <div>
-          <h3 style={{ fontSize: '28px', fontWeight: '800', color: COLORS.red, marginBottom: '16px' }}>FoeGuard</h3>
+          <div style={{ marginBottom: '16px' }}>
+            <FoeGuardLogo size="default" />
+          </div>
           <p style={{ fontSize: '14px', lineHeight: '1.7', color: COLORS.khaki, marginBottom: '24px' }}>
-            Ontario's #1 farm-to-bowl raw dog food delivery. Real, fresh, complete nutrition for your best friend.
+            Ontario&apos;s #1 farm-to-bowl raw dog food delivery. Real, fresh, complete nutrition for your best friend.
           </p>
           <div style={{ display: 'flex', gap: '12px' }}>
             {['Instagram', 'Facebook'].map(social => (
@@ -313,7 +435,7 @@ const ModernFooter = () => {
         {/* Shop column */}
         <div>
           <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', color: COLORS.white }}>Shop</h4>
-          {['Raw Dog Food', 'Meaty Treats', 'Build Meal Plan', 'Feeding Calculator'].map(item => (
+          {['Raw Dog Food', 'Meaty Treats', 'Build Meal Plan', 'Dog Food Calculator'].map(item => (
             <a key={item} href="#" style={{
               display: 'block',
               color: COLORS.khaki,
@@ -329,7 +451,7 @@ const ModernFooter = () => {
         {/* Help column */}
         <div>
           <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', color: COLORS.white }}>Help</h4>
-          {['Contact Us', 'FAQs', 'Shipping Info', 'Returns'].map(item => (
+          {['Contact Us', 'FAQs', 'Delivery Information', 'Returns'].map(item => (
             <a key={item} href="#" style={{
               display: 'block',
               color: COLORS.khaki,
@@ -413,85 +535,117 @@ export const LandingPage = () => {
         {/* HERO SECTION */}
         <section style={{
           background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)`,
-          padding: '60px 20px 80px',
+          padding: '40px 20px 60px',
           position: 'relative',
           overflow: 'hidden'
         }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
-            {/* Rating badge */}
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            {/* Tri-Image Layout */}
             <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: COLORS.white,
-              padding: '8px 16px',
-              borderRadius: '50px',
-              marginBottom: '24px',
-              boxShadow: '0 2px 12px rgba(0,0,0,0.08)'
+              display: 'grid',
+              gridTemplateColumns: '1.5fr 1fr',
+              gap: '12px',
+              marginBottom: '40px',
+              maxWidth: '700px',
+              margin: '0 auto 40px'
             }}>
-              <div style={{ display: 'flex', gap: '2px' }}>
-                {[1,2,3,4,5].map(i => <Star key={i} size={14} fill={COLORS.red} color={COLORS.red} />)}
+              {/* Large image on left */}
+              <div style={{
+                borderRadius: '16px',
+                overflow: 'hidden',
+                height: '280px'
+              }}>
+                <img 
+                  src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop"
+                  alt="Happy dog"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
               </div>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: COLORS.charcoal }}>
-                Thousands of 5-Star Reviews
-              </span>
+              {/* Two smaller images stacked on right */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  flex: 1
+                }}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&h=200&fit=crop"
+                    alt="Raw food"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
+                <div style={{
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  flex: 1
+                }}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=300&h=200&fit=crop"
+                    alt="Dogs playing"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
+              </div>
             </div>
 
-            <h1 style={{
-              fontSize: 'clamp(32px, 6vw, 56px)',
-              fontWeight: '800',
-              color: COLORS.charcoal,
-              lineHeight: '1.1',
-              marginBottom: '20px',
-              fontFamily: "'Rubik', sans-serif"
-            }}>
-              Ontario's #1 Farm-to-Bowl<br />
-              <span style={{ color: COLORS.red }}>Raw Dog Food Delivery</span>
-            </h1>
+            {/* Hero Text */}
+            <div style={{ textAlign: 'center' }}>
+              <h1 style={{
+                fontSize: 'clamp(28px, 5vw, 48px)',
+                fontWeight: '800',
+                color: COLORS.charcoal,
+                lineHeight: '1.15',
+                marginBottom: '20px',
+                fontFamily: "'Rubik', sans-serif"
+              }}>
+                Ontario&apos;s #1 Farm-to-Bowl<br />
+                <span style={{ color: COLORS.red }}>Raw Dog Food Delivery</span>
+              </h1>
 
-            <p style={{
-              fontSize: '18px',
-              color: COLORS.charcoal,
-              opacity: 0.8,
-              maxWidth: '600px',
-              margin: '0 auto 32px',
-              lineHeight: '1.6'
-            }}>
-              Restore your dog's digestion, energy and comfort from the inside out with real, fresh, complete raw nutrition.
-            </p>
+              <p style={{
+                fontSize: '17px',
+                color: COLORS.charcoal,
+                opacity: 0.8,
+                maxWidth: '550px',
+                margin: '0 auto 28px',
+                lineHeight: '1.6'
+              }}>
+                Restore your dog&apos;s digestion, energy and comfort from the inside out with real, fresh, complete raw nutrition.
+              </p>
 
-            <button
-              onClick={() => navigate('/menu')}
-              style={{
-                background: COLORS.red,
-                color: COLORS.white,
-                border: 'none',
-                padding: '18px 48px',
-                borderRadius: '50px',
-                fontSize: '16px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                boxShadow: '0 4px 20px rgba(200, 16, 46, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 6px 24px rgba(200, 16, 46, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 20px rgba(200, 16, 46, 0.3)';
-              }}
-            >
-              Shop Now
-            </button>
+              {/* Shop Now Button - Lifted Style */}
+              <button
+                onClick={() => navigate('/menu')}
+                style={liftedButtonStyle}
+                onMouseEnter={(e) => liftedButtonHover(e, true)}
+                onMouseLeave={(e) => liftedButtonHover(e, false)}
+              >
+                Shop Now
+              </button>
+
+              {/* Reviews - No pill, under Shop Now */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                marginTop: '20px'
+              }}>
+                <div style={{ display: 'flex', gap: '2px' }}>
+                  {[1,2,3,4,5].map(i => <Star key={i} size={16} fill={COLORS.red} color={COLORS.red} />)}
+                </div>
+                <span style={{ fontSize: '14px', fontWeight: '500', color: COLORS.charcoal }}>
+                  Hundreds of 5-Star Reviews
+                </span>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* TRUST MARQUEE */}
         <TrustMarquee />
 
-        {/* COLLECTION CARDS - "Our Menu" */}
+        {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
           background: COLORS.white,
           padding: '80px 20px'
@@ -504,7 +658,7 @@ export const LandingPage = () => {
               marginBottom: '48px',
               color: COLORS.charcoal
             }}>
-              Meet Our <span style={{ color: COLORS.red }}>Delicious</span> Lineup
+              Shop <span style={{ color: COLORS.red }}>Farm Fresh</span>
             </h2>
 
             <div style={{
@@ -518,21 +672,21 @@ export const LandingPage = () => {
                   desc: 'Take our simple quiz to receive your customized raw feeding plan in seconds.',
                   image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=300&fit=crop',
                   path: '/meal-plan',
-                  color: COLORS.forestGreen
+                  cta: 'Get Started'
                 },
                 {
                   title: 'Raw Dog Food',
-                  desc: 'Fresh food that\'s easy to portion and serve, ensuring balanced, nutritious meals every day.',
+                  desc: 'Fresh food that is easy to portion and serve, ensuring balanced, nutritious meals every day.',
                   image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
                   path: '/menu',
-                  color: COLORS.red
+                  cta: 'Order Now'
                 },
                 {
                   title: 'Meaty Treats',
-                  desc: 'Freeze-dried treats add a nutritional boost to any diet. Perfect as rewards or training tools.',
+                  desc: 'Raw treats add a nutritional boost to any diet. Perfect as rewards or training tools.',
                   image: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&h=300&fit=crop',
                   path: '/menu/treats',
-                  color: COLORS.lightGreen
+                  cta: 'Shop Now'
                 }
               ].map((card, i) => (
                 <button
@@ -541,41 +695,26 @@ export const LandingPage = () => {
                   style={{
                     background: COLORS.cream,
                     border: 'none',
-                    borderRadius: '20px',
+                    borderRadius: '16px',
                     overflow: 'hidden',
                     cursor: 'pointer',
                     textAlign: 'left',
                     transition: 'all 0.3s ease',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.06)'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-8px)';
-                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.12)';
+                    e.currentTarget.style.transform = 'translateY(-6px)';
+                    e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.12)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.06)';
+                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
                   }}
                 >
                   <div style={{
                     height: '200px',
-                    background: `url(${card.image}) center/cover`,
-                    position: 'relative'
-                  }}>
-                    <div style={{
-                      position: 'absolute',
-                      bottom: '16px',
-                      left: '16px',
-                      background: card.color,
-                      color: COLORS.white,
-                      padding: '6px 14px',
-                      borderRadius: '20px',
-                      fontSize: '12px',
-                      fontWeight: '600'
-                    }}>
-                      {i === 0 ? 'Quiz' : i === 1 ? 'Shop' : 'Treats'}
-                    </div>
-                  </div>
+                    background: `url(${card.image}) center/cover`
+                  }} />
                   <div style={{ padding: '24px' }}>
                     <h3 style={{
                       fontSize: '20px',
@@ -602,7 +741,7 @@ export const LandingPage = () => {
                       fontWeight: '600',
                       fontSize: '14px'
                     }}>
-                      Get Started <ChevronRight size={18} />
+                      {card.cta} <ChevronRight size={18} />
                     </span>
                   </div>
                 </button>
@@ -626,9 +765,9 @@ export const LandingPage = () => {
               {/* Image side */}
               <div style={{
                 position: 'relative',
-                borderRadius: '24px',
+                borderRadius: '20px',
                 overflow: 'hidden',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.1)'
+                boxShadow: '8px 8px 0px rgba(0,0,0,0.1)'
               }}>
                 <img
                   src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=500&fit=crop"
@@ -642,8 +781,7 @@ export const LandingPage = () => {
                   right: '24px',
                   background: 'rgba(255,255,255,0.95)',
                   padding: '20px',
-                  borderRadius: '16px',
-                  backdropFilter: 'blur(10px)'
+                  borderRadius: '12px'
                 }}>
                   <p style={{ fontSize: '14px', color: COLORS.charcoal, margin: 0 }}>
                     <strong style={{ color: COLORS.red }}>Made in our Ontario Regulated Human Food Kitchen</strong><br />
@@ -663,9 +801,9 @@ export const LandingPage = () => {
                   Why <span style={{ color: COLORS.red }}>FoeGuard</span> Raw?
                 </h2>
 
-                <div style={{ display: 'grid', gap: '20px' }}>
+                <div style={{ display: 'grid', gap: '16px' }}>
                   {[
-                    { icon: '🌿', title: 'Organic, Human-Grade Ingredients', desc: 'Only the finest ingredients you\'d eat yourself' },
+                    { icon: '🌿', title: 'Organic, Human-Grade Ingredients', desc: 'Only the finest ingredients you would eat yourself' },
                     { icon: '✓', title: 'Exceeds AAFCO Standards', desc: 'Complete nutrition backed by science' },
                     { icon: '🇨🇦', title: '100% Canadian Sourced', desc: 'Supporting local farmers and suppliers' },
                     { icon: '🏠', title: 'Family Owned & Operated', desc: 'Third generation farmers who truly care' }
@@ -673,29 +811,29 @@ export const LandingPage = () => {
                     <div key={i} style={{
                       display: 'flex',
                       gap: '16px',
-                      padding: '20px',
+                      padding: '18px',
                       background: COLORS.white,
-                      borderRadius: '16px',
-                      boxShadow: '0 2px 12px rgba(0,0,0,0.04)'
+                      borderRadius: '12px',
+                      boxShadow: '3px 3px 0px rgba(0,0,0,0.05)'
                     }}>
                       <div style={{
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: '12px',
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '10px',
                         background: COLORS.cream,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '24px',
+                        fontSize: '22px',
                         flexShrink: 0
                       }}>
                         {item.icon}
                       </div>
                       <div>
-                        <h4 style={{ fontSize: '16px', fontWeight: '700', color: COLORS.charcoal, margin: '0 0 4px' }}>
+                        <h4 style={{ fontSize: '15px', fontWeight: '700', color: COLORS.charcoal, margin: '0 0 4px' }}>
                           {item.title}
                         </h4>
-                        <p style={{ fontSize: '14px', color: COLORS.charcoal, opacity: 0.7, margin: 0 }}>
+                        <p style={{ fontSize: '13px', color: COLORS.charcoal, opacity: 0.7, margin: 0 }}>
                           {item.desc}
                         </p>
                       </div>
@@ -706,15 +844,16 @@ export const LandingPage = () => {
                 <button
                   onClick={() => navigate('/new-to-raw')}
                   style={{
-                    marginTop: '24px',
-                    background: 'none',
-                    border: `2px solid ${COLORS.red}`,
-                    color: COLORS.red,
-                    padding: '14px 28px',
-                    borderRadius: '50px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer'
+                    ...outlineButtonStyle,
+                    marginTop: '24px'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = COLORS.red;
+                    e.currentTarget.style.color = COLORS.white;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.color = COLORS.red;
                   }}
                 >
                   Learn More
@@ -741,7 +880,7 @@ export const LandingPage = () => {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '24px'
+              gap: '20px'
             }}>
               {[
                 { icon: '💪', title: 'Improved Digestion', desc: 'Easier on the stomach' },
@@ -751,12 +890,11 @@ export const LandingPage = () => {
               ].map((benefit, i) => (
                 <div key={i} style={{
                   background: 'rgba(255,255,255,0.1)',
-                  padding: '32px 24px',
-                  borderRadius: '20px',
-                  backdropFilter: 'blur(10px)'
+                  padding: '28px 20px',
+                  borderRadius: '16px'
                 }}>
-                  <div style={{ fontSize: '40px', marginBottom: '16px' }}>{benefit.icon}</div>
-                  <h4 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '8px' }}>{benefit.title}</h4>
+                  <div style={{ fontSize: '36px', marginBottom: '12px' }}>{benefit.icon}</div>
+                  <h4 style={{ fontSize: '17px', fontWeight: '700', marginBottom: '6px' }}>{benefit.title}</h4>
                   <p style={{ fontSize: '14px', opacity: 0.8, margin: 0 }}>{benefit.desc}</p>
                 </div>
               ))}
@@ -786,26 +924,26 @@ export const LandingPage = () => {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '24px'
+              gap: '20px'
             }}>
               {reviews.map((review, i) => (
                 <div key={i} style={{
                   background: COLORS.white,
-                  padding: '32px',
-                  borderRadius: '20px',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
+                  padding: '28px',
+                  borderRadius: '16px',
+                  boxShadow: '4px 4px 0px rgba(0,0,0,0.05)'
                 }}>
-                  <div style={{ display: 'flex', gap: '4px', marginBottom: '16px' }}>
-                    {[1,2,3,4,5].map(s => <Star key={s} size={18} fill={COLORS.red} color={COLORS.red} />)}
+                  <div style={{ display: 'flex', gap: '4px', marginBottom: '14px' }}>
+                    {[1,2,3,4,5].map(s => <Star key={s} size={16} fill={COLORS.red} color={COLORS.red} />)}
                   </div>
                   <p style={{
-                    fontSize: '16px',
+                    fontSize: '15px',
                     color: COLORS.charcoal,
                     lineHeight: '1.6',
-                    marginBottom: '20px',
+                    marginBottom: '18px',
                     fontStyle: 'italic'
                   }}>
-                    "{review.text}"
+                    {`"${review.text}"`}
                   </p>
                   <p style={{
                     fontSize: '14px',
@@ -867,7 +1005,7 @@ export const LandingPage = () => {
                 lineHeight: '1.8',
                 marginBottom: '24px'
               }}>
-                FoeGuard is a family-run business committed to providing pet parents with the same fresh, natural ingredients we expect at our own table. As third generation Canadian Farmers and award-winning German Shepherd breeders with a PhD in biology, we've seen the benefits of biologically appropriate raw food first-hand.
+                FoeGuard is a family-run business committed to providing pet parents with the same fresh, natural ingredients we expect at our own table. As third generation Canadian Farmers and award-winning German Shepherd breeders with a PhD in biology, we have seen the benefits of biologically appropriate raw food first-hand.
               </p>
               <p style={{
                 fontSize: '16px',
@@ -875,21 +1013,17 @@ export const LandingPage = () => {
                 lineHeight: '1.8',
                 marginBottom: '32px'
               }}>
-                What began as helping our neighbours and friends with their dogs' meals became a realization that Ontario pet parents needed better access to trusted, transparent pet nutrition. Our passion became profession, FoeGuard was born!
+                What began as helping our neighbours and friends with their dogs meals became a realization that Ontario pet parents needed better access to trusted, transparent pet nutrition. Our passion became profession, FoeGuard was born!
               </p>
               <button
                 onClick={() => navigate('/about')}
                 style={{
+                  ...liftedButtonStyle,
                   alignSelf: 'flex-start',
-                  background: COLORS.charcoal,
-                  color: COLORS.white,
-                  border: 'none',
-                  padding: '14px 28px',
-                  borderRadius: '50px',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer'
+                  background: COLORS.charcoal
                 }}
+                onMouseEnter={(e) => liftedButtonHover(e, true)}
+                onMouseLeave={(e) => liftedButtonHover(e, false)}
               >
                 More About Us
               </button>
@@ -917,8 +1051,9 @@ export const LandingPage = () => {
               {faqs.map((faq, i) => (
                 <div key={i} style={{
                   background: COLORS.cream,
-                  borderRadius: '16px',
-                  overflow: 'hidden'
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  boxShadow: '2px 2px 0px rgba(0,0,0,0.03)'
                 }}>
                   <button
                     onClick={() => setActiveFaq(activeFaq === i ? null : i)}
@@ -982,7 +1117,7 @@ export const LandingPage = () => {
               display: 'flex',
               flexWrap: 'wrap',
               justifyContent: 'center',
-              gap: '16px',
+              gap: '12px',
               marginBottom: '40px'
             }}>
               {[
@@ -993,8 +1128,8 @@ export const LandingPage = () => {
               ].map((item, i) => (
                 <span key={i} style={{
                   background: 'rgba(255,255,255,0.2)',
-                  padding: '10px 20px',
-                  borderRadius: '50px',
+                  padding: '10px 18px',
+                  borderRadius: '8px',
                   fontSize: '14px',
                   fontWeight: '500'
                 }}>
@@ -1010,11 +1145,19 @@ export const LandingPage = () => {
                 color: COLORS.red,
                 border: 'none',
                 padding: '18px 48px',
-                borderRadius: '50px',
-                fontSize: '18px',
+                borderRadius: '8px',
+                fontSize: '17px',
                 fontWeight: '700',
                 cursor: 'pointer',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
+                boxShadow: '4px 4px 0px rgba(0,0,0,0.2)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translate(-2px, -2px)';
+                e.currentTarget.style.boxShadow = '6px 6px 0px rgba(0,0,0,0.25)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translate(0, 0)';
+                e.currentTarget.style.boxShadow = '4px 4px 0px rgba(0,0,0,0.2)';
               }}
             >
               Shop Now
