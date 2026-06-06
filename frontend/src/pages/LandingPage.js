@@ -1,1126 +1,1031 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Navbar, Footer } from '../components/Layout';
-import { Check, ChevronLeft, ChevronRight, Home, CheckCircle, Scale, Beef, X, Package, HelpCircle, Tag } from 'lucide-react';
+import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus } from 'lucide-react';
+import { useCart, SlideCart } from './MenuPage';
 
-export const LandingPage = () => {
+// FoeGuard Brand Colors
+const COLORS = {
+  red: '#c8102e',
+  redOverlay: '#9D0D23',
+  cream: '#f5f3ef',
+  softBg: '#f0ece6',
+  khaki: '#D8CFB8',
+  charcoal: '#2C2C2C',
+  forestGreen: '#2F4538',
+  lightGreen: '#00934f',
+  white: '#ffffff'
+};
+
+// Modern Navbar with centered logo
+const ModernNavbar = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [emailSubmitted, setEmailSubmitted] = useState('');
-  const photoScrollRef = useRef(null);
-  const reviewsScrollRef = useRef(null);
-  const proteinScrollRef = useRef(null);
-  const [sliderPos, setSliderPos] = useState(50);
-  const sliderRef = useRef(null);
-  const isDragging = useRef(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { cartItems, setIsCartOpen } = useCart();
 
-  const handleSliderMove = useCallback((clientX) => {
-    if (!sliderRef.current) return;
-    const rect = sliderRef.current.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    setSliderPos(pct);
-  }, []);
-
-  const onPointerDown = useCallback((e) => {
-    isDragging.current = true;
-    handleSliderMove(e.clientX);
-    e.preventDefault();
-  }, [handleSliderMove]);
-
-  const onPointerMove = useCallback((e) => {
-    if (!isDragging.current) return;
-    handleSliderMove(e.clientX);
-  }, [handleSliderMove]);
-
-  const onPointerUp = useCallback(() => {
-    isDragging.current = false;
-  }, []);
-
-  const handleEmailSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Connect to email service
-    setEmailSubmitted(true);
-  };
-
-  const scrollPhotos = (direction) => {
-    if (photoScrollRef.current) {
-      const scrollAmount = 300;
-      photoScrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const scrollReviews = (direction) => {
-    if (reviewsScrollRef.current) {
-      const scrollAmount = 300;
-      reviewsScrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const scrollProteins = (direction) => {
-    if (proteinScrollRef.current) {
-      const scrollAmount = 350;
-      proteinScrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  const proteins = [
-    {
-      name: 'Chicken',
-      description: 'Lean protein that supports muscle development and provides essential amino acids for overall health.',
-      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/dksu613b_chicken.png'
-    },
-    {
-      name: 'Beef',
-      description: 'Rich in iron and zinc, beef supports energy levels, immune function, and healthy blood cells.',
-      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/262n9jvl_beef.png'
-    },
-    {
-      name: 'Turkey',
-      description: 'Low-fat protein packed with nutrients that promote lean muscle mass and digestive health.',
-      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/j6yxejew_turkey.png'
-    },
-    {
-      name: 'Duck',
-      description: 'Nutrient-dense protein with omega fatty acids that support skin, coat, and joint health.',
-      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/s3okrgsw_duck.png'
-    },
-    {
-      name: 'Salmon',
-      description: 'Omega-3 rich fish that promotes brain function, reduces inflammation, and supports a shiny coat.',
-      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/l6i3vb5d_salmon.png'
-    },
-    {
-      name: 'Lamb',
-      description: 'Easily digestible protein with B vitamins that support energy metabolism and muscle health.',
-      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/pgajdkxv_lamb.png'
-    },
-    {
-      name: 'Goat',
-      description: 'Novel protein that is gentle on sensitive stomachs and provides essential nutrients for overall wellness.',
-      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0u52lnr0_goat.png'
-    },
-    {
-      name: 'Rabbit',
-      description: 'Hypoallergenic lean protein ideal for dogs with food sensitivities, supporting digestion and vitality.',
-      image: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ptl7se73_rabbit.png'
-    }
-  ];
-  
   return (
     <>
-      <Navbar />
-      <div className="landing-page">
+      <nav style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        background: COLORS.cream,
+        borderBottom: `1px solid ${COLORS.khaki}`
+      }}>
+        {/* Top announcement bar */}
+        <div style={{
+          background: COLORS.red,
+          color: COLORS.white,
+          textAlign: 'center',
+          padding: '8px 16px',
+          fontSize: '13px',
+          fontWeight: '500'
+        }}>
+          Free shipping on all orders over $149
+        </div>
         
-        {/* ===== BANNER — HERO ===== */}
-        <section className="hero-section" data-testid="hero-section" style={{
-          position: 'relative',
-          minHeight: '380px',
+        {/* Main navbar */}
+        <div style={{
           display: 'flex',
           alignItems: 'center',
-          background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.85) 0%, rgba(115, 40, 39, 0.75) 100%)',
-          overflow: 'hidden'
+          justifyContent: 'space-between',
+          padding: '12px 20px',
+          maxWidth: '1400px',
+          margin: '0 auto'
         }}>
-          {/* Background Image */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 0
-          }}>
-            <img 
-              src="https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/q9no77mv_site%20banner%20images_fg26%27.png"
-              alt="Happy dog on farm path"
+          {/* Left - Menu button */}
+          <button
+            onClick={() => setMenuOpen(true)}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
+          >
+            <Menu size={24} color={COLORS.charcoal} />
+          </button>
+
+          {/* Center - Logo */}
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0'
+            }}
+          >
+            <h1 style={{
+              fontSize: '28px',
+              fontWeight: '800',
+              color: COLORS.red,
+              margin: 0,
+              fontFamily: "'Rubik', sans-serif",
+              letterSpacing: '-0.5px'
+            }}>
+              FoeGuard
+            </h1>
+          </button>
+
+          {/* Right - Cart & Profile */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button
+              onClick={() => navigate('/account')}
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                objectPosition: 'center 30%'
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '8px'
               }}
-            />
+            >
+              <User size={22} color={COLORS.charcoal} />
+            </button>
+            <button
+              onClick={() => setIsCartOpen(true)}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '8px',
+                position: 'relative'
+              }}
+            >
+              <ShoppingBag size={22} color={COLORS.charcoal} />
+              {cartItems.length > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: '2px',
+                  right: '2px',
+                  background: COLORS.red,
+                  color: COLORS.white,
+                  fontSize: '10px',
+                  fontWeight: '700',
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  {cartItems.length}
+                </span>
+              )}
+            </button>
           </div>
-          
-          {/* Dark Overlay for text readability */}
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {menuOpen && (
+        <>
+          <div
+            onClick={() => setMenuOpen(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.5)',
+              zIndex: 1001
+            }}
+          />
           <div style={{
-            position: 'absolute',
+            position: 'fixed',
             top: 0,
             left: 0,
-            right: 0,
             bottom: 0,
-            background: 'linear-gradient(90deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)',
-            zIndex: 1
-          }}></div>
-
-          {/* Text Content - Left Aligned */}
-          <div className="hero-content" style={{
-            position: 'relative',
-            zIndex: 2,
-            maxWidth: '1200px',
-            margin: '0 auto',
-            padding: '50px 40px',
-            textAlign: 'left',
-            width: '100%'
+            width: '300px',
+            background: COLORS.cream,
+            zIndex: 1002,
+            padding: '20px',
+            overflowY: 'auto'
           }}>
-            <div style={{ maxWidth: '550px' }}>
-              <h1 className="hero-title" style={{ 
-                fontFamily: "'Rubik', sans-serif",
-                fontWeight: '600',
-                fontSize: '34px',
-                lineHeight: '1.1',
-                marginBottom: '16px',
-                color: '#FFFFFF',
-                textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
-              }}>
-                Feed the Way<br />
-                <span className="hero-accent" style={{ color: '#E8DDD0' }}>Nature Intended</span>
-              </h1>
-              <p className="hero-subtitle" style={{ 
-                fontFamily: "'Rubik', sans-serif",
-                fontWeight: '400',
-                marginBottom: '24px',
-                fontSize: '16px',
-                lineHeight: '1.6',
-                color: '#FFFFFF',
-                textShadow: '1px 1px 4px rgba(0,0,0,0.5)'
-              }}>
-                Ontario's farm-fresh raw dog food — delivered to your door in just 3 days.
-              </p>
-              <button 
-                className="btn-hero" 
-                onClick={() => navigate('/order')}
-                data-testid="hero-build-box-btn"
-                style={{
-                  borderRadius: '8px',
-                  padding: '14px 42px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                  transition: 'transform 0.2s',
-                  cursor: 'pointer'
-                }}
-              >
-                Order Now
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+              <h2 style={{ fontSize: '24px', fontWeight: '700', color: COLORS.red, margin: 0 }}>FoeGuard</h2>
+              <button onClick={() => setMenuOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                <X size={24} color={COLORS.charcoal} />
               </button>
             </div>
-          </div>
-        </section>
-
-        {/* ===== SECTION — FROM OUR FARM TO YOUR BOWL ===== */}
-        <section className="problem-section">
-          <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>From our farm to your bowl.</h2>
-            <div className="problem-content" style={{ maxWidth: '900px', margin: '0 auto' }}>
-              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-                Good food starts before the bowl, with how ingredients are raised, handled, and prepared.
-              </p>
-              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
-                Many pet parents feel stuck dealing with allergies, digestive issues, or simply trying to find food their dog actually enjoys — without knowing if what they're feeding is part of the problem or the solution. The truth is, the right ingredients can make all the difference, but finding them shouldn't feel overwhelming.
-              </p>
-              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
-                That's where we come in. As an Ontario family-run farm, we handle the sourcing, balancing, and preparation so your dog gets fresh raw meals that support a healthier, more vibrant life — made with the same care you would expect at your own table.
-              </p>
-              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '17px', marginTop: '20px', marginBottom: '0', lineHeight: '1.7' }}>
-                We make raw feeding simple, exciting, and tailored to what your dog needs.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== CUSTOMER REVIEWS & PHOTOS ===== */}
-        <section className="community-section" style={{ background: '#F8F6F4' }}>
-          <div className="section-container">
-            {/* Swipeable Customer Photo Grid - 12 photos */}
-            <div style={{ position: 'relative' }}>
-              <button
-                onClick={() => scrollPhotos('left')}
-                style={{
-                  position: 'absolute',
-                  left: '-20px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'white',
-                  border: '2px solid #E8DDD0',
-                  borderRadius: '50%',
-                  width: '40px',
-                  height: '40px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  zIndex: 10,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-              >
-                <ChevronLeft size={20} />
-              </button>
-              
-              <div 
-                ref={photoScrollRef}
-                style={{
-                  display: 'flex',
-                  gap: '16px',
-                  overflowX: 'auto',
-                  scrollBehavior: 'smooth',
-                  paddingBottom: '16px',
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none'
-                }}
-                className="photo-scroll-container"
-              >
-                {[
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/skuox6lk_customer%20image%201.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/i8unoyzf_customer%20image%202.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0chc5rd7_customer%20image%203.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ztqi7osh_customer%20image%204.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/mdrqjiyi_customer%20image%205.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/fd4zxuc8_customer%20image%206.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/bntscfuc_customer%20image%207.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/uci3qgmq_customer%20image%208.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/aphigyw1_customer%20image%209.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/2kgbxhaf_customer%20image%2010.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/pk34xhh5_customer%20image%2011.jpg',
-                  'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/nsfx800g_customer%20image%2012.jpg'
-                ].map((url, i) => (
-                  <div 
-                    key={i}
-                    style={{
-                      minWidth: '250px',
-                      height: '250px',
-                      borderRadius: '12px',
-                      background: '#E8DDD0',
-                      overflow: 'hidden',
-                      flexShrink: 0
-                    }}
-                  >
-                    <img src={url} alt={`Customer photo ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={() => scrollPhotos('right')}
-                style={{
-                  position: 'absolute',
-                  right: '-20px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'white',
-                  border: '2px solid #E8DDD0',
-                  borderRadius: '50%',
-                  width: '40px',
-                  height: '40px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  zIndex: 10,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-
-            <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '15px', color: '#666' }}>
-              93% of owners surveyed reported positive changes in digestion, coat, and/or energy.
-            </p>
-          </div>
-        </section>
-
-        {/* ===== SECTION — BETTER FOOD ===== */}
-        <section className="standard-section">
-          <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', color: 'white', fontWeight: '600' }}>Real food for dogs, raised right in Ontario.</h2>
-            <p style={{ fontSize: '17px', marginBottom: '48px', textAlign: 'center', color: 'rgba(255,255,255,0.9)' }}>
-              Skip the fillers, preservatives, and retail markups. By delivering directly from our farm, we invest in better ingredients and ethical sourcing — quality you won't find in store.
-            </p>
-
-            {/* Before/After Slider Comparison */}
-            <div style={{ maxWidth: '350px', margin: '0 auto 48px', textAlign: 'center' }}>
-              <div
-                ref={sliderRef}
-                data-testid="food-comparison-slider"
-                onPointerDown={onPointerDown}
-                onPointerMove={onPointerMove}
-                onPointerUp={onPointerUp}
-                onPointerLeave={onPointerUp}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  aspectRatio: '1 / 1',
-                  borderRadius: '50%',
-                  overflow: 'hidden',
-                  cursor: 'ew-resize',
-                  userSelect: 'none',
-                  touchAction: 'none',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-                  background: '#732827',
-                  border: '4px solid #732827'
-                }}
-              >
-                {/* Competition meat (full background) */}
-                <img
-                  src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/jtirzx2v_competition_meat.png"
-                  alt="Competition processed dog food"
-                  draggable={false}
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {[
+                { label: 'Shop Menu', path: '/menu' },
+                { label: 'Build Meal Plan', path: '/meal-plan' },
+                { label: 'Feeding Calculator', path: '/calculator' },
+                { label: 'Why Raw?', path: '/new-to-raw' },
+                { label: 'About Us', path: '/about' },
+                { label: 'Contact', path: '/contact' }
+              ].map(item => (
+                <button
+                  key={item.path}
+                  onClick={() => { navigate(item.path); setMenuOpen(false); }}
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    transform: 'scale(1.15)'
-                  }}
-                />
-                {/* FoeGuard meat (clipped by slider) */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  clipPath: `inset(0 ${100 - sliderPos}% 0 0)`
-                }}>
-                  <img
-                    src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/krlzk3m3_fg_meat.png"
-                    alt="FoeGuard fresh raw dog food"
-                    draggable={false}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      transform: 'scale(1.15)'
-                    }}
-                  />
-                </div>
-                {/* Slider handle */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: `${sliderPos}%`,
-                  transform: 'translateX(-50%)',
-                  width: '3px',
-                  height: '100%',
-                  background: 'white',
-                  boxShadow: '0 0 8px rgba(0,0,0,0.4)',
-                  zIndex: 2
-                }}>
-                  <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '40px',
-                    height: '40px',
-                    background: 'white',
-                    borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                    justifyContent: 'space-between',
+                    padding: '16px 0',
+                    background: 'none',
+                    border: 'none',
+                    borderBottom: `1px solid ${COLORS.khaki}`,
+                    cursor: 'pointer',
                     fontSize: '16px',
-                    color: '#666',
-                    fontWeight: '700'
-                  }}>
-                    <ChevronLeft size={14} style={{ marginRight: '-4px' }} />
-                    <ChevronRight size={14} style={{ marginLeft: '-4px' }} />
-                  </div>
-                </div>
-              </div>
-              <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', marginTop: '16px' }}>Drag to compare</p>
+                    fontWeight: '500',
+                    color: COLORS.charcoal
+                  }}
+                >
+                  {item.label}
+                  <ChevronRight size={20} color={COLORS.khaki} />
+                </button>
+              ))}
             </div>
 
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(2, 1fr)', 
-              gap: '48px',
-              maxWidth: '800px',
-              margin: '0 auto 48px'
-            }}>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  width: '56px', 
-                  height: '56px', 
-                  margin: '0 auto 20px', 
-                  border: '2px solid rgba(255,255,255,0.3)',
-                  borderRadius: '50%',
+            <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: `1px solid ${COLORS.khaki}` }}>
+              <button
+                onClick={() => { navigate('/account'); setMenuOpen(false); }}
+                style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Beef size={28} style={{ color: 'white' }} />
-                </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Organic Raw Food</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Nutrient-rich meat and vegetables, raised without GMOs, antibiotics, or hormones.</p>
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  width: '56px', 
-                  height: '56px', 
-                  margin: '0 auto 20px', 
-                  border: '2px solid rgba(255,255,255,0.3)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <CheckCircle size={28} style={{ color: 'white' }} />
-                </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Human-Grade Safety</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Made to the highest food quality and safety standards in Canada.</p>
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  width: '56px', 
-                  height: '56px', 
-                  margin: '0 auto 20px', 
-                  border: '2px solid rgba(255,255,255,0.3)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Scale size={28} style={{ color: 'white' }} />
-                </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>Nutritionist-Approved</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Complete and balanced whole food recipes that exceed AAFCO standards.</p>
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ 
-                  width: '56px', 
-                  height: '56px', 
-                  margin: '0 auto 20px', 
-                  border: '2px solid rgba(255,255,255,0.3)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  <Home size={28} style={{ color: 'white' }} />
-                </div>
-                <h3 style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '600', fontSize: '18px', marginBottom: '12px', color: 'white' }}>FoeGuard Farms</h3>
-                <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: '1.6' }}>Humanely raised on organic feed, open pastures, and small-batch harvests.</p>
-              </div>
-            </div>
-
-            <div style={{ textAlign: 'center' }}>
-              <button 
-                className="btn-hero" 
-                onClick={() => navigate('/order')}
-                style={{ 
-                  background: 'white',
-                  color: '#8B4513',
+                  gap: '12px',
+                  padding: '12px 0',
+                  background: 'none',
                   border: 'none',
-                  padding: '14px 32px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  borderRadius: '8px',
-                  cursor: 'pointer'
-                }}
-              >
-                Order Now
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== SECTION — 8 PROTEINS ===== */}
-        <section className="proteins-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
-          <div className="section-container">
-            <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '16px', textTransform: 'none', fontWeight: '600' }}>Choose your dogs favourites</h2>
-            <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '48px', color: '#666', maxWidth: '900px', margin: '0 auto 48px' }}>
-              Introduce your dog to their own raw food cuisine. We offer a variety of protein options and blends to suit their unique dietary needs and the flavours they love.
-            </p>
-            
-            {/* Proteins Carousel */}
-            <div style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto' }}>
-              <button
-                onClick={() => scrollProteins('left')}
-                style={{
-                  position: 'absolute',
-                  left: '-20px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'white',
-                  border: '2px solid #E8DDD0',
-                  borderRadius: '50%',
-                  width: '40px',
-                  height: '40px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                   cursor: 'pointer',
-                  zIndex: 10,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  fontSize: '15px',
+                  color: COLORS.charcoal
                 }}
               >
-                <ChevronLeft size={20} />
-              </button>
-              
-              <div 
-                ref={proteinScrollRef}
-                style={{
-                  display: 'flex',
-                  gap: '24px',
-                  overflowX: 'auto',
-                  scrollBehavior: 'smooth',
-                  paddingBottom: '16px',
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none'
-                }}
-                className="protein-scroll-container"
-              >
-                {proteins.map((protein, i) => (
-                  <div 
-                    key={i}
-                    style={{
-                      minWidth: '280px',
-                      background: 'white',
-                      borderRadius: '12px',
-                      padding: '20px',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                      border: '1px solid #E8DDD0',
-                      textAlign: 'center'
-                    }}
-                  >
-                    <div style={{
-                      width: '100%',
-                      height: '180px',
-                      background: '#E8DDD0',
-                      borderRadius: '8px',
-                      marginBottom: '16px',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#8B4513',
-                      fontSize: '14px'
-                    }}>
-                      {protein.image ? (
-                        <img src={protein.image} alt={protein.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      ) : (
-                        `${protein.name} Image`
-                      )}
-                    </div>
-                    <h3 style={{ 
-                      fontSize: '20px', 
-                      fontWeight: '600', 
-                      marginBottom: '12px',
-                      color: '#8B4513'
-                    }}>
-                      {protein.name}
-                    </h3>
-                    <p style={{ 
-                      fontSize: '15px', 
-                      color: '#666',
-                      lineHeight: '1.6',
-                      margin: 0
-                    }}>
-                      {protein.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={() => scrollProteins('right')}
-                style={{
-                  position: 'absolute',
-                  right: '-20px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'white',
-                  border: '2px solid #E8DDD0',
-                  borderRadius: '50%',
-                  width: '40px',
-                  height: '40px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  zIndex: 10,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-              >
-                <ChevronRight size={20} />
+                <User size={20} /> Login / Create Account
               </button>
             </div>
           </div>
-        </section>
-
-        {/* ===== SECTION — REDEFINE PET FOOD ===== */}
-        <section className="problem-section" style={{ background: 'white', padding: '60px 20px' }}>
-          <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>What you won't find in the bowl</h2>
-            <p style={{ textAlign: 'center', fontSize: '17px', marginBottom: '40px', color: '#666', maxWidth: '700px', margin: '0 auto 40px' }}>
-              We put value where it matters most - towards your dog. It's time to get rid of:
-            </p>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(3, 1fr)', 
-              gap: '24px',
-              maxWidth: '1100px',
-              margin: '0 auto'
-            }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '24px 16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
-                <Package size={32} style={{ color: '#8B4513', flexShrink: 0 }} />
-                <div>
-                  <h3 style={{ fontSize: '16px', marginBottom: '8px', fontWeight: '600', color: '#8B4513' }}>Processed Ingredients</h3>
-                  <p style={{ fontSize: '14px', color: '#666', margin: 0, lineHeight: '1.5' }}>Made for longer shelf life, not for a dog's anatomy.</p>
-                </div>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '24px 16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
-                <X size={32} style={{ color: '#8B4513', flexShrink: 0 }} />
-                <div>
-                  <h3 style={{ fontSize: '16px', marginBottom: '8px', fontWeight: '600', color: '#8B4513' }}>Low-Quality Fillers</h3>
-                  <p style={{ fontSize: '14px', color: '#666', margin: 0, lineHeight: '1.5' }}>Without grain, byproducts or months-old meat.</p>
-                </div>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '24px 16px', background: '#F8F6F4', borderRadius: '8px', textAlign: 'center' }}>
-                <Tag size={32} style={{ color: '#8B4513', flexShrink: 0 }} />
-                <div>
-                  <h3 style={{ fontSize: '16px', marginBottom: '8px', fontWeight: '600', color: '#8B4513' }}>Misleading Labels</h3>
-                  <p style={{ fontSize: '14px', color: '#666', margin: 0, lineHeight: '1.5' }}>That meet minimum guidelines, not carnivores.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== SECTION — HOW IT WORKS ===== */}
-        <section className="how-it-works-section">
-          <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', fontWeight: '600' }}>How it works</h2>
-            <p style={{ textAlign: 'center', fontSize: '18px', marginBottom: '48px', color: '#666' }}>
-              Your personal source for real, transparent raw dog food. Feeding fresh is simpler than you think.
-            </p>
-            
-            <div className="steps-grid">
-              <div className="step-card">
-                <div className="step-image-container">
-                  <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/o4ctb4hs_step%201.png" alt="Choose your plan" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
-                  <div className="step-number-overlay">1</div>
-                </div>
-                <h3>Made Fresh to Order</h3>
-                <p style={{ fontSize: '15px', color: '#666' }}>
-                  Create a meal plan or build your own box from our raw food menu.
-                </p>
-              </div>
-              <div className="step-card">
-                <div className="step-image-container">
-                  <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ms6gxgag_step%202.png" alt="Receive your delivery" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
-                  <div className="step-number-overlay">2</div>
-                </div>
-                <h3>Receive Your Delivery</h3>
-                <p style={{ fontSize: '15px', color: '#666' }}>
-                  Meals arrive safely frozen from our certified facility in just 3–5 days.
-                </p>
-              </div>
-              <div className="step-card">
-                <div className="step-image-container">
-                  <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/wov418dt_step%203.png" alt="Feed with confidence" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
-                  <div className="step-number-overlay">3</div>
-                </div>
-                <h3>Feed with Confidence</h3>
-                <p style={{ fontSize: '15px', color: '#666' }}>
-                  Just thaw, serve, and see the difference real food makes.
-                </p>
-              </div>
-            </div>
-            
-            <div style={{ textAlign: 'center', marginTop: '32px' }}>
-              <button 
-                className="btn-primary" 
-                onClick={() => navigate('/order')}
-                style={{ borderRadius: '8px', padding: '14px 32px', fontSize: '16px' }}
-              >
-                Order Now
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== SECTION — OUR STORY ===== */}
-        <section className="about-section" style={{ background: '#F8F6F4', padding: '80px 20px' }}>
-          <div className="section-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '32px', color: '#2B2B2B', fontWeight: '600' }}>Our Story Is Your Story</h2>
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
-              Like many pet parents, we trusted the labels and fed what the stores recommended. But when our own family started struggling with health issues linked to processed food, we turned to our farm and began growing real, wholesome ingredients ourselves — and the difference changed everything for us.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
-              So we asked a simple question: why should our dogs eat any differently?
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7', color: '#333' }}>
-              We started feeding them the same way — fresh, natural, raised with care. The results confirmed what we already believed. Dogs are carnivores, and they thrive when they eat like it.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7', color: '#333' }}>
-              What began as meals for our own dogs, then friends and neighbours, has grown over the past 10 years into FoeGuard. Along the way, we've worked closely with canine nutritionists, biologists, and behaviourists to make sure every recipe meets one standard: if it's not good enough for our table, it's not going in your dog's bowl.
-            </p>
-          </div>
-        </section>
-
-        {/* ===== SECTION — BENEFITS ===== */}
-        <section className="problem-section" style={{ background: 'white' }}>
-          <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '24px', fontWeight: '600' }}>Benefits you can see, and they can feel.</h2>
-            
-            <div style={{ maxWidth: '900px', margin: '0 auto 48px' }}>
-              <img 
-                src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/fleo929y_benefits.png"
-                alt="Dog with benefits labeled - Fresh Breath, Less Allergies, Better Digestion, More Energy, Healthy Weight"
-                style={{ width: '100%', borderRadius: '16px', display: 'block' }}
-              />
-            </div>
-
-            {/* Scrollable Reviews Carousel */}
-            <div style={{ position: 'relative', maxWidth: '1000px', margin: '0 auto' }}>
-              <button
-                onClick={() => scrollReviews('left')}
-                style={{
-                  position: 'absolute',
-                  left: '-20px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'white',
-                  border: '2px solid #E8DDD0',
-                  borderRadius: '50%',
-                  width: '40px',
-                  height: '40px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  zIndex: 10,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-              >
-                <ChevronLeft size={20} />
-              </button>
-              
-              <div 
-                ref={reviewsScrollRef}
-                style={{
-                  display: 'flex',
-                  gap: '24px',
-                  overflowX: 'auto',
-                  scrollBehavior: 'smooth',
-                  paddingBottom: '16px',
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none'
-                }}
-                className="reviews-scroll-container"
-              >
-                <div style={{ 
-                  background: 'white', 
-                  padding: '24px',
-                  minWidth: '320px',
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  border: '1px solid #E8DDD0'
-                }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    background: '#E8DDD0', 
-                    borderRadius: '8px', 
-                    marginBottom: '16px',
-                    overflow: 'hidden'
-                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/tigvcdhx_canadianfarmdogs_review.jpg" alt="Canadian Farm Dogs review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "Indigo is known to be pickier ... but had zero issue with this food and enjoyed every meal. Oliver also thoroughly enjoyed the food and his stools were perfect (...something that we have issues with)"
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@canadian.farm.dogs</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '24px',
-                  minWidth: '320px',
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  border: '1px solid #E8DDD0'
-                }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    background: '#E8DDD0', 
-                    borderRadius: '8px', 
-                    marginBottom: '16px',
-                    overflow: 'hidden'
-                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/u1n2212w_zeus_review.jpg" alt="Zeus review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "Zeus is VERY impressed. Love the dinners because they're already a balanced meal making it easy ... he devours and makes sure he licks every little bit left in his bowl!"
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@zeus.thedobie_</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '24px',
-                  minWidth: '320px',
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  border: '1px solid #E8DDD0'
-                }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    background: '#E8DDD0', 
-                    borderRadius: '8px', 
-                    marginBottom: '16px',
-                    overflow: 'hidden'
-                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/t7k8yiyo_fuji_review.jpg" alt="Fuji review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "I've been waiting to be woken up in the middle of the night for her to go washroom, but her stool has been consistent and perfect since I began introducing the raw food."
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@fuji.pai02</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '24px',
-                  minWidth: '320px',
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  border: '1px solid #E8DDD0'
-                }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    background: '#E8DDD0', 
-                    borderRadius: '8px', 
-                    marginBottom: '16px',
-                    overflow: 'hidden'
-                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/oogtcds4_Bane_review%20.jpg" alt="Bane review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "If you show your dog's professionally FG may be your secret weapon"
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@bane.thebully</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '24px',
-                  minWidth: '320px',
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  border: '1px solid #E8DDD0'
-                }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    background: '#E8DDD0', 
-                    borderRadius: '8px', 
-                    marginBottom: '16px',
-                    overflow: 'hidden'
-                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/q6am4khg_tyson_review.jpg" alt="Tyson review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "Ever since switching to their raw food her allergies have disappeared"
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@tyson.blacklabb</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '24px',
-                  minWidth: '320px',
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  border: '1px solid #E8DDD0'
-                }}>
-                  <div style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    background: '#E8DDD0', 
-                    borderRadius: '8px', 
-                    marginBottom: '16px',
-                    overflow: 'hidden'
-                  }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/k1ijugp9_leo_review.jpg" alt="Leo review" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-                  <p style={{ fontSize: '15px', fontStyle: 'normal', marginBottom: '12px', lineHeight: '1.6' }}>
-                    "Milans sensitive tummy was causing us constant worry until we switched to FoeGuard."
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>@leo.thegsd</p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => scrollReviews('right')}
-                style={{
-                  position: 'absolute',
-                  right: '-20px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'white',
-                  border: '2px solid #E8DDD0',
-                  borderRadius: '50%',
-                  width: '40px',
-                  height: '40px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  zIndex: 10,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                }}
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== SECTION — VET INSIGHTS ===== */}
-        <section className="problem-section" style={{ background: '#F8F6F4' }}>
-          <div className="section-container">
-            <div style={{ marginTop: '0' }}>
-              <h3 style={{ textAlign: 'center', fontSize: '24px', marginBottom: '32px', textTransform: 'none' }}>Insights from veterinarians</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', maxWidth: '1000px', margin: '0 auto' }}>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '32px', 
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  textAlign: 'center'
-                }}>
-                  <p style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
-                    "When I began to suggest the feeding of raw meat I found animals becoming more healthy [against diseases] even without other treatment."
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Dr. Richard Pitcairn, Veterinarian & author of Complete Guide to Natural Health for Dogs & Cats</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '32px', 
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  textAlign: 'center'
-                }}>
-                  <p style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
-                    "My nutritional goals for my patients: to make the diet as species-appropriate as possible, which is low-carb, high-moisture and unprocessed."
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Dr. Karen Becker, Veterinarian & author of The Forever Dog</p>
-                </div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '32px', 
-                  borderRadius: '12px', 
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  textAlign: 'center'
-                }}>
-                  <p style={{ fontSize: '16px', fontStyle: 'normal', marginBottom: '16px', lineHeight: '1.6', color: '#333' }}>
-                    "Our dogs' disease problems are increasing on a par with their increasing consumption of processed and cooked foods"
-                  </p>
-                  <p style={{ fontSize: '14px', fontWeight: '600', color: '#8B4513', margin: 0 }}>Dr. Ian Billinghurst, Veterinarian & author of Give Your Dog a Bone</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== SECTION — COMPLETE PLANS ===== */}
-        <section className="new-to-raw-section">
-          <div className="section-container">
-            <h2 className="section-title" style={{ textTransform: 'none', marginBottom: '40px', fontWeight: '600' }}>Start to see a healthier, more energetic dog within days.</h2>
-            
-            <div style={{ display: 'flex', gap: '48px', maxWidth: '1100px', margin: '0 auto', alignItems: 'center', flexWrap: 'wrap' }}>
-              <div style={{ 
-                flex: '0 0 400px', 
-                height: '450px', 
-                borderRadius: '12px',
-                overflow: 'hidden'
-              }}>
-                <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/jec541v5_product%20bowl.png" alt="FoeGuard raw food bowl with fresh ingredients" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-              </div>
-              
-              <div style={{ 
-                flex: '1', 
-                minWidth: '300px',
-                background: 'white',
-                padding: '32px',
-                borderRadius: '16px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-              }}>
-                <p style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', textAlign: 'center' }}>
-                  All FoeGuard plans include:
-                </p>
-                
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free 1-on-1 consultation</p>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Personalized, portioned meals</p>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Free complete raw feeding guide</p>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Eco-friendly packaging</p>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Subscribe and save</p>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>FoeGuard delivery</p>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Check size={20} style={{ color: '#8B4513', flexShrink: 0 }} />
-                      <p style={{ fontSize: '16px', margin: 0, textAlign: 'left' }}>Lifetime support</p>
-                    </div>
-                  </div>
-                </div>
-
-                <p style={{ fontSize: '16px', fontWeight: '600', marginTop: '24px', marginBottom: '0', color: '#8B4513', textAlign: 'center' }}>
-                  14-Day Happiness Guarantee: If your dog does not love their meal, we will switch any leftovers for a different protein at no extra cost.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== FINAL CTA ===== */}
-        <section className="final-cta-section">
-          <div className="section-container">
-            <h2 className="section-title-white" style={{ fontSize: '36px', marginBottom: '24px', textTransform: 'none', fontWeight: '600' }}>
-              Ready to see your dog thrive?
-            </h2>
-            
-            <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.9)', marginBottom: '20px' }}>
-              Farm-fresh raw pet food, raised in Ontario and delivered to your door.
-            </p>
-            
-            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.95)', marginBottom: '40px', fontWeight: '600' }}>
-              Get 40% off your first 2 weeks.
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', maxWidth: '400px', margin: '0 auto' }}>
-              <button 
-                className="btn-hero" 
-                onClick={() => navigate('/order')}
-                data-testid="final-cta-btn"
-                style={{ width: '100%', borderRadius: '8px', padding: '14px 32px', fontSize: '16px' }}
-              >
-                Order Now
-              </button>
-            </div>
-          </div>
-        </section>
-
-      </div>
-      <Footer />
+        </>
+      )}
     </>
   );
 };
+
+// Trust Badge Marquee
+const TrustMarquee = () => {
+  const badges = ['Farm Fresh', '100% Canadian', 'Family Owned', 'Organic', 'Human Grade'];
+  
+  return (
+    <div style={{
+      background: COLORS.forestGreen,
+      color: COLORS.cream,
+      overflow: 'hidden',
+      padding: '14px 0'
+    }}>
+      <div style={{
+        display: 'flex',
+        animation: 'marquee 20s linear infinite',
+        whiteSpace: 'nowrap'
+      }}>
+        {[...badges, ...badges, ...badges, ...badges].map((badge, i) => (
+          <span key={i} style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '12px',
+            marginRight: '48px',
+            fontSize: '14px',
+            fontWeight: '600',
+            textTransform: 'uppercase',
+            letterSpacing: '1px'
+          }}>
+            <span style={{ color: COLORS.lightGreen }}>✦</span>
+            {badge}
+          </span>
+        ))}
+      </div>
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+// Modern Footer
+const ModernFooter = () => {
+  const navigate = useNavigate();
+  
+  return (
+    <footer style={{ background: COLORS.charcoal, color: COLORS.cream }}>
+      {/* Main footer content */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gap: '40px',
+        padding: '60px 20px',
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
+        {/* Brand column */}
+        <div>
+          <h3 style={{ fontSize: '28px', fontWeight: '800', color: COLORS.red, marginBottom: '16px' }}>FoeGuard</h3>
+          <p style={{ fontSize: '14px', lineHeight: '1.7', color: COLORS.khaki, marginBottom: '24px' }}>
+            Ontario's #1 farm-to-bowl raw dog food delivery. Real, fresh, complete nutrition for your best friend.
+          </p>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            {['Instagram', 'Facebook'].map(social => (
+              <a key={social} href="#" style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                background: COLORS.forestGreen,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: COLORS.cream,
+                fontSize: '12px',
+                textDecoration: 'none'
+              }}>
+                {social[0]}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Shop column */}
+        <div>
+          <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', color: COLORS.white }}>Shop</h4>
+          {['Raw Dog Food', 'Meaty Treats', 'Build Meal Plan', 'Feeding Calculator'].map(item => (
+            <a key={item} href="#" style={{
+              display: 'block',
+              color: COLORS.khaki,
+              fontSize: '14px',
+              marginBottom: '12px',
+              textDecoration: 'none'
+            }}>
+              {item}
+            </a>
+          ))}
+        </div>
+
+        {/* Help column */}
+        <div>
+          <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', color: COLORS.white }}>Help</h4>
+          {['Contact Us', 'FAQs', 'Shipping Info', 'Returns'].map(item => (
+            <a key={item} href="#" style={{
+              display: 'block',
+              color: COLORS.khaki,
+              fontSize: '14px',
+              marginBottom: '12px',
+              textDecoration: 'none'
+            }}>
+              {item}
+            </a>
+          ))}
+        </div>
+
+        {/* Company column */}
+        <div>
+          <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', color: COLORS.white }}>Company</h4>
+          {['About Us', 'Why Raw?', 'Blog', 'Privacy Policy', 'Terms of Service'].map(item => (
+            <a key={item} href="#" style={{
+              display: 'block',
+              color: COLORS.khaki,
+              fontSize: '14px',
+              marginBottom: '12px',
+              textDecoration: 'none'
+            }}>
+              {item}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div style={{
+        borderTop: `1px solid ${COLORS.forestGreen}`,
+        padding: '20px',
+        textAlign: 'center',
+        fontSize: '13px',
+        color: COLORS.khaki
+      }}>
+        © 2025 FoeGuard. All rights reserved. Made with ❤️ in Ontario, Canada.
+      </div>
+    </footer>
+  );
+};
+
+// Landing Page Component
+export const LandingPage = () => {
+  const navigate = useNavigate();
+  const [activeFaq, setActiveFaq] = useState(null);
+
+  const faqs = [
+    {
+      q: "Is raw food safe for my dog?",
+      a: "Yes! Our raw food is made in an Ontario Regulated Human Food Kitchen with the same safety standards as human food. We use only human-grade, ethically sourced ingredients."
+    },
+    {
+      q: "How do I transition my dog to raw?",
+      a: "We recommend a gradual transition over 7-10 days, mixing increasing amounts of raw food with their current diet. Our team is always here to help guide you through the process."
+    },
+    {
+      q: "How is the food shipped?",
+      a: "All orders are shipped frozen in insulated packaging with dry ice to ensure freshness. We deliver directly to your door across Ontario."
+    },
+    {
+      q: "Can I pause or cancel my subscription?",
+      a: "Absolutely! Your meal plan is completely customizable. Pause, skip, change, or cancel anytime with no commitments or hidden fees."
+    }
+  ];
+
+  const reviews = [
+    { name: "Sarah M.", text: "No more stomach issues, and his coat looks amazing. Definitely worth the switch!", rating: 5 },
+    { name: "Michael T.", text: "My dog has been on FoeGuard for 6 months and the difference in energy is incredible!", rating: 5 },
+    { name: "Jennifer K.", text: "Finally found a raw food I can trust. The quality is obvious and my pup loves it.", rating: 5 },
+    { name: "David R.", text: "The convenience of delivery plus the health benefits - it's a no-brainer.", rating: 5 }
+  ];
+
+  return (
+    <>
+      <ModernNavbar />
+      <SlideCart />
+      
+      <main style={{ paddingTop: '100px' }}>
+        {/* HERO SECTION */}
+        <section style={{
+          background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)`,
+          padding: '60px 20px 80px',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+            {/* Rating badge */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: COLORS.white,
+              padding: '8px 16px',
+              borderRadius: '50px',
+              marginBottom: '24px',
+              boxShadow: '0 2px 12px rgba(0,0,0,0.08)'
+            }}>
+              <div style={{ display: 'flex', gap: '2px' }}>
+                {[1,2,3,4,5].map(i => <Star key={i} size={14} fill={COLORS.red} color={COLORS.red} />)}
+              </div>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: COLORS.charcoal }}>
+                Thousands of 5-Star Reviews
+              </span>
+            </div>
+
+            <h1 style={{
+              fontSize: 'clamp(32px, 6vw, 56px)',
+              fontWeight: '800',
+              color: COLORS.charcoal,
+              lineHeight: '1.1',
+              marginBottom: '20px',
+              fontFamily: "'Rubik', sans-serif"
+            }}>
+              Ontario's #1 Farm-to-Bowl<br />
+              <span style={{ color: COLORS.red }}>Raw Dog Food Delivery</span>
+            </h1>
+
+            <p style={{
+              fontSize: '18px',
+              color: COLORS.charcoal,
+              opacity: 0.8,
+              maxWidth: '600px',
+              margin: '0 auto 32px',
+              lineHeight: '1.6'
+            }}>
+              Restore your dog's digestion, energy and comfort from the inside out with real, fresh, complete raw nutrition.
+            </p>
+
+            <button
+              onClick={() => navigate('/menu')}
+              style={{
+                background: COLORS.red,
+                color: COLORS.white,
+                border: 'none',
+                padding: '18px 48px',
+                borderRadius: '50px',
+                fontSize: '16px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(200, 16, 46, 0.3)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 24px rgba(200, 16, 46, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(200, 16, 46, 0.3)';
+              }}
+            >
+              Shop Now
+            </button>
+          </div>
+        </section>
+
+        {/* TRUST MARQUEE */}
+        <TrustMarquee />
+
+        {/* COLLECTION CARDS - "Our Menu" */}
+        <section style={{
+          background: COLORS.white,
+          padding: '80px 20px'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <h2 style={{
+              fontSize: '36px',
+              fontWeight: '700',
+              textAlign: 'center',
+              marginBottom: '48px',
+              color: COLORS.charcoal
+            }}>
+              Meet Our <span style={{ color: COLORS.red }}>Delicious</span> Lineup
+            </h2>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '24px'
+            }}>
+              {[
+                {
+                  title: 'Build Your Meal Plan',
+                  desc: 'Take our simple quiz to receive your customized raw feeding plan in seconds.',
+                  image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=300&fit=crop',
+                  path: '/meal-plan',
+                  color: COLORS.forestGreen
+                },
+                {
+                  title: 'Raw Dog Food',
+                  desc: 'Fresh food that\'s easy to portion and serve, ensuring balanced, nutritious meals every day.',
+                  image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
+                  path: '/menu',
+                  color: COLORS.red
+                },
+                {
+                  title: 'Meaty Treats',
+                  desc: 'Freeze-dried treats add a nutritional boost to any diet. Perfect as rewards or training tools.',
+                  image: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&h=300&fit=crop',
+                  path: '/menu/treats',
+                  color: COLORS.lightGreen
+                }
+              ].map((card, i) => (
+                <button
+                  key={i}
+                  onClick={() => navigate(card.path)}
+                  style={{
+                    background: COLORS.cream,
+                    border: 'none',
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.12)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.06)';
+                  }}
+                >
+                  <div style={{
+                    height: '200px',
+                    background: `url(${card.image}) center/cover`,
+                    position: 'relative'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '16px',
+                      left: '16px',
+                      background: card.color,
+                      color: COLORS.white,
+                      padding: '6px 14px',
+                      borderRadius: '20px',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      {i === 0 ? 'Quiz' : i === 1 ? 'Shop' : 'Treats'}
+                    </div>
+                  </div>
+                  <div style={{ padding: '24px' }}>
+                    <h3 style={{
+                      fontSize: '20px',
+                      fontWeight: '700',
+                      color: COLORS.charcoal,
+                      marginBottom: '8px'
+                    }}>
+                      {card.title}
+                    </h3>
+                    <p style={{
+                      fontSize: '14px',
+                      color: COLORS.charcoal,
+                      opacity: 0.7,
+                      lineHeight: '1.5',
+                      marginBottom: '16px'
+                    }}>
+                      {card.desc}
+                    </p>
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      color: COLORS.red,
+                      fontWeight: '600',
+                      fontSize: '14px'
+                    }}>
+                      Get Started <ChevronRight size={18} />
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHY FOEGUARD RAW? */}
+        <section style={{
+          background: COLORS.softBg,
+          padding: '80px 20px'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '60px',
+              alignItems: 'center'
+            }}>
+              {/* Image side */}
+              <div style={{
+                position: 'relative',
+                borderRadius: '24px',
+                overflow: 'hidden',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.1)'
+              }}>
+                <img
+                  src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=500&fit=crop"
+                  alt="Happy dog"
+                  style={{ width: '100%', display: 'block' }}
+                />
+                <div style={{
+                  position: 'absolute',
+                  bottom: '24px',
+                  left: '24px',
+                  right: '24px',
+                  background: 'rgba(255,255,255,0.95)',
+                  padding: '20px',
+                  borderRadius: '16px',
+                  backdropFilter: 'blur(10px)'
+                }}>
+                  <p style={{ fontSize: '14px', color: COLORS.charcoal, margin: 0 }}>
+                    <strong style={{ color: COLORS.red }}>Made in our Ontario Regulated Human Food Kitchen</strong><br />
+                    Ethically Raised & Hand-Crafted in Small Batches
+                  </p>
+                </div>
+              </div>
+
+              {/* Content side */}
+              <div>
+                <h2 style={{
+                  fontSize: '36px',
+                  fontWeight: '700',
+                  color: COLORS.charcoal,
+                  marginBottom: '24px'
+                }}>
+                  Why <span style={{ color: COLORS.red }}>FoeGuard</span> Raw?
+                </h2>
+
+                <div style={{ display: 'grid', gap: '20px' }}>
+                  {[
+                    { icon: '🌿', title: 'Organic, Human-Grade Ingredients', desc: 'Only the finest ingredients you\'d eat yourself' },
+                    { icon: '✓', title: 'Exceeds AAFCO Standards', desc: 'Complete nutrition backed by science' },
+                    { icon: '🇨🇦', title: '100% Canadian Sourced', desc: 'Supporting local farmers and suppliers' },
+                    { icon: '🏠', title: 'Family Owned & Operated', desc: 'Third generation farmers who truly care' }
+                  ].map((item, i) => (
+                    <div key={i} style={{
+                      display: 'flex',
+                      gap: '16px',
+                      padding: '20px',
+                      background: COLORS.white,
+                      borderRadius: '16px',
+                      boxShadow: '0 2px 12px rgba(0,0,0,0.04)'
+                    }}>
+                      <div style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '12px',
+                        background: COLORS.cream,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '24px',
+                        flexShrink: 0
+                      }}>
+                        {item.icon}
+                      </div>
+                      <div>
+                        <h4 style={{ fontSize: '16px', fontWeight: '700', color: COLORS.charcoal, margin: '0 0 4px' }}>
+                          {item.title}
+                        </h4>
+                        <p style={{ fontSize: '14px', color: COLORS.charcoal, opacity: 0.7, margin: 0 }}>
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => navigate('/new-to-raw')}
+                  style={{
+                    marginTop: '24px',
+                    background: 'none',
+                    border: `2px solid ${COLORS.red}`,
+                    color: COLORS.red,
+                    padding: '14px 28px',
+                    borderRadius: '50px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* BENEFITS SECTION */}
+        <section style={{
+          background: COLORS.forestGreen,
+          padding: '80px 20px',
+          color: COLORS.cream
+        }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
+            <h2 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '16px' }}>
+              Customers Often See Benefits in Just <span style={{ color: COLORS.lightGreen }}>2 Weeks</span>
+            </h2>
+            <p style={{ fontSize: '18px', opacity: 0.9, marginBottom: '48px' }}>
+              Help your dog live their best life by changing how they feel, look and act on a day-to-day basis.
+            </p>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '24px'
+            }}>
+              {[
+                { icon: '💪', title: 'Improved Digestion', desc: 'Easier on the stomach' },
+                { icon: '✨', title: 'Shinier Coat', desc: 'Healthier skin & fur' },
+                { icon: '⚡', title: 'More Energy', desc: 'Active & playful' },
+                { icon: '🏃', title: 'Healthy Weight', desc: 'Lean muscle mass' }
+              ].map((benefit, i) => (
+                <div key={i} style={{
+                  background: 'rgba(255,255,255,0.1)',
+                  padding: '32px 24px',
+                  borderRadius: '20px',
+                  backdropFilter: 'blur(10px)'
+                }}>
+                  <div style={{ fontSize: '40px', marginBottom: '16px' }}>{benefit.icon}</div>
+                  <h4 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '8px' }}>{benefit.title}</h4>
+                  <p style={{ fontSize: '14px', opacity: 0.8, margin: 0 }}>{benefit.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* REVIEWS SECTION */}
+        <section style={{
+          background: COLORS.cream,
+          padding: '80px 20px'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <h2 style={{
+              fontSize: '36px',
+              fontWeight: '700',
+              textAlign: 'center',
+              marginBottom: '16px',
+              color: COLORS.charcoal
+            }}>
+              Hear from Happy <span style={{ color: COLORS.red }}>FoeGuardians</span>
+            </h2>
+            <p style={{ textAlign: 'center', color: COLORS.charcoal, opacity: 0.7, marginBottom: '48px' }}>
+              Real reviews from real pet parents
+            </p>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '24px'
+            }}>
+              {reviews.map((review, i) => (
+                <div key={i} style={{
+                  background: COLORS.white,
+                  padding: '32px',
+                  borderRadius: '20px',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.06)'
+                }}>
+                  <div style={{ display: 'flex', gap: '4px', marginBottom: '16px' }}>
+                    {[1,2,3,4,5].map(s => <Star key={s} size={18} fill={COLORS.red} color={COLORS.red} />)}
+                  </div>
+                  <p style={{
+                    fontSize: '16px',
+                    color: COLORS.charcoal,
+                    lineHeight: '1.6',
+                    marginBottom: '20px',
+                    fontStyle: 'italic'
+                  }}>
+                    "{review.text}"
+                  </p>
+                  <p style={{
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: COLORS.charcoal,
+                    margin: 0
+                  }}>
+                    — {review.name}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ABOUT US / OUR STORY */}
+        <section style={{
+          background: COLORS.softBg,
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            minHeight: '500px'
+          }}>
+            {/* Image side with overlay */}
+            <div style={{
+              background: `linear-gradient(135deg, ${COLORS.redOverlay}dd 0%, ${COLORS.red}cc 100%), url(https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&h=600&fit=crop) center/cover`,
+              minHeight: '400px'
+            }} />
+
+            {/* Content side */}
+            <div style={{
+              padding: '60px 40px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
+            }}>
+              <h2 style={{
+                fontSize: '32px',
+                fontWeight: '700',
+                color: COLORS.charcoal,
+                marginBottom: '8px'
+              }}>
+                From Soil to Serving
+              </h2>
+              <p style={{
+                fontSize: '20px',
+                color: COLORS.red,
+                fontWeight: '600',
+                marginBottom: '24px'
+              }}>
+                Raw Feeding Is A Family Tradition
+              </p>
+              <p style={{
+                fontSize: '16px',
+                color: COLORS.charcoal,
+                lineHeight: '1.8',
+                marginBottom: '24px'
+              }}>
+                FoeGuard is a family-run business committed to providing pet parents with the same fresh, natural ingredients we expect at our own table. As third generation Canadian Farmers and award-winning German Shepherd breeders with a PhD in biology, we've seen the benefits of biologically appropriate raw food first-hand.
+              </p>
+              <p style={{
+                fontSize: '16px',
+                color: COLORS.charcoal,
+                lineHeight: '1.8',
+                marginBottom: '32px'
+              }}>
+                What began as helping our neighbours and friends with their dogs' meals became a realization that Ontario pet parents needed better access to trusted, transparent pet nutrition. Our passion became profession, FoeGuard was born!
+              </p>
+              <button
+                onClick={() => navigate('/about')}
+                style={{
+                  alignSelf: 'flex-start',
+                  background: COLORS.charcoal,
+                  color: COLORS.white,
+                  border: 'none',
+                  padding: '14px 28px',
+                  borderRadius: '50px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                More About Us
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ SECTION */}
+        <section style={{
+          background: COLORS.white,
+          padding: '80px 20px'
+        }}>
+          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <h2 style={{
+              fontSize: '36px',
+              fontWeight: '700',
+              textAlign: 'center',
+              marginBottom: '48px',
+              color: COLORS.charcoal
+            }}>
+              Frequently Asked <span style={{ color: COLORS.red }}>Questions</span>
+            </h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {faqs.map((faq, i) => (
+                <div key={i} style={{
+                  background: COLORS.cream,
+                  borderRadius: '16px',
+                  overflow: 'hidden'
+                }}>
+                  <button
+                    onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '20px 24px',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      textAlign: 'left'
+                    }}
+                  >
+                    <span style={{ fontSize: '16px', fontWeight: '600', color: COLORS.charcoal }}>
+                      {faq.q}
+                    </span>
+                    <ChevronDown
+                      size={20}
+                      color={COLORS.charcoal}
+                      style={{
+                        transform: activeFaq === i ? 'rotate(180deg)' : 'rotate(0)',
+                        transition: 'transform 0.3s'
+                      }}
+                    />
+                  </button>
+                  {activeFaq === i && (
+                    <div style={{
+                      padding: '0 24px 20px',
+                      fontSize: '15px',
+                      color: COLORS.charcoal,
+                      opacity: 0.8,
+                      lineHeight: '1.6'
+                    }}>
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FINAL CTA */}
+        <section style={{
+          background: `linear-gradient(135deg, ${COLORS.red} 0%, ${COLORS.redOverlay} 100%)`,
+          padding: '80px 20px',
+          textAlign: 'center',
+          color: COLORS.white
+        }}>
+          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+            <h2 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '16px' }}>
+              See the FoeGuard Difference
+            </h2>
+            <p style={{ fontSize: '20px', marginBottom: '32px', opacity: 0.95 }}>
+              Discover the meals that work for your dog, not against them.
+            </p>
+
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '16px',
+              marginBottom: '40px'
+            }}>
+              {[
+                'Build your box or meal plan',
+                'Pause, change or cancel anytime',
+                'Watch your dog thrive',
+                'Delivered to your door'
+              ].map((item, i) => (
+                <span key={i} style={{
+                  background: 'rgba(255,255,255,0.2)',
+                  padding: '10px 20px',
+                  borderRadius: '50px',
+                  fontSize: '14px',
+                  fontWeight: '500'
+                }}>
+                  ✓ {item}
+                </span>
+              ))}
+            </div>
+
+            <button
+              onClick={() => navigate('/menu')}
+              style={{
+                background: COLORS.white,
+                color: COLORS.red,
+                border: 'none',
+                padding: '18px 48px',
+                borderRadius: '50px',
+                fontSize: '18px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
+              }}
+            >
+              Shop Now
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <ModernFooter />
+    </>
+  );
+};
+
+export default LandingPage;
