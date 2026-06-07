@@ -24,6 +24,8 @@ import { AdminLogin } from './pages/AdminLogin';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { BlogListPage, BlogDetailPage } from './pages/BlogPage';
 import { CheckoutPage } from './pages/CheckoutPage';
+import { FaqPage } from './pages/FaqPage';
+import { DeliveryPage } from './pages/DeliveryPage';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -96,6 +98,8 @@ function App() {
             <Route path="/account" element={<AccountPage />} />
             <Route path="/blog" element={<BlogListPage />} />
             <Route path="/blog/:blogId" element={<BlogDetailPage />} />
+            <Route path="/faq" element={<FaqPage />} />
+            <Route path="/delivery" element={<DeliveryPage />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
