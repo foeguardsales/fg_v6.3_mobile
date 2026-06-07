@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus } from 'lucide-react';
-import { useCart, SlideCart } from './MenuPage';
+import { useCart, SlideCart } from '../contexts/CartContext';
 
 // FoeGuard Brand Colors
 const COLORS = {

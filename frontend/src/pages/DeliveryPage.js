@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Truck, Snowflake, Clock, MapPin, Package, ShieldCheck } from 'lucide-react';
 import { ModernNavbar, ModernFooter, COLORS, liftedButtonStyle, liftedButtonHover } from './LandingPage';
-import { SlideCart } from './MenuPage';
+import { SlideCart } from '../contexts/CartContext';
 
 const StepCard = ({ idx, icon: Icon, title, body }) => (
   <div

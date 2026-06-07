@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronUp, MessageCircle } from 'lucide-react';
 import { ModernNavbar, ModernFooter, COLORS, liftedButtonStyle, liftedButtonHover } from './LandingPage';
-import { SlideCart } from './MenuPage';
+import { SlideCart } from '../contexts/CartContext';
 
 const FAQ_CATEGORIES = [
   {
