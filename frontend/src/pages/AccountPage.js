@@ -271,7 +271,7 @@ export const AccountPage = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '20px',
-                background: '#5F7C5A',
+                background: '#2F4538',
                 color: 'white',
                 borderRadius: '12px',
                 textDecoration: 'none',

@@ -69,32 +69,33 @@ body {
 
 /* ========== CSS VARIABLES ========== */
 :root {
-  /* Primary Colors - FoeGuard Brand */
-  --foeguard-red: #88302F;
-  --overlay-red: #732827;
-  --barn-red: #88302F;
-  --barn-red-hover: #732827;
-  --burgundy: #732827;
-  --burgundy-deep: #5a1f1e;
+  /* Primary Colors - FoeGuard Brand (Feb 2026) */
+  --foeguard-red: #c8102e;
+  --overlay-red: #9D0D23;
+  --barn-red: #c8102e;
+  --barn-red-hover: #9D0D23;
+  --burgundy: #9D0D23;
+  --burgundy-deep: #7a0a1a;
   
   /* Product Collection Colors */
-  --comfort-dinner: #5F7C5A;
+  --comfort-dinner: #2F4538;
   --royal-paws: #5e4b73;
-  --primal-feast: #732827;
+  --primal-feast: #c8102e;
   
   /* Warm Accent Colors */
   --foeguard-cream: #f5f3ef;
-  --khaki: #D9C8B3;
-  --khaki-light: #E8DDD0;
-  --khaki-dark: #C4B19A;
+  --khaki: #D8CFB8;
+  --khaki-light: #E5DECC;
+  --khaki-dark: #B8AB91;
   --cream: #f5f3ef;
+  --soft-bg: #f0ece6;
   
   /* Background Colors */
   --offwhite: #f5f3ef;
   --white: #FFFFFF;
   
   /* Text Colors */
-  --charcoal: #2B2B2B;
+  --charcoal: #2C2C2C;
   --charcoal-light: #3D3D3D;
   --text-secondary: #5A5A5A;
   --text-muted: #8A8A8A;
@@ -105,14 +106,15 @@ body {
   --border-light: #E5E5E5;
   
   /* Success/Green for accents */
-  --forest-green: #5F7C5A;
+  --forest-green: #2F4538;
   --sage: #7A9A7A;
+  --light-green: #00934f;
   
   /* Shadows - Warmer tones */
-  --shadow-sm: 0 1px 3px rgba(43, 43, 43, 0.06);
-  --shadow-md: 0 4px 16px rgba(43, 43, 43, 0.08);
-  --shadow-lg: 0 8px 32px rgba(43, 43, 43, 0.12);
-  --shadow-card: 0 2px 8px rgba(136, 48, 47, 0.06);
+  --shadow-sm: 0 1px 3px rgba(44, 44, 44, 0.06);
+  --shadow-md: 0 4px 16px rgba(44, 44, 44, 0.08);
+  --shadow-lg: 0 8px 32px rgba(44, 44, 44, 0.12);
+  --shadow-card: 0 2px 8px rgba(200, 16, 46, 0.06);
   
   /* Border Radius */
   --radius-sm: 6px;

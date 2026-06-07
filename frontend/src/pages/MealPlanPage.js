@@ -724,7 +724,7 @@ export const MealPlanPage = () => {
                           style={{
                             padding: '10px 14px',
                             borderRadius: '8px',
-                            border: isSelected ? `2px solid ${isNone ? '#5F7C5A' : '#8B4513'}` : '2px solid #E8E4DC',
+                            border: isSelected ? `2px solid ${isNone ? '#2F4538' : '#8B4513'}` : '2px solid #E8E4DC',
                             background: isSelected ? (isNone ? '#E8F5E9' : '#FDF8F3') : 'white',
                             cursor: 'pointer',
                             textAlign: 'left',
@@ -738,7 +738,7 @@ export const MealPlanPage = () => {
                           }}
                         >
                           {issue.label}
-                          {isSelected && <Check size={14} color={isNone ? '#5F7C5A' : '#8B4513'} />}
+                          {isSelected && <Check size={14} color={isNone ? '#2F4538' : '#8B4513'} />}
                         </button>
                       );
                     })}
@@ -790,7 +790,7 @@ export const MealPlanPage = () => {
                 <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#E65100' }}>
                   We'll Contact You Personally
                 </h3>
-                <p style={{ color: '#5D4037', lineHeight: '1.6' }}>
+                <p style={{ color: '#2C2C2C', lineHeight: '1.6' }}>
                   Based on the health conditions you've shared, one of our pet nutrition specialists will reach out to you within 24-48 hours to discuss {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s` : "your dogs'"} specific needs and create a customized meal plan.
                 </p>
               </div>
@@ -943,7 +943,7 @@ export const MealPlanPage = () => {
               marginTop: '24px',
               border: '2px solid #FFB74D'
             }}>
-              <p style={{ color: '#5D4037', fontSize: '14px', lineHeight: '1.5', margin: 0 }}>
+              <p style={{ color: '#2C2C2C', fontSize: '14px', lineHeight: '1.5', margin: 0 }}>
                 <strong>Note:</strong> Based on the health conditions selected, we'll contact you personally to discuss a customized meal plan.
               </p>
             </div>

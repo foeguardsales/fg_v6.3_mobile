@@ -1,0 +1,53 @@
+{
+  "summary": "Iteration 7 visual regression sweep at viewport 1920x800 across 13 routes. PASSED: (a) Round circular FoeGuard logo (PNG, border-radius 50%, 2px khaki ring rgb(216,207,184) = #D8CFB8) replaces the previous SVG wordmark in ModernNavbar across /, /menu, /about, /faq, /delivery (and all other tested routes). (b) Khaki visibility: nav border-bottom is 3px solid #D8CFB8 AND the round logo has a 2px khaki ring. (c) Hero tri-image on / now has NO outer border and NO box-shadow (computed border:'0px none', box-shadow:'none'); rounded-corner container preserved (borderRadius 20px on grandparent). (d) Brand red #c8102e (rgb(200,16,46)) verified on: Shop Now button on /, About-page hero background, 'Get in Touch' heading on /contact, Send Message button on /contact, Add button on /menu/comfort-dinner, slide-cart Checkout button, '+ Add more items' link, cart-badge circle on navbar, selected size-pill red underline. (e) Cart flow regression: Add → slide cart opens (Subtotal $26.99 line, red Checkout button) → /checkout loads with ModernNavbar visible. (f) Headings fully visible below the 122px navbar on /about (Why FoeGuard?), /new-to-raw, /contact, /calculator, /policies, /terms, /account, /blog, /faq, /delivery — h1 top ≥ 168. FAILED: /meal-plan h1 'How many dogs do you have?' has top=115px while navBottom=122px — heading is clipped ~7px behind the fixed navbar (missing the spacer/offset that the other pages received). Additionally MealPlanPage.js stepper badge '1' still renders in OLD burgundy/brown #8B4513 (regression — request explicitly listed MealPlanPage.js as needing colors swapped).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "MealPlanPage (/meal-plan)", "issue": "First H1 'How many dogs do you have?' is clipped ~7px behind the fixed navbar (h1 top=115, nav bottom=122). All other tested routes correctly start headings at top >= 168. MealPlanPage is missing the 108px spacer div / top padding that ModernNavbar requires.", "selector": "h1 (first on /meal-plan)", "priority": "HIGH"},
+      {"component": "MealPlanPage stepper badge + UI accents", "issue": "Step number badge '1' and other accents still use OLD burgundy/brown #8B4513 instead of new brand red #c8102e. grep shows ~30+ #8B4513 occurrences remaining in /app/frontend/src/pages/MealPlanPage.js (lines 273, 335, 336, 410, 426, 453, 490, 566, 582, 599, 627, 670, etc.). The iteration brief explicitly listed MealPlanPage.js as needing color swap.", "selector": ".step-badge / step indicator on /meal-plan", "priority": "HIGH"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Color regression — other (non-listed) pages still have legacy palette", "issues": [
+        "/app/frontend/src/pages/CheckoutPage.js: still has 2 occurrences of #8B4513 (lines 145, 282) on the Checkout CTA / continue button — request listed CheckoutPage as needing color swap.",
+        "/app/frontend/src/pages/AccountPage.js: 5 occurrences of #8B4513 (lines 42, 77-78, 107, 258).",
+        "/app/frontend/src/pages/BlogPage.js: 2 occurrences of #8B4513 (lines 229, 354).",
+        "/app/frontend/src/pages/AdminPage.js, AdminDashboard.js, BoxBuilder.js, OrderChoicePage.js also retain #8B4513 (lower priority — not in the iteration brief but worth aligning to brand)."
+      ]}
+    ]
+  },
+  "passed_tests": [
+    "Round FoeGuard logo PNG (border-radius 50%, 2px khaki ring) replaces SVG wordmark on /, /menu, /about, /faq, /delivery",
+    "Navbar bottom border = 3px solid khaki #D8CFB8",
+    "Hero tri-image on /: parent border = 0px none, box-shadow = none, rounded corners preserved",
+    "Shop Now button bg = #c8102e",
+    "/about hero background = #c8102e and 'Why FoeGuard?' heading fully visible below navbar",
+    "/contact 'Get in Touch' heading color = #c8102e",
+    "/contact Send Message button bg = #c8102e",
+    "Add button on /menu/comfort-dinner bg = #c8102e",
+    "Slide cart Checkout button bg = #c8102e",
+    "'+ Add more items' link color = #c8102e",
+    "Cart badge circle in navbar bg = #c8102e (showing '1')",
+    "Heading visibility (top >= navBottom 122px) on: /about, /new-to-raw, /contact, /calculator, /policies, /terms, /account, /blog, /faq, /delivery",
+    "Cart flow: Add -> slide cart with $26.99 Subtotal -> Checkout -> /checkout loads with ModernNavbar"
+  ],
+  "test_report_links": [],
+  "action_items": [
+    "Add the 108px top spacer (or matching pt-[122px]) to /meal-plan route so the first 'How many dogs do you have?' heading is not clipped by the fixed ModernNavbar.",
+    "In /app/frontend/src/pages/MealPlanPage.js replace all #8B4513 occurrences (≈30) with the new brand red #c8102e (or var(--barn-red)) to complete the palette migration listed in the iteration brief.",
+    "Also replace #8B4513 in /app/frontend/src/pages/CheckoutPage.js (lines 145, 282) — Checkout CTA is still old brown, contradicting the iteration brief which lists CheckoutPage.js as updated.",
+    "Optional follow-up: align AccountPage.js, BlogPage.js, AdminPage.js, AdminDashboard.js, BoxBuilder.js, OrderChoicePage.js to the new palette for brand consistency."
+  ],
+  "critical_code_review_comments": [
+    "Color tokens are well centralized in App.css (--barn-red, --khaki, --charcoal). Pages should consume these CSS variables instead of repeating raw hex inline styles — current inline #8B4513 usage made this iteration partially miss its target. Suggest a follow-up refactor to swap inline hex to var(--barn-red).",
+    "LandingPage.js still hosts ModernNavbar and ModernFooter (re-exported via Layout.js). The 108px top-spacer is owned by LandingPage, so each route depends on this re-export — MealPlanPage likely renders a layout that bypasses the spacer (e.g., its own wrapper has negative/zero top padding). Extracting ModernNavbar/ModernFooter into /components/* and shipping the spacer with the nav itself would prevent this kind of regression."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "85%"},
+  "test_credentials": "n/a",
+  "seed_data_creation": "none",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "ModernNavbar height = 122.4px (includes red shipping banner + cream bar + 3px khaki bottom border). All page headings should have top >= 122px. /meal-plan currently has h1 top = 115px (clipped). Round-logo PNG URL: https://customer-assets.emergentagent.com/job_b173aa98-8700-42d1-aca5-6a3b8220c855/artifacts/0fo0kwz0_fglogo.png (verified loaded). Brand red = rgb(200,16,46) = #c8102e. Khaki ring/divider = rgb(216,207,184) = #D8CFB8. After main agent applies the spacer fix on /meal-plan AND replaces #8B4513 in MealPlanPage.js + CheckoutPage.js, re-verify only those two pages + a quick screenshot of /meal-plan to confirm heading is no longer clipped.",
+  "rca_of_the_issue": "Spacer regression on /meal-plan: ModernNavbar is position:fixed at top:0 with total height ≈122px. Other legacy pages received a 108px spacer div (per files_of_reference). MealPlanPage.js likely has its own layout wrapper without the spacer, so its first h1 starts at ~115px and is partially hidden behind the navbar. Color regression: MealPlanPage.js (and CheckoutPage.js) inline styles were not migrated from #8B4513 to #c8102e despite being listed in the iteration brief — visible as a brown step badge instead of a red one."
+}

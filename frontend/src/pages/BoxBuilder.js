@@ -364,7 +364,7 @@ export const BoxBuilder = () => {
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   flexShrink: 0,
-                  border: card.selected ? '3px solid #A41E34' : '3px solid transparent',
+                  border: card.selected ? '3px solid #c8102e' : '3px solid transparent',
                   boxShadow: '0 6px 20px rgba(0,0,0,0.12)'
                 }}
                 onMouseEnter={(e) => {
@@ -436,7 +436,7 @@ export const BoxBuilder = () => {
                     position: 'absolute',
                     top: '20px',
                     right: '20px',
-                    background: '#A41E34',
+                    background: '#c8102e',
                     color: '#FFFFFF',
                     width: '48px',
                     height: '48px',
@@ -485,7 +485,7 @@ export const BoxBuilder = () => {
 
           {/* Box Size Selector - Inline */}
           <div className="box-size-selector-inline" data-testid="box-size-selector">
-            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#A41E34' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#c8102e' }}>
               Select Box Size
             </h3>
             <div className="box-size-tabs">
@@ -531,14 +531,14 @@ export const BoxBuilder = () => {
                       flex: '1 1 160px',
                       padding: '16px 20px',
                       borderRadius: '12px',
-                      border: subscriptionPlan === 'biweekly' ? '3px solid #5F7C5A' : '2px solid #E8DDD0',
+                      border: subscriptionPlan === 'biweekly' ? '3px solid #2F4538' : '2px solid #E8DDD0',
                       background: subscriptionPlan === 'biweekly' ? '#E8F5E9' : 'white',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
                       boxShadow: subscriptionPlan === 'biweekly' ? '0 4px 12px rgba(95, 124, 90, 0.2)' : 'none'
                     }}
                   >
-                    <div style={{ fontSize: '16px', fontWeight: '700', color: subscriptionPlan === 'biweekly' ? '#5F7C5A' : '#2B2B2B', marginBottom: '4px' }}>
+                    <div style={{ fontSize: '16px', fontWeight: '700', color: subscriptionPlan === 'biweekly' ? '#2F4538' : '#2B2B2B', marginBottom: '4px' }}>
                       Every 2 Weeks
                     </div>
                     <div style={{ fontSize: '12px', color: '#666' }}>Most Popular</div>
@@ -551,14 +551,14 @@ export const BoxBuilder = () => {
                       flex: '1 1 160px',
                       padding: '16px 20px',
                       borderRadius: '12px',
-                      border: subscriptionPlan === 'monthly' ? '3px solid #5F7C5A' : '2px solid #E8DDD0',
+                      border: subscriptionPlan === 'monthly' ? '3px solid #2F4538' : '2px solid #E8DDD0',
                       background: subscriptionPlan === 'monthly' ? '#E8F5E9' : 'white',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
                       boxShadow: subscriptionPlan === 'monthly' ? '0 4px 12px rgba(95, 124, 90, 0.2)' : 'none'
                     }}
                   >
-                    <div style={{ fontSize: '16px', fontWeight: '700', color: subscriptionPlan === 'monthly' ? '#5F7C5A' : '#2B2B2B', marginBottom: '4px' }}>
+                    <div style={{ fontSize: '16px', fontWeight: '700', color: subscriptionPlan === 'monthly' ? '#2F4538' : '#2B2B2B', marginBottom: '4px' }}>
                       Monthly
                     </div>
                     <div style={{ fontSize: '12px', color: '#666' }}>Flexible</div>
@@ -574,7 +574,7 @@ export const BoxBuilder = () => {
                       background: 'transparent',
                       cursor: 'pointer',
                       fontSize: '13px',
-                      color: subscriptionPlan === null ? '#A41E34' : '#999',
+                      color: subscriptionPlan === null ? '#c8102e' : '#999',
                       textDecoration: subscriptionPlan === null ? 'underline' : 'none',
                       fontWeight: subscriptionPlan === null ? '600' : '400'
                     }}
@@ -597,15 +597,15 @@ export const BoxBuilder = () => {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#5F7C5A', fontSize: '16px' }}>✓</span>
+                    <span style={{ color: '#2F4538', fontSize: '16px' }}>✓</span>
                     <span style={{ fontSize: '13px', color: '#2B2B2B' }}>Free Delivery</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#5F7C5A', fontSize: '16px' }}>✓</span>
+                    <span style={{ color: '#2F4538', fontSize: '16px' }}>✓</span>
                     <span style={{ fontSize: '13px', color: '#2B2B2B', fontWeight: '600' }}>5% Off Every Order</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#5F7C5A', fontSize: '16px' }}>✓</span>
+                    <span style={{ color: '#2F4538', fontSize: '16px' }}>✓</span>
                     <span style={{ fontSize: '13px', color: '#2B2B2B' }}>Pause or Cancel anytime</span>
                   </div>
                 </div>
@@ -926,10 +926,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   // Get collection color based on product line
   const getCollectionColor = () => {
     switch(product.product_line) {
-      case 'comfort_dinner': return '#5F7C5A';
-      case 'primal_feast': return '#732827';
+      case 'comfort_dinner': return '#2F4538';
+      case 'primal_feast': return '#9D0D23';
       case 'royal_paws': return '#5e4b73';
-      default: return '#88302F';
+      default: return '#c8102e';
     }
   };
   
@@ -950,7 +950,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       className="product-card" 
       data-testid={`product-${product.product_id}`}
       style={{
-        border: isSelected ? '3px solid #A41E34' : '3px solid transparent',
+        border: isSelected ? '3px solid #c8102e' : '3px solid transparent',
         boxShadow: isSelected ? '0 4px 20px rgba(164, 30, 52, 0.25)' : undefined,
         transition: 'all 0.2s ease'
       }}

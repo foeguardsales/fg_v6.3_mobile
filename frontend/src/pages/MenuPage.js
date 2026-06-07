@@ -45,7 +45,7 @@ const StickyFooter = () => {
       <button onClick={() => setIsCartOpen(true)} style={{
         width: '100%', maxWidth: '600px', margin: '0 auto', display: 'flex',
         justifyContent: 'space-between', alignItems: 'center', padding: '14px 20px',
-        background: '#8B4513', color: 'white', border: 'none', borderRadius: '8px',
+        background: '#c8102e', color: 'white', border: 'none', borderRadius: '8px',
         fontSize: '16px', fontWeight: '600', cursor: 'pointer'
       }}>
         <span>View Order ({totalLbs} lbs)</span>
@@ -272,7 +272,7 @@ export const ProductLinePage = ({ productLine }) => {
       <div style={{ minHeight: '100vh', background: 'white', paddingBottom: '180px' }}>
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid #eee' }}>
-          <button onClick={() => navigate('/menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#8B4513', fontWeight: '500' }}>
+          <button onClick={() => navigate('/menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#c8102e', fontWeight: '500' }}>
             <ChevronLeft size={20} /> Menu
           </button>
         </div>
@@ -354,7 +354,7 @@ export const ProductLinePage = ({ productLine }) => {
                     onClick={() => setSelectedSize(size)}
                     style={{
                       flex: 1, padding: '12px 8px', borderRadius: '8px',
-                      border: selectedSize === size ? '2px solid #8B4513' : '1px solid #ddd',
+                      border: selectedSize === size ? '2px solid #c8102e' : '1px solid #ddd',
                       background: selectedSize === size ? '#FDF8F3' : 'white',
                       cursor: 'pointer', textAlign: 'center'
                     }}
@@ -410,7 +410,7 @@ export const ProductLinePage = ({ productLine }) => {
               </button>
             </div>
             <button onClick={handleAddToCart} style={{
-              flex: 1, padding: '14px 24px', background: '#8B4513', color: 'white',
+              flex: 1, padding: '14px 24px', background: '#c8102e', color: 'white',
               border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: '600', cursor: 'pointer'
             }}>
               Add – ${selectedPricing?.price.toFixed(2)}
@@ -462,7 +462,7 @@ export const TreatsPage = () => {
       <div style={{ minHeight: '100vh', background: 'white', paddingBottom: cartItems.length > 0 ? '80px' : '0' }}>
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', padding: '16px 20px', borderBottom: '1px solid #eee' }}>
-          <button onClick={() => navigate('/menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#8B4513', fontWeight: '500' }}>
+          <button onClick={() => navigate('/menu')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#c8102e', fontWeight: '500' }}>
             <ChevronLeft size={20} /> Menu
           </button>
         </div>
@@ -493,7 +493,7 @@ export const TreatsPage = () => {
                   </div>
                 </div>
                 <button onClick={() => handleAddTreat(treat)} style={{
-                  padding: '10px 16px', background: '#8B4513', color: 'white',
+                  padding: '10px 16px', background: '#c8102e', color: 'white',
                   border: 'none', borderRadius: '6px', fontSize: '14px', fontWeight: '600', cursor: 'pointer'
                 }}>
                   Add

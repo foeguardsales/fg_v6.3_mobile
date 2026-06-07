@@ -74,7 +74,7 @@ export const DeliveryPage = () => {
     <>
       <ModernNavbar />
       <SlideCart />
-      <main style={{ paddingTop: '110px', background: COLORS.cream }}>
+      <main style={{ background: COLORS.cream }}>
         {/* Hero */}
         <section style={{
           background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)`,

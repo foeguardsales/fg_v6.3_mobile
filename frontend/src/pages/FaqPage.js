@@ -143,7 +143,7 @@ export const FaqPage = () => {
     <>
       <ModernNavbar />
       <SlideCart />
-      <main style={{ paddingTop: '110px', background: COLORS.cream, minHeight: '80vh' }}>
+      <main style={{ background: COLORS.cream, minHeight: '80vh' }}>
         {/* Hero */}
         <section style={{
           background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)`,

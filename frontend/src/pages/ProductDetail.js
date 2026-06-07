@@ -49,7 +49,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
         }}
       >
         <span>{title}</span>
-        {isOpen ? <ChevronUp size={20} color="#A41E34" /> : <ChevronDown size={20} color="#A41E34" />}
+        {isOpen ? <ChevronUp size={20} color="#c8102e" /> : <ChevronDown size={20} color="#c8102e" />}
       </button>
       {isOpen && (
         <div style={{
@@ -198,10 +198,10 @@ export const ProductDetailPage = () => {
   // Get collection color and name based on product line
   const getCollectionInfo = () => {
     switch(product.product_line) {
-      case 'comfort_dinner': return { color: '#5F7C5A', name: 'Comfort Dinner' };
-      case 'primal_feast': return { color: '#732827', name: 'Primal Feast' };
+      case 'comfort_dinner': return { color: '#2F4538', name: 'Comfort Dinner' };
+      case 'primal_feast': return { color: '#9D0D23', name: 'Primal Feast' };
       case 'royal_paws': return { color: '#5e4b73', name: 'Royal Paws' };
-      default: return { color: '#88302F', name: 'FoeGuard' };
+      default: return { color: '#c8102e', name: 'FoeGuard' };
     }
   };
 
@@ -257,7 +257,7 @@ export const ProductDetailPage = () => {
           position: 'fixed',
           bottom: '24px',
           right: '24px',
-          background: '#88302F',
+          background: '#c8102e',
           color: '#fff',
           border: 'none',
           borderRadius: '50px',
@@ -273,12 +273,12 @@ export const ProductDetailPage = () => {
           transition: 'all 0.2s'
         }}
         onMouseEnter={(e) => {
-          e.target.style.background = '#732827';
+          e.target.style.background = '#9D0D23';
           e.target.style.transform = 'translateY(-2px)';
           e.target.style.boxShadow = '0 6px 16px rgba(136, 48, 47, 0.4)';
         }}
         onMouseLeave={(e) => {
-          e.target.style.background = '#88302F';
+          e.target.style.background = '#c8102e';
           e.target.style.transform = 'translateY(0)';
           e.target.style.boxShadow = '0 4px 12px rgba(136, 48, 47, 0.3)';
         }}
@@ -299,7 +299,7 @@ export const ProductDetailPage = () => {
             gap: '6px',
             background: 'none',
             border: 'none',
-            color: '#A41E34',
+            color: '#c8102e',
             fontFamily: "'Rubik', sans-serif",
             fontSize: '15px',
             fontWeight: '600',
@@ -365,9 +365,9 @@ export const ProductDetailPage = () => {
                   <div style={{
                     padding: '10px 20px',
                     borderRadius: '8px',
-                    border: '2px solid #88302F',
+                    border: '2px solid #c8102e',
                     background: '#FAF8F5',
-                    color: '#88302F',
+                    color: '#c8102e',
                     fontSize: '15px',
                     fontWeight: '600',
                     display: 'flex',
@@ -376,7 +376,7 @@ export const ProductDetailPage = () => {
                   }}>
                     <span>{boxSize}lb</span>
                     {DISCOUNT_RATES[boxSize] > 0 && (
-                      <span style={{ fontSize: '13px', color: '#5F7C5A' }}>
+                      <span style={{ fontSize: '13px', color: '#2F4538' }}>
                         ({DISCOUNT_RATES[boxSize] * 100}% off)
                       </span>
                     )}
@@ -400,7 +400,7 @@ export const ProductDetailPage = () => {
                     <span style={{ fontSize: '14px', color: '#666' }}>
                       ${getDiscountedPrice(product).toFixed(2)} per 6lb
                       {DISCOUNT_RATES[boxSize] > 0 && (
-                        <span style={{ color: '#5F7C5A', marginLeft: '8px', fontWeight: '600' }}>
+                        <span style={{ color: '#2F4538', marginLeft: '8px', fontWeight: '600' }}>
                           ({DISCOUNT_RATES[boxSize] * 100}% off)
                         </span>
                       )}
@@ -414,9 +414,9 @@ export const ProductDetailPage = () => {
                         width: '36px',
                         height: '36px',
                         borderRadius: '50%',
-                        border: '2px solid #88302F',
+                        border: '2px solid #c8102e',
                         background: '#fff',
-                        color: '#88302F',
+                        color: '#c8102e',
                         fontSize: '20px',
                         cursor: quantity <= 6 ? 'not-allowed' : 'pointer',
                         display: 'flex',
@@ -453,9 +453,9 @@ export const ProductDetailPage = () => {
                         width: '36px',
                         height: '36px',
                         borderRadius: '50%',
-                        border: '2px solid #88302F',
+                        border: '2px solid #c8102e',
                         background: '#fff',
-                        color: '#88302F',
+                        color: '#c8102e',
                         fontSize: '20px',
                         cursor: (() => {
                           const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
@@ -487,7 +487,7 @@ export const ProductDetailPage = () => {
                     padding: '14px 24px',
                     background: (() => {
                       const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                      return currentTotal >= boxSize ? '#ccc' : '#88302F';
+                      return currentTotal >= boxSize ? '#ccc' : '#c8102e';
                     })(),
                     color: '#fff',
                     border: 'none',
@@ -503,13 +503,13 @@ export const ProductDetailPage = () => {
                   onMouseEnter={(e) => {
                     const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
                     if (currentTotal < boxSize) {
-                      e.target.style.background = '#732827';
+                      e.target.style.background = '#9D0D23';
                     }
                   }}
                   onMouseLeave={(e) => {
                     const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
                     if (currentTotal < boxSize) {
-                      e.target.style.background = '#88302F';
+                      e.target.style.background = '#c8102e';
                     }
                   }}
                 >
@@ -545,7 +545,7 @@ export const ProductDetailPage = () => {
               
               {product.recipe_breakdown && (
                 <div style={{ marginBottom: '24px', padding: '16px', background: '#FAF8F5', borderRadius: '12px' }}>
-                  <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#A41E34', margin: '0 0 8px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recipe Breakdown</h4>
+                  <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#c8102e', margin: '0 0 8px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recipe Breakdown</h4>
                   <p style={{ fontSize: '15px', color: '#3D3D3D', margin: 0 }}>{product.recipe_breakdown}</p>
                 </div>
               )}
@@ -584,7 +584,7 @@ export const ProductDetailPage = () => {
                     {product.feeding_guide.note && (
                       <div style={{ background: '#FAF8F5', padding: '16px', borderRadius: '12px' }}>
                         <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0 }}>
-                          <a href="/calculator" style={{ color: '#A41E34', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
+                          <a href="/calculator" style={{ color: '#c8102e', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
                         </p>
                       </div>
                     )}

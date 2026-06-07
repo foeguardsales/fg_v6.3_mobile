@@ -55,55 +55,30 @@ const outlineButtonStyle = {
   transition: 'all 0.2s ease'
 };
 
-// FoeGuard Logo Component (SVG wordmark — no external dependency)
-const FoeGuardLogo = ({ size = 'default', color }) => {
+// FoeGuard Logo Component — round badge image
+const FoeGuardLogo = ({ size = 'default' }) => {
   const sizes = {
-    small: { width: 130, height: 36, fontSize: 22, shieldSize: 28 },
-    default: { width: 180, height: 48, fontSize: 28, shieldSize: 36 },
-    large: { width: 230, height: 60, fontSize: 36, shieldSize: 44 }
+    small: 44,
+    default: 58,
+    large: 80
   };
-  const s = sizes[size];
-  const wordColor = color || COLORS.charcoal;
-  const accentColor = COLORS.red;
+  const dim = sizes[size];
 
   return (
-    <div
-      aria-label="FoeGuard"
+    <img
+      src="https://customer-assets.emergentagent.com/job_b173aa98-8700-42d1-aca5-6a3b8220c855/artifacts/0fo0kwz0_fglogo.png"
+      alt="FoeGuard"
       style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '10px',
-        height: s.height,
-        lineHeight: 1
+        width: dim,
+        height: dim,
+        objectFit: 'contain',
+        borderRadius: '50%',
+        background: COLORS.cream,
+        padding: '2px',
+        border: `2px solid ${COLORS.khaki}`,
+        display: 'block'
       }}
-    >
-      {/* Shield icon with paw */}
-      <svg width={s.shieldSize} height={s.shieldSize} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M24 3 L42 9 V24 C42 35 33 43 24 45 C15 43 6 35 6 24 V9 Z"
-          fill={accentColor}
-          stroke={wordColor}
-          strokeWidth="2"
-        />
-        {/* Paw print on shield */}
-        <circle cx="17" cy="20" r="2.5" fill={COLORS.cream} />
-        <circle cx="24" cy="16" r="2.5" fill={COLORS.cream} />
-        <circle cx="31" cy="20" r="2.5" fill={COLORS.cream} />
-        <ellipse cx="24" cy="29" rx="6" ry="5" fill={COLORS.cream} />
-      </svg>
-      <span
-        style={{
-          fontFamily: "'Rubik', sans-serif",
-          fontSize: `${s.fontSize}px`,
-          fontWeight: 800,
-          letterSpacing: '-0.02em',
-          color: wordColor,
-          whiteSpace: 'nowrap'
-        }}
-      >
-        Foe<span style={{ color: accentColor }}>Guard</span>
-      </span>
-    </div>
+    />
   );
 };
 
@@ -140,7 +115,7 @@ const ModernNavbar = () => {
         right: 0,
         zIndex: 1000,
         background: COLORS.cream,
-        borderBottom: `1px solid ${COLORS.khaki}`
+        borderBottom: `3px solid ${COLORS.khaki}`
       }}>
         {/* Top announcement bar */}
         <div style={{
@@ -239,6 +214,9 @@ const ModernNavbar = () => {
           </div>
         </div>
       </nav>
+
+      {/* Spacer to clear the fixed navbar — keeps all pages content below the bar */}
+      <div aria-hidden="true" style={{ height: '108px', flexShrink: 0 }} />
 
       {/* Mobile Menu Overlay */}
       {menuOpen && (
@@ -438,7 +416,7 @@ const ModernFooter = () => {
         {/* Brand column */}
         <div>
           <div style={{ marginBottom: '16px' }}>
-            <FoeGuardLogo size="default" color={COLORS.cream} />
+            <FoeGuardLogo size="default" />
           </div>
           <p style={{ fontSize: '14px', lineHeight: '1.7', color: COLORS.khaki, marginBottom: '24px' }}>
             Ontario&apos;s #1 farm-to-bowl raw dog food delivery. Real, fresh, complete nutrition for your best friend.
@@ -562,7 +540,7 @@ export const LandingPage = () => {
       <ModernNavbar />
       <SlideCart />
       
-      <main style={{ paddingTop: '100px' }}>
+      <main>
         {/* HERO SECTION */}
         <section style={{
           background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)`,
@@ -571,7 +549,7 @@ export const LandingPage = () => {
           overflow: 'hidden'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            {/* Tri-Image Layout - Unified container, no gaps, lifted shadow */}
+            {/* Tri-Image Layout - Unified container, no gaps, no border, no shadow */}
             <div
               className="hero-tri-image"
               style={{
@@ -582,10 +560,7 @@ export const LandingPage = () => {
                 maxWidth: '720px',
                 margin: '0 auto 40px',
                 borderRadius: '20px',
-                overflow: 'hidden',
-                border: `3px solid ${COLORS.charcoal}`,
-                boxShadow: '8px 8px 0px rgba(0,0,0,0.2)',
-                background: COLORS.charcoal
+                overflow: 'hidden'
               }}
             >
               {/* Large image on left — square (matches full container height) */}
@@ -598,14 +573,14 @@ export const LandingPage = () => {
               </div>
               {/* Two square images stacked on right — no gap */}
               <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: '0px' }}>
-                <div style={{ overflow: 'hidden', borderLeft: `3px solid ${COLORS.charcoal}` }}>
+                <div style={{ overflow: 'hidden' }}>
                   <img
                     src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop"
                     alt="Raw food"
                     style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                   />
                 </div>
-                <div style={{ overflow: 'hidden', borderLeft: `3px solid ${COLORS.charcoal}`, borderTop: `3px solid ${COLORS.charcoal}` }}>
+                <div style={{ overflow: 'hidden' }}>
                   <img
                     src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop"
                     alt="Dogs playing"

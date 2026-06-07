@@ -176,7 +176,7 @@ export const TreatDetailPage = () => {
         <Navbar />
         <div style={{ padding: '60px 20px', textAlign: 'center' }}>
           <h2>Treat not found</h2>
-          <button onClick={handleBackToMenu} style={{ marginTop: '20px', padding: '12px 24px', background: '#A41E34', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
+          <button onClick={handleBackToMenu} style={{ marginTop: '20px', padding: '12px 24px', background: '#c8102e', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>
             Back to Menu
           </button>
         </div>
@@ -235,7 +235,7 @@ export const TreatDetailPage = () => {
           position: 'fixed',
           bottom: '24px',
           right: '24px',
-          background: '#88302F',
+          background: '#c8102e',
           color: '#fff',
           border: 'none',
           borderRadius: '50px',
@@ -251,12 +251,12 @@ export const TreatDetailPage = () => {
           transition: 'all 0.2s'
         }}
         onMouseEnter={(e) => {
-          e.target.style.background = '#732827';
+          e.target.style.background = '#9D0D23';
           e.target.style.transform = 'translateY(-2px)';
           e.target.style.boxShadow = '0 6px 16px rgba(136, 48, 47, 0.4)';
         }}
         onMouseLeave={(e) => {
-          e.target.style.background = '#88302F';
+          e.target.style.background = '#c8102e';
           e.target.style.transform = 'translateY(0)';
           e.target.style.boxShadow = '0 4px 12px rgba(136, 48, 47, 0.3)';
         }}
@@ -278,7 +278,7 @@ export const TreatDetailPage = () => {
               gap: '6px',
               background: 'none',
               border: 'none',
-              color: '#A41E34',
+              color: '#c8102e',
               fontFamily: "'Rubik', sans-serif",
               fontSize: '15px',
               fontWeight: '600',
@@ -336,7 +336,7 @@ export const TreatDetailPage = () => {
                         height: '80px',
                         borderRadius: '8px',
                         overflow: 'hidden',
-                        border: selectedImageIndex === index ? '3px solid #A41E34' : '2px solid #E8DDD0',
+                        border: selectedImageIndex === index ? '3px solid #c8102e' : '2px solid #E8DDD0',
                         padding: '4px',
                         background: '#F5F1EB',
                         cursor: 'pointer',
@@ -360,7 +360,7 @@ export const TreatDetailPage = () => {
               }}>{treat.name}</h1>
               
               <div style={{ marginBottom: '24px' }}>
-                <span style={{ fontSize: '32px', fontWeight: '600', color: '#A41E34' }}>${treat.price.toFixed(2)}</span>
+                <span style={{ fontSize: '32px', fontWeight: '600', color: '#c8102e' }}>${treat.price.toFixed(2)}</span>
                 <p style={{ fontSize: '15px', color: '#666', margin: '8px 0 0 0' }}>{treat.quantity_description}</p>
               </div>
 
@@ -391,9 +391,9 @@ export const TreatDetailPage = () => {
                         width: '36px',
                         height: '36px',
                         borderRadius: '50%',
-                        border: '2px solid #88302F',
+                        border: '2px solid #c8102e',
                         background: '#fff',
-                        color: '#88302F',
+                        color: '#c8102e',
                         fontSize: '20px',
                         cursor: 'pointer',
                         display: 'flex',
@@ -418,9 +418,9 @@ export const TreatDetailPage = () => {
                         width: '36px',
                         height: '36px',
                         borderRadius: '50%',
-                        border: '2px solid #88302F',
+                        border: '2px solid #c8102e',
                         background: '#fff',
-                        color: '#88302F',
+                        color: '#c8102e',
                         fontSize: '20px',
                         cursor: 'pointer',
                         display: 'flex',
@@ -437,7 +437,7 @@ export const TreatDetailPage = () => {
                   style={{
                     width: '100%',
                     padding: '14px 24px',
-                    background: '#88302F',
+                    background: '#c8102e',
                     color: '#fff',
                     border: 'none',
                     borderRadius: '8px',
@@ -446,8 +446,8 @@ export const TreatDetailPage = () => {
                     cursor: 'pointer',
                     transition: 'background 0.2s'
                   }}
-                  onMouseEnter={(e) => e.target.style.background = '#732827'}
-                  onMouseLeave={(e) => e.target.style.background = '#88302F'}
+                  onMouseEnter={(e) => e.target.style.background = '#9D0D23'}
+                  onMouseLeave={(e) => e.target.style.background = '#c8102e'}
                 >
                   Add to Box
                 </button>
@@ -491,7 +491,7 @@ export const TreatDetailPage = () => {
                 </div>
                 <div style={{ background: '#FAF8F5', padding: '16px', borderRadius: '12px' }}>
                   <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0 }}>
-                    <a href="/calculator" style={{ color: '#A41E34', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
+                    <a href="/calculator" style={{ color: '#c8102e', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
                   </p>
                 </div>
               </div>

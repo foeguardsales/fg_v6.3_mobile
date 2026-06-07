@@ -118,7 +118,7 @@ export const SlideCart = () => {
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: '600', fontSize: '15px' }}>{item.name}</div>
                   <div style={{ fontSize: '13px', color: '#666' }}>{item.lbs} lbs</div>
-                  <div style={{ fontWeight: '600', color: '#8B4513', marginTop: '4px' }}>${item.price.toFixed(2)}</div>
+                  <div style={{ fontWeight: '600', color: '#c8102e', marginTop: '4px' }}>${item.price.toFixed(2)}</div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <button onClick={() => updateQuantity(index, -1)} style={{ width: '28px', height: '28px', borderRadius: '50%', border: '1px solid #ddd', background: 'white', cursor: 'pointer' }}>
@@ -164,13 +164,13 @@ export const SlideCart = () => {
             </div>
 
             <button onClick={() => { setIsCartOpen(false); navigate('/checkout'); }} style={{
-              width: '100%', marginTop: '16px', padding: '16px', background: '#8B4513', color: 'white',
+              width: '100%', marginTop: '16px', padding: '16px', background: '#c8102e', color: 'white',
               border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: '600', cursor: 'pointer'
             }}>
               Checkout • ${total.toFixed(2)}
             </button>
             <button onClick={() => setIsCartOpen(false)} style={{
-              width: '100%', marginTop: '8px', padding: '12px', background: 'none', color: '#8B4513',
+              width: '100%', marginTop: '8px', padding: '12px', background: 'none', color: '#c8102e',
               border: 'none', fontSize: '14px', cursor: 'pointer'
             }}>
               + Add more items
