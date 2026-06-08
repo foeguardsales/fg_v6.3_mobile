@@ -190,7 +190,7 @@ export const MenuPage = () => {
 
             <button onClick={() => navigate('/meal-plan')} style={{
               width: '100%', display: 'flex', alignItems: 'center', gap: '16px',
-              padding: '16px 20px', background: 'white', border: 'none', borderBottom: '1px solid #f0f0f0',
+              padding: '16px 20px', background: 'white', border: 'none',
               cursor: 'pointer', textAlign: 'left'
             }}>
               <div style={{ width: '70px', height: '70px', borderRadius: '8px', background: '#F5F3EF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px' }}>📋</div>

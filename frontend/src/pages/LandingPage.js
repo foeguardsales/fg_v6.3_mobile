@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus } from 'lucide-react';
+import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus, Sprout, Leaf, ChefHat, Award } from 'lucide-react';
 import { useCart, SlideCart } from '../contexts/CartContext';
 
 // FoeGuard Brand Colors
@@ -10,6 +10,7 @@ const COLORS = {
   cream: '#f5f3ef',
   softBg: '#f0ece6',
   khaki: '#D8CFB8',
+  khakiDark: '#A89B7C',
   charcoal: '#2C2C2C',
   forestGreen: '#2F4538',
   lightGreen: '#00934f',
@@ -55,12 +56,12 @@ const outlineButtonStyle = {
   transition: 'all 0.2s ease'
 };
 
-// FoeGuard Logo Component — round badge image
+// FoeGuard Logo Component — round red badge (no ring)
 const FoeGuardLogo = ({ size = 'default' }) => {
   const sizes = {
-    small: 44,
-    default: 58,
-    large: 80
+    small: 56,
+    default: 72,
+    large: 100
   };
   const dim = sizes[size];
 
@@ -72,10 +73,6 @@ const FoeGuardLogo = ({ size = 'default' }) => {
         width: dim,
         height: dim,
         objectFit: 'contain',
-        borderRadius: '50%',
-        background: COLORS.cream,
-        padding: '2px',
-        border: `2px solid ${COLORS.khaki}`,
         display: 'block'
       }}
     />
@@ -114,63 +111,76 @@ const ModernNavbar = () => {
         left: 0,
         right: 0,
         zIndex: 1000,
-        background: COLORS.cream,
-        borderBottom: `3px solid ${COLORS.khaki}`
+        background: COLORS.red,
+        borderBottom: `3px solid ${COLORS.khakiDark}`
       }}>
         {/* Top announcement bar */}
         <div style={{
-          background: COLORS.red,
+          background: COLORS.redOverlay,
           color: COLORS.white,
           textAlign: 'center',
           padding: '8px 16px',
           fontSize: '13px',
-          fontWeight: '500'
+          fontWeight: '500',
+          letterSpacing: '0.02em'
         }}>
           Free shipping on all orders over $149
         </div>
         
-        {/* Main navbar */}
+        {/* Main navbar — 3-col grid so center logo stays centered on every viewport */}
         <div style={{
-          display: 'flex',
+          display: 'grid',
+          gridTemplateColumns: '1fr auto 1fr',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '12px 20px',
+          padding: '2px 20px',
           maxWidth: '1400px',
-          margin: '0 auto'
+          margin: '0 auto',
+          gap: '12px'
         }}>
           {/* Left - Menu button */}
-          <button
-            onClick={() => setMenuOpen(true)}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
-            <Menu size={24} color={COLORS.charcoal} />
-          </button>
+          <div style={{ justifySelf: 'start' }}>
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+              data-testid="nav-menu-open"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              <Menu size={26} color={COLORS.white} />
+            </button>
+          </div>
 
-          {/* Center - Logo Image */}
+          {/* Center - Logo Image (true center via grid) */}
           <button
             onClick={() => navigate('/')}
+            aria-label="FoeGuard home"
+            data-testid="nav-logo"
             style={{
+              justifySelf: 'center',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              padding: '0'
+              padding: '0',
+              display: 'flex',
+              alignItems: 'center'
             }}
           >
             <FoeGuardLogo size="default" />
           </button>
 
           {/* Right - Cart & Profile */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <button
               onClick={() => navigate('/account')}
+              aria-label="Account"
+              data-testid="nav-account"
               style={{
                 background: 'none',
                 border: 'none',
@@ -178,10 +188,12 @@ const ModernNavbar = () => {
                 padding: '8px'
               }}
             >
-              <User size={22} color={COLORS.charcoal} />
+              <User size={22} color={COLORS.white} />
             </button>
             <button
               onClick={() => setIsCartOpen(true)}
+              aria-label="Open cart"
+              data-testid="nav-cart"
               style={{
                 background: 'none',
                 border: 'none',
@@ -190,14 +202,14 @@ const ModernNavbar = () => {
                 position: 'relative'
               }}
             >
-              <ShoppingBag size={22} color={COLORS.charcoal} />
+              <ShoppingBag size={22} color={COLORS.white} />
               {cartItems.length > 0 && (
                 <span style={{
                   position: 'absolute',
                   top: '2px',
                   right: '2px',
-                  background: COLORS.red,
-                  color: COLORS.white,
+                  background: COLORS.white,
+                  color: COLORS.red,
                   fontSize: '10px',
                   fontWeight: '700',
                   width: '16px',
@@ -362,28 +374,29 @@ const TrustMarquee = () => {
   
   return (
     <div style={{
-      background: COLORS.forestGreen,
-      color: COLORS.cream,
+      background: COLORS.lightGreen,
+      color: COLORS.white,
       overflow: 'hidden',
-      padding: '14px 0'
+      padding: '8px 0',
+      marginTop: '-1px'
     }}>
       <div style={{
         display: 'flex',
-        animation: 'marquee 20s linear infinite',
+        animation: 'marquee 12s linear infinite',
         whiteSpace: 'nowrap'
       }}>
-        {[...badges, ...badges, ...badges, ...badges].map((badge, i) => (
+        {[...badges, ...badges, ...badges, ...badges, ...badges, ...badges].map((badge, i) => (
           <span key={i} style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '12px',
-            marginRight: '48px',
-            fontSize: '14px',
+            gap: '10px',
+            marginRight: '32px',
+            fontSize: '13px',
             fontWeight: '600',
             textTransform: 'uppercase',
-            letterSpacing: '1px'
+            letterSpacing: '0.08em'
           }}>
-            <span style={{ color: COLORS.lightGreen }}>✦</span>
+            <span style={{ color: COLORS.white, opacity: 0.85 }}>✦</span>
             {badge}
           </span>
         ))}
@@ -544,14 +557,24 @@ export const LandingPage = () => {
         {/* HERO SECTION */}
         <section style={{
           background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)`,
-          padding: '40px 20px 60px',
+          padding: '40px 20px 80px',
           position: 'relative',
           overflow: 'hidden'
         }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            {/* Tri-Image Layout - Unified container, no gaps, no border, no shadow */}
+          {/* Bottom gradient mask blending into next section */}
+          <div aria-hidden="true" style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: '120px',
+            background: `linear-gradient(180deg, rgba(245,243,239,0) 0%, ${COLORS.cream} 100%)`,
+            pointerEvents: 'none'
+          }} />
+          <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+            {/* Tri-Image Layout - Unified container, no gaps, no border, no shadow, scroll fade-in */}
             <div
-              className="hero-tri-image"
+              className="hero-tri-image hero-fade-in"
               style={{
                 display: 'grid',
                 gridTemplateColumns: '2fr 1fr',
@@ -593,26 +616,28 @@ export const LandingPage = () => {
             {/* Hero Text */}
             <div style={{ textAlign: 'center' }}>
               <h1 style={{
-                fontSize: 'clamp(28px, 5vw, 48px)',
+                fontSize: 'clamp(24px, 4.2vw, 42px)',
                 fontWeight: '800',
                 color: COLORS.charcoal,
                 lineHeight: '1.15',
-                marginBottom: '20px',
-                fontFamily: "'Rubik', sans-serif"
+                marginBottom: '18px',
+                fontFamily: "'Rubik', sans-serif",
+                letterSpacing: '-0.01em'
               }}>
-                Ontario&apos;s #1 Farm-to-Bowl<br />
-                <span style={{ color: COLORS.red }}>Raw Dog Food Delivery</span>
+                Ontario&apos;s #1 Farm Fresh<br />
+                <span style={{ color: COLORS.red }}>Raw Dog Food</span>
               </h1>
 
               <p style={{
-                fontSize: '17px',
+                fontSize: 'clamp(14px, 1.6vw, 16px)',
                 color: COLORS.charcoal,
-                opacity: 0.8,
-                maxWidth: '550px',
-                margin: '0 auto 28px',
-                lineHeight: '1.6'
+                opacity: 0.82,
+                maxWidth: '600px',
+                margin: '0 auto 26px',
+                lineHeight: '1.6',
+                fontWeight: 400
               }}>
-                Restore your dog&apos;s digestion, energy and comfort from the inside out with real, fresh, complete raw nutrition.
+                Restore your dog&apos;s digestion, energy and comfort from the inside out with freshly made, real raw pet nutrition.
               </p>
 
               {/* Shop Now Button - Lifted Style */}
@@ -757,109 +782,96 @@ export const LandingPage = () => {
           background: COLORS.softBg,
           padding: '80px 20px'
         }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            {/* Headline */}
+            <div style={{ textAlign: 'center', marginBottom: '48px', maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto' }}>
+              <h2 style={{
+                fontSize: 'clamp(22px, 2.6vw, 28px)',
+                fontWeight: 400,
+                color: COLORS.charcoal,
+                lineHeight: 1.5,
+                marginBottom: '0',
+                fontFamily: "'Rubik', sans-serif",
+                letterSpacing: '0'
+              }}>
+                By delivering directly to you, we&apos;re able to invest more into better, fresher and ethically raised ingredients. Something <span style={{ color: COLORS.red, fontWeight: 600 }}>you and your best friend</span> can both feel good about.
+              </h2>
+            </div>
+
+            {/* Image + Benefits grid */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '60px',
+              gap: '48px',
               alignItems: 'center'
             }}>
-              {/* Image side */}
+              {/* Image side — no border, no shadow */}
               <div style={{
                 position: 'relative',
                 borderRadius: '20px',
-                overflow: 'hidden',
-                boxShadow: '8px 8px 0px rgba(0,0,0,0.1)'
+                overflow: 'hidden'
               }}>
                 <img
-                  src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=500&fit=crop"
+                  src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop"
                   alt="Happy dog"
                   style={{ width: '100%', display: 'block' }}
                 />
-                <div style={{
-                  position: 'absolute',
-                  bottom: '24px',
-                  left: '24px',
-                  right: '24px',
-                  background: 'rgba(255,255,255,0.95)',
-                  padding: '20px',
-                  borderRadius: '12px'
-                }}>
-                  <p style={{ fontSize: '14px', color: COLORS.charcoal, margin: 0 }}>
-                    <strong style={{ color: COLORS.red }}>Made in our Ontario Regulated Human Food Kitchen</strong><br />
-                    Ethically Raised & Hand-Crafted in Small Batches
-                  </p>
-                </div>
               </div>
 
-              {/* Content side */}
-              <div>
-                <h2 style={{
-                  fontSize: '36px',
-                  fontWeight: '700',
-                  color: COLORS.charcoal,
-                  marginBottom: '24px'
-                }}>
-                  Why <span style={{ color: COLORS.red }}>FoeGuard</span> Raw?
-                </h2>
-
-                <div style={{ display: 'grid', gap: '16px' }}>
-                  {[
-                    { icon: '🌿', title: 'Organic, Human-Grade Ingredients', desc: 'Only the finest ingredients you would eat yourself' },
-                    { icon: '✓', title: 'Exceeds AAFCO Standards', desc: 'Complete nutrition backed by science' },
-                    { icon: '🇨🇦', title: '100% Canadian Sourced', desc: 'Supporting local farmers and suppliers' },
-                    { icon: '🏠', title: 'Family Owned & Operated', desc: 'Third generation farmers who truly care' }
-                  ].map((item, i) => (
+              {/* 4 Benefit cards */}
+              <div style={{ display: 'grid', gap: '16px' }}>
+                {[
+                  { Icon: Sprout, title: 'Farm Fresh', desc: 'Locally sourced and hand-crafted in small batches every week.' },
+                  { Icon: Leaf, title: '100% Organic', desc: 'Raised without additives, preservatives, fillers, antibiotics or hormones.' },
+                  { Icon: ChefHat, title: 'Human Grade', desc: 'Whole proteins prepared in our Ontario regulated human food kitchen.' },
+                  { Icon: Award, title: 'Complete Nutrition', desc: 'Made to AAFCO standards. No balancing or supplements needed.' }
+                ].map((item, i) => {
+                  const Icon = item.Icon;
+                  return (
                     <div key={i} style={{
                       display: 'flex',
-                      gap: '16px',
-                      padding: '18px',
+                      gap: '18px',
+                      padding: '20px',
                       background: COLORS.white,
-                      borderRadius: '12px',
-                      boxShadow: '3px 3px 0px rgba(0,0,0,0.05)'
+                      borderRadius: '14px',
+                      border: `1px solid ${COLORS.khaki}`,
+                      alignItems: 'flex-start'
                     }}>
                       <div style={{
-                        width: '44px',
-                        height: '44px',
-                        borderRadius: '10px',
-                        background: COLORS.cream,
+                        width: '52px',
+                        height: '52px',
+                        borderRadius: '12px',
+                        background: COLORS.red,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '22px',
                         flexShrink: 0
                       }}>
-                        {item.icon}
+                        <Icon size={26} color={COLORS.white} strokeWidth={2} />
                       </div>
                       <div>
-                        <h4 style={{ fontSize: '15px', fontWeight: '700', color: COLORS.charcoal, margin: '0 0 4px' }}>
+                        <h4 style={{
+                          fontSize: '17px',
+                          fontWeight: 800,
+                          color: COLORS.charcoal,
+                          margin: '0 0 6px',
+                          fontFamily: "'Rubik', sans-serif"
+                        }}>
                           {item.title}
                         </h4>
-                        <p style={{ fontSize: '13px', color: COLORS.charcoal, opacity: 0.7, margin: 0 }}>
+                        <p style={{
+                          fontSize: '14px',
+                          color: COLORS.charcoal,
+                          opacity: 0.78,
+                          margin: 0,
+                          lineHeight: 1.55
+                        }}>
                           {item.desc}
                         </p>
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => navigate('/new-to-raw')}
-                  style={{
-                    ...outlineButtonStyle,
-                    marginTop: '24px'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = COLORS.red;
-                    e.currentTarget.style.color = COLORS.white;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = COLORS.red;
-                  }}
-                >
-                  Learn More
-                </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -867,15 +879,15 @@ export const LandingPage = () => {
 
         {/* BENEFITS SECTION */}
         <section style={{
-          background: COLORS.forestGreen,
+          background: COLORS.lightGreen,
           padding: '80px 20px',
-          color: COLORS.cream
+          color: COLORS.white
         }}>
           <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
-            <h2 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '16px' }}>
-              Customers Often See Benefits in Just <span style={{ color: COLORS.lightGreen }}>2 Weeks</span>
+            <h2 style={{ fontSize: 'clamp(26px, 3.6vw, 36px)', fontWeight: '700', marginBottom: '16px', fontFamily: "'Rubik', sans-serif" }}>
+              Customers Often See Benefits in Just <span style={{ color: COLORS.cream }}>2 Weeks</span>
             </h2>
-            <p style={{ fontSize: '18px', opacity: 0.9, marginBottom: '48px' }}>
+            <p style={{ fontSize: '17px', opacity: 0.95, marginBottom: '48px', fontWeight: 400 }}>
               Help your dog live their best life by changing how they feel, look and act on a day-to-day basis.
             </p>
 
@@ -891,13 +903,13 @@ export const LandingPage = () => {
                 { icon: '🏃', title: 'Healthy Weight', desc: 'Lean muscle mass' }
               ].map((benefit, i) => (
                 <div key={i} style={{
-                  background: 'rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.15)',
                   padding: '28px 20px',
                   borderRadius: '16px'
                 }}>
                   <div style={{ fontSize: '36px', marginBottom: '12px' }}>{benefit.icon}</div>
                   <h4 style={{ fontSize: '17px', fontWeight: '700', marginBottom: '6px' }}>{benefit.title}</h4>
-                  <p style={{ fontSize: '14px', opacity: 0.8, margin: 0 }}>{benefit.desc}</p>
+                  <p style={{ fontSize: '14px', opacity: 0.85, margin: 0 }}>{benefit.desc}</p>
                 </div>
               ))}
             </div>
