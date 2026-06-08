@@ -35,7 +35,7 @@ export const OrdersList = ({ orders, onManage }) => {
             <p style={{ color: '#666', margin: '4px 0' }}>{new Date(order.created_at).toLocaleDateString()}</p>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '20px', fontWeight: '700', color: '#8B4513' }}>${order.total.toFixed(2)}</div>
+            <div style={{ fontSize: '20px', fontWeight: '700', color: '#c8102e' }}>${order.total.toFixed(2)}</div>
             <span style={{ display: 'inline-block', padding: '4px 12px', borderRadius: '12px', fontSize: '12px', fontWeight: '600', background: statusBg, color: statusColor }}>
               {order.status}
             </span>

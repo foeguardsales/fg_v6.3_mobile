@@ -158,7 +158,7 @@ export const SEOManager = () => {
           
           {/* Static Pages */}
           <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#8B4513' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#c8102e' }}>
               Static Pages
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -168,9 +168,9 @@ export const SEOManager = () => {
                   onClick={() => handlePageSelect('static', page.name)}
                   style={{
                     padding: '10px 12px',
-                    background: selectedPage === page.name && pageType === 'static' ? '#8B4513' : 'white',
+                    background: selectedPage === page.name && pageType === 'static' ? '#c8102e' : 'white',
                     color: selectedPage === page.name && pageType === 'static' ? 'white' : '#2C2C2C',
-                    border: '2px solid ' + (selectedPage === page.name && pageType === 'static' ? '#8B4513' : '#E8DDD0'),
+                    border: '2px solid ' + (selectedPage === page.name && pageType === 'static' ? '#c8102e' : '#E8DDD0'),
                     borderRadius: '8px',
                     cursor: 'pointer',
                     textAlign: 'left',
@@ -187,7 +187,7 @@ export const SEOManager = () => {
 
           {/* Product Pages */}
           <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#8B4513' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#c8102e' }}>
               Product Pages
             </h4>
             <select
@@ -213,7 +213,7 @@ export const SEOManager = () => {
 
           {/* Treat Pages */}
           <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#8B4513' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#c8102e' }}>
               Treat Pages
             </h4>
             <select
@@ -270,7 +270,7 @@ export const SEOManager = () => {
               />
               <p style={{ fontSize: '12px', color: '#666', marginTop: '4px', background: '#FFF9E6', padding: '6px 10px', borderRadius: '4px' }}>
                 📊 {formData.page_title.length}/60 characters | 
-                <strong style={{ color: '#8B4513' }}> Best: 50-60 characters</strong><br/>
+                <strong style={{ color: '#c8102e' }}> Best: 50-60 characters</strong><br/>
                 💡 Appears in browser tabs and Google search results
               </p>
             </div>
@@ -298,7 +298,7 @@ export const SEOManager = () => {
               />
               <p style={{ fontSize: '12px', color: '#666', marginTop: '4px', background: '#FFF9E6', padding: '6px 10px', borderRadius: '4px' }}>
                 📊 {formData.meta_description.length}/165 characters | 
-                <strong style={{ color: '#8B4513' }}> Best: 150-165 characters</strong><br/>
+                <strong style={{ color: '#c8102e' }}> Best: 150-165 characters</strong><br/>
                 💡 Appears below your page title in Google search results. Make it compelling!
               </p>
             </div>
@@ -353,7 +353,7 @@ export const SEOManager = () => {
               type="submit"
               style={{
                 padding: '12px 24px',
-                background: '#8B4513',
+                background: '#c8102e',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

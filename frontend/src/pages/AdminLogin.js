@@ -41,7 +41,7 @@ export const AdminLogin = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)'
+      background: 'linear-gradient(135deg, #c8102e 0%, #A0522D 100%)'
     }}>
       <div style={{
         background: 'white',
@@ -142,7 +142,7 @@ export const AdminLogin = () => {
             style={{
               width: '100%',
               padding: '14px',
-              background: loading ? '#999' : '#8B4513',
+              background: loading ? '#999' : '#c8102e',
               color: 'white',
               border: 'none',
               borderRadius: '8px',

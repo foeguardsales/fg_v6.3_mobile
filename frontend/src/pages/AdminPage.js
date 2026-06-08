@@ -45,8 +45,8 @@ export const AdminPage = () => {
           <div style={{ marginBottom: '20px', display: 'flex', gap: '12px' }}>
             {['all', 'pending', 'confirmed'].map(f => (
               <button key={f} onClick={() => setFilter(f)}
-                style={{ padding: '10px 20px', background: filter === f ? '#8B4513' : 'white', 
-                  color: filter === f ? 'white' : '#2C2C2C', border: '2px solid #8B4513', 
+                style={{ padding: '10px 20px', background: filter === f ? '#c8102e' : 'white', 
+                  color: filter === f ? 'white' : '#2C2C2C', border: '2px solid #c8102e', 
                   borderRadius: '8px', cursor: 'pointer', fontWeight: '600', textTransform: 'capitalize' }}>
                 {f}
               </button>

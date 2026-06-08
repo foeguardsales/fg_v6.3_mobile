@@ -79,7 +79,7 @@ export const CustomerDatabase = () => {
           onClick={() => setShowAddForm(!showAddForm)}
           style={{
             padding: '10px 20px',
-            background: '#8B4513',
+            background: '#c8102e',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -195,7 +195,7 @@ export const CustomerDatabase = () => {
               type="submit"
               style={{
                 padding: '10px 24px',
-                background: '#8B4513',
+                background: '#c8102e',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',
@@ -236,7 +236,7 @@ export const CustomerDatabase = () => {
                   <td style={{ padding: '12px', color: '#666', fontSize: '14px' }}>{customer.email}</td>
                   <td style={{ padding: '12px', color: '#666', fontSize: '14px' }}>{customer.phone || '-'}</td>
                   <td style={{ padding: '12px', textAlign: 'center', fontWeight: '600' }}>{customer.total_orders}</td>
-                  <td style={{ padding: '12px', textAlign: 'right', fontWeight: '600', color: '#8B4513' }}>
+                  <td style={{ padding: '12px', textAlign: 'right', fontWeight: '600', color: '#c8102e' }}>
                     ${customer.total_spent.toFixed(2)}
                   </td>
                   <td style={{ padding: '12px', textAlign: 'center' }}>
@@ -304,7 +304,7 @@ export const CustomerDatabase = () => {
                         </p>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontSize: '18px', fontWeight: '600', color: '#8B4513' }}>
+                        <div style={{ fontSize: '18px', fontWeight: '600', color: '#c8102e' }}>
                           ${order.total.toFixed(2)}
                         </div>
                         <div style={{
@@ -333,7 +333,7 @@ export const CustomerDatabase = () => {
               style={{
                 marginTop: '20px',
                 padding: '10px 20px',
-                background: '#8B4513',
+                background: '#c8102e',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

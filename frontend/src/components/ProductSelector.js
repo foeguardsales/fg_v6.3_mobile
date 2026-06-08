@@ -30,7 +30,7 @@ export const ProductSelector = ({ products, boxSize, selectedProteins, onUpdateP
       <div className="product-card" data-testid={`product-${product.product_id}`}>
         <h4 style={{ fontSize: '20px', margin: '8px 0', textTransform: 'capitalize' }}>{product.protein_type}</h4>
         <p style={{ fontSize: '13px', color: '#666', lineHeight: '1.4', marginBottom: '16px' }}>{product.description.split('.')[0]}</p>
-        <div style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513', marginBottom: '12px' }}>
+        <div style={{ fontSize: '18px', fontWeight: '700', color: '#c8102e', marginBottom: '12px' }}>
           ${price.toFixed(2)} / 6lb
         </div>
         <div className="quantity-controls">

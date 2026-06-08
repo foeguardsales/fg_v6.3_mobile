@@ -88,7 +88,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
       <div className={`cart-drawer-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
       <div className={`cart-drawer ${isOpen ? 'open' : ''}`} data-testid="cart-drawer">
         <div className="cart-drawer-header">
-          <h3 style={{ fontSize: '24px', color: '#8B4513', margin: 0 }}>Your Box</h3>
+          <h3 style={{ fontSize: '24px', color: '#c8102e', margin: 0 }}>Your Box</h3>
           <button onClick={onClose} className="cart-close-btn">×</button>
         </div>
         
@@ -550,7 +550,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
               <div className="treat-info">
                 <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>
                 <p style={{ color: '#666', fontSize: '13px', margin: '0 0 8px 0' }}>{treat.quantity_description}</p>
-                <span style={{ fontSize: '18px', fontWeight: '700', color: '#8B4513', display: 'block' }}>${treat.price.toFixed(2)}</span>
+                <span style={{ fontSize: '18px', fontWeight: '700', color: '#c8102e', display: 'block' }}>${treat.price.toFixed(2)}</span>
               </div>
             </div>
             <div style={{ 

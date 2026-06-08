@@ -142,7 +142,7 @@ export const CheckoutPage = () => {
               </p>
             )}
             <button onClick={() => navigate('/menu')} style={{
-              padding: '14px 32px', background: '#8B4513', color: 'white',
+              padding: '14px 32px', background: '#c8102e', color: 'white',
               border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: '600', cursor: 'pointer'
             }}>
               Continue Shopping
@@ -279,7 +279,7 @@ export const CheckoutPage = () => {
             onClick={handleSubmitOrder}
             disabled={loading || !name || !email || !address || !city || !province || !postalCode}
             style={{
-              width: '100%', padding: '16px', background: loading ? '#ccc' : '#8B4513', color: 'white',
+              width: '100%', padding: '16px', background: loading ? '#ccc' : '#c8102e', color: 'white',
               border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: '600',
               cursor: loading ? 'not-allowed' : 'pointer'
             }}

@@ -169,14 +169,14 @@ export const FeedingCalculator = ({ onComplete }) => {
           cursor: 'pointer',
           fontSize: '15px',
           fontWeight: '600',
-          color: '#8B4513',
+          color: '#c8102e',
           marginBottom: '32px',
           transition: 'all 0.2s',
           fontFamily: "'Rubik', sans-serif"
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = '#F8F6F4';
-          e.currentTarget.style.borderColor = '#8B4513';
+          e.currentTarget.style.borderColor = '#c8102e';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.background = 'white';
@@ -201,7 +201,7 @@ export const FeedingCalculator = ({ onComplete }) => {
           marginBottom: '20px' 
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '22px', color: '#8B4513' }}>Pet {index + 1}</h3>
+            <h3 style={{ fontSize: '22px', color: '#c8102e' }}>Pet {index + 1}</h3>
             {pets.length > 1 && (
               <button 
                 onClick={() => removePet(pet.id)}
@@ -302,7 +302,7 @@ export const FeedingCalculator = ({ onComplete }) => {
               borderRadius: '8px',
               border: '2px solid #D2B48C'
             }}>
-              <strong style={{ color: '#8B4513' }}>{pet.name}'s Recommendation:</strong>
+              <strong style={{ color: '#c8102e' }}>{pet.name}'s Recommendation:</strong>
               <p style={{ margin: '8px 0 0 0', color: '#555' }}>
                 Feed approximately <strong>{calculateFeeding(pet)} oz</strong> per day 
                 ({(calculateFeeding(pet) / 16).toFixed(2)} lbs/day) | <strong>{((calculateFeeding(pet) / 16) * 30).toFixed(1)} lbs/month</strong>
@@ -318,9 +318,9 @@ export const FeedingCalculator = ({ onComplete }) => {
           width: '100%',
           padding: '14px',
           background: 'white',
-          border: '2px dashed #8B4513',
+          border: '2px dashed #c8102e',
           borderRadius: '12px',
-          color: '#8B4513',
+          color: '#c8102e',
           fontSize: '16px',
           fontWeight: '600',
           cursor: 'pointer',
@@ -332,7 +332,7 @@ export const FeedingCalculator = ({ onComplete }) => {
 
       {isComplete && (
         <div style={{
-          background: 'linear-gradient(135deg, #8B4513 0%, #6D3510 100%)',
+          background: 'linear-gradient(135deg, #c8102e 0%, #6D3510 100%)',
           color: 'white',
           padding: '32px',
           borderRadius: '16px',
@@ -377,9 +377,9 @@ export const FeedingCalculator = ({ onComplete }) => {
               padding: '14px 28px',
               background: showSaveSuccess ? '#4CAF50' : 'white',
               border: '2px solid',
-              borderColor: showSaveSuccess ? '#4CAF50' : '#8B4513',
+              borderColor: showSaveSuccess ? '#4CAF50' : '#c8102e',
               borderRadius: '8px',
-              color: showSaveSuccess ? 'white' : '#8B4513',
+              color: showSaveSuccess ? 'white' : '#c8102e',
               fontSize: '16px',
               fontWeight: '600',
               cursor: 'pointer',

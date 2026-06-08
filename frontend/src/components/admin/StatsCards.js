@@ -2,7 +2,7 @@ import React from 'react';
 
 const StatCard = ({ value, label }) => (
   <div style={{ background: 'white', padding: '24px', borderRadius: '12px', border: '2px solid #E5E7E6' }}>
-    <div style={{ fontSize: '32px', fontWeight: '700', color: '#8B4513' }}>{value}</div>
+    <div style={{ fontSize: '32px', fontWeight: '700', color: '#c8102e' }}>{value}</div>
     <div style={{ color: '#666' }}>{label}</div>
   </div>
 );

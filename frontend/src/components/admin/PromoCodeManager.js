@@ -128,7 +128,7 @@ export const PromoCodeManager = () => {
           onClick={() => setShowForm(!showForm)}
           style={{
             padding: '10px 20px',
-            background: '#8B4513',
+            background: '#c8102e',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -333,7 +333,7 @@ export const PromoCodeManager = () => {
                 type="submit"
                 style={{
                   padding: '10px 24px',
-                  background: '#8B4513',
+                  background: '#c8102e',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',

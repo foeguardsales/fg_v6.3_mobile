@@ -226,7 +226,7 @@ export const BlogDetailPage = () => {
             style={{
               marginTop: '20px',
               padding: '12px 24px',
-              background: '#8B4513',
+              background: '#c8102e',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -351,7 +351,7 @@ export const BlogDetailPage = () => {
               onClick={() => navigate('/blog')}
               style={{
                 padding: '12px 24px',
-                background: '#8B4513',
+                background: '#c8102e',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

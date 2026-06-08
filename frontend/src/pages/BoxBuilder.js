@@ -210,7 +210,7 @@ export const BoxBuilder = () => {
       id: 'calculator',
       title: 'Feeding Calculator',
       icon: <Calculator size={36} />,
-      gradient: 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)',
+      gradient: 'linear-gradient(135deg, #c8102e 0%, #A0522D 100%)',
       onClick: () => navigate('/calculator')
     }
   ];

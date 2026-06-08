@@ -98,7 +98,7 @@ export const OrderChoicePage = () => {
               </p>
               <div style={{
                 background: '#fff',
-                color: '#8B4513',
+                color: '#c8102e',
                 padding: '14px 28px',
                 borderRadius: '8px',
                 fontFamily: "'Rubik', sans-serif",
@@ -164,7 +164,7 @@ export const OrderChoicePage = () => {
               </p>
               <div style={{
                 background: '#fff',
-                color: '#8B4513',
+                color: '#c8102e',
                 padding: '14px 28px',
                 borderRadius: '8px',
                 fontFamily: "'Rubik', sans-serif",

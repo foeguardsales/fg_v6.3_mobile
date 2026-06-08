@@ -9,7 +9,7 @@ const OrderRow = ({ order, onUpdate }) => (
     </td>
     <td style={{ padding: '16px', fontSize: '14px' }}>{new Date(order.created_at).toLocaleDateString()}</td>
     <td style={{ padding: '16px' }}>{order.box_size_lb}lb</td>
-    <td style={{ padding: '16px', fontWeight: '700', color: '#8B4513' }}>${order.total.toFixed(2)}</td>
+    <td style={{ padding: '16px', fontWeight: '700', color: '#c8102e' }}>${order.total.toFixed(2)}</td>
     <td style={{ padding: '16px' }}>
       {order.is_subscription ? (
         <span style={{ padding: '4px 8px', borderRadius: '8px', fontSize: '12px', fontWeight: '600', background: '#E8F5E9', color: '#2E7D32' }}>Sub</span>

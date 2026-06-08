@@ -165,7 +165,7 @@ export const BlogManager = () => {
           onClick={() => setShowForm(!showForm)}
           style={{
             padding: '10px 20px',
-            background: '#8B4513',
+            background: '#c8102e',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
@@ -445,7 +445,7 @@ export const BlogManager = () => {
                 />
                 <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
                   {formData.meta_title.length}/60 characters | 
-                  <strong style={{ color: '#8B4513' }}> SEO Best Practice: 50-60 characters</strong>
+                  <strong style={{ color: '#c8102e' }}> SEO Best Practice: 50-60 characters</strong>
                 </p>
               </div>
 
@@ -470,7 +470,7 @@ export const BlogManager = () => {
                 />
                 <p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
                   {formData.meta_description.length}/165 characters | 
-                  <strong style={{ color: '#8B4513' }}> SEO Best Practice: 150-165 characters</strong>
+                  <strong style={{ color: '#c8102e' }}> SEO Best Practice: 150-165 characters</strong>
                 </p>
               </div>
 
@@ -512,7 +512,7 @@ export const BlogManager = () => {
                 type="submit"
                 style={{
                   padding: '10px 24px',
-                  background: '#8B4513',
+                  background: '#c8102e',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',

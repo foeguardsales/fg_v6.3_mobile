@@ -8,14 +8,14 @@ export const AuthSection = ({ onSuccess }) => {
     <div style={{ maxWidth: '500px', margin: '0 auto' }}>
       <div style={{ textAlign: 'center', marginBottom: '30px' }}>
         <button onClick={() => setShowLogin(true)} 
-          style={{ padding: '12px 24px', background: showLogin ? '#8B4513' : 'transparent', 
-            color: showLogin ? 'white' : '#8B4513', border: '2px solid #8B4513', 
+          style={{ padding: '12px 24px', background: showLogin ? '#c8102e' : 'transparent', 
+            color: showLogin ? 'white' : '#c8102e', border: '2px solid #c8102e', 
             borderRadius: '8px 0 0 8px', cursor: 'pointer', fontWeight: '600' }}>
           Login
         </button>
         <button onClick={() => setShowLogin(false)}
-          style={{ padding: '12px 24px', background: !showLogin ? '#8B4513' : 'transparent',
-            color: !showLogin ? 'white' : '#8B4513', border: '2px solid #8B4513',
+          style={{ padding: '12px 24px', background: !showLogin ? '#c8102e' : 'transparent',
+            color: !showLogin ? 'white' : '#c8102e', border: '2px solid #c8102e',
             borderRadius: '0 8px 8px 0', cursor: 'pointer', fontWeight: '600' }}>
           Register
         </button>

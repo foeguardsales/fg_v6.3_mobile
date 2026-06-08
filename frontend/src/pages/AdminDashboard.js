@@ -120,7 +120,7 @@ export const AdminDashboard = () => {
                 onClick={() => setActiveTab(tab.id)}
                 style={{
                   padding: '12px 24px',
-                  background: activeTab === tab.id ? '#8B4513' : 'transparent',
+                  background: activeTab === tab.id ? '#c8102e' : 'transparent',
                   color: activeTab === tab.id ? 'white' : '#666',
                   border: 'none',
                   borderRadius: '8px 8px 0 0',
@@ -150,9 +150,9 @@ export const AdminDashboard = () => {
                       onClick={() => setFilter(f)}
                       style={{ 
                         padding: '10px 20px', 
-                        background: filter === f ? '#8B4513' : 'white', 
+                        background: filter === f ? '#c8102e' : 'white', 
                         color: filter === f ? 'white' : '#2C2C2C', 
-                        border: '2px solid #8B4513', 
+                        border: '2px solid #c8102e', 
                         borderRadius: '8px', 
                         cursor: 'pointer', 
                         fontWeight: '600', 

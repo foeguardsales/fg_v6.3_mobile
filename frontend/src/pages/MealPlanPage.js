@@ -270,7 +270,7 @@ export const MealPlanPage = () => {
                     width: '40px',
                     height: '40px',
                     borderRadius: '50%',
-                    background: '#8B4513',
+                    background: '#c8102e',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -332,8 +332,8 @@ export const MealPlanPage = () => {
                   transition: 'all 0.2s'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#8B4513';
-                  e.currentTarget.style.color = '#8B4513';
+                  e.currentTarget.style.borderColor = '#c8102e';
+                  e.currentTarget.style.color = '#c8102e';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = '#D9D9D9';
@@ -407,7 +407,7 @@ export const MealPlanPage = () => {
               const name = capitalizeName(dog.name);
               return (
                 <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px', color: '#8B4513' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px', color: '#c8102e' }}>
                     {name}
                   </h3>
                   
@@ -423,7 +423,7 @@ export const MealPlanPage = () => {
                           style={{
                             padding: '12px 16px',
                             borderRadius: '8px',
-                            border: dog.gender === gender ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                            border: dog.gender === gender ? '2px solid #c8102e' : '2px solid #E8E4DC',
                             background: dog.gender === gender ? '#FDF8F3' : 'white',
                             cursor: 'pointer',
                             fontSize: '15px',
@@ -450,7 +450,7 @@ export const MealPlanPage = () => {
                           style={{
                             padding: '12px 16px',
                             borderRadius: '8px',
-                            border: dog.is_neutered === option.value ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                            border: dog.is_neutered === option.value ? '2px solid #c8102e' : '2px solid #E8E4DC',
                             background: dog.is_neutered === option.value ? '#FDF8F3' : 'white',
                             cursor: 'pointer',
                             fontSize: '15px',
@@ -487,7 +487,7 @@ export const MealPlanPage = () => {
               const name = capitalizeName(dog.name);
               return (
                 <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px', color: '#8B4513' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px', color: '#c8102e' }}>
                     {name}
                   </h3>
                   
@@ -563,7 +563,7 @@ export const MealPlanPage = () => {
               const name = capitalizeName(dog.name);
               return (
                 <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#8B4513' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#c8102e' }}>
                     {name}
                   </h3>
                   
@@ -579,7 +579,7 @@ export const MealPlanPage = () => {
                         style={{
                           padding: '14px 16px',
                           borderRadius: '10px',
-                          border: dog.body_condition === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                          border: dog.body_condition === option.id ? '2px solid #c8102e' : '2px solid #E8E4DC',
                           background: dog.body_condition === option.id ? '#FDF8F3' : 'white',
                           cursor: 'pointer',
                           textAlign: 'left',
@@ -596,7 +596,7 @@ export const MealPlanPage = () => {
                             {option.desc}
                           </div>
                         </div>
-                        {dog.body_condition === option.id && <Check size={18} color="#8B4513" />}
+                        {dog.body_condition === option.id && <Check size={18} color="#c8102e" />}
                       </button>
                     ))}
                   </div>
@@ -624,7 +624,7 @@ export const MealPlanPage = () => {
               const name = capitalizeName(dog.name);
               return (
                 <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px', color: '#8B4513' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px', color: '#c8102e' }}>
                     {name}
                   </h3>
                   
@@ -667,7 +667,7 @@ export const MealPlanPage = () => {
                           style={{
                             padding: '12px 16px',
                             borderRadius: '8px',
-                            border: dog.lifestyle === option.id ? '2px solid #8B4513' : '2px solid #E8E4DC',
+                            border: dog.lifestyle === option.id ? '2px solid #c8102e' : '2px solid #E8E4DC',
                             background: dog.lifestyle === option.id ? '#FDF8F3' : 'white',
                             cursor: 'pointer',
                             textAlign: 'left',
@@ -679,7 +679,7 @@ export const MealPlanPage = () => {
                           <span style={{ fontWeight: '500', fontSize: '14px', color: '#2B2B2B' }}>
                             {option.label} <span style={{ color: '#666', fontWeight: '400' }}>– {option.desc}</span>
                           </span>
-                          {dog.lifestyle === option.id && <Check size={16} color="#8B4513" />}
+                          {dog.lifestyle === option.id && <Check size={16} color="#c8102e" />}
                         </button>
                       ))}
                     </div>
@@ -708,7 +708,7 @@ export const MealPlanPage = () => {
               const name = capitalizeName(dog.name);
               return (
                 <div key={dog.dog_id} style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#8B4513' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#c8102e' }}>
                     {name}
                   </h3>
                   
@@ -724,7 +724,7 @@ export const MealPlanPage = () => {
                           style={{
                             padding: '10px 14px',
                             borderRadius: '8px',
-                            border: isSelected ? `2px solid ${isNone ? '#2F4538' : '#8B4513'}` : '2px solid #E8E4DC',
+                            border: isSelected ? `2px solid ${isNone ? '#2F4538' : '#c8102e'}` : '2px solid #E8E4DC',
                             background: isSelected ? (isNone ? '#E8F5E9' : '#FDF8F3') : 'white',
                             cursor: 'pointer',
                             textAlign: 'left',
@@ -738,7 +738,7 @@ export const MealPlanPage = () => {
                           }}
                         >
                           {issue.label}
-                          {isSelected && <Check size={14} color={isNone ? '#2F4538' : '#8B4513'} />}
+                          {isSelected && <Check size={14} color={isNone ? '#2F4538' : '#c8102e'} />}
                         </button>
                       );
                     })}
@@ -819,7 +819,7 @@ export const MealPlanPage = () => {
                 style={{
                   flex: 1,
                   padding: '16px 24px',
-                  background: '#8B4513',
+                  background: '#c8102e',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',
@@ -836,8 +836,8 @@ export const MealPlanPage = () => {
                   flex: 1,
                   padding: '16px 24px',
                   background: 'white',
-                  color: '#8B4513',
-                  border: '2px solid #8B4513',
+                  color: '#c8102e',
+                  border: '2px solid #c8102e',
                   borderRadius: '8px',
                   fontSize: '16px',
                   fontWeight: '600',
@@ -922,7 +922,7 @@ export const MealPlanPage = () => {
               style={{
                 width: '100%',
                 padding: '16px 24px',
-                background: email ? '#8B4513' : '#CCC',
+                background: email ? '#c8102e' : '#CCC',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',
@@ -958,7 +958,7 @@ export const MealPlanPage = () => {
   return (
     <>
       <Navbar />
-      <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '40px 20px' }}>
+      <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '60px 20px 40px' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           {/* Progress Bar */}
           {!profileSaved && (
@@ -969,7 +969,7 @@ export const MealPlanPage = () => {
               </div>
               <div style={{ background: '#E8E4DC', borderRadius: '4px', height: '6px', overflow: 'hidden' }}>
                 <div style={{ 
-                  background: '#8B4513', 
+                  background: '#c8102e', 
                   height: '100%', 
                   width: `${getProgress()}%`,
                   transition: 'width 0.3s ease'
@@ -1014,7 +1014,7 @@ export const MealPlanPage = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
-                  background: canProceed() ? '#8B4513' : '#CCC',
+                  background: canProceed() ? '#c8102e' : '#CCC',
                   color: 'white',
                   border: 'none',
                   padding: '14px 32px',
