@@ -415,36 +415,78 @@ const ModernFooter = () => {
   const navigate = useNavigate();
   
   return (
-    <footer style={{ background: COLORS.charcoal, color: COLORS.cream }}>
+    <footer style={{ background: COLORS.khaki, color: COLORS.charcoal }}>
+      {/* Tagline strip */}
+      <div style={{
+        maxWidth: '1100px',
+        margin: '0 auto',
+        padding: '40px 20px 8px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+        gap: '20px'
+      }}>
+        {[
+          'Build your box or your own meal plan. Pause, change or cancel anytime.',
+          'Watch your dog thrive as digestion, weight, energy and allergies start to improve.',
+          'We deliver straight to your door. Subscribe to save and never run out of food.'
+        ].map((line, i) => (
+          <div key={i} style={{
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'flex-start'
+          }}>
+            <span style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background: COLORS.red,
+              flexShrink: 0,
+              marginTop: '7px'
+            }} />
+            <p style={{
+              fontSize: '14px',
+              lineHeight: 1.55,
+              margin: 0,
+              color: COLORS.charcoal,
+              fontWeight: 500,
+              fontFamily: "'Rubik', sans-serif"
+            }}>
+              {line}
+            </p>
+          </div>
+        ))}
+      </div>
+
       {/* Main footer content */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: '40px',
-        padding: '60px 20px',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gap: '32px',
+        padding: '32px 20px 40px',
         maxWidth: '1200px',
         margin: '0 auto'
       }}>
         {/* Brand column */}
         <div>
-          <div style={{ marginBottom: '16px' }}>
+          <div style={{ marginBottom: '12px' }}>
             <FoeGuardLogo size="default" />
           </div>
-          <p style={{ fontSize: '14px', lineHeight: '1.7', color: COLORS.khaki, marginBottom: '24px' }}>
-            Ontario&apos;s #1 farm-to-bowl raw dog food delivery. Real, fresh, complete nutrition for your best friend.
+          <p style={{ fontSize: '13px', lineHeight: '1.6', color: COLORS.charcoal, opacity: 0.85, marginBottom: '20px' }}>
+            Ontario&apos;s #1 farm-fresh raw dog food delivery. Real, fresh, complete nutrition for your best friend.
           </p>
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
             {['Instagram', 'Facebook'].map(social => (
               <a key={social} href="#" style={{
-                width: '40px',
-                height: '40px',
+                width: '36px',
+                height: '36px',
                 borderRadius: '50%',
-                background: COLORS.forestGreen,
+                background: COLORS.red,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: COLORS.cream,
+                color: COLORS.white,
                 fontSize: '12px',
+                fontWeight: 700,
                 textDecoration: 'none'
               }}>
                 {social[0]}
@@ -455,62 +497,109 @@ const ModernFooter = () => {
 
         {/* Shop column */}
         <div>
-          <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', color: COLORS.white }}>Shop</h4>
-          {['Raw Dog Food', 'Meaty Treats', 'Build Meal Plan', 'Dog Food Calculator'].map(item => (
-            <a key={item} href="#" style={{
-              display: 'block',
-              color: COLORS.khaki,
-              fontSize: '14px',
-              marginBottom: '12px',
-              textDecoration: 'none'
-            }}>
-              {item}
-            </a>
+          <h4 style={{ fontSize: '14px', fontWeight: '800', marginBottom: '14px', color: COLORS.charcoal, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Shop</h4>
+          {[
+            { label: 'Raw Dog Food', to: '/menu' },
+            { label: 'Meaty Treats', to: '/menu/treats' },
+            { label: 'Build Meal Plan', to: '/meal-plan' },
+            { label: 'Dog Food Calculator', to: '/calculator' }
+          ].map(item => (
+            <button
+              key={item.label}
+              onClick={() => navigate(item.to)}
+              style={{
+                display: 'block',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                color: COLORS.charcoal,
+                fontSize: '14px',
+                marginBottom: '8px',
+                cursor: 'pointer',
+                opacity: 0.85,
+                textAlign: 'left',
+                fontFamily: "'Rubik', sans-serif"
+              }}
+            >
+              {item.label}
+            </button>
           ))}
         </div>
 
         {/* Help column */}
         <div>
-          <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', color: COLORS.white }}>Help</h4>
-          {['Contact Us', 'FAQs', 'Delivery Information', 'Returns'].map(item => (
-            <a key={item} href="#" style={{
-              display: 'block',
-              color: COLORS.khaki,
-              fontSize: '14px',
-              marginBottom: '12px',
-              textDecoration: 'none'
-            }}>
-              {item}
-            </a>
+          <h4 style={{ fontSize: '14px', fontWeight: '800', marginBottom: '14px', color: COLORS.charcoal, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Help</h4>
+          {[
+            { label: 'Contact Us', to: '/contact' },
+            { label: 'FAQs', to: '/faq' },
+            { label: 'Delivery Information', to: '/delivery' },
+            { label: 'Returns', to: '/policies' }
+          ].map(item => (
+            <button
+              key={item.label}
+              onClick={() => navigate(item.to)}
+              style={{
+                display: 'block',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                color: COLORS.charcoal,
+                fontSize: '14px',
+                marginBottom: '8px',
+                cursor: 'pointer',
+                opacity: 0.85,
+                textAlign: 'left',
+                fontFamily: "'Rubik', sans-serif"
+              }}
+            >
+              {item.label}
+            </button>
           ))}
         </div>
 
         {/* Company column */}
         <div>
-          <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '20px', color: COLORS.white }}>Company</h4>
-          {['About Us', 'Why Raw?', 'Blog', 'Privacy Policy', 'Terms of Service'].map(item => (
-            <a key={item} href="#" style={{
-              display: 'block',
-              color: COLORS.khaki,
-              fontSize: '14px',
-              marginBottom: '12px',
-              textDecoration: 'none'
-            }}>
-              {item}
-            </a>
+          <h4 style={{ fontSize: '14px', fontWeight: '800', marginBottom: '14px', color: COLORS.charcoal, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Company</h4>
+          {[
+            { label: 'About Us', to: '/about' },
+            { label: 'Why Raw?', to: '/new-to-raw' },
+            { label: 'Blog', to: '/blog' },
+            { label: 'Privacy Policy', to: '/policies' },
+            { label: 'Terms of Service', to: '/terms' }
+          ].map(item => (
+            <button
+              key={item.label}
+              onClick={() => navigate(item.to)}
+              style={{
+                display: 'block',
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                color: COLORS.charcoal,
+                fontSize: '14px',
+                marginBottom: '8px',
+                cursor: 'pointer',
+                opacity: 0.85,
+                textAlign: 'left',
+                fontFamily: "'Rubik', sans-serif"
+              }}
+            >
+              {item.label}
+            </button>
           ))}
         </div>
       </div>
 
       {/* Bottom bar */}
       <div style={{
-        borderTop: `1px solid ${COLORS.forestGreen}`,
-        padding: '20px',
+        borderTop: `1px solid ${COLORS.khakiDark}`,
+        padding: '18px 20px',
         textAlign: 'center',
-        fontSize: '13px',
-        color: COLORS.khaki
+        fontSize: '12px',
+        color: COLORS.charcoal,
+        opacity: 0.7
       }}>
-        © 2025 FoeGuard. All rights reserved. Made with ❤️ in Ontario, Canada.
+        © {new Date().getFullYear()} FoeGuard. All rights reserved. Made with care in Ontario.
       </div>
     </footer>
   );
@@ -540,11 +629,32 @@ export const LandingPage = () => {
     }
   ];
 
+  // Customer photos from old site — used for both review thumbs + background collage
+  const CUSTOMER_IMG = (i) => {
+    const urls = [
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/skuox6lk_customer%20image%201.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/i8unoyzf_customer%20image%202.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0chc5rd7_customer%20image%203.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ztqi7osh_customer%20image%204.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/mdrqjiyi_customer%20image%205.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/fd4zxuc8_customer%20image%206.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/bntscfuc_customer%20image%207.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/uci3qgmq_customer%20image%208.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/aphigyw1_customer%20image%209.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/2kgbxhaf_customer%20image%2010.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/pk34xhh5_customer%20image%2011.jpg',
+      'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/nsfx800g_customer%20image%2012.jpg'
+    ];
+    return urls[i % urls.length];
+  };
+
   const reviews = [
-    { name: "Sarah M.", text: "No more stomach issues, and his coat looks amazing. Definitely worth the switch!", rating: 5 },
-    { name: "Michael T.", text: "My dog has been on FoeGuard for 6 months and the difference in energy is incredible!", rating: 5 },
-    { name: "Jennifer K.", text: "Finally found a raw food I can trust. The quality is obvious and my pup loves it.", rating: 5 },
-    { name: "David R.", text: "The convenience of delivery plus the health benefits - it's a no-brainer.", rating: 5 }
+    { name: 'Sarah M.', text: "Her digestion improved within weeks. I'll never go back to kibble.", rating: 5, img: CUSTOMER_IMG(0) },
+    { name: 'Daniel R.', text: 'Finally a raw brand I trust.', rating: 5, img: CUSTOMER_IMG(1) },
+    { name: 'Melissa T.', text: 'Energy, coat, stools — everything changed.', rating: 5, img: CUSTOMER_IMG(2) },
+    { name: 'Jennifer L.', text: "My dog's coat is so much shinier now. Worth every penny!", rating: 5, img: CUSTOMER_IMG(3) },
+    { name: 'Michael K.', text: "Switching to FoeGuard was the best decision for our pup's health.", rating: 5, img: CUSTOMER_IMG(4) },
+    { name: 'Amanda R.', text: "I love knowing exactly what my dog is eating. Real ingredients!", rating: 5, img: CUSTOMER_IMG(5) }
   ];
 
   return (
@@ -900,9 +1010,10 @@ export const LandingPage = () => {
                 fontWeight: '700',
                 marginBottom: '14px',
                 fontFamily: "'Rubik', sans-serif",
-                lineHeight: 1.25
+                lineHeight: 1.25,
+                color: COLORS.white
               }}>
-                Help Your Best Friend <span style={{ color: COLORS.lightGreen }}>Live Their Best Life.</span>
+                Help Your Best Friend Live Their Best Life.
               </h2>
               <p style={{
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
@@ -992,9 +1103,39 @@ export const LandingPage = () => {
         {/* REVIEWS SECTION */}
         <section style={{
           background: COLORS.cream,
-          padding: '60px 20px'
+          padding: '60px 20px',
+          position: 'relative',
+          overflow: 'hidden'
         }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Background customer photo collage — faded back layer */}
+          <div aria-hidden="true" style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(6, 1fr)',
+            gridAutoRows: '1fr',
+            gap: '4px',
+            opacity: 0.18,
+            pointerEvents: 'none',
+            filter: 'saturate(0.85)'
+          }}>
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div key={i} style={{
+                backgroundImage: `url(${CUSTOMER_IMG(i)})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }} />
+            ))}
+          </div>
+          {/* Soft cream overlay to keep reviews legible */}
+          <div aria-hidden="true" style={{
+            position: 'absolute',
+            inset: 0,
+            background: `linear-gradient(180deg, rgba(245,243,239,0.85) 0%, rgba(245,243,239,0.92) 100%)`,
+            pointerEvents: 'none'
+          }} />
+
+          <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
             <h2 style={{
               fontSize: 'clamp(22px, 2.6vw, 28px)',
               fontWeight: '700',
@@ -1017,30 +1158,49 @@ export const LandingPage = () => {
               {reviews.map((review, i) => (
                 <div key={i} style={{
                   background: COLORS.white,
-                  padding: '28px',
+                  padding: '20px',
                   borderRadius: '16px',
-                  boxShadow: '4px 4px 0px rgba(0,0,0,0.05)'
+                  boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
+                  border: `1px solid ${COLORS.khaki}`,
+                  display: 'flex',
+                  gap: '14px',
+                  alignItems: 'flex-start'
                 }}>
-                  <div style={{ display: 'flex', gap: '4px', marginBottom: '14px' }}>
-                    {[1,2,3,4,5].map(s => <Star key={s} size={16} fill={COLORS.red} color={COLORS.red} />)}
+                  <img
+                    src={review.img}
+                    alt={review.name}
+                    style={{
+                      width: '72px',
+                      height: '72px',
+                      borderRadius: '12px',
+                      objectFit: 'cover',
+                      flexShrink: 0,
+                      border: `2px solid ${COLORS.khaki}`
+                    }}
+                  />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
+                      {[1,2,3,4,5].map(s => <Star key={s} size={14} fill={COLORS.red} color={COLORS.red} />)}
+                    </div>
+                    <p style={{
+                      fontSize: '14px',
+                      color: COLORS.charcoal,
+                      lineHeight: '1.55',
+                      marginBottom: '10px',
+                      fontStyle: 'italic'
+                    }}>
+                      {`"${review.text}"`}
+                    </p>
+                    <p style={{
+                      fontSize: '13px',
+                      fontWeight: '700',
+                      color: COLORS.red,
+                      margin: 0,
+                      fontFamily: "'Rubik', sans-serif"
+                    }}>
+                      — {review.name}
+                    </p>
                   </div>
-                  <p style={{
-                    fontSize: '15px',
-                    color: COLORS.charcoal,
-                    lineHeight: '1.6',
-                    marginBottom: '18px',
-                    fontStyle: 'italic'
-                  }}>
-                    {`"${review.text}"`}
-                  </p>
-                  <p style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: COLORS.charcoal,
-                    margin: 0
-                  }}>
-                    — {review.name}
-                  </p>
                 </div>
               ))}
             </div>
@@ -1092,9 +1252,9 @@ export const LandingPage = () => {
                 fontSize: '16px',
                 color: COLORS.charcoal,
                 lineHeight: '1.8',
-                marginBottom: '24px'
+                marginBottom: '20px'
               }}>
-                FoeGuard is a family-run business committed to providing pet parents with the same fresh, natural ingredients we expect at our own table. As third generation Canadian Farmers and award-winning German Shepherd breeders with a PhD in biology, we have seen the benefits of biologically appropriate raw food first-hand.
+                FoeGuard is a family-run business committed to providing pet parents with the same fresh, natural ingredients we expect at our own table. As third-generation Canadian farmers and award-winning German Shepherd breeders with a PhD in biology, we have personally overcome health issues with our own dogs and seen first-hand the benefits of biologically appropriate raw food.
               </p>
               <p style={{
                 fontSize: '16px',
@@ -1102,7 +1262,7 @@ export const LandingPage = () => {
                 lineHeight: '1.8',
                 marginBottom: '32px'
               }}>
-                What began as helping our neighbours and friends with their dogs meals became a realization that Ontario pet parents needed better access to trusted, transparent pet nutrition. Our passion became profession, FoeGuard was born!
+                What started as helping our neighbours and friends feed their dogs better quickly became a realization — Ontario pet parents deserved better access to trusted, transparent pet nutrition. FoeGuard was created for the community, by the community. Our passion became profession.
               </p>
               <button
                 onClick={() => navigate('/about')}

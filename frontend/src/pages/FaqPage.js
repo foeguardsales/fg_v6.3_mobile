@@ -6,6 +6,27 @@ import { SlideCart } from '../contexts/CartContext';
 
 const FAQ_CATEGORIES = [
   {
+    title: 'Quick Answers',
+    items: [
+      {
+        q: 'Is raw food safe for my dog?',
+        a: 'Yes! Our raw food is made in an Ontario Regulated Human Food Kitchen with the same safety standards as human food. We use only human-grade, ethically sourced ingredients.'
+      },
+      {
+        q: 'How do I transition my dog to raw?',
+        a: 'We recommend a gradual transition over 7-10 days, mixing increasing amounts of raw food with their current diet. Our team is always here to help guide you through the process.'
+      },
+      {
+        q: 'How is the food shipped?',
+        a: 'All orders are shipped frozen in insulated packaging with dry ice to ensure freshness. We deliver directly to your door across Ontario.'
+      },
+      {
+        q: 'Can I pause or cancel my subscription?',
+        a: 'Absolutely! Your meal plan is completely customizable. Pause, skip, change, or cancel anytime with no commitments or hidden fees.'
+      }
+    ]
+  },
+  {
     title: 'Getting Started',
     items: [
       {
