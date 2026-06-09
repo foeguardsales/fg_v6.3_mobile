@@ -1095,20 +1095,39 @@ export const LandingPage = () => {
               WebkitOverflowScrolling: 'touch'
             }}
           >
-            {/* Build a feed: review card, then a photo card, alternating — all uniform size */}
+            {/* Feed: small photo, small photo, larger review (featured) — uses all 12 customer photos */}
             {(() => {
               const tiles = [];
-              const CARD_WIDTH = 240;
+              const PHOTO_W = 130;
+              const REVIEW_W = 210;
+              let photoIdx = 0;
               reviews.forEach((r, i) => {
-                // Review card
+                // Two small customer photos
+                for (let k = 0; k < 2; k++) {
+                  tiles.push(
+                    <div key={`p-${i}-${k}`} style={{
+                      flex: `0 0 ${PHOTO_W}px`,
+                      scrollSnapAlign: 'center',
+                      aspectRatio: '4 / 5',
+                      borderRadius: '14px',
+                      overflow: 'hidden',
+                      border: `1px solid ${COLORS.khaki}`,
+                      boxShadow: '3px 3px 0px rgba(0,0,0,0.06)',
+                      backgroundImage: `url(${CUSTOMER_IMG(photoIdx++)})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }} />
+                  );
+                }
+                // Featured review — wider/larger so it pops as the main one
                 tiles.push(
                   <article key={`r-${i}`} style={{
-                    flex: `0 0 ${CARD_WIDTH}px`,
-                    scrollSnapAlign: 'start',
+                    flex: `0 0 ${REVIEW_W}px`,
+                    scrollSnapAlign: 'center',
                     background: COLORS.white,
                     borderRadius: '16px',
-                    border: `1px solid ${COLORS.khaki}`,
-                    boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
+                    border: `2px solid ${COLORS.red}`,
+                    boxShadow: '5px 5px 0px rgba(0,0,0,0.12)',
                     overflow: 'hidden',
                     display: 'flex',
                     flexDirection: 'column'
@@ -1120,22 +1139,22 @@ export const LandingPage = () => {
                       backgroundSize: 'cover',
                       backgroundPosition: 'center'
                     }} />
-                    <div style={{ padding: '14px 16px 16px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
-                        {[1,2,3,4,5].map(s => <Star key={s} size={13} fill={COLORS.red} color={COLORS.red} />)}
+                    <div style={{ padding: '12px 14px 14px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ display: 'flex', gap: '2px', marginBottom: '6px' }}>
+                        {[1,2,3,4,5].map(s => <Star key={s} size={12} fill={COLORS.red} color={COLORS.red} />)}
                       </div>
                       <p style={{
-                        fontSize: '13px',
+                        fontSize: '12px',
                         color: COLORS.charcoal,
                         lineHeight: '1.5',
-                        marginBottom: '10px',
+                        marginBottom: '8px',
                         fontStyle: 'italic',
                         flex: 1
                       }}>
                         {`"${r.text}"`}
                       </p>
                       <p style={{
-                        fontSize: '12px',
+                        fontSize: '11px',
                         fontWeight: '700',
                         color: COLORS.red,
                         margin: 0,
@@ -1145,20 +1164,6 @@ export const LandingPage = () => {
                       </p>
                     </div>
                   </article>
-                );
-                // Photo tile — matches review card height via 1:1 image + filler block
-                tiles.push(
-                  <div key={`p-${i}`} style={{
-                    flex: `0 0 ${CARD_WIDTH}px`,
-                    scrollSnapAlign: 'start',
-                    borderRadius: '16px',
-                    overflow: 'hidden',
-                    border: `1px solid ${COLORS.khaki}`,
-                    boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
-                    backgroundImage: `url(${CUSTOMER_IMG(i + 6)})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }} />
                 );
               });
               return tiles;
