@@ -416,53 +416,12 @@ const ModernFooter = () => {
   
   return (
     <footer style={{ background: COLORS.khaki, color: COLORS.charcoal }}>
-      {/* Tagline strip */}
-      <div style={{
-        maxWidth: '1100px',
-        margin: '0 auto',
-        padding: '40px 20px 8px',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-        gap: '20px'
-      }}>
-        {[
-          'Build your box or your own meal plan. Pause, change or cancel anytime.',
-          'Watch your dog thrive as digestion, weight, energy and allergies start to improve.',
-          'We deliver straight to your door. Subscribe to save and never run out of food.'
-        ].map((line, i) => (
-          <div key={i} style={{
-            display: 'flex',
-            gap: '10px',
-            alignItems: 'flex-start'
-          }}>
-            <span style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: COLORS.red,
-              flexShrink: 0,
-              marginTop: '7px'
-            }} />
-            <p style={{
-              fontSize: '14px',
-              lineHeight: 1.55,
-              margin: 0,
-              color: COLORS.charcoal,
-              fontWeight: 500,
-              fontFamily: "'Rubik', sans-serif"
-            }}>
-              {line}
-            </p>
-          </div>
-        ))}
-      </div>
-
       {/* Main footer content */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
         gap: '32px',
-        padding: '32px 20px 40px',
+        padding: '48px 20px 40px',
         maxWidth: '1200px',
         margin: '0 auto'
       }}>
@@ -914,7 +873,7 @@ export const LandingPage = () => {
                 margin: 0,
                 fontFamily: "'Rubik', sans-serif"
               }}>
-                By delivering directly to you, we&apos;re able to invest more into better, fresher and ethically raised ingredients. Something <span style={{ color: COLORS.red, fontWeight: 600 }}>you and your best friend</span> can both feel good about.
+                By delivering directly to you, we&apos;re able to invest more into quality portions, real ingredients and meals that are <span style={{ color: COLORS.red, fontWeight: 600 }}>100% made in Canada</span>. Something you and your best friend can both feel good about.
               </p>
             </div>
 
@@ -1008,12 +967,12 @@ export const LandingPage = () => {
               <h2 style={{
                 fontSize: 'clamp(22px, 2.6vw, 28px)',
                 fontWeight: '700',
-                marginBottom: '14px',
+                marginBottom: '12px',
                 fontFamily: "'Rubik', sans-serif",
                 lineHeight: 1.25,
                 color: COLORS.white
               }}>
-                Help Your Best Friend Live Their Best Life.
+                Customers Notice Benefits in Just 2 Weeks
               </h2>
               <p style={{
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
@@ -1022,7 +981,7 @@ export const LandingPage = () => {
                 fontWeight: 400,
                 lineHeight: 1.6
               }}>
-                Change how healthy they look, feel and behave day-in and day-out. Customers often see benefits in just 2 weeks.
+                Here&apos;s what you can expect:
               </p>
             </div>
 
@@ -1107,7 +1066,7 @@ export const LandingPage = () => {
           position: 'relative',
           overflow: 'hidden'
         }}>
-          {/* Background customer photo collage — faded back layer */}
+          {/* Background customer photo collage — visible back layer */}
           <div aria-hidden="true" style={{
             position: 'absolute',
             inset: 0,
@@ -1115,9 +1074,8 @@ export const LandingPage = () => {
             gridTemplateColumns: 'repeat(6, 1fr)',
             gridAutoRows: '1fr',
             gap: '4px',
-            opacity: 0.18,
-            pointerEvents: 'none',
-            filter: 'saturate(0.85)'
+            opacity: 0.55,
+            pointerEvents: 'none'
           }}>
             {Array.from({ length: 12 }).map((_, i) => (
               <div key={i} style={{
@@ -1127,11 +1085,11 @@ export const LandingPage = () => {
               }} />
             ))}
           </div>
-          {/* Soft cream overlay to keep reviews legible */}
+          {/* Subtle cream overlay only behind text area, not over the collage */}
           <div aria-hidden="true" style={{
             position: 'absolute',
             inset: 0,
-            background: `linear-gradient(180deg, rgba(245,243,239,0.85) 0%, rgba(245,243,239,0.92) 100%)`,
+            background: `linear-gradient(180deg, rgba(245,243,239,0.35) 0%, rgba(245,243,239,0.55) 100%)`,
             pointerEvents: 'none'
           }} />
 
@@ -1157,51 +1115,137 @@ export const LandingPage = () => {
             }}>
               {reviews.map((review, i) => (
                 <div key={i} style={{
-                  background: COLORS.white,
-                  padding: '20px',
+                  background: 'rgba(255,255,255,0.95)',
+                  backdropFilter: 'blur(4px)',
+                  padding: '22px',
                   borderRadius: '16px',
                   boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
-                  border: `1px solid ${COLORS.khaki}`,
-                  display: 'flex',
-                  gap: '14px',
-                  alignItems: 'flex-start'
+                  border: `1px solid ${COLORS.khaki}`
                 }}>
-                  <img
-                    src={review.img}
-                    alt={review.name}
-                    style={{
-                      width: '72px',
-                      height: '72px',
-                      borderRadius: '12px',
-                      objectFit: 'cover',
-                      flexShrink: 0,
-                      border: `2px solid ${COLORS.khaki}`
-                    }}
-                  />
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
-                      {[1,2,3,4,5].map(s => <Star key={s} size={14} fill={COLORS.red} color={COLORS.red} />)}
-                    </div>
-                    <p style={{
-                      fontSize: '14px',
-                      color: COLORS.charcoal,
-                      lineHeight: '1.55',
-                      marginBottom: '10px',
-                      fontStyle: 'italic'
-                    }}>
-                      {`"${review.text}"`}
-                    </p>
-                    <p style={{
-                      fontSize: '13px',
-                      fontWeight: '700',
-                      color: COLORS.red,
-                      margin: 0,
-                      fontFamily: "'Rubik', sans-serif"
-                    }}>
-                      — {review.name}
-                    </p>
+                  <div style={{ display: 'flex', gap: '2px', marginBottom: '10px' }}>
+                    {[1,2,3,4,5].map(s => <Star key={s} size={14} fill={COLORS.red} color={COLORS.red} />)}
                   </div>
+                  <p style={{
+                    fontSize: '14px',
+                    color: COLORS.charcoal,
+                    lineHeight: '1.55',
+                    marginBottom: '12px',
+                    fontStyle: 'italic'
+                  }}>
+                    {`"${review.text}"`}
+                  </p>
+                  <p style={{
+                    fontSize: '13px',
+                    fontWeight: '700',
+                    color: COLORS.red,
+                    margin: 0,
+                    fontFamily: "'Rubik', sans-serif"
+                  }}>
+                    — {review.name}
+                  </p>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* PROTEIN OPTIONS — 8+ Meat Options */}
+        <section style={{
+          background: COLORS.white,
+          padding: '60px 20px'
+        }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
+              <h2 style={{
+                fontSize: 'clamp(22px, 2.6vw, 28px)',
+                fontWeight: '700',
+                color: COLORS.charcoal,
+                lineHeight: 1.25,
+                marginBottom: '12px',
+                fontFamily: "'Rubik', sans-serif"
+              }}>
+                Pick Your Dog&apos;s Favourites From <span style={{ color: COLORS.red }}>8+ Delicious Meat Options</span>
+              </h2>
+              <p style={{
+                fontSize: 'clamp(15px, 1.8vw, 17px)',
+                color: COLORS.charcoal,
+                opacity: 0.82,
+                lineHeight: 1.6,
+                margin: 0,
+                fontWeight: 400,
+                fontFamily: "'Rubik', sans-serif"
+              }}>
+                Each meal has its own unique flavour and nutritional value.
+              </p>
+            </div>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+              gap: '24px 16px',
+              justifyItems: 'center',
+              maxWidth: '900px',
+              margin: '0 auto'
+            }}>
+              {[
+                { label: 'Chicken', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/dksu613b_chicken.png' },
+                { label: 'Beef', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/262n9jvl_beef.png' },
+                { label: 'Turkey', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/j6yxejew_turkey.png' },
+                { label: 'Duck', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/s3okrgsw_duck.png' },
+                { label: 'Goat', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0u52lnr0_goat.png' },
+                { label: 'Salmon', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/l6i3vb5d_salmon.png' },
+                { label: 'Lamb', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/pgajdkxv_lamb.png' },
+                { label: 'Rabbit', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ptl7se73_rabbit.png' }
+              ].map((p) => (
+                <button
+                  key={p.label}
+                  onClick={() => navigate('/menu')}
+                  data-testid={`protein-${p.label.toLowerCase()}`}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '10px'
+                  }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget.querySelector('div');
+                    if (el) el.style.transform = 'translateY(-3px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget.querySelector('div');
+                    if (el) el.style.transform = 'translateY(0)';
+                  }}
+                >
+                  <div style={{
+                    width: '110px',
+                    height: '110px',
+                    borderRadius: '50%',
+                    background: COLORS.softBg,
+                    border: `3px solid ${COLORS.khaki}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    transition: 'transform 0.2s ease',
+                    boxShadow: '3px 3px 0px rgba(0,0,0,0.08)'
+                  }}>
+                    <img
+                      src={p.url}
+                      alt={p.label}
+                      style={{ width: '88%', height: '88%', objectFit: 'contain' }}
+                    />
+                  </div>
+                  <span style={{
+                    fontSize: '15px',
+                    fontWeight: 700,
+                    color: COLORS.charcoal,
+                    fontFamily: "'Rubik', sans-serif"
+                  }}>{p.label}</span>
+                </button>
               ))}
             </div>
           </div>
@@ -1353,38 +1397,50 @@ export const LandingPage = () => {
           background: `linear-gradient(135deg, ${COLORS.red} 0%, ${COLORS.redOverlay} 100%)`,
           padding: '80px 20px',
           textAlign: 'center',
-          color: COLORS.white
+          color: COLORS.cream
         }}>
-          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-            <h2 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '16px' }}>
+          <div style={{ maxWidth: '760px', margin: '0 auto' }}>
+            <h2 style={{
+              fontSize: 'clamp(26px, 3.6vw, 36px)',
+              fontWeight: '700',
+              marginBottom: '16px',
+              color: COLORS.cream,
+              fontFamily: "'Rubik', sans-serif"
+            }}>
               See the FoeGuard Difference
             </h2>
-            <p style={{ fontSize: '20px', marginBottom: '32px', opacity: 0.95 }}>
+            <p style={{
+              fontSize: 'clamp(16px, 1.8vw, 19px)',
+              marginBottom: '32px',
+              opacity: 0.95,
+              color: COLORS.cream,
+              lineHeight: 1.55
+            }}>
               Discover the meals that work for your dog, not against them.
             </p>
 
             <div style={{
               display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              gap: '12px',
-              marginBottom: '40px'
+              flexDirection: 'column',
+              gap: '14px',
+              maxWidth: '600px',
+              margin: '0 auto 40px'
             }}>
               {[
-                'Build your box or meal plan',
-                'Pause, change or cancel anytime',
-                'Watch your dog thrive',
-                'Delivered to your door'
-              ].map((item, i) => (
-                <span key={i} style={{
-                  background: 'rgba(255,255,255,0.2)',
-                  padding: '10px 18px',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '500'
+                'Build your box or your own meal plan. Pause, change or cancel anytime.',
+                'Watch your dog thrive as digestion, weight, energy and allergies start to improve.',
+                'We deliver straight to your door. Subscribe to save and never run out of food.'
+              ].map((line, i) => (
+                <p key={i} style={{
+                  fontSize: '15px',
+                  lineHeight: 1.6,
+                  margin: 0,
+                  color: COLORS.cream,
+                  opacity: 0.95,
+                  fontFamily: "'Rubik', sans-serif"
                 }}>
-                  ✓ {item}
-                </span>
+                  {line}
+                </p>
               ))}
             </div>
 
@@ -1399,7 +1455,8 @@ export const LandingPage = () => {
                 fontSize: '17px',
                 fontWeight: '700',
                 cursor: 'pointer',
-                boxShadow: '4px 4px 0px rgba(0,0,0,0.2)'
+                boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
+                fontFamily: "'Rubik', sans-serif"
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translate(-2px, -2px)';
