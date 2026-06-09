@@ -1082,13 +1082,13 @@ export const LandingPage = () => {
             </p>
           </div>
 
-          {/* Horizontal scroll feed — uniform cards, centered with edge spacing on mobile */}
+          {/* Horizontal scroll feed — uniform slim cards, alternating review / full photo */}
           <div
             className="review-feed"
             data-testid="review-feed"
             style={{
               display: 'flex',
-              gap: '20px',
+              gap: '18px',
               overflowX: 'auto',
               scrollSnapType: 'x mandatory',
               padding: '12px max(20px, calc((100vw - 1200px) / 2 + 20px)) 32px',
@@ -1096,61 +1096,95 @@ export const LandingPage = () => {
               justifyContent: 'flex-start'
             }}
           >
-            {reviews.map((r, i) => (
-              <article
-                key={`review-${i}`}
-                className="review-card"
-                style={{
-                  flex: '0 0 auto',
-                  width: 'clamp(260px, 78vw, 300px)',
-                  scrollSnapAlign: 'center',
-                  background: COLORS.white,
-                  borderRadius: '16px',
-                  border: `1px solid ${COLORS.khaki}`,
-                  boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
-                  overflow: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
-                <div style={{
-                  width: '100%',
-                  aspectRatio: '1 / 1',
-                  backgroundImage: `url(${r.img})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }} />
-                <div style={{
-                  padding: '16px 18px 18px',
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}>
-                  <div style={{ display: 'flex', gap: '3px', marginBottom: '10px' }}>
-                    {[1,2,3,4,5].map(s => <Star key={s} size={14} fill={COLORS.red} color={COLORS.red} />)}
-                  </div>
-                  <p style={{
-                    fontSize: '14px',
-                    color: COLORS.charcoal,
-                    lineHeight: '1.55',
-                    marginBottom: '12px',
-                    fontStyle: 'italic',
-                    flex: 1
-                  }}>
-                    {`"${r.text}"`}
-                  </p>
-                  <p style={{
-                    fontSize: '13px',
-                    fontWeight: '700',
-                    color: COLORS.red,
-                    margin: 0,
-                    fontFamily: "'Rubik', sans-serif"
-                  }}>
-                    — {r.name}
-                  </p>
-                </div>
-              </article>
-            ))}
+            {(() => {
+              // Interleave review cards with photo-only cards.
+              // 6 reviews + 6 extra photos (indexes 6..11) = 12 uniform slim cards
+              const CARD_W = 'clamp(220px, 72vw, 260px)';
+              const tiles = [];
+              let extraPhotoIdx = reviews.length; // start at 6
+              reviews.forEach((r, i) => {
+                // Review card
+                tiles.push(
+                  <article
+                    key={`review-${i}`}
+                    className="review-card"
+                    style={{
+                      flex: '0 0 auto',
+                      width: CARD_W,
+                      scrollSnapAlign: 'center',
+                      background: COLORS.white,
+                      borderRadius: '16px',
+                      border: `1px solid ${COLORS.khaki}`,
+                      boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
+                      overflow: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}
+                  >
+                    <div style={{
+                      width: '100%',
+                      aspectRatio: '1 / 1',
+                      backgroundImage: `url(${r.img})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }} />
+                    <div style={{
+                      padding: '14px 16px 16px',
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'column'
+                    }}>
+                      <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
+                        {[1,2,3,4,5].map(s => <Star key={s} size={13} fill={COLORS.red} color={COLORS.red} />)}
+                      </div>
+                      <p style={{
+                        fontSize: '13px',
+                        color: COLORS.charcoal,
+                        lineHeight: '1.55',
+                        marginBottom: '10px',
+                        fontStyle: 'italic',
+                        flex: 1
+                      }}>
+                        {`"${r.text}"`}
+                      </p>
+                      <p style={{
+                        fontSize: '12px',
+                        fontWeight: '700',
+                        color: COLORS.red,
+                        margin: 0,
+                        fontFamily: "'Rubik', sans-serif"
+                      }}>
+                        — {r.name}
+                      </p>
+                    </div>
+                  </article>
+                );
+                // Full-photo card (no review text) — alternates after each review
+                if (extraPhotoIdx < 12) {
+                  tiles.push(
+                    <div
+                      key={`photo-${extraPhotoIdx}`}
+                      className="review-photo-card"
+                      style={{
+                        flex: '0 0 auto',
+                        width: CARD_W,
+                        scrollSnapAlign: 'center',
+                        borderRadius: '16px',
+                        border: `1px solid ${COLORS.khaki}`,
+                        boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
+                        overflow: 'hidden',
+                        backgroundImage: `url(${CUSTOMER_IMG(extraPhotoIdx)})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundColor: COLORS.softBg
+                      }}
+                    />
+                  );
+                  extraPhotoIdx++;
+                }
+              });
+              return tiles;
+            })()}
           </div>
         </section>
 
