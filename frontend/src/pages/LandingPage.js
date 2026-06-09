@@ -1095,17 +1095,18 @@ export const LandingPage = () => {
               WebkitOverflowScrolling: 'touch'
             }}
           >
-            {/* Build a feed: review card, then a photo card, alternating */}
+            {/* Build a feed: review card, then a photo card, alternating — all uniform size */}
             {(() => {
               const tiles = [];
+              const CARD_WIDTH = 240;
               reviews.forEach((r, i) => {
                 // Review card
                 tiles.push(
                   <article key={`r-${i}`} style={{
-                    flex: '0 0 280px',
+                    flex: `0 0 ${CARD_WIDTH}px`,
                     scrollSnapAlign: 'start',
                     background: COLORS.white,
-                    borderRadius: '18px',
+                    borderRadius: '16px',
                     border: `1px solid ${COLORS.khaki}`,
                     boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
                     overflow: 'hidden',
@@ -1114,27 +1115,27 @@ export const LandingPage = () => {
                   }}>
                     <div style={{
                       width: '100%',
-                      aspectRatio: '4 / 5',
+                      aspectRatio: '1 / 1',
                       backgroundImage: `url(${r.img})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center'
                     }} />
-                    <div style={{ padding: '18px 18px 20px' }}>
-                      <div style={{ display: 'flex', gap: '2px', marginBottom: '10px' }}>
-                        {[1,2,3,4,5].map(s => <Star key={s} size={14} fill={COLORS.red} color={COLORS.red} />)}
+                    <div style={{ padding: '14px 16px 16px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ display: 'flex', gap: '2px', marginBottom: '8px' }}>
+                        {[1,2,3,4,5].map(s => <Star key={s} size={13} fill={COLORS.red} color={COLORS.red} />)}
                       </div>
                       <p style={{
-                        fontSize: '14px',
+                        fontSize: '13px',
                         color: COLORS.charcoal,
-                        lineHeight: '1.55',
-                        marginBottom: '12px',
+                        lineHeight: '1.5',
+                        marginBottom: '10px',
                         fontStyle: 'italic',
-                        minHeight: '60px'
+                        flex: 1
                       }}>
                         {`"${r.text}"`}
                       </p>
                       <p style={{
-                        fontSize: '13px',
+                        fontSize: '12px',
                         fontWeight: '700',
                         color: COLORS.red,
                         margin: 0,
@@ -1145,12 +1146,12 @@ export const LandingPage = () => {
                     </div>
                   </article>
                 );
-                // Every other review, insert a pure customer photo tile (offset to use later images 6-11)
+                // Photo tile — matches review card height via 1:1 image + filler block
                 tiles.push(
                   <div key={`p-${i}`} style={{
-                    flex: '0 0 220px',
+                    flex: `0 0 ${CARD_WIDTH}px`,
                     scrollSnapAlign: 'start',
-                    borderRadius: '18px',
+                    borderRadius: '16px',
                     overflow: 'hidden',
                     border: `1px solid ${COLORS.khaki}`,
                     boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
