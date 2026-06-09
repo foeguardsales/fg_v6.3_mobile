@@ -12,7 +12,7 @@ export const NewToRawPage = () => {
         {/* SECTION 1 — Hero */}
         <section className="ntf-hero">
           <div className="ntf-hero-content">
-            <h1 style={{ textTransform: 'none', fontFamily: "'Rubik', sans-serif" }}>New to FG</h1>
+            <h1 style={{ textTransform: 'none', fontFamily: "'Oswald', sans-serif" }}>New to FG</h1>
             <h3 className="ntf-hero-subtitle" style={{ fontWeight: '400', fontSize: '18px', marginBottom: '16px' }}>
               Feel confident about switching to FoeGuard raw
             </h3>

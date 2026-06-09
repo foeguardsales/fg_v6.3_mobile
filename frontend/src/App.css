@@ -13,6 +13,30 @@
 .review-feed::-webkit-scrollbar { display: none; }
 .review-feed { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* Hero layout: stacked on mobile, side-by-side (text left / image right) on desktop */
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+.hero-layout .hero-text { text-align: center; }
+@media (min-width: 900px) {
+  .hero-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+  }
+  .hero-layout .hero-text {
+    text-align: left;
+    order: 1;
+  }
+  .hero-layout .hero-images {
+    order: 2;
+    margin: 0 !important;
+  }
+  .hero-layout .hero-cta-row { justify-content: flex-start !important; }
+}
+
 
 /* Mobile App-like Experience */
 html {
@@ -73,10 +97,10 @@ body {
   font-style: normal;
 }
 
-/* Neue Haas Grotesk fallback to Helvetica Now, then system sans-serif */
+/* Heritage typography: Oswald for headings, Bitter for body/subtext */
 :root {
-  --font-body: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-heading: 'Rubik', Georgia, serif;
+  --font-body: 'Bitter', Georgia, 'Times New Roman', serif;
+  --font-heading: 'Oswald', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 /* ========== CSS VARIABLES ========== */

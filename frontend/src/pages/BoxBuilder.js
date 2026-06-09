@@ -417,7 +417,7 @@ export const BoxBuilder = () => {
                     </div>
                   )}
                   <span style={{
-                    fontFamily: "'Rubik', sans-serif",
+                    fontFamily: "'Oswald', sans-serif",
                     fontSize: '18px',
                     fontWeight: '700',
                     color: '#FDFCFA',
@@ -461,10 +461,10 @@ export const BoxBuilder = () => {
           {/* Header with cart button */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
             <div>
-              <h1 style={{ fontFamily: "'Rubik', sans-serif", fontSize: '32px', fontWeight: '800', marginBottom: '8px', color: '#2B2B2B', textTransform: 'none' }}>
+              <h1 style={{ fontFamily: "'Oswald', sans-serif", fontSize: '32px', fontWeight: '800', marginBottom: '8px', color: '#2B2B2B', textTransform: 'none' }}>
                 {petType === 'cat' ? 'Build your cat box' : 'Build your box'}
               </h1>
-              <p style={{ fontFamily: "'Rubik', sans-serif", fontWeight: '400', color: '#666' }}>
+              <p style={{ fontFamily: "'Oswald', sans-serif", fontWeight: '400', color: '#666' }}>
                 {petType === 'cat' 
                   ? 'Select your box size, then choose your cat proteins' 
                   : 'Select your box size, then choose your proteins'}
@@ -659,7 +659,7 @@ export const BoxBuilder = () => {
                       padding: '32px 40px'
                     }}>
                       <h3 style={{
-                        fontFamily: "'Rubik', sans-serif",
+                        fontFamily: "'Oswald', sans-serif",
                         fontSize: '36px',
                         fontWeight: '800',
                         color: '#FFFFFF',
@@ -668,7 +668,7 @@ export const BoxBuilder = () => {
                         letterSpacing: '0.05em'
                       }}>Comfort Dinner</h3>
                       <p style={{
-                        fontFamily: "'Rubik', sans-serif",
+                        fontFamily: "'Oswald', sans-serif",
                         fontWeight: '400',
                         color: 'rgba(255,255,255,0.95)',
                         fontSize: '15px',
@@ -729,7 +729,7 @@ export const BoxBuilder = () => {
                       padding: '32px 40px'
                     }}>
                       <h3 style={{
-                        fontFamily: "'Rubik', sans-serif",
+                        fontFamily: "'Oswald', sans-serif",
                         fontSize: '36px',
                         fontWeight: '800',
                         color: '#FFFFFF',
@@ -738,7 +738,7 @@ export const BoxBuilder = () => {
                         letterSpacing: '0.05em'
                       }}>Primal Feast</h3>
                       <p style={{
-                        fontFamily: "'Rubik', sans-serif",
+                        fontFamily: "'Oswald', sans-serif",
                         fontWeight: '400',
                         color: 'rgba(255,255,255,0.95)',
                         fontSize: '15px',
@@ -809,7 +809,7 @@ export const BoxBuilder = () => {
                       padding: '32px 40px'
                     }}>
                       <h3 style={{
-                        fontFamily: "'Rubik', sans-serif",
+                        fontFamily: "'Oswald', sans-serif",
                         fontSize: '36px',
                         fontWeight: '800',
                         color: '#FFFFFF',
@@ -818,7 +818,7 @@ export const BoxBuilder = () => {
                         letterSpacing: '0.05em'
                       }}>Royal Paws Dinner</h3>
                       <p style={{
-                        fontFamily: "'Rubik', sans-serif",
+                        fontFamily: "'Oswald', sans-serif",
                         fontWeight: '400',
                         color: 'rgba(255,255,255,0.95)',
                         fontSize: '15px',

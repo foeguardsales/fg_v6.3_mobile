@@ -24,7 +24,7 @@ export const AboutPage = () => {
         {/* Hero Section */}
         <section className="about-hero">
           <div className="about-hero-content">
-            <h1 style={{ textTransform: 'none', fontFamily: "'Rubik', sans-serif" }}>Why FoeGuard?</h1>
+            <h1 style={{ textTransform: 'none', fontFamily: "'Oswald', sans-serif" }}>Why FoeGuard?</h1>
             <p style={{ fontSize: '18px', color: '#D9C8B3', marginTop: '20px' }}>
               Feed your dog the diet they were always meant to eat - without stressing over labels or what's right for them.
             </p>

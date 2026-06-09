@@ -477,7 +477,7 @@ const ModernFooter = () => {
                 cursor: 'pointer',
                 opacity: 0.85,
                 textAlign: 'left',
-                fontFamily: "'Rubik', sans-serif"
+                fontFamily: "'Oswald', sans-serif"
               }}
             >
               {item.label}
@@ -508,7 +508,7 @@ const ModernFooter = () => {
                 cursor: 'pointer',
                 opacity: 0.85,
                 textAlign: 'left',
-                fontFamily: "'Rubik', sans-serif"
+                fontFamily: "'Oswald', sans-serif"
               }}
             >
               {item.label}
@@ -540,7 +540,7 @@ const ModernFooter = () => {
                 cursor: 'pointer',
                 opacity: 0.85,
                 textAlign: 'left',
-                fontFamily: "'Rubik', sans-serif"
+                fontFamily: "'Oswald', sans-serif"
               }}
             >
               {item.label}
@@ -640,98 +640,86 @@ export const LandingPage = () => {
             pointerEvents: 'none'
           }} />
           <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-            {/* Tri-Image Layout - Unified container, no gaps, no border, no shadow, scroll fade-in */}
-            <div
-              className="hero-tri-image hero-fade-in"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '2fr 1fr',
-                gap: '0px',
-                aspectRatio: '3 / 2',
-                maxWidth: '720px',
-                margin: '0 auto 40px',
-                borderRadius: '20px',
-                overflow: 'hidden'
-              }}
-            >
-              {/* Large image on left — square (matches full container height) */}
-              <div style={{ overflow: 'hidden', position: 'relative' }}>
-                <img
-                  src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=800&fit=crop"
-                  alt="Happy dog"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
-              </div>
-              {/* Two square images stacked on right — no gap */}
-              <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: '0px' }}>
-                <div style={{ overflow: 'hidden' }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop"
-                    alt="Raw food"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                  />
-                </div>
-                <div style={{ overflow: 'hidden' }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop"
-                    alt="Dogs playing"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Hero Text */}
-            <div style={{ textAlign: 'center' }}>
-              <h1 style={{
-                fontSize: 'clamp(24px, 4.2vw, 42px)',
-                fontWeight: '800',
-                color: COLORS.charcoal,
-                lineHeight: '1.15',
-                marginBottom: '18px',
-                fontFamily: "'Rubik', sans-serif",
-                letterSpacing: '-0.01em'
-              }}>
-                Ontario&apos;s #1 Farm Fresh<br />
-                <span style={{ color: COLORS.red }}>Raw Dog Food</span>
-              </h1>
-
-              <p style={{
-                fontSize: 'clamp(14px, 1.6vw, 16px)',
-                color: COLORS.charcoal,
-                opacity: 0.82,
-                maxWidth: '600px',
-                margin: '0 auto 26px',
-                lineHeight: '1.6',
-                fontWeight: 400
-              }}>
-                Restore your dog&apos;s digestion, energy and comfort from the inside out with fresh, complete raw pet nutrition.
-              </p>
-
-              {/* Shop Now Button - Lifted Style */}
-              <button
-                onClick={() => navigate('/menu')}
-                style={liftedButtonStyle}
-                onMouseEnter={(e) => liftedButtonHover(e, true)}
-                onMouseLeave={(e) => liftedButtonHover(e, false)}
+            <div className="hero-layout">
+              {/* Tri-Image Layout — comes first in source (mobile shows image first) */}
+              <div
+                className="hero-tri-image hero-fade-in hero-images"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '2fr 1fr',
+                  gap: '0px',
+                  aspectRatio: '3 / 2',
+                  maxWidth: '720px',
+                  width: '100%',
+                  margin: '0 auto',
+                  borderRadius: '20px',
+                  overflow: 'hidden'
+                }}
               >
-                Shop Now
-              </button>
-
-              {/* Reviews - No pill, under Shop Now */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                marginTop: '20px'
-              }}>
-                <div style={{ display: 'flex', gap: '2px' }}>
-                  {[1,2,3,4,5].map(i => <Star key={i} size={16} fill={COLORS.red} color={COLORS.red} />)}
+                {/* Large image on left — square (matches full container height) */}
+                <div style={{ overflow: 'hidden', position: 'relative' }}>
+                  <img
+                    src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=800&fit=crop"
+                    alt="Happy dog"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  />
                 </div>
-                <span style={{ fontSize: '14px', fontWeight: '500', color: COLORS.charcoal }}>
-                  Hundreds of 5-Star Reviews
-                </span>
+                {/* Two square images stacked on right — no gap */}
+                <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: '0px' }}>
+                  <div style={{ overflow: 'hidden' }}>
+                    <img
+                      src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop"
+                      alt="Raw food"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                  </div>
+                  <div style={{ overflow: 'hidden' }}>
+                    <img
+                      src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop"
+                      alt="Dogs playing"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Hero Text — on desktop CSS reorders this to the left of the image */}
+              <div className="hero-text">
+                <h1 style={{
+                  fontSize: 'clamp(28px, 4.6vw, 48px)',
+                  fontWeight: '700',
+                  color: COLORS.charcoal,
+                  lineHeight: '1.1',
+                  marginBottom: '18px',
+                  fontFamily: "'Oswald', sans-serif",
+                  letterSpacing: '0.5px',
+                  textTransform: 'uppercase'
+                }}>
+                  Ontario&apos;s #1 Farm Fresh<br />
+                  <span style={{ color: COLORS.red }}>Raw Dog Food</span>
+                </h1>
+
+                <p style={{
+                  fontSize: 'clamp(15px, 1.6vw, 17px)',
+                  color: COLORS.charcoal,
+                  opacity: 0.85,
+                  maxWidth: '560px',
+                  margin: '0 auto 26px',
+                  lineHeight: '1.65',
+                  fontWeight: 400
+                }}>
+                  Restore your dog&apos;s digestion, energy and comfort from the inside out with fresh, complete raw pet nutrition rooted in old-world feeding traditions.
+                </p>
+
+                {/* Shop Now Button - Lifted Style */}
+                <button
+                  onClick={() => navigate('/menu')}
+                  style={liftedButtonStyle}
+                  onMouseEnter={(e) => liftedButtonHover(e, true)}
+                  onMouseLeave={(e) => liftedButtonHover(e, false)}
+                >
+                  Shop Now
+                </button>
               </div>
             </div>
           </div>
@@ -752,7 +740,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '32px',
               color: COLORS.charcoal,
-              fontFamily: "'Rubik', sans-serif"
+              fontFamily: "'Oswald', sans-serif"
             }}>
               Shop <span style={{ color: COLORS.red }}>Farm Fresh</span>
             </h2>
@@ -860,7 +848,7 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 lineHeight: 1.25,
                 marginBottom: '16px',
-                fontFamily: "'Rubik', sans-serif"
+                fontFamily: "'Oswald', sans-serif"
               }}>
                 Why <span style={{ color: COLORS.red }}>FoeGuard</span> Raw?
               </h2>
@@ -871,7 +859,7 @@ export const LandingPage = () => {
                 opacity: 0.85,
                 lineHeight: 1.6,
                 margin: 0,
-                fontFamily: "'Rubik', sans-serif"
+                fontFamily: "'Oswald', sans-serif"
               }}>
                 By delivering directly to you, we&apos;re able to invest more into quality portions, real ingredients and meals that are <span style={{ color: COLORS.red, fontWeight: 600 }}>100% made in Canada</span>. Something you and your best friend can both feel good about.
               </p>
@@ -934,7 +922,7 @@ export const LandingPage = () => {
                           fontWeight: 800,
                           color: COLORS.charcoal,
                           margin: '0 0 6px',
-                          fontFamily: "'Rubik', sans-serif"
+                          fontFamily: "'Oswald', sans-serif"
                         }}>
                           {item.title}
                         </h4>
@@ -968,7 +956,7 @@ export const LandingPage = () => {
                 fontSize: 'clamp(22px, 2.6vw, 28px)',
                 fontWeight: '700',
                 marginBottom: '12px',
-                fontFamily: "'Rubik', sans-serif",
+                fontFamily: "'Oswald', sans-serif",
                 lineHeight: 1.25,
                 color: COLORS.white
               }}>
@@ -981,7 +969,7 @@ export const LandingPage = () => {
                 fontWeight: 400,
                 lineHeight: 1.6
               }}>
-                Here&apos;s what you can expect:
+                Here&apos;s what you can expect from real food nutrition:
               </p>
             </div>
 
@@ -1028,7 +1016,7 @@ export const LandingPage = () => {
                       fontSize: '15px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      fontFamily: "'Rubik', sans-serif",
+                      fontFamily: "'Oswald', sans-serif",
                       lineHeight: 1.3
                     }}>{benefit.title}</div>
                     <div style={{
@@ -1073,7 +1061,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '12px',
               color: COLORS.charcoal,
-              fontFamily: "'Rubik', sans-serif"
+              fontFamily: "'Oswald', sans-serif"
             }}>
               Hear from Happy <span style={{ color: COLORS.red }}>FoeGuardians</span>
             </h2>
@@ -1152,7 +1140,7 @@ export const LandingPage = () => {
                         fontWeight: '700',
                         color: COLORS.red,
                         margin: 0,
-                        fontFamily: "'Rubik', sans-serif"
+                        fontFamily: "'Oswald', sans-serif"
                       }}>
                         — {r.name}
                       </p>
@@ -1201,7 +1189,7 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 lineHeight: 1.25,
                 marginBottom: '12px',
-                fontFamily: "'Rubik', sans-serif"
+                fontFamily: "'Oswald', sans-serif"
               }}>
                 Pick Your Dog&apos;s Favourites From <span style={{ color: COLORS.red }}>8+ Delicious Meat Options</span>
               </h2>
@@ -1212,7 +1200,7 @@ export const LandingPage = () => {
                 lineHeight: 1.6,
                 margin: 0,
                 fontWeight: 400,
-                fontFamily: "'Rubik', sans-serif"
+                fontFamily: "'Oswald', sans-serif"
               }}>
                 Each meal has its own unique flavour and nutritional value.
               </p>
@@ -1279,7 +1267,7 @@ export const LandingPage = () => {
                     fontSize: '15px',
                     fontWeight: 700,
                     color: COLORS.charcoal,
-                    fontFamily: "'Rubik', sans-serif"
+                    fontFamily: "'Oswald', sans-serif"
                   }}>{p.label}</span>
                 </button>
               ))}
@@ -1316,7 +1304,7 @@ export const LandingPage = () => {
                 fontWeight: '700',
                 color: COLORS.charcoal,
                 marginBottom: '8px',
-                fontFamily: "'Rubik', sans-serif"
+                fontFamily: "'Oswald', sans-serif"
               }}>
                 From Soil to Serving
               </h2>
@@ -1342,7 +1330,7 @@ export const LandingPage = () => {
                 lineHeight: '1.8',
                 marginBottom: '32px'
               }}>
-                What started as helping our neighbours and friends feed their dogs better quickly became a realization — Ontario pet parents deserved better access to trusted, transparent pet nutrition. FoeGuard was created for the community, by the community. Our passion became profession.
+                What started as helping our neighbours and friends feed their dogs better quickly grew into something bigger — a way to share trusted, transparent pet nutrition with families across Ontario. FoeGuard was created for the community, by the community. Our passion became our profession.
               </p>
               <button
                 onClick={() => navigate('/about')}
@@ -1372,7 +1360,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '36px',
               color: COLORS.charcoal,
-              fontFamily: "'Rubik', sans-serif"
+              fontFamily: "'Oswald', sans-serif"
             }}>
               Frequently Asked <span style={{ color: COLORS.red }}>Questions</span>
             </h2>
@@ -1441,7 +1429,7 @@ export const LandingPage = () => {
               fontWeight: '700',
               marginBottom: '16px',
               color: COLORS.cream,
-              fontFamily: "'Rubik', sans-serif"
+              fontFamily: "'Oswald', sans-serif"
             }}>
               See the FoeGuard Difference
             </h2>
@@ -1493,7 +1481,7 @@ export const LandingPage = () => {
                     margin: 0,
                     color: COLORS.cream,
                     opacity: 0.95,
-                    fontFamily: "'Rubik', sans-serif"
+                    fontFamily: "'Oswald', sans-serif"
                   }}>
                     {line}
                   </p>
@@ -1513,7 +1501,7 @@ export const LandingPage = () => {
                 fontWeight: '700',
                 cursor: 'pointer',
                 boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
-                fontFamily: "'Rubik', sans-serif"
+                fontFamily: "'Oswald', sans-serif"
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translate(-2px, -2px)';

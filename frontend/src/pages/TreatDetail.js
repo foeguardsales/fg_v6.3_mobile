@@ -28,7 +28,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           cursor: 'pointer',
-          fontFamily: "'Rubik', sans-serif",
+          fontFamily: "'Oswald', sans-serif",
           fontSize: '18px',
           fontWeight: '600',
           color: '#2B2B2B',
@@ -279,7 +279,7 @@ export const TreatDetailPage = () => {
               background: 'none',
               border: 'none',
               color: '#c8102e',
-              fontFamily: "'Rubik', sans-serif",
+              fontFamily: "'Oswald', sans-serif",
               fontSize: '15px',
               fontWeight: '600',
               cursor: 'pointer',
@@ -352,7 +352,7 @@ export const TreatDetailPage = () => {
 
             <div className="product-hero-info" style={{ padding: '32px' }}>
               <h1 style={{
-                fontFamily: "'Rubik', sans-serif",
+                fontFamily: "'Oswald', sans-serif",
                 fontSize: '36px',
                 color: '#2B2B2B',
                 margin: '0 0 20px 0',
