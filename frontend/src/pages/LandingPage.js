@@ -1059,7 +1059,7 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* REVIEWS SECTION — vertical-card horizontal feed */}
+        {/* REVIEWS SECTION — uniform card horizontal feed (uma's pride style) */}
         <section style={{
           background: COLORS.cream,
           padding: '60px 0',
@@ -1082,92 +1082,75 @@ export const LandingPage = () => {
             </p>
           </div>
 
-          {/* Horizontal scroll feed */}
+          {/* Horizontal scroll feed — uniform cards, centered with edge spacing on mobile */}
           <div
             className="review-feed"
             data-testid="review-feed"
             style={{
               display: 'flex',
-              gap: '18px',
+              gap: '20px',
               overflowX: 'auto',
               scrollSnapType: 'x mandatory',
-              padding: '12px 20px 28px',
-              WebkitOverflowScrolling: 'touch'
+              padding: '12px max(20px, calc((100vw - 1200px) / 2 + 20px)) 32px',
+              WebkitOverflowScrolling: 'touch',
+              justifyContent: 'flex-start'
             }}
           >
-            {/* Feed: small photo, small photo, larger review (featured) — uses all 12 customer photos */}
-            {(() => {
-              const tiles = [];
-              const PHOTO_W = 130;
-              const REVIEW_W = 210;
-              let photoIdx = 0;
-              reviews.forEach((r, i) => {
-                // Two small customer photos
-                for (let k = 0; k < 2; k++) {
-                  tiles.push(
-                    <div key={`p-${i}-${k}`} style={{
-                      flex: `0 0 ${PHOTO_W}px`,
-                      scrollSnapAlign: 'center',
-                      aspectRatio: '4 / 5',
-                      borderRadius: '14px',
-                      overflow: 'hidden',
-                      border: `1px solid ${COLORS.khaki}`,
-                      boxShadow: '3px 3px 0px rgba(0,0,0,0.06)',
-                      backgroundImage: `url(${CUSTOMER_IMG(photoIdx++)})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }} />
-                  );
-                }
-                // Featured review — wider/larger so it pops as the main one
-                tiles.push(
-                  <article key={`r-${i}`} style={{
-                    flex: `0 0 ${REVIEW_W}px`,
-                    scrollSnapAlign: 'center',
-                    background: COLORS.white,
-                    borderRadius: '16px',
-                    border: `2px solid ${COLORS.red}`,
-                    boxShadow: '5px 5px 0px rgba(0,0,0,0.12)',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column'
+            {reviews.map((r, i) => (
+              <article
+                key={`review-${i}`}
+                className="review-card"
+                style={{
+                  flex: '0 0 auto',
+                  width: 'clamp(260px, 78vw, 300px)',
+                  scrollSnapAlign: 'center',
+                  background: COLORS.white,
+                  borderRadius: '16px',
+                  border: `1px solid ${COLORS.khaki}`,
+                  boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <div style={{
+                  width: '100%',
+                  aspectRatio: '1 / 1',
+                  backgroundImage: `url(${r.img})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }} />
+                <div style={{
+                  padding: '16px 18px 18px',
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}>
+                  <div style={{ display: 'flex', gap: '3px', marginBottom: '10px' }}>
+                    {[1,2,3,4,5].map(s => <Star key={s} size={14} fill={COLORS.red} color={COLORS.red} />)}
+                  </div>
+                  <p style={{
+                    fontSize: '14px',
+                    color: COLORS.charcoal,
+                    lineHeight: '1.55',
+                    marginBottom: '12px',
+                    fontStyle: 'italic',
+                    flex: 1
                   }}>
-                    <div style={{
-                      width: '100%',
-                      aspectRatio: '1 / 1',
-                      backgroundImage: `url(${r.img})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }} />
-                    <div style={{ padding: '12px 14px 14px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <div style={{ display: 'flex', gap: '2px', marginBottom: '6px' }}>
-                        {[1,2,3,4,5].map(s => <Star key={s} size={12} fill={COLORS.red} color={COLORS.red} />)}
-                      </div>
-                      <p style={{
-                        fontSize: '12px',
-                        color: COLORS.charcoal,
-                        lineHeight: '1.5',
-                        marginBottom: '8px',
-                        fontStyle: 'italic',
-                        flex: 1
-                      }}>
-                        {`"${r.text}"`}
-                      </p>
-                      <p style={{
-                        fontSize: '11px',
-                        fontWeight: '700',
-                        color: COLORS.red,
-                        margin: 0,
-                        fontFamily: "'Rubik', sans-serif"
-                      }}>
-                        — {r.name}
-                      </p>
-                    </div>
-                  </article>
-                );
-              });
-              return tiles;
-            })()}
+                    {`"${r.text}"`}
+                  </p>
+                  <p style={{
+                    fontSize: '13px',
+                    fontWeight: '700',
+                    color: COLORS.red,
+                    margin: 0,
+                    fontFamily: "'Rubik', sans-serif"
+                  }}>
+                    — {r.name}
+                  </p>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 

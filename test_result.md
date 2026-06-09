@@ -103,10 +103,10 @@
 #====================================================================================================
 
 user_problem_statement: |
-  FoeGuard Raw Pet Food e-commerce application - Previous: Cat treats section fixed.
-  Current task: Make all treat product pages same as other product page setups (comfort dinner format such as ingredients, info, feeding guide, etc.)
-  For all products add a quantity selector and add to cart button on the product page itself as well (under main description, above nutrients)
-  Also add qnty selector for treats within the menu boxes so customer can choose how many to add right there
+  FoeGuard Raw Pet Food e-commerce application - Continuation from another Emergent chat.
+  Current task: Fix the reviews panel on the landing page so all review cards are the same size,
+  remove the red border around the middle/featured one, and make it look nice on mobile
+  (centered with edge spacing, like umaspride.com review section).
 
 backend:
   - task: "Fix cat treats data - only 5 specific treats"
@@ -382,6 +382,30 @@ frontend:
           - Quantity selector with -/+ buttons (styled with colored pill background when quantity > 0)
           - Learn More button below treat info
           Customers can select multiple quantities of each treat directly in the menu.
+
+  - task: "Fix landing-page reviews panel (uniform cards, mobile spacing)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: |
+          Replaced mixed "small photo tile + bordered featured review" feed with a uniform
+          horizontal card carousel (uma's-pride style):
+          - All 6 review cards are the same size (clamp(260px, 78vw, 300px))
+          - Removed the thick red 2px border from the middle/featured card; now every card
+            has a subtle 1px khaki border + soft 4px black shadow
+          - Each card: square customer photo on top, 5-star row, italic quote, name in red
+          - Mobile-friendly: container padding uses
+            `max(20px, calc((100vw - 1200px)/2 + 20px))` so on mobile cards sit ~20px from
+            the screen edges and on desktop content is centered within max-width 1200px
+          - scroll-snap-type: x mandatory + scroll-snap-align: center for smooth swiping
+          - Removed the now-unused photo-tile loop / CUSTOMER_IMG counter
+          Verified visually on desktop (1440x900) and mobile (390x844).
 
   - task: "Subscription feature on /build-box page"
     implemented: true
