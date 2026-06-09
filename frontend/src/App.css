@@ -84,11 +84,11 @@ body {
   
   /* Warm Accent Colors */
   --foeguard-cream: #f5f3ef;
-  --khaki: #D8CFB8;
-  --khaki-light: #E5DECC;
-  --khaki-dark: #B8AB91;
+  --khaki: #C9BE9F;
+  --khaki-light: #D8CFB8;
+  --khaki-dark: #A89B7C;
   --cream: #f5f3ef;
-  --soft-bg: #f0ece6;
+  --soft-bg: #E5D9C2;
   
   /* Background Colors */
   --offwhite: #f5f3ef;
@@ -331,7 +331,7 @@ h2, h3, h4 {
 
 /* Hero Section */
 .hero-section {
-  background: linear-gradient(145deg, var(--barn-red) 0%, var(--barn-red) 50%, var(--barn-red) 100%);
+  background: linear-gradient(145deg, var(--overlay-red) 0%, var(--overlay-red) 50%, var(--overlay-red) 100%);
   min-height: 85vh;
   display: flex;
   align-items: center;
@@ -3169,7 +3169,7 @@ h2, h3, h4 {
 }
 
 .about-hero {
-  background: var(--barn-red);
+  background: var(--overlay-red);
   padding: 100px 24px 80px;
   text-align: center;
 }
@@ -3640,7 +3640,7 @@ h2, h3, h4 {
 }
 
 .ntf-hero {
-  background: var(--barn-red);
+  background: var(--overlay-red);
   padding: 100px 24px 80px;
   text-align: center;
 }

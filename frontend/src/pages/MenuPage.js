@@ -137,7 +137,7 @@ export const MenuPage = () => {
             {/* Primal Feast */}
             <button onClick={() => navigate('/menu/primal-feast')} style={{
               width: '100%', display: 'flex', alignItems: 'center', gap: '16px',
-              padding: '16px 20px', background: 'white', border: 'none', borderBottom: '1px solid #f0f0f0',
+              padding: '16px 20px', background: 'white', border: 'none',
               cursor: 'pointer', textAlign: 'left'
             }}>
               <img src="https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=200&h=200&fit=crop" alt="" style={{ width: '70px', height: '70px', borderRadius: '8px', objectFit: 'cover' }} />
@@ -157,7 +157,7 @@ export const MenuPage = () => {
             
             <button onClick={() => navigate('/menu/treats')} style={{
               width: '100%', display: 'flex', alignItems: 'center', gap: '16px',
-              padding: '16px 20px', background: 'white', border: 'none', borderBottom: '1px solid #f0f0f0',
+              padding: '16px 20px', background: 'white', border: 'none',
               cursor: 'pointer', textAlign: 'left'
             }}>
               <img src="https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=200&h=200&fit=crop" alt="" style={{ width: '70px', height: '70px', borderRadius: '8px', objectFit: 'cover' }} />
@@ -476,10 +476,11 @@ export const TreatsPage = () => {
           <div style={{ padding: '40px', textAlign: 'center', color: '#999' }}>Loading...</div>
         ) : (
           <div>
-            {treats.map(treat => (
+            {treats.map((treat, idx) => (
               <div key={treat.treat_id} style={{
                 display: 'flex', alignItems: 'center', gap: '16px',
-                padding: '16px 20px', borderBottom: '1px solid #f0f0f0'
+                padding: '16px 20px',
+                borderBottom: idx < treats.length - 1 ? '1px solid #f0f0f0' : 'none'
               }}>
                 <img 
                   src={treat.images?.[0] || PRODUCT_IMAGES.default} 
