@@ -1059,41 +1059,14 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* REVIEWS SECTION */}
+        {/* REVIEWS SECTION — vertical-card horizontal feed */}
         <section style={{
           background: COLORS.cream,
-          padding: '60px 20px',
+          padding: '60px 0',
           position: 'relative',
           overflow: 'hidden'
         }}>
-          {/* Background customer photo collage — visible back layer */}
-          <div aria-hidden="true" style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'grid',
-            gridTemplateColumns: 'repeat(6, 1fr)',
-            gridAutoRows: '1fr',
-            gap: '4px',
-            opacity: 0.55,
-            pointerEvents: 'none'
-          }}>
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} style={{
-                backgroundImage: `url(${CUSTOMER_IMG(i)})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-              }} />
-            ))}
-          </div>
-          {/* Subtle cream overlay only behind text area, not over the collage */}
-          <div aria-hidden="true" style={{
-            position: 'absolute',
-            inset: 0,
-            background: `linear-gradient(180deg, rgba(245,243,239,0.35) 0%, rgba(245,243,239,0.55) 100%)`,
-            pointerEvents: 'none'
-          }} />
-
-          <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
             <h2 style={{
               fontSize: 'clamp(22px, 2.6vw, 28px)',
               fontWeight: '700',
@@ -1104,48 +1077,91 @@ export const LandingPage = () => {
             }}>
               Hear from Happy <span style={{ color: COLORS.red }}>FoeGuardians</span>
             </h2>
-            <p style={{ textAlign: 'center', color: COLORS.charcoal, opacity: 0.7, marginBottom: '40px' }}>
+            <p style={{ textAlign: 'center', color: COLORS.charcoal, opacity: 0.75, marginBottom: '32px' }}>
               Real reviews from real pet parents
             </p>
+          </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '20px'
-            }}>
-              {reviews.map((review, i) => (
-                <div key={i} style={{
-                  background: 'rgba(255,255,255,0.95)',
-                  backdropFilter: 'blur(4px)',
-                  padding: '22px',
-                  borderRadius: '16px',
-                  boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
-                  border: `1px solid ${COLORS.khaki}`
-                }}>
-                  <div style={{ display: 'flex', gap: '2px', marginBottom: '10px' }}>
-                    {[1,2,3,4,5].map(s => <Star key={s} size={14} fill={COLORS.red} color={COLORS.red} />)}
-                  </div>
-                  <p style={{
-                    fontSize: '14px',
-                    color: COLORS.charcoal,
-                    lineHeight: '1.55',
-                    marginBottom: '12px',
-                    fontStyle: 'italic'
+          {/* Horizontal scroll feed */}
+          <div
+            className="review-feed"
+            data-testid="review-feed"
+            style={{
+              display: 'flex',
+              gap: '18px',
+              overflowX: 'auto',
+              scrollSnapType: 'x mandatory',
+              padding: '12px 20px 28px',
+              WebkitOverflowScrolling: 'touch'
+            }}
+          >
+            {/* Build a feed: review card, then a photo card, alternating */}
+            {(() => {
+              const tiles = [];
+              reviews.forEach((r, i) => {
+                // Review card
+                tiles.push(
+                  <article key={`r-${i}`} style={{
+                    flex: '0 0 280px',
+                    scrollSnapAlign: 'start',
+                    background: COLORS.white,
+                    borderRadius: '18px',
+                    border: `1px solid ${COLORS.khaki}`,
+                    boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column'
                   }}>
-                    {`"${review.text}"`}
-                  </p>
-                  <p style={{
-                    fontSize: '13px',
-                    fontWeight: '700',
-                    color: COLORS.red,
-                    margin: 0,
-                    fontFamily: "'Rubik', sans-serif"
-                  }}>
-                    — {review.name}
-                  </p>
-                </div>
-              ))}
-            </div>
+                    <div style={{
+                      width: '100%',
+                      aspectRatio: '4 / 5',
+                      backgroundImage: `url(${r.img})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center'
+                    }} />
+                    <div style={{ padding: '18px 18px 20px' }}>
+                      <div style={{ display: 'flex', gap: '2px', marginBottom: '10px' }}>
+                        {[1,2,3,4,5].map(s => <Star key={s} size={14} fill={COLORS.red} color={COLORS.red} />)}
+                      </div>
+                      <p style={{
+                        fontSize: '14px',
+                        color: COLORS.charcoal,
+                        lineHeight: '1.55',
+                        marginBottom: '12px',
+                        fontStyle: 'italic',
+                        minHeight: '60px'
+                      }}>
+                        {`"${r.text}"`}
+                      </p>
+                      <p style={{
+                        fontSize: '13px',
+                        fontWeight: '700',
+                        color: COLORS.red,
+                        margin: 0,
+                        fontFamily: "'Rubik', sans-serif"
+                      }}>
+                        — {r.name}
+                      </p>
+                    </div>
+                  </article>
+                );
+                // Every other review, insert a pure customer photo tile (offset to use later images 6-11)
+                tiles.push(
+                  <div key={`p-${i}`} style={{
+                    flex: '0 0 220px',
+                    scrollSnapAlign: 'start',
+                    borderRadius: '18px',
+                    overflow: 'hidden',
+                    border: `1px solid ${COLORS.khaki}`,
+                    boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
+                    backgroundImage: `url(${CUSTOMER_IMG(i + 6)})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }} />
+                );
+              });
+              return tiles;
+            })()}
           </div>
         </section>
 
@@ -1181,12 +1197,12 @@ export const LandingPage = () => {
 
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-              gap: '24px 16px',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '20px 12px',
               justifyItems: 'center',
               maxWidth: '900px',
               margin: '0 auto'
-            }}>
+            }} className="protein-grid">
               {[
                 { label: 'Chicken', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/dksu613b_chicken.png' },
                 { label: 'Beef', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/262n9jvl_beef.png' },
@@ -1221,14 +1237,11 @@ export const LandingPage = () => {
                   }}
                 >
                   <div style={{
-                    width: '110px',
-                    height: '110px',
+                    width: '120px',
+                    height: '120px',
                     borderRadius: '50%',
                     background: COLORS.softBg,
                     border: `3px solid ${COLORS.khaki}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
                     overflow: 'hidden',
                     transition: 'transform 0.2s ease',
                     boxShadow: '3px 3px 0px rgba(0,0,0,0.08)'
@@ -1236,7 +1249,7 @@ export const LandingPage = () => {
                     <img
                       src={p.url}
                       alt={p.label}
-                      style={{ width: '88%', height: '88%', objectFit: 'contain' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                     />
                   </div>
                   <span style={{
@@ -1422,8 +1435,8 @@ export const LandingPage = () => {
             <div style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '14px',
-              maxWidth: '600px',
+              gap: '12px',
+              maxWidth: '620px',
               margin: '0 auto 40px'
             }}>
               {[
@@ -1431,16 +1444,37 @@ export const LandingPage = () => {
                 'Watch your dog thrive as digestion, weight, energy and allergies start to improve.',
                 'We deliver straight to your door. Subscribe to save and never run out of food.'
               ].map((line, i) => (
-                <p key={i} style={{
-                  fontSize: '15px',
-                  lineHeight: 1.6,
-                  margin: 0,
-                  color: COLORS.cream,
-                  opacity: 0.95,
-                  fontFamily: "'Rubik', sans-serif"
+                <div key={i} style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px',
+                  textAlign: 'left'
                 }}>
-                  {line}
-                </p>
+                  <span style={{
+                    flexShrink: 0,
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '50%',
+                    background: COLORS.cream,
+                    color: COLORS.red,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '13px',
+                    fontWeight: 800,
+                    marginTop: '2px'
+                  }}>✓</span>
+                  <p style={{
+                    fontSize: '15px',
+                    lineHeight: 1.6,
+                    margin: 0,
+                    color: COLORS.cream,
+                    opacity: 0.95,
+                    fontFamily: "'Rubik', sans-serif"
+                  }}>
+                    {line}
+                  </p>
+                </div>
               ))}
             </div>
 
