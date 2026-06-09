@@ -123,7 +123,7 @@ const ModernNavbar = () => {
           fontWeight: '500',
           letterSpacing: '0.02em'
         }}>
-          Free shipping on all orders over $149
+          Free Delivery in the GTA Over $100
         </div>
         
         {/* Main navbar — 3-col grid so center logo stays centered on every viewport */}
@@ -832,7 +832,7 @@ export const LandingPage = () => {
               <div style={{ display: 'grid', gap: '16px' }}>
                 {[
                   { Icon: Sprout, title: 'Farm Fresh', desc: 'Locally sourced and hand-crafted in small batches every week.' },
-                  { Icon: Leaf, title: '100% Organic', desc: 'Raised without additives, preservatives, fillers, antibiotics or hormones.' },
+                  { Icon: Leaf, title: '100% Organic', desc: 'Raised on open pastures, clean feed and without hormones, fillers or additives.' },
                   { Icon: ChefHat, title: 'Human Grade', desc: 'Whole proteins prepared in our Ontario regulated human food kitchen.' },
                   { Icon: Award, title: 'Complete Nutrition', desc: 'Made to AAFCO standards. No balancing or supplements needed.' }
                 ].map((item, i) => {
@@ -893,35 +893,98 @@ export const LandingPage = () => {
           padding: '60px 20px',
           color: COLORS.cream
         }}>
-          <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
-            <h2 style={{ fontSize: 'clamp(22px, 2.6vw, 28px)', fontWeight: '700', marginBottom: '14px', fontFamily: "'Rubik', sans-serif" }}>
-              Customers Often See Benefits in Just <span style={{ color: COLORS.lightGreen }}>2 Weeks</span>
-            </h2>
-            <p style={{ fontSize: '16px', opacity: 0.92, marginBottom: '40px', fontWeight: 400 }}>
-              Help your dog live their best life by changing how they feel, look and act on a day-to-day basis.
-            </p>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
+              <h2 style={{
+                fontSize: 'clamp(22px, 2.6vw, 28px)',
+                fontWeight: '700',
+                marginBottom: '14px',
+                fontFamily: "'Rubik', sans-serif",
+                lineHeight: 1.25
+              }}>
+                Help Your Best Friend <span style={{ color: COLORS.lightGreen }}>Live Their Best Life.</span>
+              </h2>
+              <p style={{
+                fontSize: 'clamp(15px, 1.8vw, 17px)',
+                opacity: 0.92,
+                margin: 0,
+                fontWeight: 400,
+                lineHeight: 1.6
+              }}>
+                Change how healthy they look, feel and behave day-in and day-out. Customers often see benefits in just 2 weeks.
+              </p>
+            </div>
 
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '20px'
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: '14px',
+              marginBottom: '36px'
             }}>
               {[
-                { icon: '💪', title: 'Improved Digestion', desc: 'Easier on the stomach' },
-                { icon: '✨', title: 'Shinier Coat', desc: 'Healthier skin & fur' },
-                { icon: '⚡', title: 'More Energy', desc: 'Active & playful' },
-                { icon: '🏃', title: 'Healthy Weight', desc: 'Lean muscle mass' }
+                { title: 'Improved Digestibility', desc: 'Less gas, less bloat, more comfort.' },
+                { title: 'Healthier Skin & Coat', desc: 'From real nutrient absorption that\u2019s long lasting.' },
+                { title: 'More Stable Energy', desc: 'No peaks and crashes from filler and synthetic inputs.' },
+                { title: 'Muscle Condition Improves', desc: 'Without overfeeding or additional toppers.' },
+                { title: 'Smaller, Firm Stools', desc: 'A direct sign of higher ingredient bioavailability.' },
+                { title: 'Stronger, Cleaner Teeth', desc: 'Less chewing residue and plaque.' }
               ].map((benefit, i) => (
                 <div key={i} style={{
-                  background: 'rgba(255,255,255,0.15)',
-                  padding: '28px 20px',
-                  borderRadius: '16px'
+                  background: 'rgba(255,255,255,0.08)',
+                  border: `1px solid rgba(255,255,255,0.12)`,
+                  padding: '18px 18px',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px',
+                  textAlign: 'left'
                 }}>
-                  <div style={{ fontSize: '36px', marginBottom: '12px' }}>{benefit.icon}</div>
-                  <h4 style={{ fontSize: '17px', fontWeight: '700', marginBottom: '6px' }}>{benefit.title}</h4>
-                  <p style={{ fontSize: '14px', opacity: 0.85, margin: 0 }}>{benefit.desc}</p>
+                  <div style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: COLORS.lightGreen,
+                    color: COLORS.forestGreen,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    fontSize: '14px',
+                    fontWeight: '700',
+                    marginTop: '2px'
+                  }}>✓</div>
+                  <div>
+                    <div style={{
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      marginBottom: '4px',
+                      fontFamily: "'Rubik', sans-serif",
+                      lineHeight: 1.3
+                    }}>{benefit.title}</div>
+                    <div style={{
+                      fontSize: '13px',
+                      opacity: 0.85,
+                      lineHeight: 1.5
+                    }}>{benefit.desc}</div>
+                  </div>
                 </div>
               ))}
+            </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <button
+                data-testid="benefits-learn-more"
+                onClick={() => navigate('/new-to-raw')}
+                style={{
+                  ...liftedButtonStyle,
+                  background: COLORS.lightGreen,
+                  color: COLORS.white
+                }}
+                onMouseEnter={(e) => liftedButtonHover(e, true)}
+                onMouseLeave={(e) => liftedButtonHover(e, false)}
+              >
+                Learn More
+              </button>
             </div>
           </div>
         </section>
