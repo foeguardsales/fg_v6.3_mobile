@@ -111,6 +111,10 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
+/* Force all subtext/paragraphs to Public Sans, even if a leftover inline Barlow snuck in */
+p, li, blockquote, dd, dt, figcaption, small, .subtext {
+  font-family: var(--font-body) !important;
+}
 
 /* ========== CSS VARIABLES ========== */
 :root {

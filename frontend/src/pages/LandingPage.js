@@ -704,7 +704,7 @@ export const LandingPage = () => {
                   color: COLORS.charcoal,
                   opacity: 0.85,
                   maxWidth: '560px',
-                  margin: '0 auto 26px',
+                  margin: '0 0 26px',
                   lineHeight: '1.65',
                   fontWeight: 400
                 }}>
