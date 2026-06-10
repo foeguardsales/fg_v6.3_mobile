@@ -172,7 +172,7 @@ export const FeedingCalculator = ({ onComplete }) => {
           color: '#c8102e',
           marginBottom: '32px',
           transition: 'all 0.2s',
-          fontFamily: "'Oswald', sans-serif"
+          fontFamily: "'Barlow', sans-serif"
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.background = '#F8F6F4';
@@ -187,8 +187,8 @@ export const FeedingCalculator = ({ onComplete }) => {
         Back
       </button>
 
-      <h2 style={{ fontSize: '36px', textAlign: 'center', marginBottom: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: '700' }}>Feeding Calculator</h2>
-      <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontFamily: "'Oswald', sans-serif" }}>
+      <h2 style={{ fontSize: '36px', textAlign: 'center', marginBottom: '16px', fontFamily: "'Barlow', sans-serif", fontWeight: '700' }}>Feeding Calculator</h2>
+      <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontFamily: "'Barlow', sans-serif" }}>
         Tell us about your pet(s) to get personalized feeding recommendations
       </p>
 

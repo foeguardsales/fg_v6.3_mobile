@@ -41,7 +41,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           background: isOpen ? '#FAF8F5' : 'transparent',
           border: 'none',
           cursor: 'pointer',
-          fontFamily: "'Oswald', sans-serif",
+          fontFamily: "'Barlow', sans-serif",
           fontSize: '20px',
           fontWeight: '600',
           color: '#2B2B2B',
@@ -300,7 +300,7 @@ export const ProductDetailPage = () => {
             background: 'none',
             border: 'none',
             color: '#c8102e',
-            fontFamily: "'Oswald', sans-serif",
+            fontFamily: "'Barlow', sans-serif",
             fontSize: '15px',
             fontWeight: '600',
             cursor: 'pointer',
@@ -334,7 +334,7 @@ export const ProductDetailPage = () => {
                 color: '#FFFFFF',
                 padding: '8px 20px',
                 borderRadius: '100px',
-                fontFamily: "'Oswald', sans-serif",
+                fontFamily: "'Barlow', sans-serif",
                 fontSize: '13px',
                 fontWeight: '600',
                 textTransform: 'uppercase',
@@ -344,7 +344,7 @@ export const ProductDetailPage = () => {
             
             <div className="product-hero-info" style={{ padding: '32px' }}>
               <h1 style={{
-                fontFamily: "'Oswald', sans-serif",
+                fontFamily: "'Barlow', sans-serif",
                 fontSize: '36px',
                 color: '#2B2B2B',
                 margin: '0 0 20px 0',

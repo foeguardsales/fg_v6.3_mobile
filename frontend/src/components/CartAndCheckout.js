@@ -480,7 +480,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             border: '1px solid rgba(255,255,255,0.3)'
           }}>Optional Add-On</span>
           <h3 style={{
-            fontFamily: "'Oswald', sans-serif",
+            fontFamily: "'Barlow', sans-serif",
             fontSize: '32px',
             fontWeight: '600',
             color: '#FFFFFF',

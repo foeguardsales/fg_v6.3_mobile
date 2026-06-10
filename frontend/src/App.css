@@ -97,10 +97,19 @@ body {
   font-style: normal;
 }
 
-/* Heritage typography: Oswald for headings, Bitter for body/subtext */
+/* Heritage typography: Barlow Bold for headings, Public Sans Medium for body/subtext */
 :root {
-  --font-body: 'Bitter', Georgia, 'Times New Roman', serif;
-  --font-heading: 'Oswald', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Default body weight = Public Sans Medium (500) */
+body {
+  font-weight: 500;
+}
+/* Default heading weight = Barlow Bold (700) */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
 }
 
 /* ========== CSS VARIABLES ========== */

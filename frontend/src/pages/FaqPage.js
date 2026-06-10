@@ -135,7 +135,7 @@ const AccordionItem = ({ q, a, isOpen, onToggle }) => (
         fontSize: '17px',
         fontWeight: 600,
         color: COLORS.charcoal,
-        fontFamily: "'Oswald', sans-serif"
+        fontFamily: "'Barlow', sans-serif"
       }}>{q}</span>
       {isOpen
         ? <ChevronUp size={22} color={COLORS.red} />
@@ -189,7 +189,7 @@ export const FaqPage = () => {
               color: COLORS.charcoal,
               lineHeight: 1.15,
               marginBottom: '16px',
-              fontFamily: "'Oswald', sans-serif"
+              fontFamily: "'Barlow', sans-serif"
             }}>
               Everything you need to know,<br />
               <span style={{ color: COLORS.red }}>before you switch to raw.</span>
@@ -219,7 +219,7 @@ export const FaqPage = () => {
                   letterSpacing: '0.12em',
                   color: COLORS.red,
                   marginBottom: '8px',
-                  fontFamily: "'Oswald', sans-serif"
+                  fontFamily: "'Barlow', sans-serif"
                 }}>{cat.title}</h2>
                 <div style={{
                   background: COLORS.white,
@@ -259,7 +259,7 @@ export const FaqPage = () => {
                 fontSize: '24px',
                 fontWeight: 800,
                 marginBottom: '8px',
-                fontFamily: "'Oswald', sans-serif"
+                fontFamily: "'Barlow', sans-serif"
               }}>Still have questions?</h3>
               <p style={{
                 fontSize: '15px',
