@@ -6,6 +6,71 @@ import { SlideCart } from '../contexts/CartContext';
 
 const FAQ_CATEGORIES = [
   {
+    title: 'Raw Feeding Basics',
+    items: [
+      {
+        q: 'Is raw food safe for my dog?',
+        a: (
+          <>
+            <p style={{ margin: '0 0 12px' }}><strong>When handled properly — yes.</strong></p>
+            <p style={{ margin: '0 0 12px' }}>Dogs and cats are biologically designed to digest raw meat, bone, and organ. The key is quality, formulation, and proper storage.</p>
+            <p style={{ margin: '0 0 8px', fontWeight: 600 }}>At FoeGuard, every meal is:</p>
+            <ul style={{ margin: '0 0 12px 20px', padding: 0 }}>
+              <li>Professionally balanced</li>
+              <li>Prepared in a government-inspected facility</li>
+              <li>Flash frozen immediately</li>
+              <li>Handled with the same standards you would use for your own food</li>
+            </ul>
+            <p style={{ margin: 0 }}>Raw feeding isn&apos;t extreme — it&apos;s simply a return to biological design.</p>
+          </>
+        )
+      },
+      {
+        q: 'How do I transition my pet?',
+        a: (
+          <>
+            <p style={{ margin: '0 0 12px' }}>Because our meals are nutrient-dense and minimally processed, a thoughtful transition helps avoid digestive upset. We recommend the following approaches:</p>
+            <p style={{ margin: '0 0 6px', fontWeight: 700 }}>Option 1: 10-Day Gradual Transition</p>
+            <p style={{ margin: '0 0 12px', fontStyle: 'italic' }}>Best for kibble-fed pets, sensitive stomachs, puppies, seniors, or cautious guardians.</p>
+            <ul style={{ margin: '0 0 12px 20px', padding: 0 }}>
+              <li>Day 1: 10% FoeGuard / 90% current food</li>
+              <li>Day 2: 20% FoeGuard / 80% current food</li>
+              <li>Continue increasing FoeGuard by 10% daily</li>
+              <li>Day 10: 100% FoeGuard — fully transitioned!</li>
+            </ul>
+            <p style={{ margin: '0 0 6px', fontWeight: 600 }}>Tips during transition:</p>
+            <ul style={{ margin: '0 0 16px 20px', padding: 0 }}>
+              <li>Feed slightly smaller portions</li>
+              <li>Monitor stool consistency</li>
+              <li>Avoid introducing new treats</li>
+            </ul>
+            <p style={{ margin: '0 0 6px', fontWeight: 700 }}>Optional: Structured Fast + Switch</p>
+            <p style={{ margin: '0 0 12px', fontStyle: 'italic' }}>Only recommended for healthy adult dogs already eating raw or lightly processed diets. Feed the regular morning meal, allow a 24-hour digestive reset (water is fine), then introduce FoeGuard at the next evening meal with a slightly smaller portion.</p>
+            <p style={{ margin: 0 }}>Our team is one message away if you need help.</p>
+          </>
+        )
+      },
+      {
+        q: 'What if my dog or cat won\u2019t eat raw?',
+        a: (
+          <>
+            <p style={{ margin: '0 0 12px' }}>Transitioning to raw is often <strong>behavioural</strong> — not nutritional. Many pets are accustomed to processed foods engineered for taste intensity, flavour enhancers, and frequent treats. Real food can feel unfamiliar at first.</p>
+            <p style={{ margin: '0 0 12px', fontWeight: 600 }}>Consistency and structure usually solve it.</p>
+            <p style={{ margin: '0 0 6px' }}>To encourage success:</p>
+            <ul style={{ margin: '0 0 12px 20px', padding: 0 }}>
+              <li>Feed at consistent times</li>
+              <li>Avoid free-feeding</li>
+              <li>Limit treats during transition</li>
+              <li>Ensure your dog is exercised before mealtime</li>
+              <li>Remove the bowl after 15–20 minutes if uneaten</li>
+            </ul>
+            <p style={{ margin: 0 }}>Structure builds appetite. If they skip a meal, store the food in the fridge and offer it again at the next scheduled feeding. With patience and consistency, most pets adapt quickly — and thrive.</p>
+          </>
+        )
+      }
+    ]
+  },
+  {
     title: 'Quick Answers',
     items: [
       {

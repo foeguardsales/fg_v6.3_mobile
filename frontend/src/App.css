@@ -21,6 +21,7 @@
   align-items: center;
 }
 .hero-layout .hero-text { text-align: center; }
+.hero-layout .hero-text p { margin-left: auto !important; margin-right: auto !important; }
 @media (min-width: 900px) {
   .hero-layout {
     grid-template-columns: 1.15fr 1fr;
@@ -30,6 +31,7 @@
     text-align: left;
     order: 1;
   }
+  .hero-layout .hero-text p { margin-left: 0 !important; margin-right: 0 !important; }
   .hero-layout .hero-images {
     order: 2;
     margin: 0 !important;
