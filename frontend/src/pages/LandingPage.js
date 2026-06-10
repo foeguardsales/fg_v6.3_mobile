@@ -7,6 +7,7 @@ import { useCart, SlideCart } from '../contexts/CartContext';
 const COLORS = {
   red: '#c8102e',
   redOverlay: '#9D0D23',
+  redDark: '#6F0A1B',
   cream: '#f5f3ef',
   softBg: '#E5D9C2',
   khaki: '#C9BE9F',
@@ -413,9 +414,32 @@ const TrustMarquee = () => {
 // Modern Footer
 const ModernFooter = () => {
   const navigate = useNavigate();
-  
+
+  const footerLinkStyle = {
+    display: 'block',
+    background: 'none',
+    border: 'none',
+    padding: 0,
+    color: COLORS.cream,
+    fontSize: '14px',
+    marginBottom: '8px',
+    cursor: 'pointer',
+    opacity: 0.85,
+    textAlign: 'left',
+    fontFamily: "'Barlow', sans-serif"
+  };
+
+  const footerHeadingStyle = {
+    fontSize: '14px',
+    fontWeight: '800',
+    marginBottom: '14px',
+    color: COLORS.cream,
+    letterSpacing: '0.04em',
+    textTransform: 'uppercase'
+  };
+
   return (
-    <footer style={{ background: COLORS.khaki, color: COLORS.charcoal }}>
+    <footer style={{ background: COLORS.redDark, color: COLORS.cream }}>
       {/* Main footer content */}
       <div style={{
         display: 'grid',
@@ -430,7 +454,7 @@ const ModernFooter = () => {
           <div style={{ marginBottom: '12px' }}>
             <FoeGuardLogo size="default" />
           </div>
-          <p style={{ fontSize: '13px', lineHeight: '1.6', color: COLORS.charcoal, opacity: 0.85, marginBottom: '20px' }}>
+          <p style={{ fontSize: '13px', lineHeight: '1.6', color: COLORS.cream, opacity: 0.85, marginBottom: '20px' }}>
             Ontario&apos;s #1 farm-fresh raw dog food delivery. Real, fresh, complete nutrition for your best friend.
           </p>
           <div style={{ display: 'flex', gap: '10px' }}>
@@ -439,11 +463,11 @@ const ModernFooter = () => {
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
-                background: COLORS.red,
+                background: COLORS.cream,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: COLORS.white,
+                color: COLORS.redDark,
                 fontSize: '12px',
                 fontWeight: 700,
                 textDecoration: 'none'
@@ -456,30 +480,14 @@ const ModernFooter = () => {
 
         {/* Shop column */}
         <div>
-          <h4 style={{ fontSize: '14px', fontWeight: '800', marginBottom: '14px', color: COLORS.charcoal, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Shop</h4>
+          <h4 style={footerHeadingStyle}>Shop</h4>
           {[
             { label: 'Raw Dog Food', to: '/menu' },
             { label: 'Meaty Treats', to: '/menu/treats' },
             { label: 'Build Meal Plan', to: '/meal-plan' },
             { label: 'Dog Food Calculator', to: '/calculator' }
           ].map(item => (
-            <button
-              key={item.label}
-              onClick={() => navigate(item.to)}
-              style={{
-                display: 'block',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                color: COLORS.charcoal,
-                fontSize: '14px',
-                marginBottom: '8px',
-                cursor: 'pointer',
-                opacity: 0.85,
-                textAlign: 'left',
-                fontFamily: "'Barlow', sans-serif"
-              }}
-            >
+            <button key={item.label} onClick={() => navigate(item.to)} style={footerLinkStyle}>
               {item.label}
             </button>
           ))}
@@ -487,30 +495,14 @@ const ModernFooter = () => {
 
         {/* Help column */}
         <div>
-          <h4 style={{ fontSize: '14px', fontWeight: '800', marginBottom: '14px', color: COLORS.charcoal, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Help</h4>
+          <h4 style={footerHeadingStyle}>Help</h4>
           {[
             { label: 'Contact Us', to: '/contact' },
             { label: 'FAQs', to: '/faq' },
             { label: 'Delivery Information', to: '/delivery' },
             { label: 'Returns', to: '/policies' }
           ].map(item => (
-            <button
-              key={item.label}
-              onClick={() => navigate(item.to)}
-              style={{
-                display: 'block',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                color: COLORS.charcoal,
-                fontSize: '14px',
-                marginBottom: '8px',
-                cursor: 'pointer',
-                opacity: 0.85,
-                textAlign: 'left',
-                fontFamily: "'Barlow', sans-serif"
-              }}
-            >
+            <button key={item.label} onClick={() => navigate(item.to)} style={footerLinkStyle}>
               {item.label}
             </button>
           ))}
@@ -518,7 +510,7 @@ const ModernFooter = () => {
 
         {/* Company column */}
         <div>
-          <h4 style={{ fontSize: '14px', fontWeight: '800', marginBottom: '14px', color: COLORS.charcoal, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Company</h4>
+          <h4 style={footerHeadingStyle}>Company</h4>
           {[
             { label: 'About Us', to: '/about' },
             { label: 'Why Raw?', to: '/new-to-raw' },
@@ -526,23 +518,7 @@ const ModernFooter = () => {
             { label: 'Privacy Policy', to: '/policies' },
             { label: 'Terms of Service', to: '/terms' }
           ].map(item => (
-            <button
-              key={item.label}
-              onClick={() => navigate(item.to)}
-              style={{
-                display: 'block',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                color: COLORS.charcoal,
-                fontSize: '14px',
-                marginBottom: '8px',
-                cursor: 'pointer',
-                opacity: 0.85,
-                textAlign: 'left',
-                fontFamily: "'Barlow', sans-serif"
-              }}
-            >
+            <button key={item.label} onClick={() => navigate(item.to)} style={footerLinkStyle}>
               {item.label}
             </button>
           ))}
@@ -551,12 +527,12 @@ const ModernFooter = () => {
 
       {/* Bottom bar */}
       <div style={{
-        borderTop: `1px solid ${COLORS.khakiDark}`,
+        borderTop: `1px solid rgba(255,255,255,0.15)`,
         padding: '18px 20px',
         textAlign: 'center',
         fontSize: '12px',
-        color: COLORS.charcoal,
-        opacity: 0.7
+        color: COLORS.cream,
+        opacity: 0.75
       }}>
         © {new Date().getFullYear()} FoeGuard. All rights reserved. Made with care in Ontario.
       </div>
@@ -1447,8 +1423,10 @@ export const LandingPage = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '12px',
-              maxWidth: '620px',
-              margin: '0 auto 40px'
+              width: 'fit-content',
+              maxWidth: '100%',
+              margin: '0 auto 40px',
+              textAlign: 'left'
             }}>
               {[
                 'Build your box or your own meal plan. Pause, change or cancel anytime.',
