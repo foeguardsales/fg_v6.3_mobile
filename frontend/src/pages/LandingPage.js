@@ -686,17 +686,17 @@ export const LandingPage = () => {
               {/* Hero Text — on desktop CSS reorders this to the left of the image */}
               <div className="hero-text">
                 <h1 style={{
-                  fontSize: 'clamp(26px, 4vw, 42px)',
+                  fontSize: 'clamp(30px, 4.4vw, 48px)',
                   fontWeight: '700',
                   color: COLORS.charcoal,
-                  lineHeight: '1.1',
+                  lineHeight: '1.08',
                   marginBottom: '18px',
                   fontFamily: "'Barlow', sans-serif",
-                  letterSpacing: '0',
+                  letterSpacing: '-0.5px',
                   textTransform: 'uppercase'
                 }}>
                   Ontario&apos;s #1 Farm Fresh<br />
-                  <span style={{ color: COLORS.red }}>Raw Dog Food</span>
+                  <span style={{ color: COLORS.red }}>Raw Dog Food Delivery</span>
                 </h1>
 
                 <p style={{
