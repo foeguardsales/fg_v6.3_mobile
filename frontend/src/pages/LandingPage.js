@@ -444,8 +444,8 @@ const ModernFooter = () => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '32px',
-        padding: '48px 20px 40px',
+        gap: '28px',
+        padding: '32px 20px 24px',
         maxWidth: '1200px',
         margin: '0 auto'
       }}>
@@ -528,7 +528,7 @@ const ModernFooter = () => {
       {/* Bottom bar */}
       <div style={{
         borderTop: `1px solid rgba(255,255,255,0.15)`,
-        padding: '18px 20px',
+        padding: '12px 20px',
         textAlign: 'center',
         fontSize: '12px',
         color: COLORS.cream,
