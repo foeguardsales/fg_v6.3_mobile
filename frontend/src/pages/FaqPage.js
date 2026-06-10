@@ -6,8 +6,12 @@ import { SlideCart } from '../contexts/CartContext';
 
 const FAQ_CATEGORIES = [
   {
-    title: 'Raw Feeding Basics',
+    title: 'Getting Started',
     items: [
+      {
+        q: 'What exactly is raw dog food?',
+        a: 'Raw dog food is a biologically appropriate diet made from fresh, unprocessed muscle meat, organs, bone and whole-food ingredients — the way dogs are designed to eat. FoeGuard meals are prepared in an Ontario-regulated human-grade kitchen and flash-frozen to lock in nutrition.'
+      },
       {
         q: 'Is raw food safe for my dog?',
         a: (
@@ -67,44 +71,6 @@ const FAQ_CATEGORIES = [
             <p style={{ margin: 0 }}>Structure builds appetite. If they skip a meal, store the food in the fridge and offer it again at the next scheduled feeding. With patience and consistency, most pets adapt quickly — and thrive.</p>
           </>
         )
-      }
-    ]
-  },
-  {
-    title: 'Quick Answers',
-    items: [
-      {
-        q: 'Is raw food safe for my dog?',
-        a: 'Yes! Our raw food is made in an Ontario Regulated Human Food Kitchen with the same safety standards as human food. We use only human-grade, ethically sourced ingredients.'
-      },
-      {
-        q: 'How do I transition my dog to raw?',
-        a: 'We recommend a gradual transition over 7-10 days, mixing increasing amounts of raw food with their current diet. Our team is always here to help guide you through the process.'
-      },
-      {
-        q: 'How is the food shipped?',
-        a: 'All orders are shipped frozen in insulated packaging with dry ice to ensure freshness. We deliver directly to your door across Ontario.'
-      },
-      {
-        q: 'Can I pause or cancel my subscription?',
-        a: 'Absolutely! Your meal plan is completely customizable. Pause, skip, change, or cancel anytime with no commitments or hidden fees.'
-      }
-    ]
-  },
-  {
-    title: 'Getting Started',
-    items: [
-      {
-        q: 'What exactly is raw dog food?',
-        a: 'Raw dog food is a biologically appropriate diet made from fresh, unprocessed muscle meat, organs, bone and whole-food ingredients — the way dogs are designed to eat. FoeGuard meals are prepared in an Ontario-regulated human-grade kitchen and flash-frozen to lock in nutrition.'
-      },
-      {
-        q: 'Is raw food safe for my dog?',
-        a: 'Yes. Our facility follows the same handling standards used for human food. Every recipe is screened for pathogens, and meats are sourced from drug-free, ethically raised Canadian farms.'
-      },
-      {
-        q: 'How do I transition my dog onto FoeGuard?',
-        a: 'We recommend a gradual 7–10 day transition. Start at 25% raw and 75% current food, then increase the raw portion every couple of days. Our team is always one message away if you need help.'
       },
       {
         q: 'Can puppies and senior dogs eat raw?',
@@ -116,16 +82,12 @@ const FAQ_CATEGORIES = [
     title: 'Ordering & Subscriptions',
     items: [
       {
-        q: 'How does the 6lb pack system work?',
-        a: 'Every recipe is sold in 6lb increments. Order 12lb to unlock a 5% bulk discount, or 24lb for 10% off. Stack a subscription for an additional 5% off — automatically applied at checkout.'
-      },
-      {
         q: 'Can I pause, skip or cancel my subscription?',
         a: 'Yes — fully flexible. Manage delivery dates, swap proteins or cancel anytime from your account. No hidden fees, no commitments.'
       },
       {
         q: 'Do you offer a custom meal plan?',
-        a: 'Yes! Take our quick Meal Plan quiz and we’ll match your dog’s breed, weight, activity and sensitivities to the right recipes and feeding amounts.'
+        a: 'Yes! Take our quick Meal Plan quiz and we\u2019ll match your dog\u2019s breed, weight, activity and sensitivities to the right recipes and feeding amounts.'
       },
       {
         q: 'What payment methods do you accept?',
@@ -142,7 +104,7 @@ const FAQ_CATEGORIES = [
       },
       {
         q: 'How is the food shipped?',
-        a: 'Frozen, in insulated boxes with dry ice. Boxes are designed to keep meals frozen for up to 48 hours in transit.'
+        a: 'We don\u2019t use insulated boxes or third-party couriers. Every order is flash-frozen straight out of our regulated human-grade kitchen and personally delivered to your door, so meals stay solid and fresh from our freezer to yours.'
       },
       {
         q: 'How long does the food last?',
@@ -150,7 +112,7 @@ const FAQ_CATEGORIES = [
       },
       {
         q: 'What if my order arrives partially thawed?',
-        a: 'If meals are still cold to the touch, they are safe to refreeze immediately. If anything looks off, email hello@foeguard.com within 48 hours and we’ll make it right.'
+        a: 'If meals are still cold to the touch, they are safe to refreeze immediately. If anything looks off, email info@foeguard.com within 48 hours and we\u2019ll make it right.'
       }
     ]
   },
@@ -163,11 +125,16 @@ const FAQ_CATEGORIES = [
       },
       {
         q: 'What if my dog has allergies?',
-        a: 'Use our Meal Plan quiz to flag allergens — we’ll surface novel-protein options like Duck, Rabbit or Venison and skip any recipes containing your dog’s triggers.'
+        a: 'Use our Meal Plan quiz to flag allergens — we\u2019ll surface novel-protein options like Duck, Rabbit or Venison and skip any recipes containing your dog\u2019s triggers.'
       },
       {
-        q: 'Will raw food make my dog’s coat shinier?',
-        a: 'Most customers see noticeable coat improvement within 30 days thanks to whole-food omega-3s and bioavailable nutrients.'
+        q: 'What benefits does raw feeding have?',
+        a: (
+          <>
+            <p style={{ margin: '0 0 12px' }}>Most pet parents see noticeable changes within the first 30 days — a glossier coat, cleaner teeth, brighter eyes, smaller stools, steadier energy, better digestion, and fewer flare-ups for dogs with allergies or sensitivities.</p>
+            <p style={{ margin: 0 }}>For the full breakdown of how raw feeding supports longevity, vitality and well-being, read our <a href="/new-to-raw" style={{ color: COLORS.red, fontWeight: 700, textDecoration: 'underline' }}>Why Raw?</a> page.</p>
+          </>
+        )
       }
     ]
   }
@@ -312,23 +279,26 @@ export const FaqPage = () => {
             {/* CTA — still have questions */}
             <div style={{
               marginTop: '60px',
-              background: COLORS.forestGreen,
-              color: COLORS.cream,
+              background: COLORS.khaki,
+              color: COLORS.charcoal,
               padding: '48px 32px',
               borderRadius: '20px',
               textAlign: 'center',
-              boxShadow: '6px 6px 0px rgba(0,0,0,0.18)'
+              boxShadow: '6px 6px 0px rgba(0,0,0,0.12)',
+              border: `1px solid ${COLORS.khakiDark}`
             }}>
-              <MessageCircle size={36} color={COLORS.cream} style={{ marginBottom: '12px' }} />
+              <MessageCircle size={36} color={COLORS.red} style={{ marginBottom: '12px' }} />
               <h3 style={{
                 fontSize: '24px',
-                fontWeight: 800,
+                fontWeight: 700,
                 marginBottom: '8px',
+                color: COLORS.charcoal,
                 fontFamily: "'Barlow', sans-serif"
               }}>Still have questions?</h3>
               <p style={{
                 fontSize: '15px',
-                opacity: 0.9,
+                color: COLORS.charcoal,
+                opacity: 0.85,
                 marginBottom: '24px',
                 maxWidth: '480px',
                 marginLeft: 'auto',

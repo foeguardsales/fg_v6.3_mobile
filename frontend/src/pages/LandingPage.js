@@ -10,7 +10,7 @@ const COLORS = {
   redDark: '#6F0A1B',
   cream: '#f5f3ef',
   softBg: '#E5D9C2',
-  khaki: '#C9BE9F',
+  khaki: '#c2b6a3',
   khakiDark: '#A89B7C',
   charcoal: '#2C2C2C',
   forestGreen: '#2F4538',
@@ -668,8 +668,7 @@ export const LandingPage = () => {
                   lineHeight: '1.08',
                   marginBottom: '18px',
                   fontFamily: "'Barlow', sans-serif",
-                  letterSpacing: '-0.5px',
-                  textTransform: 'uppercase'
+                  letterSpacing: '-0.5px'
                 }}>
                   Ontario&apos;s #1 Farm Fresh<br />
                   <span style={{ color: COLORS.red }}>Raw Dog Food Delivery</span>

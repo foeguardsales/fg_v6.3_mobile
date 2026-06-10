@@ -1,6 +1,49 @@
 import React, { useState } from 'react';
 import { Navbar, Footer } from '../components/Layout';
 
+const PROTEINS = [
+  {
+    label: 'Chicken',
+    url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/dksu613b_chicken.png',
+    desc: 'A lean, easy-to-digest everyday protein — gentle on most dogs and rich in highly absorbable amino acids for muscle and energy.'
+  },
+  {
+    label: 'Beef',
+    url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/262n9jvl_beef.png',
+    desc: 'Hearty, iron-rich red meat loaded with B12 and zinc — builds strong muscle and supports steady energy in active dogs.'
+  },
+  {
+    label: 'Turkey',
+    url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/j6yxejew_turkey.png',
+    desc: 'A naturally lean white meat that\u2019s easy on sensitive stomachs while delivering plenty of protein, selenium and B vitamins.'
+  },
+  {
+    label: 'Duck',
+    url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/s3okrgsw_duck.png',
+    desc: 'A novel, omega-rich protein perfect for dogs with chicken sensitivities — supports skin, coat and joint health.'
+  },
+  {
+    label: 'Goat',
+    url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0u52lnr0_goat.png',
+    desc: 'A clean, low-fat novel protein that\u2019s naturally hypoallergenic and easy to digest \u2014 ideal for itchy or sensitive pups.'
+  },
+  {
+    label: 'Salmon',
+    url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/l6i3vb5d_salmon.png',
+    desc: 'Wild-caught omega-3 powerhouse \u2014 boosts brain function, joint mobility and gives that signature glossy, healthy coat.'
+  },
+  {
+    label: 'Lamb',
+    url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/pgajdkxv_lamb.png',
+    desc: 'A rich, flavour-packed red meat full of iron and zinc \u2014 a satisfying choice for picky eaters and active breeds.'
+  },
+  {
+    label: 'Rabbit',
+    url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/ptl7se73_rabbit.png',
+    desc: 'Ultra-lean and hypoallergenic \u2014 the gold standard novel protein for allergy-prone dogs and elimination diets.'
+  }
+];
+
 export const AboutPage = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -10,11 +53,16 @@ export const AboutPage = () => {
     e.preventDefault();
     if (!email) return;
     setLoading(true);
-    // Simulate subscription
     setTimeout(() => {
       setSubscribed(true);
       setLoading(false);
     }, 800);
+  };
+
+  const titleStyle = {
+    textTransform: 'none',
+    fontFamily: "'Barlow', sans-serif",
+    letterSpacing: '-0.4px'
   };
 
   return (
@@ -24,27 +72,25 @@ export const AboutPage = () => {
         {/* Hero Section */}
         <section className="about-hero">
           <div className="about-hero-content">
-            <h1 style={{ textTransform: 'none', fontFamily: "'Barlow', sans-serif" }}>Why FoeGuard?</h1>
+            <h1 style={titleStyle}>About Us</h1>
             <p style={{ fontSize: '18px', color: '#D9C8B3', marginTop: '20px' }}>
-              Feed your dog the diet they were always meant to eat - without stressing over labels or what's right for them.
+              From Our Family to Yours
             </p>
           </div>
         </section>
 
-        {/* Introduction Section */}
-        <section className="about-section about-story">
+        {/* OUR STORY */}
+        <section className="about-section about-story" data-testid="about-our-story">
           <div className="about-container">
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-              Dogs are designed by nature to break down real meat and bones - yet in recent times, we've been feeding our carnivores processed foods made with vague ingredients, questionable meats, and unethical sourcing.
+            <h2 style={titleStyle}>Our Story</h2>
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
+              Our humble beginnings started with a small farm in Acton, ON and ongoing health issues with our breeding German Shepherd male, Negus. When we couldn&apos;t find raw food that used fresh, whole ingredients raised to our standards, we decided to make our own.
             </p>
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-              For decades, doctors have told us to eat fresh, local, minimally processed foods, so why should our pets be any different?
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
+              The difference was real and sudden. We moved all of our dogs to raw and eventually neighbours started asking for meals — then their friends did too. Over time our experience as third-generation farmers, second-generation German Shepherd breeders and PhDs in biology led us to turn our passion for dogs into a profession through fresh-food recipes crafted alongside other breeders, nutritionists, pet parents and dog behaviourists.
             </p>
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.7' }}>
-              At FoeGuard, we believe dogs deserve food that's fresh, locally sourced, and aligned with nature. Everything a biologically-appropriate raw diet needs to support longevity, vitality, and true well-being.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.7' }}>
-              You can see it in the details: a glossier coat, cleaner teeth, brighter eyes, and energy that feels youthful again. Real food doesn't just nourish—it deepens the bond we share with our pets.
+            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.75', fontWeight: 600 }}>
+              FoeGuard was created for the community, by the community.
             </p>
           </div>
         </section>
@@ -53,22 +99,6 @@ export const AboutPage = () => {
         <section className="about-farm-image">
           <div style={{ width: '100%', overflow: 'hidden', borderRadius: '12px' }}>
             <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/l0xcyf5b_farm.png" alt="FoeGuard farm with cows grazing" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-          </div>
-        </section>
-
-        {/* From Our Family to Yours */}
-        <section className="about-section about-why">
-          <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>From Our Family to Yours</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              We are your direct and local connection to farm fresh raw pet food raised without the use of any antibiotics, hormones or any animals by-products in our feed ... we offer naturally raised meats streamlined from the farm to your bowl. Every FoeGuard product is made fresh using the same ingredients we use to feed our own family - with the same quality and finish, but made for your pets.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Since we are small run operation, unlike big pet food manufacturers we rely on our community of FoeGuardians for support.
-            </p>
-            <p style={{ fontSize: '17px' }}>
-              All of our ingredients are humanely raised in small batch harvests at our farm and local partnered farms in Ontario.
-            </p>
           </div>
         </section>
 
@@ -89,45 +119,67 @@ export const AboutPage = () => {
         </section>
 
         {/* See the FoeGuard Difference */}
-        <section className="about-section about-team-text">
+        <section className="about-section about-team-text" data-testid="about-difference">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>See the FoeGuard Difference</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Get a crystal-clear understanding of your pet's health and what flavours they actually love.
+            <h2 style={titleStyle}>See the FoeGuard Difference</h2>
+            <p style={{ fontSize: '17px', marginBottom: '16px', lineHeight: '1.75' }}>
+              Skip the fillers, preservatives, and retail markups — get a clear understanding of your pet&apos;s health and what flavours they actually love.
             </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              We give pet parents a variety of simple, affordable options to feed a clean, transparent diet—so you can support your pet's cravings and local Canadian farms, all at retail cost.
+            <p style={{ fontSize: '17px', marginBottom: '16px', lineHeight: '1.75' }}>
+              Our farm-to-bowl delivery gives pet parents a variety of simple, affordable options to feed a clean, transparent diet — so you can support your pet&apos;s cravings and local Canadian farms, all at retail cost.
             </p>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Unlike most manufacturers, we handle every step in-house to ensure a consistent delivery service that provides you with unmatched quality, convenience, and personal service.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '0' }}>
-              Skip the fillers, preservatives, and retail markups. By delivering directly from our farm, we invest in better ingredients and ethical sourcing — quality you won't find in store.
+            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.75' }}>
+              Unlike most manufacturers, we handle every step in-house to ensure a consistent delivery service that provides you with better quality, convenience, and personalized service.
             </p>
           </div>
         </section>
 
-        {/* Nature Nurtured by Science - NEW SECTION */}
-        <section className="about-section about-science">
+        {/* Nature Nurtured by Science */}
+        <section className="about-section about-science" data-testid="about-science">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none' }}>Nature Nurtured by Science</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px' }}>
-              Our complete and balanced meals are nutritionist approved and biologically appropriate raw food (BARF) recipes crafted to exceed industry standards (AAFCO) with fresh meat, fruits, veggies, superfoods and supplementation. We have fresh raw meals for dogs and puppies.
+            <h2 style={titleStyle}>Nature Nurtured by Science</h2>
+            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.75' }}>
+              Our complete and balanced meals are biologically appropriate raw food (BARF), NRC-backed recipes crafted to exceed industry standards (AAFCO) with fresh meat, fruits, veggies, superfoods and supplementation. Since we make everything in-house using fresh ingredients we&apos;re able to personalize orders exactly how you want them.
             </p>
-            <p style={{ fontSize: '17px', marginBottom: '0' }}>
-              With decades of farming, meat processing, and nutrition expertise as a PHD in biology, we have worked with canine nutritionists, animal behaviourists and pet owners like yourself to develop the FoeGuard products you see today.
+          </div>
+        </section>
+
+        {/* OUR 8 PROTEINS */}
+        <section className="about-section about-proteins" data-testid="about-proteins">
+          <div className="about-container">
+            <h2 style={{ ...titleStyle, textAlign: 'center', marginBottom: '12px' }}>Our 8 Proteins</h2>
+            <p style={{ fontSize: '17px', textAlign: 'center', marginBottom: '40px', lineHeight: '1.7', opacity: 0.85 }}>
+              Eight farm-fresh proteins, each with its own flavour and nutritional benefits — so you can pick the perfect match for your dog.
             </p>
+
+            <div className="about-proteins-grid">
+              {PROTEINS.map((p) => (
+                <div
+                  key={p.label}
+                  className="about-protein-card"
+                  data-testid={`about-protein-${p.label.toLowerCase()}`}
+                >
+                  <div className="about-protein-img-wrap">
+                    <img src={p.url} alt={p.label} />
+                  </div>
+                  <h3 className="about-protein-label">{p.label}</h3>
+                  <p className="about-protein-desc">{p.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* More than just healthy food plans */}
         <section className="about-section about-mission">
           <div className="about-container">
-            <h2 style={{ textTransform: 'none', textAlign: 'center' }}>More than just healthy food plans</h2>
-            <p style={{ fontSize: '17px', marginBottom: '16px', textAlign: 'center' }}>
+            <h2 style={{ ...titleStyle, textAlign: 'center', fontSize: 'clamp(22px, 2.6vw, 28px)' }}>
+              More Than Just Healthy Food Plans
+            </h2>
+            <p style={{ fontSize: '15px', marginBottom: '14px', textAlign: 'center', lineHeight: '1.65' }}>
               We want to raise the standard of what pet food should be by giving pet parents a trusted source for information, collaboration, and farm-fresh pet food.
             </p>
-            <p className="mission-callout" style={{ fontSize: '17px', fontWeight: '600', marginBottom: '40px', textAlign: 'center' }}>
+            <p className="mission-callout" style={{ fontSize: '15px', fontWeight: '600', marginBottom: '32px', textAlign: 'center' }}>
               If you believe pets deserve real food, you are already part of the mission!
             </p>
 
@@ -146,8 +198,9 @@ export const AboutPage = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
                     required
+                    data-testid="about-signup-email"
                   />
-                  <button type="submit" className="btn-primary" disabled={loading} style={{ borderRadius: '8px' }}>
+                  <button type="submit" className="btn-primary" disabled={loading} style={{ borderRadius: '8px' }} data-testid="about-signup-submit">
                     {loading ? 'Joining...' : 'Join the FoeGuard Pack'}
                   </button>
                 </form>

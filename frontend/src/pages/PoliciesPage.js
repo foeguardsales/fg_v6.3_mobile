@@ -22,7 +22,7 @@ export const PoliciesPage = () => (
             Due to the perishable nature of our products, we cannot accept returns. However, if you're unsatisfied with your order, contact us within 7 days of delivery for a refund or replacement.
           </p>
           <p>
-            For damaged or incorrect orders, please email photos to hello@foeguard.com within 48 hours of delivery.
+            For damaged or incorrect orders, please email photos to info@foeguard.com within 48 hours of delivery.
           </p>
         </section>
 
@@ -39,7 +39,7 @@ export const PoliciesPage = () => (
         <section>
           <h2>Privacy Policy</h2>
           <p>
-            We collect only the information necessary to process orders and communicate with customers. We never sell your data. View our full privacy policy at hello@foeguard.com.
+            We collect only the information necessary to process orders and communicate with customers. We never sell your data. View our full privacy policy at info@foeguard.com.
           </p>
         </section>
       </div>

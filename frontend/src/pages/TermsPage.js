@@ -53,7 +53,7 @@ export const TermsPage = () => (
         <section>
           <h2>Contact</h2>
           <p>
-            Questions about these terms? Contact us at hello@foeguard.com.
+            Questions about these terms? Contact us at info@foeguard.com.
           </p>
         </section>
       </div>

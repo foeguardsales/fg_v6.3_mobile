@@ -22,6 +22,14 @@ const BENEFITS = [
   { icon: Sparkles,     label: '& So Much More!' }
 ];
 
+const headingStyle = {
+  fontFamily: "'Barlow', sans-serif",
+  fontWeight: 700,
+  color: COLORS.charcoal,
+  letterSpacing: '-0.4px',
+  lineHeight: 1.15
+};
+
 export const NewToRawPage = () => {
   const navigate = useNavigate();
 
@@ -38,36 +46,21 @@ export const NewToRawPage = () => {
           textAlign: 'center'
         }}>
           <div style={{ maxWidth: '880px', margin: '0 auto' }}>
-            <span style={{
-              display: 'inline-block',
-              padding: '6px 14px',
-              borderRadius: '999px',
-              background: COLORS.red,
-              color: COLORS.white,
-              fontSize: '12px',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              marginBottom: '20px'
-            }}>NEW TO RAW</span>
             <h1 style={{
+              ...headingStyle,
               fontSize: 'clamp(34px, 5.2vw, 56px)',
-              fontWeight: 700,
-              color: COLORS.charcoal,
               lineHeight: 1.05,
-              marginBottom: '20px',
-              fontFamily: "'Barlow', sans-serif",
-              textTransform: 'uppercase',
-              letterSpacing: '-0.5px'
+              marginBottom: '20px'
             }}>
               Why <span style={{ color: COLORS.red }}>Raw?</span>
             </h1>
             <p style={{
-              fontSize: 'clamp(16px, 1.7vw, 19px)',
+              fontSize: '17px',
               color: COLORS.charcoal,
               opacity: 0.85,
               maxWidth: '760px',
               margin: '0 auto',
-              lineHeight: 1.65
+              lineHeight: 1.75
             }}>
               Dogs are designed by nature to break down real meat and bones — yet in recent times, we&apos;ve been feeding our carnivores processed foods made with questionable ingredients, low-quality meats, and unknown sourcing.
             </p>
@@ -76,32 +69,61 @@ export const NewToRawPage = () => {
 
         {/* INTRO PARAGRAPH SECTION */}
         <section style={{ background: COLORS.white, padding: '64px 20px' }}>
-          <div style={{ maxWidth: '820px', margin: '0 auto' }}>
-            <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, marginBottom: '20px' }}>
-              For decades, doctors have told us to eat fresh, local, minimally processed foods — so why should our pets be any different?
-            </p>
-            <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, marginBottom: '20px' }}>
-              At <strong>FoeGuard</strong>, we believe dogs deserve food that&apos;s fresh, locally sourced, and aligned with nature. Everything a biologically appropriate, nutrient-dense raw diet needs to support longevity, vitality, and true well-being.
-            </p>
-            <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, margin: 0 }}>
-              You can see it in the details: a glossier coat, cleaner teeth, brighter eyes, and energy that feels youthful again. Real food doesn&apos;t just nourish — it deepens the bond we share with our pets.
-            </p>
+          <div style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.2fr)',
+            gap: '48px',
+            alignItems: 'center'
+          }} className="ntr-split">
+            {/* Image placeholder — left */}
+            <div
+              data-testid="ntr-intro-image-placeholder"
+              style={{
+                width: '100%',
+                aspectRatio: '4 / 5',
+                borderRadius: '18px',
+                background: `repeating-linear-gradient(45deg, ${COLORS.softBg} 0 14px, ${COLORS.cream} 14px 28px)`,
+                border: `2px dashed ${COLORS.khakiDark || '#a89a83'}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: COLORS.charcoal,
+                opacity: 0.55,
+                fontFamily: "'Public Sans', sans-serif",
+                fontSize: '14px',
+                fontWeight: 600,
+                letterSpacing: '0.5px',
+                textTransform: 'uppercase'
+              }}
+            >
+              Image Placeholder
+            </div>
+
+            {/* Text — right */}
+            <div>
+              <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, marginBottom: '20px' }}>
+                For decades, doctors have told us to eat fresh, local, minimally processed foods — so why should our pets be any different?
+              </p>
+              <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, marginBottom: '20px' }}>
+                At <strong>FoeGuard</strong>, we believe dogs deserve food that&apos;s fresh, locally sourced, and aligned with nature. Everything a biologically appropriate, nutrient-dense raw diet needs to support longevity, vitality, and true well-being.
+              </p>
+              <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, margin: 0 }}>
+                You can see it in the details: a glossier coat, cleaner teeth, brighter eyes, and energy that feels youthful again. Real food doesn&apos;t just nourish — it deepens the bond we share with our pets.
+              </p>
+            </div>
           </div>
         </section>
 
-        {/* BENEFITS GRID — 12 icons */}
+        {/* BENEFITS GRID — 12 icons (4 per row on desktop) */}
         <section style={{ background: COLORS.cream, padding: '64px 20px' }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 44px' }}>
               <h2 style={{
+                ...headingStyle,
                 fontSize: 'clamp(26px, 3.8vw, 38px)',
-                fontWeight: 700,
-                color: COLORS.charcoal,
-                lineHeight: 1.15,
-                marginBottom: '14px',
-                fontFamily: "'Barlow', sans-serif",
-                textTransform: 'uppercase',
-                letterSpacing: '-0.4px'
+                marginBottom: '14px'
               }}>
                 Benefits You Can See <span style={{ color: COLORS.red }}>and They Can Feel</span>
               </h2>
@@ -110,11 +132,7 @@ export const NewToRawPage = () => {
               </p>
             </div>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '16px'
-            }}>
+            <div className="benefits-grid">
               {BENEFITS.map(({ icon: Icon, label }) => (
                 <div
                   key={label}
@@ -159,18 +177,13 @@ export const NewToRawPage = () => {
         </section>
 
         {/* HOW FOEGUARD COMPARES — chart FIRST, then descriptions */}
-        <section style={{ background: COLORS.cream, padding: '64px 20px' }}>
+        <section style={{ background: COLORS.white, padding: '64px 20px' }}>
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 36px' }}>
               <h2 style={{
+                ...headingStyle,
                 fontSize: 'clamp(26px, 3.8vw, 38px)',
-                fontWeight: 700,
-                color: COLORS.charcoal,
-                lineHeight: 1.15,
-                marginBottom: '14px',
-                fontFamily: "'Barlow', sans-serif",
-                textTransform: 'uppercase',
-                letterSpacing: '-0.4px'
+                marginBottom: '14px'
               }}>
                 How FoeGuard Raw <span style={{ color: COLORS.red }}>Compares</span>
               </h2>
@@ -179,9 +192,9 @@ export const NewToRawPage = () => {
               </p>
             </div>
 
-            {/* Comparison Chart */}
-            <div className="comparison-table-wrapper" style={{
-              background: COLORS.white,
+            {/* Comparison Chart — original 3 columns */}
+            <div style={{
+              background: COLORS.cream,
               border: `1px solid ${COLORS.khaki}`,
               borderRadius: '16px',
               padding: '24px',
@@ -189,39 +202,34 @@ export const NewToRawPage = () => {
               marginBottom: '48px',
               overflowX: 'auto'
             }}>
-              <table className="comparison-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '480px' }}>
                 <thead style={{ background: COLORS.softBg }}>
                   <tr>
-                    <th className="feature-col" style={{ padding: '14px', textAlign: 'left' }}></th>
-                    <th className="brand-col foeguard-col" style={{ padding: '14px', color: COLORS.red, fontFamily: "'Barlow', sans-serif", textTransform: 'uppercase' }}>
+                    <th style={{ padding: '14px', textAlign: 'left' }}></th>
+                    <th style={{ padding: '14px', color: COLORS.red, fontFamily: "'Barlow', sans-serif", fontSize: '16px' }}>
                       FoeGuard
                     </th>
-                    <th className="brand-col" style={{ padding: '14px', color: COLORS.charcoal, fontFamily: "'Barlow', sans-serif", textTransform: 'uppercase' }}>
+                    <th style={{ padding: '14px', color: COLORS.charcoal, fontFamily: "'Barlow', sans-serif", fontSize: '16px' }}>
                       Retail Raw
                     </th>
-                    <th className="brand-col" style={{ padding: '14px', color: COLORS.charcoal, fontFamily: "'Barlow', sans-serif", textTransform: 'uppercase' }}>
-                      Gently Cooked
-                    </th>
-                    <th className="brand-col" style={{ padding: '14px', color: COLORS.charcoal, fontFamily: "'Barlow', sans-serif", textTransform: 'uppercase' }}>
+                    <th style={{ padding: '14px', color: COLORS.charcoal, fontFamily: "'Barlow', sans-serif", fontSize: '16px' }}>
                       Kibble
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
-                    ['Human-Grade Ingredients',           true, false, false, false],
-                    ['Organic & Non-GMO',                 true, false, false, false],
-                    ['Farm Fresh',                        true, false, false, false],
-                    ['Transparent Sourcing',              true, false, false, false],
-                    ['Ethically Raised in Small Batches', true, false, false, false],
-                    ['Minimally Processed',               true, true,  false, false]
-                  ].map(([feature, fg, retail, cooked, kibble]) => (
+                    ['Human-Grade Ingredients',           true, false, false],
+                    ['Organic & Non-GMO',                 true, false, false],
+                    ['Farm Fresh',                        true, false, false],
+                    ['Transparent Sourcing',              true, false, false],
+                    ['Ethically Raised in Small Batches', true, false, false]
+                  ].map(([feature, fg, retail, kibble]) => (
                     <tr key={feature} style={{ borderTop: `1px solid ${COLORS.khaki}` }}>
-                      <td className="feature-cell" style={{ padding: '14px', fontWeight: 500 }}>{feature}</td>
-                      <td className="check-cell foeguard-cell" style={{ padding: '14px', textAlign: 'center', color: COLORS.red, fontSize: '20px', fontWeight: 700 }}>{fg ? '✓' : '✗'}</td>
-                      <td className="check-cell" style={{ padding: '14px', textAlign: 'center', color: retail ? COLORS.red : '#bbb', fontSize: '20px', fontWeight: 700 }}>{retail ? '✓' : '✗'}</td>
-                      <td className="check-cell" style={{ padding: '14px', textAlign: 'center', color: cooked ? COLORS.red : '#bbb', fontSize: '20px', fontWeight: 700 }}>{cooked ? '✓' : '✗'}</td>
-                      <td className="check-cell" style={{ padding: '14px', textAlign: 'center', color: kibble ? COLORS.red : '#bbb', fontSize: '20px', fontWeight: 700 }}>{kibble ? '✓' : '✗'}</td>
+                      <td style={{ padding: '14px', fontWeight: 500 }}>{feature}</td>
+                      <td style={{ padding: '14px', textAlign: 'center', color: COLORS.red, fontSize: '20px', fontWeight: 700 }}>{fg ? '✓' : '✗'}</td>
+                      <td style={{ padding: '14px', textAlign: 'center', color: retail ? COLORS.red : '#bbb', fontSize: '20px', fontWeight: 700 }}>{retail ? '✓' : '✗'}</td>
+                      <td style={{ padding: '14px', textAlign: 'center', color: kibble ? COLORS.red : '#bbb', fontSize: '20px', fontWeight: 700 }}>{kibble ? '✓' : '✗'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -231,20 +239,12 @@ export const NewToRawPage = () => {
             {/* Descriptions of the three (after chart) */}
             <div style={{ display: 'grid', gap: '24px' }}>
               <div style={{
-                background: COLORS.white,
+                background: COLORS.cream,
                 border: `1px solid ${COLORS.khaki}`,
                 borderRadius: '14px',
                 padding: '24px 26px'
               }}>
-                <h3 style={{
-                  fontSize: '20px',
-                  fontWeight: 700,
-                  marginBottom: '10px',
-                  color: COLORS.charcoal,
-                  fontFamily: "'Barlow', sans-serif",
-                  textTransform: 'uppercase',
-                  letterSpacing: '-0.2px'
-                }}>
+                <h3 style={{ ...headingStyle, fontSize: '20px', marginBottom: '10px' }}>
                   Retail Raw
                 </h3>
                 <p style={{ fontSize: '16px', lineHeight: 1.7, color: COLORS.charcoal, margin: 0 }}>
@@ -253,20 +253,12 @@ export const NewToRawPage = () => {
               </div>
 
               <div style={{
-                background: COLORS.white,
+                background: COLORS.cream,
                 border: `1px solid ${COLORS.khaki}`,
                 borderRadius: '14px',
                 padding: '24px 26px'
               }}>
-                <h3 style={{
-                  fontSize: '20px',
-                  fontWeight: 700,
-                  marginBottom: '10px',
-                  color: COLORS.charcoal,
-                  fontFamily: "'Barlow', sans-serif",
-                  textTransform: 'uppercase',
-                  letterSpacing: '-0.2px'
-                }}>
+                <h3 style={{ ...headingStyle, fontSize: '20px', marginBottom: '10px' }}>
                   Gently Cooked
                 </h3>
                 <p style={{ fontSize: '16px', lineHeight: 1.7, color: COLORS.charcoal, margin: 0 }}>
@@ -275,20 +267,12 @@ export const NewToRawPage = () => {
               </div>
 
               <div style={{
-                background: COLORS.white,
+                background: COLORS.cream,
                 border: `1px solid ${COLORS.khaki}`,
                 borderRadius: '14px',
                 padding: '24px 26px'
               }}>
-                <h3 style={{
-                  fontSize: '20px',
-                  fontWeight: 700,
-                  marginBottom: '10px',
-                  color: COLORS.charcoal,
-                  fontFamily: "'Barlow', sans-serif",
-                  textTransform: 'uppercase',
-                  letterSpacing: '-0.2px'
-                }}>
+                <h3 style={{ ...headingStyle, fontSize: '20px', marginBottom: '10px' }}>
                   Kibble
                 </h3>
                 <p style={{ fontSize: '16px', lineHeight: 1.7, color: COLORS.charcoal, margin: 0 }}>
@@ -300,30 +284,58 @@ export const NewToRawPage = () => {
         </section>
 
         {/* FIND WHAT REALLY WORKS — moved to end (above CTA) */}
-        <section style={{ background: COLORS.white, padding: '64px 20px' }}>
-          <div style={{ maxWidth: '820px', margin: '0 auto' }}>
-            <h2 style={{
-              fontSize: 'clamp(26px, 3.8vw, 38px)',
-              fontWeight: 700,
-              color: COLORS.charcoal,
-              lineHeight: 1.15,
-              marginBottom: '20px',
-              fontFamily: "'Barlow', sans-serif",
-              textTransform: 'uppercase',
-              letterSpacing: '-0.4px',
-              textAlign: 'center'
-            }}>
-              Find What Really Works for Your Dog, <span style={{ color: COLORS.red }}>Not Against Them</span>
-            </h2>
-            <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, marginBottom: '16px' }}>
-              From constant itching to problems with digestion, it&apos;s hard to tell what&apos;s causing your dog discomfort. Could it be their food, the environment, or something at home?
-            </p>
-            <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, marginBottom: '16px' }}>
-              Many pet parents feel frustrated by the lack of quality and transparency in traditional pet food. Switching to a clean, biologically appropriate diet can help remove one of the biggest unknowns — their food.
-            </p>
-            <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, margin: 0 }}>
-              Feeding naturally raised raw meals is a simple way to observe how your pet responds to different proteins while giving them fresh, nutrient-dense food designed for easier digestion and long-term health. We make feeding better feel simple, clear, and stress-free.
-            </p>
+        <section style={{ background: COLORS.cream, padding: '64px 20px' }}>
+          <div style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.2fr)',
+            gap: '48px',
+            alignItems: 'center'
+          }} className="ntr-split">
+            {/* Image placeholder — left */}
+            <div
+              data-testid="ntr-works-image-placeholder"
+              style={{
+                width: '100%',
+                aspectRatio: '4 / 5',
+                borderRadius: '18px',
+                background: `repeating-linear-gradient(45deg, ${COLORS.softBg} 0 14px, ${COLORS.cream} 14px 28px)`,
+                border: `2px dashed ${COLORS.khakiDark || '#a89a83'}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: COLORS.charcoal,
+                opacity: 0.55,
+                fontFamily: "'Public Sans', sans-serif",
+                fontSize: '14px',
+                fontWeight: 600,
+                letterSpacing: '0.5px',
+                textTransform: 'uppercase'
+              }}
+            >
+              Image Placeholder
+            </div>
+
+            {/* Text — right */}
+            <div>
+              <h2 style={{
+                ...headingStyle,
+                fontSize: 'clamp(26px, 3.4vw, 36px)',
+                marginBottom: '20px'
+              }}>
+                Find What Really Works for Your Dog, <span style={{ color: COLORS.red }}>Not Against Them</span>
+              </h2>
+              <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, marginBottom: '16px' }}>
+                From constant itching to problems with digestion, it&apos;s hard to tell what&apos;s causing your dog discomfort. Could it be their food, the environment, or something at home?
+              </p>
+              <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, marginBottom: '16px' }}>
+                Many pet parents feel frustrated by the lack of quality and transparency in traditional pet food. Switching to a clean, biologically appropriate diet can help remove one of the biggest unknowns — their food.
+              </p>
+              <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, margin: 0 }}>
+                Feeding naturally raised raw meals is a simple way to observe how your pet responds to different proteins while giving them fresh, nutrient-dense food designed for easier digestion and long-term health. We make feeding better feel simple, clear, and stress-free.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -336,13 +348,12 @@ export const NewToRawPage = () => {
         }}>
           <div style={{ maxWidth: '820px', margin: '0 auto' }}>
             <h2 style={{
+              fontFamily: "'Barlow', sans-serif",
               fontSize: 'clamp(28px, 4vw, 42px)',
               fontWeight: 700,
               color: COLORS.white,
               lineHeight: 1.1,
               marginBottom: '14px',
-              fontFamily: "'Barlow', sans-serif",
-              textTransform: 'uppercase',
               letterSpacing: '-0.4px'
             }}>
               Ready to make the switch?
