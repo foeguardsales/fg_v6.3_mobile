@@ -672,7 +672,7 @@ export const LandingPage = () => {
                   lineHeight: '1.65',
                   fontWeight: 400
                 }}>
-                  Start to see a happier, healthier dog within days with Ontario&apos;s farm-to-bowl raw dog food delivery.
+                  Begin to see a happier, healthier dog in days with Ontario&apos;s farm-to-bowl raw dog food delivery.
                 </p>
 
                 {/* Shop Now Button - Lifted dimensional style */}
