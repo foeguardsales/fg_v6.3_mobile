@@ -869,8 +869,8 @@ export const LandingPage = () => {
                 {[
                   { Icon: Sprout, title: 'Farm Fresh', desc: 'Locally sourced and hand-crafted in small batches every week.' },
                   { Icon: Leaf, title: '100% Organic', desc: 'Raised on open pastures, clean feed and without hormones, fillers or additives.' },
-                  { Icon: ChefHat, title: 'Human Grade', desc: 'Whole proteins prepared in our Ontario regulated human food kitchen.' },
-                  { Icon: Award, title: 'Complete Nutrition', desc: 'Made to AAFCO standards. No balancing or supplements needed.' }
+                  { Icon: ChefHat, title: 'Human Grade', desc: 'Real food meals prepared in our Ontario regulated human food kitchen.' },
+                  { Icon: Award, title: 'Complete Nutrition', desc: 'Biologically appropriate and made to AAFCO standards. No balancing or supplements needed.' }
                 ].map((item, i, arr) => {
                   const Icon = item.Icon;
                   const isLast = i === arr.length - 1;
