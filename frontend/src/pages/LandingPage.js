@@ -741,7 +741,7 @@ export const LandingPage = () => {
                   key={i}
                   onClick={() => navigate(card.path)}
                   style={{
-                    background: 'linear-gradient(135deg, #F2C5BD 0%, #E0978B 100%)',
+                    background: COLORS.khaki,
                     border: 'none',
                     borderRadius: '16px',
                     overflow: 'hidden',
@@ -949,9 +949,8 @@ export const LandingPage = () => {
               </p>
             </div>
 
-            <div style={{
+            <div className="benefits-2week-grid" style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
               gap: '14px',
               marginBottom: '36px'
             }}>
