@@ -673,7 +673,7 @@ export const LandingPage = () => {
                   lineHeight: '1.65',
                   fontWeight: 400
                 }}>
-                  Restore your dog&apos;s digestion, energy and comfort from the inside out with unprocessed, whole food nutrition they were always meant to eat.
+                  Restore your dog&apos;s digestion, energy and comfort from the inside out with unprocessed, whole food nutrition they&apos;re designed to eat.
                 </p>
 
                 {/* Shop Now Button - Lifted dimensional style */}
