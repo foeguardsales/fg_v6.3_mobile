@@ -600,7 +600,7 @@ export const LandingPage = () => {
       <main>
         {/* HERO SECTION */}
         <section style={{
-          background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)`,
+          background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.khaki} 100%)`,
           padding: '32px 20px 32px',
           position: 'relative',
           overflow: 'hidden'
@@ -705,7 +705,7 @@ export const LandingPage = () => {
 
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
-          background: COLORS.white,
+          background: COLORS.cream,
           padding: '40px 20px 60px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -811,7 +811,7 @@ export const LandingPage = () => {
 
         {/* WHY FOEGUARD RAW? */}
         <section style={{
-          background: COLORS.softBg,
+          background: COLORS.white,
           padding: '60px 20px'
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
@@ -874,7 +874,7 @@ export const LandingPage = () => {
                       display: 'flex',
                       gap: '18px',
                       padding: '20px',
-                      background: COLORS.white,
+                      background: COLORS.cream,
                       borderRadius: '14px',
                       border: `1px solid ${COLORS.khaki}`,
                       alignItems: 'flex-start'
