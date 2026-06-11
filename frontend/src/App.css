@@ -42,7 +42,7 @@
 }
 @media (min-width: 900px) {
   .why-fg-grid {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr) !important;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr) !important;
   }
 }
 
@@ -132,23 +132,29 @@ body {
   font-style: normal;
 }
 
-/* Heritage typography: Barlow Bold for headings, Public Sans Medium for body/subtext */
+/* Heritage typography: Barlow Bold for headings, Rubik Regular for body/subtext */
 :root {
-  --font-body: 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-heading: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* Default body weight = Public Sans Medium (500) */
+/* Default body weight = Rubik Regular (400) */
 body {
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-weight: 400;
 }
 /* Default heading weight = Barlow Bold (700) */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
-/* Force all subtext/paragraphs to Public Sans, even if a leftover inline Barlow snuck in */
+/* Force all subtext/paragraphs to Rubik Regular, even if a leftover inline font snuck in.
+   Note: span/button/input intentionally excluded so nested spans inside h1/h2 inherit Barlow. */
 p, li, blockquote, dd, dt, figcaption, small, .subtext {
   font-family: var(--font-body) !important;
+}
+/* Headings keep Barlow */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading) !important;
 }
 
 /* ========== CSS VARIABLES ========== */
@@ -445,7 +451,7 @@ h2, h3, h4 {
 
 .hero-title {
   font-family: 'Rubik', sans-serif;
-  font-size: clamp(32px, 5vw, 48px);
+  font-size: clamp(38px, 5vw, 52px);
   font-weight: normal;
   color: var(--text-inverse);
   line-height: 1.15;
@@ -637,7 +643,7 @@ h2, h3, h4 {
 
 .section-title {
   font-family: var(--font-heading);
-  font-size: clamp(32px, 5vw, 44px);
+  font-size: clamp(38px, 5vw, 50px);
   font-weight: 800;
   color: var(--charcoal);
   text-align: center;
@@ -1089,7 +1095,7 @@ h2, h3, h4 {
 
 .section-title-white {
   font-family: var(--font-heading);
-  font-size: clamp(28px, 4.5vw, 40px);
+  font-size: clamp(32px, 4.5vw, 44px);
   font-weight: 800;
   color: var(--text-inverse);
   text-align: center;
@@ -3264,7 +3270,7 @@ h2, h3, h4 {
 
 .about-hero h1 {
   font-family: var(--font-body);
-  font-size: clamp(36px, 5vw, 52px);
+  font-size: clamp(40px, 5vw, 58px);
   color: var(--text-inverse);
   margin: 0 0 32px 0;
 }
@@ -3384,7 +3390,7 @@ h2, h3, h4 {
 
 .about-lead-text {
   font-family: var(--font-body);
-  font-size: clamp(22px, 3vw, 28px);
+  font-size: clamp(28px, 3.2vw, 36px);
   color: var(--charcoal);
   text-align: center;
   line-height: 1.5;
@@ -3425,7 +3431,7 @@ h2, h3, h4 {
 
 .about-story h2 {
   font-family: var(--font-body);
-  font-size: clamp(28px, 4vw, 36px);
+  font-size: clamp(32px, 4vw, 42px);
   color: var(--charcoal);
   margin-bottom: 24px;
 }
@@ -3542,7 +3548,7 @@ h2, h3, h4 {
 
 .about-farm-bowl h2 {
   font-family: var(--font-body);
-  font-size: clamp(28px, 4vw, 36px);
+  font-size: clamp(32px, 4vw, 42px);
   color: var(--charcoal);
   margin-bottom: 32px;
 }
@@ -3606,7 +3612,7 @@ h2, h3, h4 {
 
 .about-why h2 {
   font-family: var(--font-body);
-  font-size: clamp(28px, 4vw, 36px);
+  font-size: clamp(32px, 4vw, 42px);
   color: var(--charcoal);
   margin-bottom: 24px;
 }
@@ -3629,7 +3635,7 @@ h2, h3, h4 {
 
 .about-team-text h2 {
   font-family: var(--font-body);
-  font-size: clamp(28px, 4vw, 36px);
+  font-size: clamp(32px, 4vw, 42px);
   color: var(--charcoal);
   margin-bottom: 24px;
 }
@@ -3658,7 +3664,7 @@ h2, h3, h4 {
 
 .about-science h2 {
   font-family: var(--font-body);
-  font-size: clamp(28px, 4vw, 36px);
+  font-size: clamp(32px, 4vw, 42px);
   color: var(--charcoal);
   margin-bottom: 24px;
 }
@@ -3677,7 +3683,7 @@ h2, h3, h4 {
 
 .about-team-fg h2 {
   font-family: var(--font-body);
-  font-size: clamp(28px, 4vw, 36px);
+  font-size: clamp(32px, 4vw, 42px);
   color: var(--charcoal);
   margin-bottom: 24px;
 }
@@ -3802,7 +3808,7 @@ h2, h3, h4 {
 
 .ntf-hero h1 {
   font-family: var(--font-body);
-  font-size: clamp(36px, 5vw, 52px);
+  font-size: clamp(40px, 5vw, 58px);
   color: var(--text-inverse);
   margin: 0 0 24px 0;
 }
@@ -3833,7 +3839,7 @@ h2, h3, h4 {
 
 .ntf-section h2 {
   font-family: var(--font-body);
-  font-size: clamp(28px, 4vw, 36px);
+  font-size: clamp(32px, 4vw, 42px);
   color: var(--barn-red);
   margin-bottom: 24px;
 }

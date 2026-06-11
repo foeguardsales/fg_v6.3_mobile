@@ -216,7 +216,7 @@ export const FaqPage = () => {
               marginBottom: '20px'
             }}>FAQ</span>
             <h1 style={{
-              fontSize: 'clamp(32px, 5vw, 52px)',
+              fontSize: 'clamp(38px, 5vw, 56px)',
               fontWeight: 800,
               color: COLORS.charcoal,
               lineHeight: 1.15,

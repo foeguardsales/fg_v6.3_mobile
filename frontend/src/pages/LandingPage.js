@@ -652,7 +652,7 @@ export const LandingPage = () => {
               {/* Hero Text — on desktop CSS reorders this to the left of the image */}
               <div className="hero-text">
                 <h1 style={{
-                  fontSize: 'clamp(34px, 4.4vw, 48px)',
+                  fontSize: 'clamp(38px, 5vw, 54px)',
                   fontWeight: '700',
                   color: COLORS.charcoal,
                   lineHeight: '1.08',
@@ -700,7 +700,7 @@ export const LandingPage = () => {
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <h2 style={{
-              fontSize: 'clamp(22px, 2.6vw, 28px)',
+              fontSize: 'clamp(28px, 3.2vw, 38px)',
               fontWeight: '700',
               textAlign: 'center',
               marginBottom: '32px',
@@ -808,7 +808,7 @@ export const LandingPage = () => {
             {/* Headline */}
             <div style={{ textAlign: 'center', marginBottom: '40px', maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto' }}>
               <h2 style={{
-                fontSize: 'clamp(22px, 2.6vw, 28px)',
+                fontSize: 'clamp(28px, 3.2vw, 38px)',
                 fontWeight: '700',
                 color: COLORS.charcoal,
                 lineHeight: 1.25,
@@ -833,18 +833,19 @@ export const LandingPage = () => {
             {/* Image + Benefits grid */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'minmax(0, 0.85fr) minmax(0, 1.15fr)',
+              gridTemplateColumns: 'minmax(0, 0.7fr) minmax(0, 1.3fr)',
               gap: '40px',
-              alignItems: 'stretch'
+              alignItems: 'center'
             }} className="why-fg-grid">
-              {/* Image side — sized to match pill column height */}
+              {/* Image side — sized to roughly match benefit text block */}
               <div style={{
                 position: 'relative',
                 borderRadius: '20px',
                 overflow: 'hidden',
-                maxHeight: '440px',
-                alignSelf: 'center',
-                width: '100%'
+                maxHeight: '360px',
+                maxWidth: '360px',
+                width: '100%',
+                margin: '0 auto'
               }}>
                 <img
                   src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop"
@@ -853,43 +854,40 @@ export const LandingPage = () => {
                 />
               </div>
 
-              {/* 4 Benefit cards */}
-              <div style={{ display: 'grid', gap: '14px' }}>
+              {/* 4 Benefits — clean rows, hairline dividers, no pill background */}
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {[
                   { Icon: Sprout, title: 'Farm Fresh', desc: 'Locally sourced and hand-crafted in small batches every week.' },
                   { Icon: Leaf, title: '100% Organic', desc: 'Raised on open pastures, clean feed and without hormones, fillers or additives.' },
                   { Icon: ChefHat, title: 'Human Grade', desc: 'Whole proteins prepared in our Ontario regulated human food kitchen.' },
                   { Icon: Award, title: 'Complete Nutrition', desc: 'Made to AAFCO standards. No balancing or supplements needed.' }
-                ].map((item, i) => {
+                ].map((item, i, arr) => {
                   const Icon = item.Icon;
+                  const isLast = i === arr.length - 1;
                   return (
                     <div key={i} style={{
                       display: 'flex',
                       gap: '18px',
-                      padding: '18px 20px',
-                      background: COLORS.khaki,
-                      borderRadius: '14px',
-                      border: 'none',
-                      alignItems: 'flex-start'
+                      padding: '20px 4px',
+                      alignItems: 'flex-start',
+                      borderBottom: isLast ? 'none' : `1px solid ${COLORS.khaki}`
                     }}>
                       <div style={{
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: '12px',
-                        background: COLORS.white,
+                        width: '44px',
+                        height: '44px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0
                       }}>
-                        <Icon size={24} color={COLORS.red} strokeWidth={2.2} />
+                        <Icon size={28} color={COLORS.red} strokeWidth={2} />
                       </div>
                       <div>
                         <h4 style={{
                           fontSize: '17px',
                           fontWeight: 800,
                           color: COLORS.charcoal,
-                          margin: '0 0 6px',
+                          margin: '0 0 4px',
                           fontFamily: "'Barlow', sans-serif"
                         }}>
                           {item.title}
@@ -897,7 +895,7 @@ export const LandingPage = () => {
                         <p style={{
                           fontSize: '14px',
                           color: COLORS.charcoal,
-                          opacity: 0.82,
+                          opacity: 0.78,
                           margin: 0,
                           lineHeight: 1.55
                         }}>
@@ -921,7 +919,7 @@ export const LandingPage = () => {
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
               <h2 style={{
-                fontSize: 'clamp(22px, 2.6vw, 28px)',
+                fontSize: 'clamp(28px, 3.2vw, 38px)',
                 fontWeight: '700',
                 marginBottom: '12px',
                 fontFamily: "'Barlow', sans-serif",
@@ -1024,7 +1022,7 @@ export const LandingPage = () => {
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
             <h2 style={{
-              fontSize: 'clamp(22px, 2.6vw, 28px)',
+              fontSize: 'clamp(28px, 3.2vw, 38px)',
               fontWeight: '700',
               textAlign: 'center',
               marginBottom: '12px',
@@ -1152,7 +1150,7 @@ export const LandingPage = () => {
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
               <h2 style={{
-                fontSize: 'clamp(22px, 2.6vw, 28px)',
+                fontSize: 'clamp(28px, 3.2vw, 38px)',
                 fontWeight: '700',
                 color: COLORS.charcoal,
                 lineHeight: 1.25,
@@ -1323,7 +1321,7 @@ export const LandingPage = () => {
         }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 style={{
-              fontSize: 'clamp(22px, 2.6vw, 28px)',
+              fontSize: 'clamp(28px, 3.2vw, 38px)',
               fontWeight: '700',
               textAlign: 'center',
               marginBottom: '36px',

@@ -169,7 +169,7 @@ export const AboutPage = () => {
         {/* More than just healthy food plans */}
         <section className="about-section about-mission">
           <div className="about-container">
-            <h2 style={{ ...titleStyle, textAlign: 'center', fontSize: 'clamp(22px, 2.6vw, 28px)' }}>
+            <h2 style={{ ...titleStyle, textAlign: 'center', fontSize: 'clamp(28px, 3.2vw, 38px)' }}>
               More Than Just Healthy Food Plans
             </h2>
             <p style={{ fontSize: '15px', marginBottom: '14px', textAlign: 'center', lineHeight: '1.65' }}>
