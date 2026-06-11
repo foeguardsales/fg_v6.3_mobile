@@ -694,7 +694,7 @@ export const LandingPage = () => {
 
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
-          background: COLORS.white,
+          background: COLORS.cream,
           padding: '40px 20px 60px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
