@@ -652,7 +652,7 @@ export const LandingPage = () => {
               {/* Hero Text — on desktop CSS reorders this to the left of the image */}
               <div className="hero-text">
                 <h1 style={{
-                  fontSize: 'clamp(40px, 5vw, 56px)',
+                  fontSize: 'clamp(34px, 4.4vw, 48px)',
                   fontWeight: '700',
                   color: COLORS.charcoal,
                   lineHeight: '1.08',
