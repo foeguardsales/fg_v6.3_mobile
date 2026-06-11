@@ -36,6 +36,16 @@
   }
 }
 
+/* Why FoeGuard Raw — image + pills grid: stacked on mobile, side-by-side on desktop */
+.why-fg-grid {
+  grid-template-columns: 1fr !important;
+}
+@media (min-width: 900px) {
+  .why-fg-grid {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr) !important;
+  }
+}
+
 /* Hero layout: stacked on mobile, side-by-side (text left / image right) on desktop */
 .hero-layout {
   display: grid;

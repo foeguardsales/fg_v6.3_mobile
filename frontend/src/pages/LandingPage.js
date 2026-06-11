@@ -600,21 +600,11 @@ export const LandingPage = () => {
       <main>
         {/* HERO SECTION */}
         <section style={{
-          background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.khaki} 100%)`,
+          background: `linear-gradient(180deg, ${COLORS.cream} 0%, ${COLORS.khaki} 55%, ${COLORS.khaki} 100%)`,
           padding: '32px 20px 32px',
           position: 'relative',
           overflow: 'hidden'
         }}>
-          {/* Bottom gradient mask blending into next section */}
-          <div aria-hidden="true" style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: '40px',
-            background: `linear-gradient(180deg, rgba(245,243,239,0) 0%, ${COLORS.cream} 100%)`,
-            pointerEvents: 'none'
-          }} />
           <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
             <div className="hero-layout">
               {/* Tri-Image Layout — comes first in source (mobile shows image first) */}
@@ -686,10 +676,10 @@ export const LandingPage = () => {
                   Restore your dog&apos;s digestion, energy and comfort from the inside out with fresh, complete raw pet nutrition rooted in old-world feeding traditions.
                 </p>
 
-                {/* Shop Now Button - Lifted Style */}
+                {/* Shop Now Button - Lifted Style (darker red overlay variant) */}
                 <button
                   onClick={() => navigate('/menu')}
-                  style={liftedButtonStyle}
+                  style={{ ...liftedButtonStyle, background: COLORS.redDark }}
                   onMouseEnter={(e) => liftedButtonHover(e, true)}
                   onMouseLeave={(e) => liftedButtonHover(e, false)}
                 >
@@ -705,7 +695,7 @@ export const LandingPage = () => {
 
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
-          background: COLORS.cream,
+          background: COLORS.khaki,
           padding: '40px 20px 60px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -843,25 +833,28 @@ export const LandingPage = () => {
             {/* Image + Benefits grid */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '48px',
-              alignItems: 'center'
-            }}>
-              {/* Image side — no border, no shadow */}
+              gridTemplateColumns: 'minmax(0, 0.85fr) minmax(0, 1.15fr)',
+              gap: '40px',
+              alignItems: 'stretch'
+            }} className="why-fg-grid">
+              {/* Image side — sized to match pill column height */}
               <div style={{
                 position: 'relative',
                 borderRadius: '20px',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                maxHeight: '440px',
+                alignSelf: 'center',
+                width: '100%'
               }}>
                 <img
                   src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop"
                   alt="Happy dog"
-                  style={{ width: '100%', display: 'block' }}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
               </div>
 
               {/* 4 Benefit cards */}
-              <div style={{ display: 'grid', gap: '16px' }}>
+              <div style={{ display: 'grid', gap: '14px' }}>
                 {[
                   { Icon: Sprout, title: 'Farm Fresh', desc: 'Locally sourced and hand-crafted in small batches every week.' },
                   { Icon: Leaf, title: '100% Organic', desc: 'Raised on open pastures, clean feed and without hormones, fillers or additives.' },
@@ -873,29 +866,29 @@ export const LandingPage = () => {
                     <div key={i} style={{
                       display: 'flex',
                       gap: '18px',
-                      padding: '20px',
-                      background: COLORS.cream,
+                      padding: '18px 20px',
+                      background: COLORS.redDark,
                       borderRadius: '14px',
-                      border: `1px solid ${COLORS.khaki}`,
+                      border: 'none',
                       alignItems: 'flex-start'
                     }}>
                       <div style={{
-                        width: '52px',
-                        height: '52px',
+                        width: '48px',
+                        height: '48px',
                         borderRadius: '12px',
-                        background: COLORS.red,
+                        background: COLORS.cream,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0
                       }}>
-                        <Icon size={26} color={COLORS.white} strokeWidth={2} />
+                        <Icon size={24} color={COLORS.redDark} strokeWidth={2.2} />
                       </div>
                       <div>
                         <h4 style={{
                           fontSize: '17px',
                           fontWeight: 800,
-                          color: COLORS.charcoal,
+                          color: COLORS.white,
                           margin: '0 0 6px',
                           fontFamily: "'Barlow', sans-serif"
                         }}>
@@ -903,8 +896,8 @@ export const LandingPage = () => {
                         </h4>
                         <p style={{
                           fontSize: '14px',
-                          color: COLORS.charcoal,
-                          opacity: 0.78,
+                          color: COLORS.white,
+                          opacity: 0.88,
                           margin: 0,
                           lineHeight: 1.55
                         }}>
