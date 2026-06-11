@@ -660,8 +660,7 @@ export const LandingPage = () => {
                   fontFamily: "'Barlow', sans-serif",
                   letterSpacing: '-0.5px'
                 }}>
-                  Ontario&apos;s #1 Farm Fresh<br />
-                  <span style={{ color: COLORS.red }}>Raw Dog Food Delivery</span>
+                  Restore Your Dog&apos;s Digestion, Energy and Comfort <span style={{ color: COLORS.red }}>from The Inside Out</span>
                 </h1>
 
                 <p style={{
@@ -673,7 +672,7 @@ export const LandingPage = () => {
                   lineHeight: '1.65',
                   fontWeight: 400
                 }}>
-                  Restore your dog&apos;s digestion, energy and comfort from the inside out with unprocessed, whole food nutrition they&apos;re designed to eat.
+                  Start to see a happier, healthier dog within days with Ontario&apos;s farm-to-bowl raw dog food delivery.
                 </p>
 
                 {/* Shop Now Button - Lifted dimensional style */}
@@ -823,10 +822,21 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 opacity: 0.85,
                 lineHeight: 1.6,
+                margin: '0 0 14px',
+                fontFamily: "'Barlow', sans-serif"
+              }}>
+                Give your best friend their best life with <span style={{ color: COLORS.red, fontWeight: 600 }}>100% Canadian</span> whole-food raw nutrition made for carnivores.
+              </p>
+              <p style={{
+                fontSize: 'clamp(15px, 1.8vw, 17px)',
+                fontWeight: 400,
+                color: COLORS.charcoal,
+                opacity: 0.85,
+                lineHeight: 1.6,
                 margin: 0,
                 fontFamily: "'Barlow', sans-serif"
               }}>
-                By delivering directly to you, we&apos;re able to invest more into quality portions, real ingredients and meals that are <span style={{ color: COLORS.red, fontWeight: 600 }}>100% made in Canada</span>. Something you and your best friend can both feel good about.
+                By delivering directly to you, we&apos;re able to invest more into fresher ingredients, premium cuts and complete meals without the retail markups, vague labels or low-quality meat. Something you and your doggo can both feel good about.
               </p>
             </div>
 
@@ -1269,18 +1279,26 @@ export const LandingPage = () => {
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
                 color: COLORS.charcoal,
-                marginBottom: '8px',
+                marginBottom: '20px',
                 fontFamily: "'Barlow', sans-serif"
               }}>
-                From Soil to Serving
+                Raw Feeding is a <span style={{ color: COLORS.red }}>Family Tradition</span>
               </h2>
               <p style={{
-                fontSize: '17px',
-                color: COLORS.red,
-                fontWeight: '600',
+                fontSize: '16px',
+                color: COLORS.charcoal,
+                lineHeight: '1.8',
                 marginBottom: '20px'
               }}>
-                Raw Feeding Is A Family Tradition
+                As third-generation farmers and award-winning German Shepherd breeders, knowing where food comes from and how it&apos;s raised has always just been part of life — long before it became a philosophy.
+              </p>
+              <p style={{
+                fontSize: '16px',
+                color: COLORS.charcoal,
+                lineHeight: '1.8',
+                marginBottom: '20px'
+              }}>
+                So when our neighbours started asking if we could put together meals for their dogs, it felt natural. We were already doing it for our own. What started as helping a few families feed their dogs better grew into something we couldn&apos;t ignore — a chance to bring that same standard of fresh, transparent nutrition to dog owners across Ontario.
               </p>
               <p style={{
                 fontSize: '16px',
@@ -1288,7 +1306,7 @@ export const LandingPage = () => {
                 lineHeight: '1.8',
                 marginBottom: '32px'
               }}>
-                FoeGuard is a family-run business committed to providing pet parents with the same fresh, natural ingredients we expect at our own table. What started as helping our neighbours and friends feed their dogs better quickly grew into something bigger — a way to share trusted, transparent pet nutrition with families across Ontario. FoeGuard was created for the community, by the community. Our passion became our profession.
+                FoeGuard was created for the community, by the community. Our passion became our profession.
               </p>
               <button
                 onClick={() => navigate('/about')}
