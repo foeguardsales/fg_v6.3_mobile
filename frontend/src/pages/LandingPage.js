@@ -741,7 +741,7 @@ export const LandingPage = () => {
                   key={i}
                   onClick={() => navigate(card.path)}
                   style={{
-                    background: COLORS.cream,
+                    background: 'linear-gradient(135deg, #FCEAEC 0%, #F4CDD2 100%)',
                     border: 'none',
                     borderRadius: '16px',
                     overflow: 'hidden',
