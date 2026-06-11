@@ -84,21 +84,17 @@ export const AboutPage = () => {
           <div className="about-container">
             <h2 style={titleStyle}>Our Story</h2>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
-              Our humble beginnings started with a small farm in Acton, ON and ongoing health issues with our breeding German Shepherd male, Negus. When we couldn&apos;t find raw food that used fresh, whole ingredients raised to our standards, we decided to make our own.
+              It started on our small farm in Acton, ON — and honestly, it started because of one dog.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
-              The difference was real and sudden. We moved all of our dogs to raw and eventually neighbours started asking for meals — then their friends did too. Over time our experience as third-generation farmers, second-generation German Shepherd breeders and PhDs in biology led us to turn our passion for dogs into a profession through fresh-food recipes crafted alongside other breeders, nutritionists, pet parents and dog behaviourists.
+              Negus, our breeding German Shepherd male, kept having health issues we couldn&apos;t get ahead of. When we went looking for raw food made with fresh, whole ingredients raised to our standards, we came up empty. So we made it ourselves. The difference was hard to ignore — we switched all of our dogs over, and before long neighbours were asking for meals. Then their friends did too.
+            </p>
+            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
+              As third-generation farmers and award-winning German Shepherd breeders, we turned that passion into a profession — building recipes with other breeders, nutritionists, and pet parents who cared just as much as we did.
             </p>
             <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.75', fontWeight: 600 }}>
               FoeGuard was created for the community, by the community.
             </p>
-          </div>
-        </section>
-
-        {/* Farm Image Section */}
-        <section className="about-farm-image">
-          <div style={{ width: '100%', overflow: 'hidden', borderRadius: '12px' }}>
-            <img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/l0xcyf5b_farm.png" alt="FoeGuard farm with cows grazing" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           </div>
         </section>
 
@@ -147,7 +143,7 @@ export const AboutPage = () => {
         {/* OUR 8 PROTEINS */}
         <section className="about-section about-proteins" data-testid="about-proteins">
           <div className="about-container">
-            <h2 style={{ ...titleStyle, textAlign: 'center', marginBottom: '12px' }}>Our 8 Proteins</h2>
+            <h2 style={{ ...titleStyle, textAlign: 'center', marginBottom: '12px' }}>Our Ingredients</h2>
             <p style={{ fontSize: '17px', textAlign: 'center', marginBottom: '40px', lineHeight: '1.7', opacity: 0.85 }}>
               Eight farm-fresh proteins, each with its own flavour and nutritional benefits — so you can pick the perfect match for your dog.
             </p>

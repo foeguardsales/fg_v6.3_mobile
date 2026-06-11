@@ -343,7 +343,7 @@ const ModernNavbar = () => {
               ))}
             </div>
 
-            <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: `1px solid ${COLORS.khaki}` }}>
+            <div style={{ marginTop: '32px', paddingTop: '24px' }}>
               <button
                 onClick={() => { navigate('/account'); setMenuOpen(false); }}
                 style={{
