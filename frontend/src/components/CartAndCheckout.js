@@ -360,7 +360,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 style={{
                   flex: 1,
                   padding: '10px 12px',
-                  border: '2px solid #D9C8B3',
+                  border: '2px solid #D8CFB8',
                   borderRadius: '8px',
                   fontSize: '14px'
                 }}
@@ -396,7 +396,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
               style={{
                 width: '100%',
                 padding: '10px 12px',
-                border: '2px solid #D9C8B3',
+                border: '2px solid #D8CFB8',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontFamily: 'inherit',
@@ -1280,7 +1280,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
             style={{
               width: '100%',
               padding: '14px 16px',
-              border: '2px solid #D9C8B3',
+              border: '2px solid #D8CFB8',
               borderRadius: '12px',
               fontSize: '16px',
               fontFamily: 'inherit',

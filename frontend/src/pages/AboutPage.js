@@ -73,7 +73,7 @@ export const AboutPage = () => {
         <section className="about-hero">
           <div className="about-hero-content">
             <h1 style={titleStyle}>About Us</h1>
-            <p style={{ fontSize: '18px', color: '#D9C8B3', marginTop: '20px' }}>
+            <p style={{ fontSize: '18px', color: '#D8CFB8', marginTop: '20px' }}>
               From Our Family to Yours
             </p>
           </div>
@@ -169,7 +169,7 @@ export const AboutPage = () => {
         {/* More than just healthy food plans */}
         <section className="about-section about-mission">
           <div className="about-container">
-            <h2 style={{ ...titleStyle, textAlign: 'center', fontSize: 'clamp(28px, 3.2vw, 38px)' }}>
+            <h2 style={{ ...titleStyle, textAlign: 'center', fontSize: 'clamp(30px, 3.6vw, 40px)' }}>
               More Than Just Healthy Food Plans
             </h2>
             <p style={{ fontSize: '15px', marginBottom: '14px', textAlign: 'center', lineHeight: '1.65' }}>

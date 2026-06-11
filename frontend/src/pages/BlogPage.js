@@ -280,7 +280,7 @@ export const BlogDetailPage = () => {
             style={{
               padding: '8px 16px',
               background: 'white',
-              border: '2px solid #D9C8B3',
+              border: '2px solid #D8CFB8',
               borderRadius: '8px',
               cursor: 'pointer',
               fontSize: '14px',

@@ -652,7 +652,7 @@ export const LandingPage = () => {
               {/* Hero Text — on desktop CSS reorders this to the left of the image */}
               <div className="hero-text">
                 <h1 style={{
-                  fontSize: 'clamp(38px, 5vw, 54px)',
+                  fontSize: 'clamp(40px, 5vw, 56px)',
                   fontWeight: '700',
                   color: COLORS.charcoal,
                   lineHeight: '1.08',
@@ -673,7 +673,7 @@ export const LandingPage = () => {
                   lineHeight: '1.65',
                   fontWeight: 400
                 }}>
-                  Restore your dog&apos;s digestion, energy and comfort from the inside out with fresh, complete raw pet nutrition rooted in old-world feeding traditions.
+                  Restore your dog&apos;s digestion, energy and comfort from the inside out with real, fresh, complete raw nutrition.
                 </p>
 
                 {/* Shop Now Button - Lifted dimensional style */}
@@ -700,7 +700,7 @@ export const LandingPage = () => {
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <h2 style={{
-              fontSize: 'clamp(28px, 3.2vw, 38px)',
+              fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
               marginBottom: '32px',
@@ -808,7 +808,7 @@ export const LandingPage = () => {
             {/* Headline */}
             <div style={{ textAlign: 'center', marginBottom: '40px', maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto' }}>
               <h2 style={{
-                fontSize: 'clamp(28px, 3.2vw, 38px)',
+                fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
                 color: COLORS.charcoal,
                 lineHeight: 1.25,
@@ -919,7 +919,7 @@ export const LandingPage = () => {
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
               <h2 style={{
-                fontSize: 'clamp(28px, 3.2vw, 38px)',
+                fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
                 marginBottom: '12px',
                 fontFamily: "'Barlow', sans-serif",
@@ -1022,7 +1022,7 @@ export const LandingPage = () => {
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
             <h2 style={{
-              fontSize: 'clamp(28px, 3.2vw, 38px)',
+              fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
               marginBottom: '12px',
@@ -1150,7 +1150,7 @@ export const LandingPage = () => {
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
               <h2 style={{
-                fontSize: 'clamp(28px, 3.2vw, 38px)',
+                fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
                 color: COLORS.charcoal,
                 lineHeight: 1.25,
@@ -1266,7 +1266,7 @@ export const LandingPage = () => {
               justifyContent: 'center'
             }}>
               <h2 style={{
-                fontSize: 'clamp(22px, 2.8vw, 30px)',
+                fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
                 color: COLORS.charcoal,
                 marginBottom: '8px',
@@ -1286,17 +1286,9 @@ export const LandingPage = () => {
                 fontSize: '16px',
                 color: COLORS.charcoal,
                 lineHeight: '1.8',
-                marginBottom: '20px'
-              }}>
-                FoeGuard is a family-run business committed to providing pet parents with the same fresh, natural ingredients we expect at our own table. As third-generation Canadian farmers and award-winning German Shepherd breeders with a PhD in biology, we have personally overcome health issues with our own dogs and seen first-hand the benefits of biologically appropriate raw food.
-              </p>
-              <p style={{
-                fontSize: '16px',
-                color: COLORS.charcoal,
-                lineHeight: '1.8',
                 marginBottom: '32px'
               }}>
-                What started as helping our neighbours and friends feed their dogs better quickly grew into something bigger — a way to share trusted, transparent pet nutrition with families across Ontario. FoeGuard was created for the community, by the community. Our passion became our profession.
+                FoeGuard is a family-run business committed to providing pet parents with the same fresh, natural ingredients we expect at our own table. What started as helping our neighbours and friends feed their dogs better quickly grew into something bigger — a way to share trusted, transparent pet nutrition with families across Ontario. FoeGuard was created for the community, by the community. Our passion became our profession.
               </p>
               <button
                 onClick={() => navigate('/about')}
@@ -1321,7 +1313,7 @@ export const LandingPage = () => {
         }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 style={{
-              fontSize: 'clamp(28px, 3.2vw, 38px)',
+              fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
               marginBottom: '36px',
@@ -1391,7 +1383,7 @@ export const LandingPage = () => {
         }}>
           <div style={{ maxWidth: '760px', margin: '0 auto' }}>
             <h2 style={{
-              fontSize: 'clamp(26px, 3.6vw, 36px)',
+              fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               marginBottom: '16px',
               color: COLORS.cream,

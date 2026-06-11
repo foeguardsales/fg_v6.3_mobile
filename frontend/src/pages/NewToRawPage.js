@@ -48,7 +48,7 @@ export const NewToRawPage = () => {
           <div style={{ maxWidth: '880px', margin: '0 auto' }}>
             <h1 style={{
               ...headingStyle,
-              fontSize: 'clamp(40px, 5.2vw, 60px)',
+              fontSize: 'clamp(40px, 5vw, 56px)',
               lineHeight: 1.05,
               marginBottom: '20px'
             }}>
@@ -122,7 +122,7 @@ export const NewToRawPage = () => {
             <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 44px' }}>
               <h2 style={{
                 ...headingStyle,
-                fontSize: 'clamp(30px, 3.8vw, 42px)',
+                fontSize: 'clamp(30px, 3.6vw, 40px)',
                 marginBottom: '14px'
               }}>
                 Benefits You Can See <span style={{ color: COLORS.red }}>and They Can Feel</span>
@@ -182,7 +182,7 @@ export const NewToRawPage = () => {
             <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 36px' }}>
               <h2 style={{
                 ...headingStyle,
-                fontSize: 'clamp(30px, 3.8vw, 42px)',
+                fontSize: 'clamp(30px, 3.6vw, 40px)',
                 marginBottom: '14px'
               }}>
                 How FoeGuard Raw <span style={{ color: COLORS.red }}>Compares</span>
@@ -321,7 +321,7 @@ export const NewToRawPage = () => {
             <div>
               <h2 style={{
                 ...headingStyle,
-                fontSize: 'clamp(30px, 3.4vw, 40px)',
+                fontSize: 'clamp(30px, 3.6vw, 40px)',
                 marginBottom: '20px'
               }}>
                 Find What Really Works for Your Dog, <span style={{ color: COLORS.red }}>Not Against Them</span>
@@ -349,7 +349,7 @@ export const NewToRawPage = () => {
           <div style={{ maxWidth: '820px', margin: '0 auto' }}>
             <h2 style={{
               fontFamily: "'Barlow', sans-serif",
-              fontSize: 'clamp(32px, 4vw, 46px)',
+              fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: 700,
               color: COLORS.white,
               lineHeight: 1.1,
