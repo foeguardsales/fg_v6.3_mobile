@@ -10,7 +10,7 @@ const COLORS = {
   redDark: '#6F0A1B',
   cream: '#f5f3ef',
   softBg: '#E5D9C2',
-  khaki: '#c2b6a3',
+  khaki: '#D8CFB8',
   khakiDark: '#A89B7C',
   charcoal: '#2C2C2C',
   forestGreen: '#2F4538',
@@ -600,7 +600,7 @@ export const LandingPage = () => {
       <main>
         {/* HERO SECTION */}
         <section style={{
-          background: `linear-gradient(180deg, ${COLORS.cream} 0%, ${COLORS.khaki} 55%, ${COLORS.khaki} 100%)`,
+          background: COLORS.khaki,
           padding: '32px 20px 32px',
           position: 'relative',
           overflow: 'hidden'
@@ -676,10 +676,10 @@ export const LandingPage = () => {
                   Restore your dog&apos;s digestion, energy and comfort from the inside out with fresh, complete raw pet nutrition rooted in old-world feeding traditions.
                 </p>
 
-                {/* Shop Now Button - Lifted Style (darker red overlay variant) */}
+                {/* Shop Now Button - Lifted dimensional style */}
                 <button
                   onClick={() => navigate('/menu')}
-                  style={{ ...liftedButtonStyle, background: COLORS.redDark }}
+                  style={liftedButtonStyle}
                   onMouseEnter={(e) => liftedButtonHover(e, true)}
                   onMouseLeave={(e) => liftedButtonHover(e, false)}
                 >
@@ -695,7 +695,7 @@ export const LandingPage = () => {
 
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
-          background: COLORS.khaki,
+          background: COLORS.white,
           padding: '40px 20px 60px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -867,7 +867,7 @@ export const LandingPage = () => {
                       display: 'flex',
                       gap: '18px',
                       padding: '18px 20px',
-                      background: COLORS.redDark,
+                      background: COLORS.khaki,
                       borderRadius: '14px',
                       border: 'none',
                       alignItems: 'flex-start'
@@ -876,19 +876,19 @@ export const LandingPage = () => {
                         width: '48px',
                         height: '48px',
                         borderRadius: '12px',
-                        background: COLORS.cream,
+                        background: COLORS.white,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0
                       }}>
-                        <Icon size={24} color={COLORS.redDark} strokeWidth={2.2} />
+                        <Icon size={24} color={COLORS.red} strokeWidth={2.2} />
                       </div>
                       <div>
                         <h4 style={{
                           fontSize: '17px',
                           fontWeight: 800,
-                          color: COLORS.white,
+                          color: COLORS.charcoal,
                           margin: '0 0 6px',
                           fontFamily: "'Barlow', sans-serif"
                         }}>
@@ -896,8 +896,8 @@ export const LandingPage = () => {
                         </h4>
                         <p style={{
                           fontSize: '14px',
-                          color: COLORS.white,
-                          opacity: 0.88,
+                          color: COLORS.charcoal,
+                          opacity: 0.82,
                           margin: 0,
                           lineHeight: 1.55
                         }}>
