@@ -9,7 +9,7 @@ import { LandingPage } from './pages/LandingPage';
 import { BoxBuilder } from './pages/BoxBuilder';
 import { OrderChoicePage } from './pages/OrderChoicePage';
 import { MealPlanPage } from './pages/MealPlanPage';
-import { MenuPage, ProductLinePage, TreatsPage } from './pages/MenuPage';
+import { MenuPage } from './pages/MenuPage';
 import { CartProvider, SlideCart } from './contexts/CartContext';
 import { ProductDetailPage } from './pages/ProductDetail';
 import { TreatDetailPage } from './pages/TreatDetail';
@@ -81,10 +81,10 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/order" element={<OrderChoicePage />} />
-            <Route path="/menu" element={<MenuPage />} />
-            <Route path="/menu/comfort-dinner" element={<ProductLinePage productLine="comfort-dinner" />} />
-            <Route path="/menu/primal-feast" element={<ProductLinePage productLine="primal-feast" />} />
-            <Route path="/menu/treats" element={<TreatsPage />} />
+            <Route path="/menu" element={<BoxBuilder />} />
+            <Route path="/menu/comfort-dinner" element={<BoxBuilder />} />
+            <Route path="/menu/primal-feast" element={<BoxBuilder />} />
+            <Route path="/menu/treats" element={<BoxBuilder />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/meal-plan" element={<MealPlanPage />} />
             <Route path="/build-box" element={<BoxBuilder />} />

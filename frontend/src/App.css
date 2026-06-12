@@ -1811,17 +1811,17 @@ h2, h3, h4 {
 
 .cart-drawer {
   position: fixed;
-  top: 0;
+  top: 120px;
   right: 0;
   width: 440px;
   max-width: 100%;
-  height: 100%;
+  height: calc(100% - 120px);
   background: var(--white);
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
-  z-index: 1001;
+  z-index: 999;
   box-shadow: -8px 0 40px rgba(0, 0, 0, 0.15);
 }
 

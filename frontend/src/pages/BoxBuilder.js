@@ -10,10 +10,10 @@ const API = `${BACKEND_URL}/api`;
 
 // Discount rates by box size - DOG
 const DOG_DISCOUNT_RATES = {
-  12: 0,
+  6: 0,
   18: 0.05,
   24: 0.10,
-  30: 0.15
+  36: 0.15
 };
 
 // Discount rates by box size - CAT
@@ -24,10 +24,10 @@ const CAT_DISCOUNT_RATES = {
 
 // Box size options - DOG
 const DOG_BOX_OPTIONS = [
-  { size: 12, label: '12 lb', discount: 0 },
+  { size: 6, label: '6 lb', discount: 0 },
   { size: 18, label: '18 lb', discount: 5 },
   { size: 24, label: '24 lb', discount: 10 },
-  { size: 30, label: '30 lb', discount: 15 }
+  { size: 36, label: '36 lb', discount: 15 }
 ];
 
 // Box size options - CAT
@@ -50,9 +50,10 @@ export const BoxBuilder = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
+  const [viewMode, setViewMode] = useState('food'); // 'food' or 'treats'
   
   // Load from sessionStorage on mount
-  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
+  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 6;
   const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
   const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
   
@@ -188,31 +189,29 @@ export const BoxBuilder = () => {
     setSelectedProteins({});
     setSelectedTreats([]);
     // Set default box size for new pet type
-    setBoxSize(newPetType === 'cat' ? 6 : 18);
+    setBoxSize(newPetType === 'cat' ? 6 : 6);
   };
 
   const bannerCards = [
-    {
-      id: 'dog',
-      title: 'Raw Dog Food',
-      image: COLLECTION_IMAGES.dog,
-      selected: petType === 'dog',
-      onClick: () => handlePetTypeChange('dog')
-    },
-    {
-      id: 'cat',
-      title: 'Raw Cat Food',
-      image: COLLECTION_IMAGES.cat,
-      selected: petType === 'cat',
-      onClick: () => handlePetTypeChange('cat')
-    },
-    {
-      id: 'calculator',
-      title: 'Feeding Calculator',
-      icon: <Calculator size={36} />,
-      gradient: 'linear-gradient(135deg, #c8102e 0%, #A0522D 100%)',
-      onClick: () => navigate('/calculator')
+    { id: 'dog-food', title: 'Raw Dog Food', petType: 'dog', viewMode: 'food', active: petType === 'dog' && viewMode === 'food' },
+    { id: 'dog-treats', title: 'Raw Dog Treats', petType: 'dog', viewMode: 'treats', active: petType === 'dog' && viewMode === 'treats' },
+    { id: 'cat-food', title: 'Raw Cat Food', petType: 'cat', viewMode: 'food', active: petType === 'cat' && viewMode === 'food' },
+    { id: 'cat-treats', title: 'Raw Cat Treats', petType: 'cat', viewMode: 'treats', active: petType === 'cat' && viewMode === 'treats' }
+  ];
+
+  const handleCategoryClick = (card) => {
+    if (card.petType !== petType) {
+      setSelectedProteins({});
+      setSelectedTreats([]);
     }
+    setPetType(card.petType);
+    setViewMode(card.viewMode);
+  };
+
+  const topNavTabs = [
+    { id: 'menu', label: 'Menu', path: '/menu', active: true },
+    { id: 'meal-plan', label: 'Meal Plan', path: '/meal-plan', active: false },
+    { id: 'calculator', label: 'Calculator', path: '/calculator', active: false }
   ];
 
   // Calculate price for 6lb based on box size discount
@@ -336,138 +335,101 @@ export const BoxBuilder = () => {
     <>
       <Navbar />
       <div className="box-builder">
-        {/* Banner Cards Selector */}
-        <div style={{ marginBottom: '50px', position: 'relative' }}>
-          {/* Cards Container */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '20px',
-              justifyContent: 'center',
-              padding: '10px 20px',
-              flexWrap: 'wrap'
-            }}
-            className="banner-carousel"
-          >
-            {bannerCards.map((card) => (
-              <div
-                key={card.id}
-                onClick={card.onClick}
-                style={{
-                  position: 'relative',
-                  flex: '1 1 0',
-                  minWidth: '320px',
-                  maxWidth: '400px',
-                  height: '200px',
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  flexShrink: 0,
-                  border: card.selected ? '3px solid #c8102e' : '3px solid transparent',
-                  boxShadow: '0 6px 20px rgba(0,0,0,0.12)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-6px)';
-                  e.currentTarget.style.boxShadow = '0 10px 28px rgba(0,0,0,0.18)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.12)';
-                }}
-              >
-                {/* Background - Image or Gradient */}
-                {card.image ? (
-                  <img 
-                    src={card.image} 
-                    alt={card.title}
-                    style={{ 
-                      width: '100%', 
-                      height: '100%', 
-                      objectFit: 'cover',
-                      position: 'absolute',
-                      inset: 0
-                    }}
-                  />
-                ) : (
-                  <div style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: card.gradient
-                  }} />
-                )}
-
-                {/* Overlay */}
-                <div style={{
+        {/* Top Nav Tabs: Menu | Meal Plan | Calculator */}
+        <div className="menu-top-nav" data-testid="menu-top-nav" style={{
+          display: 'flex',
+          gap: '4px',
+          padding: '0 4px 16px',
+          borderBottom: '1px solid #E8DDD0',
+          marginBottom: '24px',
+          overflowX: 'auto'
+        }}>
+          {topNavTabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => !tab.active && navigate(tab.path)}
+              data-testid={`top-nav-${tab.id}`}
+              style={{
+                fontFamily: "'Barlow', sans-serif",
+                fontSize: '17px',
+                fontWeight: 700,
+                color: tab.active ? '#c8102e' : '#5A5A5A',
+                background: 'none',
+                border: 'none',
+                padding: '12px 18px 14px',
+                cursor: tab.active ? 'default' : 'pointer',
+                position: 'relative',
+                whiteSpace: 'nowrap',
+                letterSpacing: '0.01em',
+                textTransform: 'none'
+              }}
+            >
+              {tab.label}
+              {tab.active && (
+                <span style={{
                   position: 'absolute',
-                  inset: 0,
-                  background: card.image 
-                    ? 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)'
-                    : 'linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '40px',
-                  gap: '16px'
-                }}>
-                  {card.icon && (
-                    <div style={{ color: '#FDFCFA' }}>
-                      {card.icon}
-                    </div>
-                  )}
-                  <span style={{
-                    fontFamily: "'Barlow', sans-serif",
-                    fontSize: '18px',
-                    fontWeight: '700',
-                    color: '#FDFCFA',
-                    textShadow: '0 2px 8px rgba(0,0,0,0.4)',
-                    textAlign: 'center',
-                    letterSpacing: '0.02em',
-                    lineHeight: '1.2'
-                  }}>
-                    {card.title}
-                  </span>
-                </div>
+                  bottom: '-1px',
+                  left: '18px',
+                  right: '18px',
+                  height: '3px',
+                  background: '#c8102e',
+                  borderRadius: '2px'
+                }} />
+              )}
+            </button>
+          ))}
+        </div>
 
-                {/* Selected Indicator */}
-                {card.selected && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '20px',
-                    right: '20px',
-                    background: '#c8102e',
-                    color: '#FFFFFF',
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '24px',
-                    fontWeight: '700',
-                    boxShadow: '0 4px 12px rgba(164, 30, 52, 0.4)'
-                  }}>
-                    ✓
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+        {/* Category Tabs: Dog Food | Dog Treats | Cat Food | Cat Treats */}
+        <div className="menu-category-tabs" data-testid="menu-category-tabs" style={{
+          display: 'flex',
+          gap: '12px',
+          padding: '4px',
+          marginBottom: '28px',
+          flexWrap: 'wrap'
+        }}>
+          {bannerCards.map((card) => (
+            <button
+              key={card.id}
+              onClick={() => handleCategoryClick(card)}
+              data-testid={`category-${card.id}`}
+              style={{
+                fontFamily: "'Barlow', sans-serif",
+                fontSize: '15px',
+                fontWeight: 700,
+                color: card.active ? '#FFFFFF' : '#c8102e',
+                background: card.active ? '#c8102e' : 'transparent',
+                border: `2px solid ${card.active ? '#c8102e' : '#D8CFB8'}`,
+                padding: '10px 22px',
+                borderRadius: '999px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                letterSpacing: '0.01em',
+                textTransform: 'none',
+                boxShadow: card.active ? '0 4px 12px rgba(200,16,46,0.18)' : 'none'
+              }}
+            >
+              {card.title}
+            </button>
+          ))}
         </div>
 
         {/* Main Content - Dog or Cat */}
         <>
-          {/* Header with cart button */}
+          {/* Header with cart button (always visible) */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
             <div>
               <h1 style={{ fontFamily: "'Barlow', sans-serif", fontSize: '32px', fontWeight: '800', marginBottom: '8px', color: '#2B2B2B', textTransform: 'none' }}>
-                {petType === 'cat' ? 'Build your cat box' : 'Build your box'}
+                {viewMode === 'treats'
+                  ? (petType === 'cat' ? 'Raw Cat Treats' : 'Raw Dog Treats')
+                  : (petType === 'cat' ? 'Build your cat box' : 'Build your box')}
               </h1>
               <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: '400', color: '#666' }}>
-                {petType === 'cat' 
-                  ? 'Select your box size, then choose your cat proteins' 
-                  : 'Select your box size, then choose your proteins'}
+                {viewMode === 'treats'
+                  ? 'Shop our farm-fresh raw treats à la carte'
+                  : (petType === 'cat'
+                    ? 'Select your box size, then choose your cat proteins'
+                    : 'Select your box size, then choose your proteins')}
               </p>
             </div>
             <button 
@@ -475,14 +437,20 @@ export const BoxBuilder = () => {
               onClick={() => setCartOpen(true)}
               data-testid="cart-button"
             >
-              Checkout {getTotalSelectedLbs()}/{boxSize}lb
-              {isBoxComplete && (
+              {viewMode === 'food' ? (
+                <>Checkout {getTotalSelectedLbs()}/{boxSize}lb</>
+              ) : (
+                <>View Cart</>
+              )}
+              {isBoxComplete && viewMode === 'food' && (
                 <span className="cart-complete-badge">✓</span>
               )}
               <span style={{ marginLeft: '8px', fontSize: '18px' }}>→</span>
             </button>
           </div>
 
+          {viewMode === 'food' && (
+          <>
           {/* Box Size Selector - Inline */}
           <div className="box-size-selector-inline" data-testid="box-size-selector">
             <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#c8102e' }}>
@@ -629,9 +597,18 @@ export const BoxBuilder = () => {
               {getTotalSelectedLbs()}lb / {boxSize}lb selected
             </span>
           </div>
+          </>
+          )}
 
             {loading ? (
               <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
+            ) : viewMode === 'treats' ? (
+              <TreatsSection 
+                selectedTreats={selectedTreats}
+                onToggleTreat={handleToggleTreat}
+                petType={petType}
+                navigate={navigate}
+              />
             ) : petType === 'dog' ? (
               <>
                 {/* Comfort Dinner Collection - DOG */}
@@ -825,7 +802,7 @@ export const BoxBuilder = () => {
                         margin: '0 0 16px 0',
                         maxWidth: '600px',
                         lineHeight: '1.6'
-                      }}>Complete and balanced raw meals crafted for your cat's carnivorous biology using 95% meat, organs & bone, 3% fruits & vegetables, 2% supplements.</p>
+                      }}>Complete and balanced raw meals crafted for your cat&apos;s carnivorous biology using 95% meat, organs &amp; bone, 3% fruits &amp; vegetables, 2% supplements.</p>
                       <p style={{
                         color: 'rgba(255,255,255,0.85)',
                         fontSize: '13px',
@@ -918,7 +895,7 @@ export const BoxBuilder = () => {
 const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType }) => {
   const basePrice = getBasePrice(product);
   const discountedPrice = getDiscountedPrice(basePrice);
-  const hasDiscount = boxSize > 12;
+  const hasDiscount = boxSize > 6;
   
   // Product image URL - use the uploaded comfort dinner image for all products
   const productImage = 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';

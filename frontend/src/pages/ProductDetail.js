@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronLeft, ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat } from 'lucide-react';
 import { CartDrawer } from '../components/CartAndCheckout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -64,6 +64,248 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
   );
 };
 
+// Brand badge trio shown under the product title
+const ProductBrandIcons = () => {
+  const items = [
+    { Icon: PawPrint, label: 'For Dogs of All Stages' },
+    { Icon: Sprout, label: 'Made Fresh-to-Order' },
+    { Icon: ChefHat, label: 'Human Grade & Organic' }
+  ];
+  return (
+    <div data-testid="product-brand-icons" style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gap: '12px',
+      margin: '20px 0 28px',
+      padding: '16px 0',
+      borderTop: '1px solid #E8DDD0',
+      borderBottom: '1px solid #E8DDD0'
+    }}>
+      {items.map(({ Icon, label }, i) => (
+        <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '8px' }}>
+          <div style={{
+            width: '44px',
+            height: '44px',
+            border: '2px solid #2B2B2B',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#FFFFFF'
+          }}>
+            <Icon size={22} color="#2B2B2B" strokeWidth={1.8} />
+          </div>
+          <span style={{
+            fontFamily: "'Barlow', sans-serif",
+            fontSize: '12px',
+            fontWeight: 600,
+            color: '#2B2B2B',
+            lineHeight: 1.25,
+            maxWidth: '110px'
+          }}>{label}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// Farm to Bowl — 3 swipable/horizontal-scroll cards
+const FarmToBowlSection = () => {
+  const cards = [
+    { title: 'Quality', body: 'Farm-fresh, pasture-raised, and fed organic — the way nature intended. No months-old meat, ever.' },
+    { title: 'Service', body: "Have a question, suggestion, or custom recipe in mind? We're always here. info@foeguard.com" },
+    { title: 'Delivery', body: 'We deliver Ontario-wide to homes, apartments, condos, and offices. Reach out for any delivery needs.' }
+  ];
+  return (
+    <section data-testid="farm-to-bowl-section" style={{ marginTop: '48px' }}>
+      <h2 style={{
+        fontFamily: "'Barlow', sans-serif",
+        fontSize: 'clamp(28px, 3.4vw, 36px)',
+        fontWeight: 700,
+        color: '#2B2B2B',
+        margin: '0 0 24px',
+        textTransform: 'none'
+      }}>Farm to Bowl</h2>
+      <div className="farm-to-bowl-cards" style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+        gap: '20px'
+      }}>
+        {cards.map((c, i) => (
+          <div key={i} data-testid={`f2b-card-${c.title.toLowerCase()}`} style={{
+            background: '#FFFFFF',
+            border: '1px solid #E8DDD0',
+            borderRadius: '20px',
+            padding: '28px 24px',
+            boxShadow: '4px 4px 0px rgba(0,0,0,0.04)'
+          }}>
+            <h3 style={{
+              fontFamily: "'Barlow', sans-serif",
+              fontSize: '22px',
+              fontWeight: 700,
+              color: '#c8102e',
+              margin: '0 0 12px',
+              textTransform: 'none'
+            }}>{c.title}</h3>
+            <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: 1.65, margin: 0 }}>{c.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+// Personalize Your Recipe section
+const PersonalizeSection = ({ navigate }) => {
+  return (
+    <section data-testid="personalize-section" style={{
+      marginTop: '48px',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+      gap: '32px',
+      alignItems: 'center',
+      background: '#F5F3EF',
+      borderRadius: '24px',
+      padding: '32px',
+      border: '1px solid #E8DDD0'
+    }}>
+      <div style={{
+        aspectRatio: '4 / 3',
+        borderRadius: '16px',
+        overflow: 'hidden',
+        background: '#E8DDD0',
+        border: '1px dashed #A89B7C',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#5A5A5A',
+        fontFamily: "'Rubik', sans-serif",
+        fontSize: '13px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.05em'
+      }}>
+        <img
+          src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/l0xcyf5b_farm.png"
+          alt="Personalize your recipe"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      </div>
+      <div>
+        <h2 style={{
+          fontFamily: "'Barlow', sans-serif",
+          fontSize: 'clamp(26px, 3vw, 32px)',
+          fontWeight: 700,
+          color: '#2B2B2B',
+          margin: '0 0 16px',
+          textTransform: 'none'
+        }}>Personalize Your Recipe</h2>
+        <p style={{ fontSize: '16px', color: '#3D3D3D', lineHeight: 1.7, margin: '0 0 20px' }}>
+          We craft every recipe by hand, so customization is easy — whether you&apos;re matching a favourite meal or building one from scratch. Perfect for picky eaters, sensitive stomachs, and food allergies.
+        </p>
+        <button
+          onClick={() => navigate('/contact')}
+          data-testid="personalize-cta"
+          style={{
+            padding: '12px 22px',
+            background: '#c8102e',
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: '999px',
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 700,
+            fontSize: '15px',
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          Request a custom recipe <ChevronRight size={16} />
+        </button>
+      </div>
+    </section>
+  );
+};
+
+// Product FAQ accordion
+const ProductFaqSection = () => {
+  const faqs = [
+    {
+      q: 'How do I transition my dog to raw?',
+      a: 'Most dogs do best with a short 5–7 day transition. Start with 25% raw / 75% current food on day 1–2, then 50/50 on day 3–4, 75/25 on day 5–6, and full raw by day 7. Some dogs (especially puppies) can switch cold-turkey. Feed at room temperature, watch stool quality, and reach out if anything seems off.'
+    },
+    {
+      q: 'How do I thaw and store FoeGuard meals?',
+      a: 'Thaw in the fridge for 24 hours before feeding. Once thawed, meals stay fresh in the fridge for up to 3 days. Refreeze unopened patties only — never refreeze thawed meat. Keep frozen at -18°C until ready.'
+    },
+    {
+      q: 'How long does delivery take?',
+      a: 'Orders placed by Sunday night ship Tuesday and arrive within 1–3 business days anywhere in Ontario. Free delivery in the GTA on orders over $100.'
+    },
+    {
+      q: 'Is raw food safe to handle?',
+      a: 'Yes — handle raw pet food the same way you would raw meat for your own kitchen. Wash your hands, bowls, and prep surfaces with hot soapy water after feeding. We also follow human-grade USDA-style food safety standards in our kitchen.'
+    },
+    {
+      q: 'How long does a box last?',
+      a: 'It depends on your dog&apos;s weight and box size. A 6lb box feeds an average 25lb dog for about 1 week; a 36lb box feeds the same dog for 6 weeks. Use our feeding calculator for an exact estimate.'
+    }
+  ];
+  const [openIdx, setOpenIdx] = useState(0);
+  return (
+    <section data-testid="product-faq-section" style={{ marginTop: '48px', marginBottom: '32px' }}>
+      <h2 style={{
+        fontFamily: "'Barlow', sans-serif",
+        fontSize: 'clamp(28px, 3.4vw, 36px)',
+        fontWeight: 700,
+        color: '#2B2B2B',
+        margin: '0 0 24px',
+        textTransform: 'none'
+      }}>Frequently Asked</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {faqs.map((f, i) => {
+          const isOpen = openIdx === i;
+          return (
+            <div key={i} data-testid={`product-faq-${i}`} style={{
+              background: '#FFFFFF',
+              border: '1px solid #E8DDD0',
+              borderRadius: '16px',
+              overflow: 'hidden'
+            }}>
+              <button
+                onClick={() => setOpenIdx(isOpen ? -1 : i)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '18px 24px',
+                  background: isOpen ? '#FAF8F5' : 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: "'Barlow', sans-serif",
+                  fontSize: '17px',
+                  fontWeight: 700,
+                  color: '#2B2B2B',
+                  textAlign: 'left'
+                }}
+              >
+                <span>{f.q}</span>
+                {isOpen ? <ChevronUp size={20} color="#c8102e" /> : <ChevronDown size={20} color="#c8102e" />}
+              </button>
+              {isOpen && (
+                <div style={{ padding: '0 24px 22px', fontSize: '15px', color: '#3D3D3D', lineHeight: 1.7 }}>
+                  {f.a}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
+
 export const ProductDetailPage = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
@@ -71,7 +313,7 @@ export const ProductDetailPage = () => {
   const [loading, setLoading] = useState(true);
   
   // Initialize from sessionStorage immediately
-  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
+  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 6;
   const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
   const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
   
@@ -122,10 +364,10 @@ export const ProductDetailPage = () => {
   
   // Discount rates by box size
   const DISCOUNT_RATES = {
-    12: 0,
+    6: 0,
     18: 0.05,
     24: 0.10,
-    30: 0.15
+    36: 0.15
   };
   
   const getBasePrice = (prod) => {
@@ -291,7 +533,7 @@ export const ProductDetailPage = () => {
       </button>
       
       <div className="product-detail-page" style={{ background: '#F2F4F3', minHeight: '100vh', padding: '0 0 80px' }}>
-        <div className="product-detail-wrapper" style={{ maxWidth: '800px', margin: '0 auto', padding: '32px 24px' }}>
+        <div className="product-detail-wrapper" style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px' }}>
           {/* Back Button */}
           <button className="product-back-btn" onClick={handleBackToMenu} style={{
             display: 'inline-flex',
@@ -317,14 +559,17 @@ export const ProductDetailPage = () => {
             borderRadius: '20px',
             overflow: 'hidden',
             boxShadow: '0 4px 16px rgba(43, 43, 43, 0.08)',
-            marginBottom: '24px'
+            marginBottom: '24px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            alignItems: 'stretch'
           }}>
-            <div className="product-image-container" style={{ position: 'relative', width: '100%', height: '320px', overflow: 'hidden' }}>
+            <div className="product-image-container" style={{ position: 'relative', width: '100%', minHeight: '320px', overflow: 'hidden' }}>
               <img 
                 src={productImage} 
                 alt={product.name}
                 className="product-hero-image"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
               />
               <span className="product-line-tag" style={{
                 position: 'absolute',
@@ -345,11 +590,15 @@ export const ProductDetailPage = () => {
             <div className="product-hero-info" style={{ padding: '32px' }}>
               <h1 style={{
                 fontFamily: "'Barlow', sans-serif",
-                fontSize: '36px',
+                fontSize: 'clamp(28px, 3.4vw, 36px)',
                 color: '#2B2B2B',
-                margin: '0 0 20px 0',
-                lineHeight: '1.2'
+                margin: '0 0 4px 0',
+                lineHeight: '1.2',
+                textTransform: 'none'
               }}>{product.name}</h1>
+
+              {/* Brand badge trio */}
+              <ProductBrandIcons />
               <p style={{
                 fontSize: '17px',
                 lineHeight: '1.7',
@@ -599,6 +848,15 @@ export const ProductDetailPage = () => {
               </p>
             </CollapsibleSection>
           </div>
+
+          {/* Farm to Bowl swipable cards */}
+          <FarmToBowlSection />
+
+          {/* Personalize Your Recipe */}
+          <PersonalizeSection navigate={navigate} />
+
+          {/* Product FAQs */}
+          <ProductFaqSection />
         </div>
       </div>
       <Footer />

@@ -79,8 +79,8 @@ export const SlideCart = () => {
     removeFromCart, updateQuantity
   } = useCart();
 
-  const lbsToNextTier = totalLbs < 12 ? 12 - totalLbs : totalLbs < 24 ? 24 - totalLbs : 0;
-  const nextTierDiscount = totalLbs < 12 ? '5%' : totalLbs < 24 ? '10%' : null;
+  const lbsToNextTier = totalLbs < 18 ? 18 - totalLbs : totalLbs < 24 ? 24 - totalLbs : totalLbs < 36 ? 36 - totalLbs : 0;
+  const nextTierDiscount = totalLbs < 18 ? '5%' : totalLbs < 24 ? '10%' : totalLbs < 36 ? '15%' : null;
 
   if (!isCartOpen) return null;
 
@@ -89,8 +89,9 @@ export const SlideCart = () => {
       <div onClick={() => setIsCartOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 998 }} />
 
       <div style={{
-        position: 'fixed', top: 0, right: 0, bottom: 0, width: '100%', maxWidth: '400px',
-        background: 'white', zIndex: 999, display: 'flex', flexDirection: 'column'
+        position: 'fixed', top: '120px', right: 0, bottom: 0, width: '100%', maxWidth: '400px',
+        background: 'white', zIndex: 999, display: 'flex', flexDirection: 'column',
+        boxShadow: '-4px 0 24px rgba(0,0,0,0.12)'
       }}>
         <div style={{ padding: '16px 20px', borderBottom: '1px solid #eee', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h2 style={{ fontSize: '18px', fontWeight: '600', margin: 0 }}>Your Order</h2>
