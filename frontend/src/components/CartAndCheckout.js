@@ -173,7 +173,14 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                   gap: '6px'
                 }}>
                   <span style={{ fontSize: '16px' }}>✓</span>
-                  Subscription: {subscriptionPlan === 'biweekly' ? 'Every 2 Weeks' : 'Monthly'}
+                  Subscription: {(() => {
+                    const m = typeof subscriptionPlan === 'string' && subscriptionPlan.match(/every_(\d+)_weeks/);
+                    if (m) {
+                      const n = parseInt(m[1], 10);
+                      return n === 1 ? 'Every week' : `Every ${n} weeks`;
+                    }
+                    return subscriptionPlan === 'biweekly' ? 'Every 2 weeks' : 'Monthly';
+                  })()}
                 </div>
                 <div style={{ fontSize: '12px', color: '#5F7C5A', marginTop: '2px' }}>
                   5% discount applied • Free delivery
@@ -446,64 +453,15 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
   const treatColor = isDog ? '#88302F' : '#6B5B73';
 
   return (
-    <div className="treats-section">
-      {/* Treats Banner */}
-      <div style={{
-        position: 'relative',
-        height: '220px',
-        borderRadius: '20px',
-        overflow: 'hidden',
-        marginBottom: '28px',
-        marginTop: '40px',
-        background: `linear-gradient(135deg, ${treatColor} 0%, ${treatColor}dd 100%)`
-      }}>
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '32px 40px'
-        }}>
-          <span style={{
-            display: 'inline-block',
-            background: treatColor,
-            color: '#fff',
-            fontSize: '11px',
-            fontWeight: '600',
-            padding: '4px 12px',
-            borderRadius: '20px',
-            marginBottom: '12px',
-            width: 'fit-content',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-            border: '1px solid rgba(255,255,255,0.3)'
-          }}>Optional Add-On</span>
-          <h3 style={{
-            fontFamily: "'Barlow', sans-serif",
-            fontSize: '32px',
-            fontWeight: '600',
-            color: '#FFFFFF',
-            margin: '0 0 12px 0'
-          }}>Raw {isDog ? 'Dog' : 'Cat'} Treats</h3>
-          <p style={{
-            color: 'rgba(255,255,255,0.95)',
-            fontSize: '15px',
-            margin: '0 0 12px 0',
-            maxWidth: '450px',
-            lineHeight: '1.6'
-          }}>{isDog 
-            ? 'Whole prey raw treats that support dental health, mental stimulation, and natural chewing.'
-            : 'Natural whole prey treats designed to support your cat\'s instinct to hunt and chew.'
-          }</p>
-          <p style={{
-            color: 'rgba(255,255,255,0.85)',
-            fontSize: '13px',
-            margin: 0,
-            maxWidth: '450px',
-            lineHeight: '1.5'
-          }}>Ideal for treats, enrichment, or dental support.</p>
-        </div>
+    <div className="treats-section menu-collection">
+      {/* Treats simple header */}
+      <div className="menu-collection-header" data-testid="collection-header-treats">
+        <h3 className="menu-collection-title">RAW {isDog ? 'DOG' : 'CAT'} TREATS</h3>
+        <p className="menu-collection-desc">
+          {isDog
+            ? 'Enriching raw treats that support dental health, mental stimulation, and natural chewing.'
+            : "Natural whole-prey treats designed to support your cat's instinct to hunt and chew."}
+        </p>
       </div>
 
       <div className="treats-grid">

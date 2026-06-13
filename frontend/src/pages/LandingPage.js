@@ -91,16 +91,16 @@ const ModernNavbar = () => {
     { label: 'Shop Now', path: '/menu' },
     { label: 'Why Raw', path: '/new-to-raw' },
     { label: 'About Us', path: '/about' },
-    { 
-      label: 'Resources', 
+    {
+      label: 'Learn More',
       isDropdown: true,
       items: [
         { label: 'FAQ', path: '/faq' },
         { label: 'Delivery Information', path: '/delivery' },
-        { label: 'Blog', path: '/blog' }
+        { label: 'Blog', path: '/blog' },
+        { label: 'Dog Food Calculator', path: '/calculator' }
       ]
     },
-    { label: 'Dog Food Calculator', path: '/calculator' },
     { label: 'Contact Us', path: '/contact' }
   ];
 

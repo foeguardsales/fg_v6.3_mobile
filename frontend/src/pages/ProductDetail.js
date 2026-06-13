@@ -25,10 +25,10 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
   
   return (
     <div style={{
-      background: '#FFFFFF',
-      borderRadius: '20px',
-      overflow: 'hidden',
-      border: '1px solid #E8DDD0'
+      background: 'transparent',
+      borderRadius: 0,
+      borderBottom: '1px solid #E8DDD0',
+      overflow: 'hidden'
     }}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
@@ -37,25 +37,24 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '20px 24px',
-          background: isOpen ? '#FAF8F5' : 'transparent',
+          padding: '18px 0',
+          background: 'transparent',
           border: 'none',
           cursor: 'pointer',
           fontFamily: "'Barlow', sans-serif",
-          fontSize: '20px',
-          fontWeight: '600',
+          fontSize: '15px',
+          fontWeight: '700',
           color: '#2B2B2B',
-          transition: 'background 0.2s ease'
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase'
         }}
       >
         <span>{title}</span>
-        {isOpen ? <ChevronUp size={20} color="#c8102e" /> : <ChevronDown size={20} color="#c8102e" />}
+        {isOpen ? <ChevronUp size={18} color="#c8102e" /> : <ChevronDown size={18} color="#c8102e" />}
       </button>
       {isOpen && (
         <div style={{
-          padding: '0 24px 24px',
-          borderTop: '1px solid #E8DDD0',
-          paddingTop: '20px'
+          padding: '0 0 22px'
         }}>
           {children}
         </div>
@@ -117,20 +116,17 @@ const FarmToBowlSection = () => {
     { title: 'Delivery', body: 'We deliver Ontario-wide to homes, apartments, condos, and offices. Reach out for any delivery needs.' }
   ];
   return (
-    <section data-testid="farm-to-bowl-section" style={{ marginTop: '48px' }}>
+    <section data-testid="farm-to-bowl-section" style={{ marginTop: '56px' }}>
       <h2 style={{
         fontFamily: "'Barlow', sans-serif",
-        fontSize: 'clamp(28px, 3.4vw, 36px)',
+        fontSize: 'clamp(24px, 3vw, 32px)',
         fontWeight: 700,
         color: '#2B2B2B',
         margin: '0 0 24px',
-        textTransform: 'none'
+        textTransform: 'uppercase',
+        letterSpacing: '0.04em'
       }}>Farm to Bowl</h2>
-      <div className="farm-to-bowl-cards" style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-        gap: '20px'
-      }}>
+      <div className="farm-to-bowl-cards">
         {cards.map((c, i) => (
           <div key={i} data-testid={`f2b-card-${c.title.toLowerCase()}`} style={{
             background: '#FFFFFF',
@@ -256,21 +252,20 @@ const ProductFaqSection = () => {
     <section data-testid="product-faq-section" style={{ marginTop: '48px', marginBottom: '32px' }}>
       <h2 style={{
         fontFamily: "'Barlow', sans-serif",
-        fontSize: 'clamp(28px, 3.4vw, 36px)',
+        fontSize: 'clamp(24px, 3vw, 32px)',
         fontWeight: 700,
         color: '#2B2B2B',
-        margin: '0 0 24px',
-        textTransform: 'none'
+        margin: '0 0 12px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.04em'
       }}>Frequently Asked</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 0, borderTop: '1px solid #E8DDD0' }}>
         {faqs.map((f, i) => {
           const isOpen = openIdx === i;
           return (
             <div key={i} data-testid={`product-faq-${i}`} style={{
-              background: '#FFFFFF',
-              border: '1px solid #E8DDD0',
-              borderRadius: '16px',
-              overflow: 'hidden'
+              background: 'transparent',
+              borderBottom: '1px solid #E8DDD0'
             }}>
               <button
                 onClick={() => setOpenIdx(isOpen ? -1 : i)}
@@ -279,22 +274,23 @@ const ProductFaqSection = () => {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '18px 24px',
-                  background: isOpen ? '#FAF8F5' : 'transparent',
+                  padding: '18px 0',
+                  background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
                   fontFamily: "'Barlow', sans-serif",
-                  fontSize: '17px',
+                  fontSize: '15px',
                   fontWeight: 700,
                   color: '#2B2B2B',
-                  textAlign: 'left'
+                  textAlign: 'left',
+                  letterSpacing: '0.02em'
                 }}
               >
                 <span>{f.q}</span>
-                {isOpen ? <ChevronUp size={20} color="#c8102e" /> : <ChevronDown size={20} color="#c8102e" />}
+                {isOpen ? <ChevronUp size={18} color="#c8102e" /> : <ChevronDown size={18} color="#c8102e" />}
               </button>
               {isOpen && (
-                <div style={{ padding: '0 24px 22px', fontSize: '15px', color: '#3D3D3D', lineHeight: 1.7 }}>
+                <div style={{ padding: '0 0 22px', fontSize: '14px', color: '#3D3D3D', lineHeight: 1.7 }}>
                   {f.a}
                 </div>
               )}
@@ -533,7 +529,7 @@ export const ProductDetailPage = () => {
       </button>
       
       <div className="product-detail-page" style={{ background: '#F2F4F3', minHeight: '100vh', padding: '0 0 80px' }}>
-        <div className="product-detail-wrapper" style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px' }}>
+        <div className="product-detail-wrapper" style={{ maxWidth: '1380px', margin: '0 auto', padding: '32px 24px' }}>
           {/* Back Button */}
           <button className="product-back-btn" onClick={handleBackToMenu} style={{
             display: 'inline-flex',
@@ -607,30 +603,41 @@ export const ProductDetailPage = () => {
                 whiteSpace: 'pre-line'
               }}>{product.description}</p>
               
-              {/* Box Size Display - Read Only */}
+              {/* Quantity label above Box Size */}
               <div style={{ marginTop: '24px', marginBottom: '16px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B' }}>Selected Box:</span>
+                <span style={{
+                  display: 'block',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: '#2B2B2B',
+                  marginBottom: '8px',
+                  fontFamily: "'Barlow', sans-serif",
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase'
+                }}>Quantity</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
                   <div style={{
-                    padding: '10px 20px',
-                    borderRadius: '8px',
+                    padding: '12px 32px',
+                    minWidth: '180px',
+                    borderRadius: '10px',
                     border: '2px solid #c8102e',
                     background: '#FAF8F5',
                     color: '#c8102e',
-                    fontSize: '15px',
-                    fontWeight: '600',
+                    fontSize: '17px',
+                    fontWeight: '800',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '8px'
+                    justifyContent: 'center',
+                    gap: '10px'
                   }}>
                     <span>{boxSize}lb</span>
                     {DISCOUNT_RATES[boxSize] > 0 && (
-                      <span style={{ fontSize: '13px', color: '#2F4538' }}>
+                      <span style={{ fontSize: '12px', color: '#2F4538', fontWeight: 600 }}>
                         ({DISCOUNT_RATES[boxSize] * 100}% off)
                       </span>
                     )}
                   </div>
-                  <span style={{ fontSize: '13px', color: '#666', fontStyle: 'italic' }}>
+                  <span style={{ fontSize: '12px', color: '#666', fontStyle: 'italic' }}>
                     (Change on menu page)
                   </span>
                 </div>
@@ -638,21 +645,28 @@ export const ProductDetailPage = () => {
               
               {/* Quantity Selector and Add to Cart */}
               <div style={{ 
-                marginTop: '32px',
+                marginTop: '24px',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '16px'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
                   <div>
-                    <span style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B', display: 'block', marginBottom: '4px' }}>Quantity (lbs)</span>
-                    <span style={{ fontSize: '14px', color: '#666' }}>
-                      ${getDiscountedPrice(product).toFixed(2)} per 6lb
-                      {DISCOUNT_RATES[boxSize] > 0 && (
-                        <span style={{ color: '#2F4538', marginLeft: '8px', fontWeight: '600' }}>
-                          ({DISCOUNT_RATES[boxSize] * 100}% off)
-                        </span>
-                      )}
+                    <span style={{
+                      display: 'block',
+                      fontSize: '13px',
+                      fontWeight: 700,
+                      color: '#2B2B2B',
+                      marginBottom: '4px',
+                      fontFamily: "'Barlow', sans-serif",
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase'
+                    }}>Price</span>
+                    <span style={{ fontSize: '18px', color: '#2B2B2B', fontWeight: 700, fontFamily: "'Barlow', sans-serif" }}>
+                      ${getDiscountedPrice(product).toFixed(2)}
+                      <span style={{ fontSize: '13px', color: '#666', fontWeight: 500, marginLeft: '6px' }}>
+                        (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
+                      </span>
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -782,39 +796,31 @@ export const ProductDetailPage = () => {
             </div>
           </div>
 
-          {/* Collapsible Sections */}
-          <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <CollapsibleSection title="Ingredients & Nutrition" defaultOpen={true}>
-              <div style={{ marginBottom: '24px' }}>
-                <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 12px 0' }}>Ingredients</h4>
-                <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
-                  {typeof product.ingredients === 'string' ? product.ingredients : product.ingredients.join(', ')}
-                </p>
-              </div>
-              
+          {/* Tabs - connected accordion (no separate containers) */}
+          <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: 0, borderTop: '1px solid #E8DDD0', marginTop: '32px' }}>
+            <CollapsibleSection title="Ingredients" defaultOpen={true}>
+              <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.7', margin: '0 0 16px' }}>
+                {typeof product.ingredients === 'string' ? product.ingredients : product.ingredients.join(', ')}
+              </p>
               {product.recipe_breakdown && (
-                <div style={{ marginBottom: '24px', padding: '16px', background: '#FAF8F5', borderRadius: '12px' }}>
-                  <h4 style={{ fontSize: '14px', fontWeight: '700', color: '#c8102e', margin: '0 0 8px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recipe Breakdown</h4>
-                  <p style={{ fontSize: '15px', color: '#3D3D3D', margin: 0 }}>{product.recipe_breakdown}</p>
+                <div style={{ padding: '14px 16px', background: '#FAF8F5', borderRadius: '10px' }}>
+                  <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#c8102e', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recipe Breakdown</h4>
+                  <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0, lineHeight: 1.6 }}>{product.recipe_breakdown}</p>
                 </div>
               )}
-              
-              <div>
-                <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 12px 0' }}>Nutrition Facts (per 100g)</h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                  {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
-                    <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #E8DDD0' }}>
-                      <span style={{ color: '#5A5A5A', fontSize: '15px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
-                      <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '15px' }}>{value}</span>
-                    </div>
-                  ))}
-                </div>
+            </CollapsibleSection>
+
+            <CollapsibleSection title="Nutrition Facts">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
+                  <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #E8DDD0' }}>
+                    <span style={{ color: '#5A5A5A', fontSize: '14px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
+                    <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '14px' }}>{value}</span>
+                  </div>
+                ))}
               </div>
-              
               {product.nutrition_notes && (
-                <div style={{ marginTop: '16px', padding: '16px', background: '#FFF9F0', border: '1px solid #FFE4B5', borderRadius: '12px' }}>
-                  <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.6', margin: 0 }}>{product.nutrition_notes}</p>
-                </div>
+                <p style={{ marginTop: '14px', fontSize: '13px', color: '#5A5A5A', lineHeight: '1.6', fontStyle: 'italic' }}>{product.nutrition_notes}</p>
               )}
             </CollapsibleSection>
 
@@ -822,20 +828,18 @@ export const ProductDetailPage = () => {
               <div className="feeding-guide">
                 {product.feeding_guide && (
                   <>
-                    <div style={{ marginBottom: '20px' }}>
-                      <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Feeding Instructions</h4>
+                    <div style={{ marginBottom: '16px' }}>
+                      <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Feeding Instructions</h4>
                       <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.feeding}</p>
                     </div>
-                    <div style={{ marginBottom: '20px' }}>
-                      <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 8px 0' }}>Handling Instructions</h4>
+                    <div style={{ marginBottom: '14px' }}>
+                      <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Handling Instructions</h4>
                       <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.handling}</p>
                     </div>
                     {product.feeding_guide.note && (
-                      <div style={{ background: '#FAF8F5', padding: '16px', borderRadius: '12px' }}>
-                        <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0 }}>
-                          <a href="/calculator" style={{ color: '#c8102e', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
-                        </p>
-                      </div>
+                      <p style={{ fontSize: '13px', color: '#5A5A5A', margin: 0 }}>
+                        <a href="/calculator" style={{ color: '#c8102e', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
+                      </p>
                     )}
                   </>
                 )}

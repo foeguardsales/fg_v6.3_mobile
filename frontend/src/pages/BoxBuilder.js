@@ -66,7 +66,8 @@ export const BoxBuilder = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [subscriptionPlan, setSubscriptionPlan] = useState(null); // null, 'biweekly', 'monthly'
+  const [subscriptionPlan, setSubscriptionPlan] = useState(null); // null or 'every_N_weeks'
+  const [subOpen, setSubOpen] = useState(false); // collapsible toggle
 
   // Get current discount rates and box options based on pet type
   const DISCOUNT_RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
@@ -380,13 +381,15 @@ export const BoxBuilder = () => {
           ))}
         </div>
 
-        {/* Category Tabs: Dog Food | Dog Treats | Cat Food | Cat Treats */}
+        {/* Category Tabs: Dog Food | Dog Treats | Cat Food | Cat Treats — text only, no pills */}
         <div className="menu-category-tabs" data-testid="menu-category-tabs" style={{
           display: 'flex',
-          gap: '12px',
-          padding: '4px',
-          marginBottom: '28px',
-          flexWrap: 'wrap'
+          gap: '6px',
+          padding: '0 0 14px',
+          marginBottom: '32px',
+          borderBottom: '1px solid #E8DDD0',
+          overflowX: 'auto',
+          flexWrap: 'nowrap'
         }}>
           {bannerCards.map((card) => (
             <button
@@ -395,21 +398,32 @@ export const BoxBuilder = () => {
               data-testid={`category-${card.id}`}
               style={{
                 fontFamily: "'Barlow', sans-serif",
-                fontSize: '15px',
-                fontWeight: 700,
-                color: card.active ? '#FFFFFF' : '#c8102e',
-                background: card.active ? '#c8102e' : 'transparent',
-                border: `2px solid ${card.active ? '#c8102e' : '#D8CFB8'}`,
-                padding: '10px 22px',
-                borderRadius: '999px',
+                fontSize: card.active ? '16px' : '14px',
+                fontWeight: card.active ? 800 : 600,
+                color: card.active ? '#2B2B2B' : '#7A7A7A',
+                background: 'transparent',
+                border: 'none',
+                padding: '8px 16px 12px',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                letterSpacing: '0.01em',
+                letterSpacing: '0.02em',
                 textTransform: 'none',
-                boxShadow: card.active ? '0 4px 12px rgba(200,16,46,0.18)' : 'none'
+                position: 'relative',
+                whiteSpace: 'nowrap'
               }}
             >
               {card.title}
+              {card.active && (
+                <span style={{
+                  position: 'absolute',
+                  bottom: '-1px',
+                  left: '16px',
+                  right: '16px',
+                  height: '3px',
+                  background: '#c8102e',
+                  borderRadius: '2px'
+                }} />
+              )}
             </button>
           ))}
         </div>
@@ -419,10 +433,10 @@ export const BoxBuilder = () => {
           {/* Header with cart button (always visible) */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
             <div>
-              <h1 style={{ fontFamily: "'Barlow', sans-serif", fontSize: '32px', fontWeight: '800', marginBottom: '8px', color: '#2B2B2B', textTransform: 'none' }}>
+              <h1 style={{ fontFamily: "'Barlow', sans-serif", fontSize: 'clamp(26px, 3vw, 32px)', fontWeight: '800', marginBottom: '4px', color: '#2B2B2B', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                 {viewMode === 'treats'
-                  ? (petType === 'cat' ? 'Raw Cat Treats' : 'Raw Dog Treats')
-                  : (petType === 'cat' ? 'Build your cat box' : 'Build your box')}
+                  ? (petType === 'cat' ? 'RAW CAT TREATS' : 'RAW DOG TREATS')
+                  : (petType === 'cat' ? 'BUILD YOUR CAT BOX' : 'BUILD YOUR BOX')}
               </h1>
               <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: '400', color: '#666' }}>
                 {viewMode === 'treats'
@@ -473,112 +487,124 @@ export const BoxBuilder = () => {
             </div>
           </div>
 
-          {/* Subscription Selector */}
-          <div style={{
-            background: 'linear-gradient(135deg, #FDF8F3 0%, #F5F1EB 100%)',
-            borderRadius: '16px',
-            padding: '24px',
-            marginBottom: '20px',
-            border: '2px solid #E8DDD0'
-          }}>
-            <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
-              {/* Left: Subscription Options */}
-              <div style={{ flex: 1 }}>
-                <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '4px', color: '#2B2B2B' }}>
-                  Subscribe & Save
-                </h3>
-                <p style={{ fontSize: '13px', color: '#666', marginBottom: '16px' }}>
-                  Get automatic deliveries and exclusive perks
-                </p>
-                
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                  {/* Biweekly */}
-                  <button
-                    onClick={() => setSubscriptionPlan('biweekly')}
-                    style={{
-                      flex: '1 1 160px',
-                      padding: '16px 20px',
-                      borderRadius: '12px',
-                      border: subscriptionPlan === 'biweekly' ? '3px solid #2F4538' : '2px solid #E8DDD0',
-                      background: subscriptionPlan === 'biweekly' ? '#E8F5E9' : 'white',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                      boxShadow: subscriptionPlan === 'biweekly' ? '0 4px 12px rgba(95, 124, 90, 0.2)' : 'none'
-                    }}
-                  >
-                    <div style={{ fontSize: '16px', fontWeight: '700', color: subscriptionPlan === 'biweekly' ? '#2F4538' : '#2B2B2B', marginBottom: '4px' }}>
-                      Every 2 Weeks
-                    </div>
-                    <div style={{ fontSize: '12px', color: '#666' }}>Most Popular</div>
-                  </button>
-
-                  {/* Monthly */}
-                  <button
-                    onClick={() => setSubscriptionPlan('monthly')}
-                    style={{
-                      flex: '1 1 160px',
-                      padding: '16px 20px',
-                      borderRadius: '12px',
-                      border: subscriptionPlan === 'monthly' ? '3px solid #2F4538' : '2px solid #E8DDD0',
-                      background: subscriptionPlan === 'monthly' ? '#E8F5E9' : 'white',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                      boxShadow: subscriptionPlan === 'monthly' ? '0 4px 12px rgba(95, 124, 90, 0.2)' : 'none'
-                    }}
-                  >
-                    <div style={{ fontSize: '16px', fontWeight: '700', color: subscriptionPlan === 'monthly' ? '#2F4538' : '#2B2B2B', marginBottom: '4px' }}>
-                      Monthly
-                    </div>
-                    <div style={{ fontSize: '12px', color: '#666' }}>Flexible</div>
-                  </button>
-
-                  {/* No Subscription */}
-                  <button
-                    onClick={() => setSubscriptionPlan(null)}
-                    style={{
-                      padding: '8px 16px',
-                      borderRadius: '8px',
-                      border: 'none',
-                      background: 'transparent',
-                      cursor: 'pointer',
-                      fontSize: '13px',
-                      color: subscriptionPlan === null ? '#c8102e' : '#999',
-                      textDecoration: subscriptionPlan === null ? 'underline' : 'none',
-                      fontWeight: subscriptionPlan === null ? '600' : '400'
-                    }}
-                  >
-                    One-time purchase
-                  </button>
-                </div>
-              </div>
-
-              {/* Right: Benefits */}
-              <div style={{
-                background: 'white',
+          {/* Subscription — collapsible toggle */}
+          <div data-testid="subscription-section" style={{ marginBottom: '20px' }}>
+            <button
+              onClick={() => {
+                if (subscriptionPlan) {
+                  // toggle OFF
+                  setSubscriptionPlan(null);
+                  setSubOpen(false);
+                } else {
+                  // toggle ON with sensible default + open dropdown
+                  setSubscriptionPlan('every_2_weeks');
+                  setSubOpen(true);
+                }
+              }}
+              data-testid="subscription-toggle"
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '14px 20px',
                 borderRadius: '12px',
-                padding: '16px 20px',
-                minWidth: '220px',
-                border: '1px solid #E8DDD0'
+                border: subscriptionPlan ? '2px solid #c8102e' : '1.5px solid #2B2B2B',
+                background: subscriptionPlan ? '#FFF5F6' : '#FFFFFF',
+                cursor: 'pointer',
+                fontFamily: "'Barlow', sans-serif",
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '12px',
+                fontSize: '15px',
+                fontWeight: 700,
+                color: '#2B2B2B',
+                letterSpacing: '0.02em'
               }}>
-                <div style={{ fontSize: '14px', fontWeight: '600', marginBottom: '12px', color: '#2B2B2B' }}>
-                  Subscriber Perks:
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#2F4538', fontSize: '16px' }}>✓</span>
-                    <span style={{ fontSize: '13px', color: '#2B2B2B' }}>Free Delivery</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#2F4538', fontSize: '16px' }}>✓</span>
-                    <span style={{ fontSize: '13px', color: '#2B2B2B', fontWeight: '600' }}>5% Off Every Order</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#2F4538', fontSize: '16px' }}>✓</span>
-                    <span style={{ fontSize: '13px', color: '#2B2B2B' }}>Pause or Cancel anytime</span>
-                  </div>
+                <span style={{
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '50%',
+                  border: subscriptionPlan ? '6px solid #c8102e' : '2px solid #2B2B2B',
+                  background: subscriptionPlan ? '#FFFFFF' : 'transparent',
+                  display: 'inline-block'
+                }} />
+                Subscribe & Save 5%
+              </span>
+              <span style={{
+                fontSize: '13px',
+                color: subscriptionPlan ? '#c8102e' : '#5A5A5A',
+                fontWeight: 600
+              }}>
+                {subscriptionPlan ? 'Active' : 'Off'}
+              </span>
+            </button>
+
+            {/* Collapsible: weeks dropdown + perks below */}
+            {subscriptionPlan && subOpen && (
+              <div data-testid="subscription-details" style={{
+                marginTop: '12px',
+                padding: '20px',
+                background: '#FAF8F5',
+                border: '1px solid #E8DDD0',
+                borderRadius: '12px'
+              }}>
+                {/* Weeks dropdown */}
+                <label style={{
+                  display: 'block',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: '#2B2B2B',
+                  marginBottom: '8px',
+                  fontFamily: "'Barlow', sans-serif",
+                  letterSpacing: '0.02em',
+                  textTransform: 'uppercase'
+                }}>
+                  Deliver every
+                </label>
+                <select
+                  value={subscriptionPlan}
+                  onChange={(e) => setSubscriptionPlan(e.target.value)}
+                  data-testid="subscription-weeks-select"
+                  style={{
+                    width: '100%',
+                    padding: '12px 14px',
+                    borderRadius: '10px',
+                    border: '1.5px solid #D8CFB8',
+                    background: '#FFFFFF',
+                    fontFamily: "'Rubik', sans-serif",
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    color: '#2B2B2B',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {[1, 2, 3, 4, 5, 6].map(n => (
+                    <option key={n} value={`every_${n}_weeks`}>
+                      {n === 1 ? 'Every week' : `Every ${n} weeks`}
+                    </option>
+                  ))}
+                </select>
+
+                {/* Subscriber Perks — vertical, beneath weeks selector */}
+                <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {[
+                    'Free delivery on every order',
+                    '5% off — stacks on top of box-size discount',
+                    'Pause, skip, or cancel anytime'
+                  ].map((perk, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ color: '#c8102e', fontSize: '16px', fontWeight: 700 }}>✓</span>
+                      <span style={{ fontSize: '14px', color: '#2B2B2B', fontFamily: "'Rubik', sans-serif" }}>{perk}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Progress Bar */}
@@ -612,55 +638,10 @@ export const BoxBuilder = () => {
             ) : petType === 'dog' ? (
               <>
                 {/* Comfort Dinner Collection - DOG */}
-                <div className="product-collection">
-                  {/* Collection Banner */}
-                  <div style={{
-                    position: 'relative',
-                    height: '280px',
-                    borderRadius: '20px',
-                    overflow: 'hidden',
-                    marginBottom: '28px'
-                  }}>
-                    <img 
-                      src={COLLECTION_IMAGES.comfort_dinner}
-                      alt="Comfort Dinner Collection"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(to right, rgba(95, 124, 90, 0.95) 0%, rgba(95, 124, 90, 0.7) 50%, rgba(95, 124, 90, 0.3) 100%)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      padding: '32px 40px'
-                    }}>
-                      <h3 style={{
-                        fontFamily: "'Barlow', sans-serif",
-                        fontSize: '36px',
-                        fontWeight: '800',
-                        color: '#FFFFFF',
-                        margin: '0 0 12px 0',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em'
-                      }}>Comfort Dinner</h3>
-                      <p style={{
-                        fontFamily: "'Barlow', sans-serif",
-                        fontWeight: '400',
-                        color: 'rgba(255,255,255,0.95)',
-                        fontSize: '15px',
-                        margin: '0 0 16px 0',
-                        maxWidth: '600px',
-                        lineHeight: '1.6'
-                      }}>Complete and balanced raw dinners made to AAFCO standards using 70% meat, 10% bone, 10% organ, 8% fruits & vegetables, 2% supplements.</p>
-                      <p style={{
-                        color: 'rgba(255,255,255,0.85)',
-                        fontSize: '13px',
-                        margin: 0,
-                        maxWidth: '600px',
-                        lineHeight: '1.5'
-                      }}><strong>For:</strong> Ready to serve for dogs of all-life stages, no extra supplements needed.</p>
-                    </div>
+                <div className="product-collection menu-collection">
+                  <div className="menu-collection-header" data-testid="collection-header-comfort">
+                    <h3 className="menu-collection-title">COMFORT DINNER</h3>
+                    <p className="menu-collection-desc">Complete raw nutrition for dogs of all-life stages.</p>
                   </div>
                   
                   <div className="product-grid">
@@ -682,55 +663,10 @@ export const BoxBuilder = () => {
                 </div>
 
                 {/* Primal Feast Collection - DOG */}
-                <div className="product-collection">
-                  {/* Collection Banner */}
-                  <div style={{
-                    position: 'relative',
-                    height: '280px',
-                    borderRadius: '20px',
-                    overflow: 'hidden',
-                    marginBottom: '28px'
-                  }}>
-                    <img 
-                      src={COLLECTION_IMAGES.primal_feast}
-                      alt="Primal Feast Collection"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(to right, rgba(115, 40, 39, 0.95) 0%, rgba(115, 40, 39, 0.7) 50%, rgba(115, 40, 39, 0.3) 100%)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      padding: '32px 40px'
-                    }}>
-                      <h3 style={{
-                        fontFamily: "'Barlow', sans-serif",
-                        fontSize: '36px',
-                        fontWeight: '800',
-                        color: '#FFFFFF',
-                        margin: '0 0 12px 0',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em'
-                      }}>Primal Feast</h3>
-                      <p style={{
-                        fontFamily: "'Barlow', sans-serif",
-                        fontWeight: '400',
-                        color: 'rgba(255,255,255,0.95)',
-                        fontSize: '15px',
-                        margin: '0 0 16px 0',
-                        maxWidth: '600px',
-                        lineHeight: '1.6'
-                      }}>Farm-fresh whole prey raw food made with 80% meat, 10% bone, 10% organ (Prey Model Raw ratio) designed for customizable feeding.</p>
-                      <p style={{
-                        color: 'rgba(255,255,255,0.85)',
-                        fontSize: '13px',
-                        margin: 0,
-                        maxWidth: '600px',
-                        lineHeight: '1.5'
-                      }}><strong>For:</strong> DIY raw feeding, rotation, toppers, or supplementation. Not complete on its own.</p>
-                    </div>
+                <div className="product-collection menu-collection">
+                  <div className="menu-collection-header" data-testid="collection-header-primal">
+                    <h3 className="menu-collection-title">PRIMAL FEAST</h3>
+                    <p className="menu-collection-desc">Whole prey raw meals made with 80% meat, 10% bone and 10% organ.</p>
                   </div>
 
                   <div className="product-grid">
@@ -762,55 +698,10 @@ export const BoxBuilder = () => {
             ) : (
               <>
                 {/* Royal Paws Collection - CAT */}
-                <div className="product-collection">
-                  {/* Collection Banner */}
-                  <div style={{
-                    position: 'relative',
-                    height: '280px',
-                    borderRadius: '20px',
-                    overflow: 'hidden',
-                    marginBottom: '28px'
-                  }}>
-                    <img 
-                      src={COLLECTION_IMAGES.royal_paws}
-                      alt="Royal Paws Collection"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                    <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(to right, rgba(94, 75, 115, 0.95) 0%, rgba(94, 75, 115, 0.7) 50%, rgba(94, 75, 115, 0.3) 100%)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      padding: '32px 40px'
-                    }}>
-                      <h3 style={{
-                        fontFamily: "'Barlow', sans-serif",
-                        fontSize: '36px',
-                        fontWeight: '800',
-                        color: '#FFFFFF',
-                        margin: '0 0 12px 0',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em'
-                      }}>Royal Paws Dinner</h3>
-                      <p style={{
-                        fontFamily: "'Barlow', sans-serif",
-                        fontWeight: '400',
-                        color: 'rgba(255,255,255,0.95)',
-                        fontSize: '15px',
-                        margin: '0 0 16px 0',
-                        maxWidth: '600px',
-                        lineHeight: '1.6'
-                      }}>Complete and balanced raw meals crafted for your cat&apos;s carnivorous biology using 95% meat, organs &amp; bone, 3% fruits &amp; vegetables, 2% supplements.</p>
-                      <p style={{
-                        color: 'rgba(255,255,255,0.85)',
-                        fontSize: '13px',
-                        margin: 0,
-                        maxWidth: '600px',
-                        lineHeight: '1.5'
-                      }}><strong>For:</strong> Daily feeding for cats of all life stages. Supports lean muscle, digestion & coat health. Additional supplements welcome.</p>
-                    </div>
+                <div className="product-collection menu-collection">
+                  <div className="menu-collection-header" data-testid="collection-header-royal">
+                    <h3 className="menu-collection-title">ROYAL PAWS DINNER</h3>
+                    <p className="menu-collection-desc">Complete raw nutrition for cats of all life stages.</p>
                   </div>
                   
                   <div className="product-grid">
@@ -924,99 +815,79 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   
   return (
     <div 
-      className="product-card" 
+      className={`product-card-row ${isSelected ? 'is-selected' : ''}`}
       data-testid={`product-${product.product_id}`}
-      style={{
-        border: isSelected ? '3px solid #c8102e' : '3px solid transparent',
-        boxShadow: isSelected ? '0 4px 20px rgba(164, 30, 52, 0.25)' : undefined,
-        transition: 'all 0.2s ease'
-      }}
     >
-      {/* Product Image */}
-      <div style={{
-        width: '100%',
-        height: '180px',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        marginBottom: '16px',
-        background: '#f5f5f5'
-      }}>
-        <img 
-          src={productImage}
-          alt={product.name}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover'
-          }}
-        />
-      </div>
-      
-      <h4 style={{ 
-        fontSize: '18px', 
-        margin: '0 0 8px 0', 
-        textTransform: 'none',
-        fontWeight: '600'
-      }}>
-        {product.name}
-      </h4>
-      <p style={{ 
-        fontSize: '13px', 
-        color: '#666', 
-        lineHeight: '1.4', 
-        marginBottom: '16px'
-      }}>
-        {product.mini_description || product.description.split('.')[0]}
-      </p>
-      
-      {/* Price Display */}
-      <div className="product-price-display">
-        {hasDiscount ? (
-          <>
-            <span className="price-original">${basePrice.toFixed(2)}</span>
-            <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
-          </>
-        ) : (
-          <span className="price-regular">${basePrice.toFixed(2)}</span>
-        )}
-        <span className="price-unit">/ 6lb</span>
-      </div>
-      
-      {/* Quantity Controls */}
-      <div className="quantity-controls">
-        <button 
-          className="qty-btn"
-          onClick={() => onUpdate(product.product_id, product.name, Math.max(0, selectedQty - 6))}
-          disabled={selectedQty === 0}
-          data-testid={`decrease-${product.product_id}`}
-        >
-          −
-        </button>
-        <div className="qty-display" data-testid={`qty-${product.product_id}`}>
-          {selectedQty}lb
+      {/* Left: text content */}
+      <div className="product-card-content">
+        <h4 className="product-card-title">{product.name}</h4>
+        <p className="product-card-desc">
+          {product.mini_description || product.description.split('.')[0]}
+        </p>
+
+        <div className="product-card-meta">
+          <div className="product-card-price">
+            {hasDiscount ? (
+              <>
+                <span className="price-original">${basePrice.toFixed(2)}</span>
+                <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
+              </>
+            ) : (
+              <span className="price-regular">${basePrice.toFixed(2)}</span>
+            )}
+            <span className="price-unit">/ 6lb</span>
+          </div>
+          <button
+            className="product-card-more"
+            onClick={() => {
+              const root = document.getElementById('root');
+              const scrollPos = root ? root.scrollTop : window.scrollY;
+              sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
+              navigate(`/product/${product.product_id}`);
+            }}
+            data-testid={`learn-more-${product.product_id}`}
+          >
+            See more
+          </button>
         </div>
-        <button 
-          className="qty-btn"
-          onClick={() => onUpdate(product.product_id, product.name, selectedQty + 6)}
-          disabled={!canAdd}
-          data-testid={`increase-${product.product_id}`}
-        >
-          +
-        </button>
       </div>
-      
-      <button 
-        className="btn-learn-more"
-        onClick={() => {
-          const root = document.getElementById('root');
-          const scrollPos = root ? root.scrollTop : window.scrollY;
-          sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
-          navigate(`/product/${product.product_id}`);
-        }}
-        data-testid={`learn-more-${product.product_id}`}
-      >
-        See more
-      </button>
+
+      {/* Right: image + plus / qty controls */}
+      <div className="product-card-media">
+        <img src={productImage} alt={product.name} />
+        {selectedQty === 0 ? (
+          <button
+            className="product-card-add"
+            onClick={() => onUpdate(product.product_id, product.name, 6)}
+            disabled={!canAdd}
+            data-testid={`increase-${product.product_id}`}
+            aria-label={`Add ${product.name}`}
+          >
+            +
+          </button>
+        ) : (
+          <div className="product-card-qty">
+            <button
+              className="qty-btn-mini"
+              onClick={() => onUpdate(product.product_id, product.name, Math.max(0, selectedQty - 6))}
+              data-testid={`decrease-${product.product_id}`}
+              aria-label="Decrease"
+            >
+              −
+            </button>
+            <span className="qty-display-mini" data-testid={`qty-${product.product_id}`}>{selectedQty}lb</span>
+            <button
+              className="qty-btn-mini"
+              onClick={() => onUpdate(product.product_id, product.name, selectedQty + 6)}
+              disabled={!canAdd}
+              data-testid={`increase-${product.product_id}`}
+              aria-label="Increase"
+            >
+              +
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
