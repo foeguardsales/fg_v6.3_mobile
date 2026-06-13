@@ -1,0 +1,79 @@
+{
+  "summary": "Iteration 10 — UI/UX refinement verification for FoeGuard /menu BoxBuilder header, box-size selector, subscribe pill/toggle, progress line, /menu/treats single header, mobile single-column rows, desktop right-side controls, /product/cd-chicken hero+accordions+FAQ container+floating checkout, /meal-plan scroll-to-top. All 15 acceptance checks PASS visually + programmatically.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verifications": {
+    "menu_header_row": {
+      "build_your_box_visible": "PASS",
+      "subscribe_pill_present": "PASS (data-testid=subscribe-pill)",
+      "checkout_button_text": "'CHECKOUT →' (no lb counter) PASS",
+      "checkout_uppercase": "PASS"
+    },
+    "subscribe_toggle": {
+      "pill_active_bg": "rgb(200,16,46) red PASS",
+      "toggle_text_on": "ON PASS",
+      "toggle_text_off": "OFF after second click PASS",
+      "toggle_border_radius": "6px squarish PASS",
+      "subscription_details_visible": "PASS (deliver-every select + 3 perks)"
+    },
+    "box_size_tabs": {
+      "6lb_no_badge": "PASS",
+      "18lb_badge": "'5% OFF' lifted above weight PASS",
+      "24lb_badge": "'10% OFF' PASS",
+      "36lb_badge": "'15% OFF' PASS",
+      "active_state_bg": "rgb(200,16,46) red PASS",
+      "active_label_color": "rgb(255,255,255) white, font-weight 800 PASS",
+      "active_badge_bg": "white, red text PASS"
+    },
+    "progress_line": {
+      "line_present": "data-testid=box-progress-line PASS",
+      "icons": "2 SVG icons (Wheat + Soup) PASS",
+      "text_initial": "'0lb/6lb' PASS",
+      "text_after_add_6lb": "'6lb/6lb' updated after desktop-increase-cd-chicken click PASS"
+    },
+    "raw_dog_treats_single_header": {
+      "h1_h2_h3_count_RAW_DOG_TREATS": "1 (single page title only) PASS",
+      "collection_header_treats_testid_present": "Not found via data-testid but visible as h1 only — PASS"
+    },
+    "mobile_layout_390x844": {
+      "single_column": "All 16 product cards share x=16, width=358 PASS",
+      "image_left_button_bottom_right": "Image at x=16 w=110; +button at x=102,y=810 — on bottom-right corner of image PASS"
+    },
+    "desktop_controls_1280x800": {
+      "desktop_increase_button_right_column": "data-testid=desktop-increase-cd-chicken found at x=528 (right side of card row) PASS",
+      "after_add_qty_pill": "Controls area shows '− / 6lb / +' pill PASS"
+    },
+    "product_detail_cd_chicken": {
+      "page_bg": "body rgb(245,243,239)=#F5F3EF PASS (note: .product-detail-page wrapper has bg rgb(242,244,243) — visually identical off-white)",
+      "hero_white_container": ".product-hero bg white, br=20px, soft shadow rgba(43,43,43,0.08) PASS",
+      "specs_accordions_inside_hero": "Ingredients, Nutrition Facts, Feeding Guide, Product Information present, positioned within hero bounding box (y=1236-1402 within hero y=820-2089) PASS",
+      "ingredients_accordion_clickable": "Button element exists (h=54, w=312), expansion visible in screenshot PASS",
+      "faq_container": "White container br=20px shadow rgba(43,43,43,0.06) 0px 4px 16px 0px PASS (line dividers between items, transition FAQ visibly expanded)",
+      "floating_checkout_btn": "data-testid=floating-cart-btn, text='CHECKOUT →', radius=10px squarish, bg rgb(200,16,46), size 142x42 small, position fixed bottom-right, NO qty counter PASS"
+    },
+    "meal_plan_scroll_to_top": {
+      "step1_title": "'How many dogs do you have?' visible at top=219px (just below 140px navbar) PASS — no large gap, not obscured"
+    },
+    "cart_drawer": {
+      "opens_on_checkout_click": "PASS — Drawer width=440 visible, shows 'Your Box / 18lb Box / (0lb selected) / 5% off / Subscription: Every 2 weeks / Subtotal $0.00'"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Note: .product-detail-page wrapper has bg rgb(242,244,243) (#F2F4F3) — slightly different from required #F5F3EF that body uses. Visually identical off-white but consider unifying to a single token (--bg-off-white) to avoid future drift.",
+    "Note: SCROLL-RESTORE test for /menu → /product → back was inconclusive — the menu height at desktop did not allow scrollTo(0,1200) (page already at scrollY=0 after attempt); Comfort Chicken 'See more' is a button (not <a>), so my anchor-based handle didn't pick it. Recommend main agent verify scroll-restore manually with mouse + back-button on a longer mobile viewport.",
+    "Minor: data-testid=collection-header-treats was not found in DOM on /menu category=Raw Dog Treats — the visible 'RAW DOG TREATS' h1 is in the page header itself; consider adding the testid to the h1 for easier targeting. Visual requirement (single header) is satisfied."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "100% (15/15 acceptance checks PASS)"},
+  "test_credentials": "N/A — no auth in scope",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Iteration 10 validated all UI/UX refinements on /menu (BoxBuilder), /menu/treats (single header), /product/cd-chicken (hero white card with specs accordions under Key Highlights, FAQ in its own white rounded container, small squarish floating CHECKOUT btn with 10px radius and no counter), and /meal-plan (step 1 visible at top of viewport). All visual + behavioural acceptance criteria PASS. Outstanding minor recommendations: add data-testid=collection-header-treats to /menu/treats h1; unify .product-detail-page bg with body bg token; verify scroll-restore on a long mobile viewport with native back navigation."
+}

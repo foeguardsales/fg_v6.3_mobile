@@ -39,6 +39,23 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - Body font swapped to **Rubik Regular** (Public Sans removed in CSS), headings keep Barlow Bold
 - Global `h1 { text-transform: uppercase }` rule removed — all titles render Title Case
 
+### Feb 2026 — UI/UX refinements (latest)
+- **Repetitive treat header fixed** — TreatsSection now accepts `hideHeader` prop; on the Dog/Cat Treats tab the outer page provides the title so the inner header is hidden
+- **Mobile menu layout** — `.product-grid` is now single-column below 900px (image left, content middle, plus on bottom-right of image)
+- **Desktop product card** — Plus / qty controls moved to a dedicated right-column (`.product-card-controls`) so they no longer overlap the image; image+content row is thinner on desktop
+- **Color palette** — Menu background unified at `#F5F3EF` (.box-builder & product page), overlay tint switched to `#F0ECE6` (Personalize, hover, etc.)
+- **Checkout button** — Smaller, squarish (border-radius 8/10px), uppercase, no `lbs/box` counter — just "Checkout →"; mirrored on ProductDetail floating button
+- **Save % pills** — Replaced bottom "Save 5%" pill with a small `% OFF` rectangular card lifted above the weight on each box-size tile (centered, sleek)
+- **Box-size selector** — Removed the cream container + "Select Box Size" h3; tiles maximise across margins; inactive tiles are unbold, active tile is red-filled + bolded
+- **Subscribe & Save** — No container; thin top-line divider; squarish ON/OFF button (not pill); detail panel sits flush below
+- **Header consolidation** — Title + Subscribe pill + Checkout button combined into one seamless top row (`.bb-header-row`)
+- **Sleek progress counter** — Replaced bulky pill with a thin line: `<Wheat>` icon · 3px track · `0lb/6lb` · `<Soup>` icon
+- **Product page** — Specs (Ingredients / Nutrition / Feeding / Product Info) moved INSIDE the white hero container under Key Highlights, keeping the line-divider design. FAQ wrapped in its own clean white container with `0 4px 16px rgba(43,43,43,.06)` shadow
+- **Scroll-to-top** — MealPlanPage top padding reduced 60px → 24px; step-change scrollIntoView replaced with `root.scrollTop = 0`; App `ScrollToTop` now also preserves scroll for `/menu` (not just `/build-box`) when `menuScrollPosition` is set
+- **Build fix** — Visual-edits babel plugin: defensive null-guard on `importPath.parentPath.parentPath.traverse`
+- **Env restore** — Recreated `/app/backend/.env` and `/app/frontend/.env` (Stripe / Brevo / Cloudflare keys are placeholders — real credentials need user input before production)
+
+
 ## Architecture Notes
 - `/menu` → renders `BoxBuilder` (was MenuPage). Old `MenuPage`/`ProductLinePage`/`TreatsPage` retained in source but no longer routed except MenuPage import.
 - BoxBuilder has `petType` (dog/cat) × `viewMode` (food/treats) — drives 4-tab layout

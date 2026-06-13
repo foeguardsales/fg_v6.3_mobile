@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
-import { Calculator } from 'lucide-react';
+import { Calculator, Wheat, Soup } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -430,46 +430,88 @@ export const BoxBuilder = () => {
 
         {/* Main Content - Dog or Cat */}
         <>
-          {/* Header with cart button (always visible) */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-            <div>
-              <h1 style={{ fontFamily: "'Barlow', sans-serif", fontSize: 'clamp(26px, 3vw, 32px)', fontWeight: '800', marginBottom: '4px', color: '#2B2B2B', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
-                {viewMode === 'treats'
-                  ? (petType === 'cat' ? 'RAW CAT TREATS' : 'RAW DOG TREATS')
-                  : (petType === 'cat' ? 'BUILD YOUR CAT BOX' : 'BUILD YOUR BOX')}
-              </h1>
-              <p style={{ fontFamily: "'Barlow', sans-serif", fontWeight: '400', color: '#666' }}>
-                {viewMode === 'treats'
-                  ? 'Shop our farm-fresh raw treats à la carte'
-                  : (petType === 'cat'
-                    ? 'Select your box size, then choose your cat proteins'
-                    : 'Select your box size, then choose your proteins')}
-              </p>
-            </div>
+          {/* Compact header bar: Title + Subscribe pill + Checkout — seamless */}
+          <div className="bb-header-row" data-testid="bb-header" style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            marginBottom: viewMode === 'food' ? '20px' : '30px',
+            flexWrap: 'wrap'
+          }}>
+            <h1 className="bb-header-title" style={{
+              fontFamily: "'Barlow', sans-serif",
+              fontSize: 'clamp(20px, 2.4vw, 26px)',
+              fontWeight: '800',
+              margin: 0,
+              color: '#2B2B2B',
+              textTransform: 'uppercase',
+              letterSpacing: '0.03em',
+              flex: '1 1 auto',
+              minWidth: 0
+            }}>
+              {viewMode === 'treats'
+                ? (petType === 'cat' ? 'RAW CAT TREATS' : 'RAW DOG TREATS')
+                : (petType === 'cat' ? 'BUILD YOUR CAT BOX' : 'BUILD YOUR BOX')}
+            </h1>
+            {viewMode === 'food' && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (subscriptionPlan) {
+                    setSubscriptionPlan(null);
+                    setSubOpen(false);
+                  } else {
+                    setSubscriptionPlan('every_2_weeks');
+                    setSubOpen(true);
+                  }
+                }}
+                data-testid="subscribe-pill"
+                style={{
+                  fontFamily: "'Barlow', sans-serif",
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  border: subscriptionPlan ? '1.5px solid #c8102e' : '1.5px solid #2B2B2B',
+                  background: subscriptionPlan ? '#c8102e' : '#F0ECE6',
+                  color: subscriptionPlan ? '#FFFFFF' : '#2B2B2B',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <span style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: subscriptionPlan ? '#FFFFFF' : 'transparent',
+                  border: subscriptionPlan ? 'none' : '1.5px solid #2B2B2B',
+                  display: 'inline-block'
+                }} />
+                Subscribe 5%
+              </button>
+            )}
             <button 
               className="btn-cart-floating"
               onClick={() => setCartOpen(true)}
               data-testid="cart-button"
             >
-              {viewMode === 'food' ? (
-                <>Checkout {getTotalSelectedLbs()}/{boxSize}lb</>
-              ) : (
-                <>View Cart</>
-              )}
+              Checkout
               {isBoxComplete && viewMode === 'food' && (
                 <span className="cart-complete-badge">✓</span>
               )}
-              <span style={{ marginLeft: '8px', fontSize: '18px' }}>→</span>
+              <span style={{ marginLeft: '6px', fontSize: '16px' }}>→</span>
             </button>
           </div>
 
           {viewMode === 'food' && (
           <>
-          {/* Box Size Selector - Inline */}
-          <div className="box-size-selector-inline" data-testid="box-size-selector">
-            <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#c8102e' }}>
-              Select Box Size
-            </h3>
+          {/* Box Size Selector — no container, no heading, maximised tiles */}
+          <div className="box-size-selector-bare" data-testid="box-size-selector">
             <div className="box-size-tabs">
               {BOX_OPTIONS.map(box => (
                 <button
@@ -478,110 +520,45 @@ export const BoxBuilder = () => {
                   onClick={() => handleBoxSizeChange(box.size)}
                   data-testid={`box-size-${box.size}lb`}
                 >
-                  <span className="box-size-label">{box.label}</span>
                   {box.discount > 0 && (
-                    <span className="box-discount-badge">Save {box.discount}%</span>
+                    <span className="box-discount-badge">{box.discount}% OFF</span>
                   )}
+                  <span className="box-size-label">{box.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Subscription — collapsible toggle */}
-          <div data-testid="subscription-section" style={{ marginBottom: '20px' }}>
-            <button
-              onClick={() => {
-                if (subscriptionPlan) {
-                  // toggle OFF
-                  setSubscriptionPlan(null);
-                  setSubOpen(false);
-                } else {
-                  // toggle ON with sensible default + open dropdown
-                  setSubscriptionPlan('every_2_weeks');
-                  setSubOpen(true);
-                }
-              }}
-              data-testid="subscription-toggle"
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '14px 20px',
-                borderRadius: '12px',
-                border: subscriptionPlan ? '2px solid #c8102e' : '1.5px solid #2B2B2B',
-                background: subscriptionPlan ? '#FFF5F6' : '#FAF8F5',
-                cursor: 'pointer',
-                fontFamily: "'Barlow', sans-serif",
-                transition: 'all 0.2s ease'
-              }}
-            >
-              <span style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '12px',
-                fontSize: '15px',
-                fontWeight: 700,
-                color: '#2B2B2B',
-                letterSpacing: '0.02em'
-              }}>
-                <span style={{
-                  width: '20px',
-                  height: '20px',
-                  borderRadius: '50%',
-                  border: subscriptionPlan ? '6px solid #c8102e' : '2px solid #2B2B2B',
-                  background: subscriptionPlan ? '#FFFFFF' : 'transparent',
-                  display: 'inline-block'
-                }} />
-                Subscribe & Save 5%
-              </span>
-              <span style={{
-                fontSize: '13px',
-                color: subscriptionPlan ? '#c8102e' : '#5A5A5A',
-                fontWeight: 600
-              }}>
-                {subscriptionPlan ? 'Active' : 'Off'}
-              </span>
-            </button>
+          {/* Subscribe & Save — no container, clean line above, squarish button */}
+          <div data-testid="subscription-section" className="bb-subscribe-bare">
+            <div className="bb-subscribe-row">
+              <span className="bb-subscribe-label">Subscribe & Save 5%</span>
+              <button
+                type="button"
+                onClick={() => {
+                  if (subscriptionPlan) {
+                    setSubscriptionPlan(null);
+                    setSubOpen(false);
+                  } else {
+                    setSubscriptionPlan('every_2_weeks');
+                    setSubOpen(true);
+                  }
+                }}
+                data-testid="subscription-toggle"
+                className={`bb-subscribe-btn ${subscriptionPlan ? 'is-on' : ''}`}
+              >
+                {subscriptionPlan ? 'On' : 'Off'}
+              </button>
+            </div>
 
-            {/* Collapsible: weeks dropdown + perks below */}
             {subscriptionPlan && subOpen && (
-              <div data-testid="subscription-details" style={{
-                marginTop: '12px',
-                padding: '20px',
-                background: '#FAF8F5',
-                border: '1px solid #E8DDD0',
-                borderRadius: '12px'
-              }}>
-                {/* Weeks dropdown */}
-                <label style={{
-                  display: 'block',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  color: '#2B2B2B',
-                  marginBottom: '8px',
-                  fontFamily: "'Barlow', sans-serif",
-                  letterSpacing: '0.02em',
-                  textTransform: 'uppercase'
-                }}>
-                  Deliver every
-                </label>
+              <div data-testid="subscription-details" className="bb-subscribe-detail">
+                <label className="bb-subscribe-detail-label">Deliver every</label>
                 <select
                   value={subscriptionPlan}
                   onChange={(e) => setSubscriptionPlan(e.target.value)}
                   data-testid="subscription-weeks-select"
-                  style={{
-                    width: '100%',
-                    padding: '12px 14px',
-                    borderRadius: '10px',
-                    border: '1.5px solid #D8CFB8',
-                    background: '#FFFFFF',
-                    fontFamily: "'Rubik', sans-serif",
-                    fontSize: '15px',
-                    fontWeight: 500,
-                    color: '#2B2B2B',
-                    cursor: 'pointer'
-                  }}
+                  className="bb-subscribe-select"
                 >
                   {[1, 2, 3, 4, 5, 6].map(n => (
                     <option key={n} value={`every_${n}_weeks`}>
@@ -589,17 +566,15 @@ export const BoxBuilder = () => {
                     </option>
                   ))}
                 </select>
-
-                {/* Subscriber Perks — vertical, beneath weeks selector */}
-                <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div className="bb-subscribe-perks">
                   {[
                     'Free delivery on every order',
-                    '5% off — stacks on top of box-size discount',
+                    '5% off — stacks on box-size discount',
                     'Pause, skip, or cancel anytime'
                   ].map((perk, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ color: '#c8102e', fontSize: '16px', fontWeight: 700 }}>✓</span>
-                      <span style={{ fontSize: '14px', color: '#2B2B2B', fontFamily: "'Rubik', sans-serif" }}>{perk}</span>
+                    <div key={i} className="bb-subscribe-perk">
+                      <span className="bb-subscribe-tick">✓</span>
+                      <span>{perk}</span>
                     </div>
                   ))}
                 </div>
@@ -607,20 +582,22 @@ export const BoxBuilder = () => {
             )}
           </div>
 
-          {/* Progress Bar */}
-          <div className="box-progress-bar">
-            <div 
-              className="box-progress-fill" 
-              style={{ width: `${(getTotalSelectedLbs() / boxSize) * 100}%` }}
-            />
-            <span 
-              className="box-progress-text"
-              style={{ 
-                color: (getTotalSelectedLbs() / boxSize) >= 0.5 ? '#FDFCFA' : 'var(--charcoal)',
-                textShadow: (getTotalSelectedLbs() / boxSize) >= 0.5 ? '0 1px 2px rgba(0, 0, 0, 0.3)' : '0 1px 2px rgba(255, 255, 255, 0.8)'
-              }}
-            >
-              {getTotalSelectedLbs()}lb / {boxSize}lb selected
+          {/* Selected quantity — sleek, thin line with farm + bowl icons */}
+          <div className="bb-progress-line" data-testid="box-progress-line">
+            <span className="bb-progress-icon" aria-hidden="true">
+              <Wheat size={16} strokeWidth={1.8} />
+            </span>
+            <div className="bb-progress-track">
+              <div 
+                className="bb-progress-fill" 
+                style={{ width: `${Math.min(100, (getTotalSelectedLbs() / boxSize) * 100)}%` }}
+              />
+            </div>
+            <span className="bb-progress-label" data-testid="box-progress-text">
+              {getTotalSelectedLbs()}lb/{boxSize}lb
+            </span>
+            <span className="bb-progress-icon" aria-hidden="true">
+              <Soup size={16} strokeWidth={1.8} />
             </span>
           </div>
           </>
@@ -634,6 +611,7 @@ export const BoxBuilder = () => {
                 onToggleTreat={handleToggleTreat}
                 petType={petType}
                 navigate={navigate}
+                hideHeader={true}
               />
             ) : petType === 'dog' ? (
               <>
@@ -818,7 +796,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       className={`product-card-row ${isSelected ? 'is-selected' : ''}`}
       data-testid={`product-${product.product_id}`}
     >
-      {/* Left: image + plus / qty controls */}
+      {/* Left: image + plus / qty controls (mobile shows here, desktop shows in right column) */}
       <div className="product-card-media">
         <img src={productImage} alt={product.name} />
         {selectedQty === 0 ? (
@@ -855,7 +833,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         )}
       </div>
 
-      {/* Right: text content */}
+      {/* Middle: text content */}
       <div className="product-card-content">
         <h4 className="product-card-title">{product.name}</h4>
         <p className="product-card-desc">
@@ -887,6 +865,42 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
             See more
           </button>
         </div>
+      </div>
+
+      {/* Right: dedicated controls column (visible on desktop only) */}
+      <div className="product-card-controls">
+        {selectedQty === 0 ? (
+          <button
+            className="product-card-add"
+            onClick={() => onUpdate(product.product_id, product.name, 6)}
+            disabled={!canAdd}
+            data-testid={`desktop-increase-${product.product_id}`}
+            aria-label={`Add ${product.name}`}
+          >
+            +
+          </button>
+        ) : (
+          <div className="product-card-qty">
+            <button
+              className="qty-btn-mini"
+              onClick={() => onUpdate(product.product_id, product.name, Math.max(0, selectedQty - 6))}
+              data-testid={`desktop-decrease-${product.product_id}`}
+              aria-label="Decrease"
+            >
+              −
+            </button>
+            <span className="qty-display-mini">{selectedQty}lb</span>
+            <button
+              className="qty-btn-mini"
+              onClick={() => onUpdate(product.product_id, product.name, selectedQty + 6)}
+              disabled={!canAdd}
+              data-testid={`desktop-increase-${product.product_id}`}
+              aria-label="Increase"
+            >
+              +
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

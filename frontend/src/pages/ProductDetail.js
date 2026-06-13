@@ -160,7 +160,7 @@ const PersonalizeSection = ({ navigate }) => {
       gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
       gap: '32px',
       alignItems: 'center',
-      background: '#F5F3EF',
+      background: '#F0ECE6',
       borderRadius: '24px',
       padding: '32px',
       border: '1px solid #E8DDD0'
@@ -255,11 +255,18 @@ const ProductFaqSection = () => {
         fontSize: 'clamp(24px, 3vw, 32px)',
         fontWeight: 700,
         color: '#2B2B2B',
-        margin: '0 0 12px',
+        margin: '0 0 16px',
         textTransform: 'uppercase',
         letterSpacing: '0.04em'
       }}>Frequently Asked</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 0, borderTop: '1px solid #E8DDD0' }}>
+      <div style={{
+        background: '#FFFFFF',
+        border: '1px solid #E8DDD0',
+        borderRadius: '20px',
+        padding: '8px 24px',
+        boxShadow: '0 4px 16px rgba(43, 43, 43, 0.06)'
+      }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         {faqs.map((f, i) => {
           const isOpen = openIdx === i;
           return (
@@ -297,6 +304,7 @@ const ProductFaqSection = () => {
             </div>
           );
         })}
+        </div>
       </div>
     </section>
   );
@@ -491,17 +499,20 @@ export const ProductDetailPage = () => {
       {/* Floating Cart Button */}
       <button
         onClick={() => setCartOpen(true)}
+        data-testid="floating-cart-btn"
         style={{
           position: 'fixed',
-          bottom: '24px',
-          right: '24px',
+          bottom: '20px',
+          right: '20px',
           background: '#c8102e',
           color: '#fff',
           border: 'none',
-          borderRadius: '50px',
-          padding: '16px 24px',
-          fontSize: '16px',
-          fontWeight: '600',
+          borderRadius: '10px',
+          padding: '12px 18px',
+          fontSize: '14px',
+          fontWeight: '700',
+          letterSpacing: '0.02em',
+          textTransform: 'uppercase',
           cursor: 'pointer',
           boxShadow: '0 4px 12px rgba(136, 48, 47, 0.3)',
           zIndex: 999,
@@ -521,14 +532,11 @@ export const ProductDetailPage = () => {
           e.target.style.boxShadow = '0 4px 12px rgba(136, 48, 47, 0.3)';
         }}
       >
-        <span style={{ fontSize: '20px' }}>🛒</span>
-        <span>
-          {Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0)}/{boxSize}lb
-        </span>
-        <span style={{ fontSize: '18px' }}>→</span>
+        <span>Checkout</span>
+        <span style={{ fontSize: '16px' }}>→</span>
       </button>
       
-      <div className="product-detail-page" style={{ background: '#F2F4F3', minHeight: '100vh', padding: '0 0 80px' }}>
+      <div className="product-detail-page" style={{ background: '#F5F3EF', minHeight: '100vh', padding: '0 0 80px' }}>
         <div className="product-detail-wrapper" style={{ maxWidth: '1380px', margin: '0 auto', padding: '32px 24px' }}>
           {/* Back Button */}
           <button className="product-back-btn" onClick={handleBackToMenu} style={{
@@ -793,65 +801,67 @@ export const ProductDetailPage = () => {
                   </ul>
                 </div>
               )}
+
+              {/* Product Specs accordion — under features, same container, line-divider design */}
+              <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: 0, borderTop: '1px solid #E8DDD0', marginTop: '24px' }}>
+                <CollapsibleSection title="Ingredients" defaultOpen={false}>
+                  <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.7', margin: '0 0 16px' }}>
+                    {typeof product.ingredients === 'string' ? product.ingredients : product.ingredients.join(', ')}
+                  </p>
+                  {product.recipe_breakdown && (
+                    <div style={{ padding: '14px 16px', background: '#F0ECE6', borderRadius: '10px' }}>
+                      <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#c8102e', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recipe Breakdown</h4>
+                      <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0, lineHeight: 1.6 }}>{product.recipe_breakdown}</p>
+                    </div>
+                  )}
+                </CollapsibleSection>
+
+                <CollapsibleSection title="Nutrition Facts">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                    {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
+                      <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #E8DDD0' }}>
+                        <span style={{ color: '#5A5A5A', fontSize: '14px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
+                        <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '14px' }}>{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {product.nutrition_notes && (
+                    <p style={{ marginTop: '14px', fontSize: '13px', color: '#5A5A5A', lineHeight: '1.6', fontStyle: 'italic' }}>{product.nutrition_notes}</p>
+                  )}
+                </CollapsibleSection>
+
+                <CollapsibleSection title="Feeding Guide">
+                  <div className="feeding-guide">
+                    {product.feeding_guide && (
+                      <>
+                        <div style={{ marginBottom: '16px' }}>
+                          <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Feeding Instructions</h4>
+                          <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.feeding}</p>
+                        </div>
+                        <div style={{ marginBottom: '14px' }}>
+                          <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Handling Instructions</h4>
+                          <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.handling}</p>
+                        </div>
+                        {product.feeding_guide.note && (
+                          <p style={{ fontSize: '13px', color: '#5A5A5A', margin: 0 }}>
+                            <a href="/calculator" style={{ color: '#c8102e', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </CollapsibleSection>
+                
+                <CollapsibleSection title="Product Information">
+                  <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
+                    {product.product_information}
+                  </p>
+                </CollapsibleSection>
+              </div>
             </div>
           </div>
 
-          {/* Tabs - connected accordion (no separate containers) */}
-          <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: 0, borderTop: '1px solid #E8DDD0', marginTop: '32px' }}>
-            <CollapsibleSection title="Ingredients" defaultOpen={true}>
-              <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.7', margin: '0 0 16px' }}>
-                {typeof product.ingredients === 'string' ? product.ingredients : product.ingredients.join(', ')}
-              </p>
-              {product.recipe_breakdown && (
-                <div style={{ padding: '14px 16px', background: '#FAF8F5', borderRadius: '10px' }}>
-                  <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#c8102e', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recipe Breakdown</h4>
-                  <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0, lineHeight: 1.6 }}>{product.recipe_breakdown}</p>
-                </div>
-              )}
-            </CollapsibleSection>
-
-            <CollapsibleSection title="Nutrition Facts">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
-                  <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #E8DDD0' }}>
-                    <span style={{ color: '#5A5A5A', fontSize: '14px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
-                    <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '14px' }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-              {product.nutrition_notes && (
-                <p style={{ marginTop: '14px', fontSize: '13px', color: '#5A5A5A', lineHeight: '1.6', fontStyle: 'italic' }}>{product.nutrition_notes}</p>
-              )}
-            </CollapsibleSection>
-
-            <CollapsibleSection title="Feeding Guide">
-              <div className="feeding-guide">
-                {product.feeding_guide && (
-                  <>
-                    <div style={{ marginBottom: '16px' }}>
-                      <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Feeding Instructions</h4>
-                      <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.feeding}</p>
-                    </div>
-                    <div style={{ marginBottom: '14px' }}>
-                      <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Handling Instructions</h4>
-                      <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.handling}</p>
-                    </div>
-                    {product.feeding_guide.note && (
-                      <p style={{ fontSize: '13px', color: '#5A5A5A', margin: 0 }}>
-                        <a href="/calculator" style={{ color: '#c8102e', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
-                      </p>
-                    )}
-                  </>
-                )}
-              </div>
-            </CollapsibleSection>
-            
-            <CollapsibleSection title="Product Information">
-              <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
-                {product.product_information}
-              </p>
-            </CollapsibleSection>
-          </div>
+          {/* (Product specs moved inside the hero container above) */}
 
           {/* Farm to Bowl swipable cards */}
           <FarmToBowlSection />

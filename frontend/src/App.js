@@ -38,8 +38,9 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
   
   useEffect(() => {
-    // Skip scroll-to-top for build-box if there's a saved scroll position
-    if (pathname === '/build-box' && sessionStorage.getItem('menuScrollPosition')) {
+    // Skip scroll-to-top for menu/build-box if there's a saved scroll position
+    const isMenuPath = pathname === '/build-box' || pathname === '/menu';
+    if (isMenuPath && sessionStorage.getItem('menuScrollPosition')) {
       return;
     }
     

@@ -108,9 +108,9 @@ export const MealPlanPage = () => {
 
   // Scroll to top when step changes
   useEffect(() => {
-    if (topRef.current) {
-      topRef.current.scrollIntoView({ behavior: 'instant', block: 'start' });
-    }
+    const root = document.getElementById('root');
+    if (root) root.scrollTop = 0;
+    window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }, [step]);
@@ -958,7 +958,7 @@ export const MealPlanPage = () => {
   return (
     <>
       <Navbar />
-      <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '60px 20px 40px' }}>
+      <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '24px 20px 40px' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           {/* Progress Bar */}
           {!profileSaved && (

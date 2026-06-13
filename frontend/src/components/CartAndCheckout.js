@@ -430,7 +430,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
 
 export const CartPopup = CartDrawer;
 
-export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', navigate }) => {
+export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', navigate, hideHeader = false }) => {
   const [treats, setTreats] = useState([]);
 
   useEffect(() => {
@@ -454,15 +454,17 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
 
   return (
     <div className="treats-section menu-collection">
-      {/* Treats simple header */}
-      <div className="menu-collection-header" data-testid="collection-header-treats">
-        <h3 className="menu-collection-title">RAW {isDog ? 'DOG' : 'CAT'} TREATS</h3>
-        <p className="menu-collection-desc">
-          {isDog
-            ? 'Enriching raw treats that support dental health, mental stimulation, and natural chewing.'
-            : "Natural whole-prey treats designed to support your cat's instinct to hunt and chew."}
-        </p>
-      </div>
+      {/* Treats simple header — hidden when caller already provides one */}
+      {!hideHeader && (
+        <div className="menu-collection-header" data-testid="collection-header-treats">
+          <h3 className="menu-collection-title">RAW {isDog ? 'DOG' : 'CAT'} TREATS</h3>
+          <p className="menu-collection-desc">
+            {isDog
+              ? 'Enriching raw treats that support dental health, mental stimulation, and natural chewing.'
+              : "Natural whole-prey treats designed to support your cat's instinct to hunt and chew."}
+          </p>
+        </div>
+      )}
 
       <div className="treats-grid">
         {treats.map(treat => {
