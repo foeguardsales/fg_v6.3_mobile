@@ -510,7 +510,7 @@ export const BoxBuilder = () => {
                 padding: '14px 20px',
                 borderRadius: '12px',
                 border: subscriptionPlan ? '2px solid #c8102e' : '1.5px solid #2B2B2B',
-                background: subscriptionPlan ? '#FFF5F6' : '#FFFFFF',
+                background: subscriptionPlan ? '#FFF5F6' : '#FAF8F5',
                 cursor: 'pointer',
                 fontFamily: "'Barlow', sans-serif",
                 transition: 'all 0.2s ease'
@@ -818,41 +818,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       className={`product-card-row ${isSelected ? 'is-selected' : ''}`}
       data-testid={`product-${product.product_id}`}
     >
-      {/* Left: text content */}
-      <div className="product-card-content">
-        <h4 className="product-card-title">{product.name}</h4>
-        <p className="product-card-desc">
-          {product.mini_description || product.description.split('.')[0]}
-        </p>
-
-        <div className="product-card-meta">
-          <div className="product-card-price">
-            {hasDiscount ? (
-              <>
-                <span className="price-original">${basePrice.toFixed(2)}</span>
-                <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
-              </>
-            ) : (
-              <span className="price-regular">${basePrice.toFixed(2)}</span>
-            )}
-            <span className="price-unit">/ 6lb</span>
-          </div>
-          <button
-            className="product-card-more"
-            onClick={() => {
-              const root = document.getElementById('root');
-              const scrollPos = root ? root.scrollTop : window.scrollY;
-              sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
-              navigate(`/product/${product.product_id}`);
-            }}
-            data-testid={`learn-more-${product.product_id}`}
-          >
-            See more
-          </button>
-        </div>
-      </div>
-
-      {/* Right: image + plus / qty controls */}
+      {/* Left: image + plus / qty controls */}
       <div className="product-card-media">
         <img src={productImage} alt={product.name} />
         {selectedQty === 0 ? (
@@ -887,6 +853,40 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
             </button>
           </div>
         )}
+      </div>
+
+      {/* Right: text content */}
+      <div className="product-card-content">
+        <h4 className="product-card-title">{product.name}</h4>
+        <p className="product-card-desc">
+          {product.mini_description || product.description.split('.')[0]}
+        </p>
+
+        <div className="product-card-meta">
+          <div className="product-card-price">
+            {hasDiscount ? (
+              <>
+                <span className="price-original">${basePrice.toFixed(2)}</span>
+                <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
+              </>
+            ) : (
+              <span className="price-regular">${basePrice.toFixed(2)}</span>
+            )}
+            <span className="price-unit">/ 6lb</span>
+          </div>
+          <button
+            className="product-card-more"
+            onClick={() => {
+              const root = document.getElementById('root');
+              const scrollPos = root ? root.scrollTop : window.scrollY;
+              sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
+              navigate(`/product/${product.product_id}`);
+            }}
+            data-testid={`learn-more-${product.product_id}`}
+          >
+            See more
+          </button>
+        </div>
       </div>
     </div>
   );
