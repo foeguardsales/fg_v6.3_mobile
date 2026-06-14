@@ -39,7 +39,19 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - Body font swapped to **Rubik Regular** (Public Sans removed in CSS), headings keep Barlow Bold
 - Global `h1 { text-transform: uppercase }` rule removed — all titles render Title Case
 
-### Feb 2026 — Farm Palette refresh + Meal/Treat card unification (Iteration 11)
+### Feb 2026 — Iteration 12: Fraunces + Logo swap + Header re-red
+- **Font swap** — Fraunces 600 replaces Playfair Display for h1/h2/h3 globally (loaded from Google Fonts); Barlow 400/600 remains everywhere else
+- **New FoeGuard logo** — `7j9zxw13_FoeGuard%20Official%20Logo_2026.png` replaces old `fglogo.png`
+- **Navbar back to Barn Red `#C8102E`** — Forest Green moved exclusively to the menu drawer + footer
+- **Menu drawer** — Forest Green `#2F4538` background; all links Cream uppercase Barlow with 0.08em letter-spacing + 1px Cream/18% dividers
+- **Unified counter colors** — All menu items (meals + treats) start Cream `#F5F3EF` with 1px Khaki border → switch to Khaki `#D8CFB8` bg when added (`data-active='true'`). NO collection-color in the menu counter.
+- **SEE MORE relocated** — Now in the content column's meta row, under the price; out of the right-column with the counter
+- **Treats grouped by subcategory** — `Meaty Treats` (non-head/feet) and `Heads and Feet` (head/feet/foot regex). Subcategory descriptions render only when `showCategoryDescriptions=true` (used on main /menu, hidden on dedicated /menu/dog-treats + /menu/cat-treats tabs)
+- **Treats cards re-skinned** — Now use the same `product-card-row` class as meals (image left, Fraunces title, price + SEE MORE meta row, counter right)
+- **Progress icons** — `Tractor` → `Wheat` (left), `CircleDot` → `PawPrint` (right)
+- **Collection pill colors** — Comfort `#A4C0A0` (lighter sage), Primal `#C8102E`, Royal `#5E4B73` (back to purple)
+- **Forest Green benefits section** — `Here's what you can expect…` paragraph + benefit-card titles/descs now Cream/Straw on the dark green bg (was unreadable dark-on-dark)
+
 - **Palette swap** — Cream `#F5F3EF` body, Aged Wood `#3B2A1A` text, Forest Green `#2F4538` nav + footer, Barn Red `#C8102E` CTAs, Khaki `#D8CFB8` borders, Straw `#E8DFC8` section accents, Harvest Gold `#C9A84C` (badges only)
 - **Typography** — Playfair Display 600 for h1/h2/h3 globally (loaded from Google Fonts); Barlow for body / buttons / labels; Rubik retired
 - **Navbar** — Forest Green background, Cream menu/account/cart icons, Aged Wood announcement bar, Barn Red cart badge
