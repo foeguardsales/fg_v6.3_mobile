@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
-import { Calculator, Wheat, Soup } from 'lucide-react';
+import { Calculator, Tractor, CircleDot } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -352,17 +352,17 @@ export const BoxBuilder = () => {
               data-testid={`top-nav-${tab.id}`}
               style={{
                 fontFamily: "'Barlow', sans-serif",
-                fontSize: '17px',
+                fontSize: '14px',
                 fontWeight: 700,
-                color: tab.active ? '#c8102e' : '#5A5A5A',
+                color: tab.active ? '#C8102E' : '#6A4F35',
                 background: 'none',
                 border: 'none',
                 padding: '12px 18px 14px',
                 cursor: tab.active ? 'default' : 'pointer',
                 position: 'relative',
                 whiteSpace: 'nowrap',
-                letterSpacing: '0.01em',
-                textTransform: 'none'
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase'
               }}
             >
               {tab.label}
@@ -373,7 +373,7 @@ export const BoxBuilder = () => {
                   left: '18px',
                   right: '18px',
                   height: '3px',
-                  background: '#c8102e',
+                  background: '#C8102E',
                   borderRadius: '2px'
                 }} />
               )}
@@ -387,7 +387,7 @@ export const BoxBuilder = () => {
           gap: '6px',
           padding: '0 0 14px',
           marginBottom: '32px',
-          borderBottom: '1px solid #E8DDD0',
+          borderBottom: '1px solid #D8CFB8',
           overflowX: 'auto',
           flexWrap: 'nowrap'
         }}>
@@ -398,16 +398,16 @@ export const BoxBuilder = () => {
               data-testid={`category-${card.id}`}
               style={{
                 fontFamily: "'Barlow', sans-serif",
-                fontSize: card.active ? '16px' : '14px',
+                fontSize: card.active ? '14px' : '13px',
                 fontWeight: card.active ? 800 : 600,
-                color: card.active ? '#2B2B2B' : '#7A7A7A',
+                color: card.active ? '#3B2A1A' : '#8A7156',
                 background: 'transparent',
                 border: 'none',
                 padding: '8px 16px 12px',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                letterSpacing: '0.02em',
-                textTransform: 'none',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
                 position: 'relative',
                 whiteSpace: 'nowrap'
               }}
@@ -439,13 +439,13 @@ export const BoxBuilder = () => {
             flexWrap: 'wrap'
           }}>
             <h1 className="bb-header-title" style={{
-              fontFamily: "'Barlow', sans-serif",
-              fontSize: 'clamp(20px, 2.4vw, 26px)',
-              fontWeight: '800',
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontSize: 'clamp(22px, 2.6vw, 30px)',
+              fontWeight: '600',
               margin: 0,
-              color: '#2B2B2B',
+              color: '#3B2A1A',
               textTransform: 'uppercase',
-              letterSpacing: '0.03em',
+              letterSpacing: '0.04em',
               flex: '1 1 auto',
               minWidth: 0
             }}>
@@ -453,48 +453,6 @@ export const BoxBuilder = () => {
                 ? (petType === 'cat' ? 'RAW CAT TREATS' : 'RAW DOG TREATS')
                 : (petType === 'cat' ? 'BUILD YOUR CAT BOX' : 'BUILD YOUR BOX')}
             </h1>
-            {viewMode === 'food' && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (subscriptionPlan) {
-                    setSubscriptionPlan(null);
-                    setSubOpen(false);
-                  } else {
-                    setSubscriptionPlan('every_2_weeks');
-                    setSubOpen(true);
-                  }
-                }}
-                data-testid="subscribe-pill"
-                style={{
-                  fontFamily: "'Barlow', sans-serif",
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
-                  padding: '8px 12px',
-                  borderRadius: '6px',
-                  border: subscriptionPlan ? '1.5px solid #c8102e' : '1.5px solid #2B2B2B',
-                  background: subscriptionPlan ? '#c8102e' : '#F0ECE6',
-                  color: subscriptionPlan ? '#FFFFFF' : '#2B2B2B',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-              >
-                <span style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  background: subscriptionPlan ? '#FFFFFF' : 'transparent',
-                  border: subscriptionPlan ? 'none' : '1.5px solid #2B2B2B',
-                  display: 'inline-block'
-                }} />
-                Subscribe 5%
-              </button>
-            )}
             <button 
               className="btn-cart-floating"
               onClick={() => setCartOpen(true)}
@@ -529,27 +487,28 @@ export const BoxBuilder = () => {
             </div>
           </div>
 
-          {/* Subscribe & Save — no container, clean line above, squarish button */}
+          {/* Subscribe & Save — checkbox, clean line above, no container */}
           <div data-testid="subscription-section" className="bb-subscribe-bare">
-            <div className="bb-subscribe-row">
-              <span className="bb-subscribe-label">Subscribe & Save 5%</span>
-              <button
-                type="button"
-                onClick={() => {
-                  if (subscriptionPlan) {
-                    setSubscriptionPlan(null);
-                    setSubOpen(false);
-                  } else {
-                    setSubscriptionPlan('every_2_weeks');
-                    setSubOpen(true);
-                  }
-                }}
-                data-testid="subscription-toggle"
-                className={`bb-subscribe-btn ${subscriptionPlan ? 'is-on' : ''}`}
-              >
-                {subscriptionPlan ? 'On' : 'Off'}
-              </button>
-            </div>
+            <label className="bb-subscribe-row bb-subscribe-row--clickable">
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px' }}>
+                <input
+                  type="checkbox"
+                  checked={!!subscriptionPlan}
+                  onChange={() => {
+                    if (subscriptionPlan) {
+                      setSubscriptionPlan(null);
+                      setSubOpen(false);
+                    } else {
+                      setSubscriptionPlan('every_2_weeks');
+                      setSubOpen(true);
+                    }
+                  }}
+                  data-testid="subscription-toggle"
+                  className="bb-subscribe-checkbox"
+                />
+                <span className="bb-subscribe-label">Subscribe & Save 5%</span>
+              </span>
+            </label>
 
             {subscriptionPlan && subOpen && (
               <div data-testid="subscription-details" className="bb-subscribe-detail">
@@ -585,7 +544,7 @@ export const BoxBuilder = () => {
           {/* Selected quantity — sleek, thin line with farm + bowl icons */}
           <div className="bb-progress-line" data-testid="box-progress-line">
             <span className="bb-progress-icon" aria-hidden="true">
-              <Wheat size={16} strokeWidth={1.8} />
+              <Tractor size={18} strokeWidth={1.8} />
             </span>
             <div className="bb-progress-track">
               <div 
@@ -597,7 +556,7 @@ export const BoxBuilder = () => {
               {getTotalSelectedLbs()}lb/{boxSize}lb
             </span>
             <span className="bb-progress-icon" aria-hidden="true">
-              <Soup size={16} strokeWidth={1.8} />
+              <CircleDot size={18} strokeWidth={1.8} />
             </span>
           </div>
           </>
@@ -772,10 +731,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   // Get collection color based on product line
   const getCollectionColor = () => {
     switch(product.product_line) {
-      case 'comfort_dinner': return '#2F4538';
-      case 'primal_feast': return '#9D0D23';
-      case 'royal_paws': return '#5e4b73';
-      default: return '#c8102e';
+      case 'comfort_dinner': return '#7A9A7A';
+      case 'primal_feast': return '#C8102E';
+      case 'royal_paws': return '#C9A84C';
+      default: return '#C8102E';
     }
   };
   
@@ -790,47 +749,40 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
   const collectionColor = getCollectionColor();
   const isSelected = selectedQty > 0;
-  
+
+  const goToProduct = () => {
+    const root = document.getElementById('root');
+    const scrollPos = root ? root.scrollTop : window.scrollY;
+    sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
+    navigate(`/product/${product.product_id}`);
+  };
+
+  const stopAndDecrease = (e) => {
+    e.stopPropagation();
+    onUpdate(product.product_id, product.name, Math.max(0, selectedQty - 6));
+  };
+  const stopAndIncrease = (e) => {
+    e.stopPropagation();
+    if (canAdd) onUpdate(product.product_id, product.name, selectedQty + 6);
+  };
+  const stopAndAdd = (e) => {
+    e.stopPropagation();
+    if (canAdd) onUpdate(product.product_id, product.name, 6);
+  };
+
   return (
     <div 
       className={`product-card-row ${isSelected ? 'is-selected' : ''}`}
       data-testid={`product-${product.product_id}`}
+      onClick={goToProduct}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter') goToProduct(); }}
+      style={{ cursor: 'pointer' }}
     >
-      {/* Left: image + plus / qty controls (mobile shows here, desktop shows in right column) */}
-      <div className="product-card-media">
+      {/* Left: image */}
+      <div className="product-card-media product-card-media--clean">
         <img src={productImage} alt={product.name} />
-        {selectedQty === 0 ? (
-          <button
-            className="product-card-add"
-            onClick={() => onUpdate(product.product_id, product.name, 6)}
-            disabled={!canAdd}
-            data-testid={`increase-${product.product_id}`}
-            aria-label={`Add ${product.name}`}
-          >
-            +
-          </button>
-        ) : (
-          <div className="product-card-qty">
-            <button
-              className="qty-btn-mini"
-              onClick={() => onUpdate(product.product_id, product.name, Math.max(0, selectedQty - 6))}
-              data-testid={`decrease-${product.product_id}`}
-              aria-label="Decrease"
-            >
-              −
-            </button>
-            <span className="qty-display-mini" data-testid={`qty-${product.product_id}`}>{selectedQty}lb</span>
-            <button
-              className="qty-btn-mini"
-              onClick={() => onUpdate(product.product_id, product.name, selectedQty + 6)}
-              disabled={!canAdd}
-              data-testid={`increase-${product.product_id}`}
-              aria-label="Increase"
-            >
-              +
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Middle: text content */}
@@ -839,68 +791,60 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         <p className="product-card-desc">
           {product.mini_description || product.description.split('.')[0]}
         </p>
-
-        <div className="product-card-meta">
-          <div className="product-card-price">
-            {hasDiscount ? (
-              <>
-                <span className="price-original">${basePrice.toFixed(2)}</span>
-                <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
-              </>
-            ) : (
-              <span className="price-regular">${basePrice.toFixed(2)}</span>
-            )}
-            <span className="price-unit">/ 6lb</span>
-          </div>
-          <button
-            className="product-card-more"
-            onClick={() => {
-              const root = document.getElementById('root');
-              const scrollPos = root ? root.scrollTop : window.scrollY;
-              sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
-              navigate(`/product/${product.product_id}`);
-            }}
-            data-testid={`learn-more-${product.product_id}`}
-          >
-            See more
-          </button>
+        <div className="product-card-price">
+          {hasDiscount ? (
+            <>
+              <span className="price-original">${basePrice.toFixed(2)}</span>
+              <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
+            </>
+          ) : (
+            <span className="price-regular">${basePrice.toFixed(2)}</span>
+          )}
+          <span className="price-unit">/ 6lb</span>
         </div>
       </div>
 
-      {/* Right: dedicated controls column (visible on desktop only) */}
-      <div className="product-card-controls">
-        {selectedQty === 0 ? (
+      {/* Right: qty counter (always shown, treats-style) + see more */}
+      <div className="product-card-rightcol">
+        <div 
+          className="product-card-qty product-card-qty--treats" 
+          style={{ background: selectedQty > 0 ? collectionColor : '#E8DFC8' }}
+        >
           <button
-            className="product-card-add"
-            onClick={() => onUpdate(product.product_id, product.name, 6)}
-            disabled={!canAdd}
-            data-testid={`desktop-increase-${product.product_id}`}
-            aria-label={`Add ${product.name}`}
+            className="qty-btn-mini"
+            onClick={stopAndDecrease}
+            disabled={selectedQty === 0}
+            data-testid={`decrease-${product.product_id}`}
+            aria-label="Decrease"
+            style={{ color: selectedQty > 0 ? '#F5F3EF' : '#3B2A1A' }}
+          >
+            −
+          </button>
+          <span 
+            className="qty-display-mini" 
+            data-testid={`qty-${product.product_id}`}
+            style={{ color: selectedQty > 0 ? '#F5F3EF' : '#3B2A1A' }}
+          >
+            {selectedQty > 0 ? `${selectedQty}lb` : '0'}
+          </span>
+          <button
+            className="qty-btn-mini"
+            onClick={selectedQty === 0 ? stopAndAdd : stopAndIncrease}
+            disabled={!canAdd && selectedQty > 0}
+            data-testid={`increase-${product.product_id}`}
+            aria-label="Increase"
+            style={{ color: selectedQty > 0 ? '#F5F3EF' : '#3B2A1A' }}
           >
             +
           </button>
-        ) : (
-          <div className="product-card-qty">
-            <button
-              className="qty-btn-mini"
-              onClick={() => onUpdate(product.product_id, product.name, Math.max(0, selectedQty - 6))}
-              data-testid={`desktop-decrease-${product.product_id}`}
-              aria-label="Decrease"
-            >
-              −
-            </button>
-            <span className="qty-display-mini">{selectedQty}lb</span>
-            <button
-              className="qty-btn-mini"
-              onClick={() => onUpdate(product.product_id, product.name, selectedQty + 6)}
-              disabled={!canAdd}
-              data-testid={`desktop-increase-${product.product_id}`}
-              aria-label="Increase"
-            >
-              +
-            </button>
-          </div>
-        )}
+        </div>
+        <button
+          className="product-card-more"
+          onClick={(e) => { e.stopPropagation(); goToProduct(); }}
+          data-testid={`learn-more-${product.product_id}`}
+        >
+          See more
+        </button>
       </div>
     </div>
   );

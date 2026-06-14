@@ -1,0 +1,102 @@
+{
+  "summary": "Iteration 11 — FoeGuard farm-palette refresh + meal/treat card unification verified end-to-end. Tested: Forest Green navbar/footer (#2F4538), Cream page bg (#F5F3EF), ALL CAPS tabs (top-nav + category) + Barn Red active underline, Playfair Display H1 'BUILD YOUR BOX', removal of subscribe pill beside CHECKOUT, 8px-radius CHECKOUT button (Barn Red bg / Cream text), Subscribe & Save CHECKBOX (input type=checkbox, accent-color #C8102E) with toggle-driven details visibility, Tractor + CircleDot lucide icons on progress line, box-size tabs (6 lb no badge / 18-24-36 lb % OFF badges, active red), Playfair uppercase collection headers, unified meal/treat cards with always-on qty counter (Straw bg #E8DFC8 at 0, sage #7A9A7A at >0 for comfort), no-underline 'See more', click-anywhere-on-card navigation to /product/<id> and /treat/<id>, product detail wrapper max-width 1280px with 50/50 image/content grid (644px image @ 560px tall), product line tag pill with 6px radius and brand-collection colors (Comfort sage #7A9A7A, Primal Barn Red #C8102E, Royal Paws Harvest Gold #C9A84C), product h1 Playfair Display, Forest Green footer with Cream text. All 25 acceptance checks PASS.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verifications": {
+    "global_palette": {
+      "navbar_bg": "rgb(47,69,56) = #2F4538 Forest Green PASS",
+      "body_bg": "rgb(245,243,239) = #F5F3EF Cream PASS",
+      "footer_bg": "rgb(47,69,56) = #2F4538 Forest Green PASS",
+      "footer_text": "rgb(245,243,239) Cream PASS"
+    },
+    "top_nav_tabs": {
+      "menu_uppercase_red": "text-transform=uppercase, active color rgb(200,16,46) Barn Red PASS",
+      "meal_plan_uppercase": "PASS",
+      "calculator_uppercase": "PASS"
+    },
+    "category_tabs": {
+      "dog_food_active_aged_wood": "color rgb(59,42,26) #3B2A1A, text-transform=uppercase PASS",
+      "dog_treats_uppercase": "PASS",
+      "cat_food_uppercase": "PASS",
+      "cat_treats_uppercase": "PASS"
+    },
+    "boxbuilder_header": {
+      "h1_text": "'BUILD YOUR BOX' PASS",
+      "h1_font_family": "Playfair Display, Georgia PASS",
+      "h1_uppercase": "PASS",
+      "h1_color": "rgb(59,42,26) Aged Wood PASS",
+      "subscribe_pill_removed_next_to_checkout": "data-testid=subscribe-pill NOT in DOM PASS",
+      "checkout_btn_radius": "8px PASS",
+      "checkout_btn_bg": "rgb(200,16,46) Barn Red PASS",
+      "checkout_btn_color": "rgb(245,243,239) Cream PASS"
+    },
+    "box_size_tabs": {
+      "6lb_no_badge": "PASS",
+      "18lb_badge": "5% OFF PASS",
+      "24lb_badge": "10% OFF PASS",
+      "36lb_badge": "15% OFF PASS",
+      "active_bg_barn_red": "rgb(200,16,46) on active 6lb PASS"
+    },
+    "subscribe_section": {
+      "is_checkbox_input": "tagName=INPUT, type=checkbox PASS",
+      "accent_color": "rgb(200,16,46) Barn Red PASS",
+      "check_shows_details": "subscription-details visible after click PASS",
+      "uncheck_hides_details": "subscription-details removed after second click PASS"
+    },
+    "progress_line": {
+      "tractor_icon": "lucide lucide-tractor PASS",
+      "circledot_icon": "lucide lucide-circle-dot PASS",
+      "no_wheat_or_soup": "PASS (Wheat & Soup icons NOT present)"
+    },
+    "collection_headers": {
+      "comfort_dinner": "'COMFORT DINNER', Playfair Display, uppercase PASS",
+      "primal_feast": "'PRIMAL FEAST', Playfair Display, uppercase PASS"
+    },
+    "unified_meal_treat_cards": {
+      "qty_pill_visible_when_zero": "PASS — bg rgb(232,223,200) Straw, text '0', '−'/'+' visible",
+      "see_more_no_underline": "text-decoration: none PASS",
+      "qty_after_plus": "text='6lb', bg rgb(122,154,122) sage = #7A9A7A (comfort collection color) PASS",
+      "card_click_navigates_to_product": "Clicked card image -> /product/cd-chicken PASS",
+      "treat_card_click_navigates_to_treat": "Clicked treat image -> /treat/turkey-feet PASS"
+    },
+    "product_detail_cd_chicken": {
+      "wrapper_max_width": "1280px PASS",
+      "hero_grid_template_columns": "644.28px / 585.72px (50/50 desktop split, image left + content right) PASS",
+      "image_container_size": "width 644.28px, height 560px (meets >=540px requirement) PASS",
+      "pill_bg": "rgb(122,154,122) #7A9A7A sage Comfort PASS",
+      "pill_radius": "6px (<=8px not 100px) PASS",
+      "pill_color": "rgb(245,243,239) Cream PASS",
+      "pill_text": "'Comfort Dinner' PASS",
+      "product_h1_font": "Playfair Display PASS"
+    },
+    "product_detail_pf_beef": {
+      "pill_bg": "rgb(200,16,46) #C8102E Barn Red Primal PASS",
+      "pill_radius": "6px PASS",
+      "pill_text": "'Primal Feast' PASS"
+    },
+    "product_detail_royal_paws_rp_chicken": {
+      "pill_bg": "rgb(201,168,76) #C9A84C Harvest Gold Royal PASS",
+      "pill_radius": "6px PASS",
+      "pill_text": "'Royal Paws' PASS"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "BoxBuilder.js inline styles are large (700+ lines, lots of inline style objects) — consider moving repeated tab/header styles into the existing App.css palette classes (.bb-header-title, .menu-top-nav button etc.) for DRY and theme-token consistency. Functionally fine.",
+    "ProductDetail.js still contains some hard-coded older colors that don't match the new farm palette: white card backgrounds (#FFFFFF, #FAF8F5) inside Farm-to-Bowl cards (line ~132) and Personalize section (#F0ECE6, line ~163), as well as the brand-icon circles (background #FFFFFF, line ~93). These secondary sections are below the hero and were not part of this iteration's spec, but they visually break the 'Remove pure white surfaces' global rule from the brief. Worth a follow-up pass.",
+    "Floating cart button on /product/<id> uses borderRadius: 10px and shadow rgba(136,48,47,...) — spec says 'Buttons max 8px radius' and 'Borders not shadows'. Tiny drift from the global rule.",
+    "ProductDetail.js helper components (FarmToBowlSection, PersonalizeSection, ProductFaqSection, CollapsibleSection) all carry stale Barlow-only headings; brief asks Playfair Display 600 for h1/h2/h3 globally. The product page hero h1 is correct, but Farm-to-Bowl h2 and FAQ h2 are still Barlow."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "100% (25/25 acceptance checks PASS)"},
+  "test_credentials": "N/A — no auth in scope",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All 25 spec items in iteration 11 verified PASS on https://build-box-redesign.preview.emergentagent.com. Spot-checks programmatically captured backgroundColor + borderRadius + fontFamily + textTransform + lucide icon classnames (lucide-tractor, lucide-circle-dot) + grid template + pill colors per collection (Comfort #7A9A7A, Primal #C8102E, Royal #C9A84C) + click-to-navigate behavior on both product and treat cards. Non-blocking style drift remains on secondary sections of /product/<id> (Farm-to-Bowl white cards, Personalize section, FAQ container, floating cart 10px radius/shadow) — these are outside this iteration's checks but worth a follow-up pass to fully honor the 'no pure white, no shadows, max 8px radius, Playfair for h2/h3' global rules."
+}

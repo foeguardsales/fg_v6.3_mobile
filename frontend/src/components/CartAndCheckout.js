@@ -450,7 +450,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
   if (treats.length === 0) return null;
 
   const isDog = petType !== 'cat';
-  const treatColor = isDog ? '#88302F' : '#6B5B73';
+  const treatColor = isDog ? '#C8102E' : '#7A9A7A';
 
   return (
     <div className="treats-section menu-collection">
@@ -476,7 +476,15 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             key={treat.treat_id} 
             className={`treat-item ${quantity > 0 ? 'selected' : ''}`}
             data-testid={`treat-${treat.treat_id}`}
-            style={{ position: 'relative', paddingRight: '130px', display: 'flex', alignItems: 'center', gap: '16px' }}
+            onClick={navigate ? () => {
+              const root = document.getElementById('root');
+              const scrollPos = root ? root.scrollTop : window.scrollY;
+              sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
+              navigate(`/treat/${treat.treat_id}`);
+            } : undefined}
+            role={navigate ? 'button' : undefined}
+            tabIndex={navigate ? 0 : undefined}
+            style={{ position: 'relative', paddingRight: '130px', display: 'flex', alignItems: 'center', gap: '16px', cursor: navigate ? 'pointer' : 'default' }}
           >
             {/* Treat Image */}
             {treat.images && treat.images.length > 0 && (
@@ -508,9 +516,9 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             )}
             <div style={{ flex: 1 }}>
               <div className="treat-info">
-                <h4 style={{ fontSize: '16px', marginBottom: '4px', fontWeight: '600' }}>{treat.name}</h4>
-                <p style={{ color: '#666', fontSize: '13px', margin: '0 0 8px 0' }}>{treat.quantity_description}</p>
-                <span style={{ fontSize: '18px', fontWeight: '700', color: '#c8102e', display: 'block' }}>${treat.price.toFixed(2)}</span>
+                <h4 style={{ fontSize: '18px', marginBottom: '4px', fontWeight: '600', fontFamily: "'Playfair Display', Georgia, serif", color: '#3B2A1A' }}>{treat.name}</h4>
+                <p style={{ color: '#6A4F35', fontSize: '13px', margin: '0 0 8px 0', fontFamily: "'Barlow', sans-serif" }}>{treat.quantity_description}</p>
+                <span style={{ fontSize: '16px', fontWeight: '700', color: '#C8102E', display: 'block', fontFamily: "'Barlow', sans-serif" }}>${treat.price.toFixed(2)}</span>
               </div>
             </div>
             <div style={{ 
@@ -529,8 +537,8 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                 display: 'flex',
                 alignItems: 'center',
                 gap: '8px',
-                background: quantity > 0 ? treatColor : '#f0f0f0',
-                borderRadius: '20px',
+                background: quantity > 0 ? treatColor : '#E8DFC8',
+                borderRadius: '8px',
                 padding: '4px 8px'
               }}>
                 <button
@@ -541,13 +549,13 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                     }
                   }}
                   style={{
-                    width: '28px',
-                    height: '28px',
-                    borderRadius: '50%',
+                    width: '26px',
+                    height: '26px',
+                    borderRadius: '6px',
                     border: 'none',
-                    background: quantity > 0 ? 'rgba(255,255,255,0.3)' : '#ddd',
-                    color: quantity > 0 ? '#fff' : '#666',
-                    fontSize: '18px',
+                    background: quantity > 0 ? 'rgba(245,243,239,0.2)' : 'rgba(59,42,26,0.1)',
+                    color: quantity > 0 ? '#F5F3EF' : '#3B2A1A',
+                    fontSize: '16px',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -560,8 +568,9 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                   minWidth: '24px',
                   textAlign: 'center',
                   fontWeight: '700',
-                  fontSize: '16px',
-                  color: quantity > 0 ? '#fff' : '#333'
+                  fontSize: '14px',
+                  color: quantity > 0 ? '#F5F3EF' : '#3B2A1A',
+                  fontFamily: "'Barlow', sans-serif"
                 }}>
                   {quantity}
                 </span>
@@ -571,13 +580,13 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                     onToggleTreat(treat, quantity + 1);
                   }}
                   style={{
-                    width: '28px',
-                    height: '28px',
-                    borderRadius: '50%',
+                    width: '26px',
+                    height: '26px',
+                    borderRadius: '6px',
                     border: 'none',
-                    background: quantity > 0 ? 'rgba(255,255,255,0.3)' : '#ddd',
-                    color: quantity > 0 ? '#fff' : '#666',
-                    fontSize: '18px',
+                    background: quantity > 0 ? 'rgba(245,243,239,0.2)' : 'rgba(59,42,26,0.1)',
+                    color: quantity > 0 ? '#F5F3EF' : '#3B2A1A',
+                    fontSize: '16px',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -605,9 +614,10 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
                     fontWeight: '600',
                     cursor: 'pointer',
                     padding: '0',
-                    textDecoration: 'underline',
-                    textUnderlineOffset: '3px',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    fontFamily: "'Barlow', sans-serif",
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase'
                   }}
                 >
                   See more

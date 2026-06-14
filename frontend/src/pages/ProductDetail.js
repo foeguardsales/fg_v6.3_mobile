@@ -444,10 +444,10 @@ export const ProductDetailPage = () => {
   // Get collection color and name based on product line
   const getCollectionInfo = () => {
     switch(product.product_line) {
-      case 'comfort_dinner': return { color: '#2F4538', name: 'Comfort Dinner' };
-      case 'primal_feast': return { color: '#9D0D23', name: 'Primal Feast' };
-      case 'royal_paws': return { color: '#5e4b73', name: 'Royal Paws' };
-      default: return { color: '#c8102e', name: 'FoeGuard' };
+      case 'comfort_dinner': return { color: '#7A9A7A', name: 'Comfort Dinner' };
+      case 'primal_feast': return { color: '#C8102E', name: 'Primal Feast' };
+      case 'royal_paws': return { color: '#C9A84C', name: 'Royal Paws' };
+      default: return { color: '#C8102E', name: 'FoeGuard' };
     }
   };
 
@@ -537,7 +537,7 @@ export const ProductDetailPage = () => {
       </button>
       
       <div className="product-detail-page" style={{ background: '#F5F3EF', minHeight: '100vh', padding: '0 0 80px' }}>
-        <div className="product-detail-wrapper" style={{ maxWidth: '1380px', margin: '0 auto', padding: '32px 24px' }}>
+        <div className="product-detail-wrapper" style={{ maxWidth: '1280px', margin: '0 auto', padding: '24px 24px' }}>
           {/* Back Button */}
           <button className="product-back-btn" onClick={handleBackToMenu} style={{
             display: 'inline-flex',
@@ -557,18 +557,19 @@ export const ProductDetailPage = () => {
             <span>Back to Menu</span>
           </button>
 
-          {/* Product Hero */}
+          {/* Product Hero — wider desktop layout (Shopify-style) */}
           <div className="product-hero" style={{
-            background: '#FFFFFF',
-            borderRadius: '20px',
+            background: '#F5F3EF',
+            border: '1px solid #D8CFB8',
+            borderRadius: '12px',
             overflow: 'hidden',
-            boxShadow: '0 4px 16px rgba(43, 43, 43, 0.08)',
+            boxShadow: 'none',
             marginBottom: '24px',
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gridTemplateColumns: '1fr',
             alignItems: 'stretch'
           }}>
-            <div className="product-image-container" style={{ position: 'relative', width: '100%', minHeight: '320px', overflow: 'hidden' }}>
+            <div className="product-image-container" style={{ position: 'relative', width: '100%', minHeight: '320px', overflow: 'hidden', background: '#E8DFC8' }}>
               <img 
                 src={productImage} 
                 alt={product.name}
@@ -577,27 +578,28 @@ export const ProductDetailPage = () => {
               />
               <span className="product-line-tag" style={{
                 position: 'absolute',
-                top: '20px',
-                left: '20px',
+                top: '16px',
+                left: '16px',
                 background: lineColor,
-                color: '#FFFFFF',
-                padding: '8px 20px',
-                borderRadius: '100px',
+                color: '#F5F3EF',
+                padding: '6px 14px',
+                borderRadius: '6px',
                 fontFamily: "'Barlow', sans-serif",
-                fontSize: '13px',
-                fontWeight: '600',
+                fontSize: '11px',
+                fontWeight: '700',
                 textTransform: 'uppercase',
-                letterSpacing: '0.05em'
+                letterSpacing: '0.08em'
               }}>{lineName}</span>
             </div>
             
             <div className="product-hero-info" style={{ padding: '32px' }}>
               <h1 style={{
-                fontFamily: "'Barlow', sans-serif",
-                fontSize: 'clamp(28px, 3.4vw, 36px)',
-                color: '#2B2B2B',
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: 'clamp(28px, 3.4vw, 40px)',
+                color: '#3B2A1A',
                 margin: '0 0 4px 0',
-                lineHeight: '1.2',
+                lineHeight: '1.15',
+                fontWeight: 600,
                 textTransform: 'none'
               }}>{product.name}</h1>
 

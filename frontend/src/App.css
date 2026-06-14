@@ -156,29 +156,29 @@ body {
   font-style: normal;
 }
 
-/* Heritage typography: Barlow Bold for headings, Rubik Regular for body/subtext */
+/* Heritage typography: Playfair Display (serif) for headings, Barlow for body/buttons/labels */
 :root {
-  --font-body: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-heading: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: "'Playfair Display'", Georgia, 'Times New Roman', serif;
 }
 
-/* Default body weight = Rubik Regular (400) */
+/* Default body = Barlow 400 */
 body {
   font-family: var(--font-body);
   font-weight: 400;
+  background: #F5F3EF;
+  color: #3B2A1A;
 }
-/* Default heading weight = Barlow Bold (700) */
+/* Headings = Playfair Display 600 */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif !important;
+  font-weight: 600;
+  color: #3B2A1A;
 }
-/* Force all subtext/paragraphs to Rubik Regular, even if a leftover inline font snuck in.
-   Note: span/button/input intentionally excluded so nested spans inside h1/h2 inherit Barlow. */
+/* Body / paragraph text = Barlow with Aged Wood */
 p, li, blockquote, dd, dt, figcaption, small, .subtext {
-  font-family: var(--font-body) !important;
-}
-/* Headings keep Barlow */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading) !important;
+  font-family: 'Barlow', sans-serif !important;
+  color: #3B2A1A;
 }
 
 /* ========== CSS VARIABLES ========== */
@@ -192,28 +192,32 @@ h1, h2, h3, h4, h5, h6 {
   --burgundy-deep: #7a0a1a;
   
   /* Product Collection Colors */
-  --comfort-dinner: #2F4538;
-  --royal-paws: #5e4b73;
-  --primal-feast: #c8102e;
+  --comfort-dinner: #7A9A7A;   /* Light sage green (was #2F4538 forest) */
+  --royal-paws: #C9A84C;       /* Harvest gold (was #5e4b73 purple) */
+  --primal-feast: #C8102E;     /* Barn red */
   
-  /* Warm Accent Colors */
-  --foeguard-cream: #f5f3ef;
+  /* Warm Accent Colors — Farm palette */
+  --foeguard-cream: #F5F3EF;
   --khaki: #D8CFB8;
-  --khaki-light: #D8CFB8;
+  --khaki-light: #E8DFC8;
   --khaki-dark: #A89B7C;
-  --cream: #f5f3ef;
-  --soft-bg: #E5D9C2;
+  --cream: #F5F3EF;
+  --straw: #E8DFC8;
+  --soft-bg: #E8DFC8;
+  --harvest-gold: #C9A84C;
+  --aged-wood: #3B2A1A;
   
   /* Background Colors */
-  --offwhite: #f5f3ef;
-  --white: #FFFFFF;
+  --offwhite: #F5F3EF;
+  --white: #F5F3EF;            /* Pure white surfaces removed — cream by default */
+  --pure-white: #FFFFFF;       /* Use only when truly needed */
   
-  /* Text Colors */
-  --charcoal: #2C2C2C;
-  --charcoal-light: #3D3D3D;
-  --text-secondary: #5A5A5A;
-  --text-muted: #8A8A8A;
-  --text-inverse: #FFFFFF;
+  /* Text Colors — Aged Wood replaces charcoal */
+  --charcoal: #3B2A1A;
+  --charcoal-light: #3B2A1A;
+  --text-secondary: #6A4F35;
+  --text-muted: #8A7156;
+  --text-inverse: #F5F3EF;
   
   /* Neutral */
   --light-grey: #D9D9D9;
@@ -1572,24 +1576,33 @@ h2, h3, h4 {
   border-color: #FFFFFF;
 }
 
-/* Subscribe & Save — no container, clean line above, squarish button */
+/* Subscribe & Save — checkbox, clean line above, no container */
 .bb-subscribe-bare {
-  border-top: 1px solid #E8DDD0;
+  border-top: 1px solid #D8CFB8;
   padding: 14px 0 0;
   margin: 0 0 18px;
 }
 .bb-subscribe-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
 }
+.bb-subscribe-row--clickable { cursor: pointer; }
+.bb-subscribe-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #C8102E;
+  flex-shrink: 0;
+  margin: 0;
+}
 .bb-subscribe-label {
-  font-family: var(--font-body);
-  font-size: 14px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
   font-weight: 700;
-  color: #2B2B2B;
+  color: #3B2A1A;
   letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 .bb-subscribe-btn {
   font-family: var(--font-body);
@@ -1791,68 +1804,74 @@ h2, h3, h4 {
   margin-bottom: 0;
 }
 .menu-collection-title {
-  font-family: 'Barlow', sans-serif;
-  font-size: clamp(22px, 2.6vw, 28px) !important;
-  font-weight: 800;
-  color: #2B2B2B;
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(24px, 2.8vw, 32px) !important;
+  font-weight: 600;
+  color: #3B2A1A;
   margin: 0 0 6px;
   letter-spacing: 0.04em;
   text-transform: uppercase !important;
 }
 .menu-collection-desc {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Barlow', sans-serif;
   font-size: 14px;
-  color: #5A5A5A;
+  color: #6A4F35;
   margin: 0;
   line-height: 1.55;
   max-width: 720px;
 }
 
-/* ===== Horizontal product row (Uber/PJ style) — IMAGE LEFT, content RIGHT ===== */
+/* ===== Horizontal product row (treats-style row for ALL products) ===== */
 .product-card-row {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 16px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
   align-items: center;
-  padding: 18px 0;
-  border-bottom: 1px solid #E8DDD0;
+  padding: 16px 0;
+  border-bottom: 1px solid #D8CFB8;
   background: transparent;
   transition: background 0.2s ease;
+  cursor: pointer;
 }
 .product-card-row.is-selected {
-  background: rgba(200, 16, 46, 0.03);
+  background: rgba(122, 154, 122, 0.08);
 }
 .product-card-row:hover {
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(232, 223, 200, 0.35);
 }
 @media (min-width: 900px) {
   .product-card-row {
     padding: 18px 6px;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 18px;
+    gap: 22px;
   }
 }
 
 .product-card-content { min-width: 0; }
 .product-card-title {
-  font-family: 'Barlow', sans-serif;
-  font-size: 17px !important;
-  font-weight: 700;
-  color: #2B2B2B;
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 18px !important;
+  font-weight: 600;
+  color: #3B2A1A;
   margin: 0 0 6px;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   text-transform: none;
 }
+@media (min-width: 900px) {
+  .product-card-title { font-size: 22px !important; }
+}
 .product-card-desc {
-  font-family: 'Rubik', sans-serif !important;
+  font-family: 'Barlow', sans-serif !important;
   font-size: 13px !important;
-  color: #5A5A5A;
+  color: #6A4F35;
   line-height: 1.5;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+@media (min-width: 900px) {
+  .product-card-desc { font-size: 14px !important; }
 }
 .product-card-meta {
   display: flex;
@@ -1870,17 +1889,17 @@ h2, h3, h4 {
 .product-card-price .price-discounted {
   font-size: 16px;
   font-weight: 700;
-  color: #2B2B2B;
+  color: #C8102E;
 }
 .product-card-price .price-original {
   font-size: 13px;
-  color: #9A9A9A;
+  color: #8A7156;
   text-decoration: line-through;
   margin-right: 2px;
 }
 .product-card-price .price-unit {
   font-size: 12px;
-  color: #7A7A7A;
+  color: #8A7156;
   font-weight: 500;
 }
 .product-card-more {
@@ -1888,113 +1907,104 @@ h2, h3, h4 {
   border: none;
   padding: 0;
   font-family: 'Barlow', sans-serif;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
-  color: #c8102e;
+  color: #3B2A1A;
   cursor: pointer;
-  letter-spacing: 0.02em;
-  text-transform: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
-.product-card-more:hover { text-decoration: underline; }
+.product-card-more:hover { color: #C8102E; }
 
 .product-card-media {
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 96px;
+  height: 96px;
   flex-shrink: 0;
 }
 @media (min-width: 760px) {
   .product-card-media {
-    width: 130px;
-    height: 130px;
+    width: 124px;
+    height: 124px;
   }
 }
 .product-card-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 8px;
   display: block;
 }
 
-/* Desktop: dedicated right-column controls (not overlapping image) */
-.product-card-controls {
-  display: none;
+/* Right column (qty counter + see more) — same for ALL product cards now */
+.product-card-rightcol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 96px;
+  flex-shrink: 0;
 }
-@media (min-width: 900px) {
-  .product-card-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 140px;
-  }
-  .product-card-media .product-card-add,
-  .product-card-media .product-card-qty {
-    display: none;
-  }
-  .product-card-controls .product-card-add {
-    position: static;
-    bottom: auto;
-    right: auto;
-    width: 40px;
-    height: 40px;
-  }
-  .product-card-controls .product-card-qty {
-    position: static;
-    bottom: auto;
-    right: auto;
+@media (min-width: 760px) {
+  .product-card-rightcol {
+    min-width: 110px;
   }
 }
+
+/* Plus button (when qty = 0) — small circular, no overlay */
 .product-card-add {
-  position: absolute;
-  bottom: -10px;
-  right: -10px;
-  width: 34px;
-  height: 34px;
+  position: static;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: #FFFFFF;
-  border: 1.5px solid #2B2B2B;
+  background: #F5F3EF;
+  border: 1.5px solid #3B2A1A;
   font-size: 20px;
   font-weight: 700;
-  color: #2B2B2B;
+  color: #3B2A1A;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: none;
   transition: all 0.15s ease;
   line-height: 1;
 }
 .product-card-add:hover:not(:disabled) {
-  background: #c8102e;
-  border-color: #c8102e;
-  color: #FFFFFF;
+  background: #C8102E;
+  border-color: #C8102E;
+  color: #F5F3EF;
 }
 .product-card-add:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* Qty counter — treats-style pill (collection-colored bg) */
 .product-card-qty {
-  position: absolute;
-  bottom: -14px;
-  right: -10px;
+  position: static;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #FFFFFF;
-  border: 1.5px solid #2B2B2B;
-  border-radius: 999px;
-  padding: 3px 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-.qty-btn-mini {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  background: #C8102E;
   border: none;
-  background: transparent;
-  color: #2B2B2B;
-  font-size: 15px;
+  border-radius: 8px;
+  padding: 5px 6px;
+  box-shadow: none;
+}
+.product-card-qty--treats {
+  background: #C8102E;
+}
+.product-card-qty .qty-btn-mini {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(245, 243, 239, 0.2);
+  color: #F5F3EF;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -2002,15 +2012,26 @@ h2, h3, h4 {
   justify-content: center;
   line-height: 1;
 }
-.qty-btn-mini:hover:not(:disabled) { background: #F5F0E8; }
-.qty-btn-mini:disabled { opacity: 0.35; cursor: not-allowed; }
-.qty-display-mini {
+.product-card-qty .qty-btn-mini:hover:not(:disabled) {
+  background: rgba(245, 243, 239, 0.35);
+}
+.product-card-qty .qty-btn-mini:disabled { opacity: 0.5; cursor: not-allowed; }
+.product-card-qty .qty-display-mini {
   font-family: 'Barlow', sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #2B2B2B;
+  color: #F5F3EF;
   min-width: 32px;
   text-align: center;
+}
+
+/* Legacy hidden — old controls column kept removed */
+.product-card-controls {
+  display: none !important;
+}
+.product-card-media--clean .product-card-add,
+.product-card-media--clean .product-card-qty {
+  display: none;
 }
 
 /* Product Card (legacy, kept for non-menu pages) */
@@ -3060,15 +3081,23 @@ h2, h3, h4 {
 
 /* ========== PRODUCT DETAIL PAGE (REDESIGNED) ========== */
 .product-detail-page {
-  background: #F2F4F3 !important;
+  background: #F5F3EF !important;
   min-height: 100vh;
   padding: 0 0 80px;
 }
 
 .product-detail-wrapper {
-  max-width: 800px !important;
+  max-width: 1280px !important;
   margin: 0 auto !important;
-  padding: 32px 24px;
+  padding: 24px 24px;
+}
+@media (min-width: 1024px) {
+  .product-hero {
+    grid-template-columns: minmax(420px, 1.1fr) minmax(0, 1fr) !important;
+  }
+  .product-image-container {
+    min-height: 560px !important;
+  }
 }
 
 .product-detail-loading,

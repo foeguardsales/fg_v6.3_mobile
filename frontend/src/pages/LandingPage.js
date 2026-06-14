@@ -3,19 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus, Sprout, Leaf, ChefHat, Award } from 'lucide-react';
 import { useCart, SlideCart } from '../contexts/CartContext';
 
-// FoeGuard Brand Colors
+// FoeGuard Brand Colors — Farm Palette
 const COLORS = {
-  red: '#c8102e',
+  red: '#C8102E',          // Barn Red — CTAs, logo, nav accent
   redOverlay: '#9D0D23',
-  redDark: '#6F0A1B',
-  cream: '#f5f3ef',
-  softBg: '#E5D9C2',
+  redDark: '#2F4538',      // Footer uses Forest now (was deep red)
+  cream: '#F5F3EF',
+  softBg: '#E8DFC8',       // Straw
   khaki: '#D8CFB8',
   khakiDark: '#A89B7C',
-  charcoal: '#2C2C2C',
+  charcoal: '#3B2A1A',     // Aged Wood (was #2C2C2C)
   forestGreen: '#2F4538',
-  lightGreen: '#00934f',
-  white: '#ffffff'
+  lightGreen: '#7A9A7A',   // Sage / Light green for Comfort
+  harvestGold: '#C9A84C',  // Accent only — badges
+  agedWood: '#3B2A1A',
+  white: '#F5F3EF'         // No pure white surfaces
 };
 
 // Lifted Button Style (like Oma's - bordered with shadow on one side)
@@ -112,17 +114,19 @@ const ModernNavbar = () => {
         left: 0,
         right: 0,
         zIndex: 1000,
-        background: COLORS.red
+        background: COLORS.forestGreen
       }}>
         {/* Top announcement bar */}
         <div style={{
-          background: COLORS.redOverlay,
-          color: COLORS.white,
+          background: COLORS.agedWood,
+          color: COLORS.cream,
           textAlign: 'center',
           padding: '8px 16px',
           fontSize: '13px',
-          fontWeight: '500',
-          letterSpacing: '0.02em'
+          fontFamily: "'Barlow', sans-serif",
+          fontWeight: '600',
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase'
         }}>
           Free Delivery in the GTA Over $100
         </div>
@@ -153,7 +157,7 @@ const ModernNavbar = () => {
                 gap: '8px'
               }}
             >
-              <Menu size={26} color={COLORS.white} />
+              <Menu size={26} color={COLORS.cream} />
             </button>
           </div>
 
@@ -188,7 +192,7 @@ const ModernNavbar = () => {
                 padding: '8px'
               }}
             >
-              <User size={22} color={COLORS.white} />
+              <User size={22} color={COLORS.cream} />
             </button>
             <button
               onClick={() => setIsCartOpen(true)}
@@ -202,14 +206,14 @@ const ModernNavbar = () => {
                 position: 'relative'
               }}
             >
-              <ShoppingBag size={22} color={COLORS.white} />
+              <ShoppingBag size={22} color={COLORS.cream} />
               {cartItems.length > 0 && (
                 <span style={{
                   position: 'absolute',
                   top: '2px',
                   right: '2px',
-                  background: COLORS.white,
-                  color: COLORS.red,
+                  background: COLORS.red,
+                  color: COLORS.cream,
                   fontSize: '10px',
                   fontWeight: '700',
                   width: '16px',
