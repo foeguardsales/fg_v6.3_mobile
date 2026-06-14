@@ -85,20 +85,20 @@ const ProductBrandIcons = () => {
           <div style={{
             width: '44px',
             height: '44px',
-            border: '2px solid #2B2B2B',
+            border: '2px solid #3B2A1A',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: '#FFFFFF'
+            background: '#F5F3EF'
           }}>
-            <Icon size={22} color="#2B2B2B" strokeWidth={1.8} />
+            <Icon size={22} color="#3B2A1A" strokeWidth={1.8} />
           </div>
           <span style={{
             fontFamily: "'Barlow', sans-serif",
             fontSize: '12px',
             fontWeight: 600,
-            color: '#2B2B2B',
+            color: '#3B2A1A',
             lineHeight: 1.25,
             maxWidth: '110px'
           }}>{label}</span>
@@ -118,10 +118,10 @@ const FarmToBowlSection = () => {
   return (
     <section data-testid="farm-to-bowl-section" style={{ marginTop: '56px' }}>
       <h2 style={{
-        fontFamily: "'Barlow', sans-serif",
-        fontSize: 'clamp(24px, 3vw, 32px)',
-        fontWeight: 700,
-        color: '#2B2B2B',
+        fontFamily: "'Playfair Display', Georgia, serif",
+        fontSize: 'clamp(26px, 3.2vw, 36px)',
+        fontWeight: 600,
+        color: '#3B2A1A',
         margin: '0 0 24px',
         textTransform: 'uppercase',
         letterSpacing: '0.04em'
@@ -129,21 +129,21 @@ const FarmToBowlSection = () => {
       <div className="farm-to-bowl-cards">
         {cards.map((c, i) => (
           <div key={i} data-testid={`f2b-card-${c.title.toLowerCase()}`} style={{
-            background: '#FFFFFF',
-            border: '1px solid #E8DDD0',
-            borderRadius: '20px',
+            background: '#F5F3EF',
+            border: '1px solid #D8CFB8',
+            borderRadius: '8px',
             padding: '28px 24px',
-            boxShadow: '4px 4px 0px rgba(0,0,0,0.04)'
+            boxShadow: 'none'
           }}>
             <h3 style={{
-              fontFamily: "'Barlow', sans-serif",
+              fontFamily: "'Playfair Display', Georgia, serif",
               fontSize: '22px',
-              fontWeight: 700,
-              color: '#c8102e',
+              fontWeight: 600,
+              color: '#C8102E',
               margin: '0 0 12px',
               textTransform: 'none'
             }}>{c.title}</h3>
-            <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: 1.65, margin: 0 }}>{c.body}</p>
+            <p style={{ fontSize: '15px', color: '#3B2A1A', lineHeight: 1.65, margin: 0 }}>{c.body}</p>
           </div>
         ))}
       </div>
@@ -160,22 +160,22 @@ const PersonalizeSection = ({ navigate }) => {
       gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
       gap: '32px',
       alignItems: 'center',
-      background: '#F0ECE6',
-      borderRadius: '24px',
+      background: '#E8DFC8',
+      borderRadius: '8px',
       padding: '32px',
-      border: '1px solid #E8DDD0'
+      border: '1px solid #D8CFB8'
     }}>
       <div style={{
         aspectRatio: '4 / 3',
-        borderRadius: '16px',
+        borderRadius: '6px',
         overflow: 'hidden',
-        background: '#E8DDD0',
+        background: '#D8CFB8',
         border: '1px dashed #A89B7C',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#5A5A5A',
-        fontFamily: "'Rubik', sans-serif",
+        color: '#6A4F35',
+        fontFamily: "'Barlow', sans-serif",
         fontSize: '13px',
         textTransform: 'uppercase',
         letterSpacing: '0.05em'
@@ -188,14 +188,14 @@ const PersonalizeSection = ({ navigate }) => {
       </div>
       <div>
         <h2 style={{
-          fontFamily: "'Barlow', sans-serif",
-          fontSize: 'clamp(26px, 3vw, 32px)',
-          fontWeight: 700,
-          color: '#2B2B2B',
+          fontFamily: "'Playfair Display', Georgia, serif",
+          fontSize: 'clamp(26px, 3.2vw, 36px)',
+          fontWeight: 600,
+          color: '#3B2A1A',
           margin: '0 0 16px',
           textTransform: 'none'
         }}>Personalize Your Recipe</h2>
-        <p style={{ fontSize: '16px', color: '#3D3D3D', lineHeight: 1.7, margin: '0 0 20px' }}>
+        <p style={{ fontSize: '16px', color: '#3B2A1A', lineHeight: 1.7, margin: '0 0 20px' }}>
           We craft every recipe by hand, so customization is easy — whether you&apos;re matching a favourite meal or building one from scratch. Perfect for picky eaters, sensitive stomachs, and food allergies.
         </p>
         <button
@@ -251,20 +251,20 @@ const ProductFaqSection = () => {
   return (
     <section data-testid="product-faq-section" style={{ marginTop: '48px', marginBottom: '32px' }}>
       <h2 style={{
-        fontFamily: "'Barlow', sans-serif",
-        fontSize: 'clamp(24px, 3vw, 32px)',
-        fontWeight: 700,
-        color: '#2B2B2B',
+        fontFamily: "'Playfair Display', Georgia, serif",
+        fontSize: 'clamp(26px, 3.2vw, 36px)',
+        fontWeight: 600,
+        color: '#3B2A1A',
         margin: '0 0 16px',
         textTransform: 'uppercase',
         letterSpacing: '0.04em'
       }}>Frequently Asked</h2>
       <div style={{
-        background: '#FFFFFF',
-        border: '1px solid #E8DDD0',
-        borderRadius: '20px',
+        background: '#F5F3EF',
+        border: '1px solid #D8CFB8',
+        borderRadius: '8px',
         padding: '8px 24px',
-        boxShadow: '0 4px 16px rgba(43, 43, 43, 0.06)'
+        boxShadow: 'none'
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         {faqs.map((f, i) => {
@@ -504,32 +504,31 @@ export const ProductDetailPage = () => {
           position: 'fixed',
           bottom: '20px',
           right: '20px',
-          background: '#c8102e',
-          color: '#fff',
+          background: '#C8102E',
+          color: '#F5F3EF',
           border: 'none',
-          borderRadius: '10px',
+          borderRadius: '8px',
           padding: '12px 18px',
-          fontSize: '14px',
+          fontSize: '13px',
           fontWeight: '700',
-          letterSpacing: '0.02em',
+          letterSpacing: '0.06em',
           textTransform: 'uppercase',
           cursor: 'pointer',
-          boxShadow: '0 4px 12px rgba(136, 48, 47, 0.3)',
+          boxShadow: 'none',
           zIndex: 999,
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
-          transition: 'all 0.2s'
+          transition: 'all 0.2s',
+          fontFamily: "'Barlow', sans-serif"
         }}
         onMouseEnter={(e) => {
           e.target.style.background = '#9D0D23';
           e.target.style.transform = 'translateY(-2px)';
-          e.target.style.boxShadow = '0 6px 16px rgba(136, 48, 47, 0.4)';
         }}
         onMouseLeave={(e) => {
-          e.target.style.background = '#c8102e';
+          e.target.style.background = '#C8102E';
           e.target.style.transform = 'translateY(0)';
-          e.target.style.boxShadow = '0 4px 12px rgba(136, 48, 47, 0.3)';
         }}
       >
         <span>Checkout</span>

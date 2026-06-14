@@ -39,7 +39,23 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - Body font swapped to **Rubik Regular** (Public Sans removed in CSS), headings keep Barlow Bold
 - Global `h1 { text-transform: uppercase }` rule removed — all titles render Title Case
 
-### Feb 2026 — UI/UX refinements (latest)
+### Feb 2026 — Farm Palette refresh + Meal/Treat card unification (Iteration 11)
+- **Palette swap** — Cream `#F5F3EF` body, Aged Wood `#3B2A1A` text, Forest Green `#2F4538` nav + footer, Barn Red `#C8102E` CTAs, Khaki `#D8CFB8` borders, Straw `#E8DFC8` section accents, Harvest Gold `#C9A84C` (badges only)
+- **Typography** — Playfair Display 600 for h1/h2/h3 globally (loaded from Google Fonts); Barlow for body / buttons / labels; Rubik retired
+- **Navbar** — Forest Green background, Cream menu/account/cart icons, Aged Wood announcement bar, Barn Red cart badge
+- **Footer** — Now Forest Green (was deep red) via `COLORS.redDark = #2F4538`
+- **Collection pill colors aligned** — Comfort Dinner = Sage `#7A9A7A`, Primal Feast = Barn Red `#C8102E`, Royal Paws = Harvest Gold `#C9A84C`
+- **Product page hero pill** — Reduced from 100px pill → 6px squarish badge; smaller padding (6×14)
+- **Desktop product hero** — Wrapper widened 800→1280px; image col 1.1fr min-height 560px so content reads up on the right (Shopify-style)
+- **Removed subscribe pill** beside Checkout — only the lower Subscribe & Save section remains
+- **Subscribe & Save** — ON/OFF button → checkbox (Barn Red accent), label uppercase, same dropdown + perks preserved
+- **Progress icons** — `Wheat` → `Tractor`, `Soup` → `CircleDot` (top-down bowl)
+- **ALL CAPS** — Top nav tabs, category tabs, collection headers
+- **Unified meal/treat card** — Both render image left, name (Playfair) + desc + price (Barn Red) middle, qty counter `− 0 +` (Straw bg → collection-color bg when qty>0) + uppercase `SEE MORE` (no underline) right
+- **Click-anywhere-to-open** — Entire product card row is clickable; qty buttons stop propagation
+- **Secondary sections** — Farm-to-Bowl, Personalize, FAQ all migrated to Playfair headings + Cream/Straw cards (no pure white surfaces, no large shadows)
+- **Floating checkout** — 8px radius, no shadow, uppercase Barlow
+
 - **Repetitive treat header fixed** — TreatsSection now accepts `hideHeader` prop; on the Dog/Cat Treats tab the outer page provides the title so the inner header is hidden
 - **Mobile menu layout** — `.product-grid` is now single-column below 900px (image left, content middle, plus on bottom-right of image)
 - **Desktop product card** — Plus / qty controls moved to a dedicated right-column (`.product-card-controls`) so they no longer overlap the image; image+content row is thinner on desktop
