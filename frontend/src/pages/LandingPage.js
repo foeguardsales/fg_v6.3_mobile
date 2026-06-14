@@ -70,7 +70,7 @@ const FoeGuardLogo = ({ size = 'default' }) => {
 
   return (
     <img
-      src="https://customer-assets.emergentagent.com/job_b173aa98-8700-42d1-aca5-6a3b8220c855/artifacts/0fo0kwz0_fglogo.png"
+      src="https://customer-assets.emergentagent.com/job_build-box-redesign/artifacts/7j9zxw13_FoeGuard%20Official%20Logo_2026.png"
       alt="FoeGuard"
       style={{
         width: dim,
@@ -114,11 +114,11 @@ const ModernNavbar = () => {
         left: 0,
         right: 0,
         zIndex: 1000,
-        background: COLORS.forestGreen
+        background: COLORS.red
       }}>
         {/* Top announcement bar */}
         <div style={{
-          background: COLORS.agedWood,
+          background: COLORS.redOverlay,
           color: COLORS.cream,
           textAlign: 'center',
           padding: '8px 16px',
@@ -252,7 +252,8 @@ const ModernNavbar = () => {
             left: 0,
             bottom: 0,
             width: '300px',
-            background: COLORS.cream,
+            background: COLORS.forestGreen,
+            color: COLORS.cream,
             zIndex: 1002,
             padding: '20px',
             overflowY: 'auto'
@@ -260,7 +261,7 @@ const ModernNavbar = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
               <FoeGuardLogo size="small" />
               <button onClick={() => setMenuOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X size={24} color={COLORS.charcoal} />
+                <X size={24} color={COLORS.cream} />
               </button>
             </div>
             
@@ -279,22 +280,25 @@ const ModernNavbar = () => {
                           padding: '16px 0',
                           background: 'none',
                           border: 'none',
-                          borderBottom: `1px solid ${COLORS.khaki}`,
+                          borderBottom: `1px solid rgba(245,243,239,0.18)`,
                           cursor: 'pointer',
-                          fontSize: '16px',
-                          fontWeight: '500',
-                          color: COLORS.charcoal
+                          fontSize: '14px',
+                          fontWeight: '700',
+                          letterSpacing: '0.08em',
+                          textTransform: 'uppercase',
+                          fontFamily: "'Barlow', sans-serif",
+                          color: COLORS.cream
                         }}
                       >
                         {item.label}
                         <ChevronDown 
                           size={20} 
-                          color={COLORS.khaki}
+                          color={COLORS.cream}
                           style={{ transform: resourcesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}
                         />
                       </button>
                       {resourcesOpen && (
-                        <div style={{ paddingLeft: '16px', background: COLORS.softBg }}>
+                        <div style={{ paddingLeft: '16px', background: 'rgba(0,0,0,0.15)' }}>
                           {item.items.map((subItem, subIdx) => (
                             <button
                               key={subIdx}
@@ -307,15 +311,18 @@ const ModernNavbar = () => {
                                 padding: '14px 0',
                                 background: 'none',
                                 border: 'none',
-                                borderBottom: `1px solid ${COLORS.khaki}`,
+                                borderBottom: `1px solid rgba(245,243,239,0.12)`,
                                 cursor: 'pointer',
-                                fontSize: '15px',
-                                fontWeight: '400',
-                                color: COLORS.charcoal
+                                fontSize: '13px',
+                                fontWeight: '500',
+                                letterSpacing: '0.06em',
+                                textTransform: 'uppercase',
+                                fontFamily: "'Barlow', sans-serif",
+                                color: COLORS.cream
                               }}
                             >
                               {subItem.label}
-                              <ChevronRight size={18} color={COLORS.khaki} />
+                              <ChevronRight size={18} color={COLORS.cream} />
                             </button>
                           ))}
                         </div>
@@ -332,15 +339,18 @@ const ModernNavbar = () => {
                         padding: '16px 0',
                         background: 'none',
                         border: 'none',
-                        borderBottom: `1px solid ${COLORS.khaki}`,
+                        borderBottom: `1px solid rgba(245,243,239,0.18)`,
                         cursor: 'pointer',
-                        fontSize: '16px',
-                        fontWeight: '500',
-                        color: COLORS.charcoal
+                        fontSize: '14px',
+                        fontWeight: '700',
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        fontFamily: "'Barlow', sans-serif",
+                        color: COLORS.cream
                       }}
                     >
                       {item.label}
-                      <ChevronRight size={20} color={COLORS.khaki} />
+                      <ChevronRight size={20} color={COLORS.cream} />
                     </button>
                   )}
                 </div>
@@ -358,8 +368,12 @@ const ModernNavbar = () => {
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
-                  fontSize: '15px',
-                  color: COLORS.charcoal
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  fontFamily: "'Barlow', sans-serif",
+                  color: COLORS.cream
                 }}
               >
                 <User size={20} /> Login / Create Account
@@ -944,10 +958,11 @@ export const LandingPage = () => {
               </h2>
               <p style={{
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
-                opacity: 0.92,
+                opacity: 1,
                 margin: 0,
                 fontWeight: 400,
-                lineHeight: 1.6
+                lineHeight: 1.6,
+                color: COLORS.softBg
               }}>
                 Here&apos;s what you can expect from real food nutrition:
               </p>
@@ -993,15 +1008,18 @@ export const LandingPage = () => {
                   <div>
                     <div style={{
                       fontSize: '15px',
-                      fontWeight: '600',
+                      fontWeight: '700',
                       marginBottom: '4px',
                       fontFamily: "'Barlow', sans-serif",
-                      lineHeight: 1.3
+                      lineHeight: 1.3,
+                      color: COLORS.cream,
+                      letterSpacing: '0.02em'
                     }}>{benefit.title}</div>
                     <div style={{
                       fontSize: '13px',
-                      opacity: 0.85,
-                      lineHeight: 1.5
+                      opacity: 0.9,
+                      lineHeight: 1.5,
+                      color: COLORS.softBg
                     }}>{benefit.desc}</div>
                   </div>
                 </div>

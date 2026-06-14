@@ -118,7 +118,7 @@ const FarmToBowlSection = () => {
   return (
     <section data-testid="farm-to-bowl-section" style={{ marginTop: '56px' }}>
       <h2 style={{
-        fontFamily: "'Playfair Display', Georgia, serif",
+        fontFamily: "'Fraunces', Georgia, serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
         color: '#3B2A1A',
@@ -136,7 +136,7 @@ const FarmToBowlSection = () => {
             boxShadow: 'none'
           }}>
             <h3 style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "'Fraunces', Georgia, serif",
               fontSize: '22px',
               fontWeight: 600,
               color: '#C8102E',
@@ -188,7 +188,7 @@ const PersonalizeSection = ({ navigate }) => {
       </div>
       <div>
         <h2 style={{
-          fontFamily: "'Playfair Display', Georgia, serif",
+          fontFamily: "'Fraunces', Georgia, serif",
           fontSize: 'clamp(26px, 3.2vw, 36px)',
           fontWeight: 600,
           color: '#3B2A1A',
@@ -251,7 +251,7 @@ const ProductFaqSection = () => {
   return (
     <section data-testid="product-faq-section" style={{ marginTop: '48px', marginBottom: '32px' }}>
       <h2 style={{
-        fontFamily: "'Playfair Display', Georgia, serif",
+        fontFamily: "'Fraunces', Georgia, serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
         color: '#3B2A1A',
@@ -444,9 +444,9 @@ export const ProductDetailPage = () => {
   // Get collection color and name based on product line
   const getCollectionInfo = () => {
     switch(product.product_line) {
-      case 'comfort_dinner': return { color: '#7A9A7A', name: 'Comfort Dinner' };
+      case 'comfort_dinner': return { color: '#A4C0A0', name: 'Comfort Dinner' };
       case 'primal_feast': return { color: '#C8102E', name: 'Primal Feast' };
-      case 'royal_paws': return { color: '#C9A84C', name: 'Royal Paws' };
+      case 'royal_paws': return { color: '#5E4B73', name: 'Royal Paws' };
       default: return { color: '#C8102E', name: 'FoeGuard' };
     }
   };
@@ -593,7 +593,7 @@ export const ProductDetailPage = () => {
             
             <div className="product-hero-info" style={{ padding: '32px' }}>
               <h1 style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "'Fraunces', Georgia, serif",
                 fontSize: 'clamp(28px, 3.4vw, 40px)',
                 color: '#3B2A1A',
                 margin: '0 0 4px 0',

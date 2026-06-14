@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
-import { Calculator, Tractor, CircleDot } from 'lucide-react';
+import { Calculator, Wheat, PawPrint } from 'lucide-react';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -439,7 +439,7 @@ export const BoxBuilder = () => {
             flexWrap: 'wrap'
           }}>
             <h1 className="bb-header-title" style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "'Fraunces', Georgia, serif",
               fontSize: 'clamp(22px, 2.6vw, 30px)',
               fontWeight: '600',
               margin: 0,
@@ -544,7 +544,7 @@ export const BoxBuilder = () => {
           {/* Selected quantity — sleek, thin line with farm + bowl icons */}
           <div className="bb-progress-line" data-testid="box-progress-line">
             <span className="bb-progress-icon" aria-hidden="true">
-              <Tractor size={18} strokeWidth={1.8} />
+              <Wheat size={18} strokeWidth={1.8} />
             </span>
             <div className="bb-progress-track">
               <div 
@@ -556,7 +556,7 @@ export const BoxBuilder = () => {
               {getTotalSelectedLbs()}lb/{boxSize}lb
             </span>
             <span className="bb-progress-icon" aria-hidden="true">
-              <CircleDot size={18} strokeWidth={1.8} />
+              <PawPrint size={18} strokeWidth={1.8} />
             </span>
           </div>
           </>
@@ -630,6 +630,7 @@ export const BoxBuilder = () => {
                   onToggleTreat={handleToggleTreat}
                   petType="dog"
                   navigate={navigate}
+                  showCategoryDescriptions={true}
                 />
               </>
             ) : (
@@ -665,6 +666,7 @@ export const BoxBuilder = () => {
                   onToggleTreat={handleToggleTreat}
                   petType="cat"
                   navigate={navigate}
+                  showCategoryDescriptions={true}
                 />
               </>
             )}
@@ -731,9 +733,9 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   // Get collection color based on product line
   const getCollectionColor = () => {
     switch(product.product_line) {
-      case 'comfort_dinner': return '#7A9A7A';
+      case 'comfort_dinner': return '#A4C0A0';
       case 'primal_feast': return '#C8102E';
-      case 'royal_paws': return '#C9A84C';
+      case 'royal_paws': return '#5E4B73';
       default: return '#C8102E';
     }
   };
@@ -791,24 +793,33 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         <p className="product-card-desc">
           {product.mini_description || product.description.split('.')[0]}
         </p>
-        <div className="product-card-price">
-          {hasDiscount ? (
-            <>
-              <span className="price-original">${basePrice.toFixed(2)}</span>
-              <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
-            </>
-          ) : (
-            <span className="price-regular">${basePrice.toFixed(2)}</span>
-          )}
-          <span className="price-unit">/ 6lb</span>
+        <div className="product-card-meta">
+          <div className="product-card-price">
+            {hasDiscount ? (
+              <>
+                <span className="price-original">${basePrice.toFixed(2)}</span>
+                <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
+              </>
+            ) : (
+              <span className="price-regular">${basePrice.toFixed(2)}</span>
+            )}
+            <span className="price-unit">/ 6lb</span>
+          </div>
+          <button
+            className="product-card-more"
+            onClick={(e) => { e.stopPropagation(); goToProduct(); }}
+            data-testid={`learn-more-${product.product_id}`}
+          >
+            See more
+          </button>
         </div>
       </div>
 
-      {/* Right: qty counter (always shown, treats-style) + see more */}
+      {/* Right: qty counter — same color for ALL menu items (seamless cream → khaki when added) */}
       <div className="product-card-rightcol">
         <div 
-          className="product-card-qty product-card-qty--treats" 
-          style={{ background: selectedQty > 0 ? collectionColor : '#E8DFC8' }}
+          className="product-card-qty product-card-qty--menu" 
+          data-active={selectedQty > 0 ? 'true' : 'false'}
         >
           <button
             className="qty-btn-mini"
@@ -816,14 +827,12 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
             disabled={selectedQty === 0}
             data-testid={`decrease-${product.product_id}`}
             aria-label="Decrease"
-            style={{ color: selectedQty > 0 ? '#F5F3EF' : '#3B2A1A' }}
           >
             −
           </button>
           <span 
             className="qty-display-mini" 
             data-testid={`qty-${product.product_id}`}
-            style={{ color: selectedQty > 0 ? '#F5F3EF' : '#3B2A1A' }}
           >
             {selectedQty > 0 ? `${selectedQty}lb` : '0'}
           </span>
@@ -833,18 +842,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
             disabled={!canAdd && selectedQty > 0}
             data-testid={`increase-${product.product_id}`}
             aria-label="Increase"
-            style={{ color: selectedQty > 0 ? '#F5F3EF' : '#3B2A1A' }}
           >
             +
           </button>
         </div>
-        <button
-          className="product-card-more"
-          onClick={(e) => { e.stopPropagation(); goToProduct(); }}
-          data-testid={`learn-more-${product.product_id}`}
-        >
-          See more
-        </button>
       </div>
     </div>
   );

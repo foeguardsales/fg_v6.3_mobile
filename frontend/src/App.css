@@ -156,10 +156,10 @@ body {
   font-style: normal;
 }
 
-/* Heritage typography: Playfair Display (serif) for headings, Barlow for body/buttons/labels */
+/* Heritage typography: Fraunces 600 (serif) for headings, Barlow for body/buttons/labels */
 :root {
   --font-body: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-heading: "'Playfair Display'", Georgia, 'Times New Roman', serif;
+  --font-heading: "'Fraunces'", Georgia, 'Times New Roman', serif;
 }
 
 /* Default body = Barlow 400 */
@@ -169,9 +169,9 @@ body {
   background: #F5F3EF;
   color: #3B2A1A;
 }
-/* Headings = Playfair Display 600 */
+/* Headings = Fraunces 600 */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif !important;
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif !important;
   font-weight: 600;
   color: #3B2A1A;
 }
@@ -1804,7 +1804,7 @@ h2, h3, h4 {
   margin-bottom: 0;
 }
 .menu-collection-title {
-  font-family: 'Playfair Display', Georgia, serif !important;
+  font-family: 'Fraunces', Georgia, serif !important;
   font-size: clamp(24px, 2.8vw, 32px) !important;
   font-weight: 600;
   color: #3B2A1A;
@@ -1848,7 +1848,7 @@ h2, h3, h4 {
 
 .product-card-content { min-width: 0; }
 .product-card-title {
-  font-family: 'Playfair Display', Georgia, serif !important;
+  font-family: 'Fraunces', Georgia, serif !important;
   font-size: 18px !important;
   font-weight: 600;
   color: #3B2A1A;
@@ -1878,6 +1878,7 @@ h2, h3, h4 {
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
+  margin-top: 4px;
 }
 .product-card-price {
   display: inline-flex;
@@ -1982,28 +1983,34 @@ h2, h3, h4 {
   cursor: not-allowed;
 }
 
-/* Qty counter — treats-style pill (collection-colored bg) */
+/* Qty counter — UNIFIED for all menu items (seamless cream → khaki when added) */
 .product-card-qty {
   position: static;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #C8102E;
-  border: none;
+  background: #F5F3EF;
+  border: 1px solid #D8CFB8;
   border-radius: 8px;
   padding: 5px 6px;
   box-shadow: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
-.product-card-qty--treats {
-  background: #C8102E;
+.product-card-qty--menu[data-active="true"] {
+  background: #D8CFB8;
+  border-color: #A89B7C;
+}
+.product-card-qty--treats[data-active="true"] {
+  background: #D8CFB8;
+  border-color: #A89B7C;
 }
 .product-card-qty .qty-btn-mini {
   width: 26px;
   height: 26px;
   border-radius: 6px;
   border: none;
-  background: rgba(245, 243, 239, 0.2);
-  color: #F5F3EF;
+  background: transparent;
+  color: #3B2A1A;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -2013,14 +2020,14 @@ h2, h3, h4 {
   line-height: 1;
 }
 .product-card-qty .qty-btn-mini:hover:not(:disabled) {
-  background: rgba(245, 243, 239, 0.35);
+  background: rgba(59,42,26,0.08);
 }
-.product-card-qty .qty-btn-mini:disabled { opacity: 0.5; cursor: not-allowed; }
+.product-card-qty .qty-btn-mini:disabled { opacity: 0.35; cursor: not-allowed; }
 .product-card-qty .qty-display-mini {
   font-family: 'Barlow', sans-serif;
   font-size: 13px;
   font-weight: 700;
-  color: #F5F3EF;
+  color: #3B2A1A;
   min-width: 32px;
   text-align: center;
 }

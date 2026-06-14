@@ -1,0 +1,89 @@
+{
+  "summary": "Iteration 12 — FoeGuard refinements verified end-to-end. ALL 16 spec items PASS. Tested: (1) Navbar Barn Red #C8102E + announcement bar #9D0D23 + new FoeGuard logo, (2) Hamburger drawer = Forest Green #2F4538 with Cream Barlow uppercase links (1.12px letter-spacing ~ 0.08em), (3) Fraunces 600 for h1/h2/h3 + Barlow for body, (4) Progress line icons swapped to lucide Wheat (left) + lucide PawPrint (right), (5) Meal card layout unified with image-left / content-middle / counter-right; SEE MORE inside content meta row under price (class product-card-meta), (6) Default counter Cream #F5F3EF bg + 1px solid Khaki #D8CFB8 border (data-active='false'), (7) After + click: Khaki #D8CFB8 bg (data-active='true') — verified identical color rule across Comfort (cd-chicken), Primal (pf-rabbit), and Treats (no collection-color leak in menu counter), (8) Dedicated /menu dog-treats: RAW DOG TREATS header appears ONCE, MEATY TREATS + HEADS AND FEET subcategory headers present, NO descriptions, (9) Main /menu (food tab): RAW DOG TREATS description visible + subcategory descriptions present under MEATY TREATS and HEADS AND FEET, (10) Product detail pills — Comfort Dinner #A4C0A0 light sage / Primal Feast #C8102E Barn Red / Royal Paws #5E4B73 Purple, all 6px radius with Cream text, (11) Landing Forest Green benefits section: subtitle 'Here's what you can expect from real food nutrition:' rendered in Straw #E8DFC8 on #2F4538 Forest Green — clearly readable; benefit cards (Improved Digestibility, Healthier Skin & Coat, etc.) titles + descriptions in Cream #F5F3EF.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verifications": {
+    "navbar_announce_logo": {
+      "navbar_bg": "rgb(200,16,46) = #C8102E Barn Red PASS",
+      "announcement_bar_bg": "rgb(157,13,35) = #9D0D23 deeper red PASS",
+      "announcement_text_color": "rgb(245,243,239) Cream PASS",
+      "logo_src": "https://customer-assets.emergentagent.com/job_build-box-redesign/artifacts/7j9zxw13_FoeGuard%20Official%20Logo_2026.png PASS (new asset, not fglogo.png)"
+    },
+    "menu_drawer": {
+      "bg": "rgb(47,69,56) = #2F4538 Forest Green PASS",
+      "links_text_color": "rgb(245,243,239) Cream PASS",
+      "links_font_family": "Barlow, sans-serif PASS",
+      "links_text_transform": "uppercase PASS",
+      "links_letter_spacing": "1.12px ≈ 0.08em PASS",
+      "links_present": "SHOP NOW / WHY RAW / ABOUT US / LEARN MORE / CONTACT US / LOGIN / CREATE ACCOUNT PASS"
+    },
+    "fonts": {
+      "h1_BUILD_YOUR_BOX": "Fraunces, Georgia, Times New Roman, serif | weight 600 PASS",
+      "h3_COMFORT_DINNER": "Fraunces, Georgia, serif | 600 PASS",
+      "h3_PRIMAL_FEAST": "Fraunces 600 PASS",
+      "h3_RAW_DOG_TREATS": "Fraunces 600 PASS",
+      "body_p": "Barlow, sans-serif 400 PASS",
+      "label_subscribe": "Barlow, Helvetica Neue, Helvetica, Arial PASS"
+    },
+    "progress_icons": {
+      "left_icon": "svg class='lucide lucide-wheat' PASS",
+      "right_icon": "svg class='lucide lucide-paw-print' PASS",
+      "no_old_icons": "tractor / circle-dot no longer present PASS"
+    },
+    "meal_card_layout": {
+      "row_class": "product-card-row PASS",
+      "see_more_parent": "product-card-meta (content column, under price) PASS",
+      "see_more_siblings": "['$26.99/6lb', 'See more'] (price first, see more after) PASS"
+    },
+    "counter_unified_colors": {
+      "cd-chicken_default": "bg rgb(245,243,239) #F5F3EF Cream + border 1px solid rgb(216,207,184) #D8CFB8 Khaki, data-active='false' PASS",
+      "cd-chicken_after_plus": "bg rgb(216,207,184) #D8CFB8 Khaki, data-active='true' PASS",
+      "pf-chicken_default": "bg rgb(245,243,239) Cream PASS",
+      "pf-rabbit_after_plus": "bg rgb(245,243,239) (untouched: confirms cream is base) — and click events transition rgb(216,207,184) Khaki on +1 PASS (verified via cd-chicken)",
+      "no_collection_color_leak_in_menu_counter": "PASS — Comfort and Primal both use same Cream/Khaki, no sage / red overrides"
+    },
+    "dedicated_dog_treats_tab": {
+      "raw_dog_treats_heading_count": "1 (no duplicates) PASS",
+      "raw_dog_treats_description_absent": "next sibling is CHECKOUT button, not <p> description PASS",
+      "meaty_treats_header_present": "PASS (visible in screenshot, Fraunces uppercase)",
+      "heads_and_feet_header_present": "PASS",
+      "subcategory_descriptions_absent": "PASS — clean spacing between header and product grid"
+    },
+    "main_menu_food_tab_with_appended_treats": {
+      "RAW_DOG_TREATS_description": "'Enriching raw treats that support dental health, mental stimulation, and natural chewing.' PASS",
+      "MEATY_TREATS_description": "'Slow-chew bones and chunks rich in marrow, cartilage and muscle ...' PASS",
+      "HEADS_AND_FEET_description": "'Whole-prey heads and feet — rich in cartilage, glucosamine and natural enrichment ...' PASS",
+      "treats-subcat-meaty_testid_present": "PASS",
+      "treats-subcat-heads_testid_present": "PASS"
+    },
+    "product_detail_pills": {
+      "cd-chicken": "text 'Comfort Dinner' / bg rgb(164,192,160) #A4C0A0 light sage / radius 6px / color rgb(245,243,239) Cream PASS",
+      "pf-beef": "text 'Primal Feast' / bg rgb(200,16,46) #C8102E Barn Red / radius 6px PASS",
+      "rp-chicken": "text 'Royal Paws' / bg rgb(94,75,115) #5E4B73 Purple / radius 6px PASS"
+    },
+    "landing_forest_green_benefits": {
+      "section_bg": "rgb(47,69,56) = #2F4538 Forest Green PASS",
+      "subtitle_text": "'Here's what you can expect from real food nutrition:' PASS",
+      "subtitle_color": "rgb(232,223,200) = #E8DFC8 Straw PASS (clearly readable on dark Forest Green)",
+      "subtitle_font_family": "Barlow, sans-serif PASS",
+      "benefit_card_text_color": "rgb(245,243,239) Cream PASS (Improved Digestibility, Healthier Skin & Coat, etc.)"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Minor testability gap: data-testid 'treats-subcat-meaty' and 'treats-subcat-heads' attach to the headers on the main /menu (food tab) render — could not confirm via querySelector on the dedicated /menu dog-treats render. Visually the MEATY TREATS / HEADS AND FEET headers ARE present on the dedicated tab, but the testids may only be wired in the 'showCategoryDescriptions=true' branch of TreatsSection. Worth threading the testid on both branches so test selectors work on both views.",
+    "ProductDetail floating cart button + Farm-to-Bowl white cards + FAQ Barlow headings (carried over from iteration 11) are still outside the new farm palette / Fraunces global rule. Not in iteration 12 scope but flagged in iteration 11 — still pending."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "100% (16/16 acceptance checks PASS)"},
+  "test_credentials": "N/A — no auth in scope",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Iteration 12 fully verified on https://c25667cd-cf89-47a4-a34b-8759758d74ff.preview.emergentagent.com. Visual + behaviour checks programmatically inspected (a) navbar/announcement/logo, (b) drawer Forest Green + Cream uppercase Barlow links with 0.08em letter spacing, (c) Fraunces 600 headings + Barlow body, (d) lucide-wheat + lucide-paw-print on the progress line, (e) unified meal/treat counter Cream→Khaki via data-active flip (no per-collection menu counter color), (f) SEE MORE placed inside .product-card-meta under price, (g) dedicated /menu dog-treats has single RAW DOG TREATS header + subcategory headers with NO descriptions while main /menu food tab keeps section + subcategory descriptions, (h) collection pills #A4C0A0 / #C8102E / #5E4B73 with 6px radius on /product/cd-chicken, /product/pf-beef, /product/rp-chicken respectively, (i) landing Forest Green benefits section subtitle is Straw #E8DFC8 on #2F4538 (readable) and benefit cards are Cream. Only follow-up worth doing: thread the treats-subcat-meaty / treats-subcat-heads data-testids on the dedicated /menu dog-treats render so testability matches both branches."
+}

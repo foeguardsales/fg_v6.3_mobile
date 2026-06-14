@@ -430,14 +430,13 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
 
 export const CartPopup = CartDrawer;
 
-export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', navigate, hideHeader = false }) => {
+export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', navigate, hideHeader = false, showCategoryDescriptions = false }) => {
   const [treats, setTreats] = useState([]);
 
   useEffect(() => {
     const loadTreats = async () => {
       try {
         const { data } = await axios.get(`${API}/treats`);
-        // Filter treats by pet type
         const filteredTreats = data.filter(t => t.pet_type === petType);
         setTreats(filteredTreats);
       } catch (error) {
@@ -450,11 +449,115 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
   if (treats.length === 0) return null;
 
   const isDog = petType !== 'cat';
-  const treatColor = isDog ? '#C8102E' : '#7A9A7A';
+
+  // Categorize each treat by name → "Heads and Feet" if name contains head/feet/foot, else "Meaty Treats"
+  const isHeadsAndFeet = (name) => /head|feet|foot/i.test(name);
+  const meatyTreats = treats.filter(t => !isHeadsAndFeet(t.name));
+  const headsAndFeet = treats.filter(t => isHeadsAndFeet(t.name));
+
+  const subCategories = [
+    {
+      key: 'meaty',
+      title: 'MEATY TREATS',
+      desc: isDog
+        ? 'Slow-chew bones and chunks rich in marrow, cartilage and muscle — built to satisfy and support dental health.'
+        : 'Bite-sized whole-muscle treats designed for natural prey instinct and dental support.',
+      items: meatyTreats
+    },
+    {
+      key: 'heads',
+      title: 'HEADS AND FEET',
+      desc: isDog
+        ? 'Whole-prey heads and feet — rich in cartilage, glucosamine and natural enrichment for serious chewers.'
+        : 'Tiny heads and feet for natural chewing, cartilage and mental enrichment.',
+      items: headsAndFeet
+    }
+  ].filter(sc => sc.items.length > 0);
+
+  const renderTreatCard = (treat) => {
+    const selectedTreat = selectedTreats.find(t => t.treat_id === treat.treat_id);
+    const quantity = selectedTreat ? selectedTreat.quantity : 0;
+    const goToTreat = () => {
+      if (!navigate) return;
+      const root = document.getElementById('root');
+      const scrollPos = root ? root.scrollTop : window.scrollY;
+      sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
+      navigate(`/treat/${treat.treat_id}`);
+    };
+    return (
+      <div
+        key={treat.treat_id}
+        className={`product-card-row ${quantity > 0 ? 'is-selected' : ''}`}
+        data-testid={`treat-${treat.treat_id}`}
+        onClick={navigate ? goToTreat : undefined}
+        role={navigate ? 'button' : undefined}
+        tabIndex={navigate ? 0 : undefined}
+        style={{ cursor: navigate ? 'pointer' : 'default' }}
+      >
+        {/* Left: image */}
+        <div className="product-card-media product-card-media--clean">
+          {treat.images && treat.images.length > 0 ? (
+            <img
+              src={treat.images[0]}
+              alt={treat.name}
+              onError={(e) => { e.target.style.opacity = '0.4'; }}
+            />
+          ) : (
+            <div style={{ width: '100%', height: '100%', background: '#E8DFC8', borderRadius: '8px' }} />
+          )}
+        </div>
+
+        {/* Middle: text content */}
+        <div className="product-card-content">
+          <h4 className="product-card-title">{treat.name}</h4>
+          <p className="product-card-desc">{treat.quantity_description}</p>
+          <div className="product-card-meta">
+            <div className="product-card-price">
+              <span className="price-regular">${treat.price.toFixed(2)}</span>
+            </div>
+            {navigate && (
+              <button
+                className="product-card-more"
+                onClick={(e) => { e.stopPropagation(); goToTreat(); }}
+                data-testid={`learn-more-treat-${treat.treat_id}`}
+              >
+                See more
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Right: qty counter — same color scheme as meals */}
+        <div className="product-card-rightcol">
+          <div
+            className="product-card-qty product-card-qty--menu"
+            data-active={quantity > 0 ? 'true' : 'false'}
+          >
+            <button
+              className="qty-btn-mini"
+              onClick={(e) => { e.stopPropagation(); if (quantity > 0) onToggleTreat(treat, quantity - 1); }}
+              disabled={quantity === 0}
+              aria-label="Decrease"
+            >
+              −
+            </button>
+            <span className="qty-display-mini">{quantity}</span>
+            <button
+              className="qty-btn-mini"
+              onClick={(e) => { e.stopPropagation(); onToggleTreat(treat, quantity + 1); }}
+              aria-label="Increase"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="treats-section menu-collection">
-      {/* Treats simple header — hidden when caller already provides one */}
+      {/* Outer page title — hidden on dedicated treats tab (caller provides one) */}
       {!hideHeader && (
         <div className="menu-collection-header" data-testid="collection-header-treats">
           <h3 className="menu-collection-title">RAW {isDog ? 'DOG' : 'CAT'} TREATS</h3>
@@ -466,167 +569,19 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
         </div>
       )}
 
-      <div className="treats-grid">
-        {treats.map(treat => {
-          const selectedTreat = selectedTreats.find(t => t.treat_id === treat.treat_id);
-          const quantity = selectedTreat ? selectedTreat.quantity : 0;
-          
-          return (
-          <div 
-            key={treat.treat_id} 
-            className={`treat-item ${quantity > 0 ? 'selected' : ''}`}
-            data-testid={`treat-${treat.treat_id}`}
-            onClick={navigate ? () => {
-              const root = document.getElementById('root');
-              const scrollPos = root ? root.scrollTop : window.scrollY;
-              sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
-              navigate(`/treat/${treat.treat_id}`);
-            } : undefined}
-            role={navigate ? 'button' : undefined}
-            tabIndex={navigate ? 0 : undefined}
-            style={{ position: 'relative', paddingRight: '130px', display: 'flex', alignItems: 'center', gap: '16px', cursor: navigate ? 'pointer' : 'default' }}
-          >
-            {/* Treat Image */}
-            {treat.images && treat.images.length > 0 && (
-              <div style={{
-                width: '100px',
-                height: '100px',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                flexShrink: 0,
-                backgroundColor: '#f5f5f5',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <img 
-                  src={treat.images[0]} 
-                  alt={treat.name}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                  }}
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.parentElement.innerHTML = '<div style="color: #999; font-size: 12px; text-align: center;">Image<br/>Coming Soon</div>';
-                  }}
-                />
-              </div>
+      {subCategories.map(sc => (
+        <div key={sc.key} className="treats-subcategory" style={{ marginTop: '28px' }}>
+          <div className="menu-collection-header" data-testid={`treats-subcat-${sc.key}`} style={{ paddingBottom: '8px' }}>
+            <h4 className="menu-collection-title" style={{ fontSize: 'clamp(20px, 2.2vw, 26px)', margin: '0 0 4px' }}>{sc.title}</h4>
+            {showCategoryDescriptions && (
+              <p className="menu-collection-desc">{sc.desc}</p>
             )}
-            <div style={{ flex: 1 }}>
-              <div className="treat-info">
-                <h4 style={{ fontSize: '18px', marginBottom: '4px', fontWeight: '600', fontFamily: "'Playfair Display', Georgia, serif", color: '#3B2A1A' }}>{treat.name}</h4>
-                <p style={{ color: '#6A4F35', fontSize: '13px', margin: '0 0 8px 0', fontFamily: "'Barlow', sans-serif" }}>{treat.quantity_description}</p>
-                <span style={{ fontSize: '16px', fontWeight: '700', color: '#C8102E', display: 'block', fontFamily: "'Barlow', sans-serif" }}>${treat.price.toFixed(2)}</span>
-              </div>
-            </div>
-            <div style={{ 
-              position: 'absolute',
-              right: '16px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              gap: '12px',
-              width: '100px'
-            }}>
-              {/* Quantity Selector */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: quantity > 0 ? treatColor : '#E8DFC8',
-                borderRadius: '8px',
-                padding: '4px 8px'
-              }}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (quantity > 0) {
-                      onToggleTreat(treat, quantity - 1);
-                    }
-                  }}
-                  style={{
-                    width: '26px',
-                    height: '26px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    background: quantity > 0 ? 'rgba(245,243,239,0.2)' : 'rgba(59,42,26,0.1)',
-                    color: quantity > 0 ? '#F5F3EF' : '#3B2A1A',
-                    fontSize: '16px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  −
-                </button>
-                <span style={{
-                  minWidth: '24px',
-                  textAlign: 'center',
-                  fontWeight: '700',
-                  fontSize: '14px',
-                  color: quantity > 0 ? '#F5F3EF' : '#3B2A1A',
-                  fontFamily: "'Barlow', sans-serif"
-                }}>
-                  {quantity}
-                </span>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onToggleTreat(treat, quantity + 1);
-                  }}
-                  style={{
-                    width: '26px',
-                    height: '26px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    background: quantity > 0 ? 'rgba(245,243,239,0.2)' : 'rgba(59,42,26,0.1)',
-                    color: quantity > 0 ? '#F5F3EF' : '#3B2A1A',
-                    fontSize: '16px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  +
-                </button>
-              </div>
-              {navigate && (
-                <button 
-                  className="btn-learn-more-treat"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const root = document.getElementById('root');
-                    const scrollPos = root ? root.scrollTop : window.scrollY;
-                    sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
-                    navigate(`/treat/${treat.treat_id}`);
-                  }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: treatColor,
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    padding: '0',
-                    whiteSpace: 'nowrap',
-                    fontFamily: "'Barlow', sans-serif",
-                    letterSpacing: '0.04em',
-                    textTransform: 'uppercase'
-                  }}
-                >
-                  See more
-                </button>
-              )}
-            </div>
           </div>
-        )})}
-      </div>
+          <div className="product-grid">
+            {sc.items.map(renderTreatCard)}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
