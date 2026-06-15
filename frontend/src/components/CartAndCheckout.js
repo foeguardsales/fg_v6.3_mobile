@@ -411,17 +411,85 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
               }}
             />
           </div>
+
+          {/* Subscribe & Save — bottom of cart, seamless */}
+          {onSubscriptionChange && (
+            <label
+              data-testid="cart-subscribe-save"
+              style={{
+                marginTop: '20px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '12px',
+                padding: '14px 16px',
+                background: '#E8DFC8',
+                border: '1px solid #D8CFB8',
+                borderRadius: '12px',
+                cursor: 'pointer'
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={!!subscriptionPlan}
+                onChange={(e) => onSubscriptionChange(e.target.checked ? 'every_2_weeks' : null)}
+                data-testid="cart-subscribe-checkbox"
+                style={{ marginTop: '2px', accentColor: '#3B2A1A', width: '18px', height: '18px' }}
+              />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '14px', fontWeight: 700, color: '#3B2A1A' }}>
+                  Save extra ${(subtotal * SUBSCRIPTION_DISCOUNT).toFixed(2)} — subscribe &amp; save 5%
+                </div>
+                <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '12px', color: '#6A4F35', marginTop: '2px' }}>
+                  Free delivery. Pause, skip, or cancel anytime.
+                </div>
+              </div>
+            </label>
+          )}
         </div>
         
         <div className="cart-drawer-footer">
-          <button 
-            className="btn-primary"
-            onClick={onProceed}
-            disabled={!isBoxComplete}
-            data-testid="cart-proceed-checkout"
-          >
-            {isBoxComplete ? 'Proceed to Checkout' : `Add ${boxSize - getTotalProteins()}lb more`}
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <button
+              type="button"
+              onClick={onClose}
+              data-testid="cart-add-items"
+              style={{
+                background: 'transparent',
+                border: '1.5px solid #3B2A1A',
+                color: '#3B2A1A',
+                padding: '12px 18px',
+                borderRadius: '999px',
+                fontFamily: "'Barlow', sans-serif",
+                fontSize: '13px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                letterSpacing: '0.02em'
+              }}
+            >
+              + Add items
+            </button>
+            <button
+              className="btn-primary"
+              onClick={onProceed}
+              disabled={!isBoxComplete}
+              data-testid="cart-proceed-checkout"
+              style={{
+                background: isBoxComplete ? '#3B2A1A' : '#A89B7C',
+                color: '#F5F3EF',
+                padding: '14px 22px',
+                border: 'none',
+                borderRadius: '999px',
+                fontFamily: "'Barlow', sans-serif",
+                fontSize: '15px',
+                fontWeight: 700,
+                cursor: isBoxComplete ? 'pointer' : 'not-allowed',
+                letterSpacing: 0,
+                textTransform: 'none'
+              }}
+            >
+              {isBoxComplete ? 'Go to checkout' : `Add ${boxSize - getTotalProteins()}lb more`}
+            </button>
+          </div>
         </div>
       </div>
     </>
@@ -492,10 +560,9 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
         onClick={navigate ? goToTreat : undefined}
         role={navigate ? 'button' : undefined}
         tabIndex={navigate ? 0 : undefined}
-        style={{ cursor: navigate ? 'pointer' : 'default' }}
       >
-        {/* Left: image */}
-        <div className="product-card-media product-card-media--clean">
+        {/* Image */}
+        <div className="product-card-media">
           {treat.images && treat.images.length > 0 ? (
             <img
               src={treat.images[0]}
@@ -503,11 +570,11 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
               onError={(e) => { e.target.style.opacity = '0.4'; }}
             />
           ) : (
-            <div style={{ width: '100%', height: '100%', background: '#E8DFC8', borderRadius: '8px' }} />
+            <div style={{ width: '100%', height: '100%', background: '#E8DFC8' }} />
           )}
         </div>
 
-        {/* Middle: text content */}
+        {/* Stacked content */}
         <div className="product-card-content">
           <h4 className="product-card-title">{treat.name}</h4>
           <p className="product-card-desc">{treat.quantity_description}</p>
@@ -515,41 +582,46 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             <div className="product-card-price">
               <span className="price-regular">${treat.price.toFixed(2)}</span>
             </div>
-            {navigate && (
-              <button
-                className="product-card-more"
-                onClick={(e) => { e.stopPropagation(); goToTreat(); }}
-                data-testid={`learn-more-treat-${treat.treat_id}`}
-              >
-                See more
-              </button>
-            )}
           </div>
-        </div>
-
-        {/* Right: qty counter — same color scheme as meals */}
-        <div className="product-card-rightcol">
-          <div
-            className="product-card-qty product-card-qty--menu"
-            data-active={quantity > 0 ? 'true' : 'false'}
-          >
+          {navigate && (
             <button
-              className="qty-btn-mini"
-              onClick={(e) => { e.stopPropagation(); if (quantity > 0) onToggleTreat(treat, quantity - 1); }}
-              disabled={quantity === 0}
-              aria-label="Decrease"
+              className="product-card-more"
+              onClick={(e) => { e.stopPropagation(); goToTreat(); }}
+              data-testid={`learn-more-treat-${treat.treat_id}`}
             >
-              −
+              See more
             </button>
-            <span className="qty-display-mini">{quantity}</span>
+          )}
+
+          {/* + / qty pill — bottom right */}
+          {quantity === 0 ? (
             <button
-              className="qty-btn-mini"
-              onClick={(e) => { e.stopPropagation(); onToggleTreat(treat, quantity + 1); }}
-              aria-label="Increase"
+              className="product-card-plus"
+              onClick={(e) => { e.stopPropagation(); onToggleTreat(treat, 1); }}
+              data-testid={`add-treat-${treat.treat_id}`}
+              aria-label="Add to box"
             >
               +
             </button>
-          </div>
+          ) : (
+            <div className="product-card-qty-pill" onClick={(e) => e.stopPropagation()}>
+              <button
+                className="qty-btn-mini"
+                onClick={(e) => { e.stopPropagation(); onToggleTreat(treat, quantity - 1); }}
+                aria-label="Decrease"
+              >
+                −
+              </button>
+              <span className="qty-display-mini">{quantity}</span>
+              <button
+                className="qty-btn-mini"
+                onClick={(e) => { e.stopPropagation(); onToggleTreat(treat, quantity + 1); }}
+                aria-label="Increase"
+              >
+                +
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -748,6 +820,16 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
   const [isSubscription, setIsSubscription] = useState(!!initialSubscriptionPlan);
   const [subscriptionFrequency, setSubscriptionFrequency] = useState(initialSubscriptionPlan || 'monthly');
   const [orderNotes, setOrderNotes] = useState('');
+
+  // Per-item subscription pre-selection — defaults to ALL items when subscription toggled
+  const allItemIds = [
+    ...Object.entries(selectedProteins).filter(([, d]) => d.qty > 0).map(([id]) => `p:${id}`),
+    ...selectedTreats.map(t => `t:${t.treat_id}`)
+  ];
+  const [subscriptionItems, setSubscriptionItems] = useState(allItemIds);
+  const toggleSubItem = (id) => {
+    setSubscriptionItems(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
 
   const discount = DISCOUNT_RATES[boxSize] || 0;
 
@@ -1188,6 +1270,39 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
                 <span>Monthly</span>
               </label>
             </div>
+
+            {/* Per-item subscription pre-select */}
+            {(Object.values(selectedProteins).some(d => d.qty > 0) || selectedTreats.length > 0) && (
+              <div data-testid="subscription-items" style={{ marginTop: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '14px' }}>
+                  Subscribe to these items:
+                </label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {Object.entries(selectedProteins).filter(([, d]) => d.qty > 0).map(([pid, d]) => (
+                    <label key={pid} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#3B2A1A' }}>
+                      <input
+                        type="checkbox"
+                        checked={subscriptionItems.includes(`p:${pid}`)}
+                        onChange={() => toggleSubItem(`p:${pid}`)}
+                        data-testid={`sub-item-${pid}`}
+                      />
+                      <span>{d.name} <span style={{ color: '#6A4F35' }}>· {d.qty}lb</span></span>
+                    </label>
+                  ))}
+                  {selectedTreats.map(t => (
+                    <label key={t.treat_id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#3B2A1A' }}>
+                      <input
+                        type="checkbox"
+                        checked={subscriptionItems.includes(`t:${t.treat_id}`)}
+                        onChange={() => toggleSubItem(`t:${t.treat_id}`)}
+                        data-testid={`sub-item-${t.treat_id}`}
+                      />
+                      <span>{t.name} <span style={{ color: '#6A4F35' }}>· x{t.quantity || 1}</span></span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

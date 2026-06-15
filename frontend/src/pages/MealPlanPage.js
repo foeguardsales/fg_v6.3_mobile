@@ -958,7 +958,32 @@ export const MealPlanPage = () => {
   return (
     <>
       <Navbar />
-      <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '24px 20px 40px' }}>
+      <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '24px 20px 40px', position: 'relative' }}>
+        {/* Small X close — top right */}
+        <button
+          onClick={() => navigate('/menu')}
+          data-testid="meal-plan-close-btn"
+          aria-label="Close"
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '34px',
+            height: '34px',
+            borderRadius: '999px',
+            background: 'rgba(245,243,239,0.92)',
+            border: 'none',
+            color: '#3B2A1A',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
+            zIndex: 10
+          }}
+        >
+          <ChevronLeft size={18} />
+        </button>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           {/* Progress Bar */}
           {!profileSaved && (

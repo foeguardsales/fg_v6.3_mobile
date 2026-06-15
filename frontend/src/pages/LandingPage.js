@@ -89,6 +89,32 @@ const ModernNavbar = () => {
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const { cartItems, setIsCartOpen } = useCart();
 
+  // Reflect FoeGuard menu cart counts (BoxBuilder uses sessionStorage)
+  const [menuCount, setMenuCount] = useState(0);
+  useEffect(() => {
+    const computeMenuCount = () => {
+      try {
+        const proteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+        const treats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+        const proteinUnits = Object.values(proteins).filter(p => p && p.qty > 0).length;
+        const treatUnits = (treats || []).reduce((s, t) => s + (t.quantity || 1), 0);
+        setMenuCount(proteinUnits + treatUnits);
+      } catch {
+        setMenuCount(0);
+      }
+    };
+    computeMenuCount();
+    const id = setInterval(computeMenuCount, 800);
+    window.addEventListener('focus', computeMenuCount);
+    window.addEventListener('storage', computeMenuCount);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener('focus', computeMenuCount);
+      window.removeEventListener('storage', computeMenuCount);
+    };
+  }, []);
+  const totalCount = (cartItems?.length || 0) + menuCount;
+
   const menuItems = [
     { label: 'Shop Now', path: '/menu' },
     { label: 'Why Raw', path: '/new-to-raw' },
@@ -116,19 +142,19 @@ const ModernNavbar = () => {
         zIndex: 1000,
         background: COLORS.red
       }}>
-        {/* Top announcement bar */}
+        {/* Top announcement bar — Aged Wood */}
         <div style={{
-          background: COLORS.redOverlay,
+          background: COLORS.agedWood,
           color: COLORS.cream,
           textAlign: 'center',
           padding: '8px 16px',
           fontSize: '13px',
           fontFamily: "'Barlow', sans-serif",
           fontWeight: '600',
-          letterSpacing: '0.04em',
-          textTransform: 'uppercase'
+          letterSpacing: '0.02em',
+          textTransform: 'none'
         }}>
-          Free Delivery in the GTA Over $100
+          Free delivery in the GTA over $100
         </div>
         
         {/* Main navbar — 3-col grid so center logo stays centered on every viewport */}
@@ -195,7 +221,15 @@ const ModernNavbar = () => {
               <User size={22} color={COLORS.cream} />
             </button>
             <button
-              onClick={() => setIsCartOpen(true)}
+              onClick={() => {
+                // If on menu/product page, open cart drawer via custom event. Otherwise navigate to /menu.
+                const isMenu = window.location.pathname.startsWith('/menu') || window.location.pathname.startsWith('/build-box') || window.location.pathname.startsWith('/product/') || window.location.pathname.startsWith('/treat/');
+                if (isMenu) {
+                  window.dispatchEvent(new CustomEvent('foeguard:open-cart'));
+                } else {
+                  setIsCartOpen(true);
+                }
+              }}
               aria-label="Open cart"
               data-testid="nav-cart"
               style={{
@@ -207,23 +241,9 @@ const ModernNavbar = () => {
               }}
             >
               <ShoppingBag size={22} color={COLORS.cream} />
-              {cartItems.length > 0 && (
-                <span style={{
-                  position: 'absolute',
-                  top: '2px',
-                  right: '2px',
-                  background: COLORS.red,
-                  color: COLORS.cream,
-                  fontSize: '10px',
-                  fontWeight: '700',
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
-                  {cartItems.length}
+              {totalCount > 0 && (
+                <span className="nav-cart-badge" data-testid="nav-cart-badge">
+                  {totalCount}
                 </span>
               )}
             </button>

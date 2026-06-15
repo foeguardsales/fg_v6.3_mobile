@@ -154,37 +154,30 @@ export const FeedingCalculator = ({ onComplete }) => {
   const hasSavedPets = savedPets.length > 0;
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
-      {/* Back Button */}
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px 20px 40px', position: 'relative' }}>
+      {/* Small X close — top right */}
       <button
         onClick={() => navigate(-1)}
+        data-testid="calc-close-btn"
+        aria-label="Close"
         style={{
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+          width: '34px',
+          height: '34px',
+          borderRadius: '999px',
+          background: 'rgba(245,243,239,0.92)',
+          border: 'none',
+          color: '#3B2A1A',
+          cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
-          padding: '10px 20px',
-          background: 'white',
-          border: '2px solid #E8DDD0',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontSize: '15px',
-          fontWeight: '600',
-          color: '#c8102e',
-          marginBottom: '32px',
-          transition: 'all 0.2s',
-          fontFamily: "'Barlow', sans-serif"
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = '#F8F6F4';
-          e.currentTarget.style.borderColor = '#c8102e';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'white';
-          e.currentTarget.style.borderColor = '#E8DDD0';
+          justifyContent: 'center',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.1)'
         }}
       >
-        <ArrowLeft size={20} />
-        Back
+        <ArrowLeft size={18} />
       </button>
 
       <h2 style={{ fontSize: '36px', textAlign: 'center', marginBottom: '16px', fontFamily: "'Barlow', sans-serif", fontWeight: '700' }}>Feeding Calculator</h2>

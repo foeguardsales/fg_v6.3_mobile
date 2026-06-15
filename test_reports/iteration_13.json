@@ -1,0 +1,108 @@
+{
+  "summary": "Iteration 13 — Uber Eats-style UI/UX overhaul of FoeGuard menu verified on mobile 390x800 against the brand-color/layout spec. 13/15 spec items PASS. 2 items partially verified (could not auto-confirm Notes textarea after tab click; could not locate a /treat/{id} link from /menu and could not confirm checkout per-item subscription list renders without first toggling subscribe-save). All critical brand-color and layout rules verified programmatically: aged-wood announcement bar, transparent product cards, brown-pill-only-when-active for category nav AND box-size slider, 2-col mobile grid, + button anchored to card bottom-right, no floating 'View basket' pill, sharp Checkout button, full-width product hero with small X close, swipable badges row, 'Change on menu' banner, Details/Notes tabs, cart drawer 'Add items' + 'Go to checkout' + subscribe-save section, Harvest-Gold cart badge, small 34x34 X close on meal-plan and calculator pages.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Checkout per-item subscription", "issue": "[data-testid=\"subscription-items\"] and [data-testid^=\"sub-item-\"] NOT found on /checkout after navigating with selected proteins. Spec requires this list to render so each protein/treat can be individually pre-selected for subscription. May be conditional on subscribe-save being toggled in cart first (couldn't verify); main agent should confirm rendering rule.", "affected_selectors": ["[data-testid=\"subscription-items\"]", "[data-testid^=\"sub-item-\"]"]},
+      {"flow": "Treat detail navigation", "issue": "No anchor matching a[href*=\"/treat/\"] found on /menu page (default 'Raw dog food' category). Treats are only reachable after clicking the 'Raw dog treats'/'Raw cat treats' category pill — main agent should confirm a treat card click does navigate to /treat/{id} with the same Uber-Eats pattern (full-width hero, X close, swipable badges, qty +/-, floating Add pill).", "affected_selectors": ["a[href*=\"/treat/\"]"]}
+    ],
+    "design_issues": []
+  },
+  "verifications": {
+    "announcement_bar": {
+      "bg": "rgb(59,42,26) = #3B2A1A Aged Wood PASS",
+      "color": "rgb(245,243,239) Cream PASS",
+      "text": "'Free delivery in the GTA over $100' (sentence case) PASS"
+    },
+    "category_nav": {
+      "container_testid": "menu-category-tabs PASS",
+      "active_dog_food": "bg #3B2A1A brown pill, color #D8CFB8, radius 999px PASS",
+      "inactive_dog_treats": "bg transparent (rgba 0,0,0,0), color rgb(138,113,86) PASS",
+      "inactive_cat_food": "transparent PASS",
+      "inactive_cat_treats": "transparent PASS",
+      "rule": "ONLY active becomes brown pill, others text-only PASS"
+    },
+    "h1": "'Build your box' (sentence case) PASS",
+    "choose_your_box_label": "Present as DIV PASS",
+    "box_size_slider": {
+      "selected_6lb": "bg #3B2A1A brown, color #D8CFB8 PASS",
+      "unselected_18_24_36lb": "bg #D8CFB8 Khaki, color #3B2A1A PASS",
+      "rule": "ONLY selected size is brown pill, others khaki PASS"
+    },
+    "product_grid": {
+      "columns": "172px 172px (2-col on 390px viewport) PASS",
+      "card_bg": "rgba(0,0,0,0) transparent (NOT khaki) PASS",
+      "card_border_bottom": "1px solid rgb(224,213,189) PASS",
+      "card_count": "28 PASS"
+    },
+    "add_button_position": {
+      "cd-chicken_btn_right": "188px = card right 188px (anchored bottom-right of card) PASS",
+      "cd-chicken_btn_bottom": "below image (top 709 vs card top 450) — at bottom-right of CARD CONTENT not on image PASS"
+    },
+    "section_header_COMFORT_DINNER": {
+      "text_transform": "uppercase PASS",
+      "font_family": "Fraunces, Georgia, serif PASS"
+    },
+    "checkout_button": {
+      "testid": "cart-button",
+      "text": "Checkout→",
+      "box_shadow": "none (sharp, no blur) PASS",
+      "filter": "none PASS"
+    },
+    "no_floating_view_basket": "PASS — only match for /view\\s*basket/ was inside an inlined CSS <style> block (.basket-pill is declared but not rendered on menu)",
+    "cart_badge": {
+      "testid": "nav-cart-badge",
+      "bg": "rgb(201,168,76) = #C9A84C Harvest Gold PASS",
+      "text": "increments on +click PASS"
+    },
+    "product_card_click_navigation": {
+      "card_image_click_to_pd": "navigates to /product/cd-chicken PASS",
+      "plus_button_stops_propagation": "PASS (badge increments without navigating)"
+    },
+    "product_detail_page": {
+      "url": "/product/cd-chicken",
+      "hero_image": "full-width, present PASS",
+      "close_btn_testid": "product-close-btn PASS",
+      "title_sentence_case": "'Comfort Chicken' PASS",
+      "badges_row_testid": "product-badges (swipable nowrap on mobile) PASS",
+      "change_box_size_testid": "change-box-size — text 'Change on menu' PASS",
+      "no_size_circles": "0 .size-circle elements PASS",
+      "details_notes_tabs": "Visible at bottom PASS",
+      "add_pill": "Brown floating pill present (showed 'Box full' because earlier +1 filled the 6lb box — UX disable state OK; default state when box has room should show 'Add 6lb to your box · $26.99' per spec, fresh-session verification recommended)"
+    },
+    "change_on_menu_link": "Click → navigates to /build-box PASS",
+    "cart_drawer": {
+      "add_items_testid": "cart-add-items — '+ Add items' PASS",
+      "proceed_checkout_testid": "cart-proceed-checkout — 'Go to checkout' (not 'Proceed to Checkout') PASS",
+      "subscribe_save_testid": "cart-subscribe-save — 'Save extra $1.35 — subscribe & save 5% / Free delivery. Pause, skip, or cancel anytime.' PASS"
+    },
+    "meal_plan_close_btn": {
+      "testid": "meal-plan-close-btn",
+      "size_px": "34x34 (small circle) PASS",
+      "position": "top 132, right offset 12 PASS"
+    },
+    "calculator_close_btn": {
+      "testid": "calc-close-btn",
+      "size_px": "34x34 (small circle) PASS",
+      "position": "top 132, right offset 12 PASS"
+    }
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Verify per-item subscription list on /checkout — [data-testid=\"subscription-items\"] and [data-testid^=\"sub-item-{id}\"] did not render in my run. If it's gated on subscribe toggle, document; otherwise wire it to render whenever there are selected proteins/treats.",
+    "Treats route smoke-test: confirm clicking a card under 'Raw dog treats' / 'Raw cat treats' opens /treat/{id} with the Uber-Eats pattern (full-width hero, product-close-btn, badges, qty +/-, floating Add pill that returns to /build-box).",
+    "Default product-detail Add pill: open a fresh-session /product/cd-chicken (no items yet) and confirm pill renders as 'Add 6lb to your box · $26.99' rather than 'Box full' (only saw the latter because my earlier + click had filled the 6lb box)."
+  ],
+  "critical_code_review_comments": [
+    "Cart drawer + product detail + menu category nav use consistent data-testid hooks — testability good.",
+    "Subscription list testids (subscription-items, sub-item-{id}) are referenced in the spec but not rendered on /checkout in my run; verify the conditional or unconditional render path."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "87% (13/15 spec items confirmed; 2 need main-agent confirmation on subscription list + treats route)"},
+  "test_credentials": "N/A — no auth in scope",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Mobile-first menu overhaul verified on https://pet-menu-revamp.preview.emergentagent.com at 390x800. /menu is BoxBuilder. Key passing checks: announcement bar #3B2A1A sentence-case, category text-nav with only-active brown pill, 'Choose your box' label, box-size slider with only-selected brown pill, 2-col grid with transparent cards, + button at card bottom-right (testid='add-{id}'), no floating View basket pill, sharp Checkout (no box-shadow), Harvest-Gold cart badge (testid='nav-cart-badge'), product card image click navigates to /product/{id} while + click stops propagation. Product detail: hero, product-close-btn, product-badges (swipable), change-box-size 'Change on menu' link, no size circles, Details/Notes tabs, floating brown Add pill. Cart drawer: cart-add-items '+ Add items', cart-proceed-checkout 'Go to checkout', cart-subscribe-save section. Meal-plan and calculator have 34x34 circle close (meal-plan-close-btn / calc-close-btn). PENDING confirmation: (a) checkout per-item subscription list (subscription-items / sub-item-{id}) did not render on /checkout in this run, (b) treats route smoke-test from menu (Raw dog treats category) — switch to that pill first to find /treat/{id} anchors, (c) Add pill default state when box not yet full."
+}

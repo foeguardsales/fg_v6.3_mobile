@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, X } from 'lucide-react';
 import { CartDrawer } from '../components/CartAndCheckout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
@@ -59,6 +59,8 @@ export const TreatDetailPage = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [cartOpen, setCartOpen] = useState(false);
+  const [orderNotes, setOrderNotes] = useState('');
+  const [activeTab, setActiveTab] = useState('description');
   
   // Initialize from sessionStorage immediately
   const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
@@ -113,6 +115,13 @@ export const TreatDetailPage = () => {
     };
   }, [treatId]);
 
+  // Listen for global "open cart" event (header cart icon)
+  useEffect(() => {
+    const open = () => setCartOpen(true);
+    window.addEventListener('foeguard:open-cart', open);
+    return () => window.removeEventListener('foeguard:open-cart', open);
+  }, []);
+
   const handleBackToMenu = () => {
     navigate('/build-box');
   };
@@ -152,12 +161,17 @@ export const TreatDetailPage = () => {
       });
     }
     
-    setSelectedTreats(updatedTreats);
     sessionStorage.setItem('selectedTreats', JSON.stringify(updatedTreats));
     sessionStorage.setItem('boxSize', boxSize.toString());
-    
-    // Open cart drawer
-    setCartOpen(true);
+
+    if (orderNotes) {
+      const existing = JSON.parse(sessionStorage.getItem('treatNotes') || '{}');
+      existing[treat.treat_id] = orderNotes;
+      sessionStorage.setItem('treatNotes', JSON.stringify(existing));
+    }
+
+    // Per spec: back to menu after add
+    navigate('/build-box');
   };
 
   if (loading) {
@@ -203,10 +217,7 @@ export const TreatDetailPage = () => {
         getBasePrice={getBasePrice}
         onAdjustProtein={(productId, productName, newQty) => {
           setSelectedProteins(prev => {
-            const updated = { 
-              ...prev, 
-              [productId]: { qty: newQty, name: productName }
-            };
+            const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
             sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
             return updated;
           });
@@ -227,284 +238,138 @@ export const TreatDetailPage = () => {
           });
         }}
       />
-      
-      {/* Floating Cart Button */}
+
+      {/* Small X close — top right */}
       <button
-        onClick={() => setCartOpen(true)}
-        style={{
-          position: 'fixed',
-          bottom: '24px',
-          right: '24px',
-          background: '#c8102e',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '50px',
-          padding: '16px 24px',
-          fontSize: '16px',
-          fontWeight: '600',
-          cursor: 'pointer',
-          boxShadow: '0 4px 12px rgba(136, 48, 47, 0.3)',
-          zIndex: 999,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          transition: 'all 0.2s'
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.background = '#9D0D23';
-          e.target.style.transform = 'translateY(-2px)';
-          e.target.style.boxShadow = '0 6px 16px rgba(136, 48, 47, 0.4)';
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.background = '#c8102e';
-          e.target.style.transform = 'translateY(0)';
-          e.target.style.boxShadow = '0 4px 12px rgba(136, 48, 47, 0.3)';
-        }}
+        onClick={handleBackToMenu}
+        data-testid="treat-close-btn"
+        className="pd-uber-close"
+        aria-label="Close"
       >
-        <span style={{ fontSize: '20px' }}>🛒</span>
-        <span>
-          {Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0)}/{boxSize}lb
-        </span>
-        <span style={{ fontSize: '18px' }}>→</span>
+        <X size={18} strokeWidth={2.2} />
       </button>
-      
-      <div className="product-detail-page" style={{ background: '#FDFCFA', minHeight: '100vh', paddingTop: '80px' }}>
-        <div className="product-detail-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
-          <button
-            onClick={handleBackToMenu}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: 'none',
-              border: 'none',
-              color: '#c8102e',
-              fontFamily: "'Barlow', sans-serif",
-              fontSize: '15px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              padding: '12px 0',
-              marginBottom: '24px'
-            }}
-          >
-            <ChevronLeft size={20} />
-            <span>Back to Menu</span>
-          </button>
 
-          <div className="product-detail-content" style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '40px',
-            marginBottom: '48px'
-          }}>
-            <div style={{ marginBottom: '0' }}>
-              {/* Main Image */}
-              <div className="product-hero-image" style={{
-                background: '#fff',
-                borderRadius: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                maxWidth: '600px',
-                height: '600px',
-                maxHeight: '600px',
-                padding: '0',
-                marginBottom: images.length > 1 ? '16px' : '0',
-                overflow: 'hidden',
-                margin: '0 auto'
-              }}>
-                {currentImage ? (
-                  <img src={currentImage} alt={treat.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <div style={{ textAlign: 'center', color: '#999' }}>
-                    <div style={{ fontSize: '80px', marginBottom: '16px' }}>🦴</div>
-                    <p style={{ fontSize: '18px', color: '#999' }}>Image coming soon</p>
-                  </div>
+      <div className="pd-uber">
+        {/* Full-width hero image */}
+        <div className="pd-uber-hero">
+          {currentImage ? (
+            <img src={currentImage} alt={treat.name} />
+          ) : (
+            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#6A4F35' }}>
+              <span>Image coming soon</span>
+            </div>
+          )}
+        </div>
+
+        <div className="pd-uber-body">
+          <h1 className="pd-uber-title">{treat.name}</h1>
+          <p className="pd-uber-desc">
+            {treat.description || treat.quantity_description}
+          </p>
+
+          <div className="pd-uber-badges">
+            <span className="pd-uber-badge">Natural single-ingredient</span>
+            <span className="pd-uber-badge">Dental support</span>
+            <span className="pd-uber-badge">Mental enrichment</span>
+          </div>
+
+          {/* Price + qty selector */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '8px 0 16px' }}>
+            <span style={{ fontFamily: "'Barlow', sans-serif", fontSize: '20px', fontWeight: 800, color: '#3B2A1A' }}>
+              ${(treat.price * quantity).toFixed(2)}
+            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button
+                onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+                aria-label="Decrease"
+                style={{ width: 32, height: 32, borderRadius: '50%', border: '1.5px solid #3B2A1A', background: '#F5F3EF', color: '#3B2A1A', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >−</button>
+              <span data-testid="treat-qty" style={{ minWidth: 28, textAlign: 'center', fontFamily: "'Barlow', sans-serif", fontWeight: 700 }}>{quantity}</span>
+              <button
+                onClick={() => setQuantity(quantity + 1)}
+                aria-label="Increase"
+                style={{ width: 32, height: 32, borderRadius: '50%', border: '1.5px solid #3B2A1A', background: '#F5F3EF', color: '#3B2A1A', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >+</button>
+            </div>
+          </div>
+
+          {/* Tabs */}
+          <div className="detail-tabs" data-testid="detail-tabs">
+            <button
+              className={`detail-tab ${activeTab === 'description' ? 'is-active' : ''}`}
+              onClick={() => setActiveTab('description')}
+              data-testid="tab-description"
+            >Details</button>
+            <button
+              className={`detail-tab ${activeTab === 'notes' ? 'is-active' : ''}`}
+              onClick={() => setActiveTab('notes')}
+              data-testid="tab-notes"
+            >Notes</button>
+          </div>
+
+          {activeTab === 'description' && (
+            <div data-testid="tab-pane-description">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 0, marginTop: '4px' }}>
+                {treat.ingredients && (
+                  <CollapsibleSection title="Ingredients">
+                    <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
+                      {typeof treat.ingredients === 'string' ? treat.ingredients : (treat.ingredients || []).join(', ')}
+                    </p>
+                  </CollapsibleSection>
                 )}
-              </div>
-              
-              {/* Image Thumbnails */}
-              {images.length > 1 && (
-                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-                  {images.map((img, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedImageIndex(index)}
-                      style={{
-                        width: '80px',
-                        height: '80px',
-                        borderRadius: '8px',
-                        overflow: 'hidden',
-                        border: selectedImageIndex === index ? '3px solid #c8102e' : '2px solid #E8DDD0',
-                        padding: '4px',
-                        background: '#F5F1EB',
-                        cursor: 'pointer',
-                        transition: 'border-color 0.2s'
-                      }}
-                    >
-                      <img src={img} alt={`${treat.name} ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="product-hero-info" style={{ padding: '32px' }}>
-              <h1 style={{
-                fontFamily: "'Barlow', sans-serif",
-                fontSize: '36px',
-                color: '#2B2B2B',
-                margin: '0 0 20px 0',
-                lineHeight: '1.2'
-              }}>{treat.name}</h1>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <span style={{ fontSize: '32px', fontWeight: '600', color: '#c8102e' }}>${treat.price.toFixed(2)}</span>
-                <p style={{ fontSize: '15px', color: '#666', margin: '8px 0 0 0' }}>{treat.quantity_description}</p>
-              </div>
-
-              {treat.description && (
-                <div style={{ marginTop: '20px' }}>
-                  <p style={{
-                    fontSize: '15px',
-                    lineHeight: '1.7',
-                    color: '#3D3D3D',
-                    whiteSpace: 'pre-line'
-                  }}>{treat.description}</p>
-                </div>
-              )}
-
-              {/* Quantity Selector and Add to Cart */}
-              <div style={{ 
-                marginTop: '32px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B' }}>Quantity</span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <button
-                      onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        border: '2px solid #c8102e',
-                        background: '#fff',
-                        color: '#c8102e',
-                        fontSize: '20px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      −
-                    </button>
-                    <span style={{ 
-                      minWidth: '40px', 
-                      textAlign: 'center', 
-                      fontSize: '20px', 
-                      fontWeight: '600',
-                      color: '#2B2B2B'
-                    }}>
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        border: '2px solid #c8102e',
-                        background: '#fff',
-                        color: '#c8102e',
-                        fontSize: '20px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <button
-                  onClick={handleAddToCart}
-                  style={{
-                    width: '100%',
-                    padding: '14px 24px',
-                    background: '#c8102e',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    transition: 'background 0.2s'
-                  }}
-                  onMouseEnter={(e) => e.target.style.background = '#9D0D23'}
-                  onMouseLeave={(e) => e.target.style.background = '#c8102e'}
-                >
-                  Add to Box
-                </button>
+                {treat.benefits && treat.benefits.length > 0 && (
+                  <CollapsibleSection title="Benefits">
+                    <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      {treat.benefits.map((b, i) => (
+                        <li key={i} style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.6' }}>{b}</li>
+                      ))}
+                    </ul>
+                  </CollapsibleSection>
+                )}
+                <CollapsibleSection title="Feeding guide">
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 8px' }}>
+                    {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet.'}
+                  </p>
+                  <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#5A5A5A', margin: 0 }}>
+                    {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
+                  </p>
+                </CollapsibleSection>
+                <CollapsibleSection title="Product info">
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
+                    {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
+                  </p>
+                </CollapsibleSection>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Collapsible Sections */}
-          <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {treat.ingredients && (
-              <CollapsibleSection title="Ingredients" defaultOpen={true}>
-                <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
-                  {typeof treat.ingredients === 'string' ? treat.ingredients : (treat.ingredients || []).join(', ')}
-                </p>
-              </CollapsibleSection>
-            )}
-
-            {treat.benefits && treat.benefits.length > 0 && (
-              <CollapsibleSection title="Benefits">
-                <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {treat.benefits.map((benefit, i) => (
-                    <li key={i} style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.6' }}>{benefit}</li>
-                  ))}
-                </ul>
-              </CollapsibleSection>
-            )}
-
-            <CollapsibleSection title="Feeding Guide">
-              <div className="feeding-guide">
-                <div style={{ marginBottom: '20px' }}>
-                  <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B', margin: '0 0 8px 0' }}>Feeding Instructions</h4>
-                  <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
-                    {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet while enjoying treats.'}
-                  </p>
-                </div>
-                <div style={{ marginBottom: '20px' }}>
-                  <h4 style={{ fontSize: '15px', fontWeight: '600', color: '#2B2B2B', margin: '0 0 8px 0' }}>Handling Instructions</h4>
-                  <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
-                    {treat.feeding_guide?.handling || 'Keep frozen until ready to use. Thaw in refrigerator before serving. Use within 3 days of thawing.'}
-                  </p>
-                </div>
-                <div style={{ background: '#FAF8F5', padding: '16px', borderRadius: '12px' }}>
-                  <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0 }}>
-                    <a href="/calculator" style={{ color: '#c8102e', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
-                  </p>
-                </div>
-              </div>
-            </CollapsibleSection>
-
-            <CollapsibleSection title="Product Information">
-              <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
-                {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes. Rich in nutrients and highly palatable, these treats are ideal for training, enrichment, or as a special reward. Always supervise your pet when feeding treats.`}
-              </p>
-            </CollapsibleSection>
-          </div>
+          {activeTab === 'notes' && (
+            <div data-testid="tab-pane-notes" style={{ marginTop: '8px' }}>
+              <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
+                Add any special notes for your order.
+              </label>
+              <textarea
+                className="pd-uber-notes"
+                value={orderNotes}
+                onChange={(e) => setOrderNotes(e.target.value)}
+                rows={5}
+                placeholder="e.g. cut into smaller pieces, no additives…"
+                data-testid="treat-notes-input"
+              />
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Floating "Add to your box" pill */}
+      <button
+        onClick={handleAddToCart}
+        className="pd-uber-add"
+        data-testid="treat-add-to-box"
+      >
+        Add to your box
+      </button>
+
       <Footer />
     </>
   );

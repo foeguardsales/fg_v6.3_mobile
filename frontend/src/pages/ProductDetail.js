@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat, X } from 'lucide-react';
 import { CartDrawer } from '../components/CartAndCheckout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -327,6 +327,8 @@ export const ProductDetailPage = () => {
   const [selectedProteins, setSelectedProteins] = useState(initialProteins);
   const [selectedTreats, setSelectedTreats] = useState(initialTreats);
   const [products, setProducts] = useState([]);
+  const [orderNotes, setOrderNotes] = useState('');
+  const [activeTab, setActiveTab] = useState('description');
 
   useEffect(() => {
     const root = document.getElementById('root');
@@ -361,6 +363,13 @@ export const ProductDetailPage = () => {
       window.removeEventListener('focus', syncFromStorage);
     };
   }, [productId]);
+
+  // Listen for global "open cart" event (header cart icon)
+  useEffect(() => {
+    const open = () => setCartOpen(true);
+    window.addEventListener('foeguard:open-cart', open);
+    return () => window.removeEventListener('foeguard:open-cart', open);
+  }, []);
 
   const handleBackToMenu = () => {
     navigate('/build-box');
@@ -405,12 +414,18 @@ export const ProductDetailPage = () => {
       name: product.name
     };
     
-    setSelectedProteins(updatedProteins);
     sessionStorage.setItem('selectedProteins', JSON.stringify(updatedProteins));
     sessionStorage.setItem('boxSize', boxSize.toString());
-    
-    // Open cart drawer
-    setCartOpen(true);
+
+    // Persist order notes
+    if (orderNotes) {
+      const existing = JSON.parse(sessionStorage.getItem('productNotes') || '{}');
+      existing[product.product_id] = orderNotes;
+      sessionStorage.setItem('productNotes', JSON.stringify(existing));
+    }
+
+    // Navigate back to the menu (per spec)
+    navigate('/build-box');
   };
 
   if (loading) {
@@ -451,6 +466,11 @@ export const ProductDetailPage = () => {
     }
   };
 
+  // Calculate current totals for live price/discount display
+  const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
+  const isBoxFull = currentTotal >= boxSize;
+  const sizeDiscount = (DISCOUNT_RATES[boxSize] || 0) * 100;
+
   const collectionInfo = getCollectionInfo();
   const lineName = collectionInfo.name;
   const lineColor = collectionInfo.color;
@@ -471,10 +491,7 @@ export const ProductDetailPage = () => {
         getBasePrice={getBasePrice}
         onAdjustProtein={(productId, productName, newQty) => {
           setSelectedProteins(prev => {
-            const updated = { 
-              ...prev, 
-              [productId]: { qty: newQty, name: productName }
-            };
+            const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
             sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
             return updated;
           });
@@ -495,385 +512,216 @@ export const ProductDetailPage = () => {
           });
         }}
       />
-      
-      {/* Floating Cart Button */}
+
+      {/* Small X close — top right (replaces giant back button) */}
       <button
-        onClick={() => setCartOpen(true)}
-        data-testid="floating-cart-btn"
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          background: '#C8102E',
-          color: '#F5F3EF',
-          border: 'none',
-          borderRadius: '8px',
-          padding: '12px 18px',
-          fontSize: '13px',
-          fontWeight: '700',
-          letterSpacing: '0.06em',
-          textTransform: 'uppercase',
-          cursor: 'pointer',
-          boxShadow: 'none',
-          zIndex: 999,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          transition: 'all 0.2s',
-          fontFamily: "'Barlow', sans-serif"
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.background = '#9D0D23';
-          e.target.style.transform = 'translateY(-2px)';
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.background = '#C8102E';
-          e.target.style.transform = 'translateY(0)';
-        }}
+        onClick={handleBackToMenu}
+        data-testid="product-close-btn"
+        className="pd-uber-close"
+        aria-label="Close"
       >
-        <span>Checkout</span>
-        <span style={{ fontSize: '16px' }}>→</span>
+        <X size={18} strokeWidth={2.2} />
       </button>
-      
-      <div className="product-detail-page" style={{ background: '#F5F3EF', minHeight: '100vh', padding: '0 0 80px' }}>
-        <div className="product-detail-wrapper" style={{ maxWidth: '1280px', margin: '0 auto', padding: '24px 24px' }}>
-          {/* Back Button */}
-          <button className="product-back-btn" onClick={handleBackToMenu} style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            background: 'none',
-            border: 'none',
-            color: '#c8102e',
+
+      <div className="pd-uber">
+        {/* Full-width hero image */}
+        <div className="pd-uber-hero">
+          <img src={productImage} alt={product.name} />
+          <span style={{
+            position: 'absolute',
+            top: '16px',
+            left: '16px',
+            background: lineColor,
+            color: '#F5F3EF',
+            padding: '5px 11px',
+            borderRadius: '999px',
             fontFamily: "'Barlow', sans-serif",
-            fontSize: '15px',
-            fontWeight: '600',
-            cursor: 'pointer',
-            padding: '12px 0',
-            marginBottom: '24px'
-          }}>
-            <ChevronLeft size={20} />
-            <span>Back to Menu</span>
-          </button>
+            fontSize: '10px',
+            fontWeight: '800',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em'
+          }}>{lineName}</span>
+        </div>
 
-          {/* Product Hero — wider desktop layout (Shopify-style) */}
-          <div className="product-hero" style={{
-            background: '#F5F3EF',
+        <div className="pd-uber-body">
+          {/* Title */}
+          <h1 className="pd-uber-title">{product.name}</h1>
+
+          {/* Description */}
+          <p className="pd-uber-desc">
+            {product.description}
+          </p>
+
+          {/* Badges */}
+          <div className="pd-uber-badges" data-testid="product-badges">
+            <span className="pd-uber-badge">For dogs of all stages</span>
+            <span className="pd-uber-badge">Made fresh-to-order</span>
+            <span className="pd-uber-badge">Human grade &amp; organic</span>
+          </div>
+
+          {/* Box-size info (set on menu page) + live pricing */}
+          <div style={{
+            marginTop: '10px',
+            padding: '12px 14px',
+            background: '#F0E9D6',
             border: '1px solid #D8CFB8',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            boxShadow: 'none',
-            marginBottom: '24px',
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            alignItems: 'stretch'
-          }}>
-            <div className="product-image-container" style={{ position: 'relative', width: '100%', minHeight: '320px', overflow: 'hidden', background: '#E8DFC8' }}>
-              <img 
-                src={productImage} 
-                alt={product.name}
-                className="product-hero-image"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
-              />
-              <span className="product-line-tag" style={{
-                position: 'absolute',
-                top: '16px',
-                left: '16px',
-                background: lineColor,
-                color: '#F5F3EF',
-                padding: '6px 14px',
-                borderRadius: '6px',
-                fontFamily: "'Barlow', sans-serif",
-                fontSize: '11px',
-                fontWeight: '700',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em'
-              }}>{lineName}</span>
-            </div>
-            
-            <div className="product-hero-info" style={{ padding: '32px' }}>
-              <h1 style={{
-                fontFamily: "'Fraunces', Georgia, serif",
-                fontSize: 'clamp(28px, 3.4vw, 40px)',
-                color: '#3B2A1A',
-                margin: '0 0 4px 0',
-                lineHeight: '1.15',
-                fontWeight: 600,
-                textTransform: 'none'
-              }}>{product.name}</h1>
-
-              {/* Brand badge trio */}
-              <ProductBrandIcons />
-              <p style={{
-                fontSize: '17px',
-                lineHeight: '1.7',
-                color: '#3D3D3D',
-                margin: '0 0 20px 0',
-                whiteSpace: 'pre-line'
-              }}>{product.description}</p>
-              
-              {/* Quantity label above Box Size */}
-              <div style={{ marginTop: '24px', marginBottom: '16px' }}>
-                <span style={{
-                  display: 'block',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  color: '#2B2B2B',
-                  marginBottom: '8px',
-                  fontFamily: "'Barlow', sans-serif",
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase'
-                }}>Quantity</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                  <div style={{
-                    padding: '12px 32px',
-                    minWidth: '180px',
-                    borderRadius: '10px',
-                    border: '2px solid #c8102e',
-                    background: '#FAF8F5',
-                    color: '#c8102e',
-                    fontSize: '17px',
-                    fontWeight: '800',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px'
-                  }}>
-                    <span>{boxSize}lb</span>
-                    {DISCOUNT_RATES[boxSize] > 0 && (
-                      <span style={{ fontSize: '12px', color: '#2F4538', fontWeight: 600 }}>
-                        ({DISCOUNT_RATES[boxSize] * 100}% off)
-                      </span>
-                    )}
-                  </div>
-                  <span style={{ fontSize: '12px', color: '#666', fontStyle: 'italic' }}>
-                    (Change on menu page)
+            borderRadius: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+            flexWrap: 'wrap'
+          }} data-testid="box-size-info">
+            <div>
+              <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#6A4F35', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>Your box size</div>
+              <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: '20px', color: '#3B2A1A', fontWeight: 700, marginTop: '2px' }}>
+                {boxSize} lb
+                {sizeDiscount > 0 && (
+                  <span style={{ marginLeft: '8px', fontSize: '12px', color: '#3B2A1A', background: '#C9A84C', padding: '2px 8px', borderRadius: '999px', fontWeight: 800 }}>
+                    {sizeDiscount}% off
                   </span>
-                </div>
+                )}
               </div>
-              
-              {/* Quantity Selector and Add to Cart */}
-              <div style={{ 
-                marginTop: '24px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
-                  <div>
-                    <span style={{
-                      display: 'block',
-                      fontSize: '13px',
-                      fontWeight: 700,
-                      color: '#2B2B2B',
-                      marginBottom: '4px',
-                      fontFamily: "'Barlow', sans-serif",
-                      letterSpacing: '0.04em',
-                      textTransform: 'uppercase'
-                    }}>Price</span>
-                    <span style={{ fontSize: '18px', color: '#2B2B2B', fontWeight: 700, fontFamily: "'Barlow', sans-serif" }}>
-                      ${getDiscountedPrice(product).toFixed(2)}
-                      <span style={{ fontSize: '13px', color: '#666', fontWeight: 500, marginLeft: '6px' }}>
-                        (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
-                      </span>
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <button
-                      onClick={() => quantity > 6 && setQuantity(quantity - 6)}
-                      disabled={quantity <= 6}
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        border: '2px solid #c8102e',
-                        background: '#fff',
-                        color: '#c8102e',
-                        fontSize: '20px',
-                        cursor: quantity <= 6 ? 'not-allowed' : 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        opacity: quantity <= 6 ? 0.4 : 1
-                      }}
-                    >
-                      −
-                    </button>
-                    <span style={{ 
-                      minWidth: '40px', 
-                      textAlign: 'center', 
-                      fontSize: '20px', 
-                      fontWeight: '600',
-                      color: '#2B2B2B'
-                    }}>
-                      {quantity} lb
-                    </span>
-                    <button
-                      onClick={() => {
-                        const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                        const spaceLeft = boxSize - currentTotal;
-                        if (quantity + 6 <= spaceLeft) {
-                          setQuantity(quantity + 6);
-                        }
-                      }}
-                      disabled={(() => {
-                        const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                        const spaceLeft = boxSize - currentTotal;
-                        return quantity + 6 > spaceLeft;
-                      })()}
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        border: '2px solid #c8102e',
-                        background: '#fff',
-                        color: '#c8102e',
-                        fontSize: '20px',
-                        cursor: (() => {
-                          const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                          const spaceLeft = boxSize - currentTotal;
-                          return quantity + 6 > spaceLeft ? 'not-allowed' : 'pointer';
-                        })(),
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        opacity: (() => {
-                          const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                          const spaceLeft = boxSize - currentTotal;
-                          return quantity + 6 > spaceLeft ? 0.4 : 1;
-                        })()
-                      }}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
+            </div>
+            <button
+              onClick={() => navigate('/build-box')}
+              data-testid="change-box-size"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#3B2A1A',
+                fontFamily: "'Barlow', sans-serif",
+                fontSize: '12px',
+                fontWeight: 700,
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                padding: 0
+              }}
+            >
+              Change on menu
+            </button>
+          </div>
+
+          {/* Quantity selector + live total */}
+          <div style={{ marginTop: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+            <div>
+              <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#6A4F35', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>Add to box</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
                 <button
-                  onClick={handleAddToCart}
-                  disabled={(() => {
-                    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                    return currentTotal >= boxSize;
-                  })()}
-                  style={{
-                    width: '100%',
-                    padding: '14px 24px',
-                    background: (() => {
-                      const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                      return currentTotal >= boxSize ? '#ccc' : '#c8102e';
-                    })(),
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    cursor: (() => {
-                      const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                      return currentTotal >= boxSize ? 'not-allowed' : 'pointer';
-                    })(),
-                    transition: 'background 0.2s'
+                  onClick={() => quantity > 6 && setQuantity(quantity - 6)}
+                  disabled={quantity <= 6}
+                  style={{ width: 34, height: 34, borderRadius: '50%', border: '1.5px solid #3B2A1A', background: '#F5F3EF', color: '#3B2A1A', fontSize: 18, fontWeight: 700, cursor: quantity <= 6 ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: quantity <= 6 ? 0.4 : 1 }}
+                  data-testid="qty-decrease"
+                >−</button>
+                <span data-testid="qty-display" style={{ minWidth: 50, textAlign: 'center', fontFamily: "'Barlow', sans-serif", fontSize: 16, fontWeight: 800, color: '#3B2A1A' }}>{quantity} lb</span>
+                <button
+                  onClick={() => {
+                    const spaceLeft = boxSize - currentTotal;
+                    if (quantity + 6 <= spaceLeft) setQuantity(quantity + 6);
                   }}
-                  onMouseEnter={(e) => {
-                    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                    if (currentTotal < boxSize) {
-                      e.target.style.background = '#9D0D23';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                    if (currentTotal < boxSize) {
-                      e.target.style.background = '#c8102e';
-                    }
-                  }}
-                >
-                  {(() => {
-                    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-                    return currentTotal >= boxSize ? 'Box Full' : 'Add to Box';
-                  })()}
-                </button>
+                  disabled={quantity + 6 > (boxSize - currentTotal)}
+                  style={{ width: 34, height: 34, borderRadius: '50%', border: '1.5px solid #3B2A1A', background: '#F5F3EF', color: '#3B2A1A', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: quantity + 6 > (boxSize - currentTotal) ? 0.4 : 1 }}
+                  data-testid="qty-increase"
+                >+</button>
               </div>
-              
-              {product.highlights && product.highlights.length > 0 && (
-                <div style={{ marginTop: '20px' }}>
-                  <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 12px 0' }}>Key Highlights</h3>
-                  <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {product.highlights.map((highlight, i) => (
-                      <li key={i} style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.6' }}>{highlight}</li>
-                    ))}
-                  </ul>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#6A4F35', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>Adds</div>
+              <div data-testid="qty-price-total" style={{ fontFamily: "'Barlow', sans-serif", fontSize: '22px', fontWeight: 800, color: '#3B2A1A', marginTop: '2px' }}>
+                ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
+              </div>
+              {sizeDiscount > 0 && (
+                <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#8A7156', textDecoration: 'line-through' }}>
+                  ${(getBasePrice(product) * (quantity / 6)).toFixed(2)}
                 </div>
               )}
+            </div>
+          </div>
 
-              {/* Product Specs accordion — under features, same container, line-divider design */}
-              <div className="product-details-sections" style={{ display: 'flex', flexDirection: 'column', gap: 0, borderTop: '1px solid #E8DDD0', marginTop: '24px' }}>
-                <CollapsibleSection title="Ingredients" defaultOpen={false}>
-                  <p style={{ fontSize: '15px', color: '#3D3D3D', lineHeight: '1.7', margin: '0 0 16px' }}>
-                    {typeof product.ingredients === 'string' ? product.ingredients : product.ingredients.join(', ')}
+          {/* Tabs: Description | Notes */}
+          <div className="detail-tabs" data-testid="detail-tabs">
+            <button
+              className={`detail-tab ${activeTab === 'description' ? 'is-active' : ''}`}
+              onClick={() => setActiveTab('description')}
+              data-testid="tab-description"
+            >Details</button>
+            <button
+              className={`detail-tab ${activeTab === 'notes' ? 'is-active' : ''}`}
+              onClick={() => setActiveTab('notes')}
+              data-testid="tab-notes"
+            >Notes</button>
+          </div>
+
+          {activeTab === 'description' && (
+            <div data-testid="tab-pane-description">
+              {product.highlights && product.highlights.length > 0 && (
+                <ul style={{ margin: '8px 0 16px', paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {product.highlights.map((h, i) => (
+                    <li key={i} style={{ fontSize: '14px', color: '#3B2A1A', lineHeight: '1.6' }}>{h}</li>
+                  ))}
+                </ul>
+              )}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 0, marginTop: '4px' }}>
+                <CollapsibleSection title="Ingredients">
+                  <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: '0 0 12px' }}>
+                    {typeof product.ingredients === 'string' ? product.ingredients : (product.ingredients || []).join(', ')}
                   </p>
-                  {product.recipe_breakdown && (
-                    <div style={{ padding: '14px 16px', background: '#F0ECE6', borderRadius: '10px' }}>
-                      <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#c8102e', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recipe Breakdown</h4>
-                      <p style={{ fontSize: '14px', color: '#3D3D3D', margin: 0, lineHeight: 1.6 }}>{product.recipe_breakdown}</p>
-                    </div>
-                  )}
                 </CollapsibleSection>
-
                 <CollapsibleSection title="Nutrition Facts">
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
                     {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
-                      <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #E8DDD0' }}>
-                        <span style={{ color: '#5A5A5A', fontSize: '14px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
-                        <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '14px' }}>{value}</span>
+                      <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #E8DDD0' }}>
+                        <span style={{ color: '#5A5A5A', fontSize: '13px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
+                        <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '13px' }}>{value}</span>
                       </div>
                     ))}
                   </div>
-                  {product.nutrition_notes && (
-                    <p style={{ marginTop: '14px', fontSize: '13px', color: '#5A5A5A', lineHeight: '1.6', fontStyle: 'italic' }}>{product.nutrition_notes}</p>
+                </CollapsibleSection>
+                <CollapsibleSection title="Feeding Guide">
+                  {product.feeding_guide && (
+                    <>
+                      <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>{product.feeding_guide.feeding}</p>
+                      <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#5A5A5A', margin: 0 }}>{product.feeding_guide.handling}</p>
+                    </>
                   )}
                 </CollapsibleSection>
-
-                <CollapsibleSection title="Feeding Guide">
-                  <div className="feeding-guide">
-                    {product.feeding_guide && (
-                      <>
-                        <div style={{ marginBottom: '16px' }}>
-                          <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Feeding Instructions</h4>
-                          <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.feeding}</p>
-                        </div>
-                        <div style={{ marginBottom: '14px' }}>
-                          <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#2B2B2B', margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Handling Instructions</h4>
-                          <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>{product.feeding_guide.handling}</p>
-                        </div>
-                        {product.feeding_guide.note && (
-                          <p style={{ fontSize: '13px', color: '#5A5A5A', margin: 0 }}>
-                            <a href="/calculator" style={{ color: '#c8102e', textDecoration: 'underline', fontWeight: '600' }}>See our feeding calculator</a> to see how much to feed your pet.
-                          </p>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </CollapsibleSection>
-                
-                <CollapsibleSection title="Product Information">
-                  <p style={{ fontSize: '15px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
+                <CollapsibleSection title="Product info">
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
                     {product.product_information}
                   </p>
                 </CollapsibleSection>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* (Product specs moved inside the hero container above) */}
-
-          {/* Farm to Bowl swipable cards */}
-          <FarmToBowlSection />
-
-          {/* Personalize Your Recipe */}
-          <PersonalizeSection navigate={navigate} />
-
-          {/* Product FAQs */}
-          <ProductFaqSection />
+          {activeTab === 'notes' && (
+            <div data-testid="tab-pane-notes" style={{ marginTop: '8px' }}>
+              <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
+                Add any special notes for your order (e.g. remove an ingredient, preference).
+              </label>
+              <textarea
+                className="pd-uber-notes"
+                value={orderNotes}
+                onChange={(e) => setOrderNotes(e.target.value)}
+                rows={5}
+                placeholder="e.g. No bone, extra liver, cut into small pieces…"
+                data-testid="product-notes-input"
+              />
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Floating "Add to your box" pill */}
+      <button
+        onClick={handleAddToCart}
+        disabled={isBoxFull}
+        className="pd-uber-add"
+        data-testid="product-add-to-box"
+      >
+        {isBoxFull ? 'Box full' : `Add ${quantity}lb to your box · $${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}`}
+      </button>
+
       <Footer />
     </>
   );
