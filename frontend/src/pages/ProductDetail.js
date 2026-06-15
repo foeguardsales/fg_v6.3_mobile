@@ -627,8 +627,13 @@ export const ProductDetailPage = () => {
             </div>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#6A4F35', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>Adds</div>
-              <div data-testid="qty-price-total" style={{ fontFamily: "'Barlow', sans-serif", fontSize: '22px', fontWeight: 800, color: '#3B2A1A', marginTop: '2px' }}>
-                ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', justifyContent: 'flex-end', marginTop: '2px' }}>
+                <span data-testid="qty-price-total" style={{ fontFamily: "'Barlow', sans-serif", fontSize: '22px', fontWeight: 800, color: '#3B2A1A' }}>
+                  ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
+                </span>
+                <span style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#6A4F35', fontWeight: 500 }}>
+                  (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
+                </span>
               </div>
               {sizeDiscount > 0 && (
                 <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#8A7156', textDecoration: 'line-through' }}>
@@ -680,8 +685,13 @@ export const ProductDetailPage = () => {
                 <CollapsibleSection title="Feeding Guide">
                   {product.feeding_guide && (
                     <>
+                      <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#3B2A1A', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Instructions</h4>
                       <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>{product.feeding_guide.feeding}</p>
-                      <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#5A5A5A', margin: 0 }}>{product.feeding_guide.handling}</p>
+                      <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 12px' }}>{product.feeding_guide.handling}</p>
+                      <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
+                        For how much to feed, visit our{' '}
+                        <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
+                      </p>
                     </>
                   )}
                 </CollapsibleSection>

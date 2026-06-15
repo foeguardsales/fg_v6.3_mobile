@@ -327,11 +327,16 @@ export const TreatDetailPage = () => {
                   </CollapsibleSection>
                 )}
                 <CollapsibleSection title="Feeding guide">
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 8px' }}>
+                  <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#3B2A1A', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Instructions</h4>
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>
                     {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet.'}
                   </p>
-                  <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#5A5A5A', margin: 0 }}>
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 12px' }}>
                     {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
+                  </p>
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
+                    For how much to feed, visit our{' '}
+                    <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
                   </p>
                 </CollapsibleSection>
                 <CollapsibleSection title="Product info">

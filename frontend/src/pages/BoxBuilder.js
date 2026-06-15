@@ -217,9 +217,9 @@ export const BoxBuilder = () => {
   };
 
   const topNavTabs = [
-    { id: 'menu', label: 'Menu', path: '/menu', active: true },
-    { id: 'meal-plan', label: 'Meal plan', path: '/meal-plan', active: false },
-    { id: 'calculator', label: 'Calculator', path: '/calculator', active: false }
+    { id: 'menu', label: 'MENU', path: '/menu', active: true },
+    { id: 'meal-plan', label: 'MEAL PLAN', path: '/meal-plan', active: false },
+    { id: 'calculator', label: 'CALCULATOR', path: '/calculator', active: false }
   ];
 
   // Calculate price for 6lb based on box size discount
@@ -342,8 +342,21 @@ export const BoxBuilder = () => {
   return (
     <>
       <Navbar />
+      {/* Full-width hero image — outside the padded container */}
+      <div className="bb-hero-outer" data-testid="bb-hero">
+        <img
+          src={viewMode === 'treats'
+            ? (petType === 'cat'
+                ? 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/7fyd6l6l_4.png'
+                : 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0chc5rd7_customer%20image%203.jpg')
+            : (petType === 'cat'
+                ? 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/7fyd6l6l_4.png'
+                : 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/1olxgtz6_3.png')}
+          alt="FoeGuard"
+        />
+      </div>
       <div className="box-builder">
-        {/* Top Nav Tabs: Menu | Meal Plan | Calculator */}
+        {/* Top Nav Tabs: MENU | MEAL PLAN | CALCULATOR — ALL CAPS */}
         <div className="menu-top-nav-clean" data-testid="menu-top-nav">
           {topNavTabs.map((tab) => (
             <button
@@ -361,8 +374,8 @@ export const BoxBuilder = () => {
                 cursor: tab.active ? 'default' : 'pointer',
                 position: 'relative',
                 whiteSpace: 'nowrap',
-                letterSpacing: '0.02em',
-                textTransform: 'none'
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase'
               }}
             >
               {tab.label}
@@ -397,28 +410,8 @@ export const BoxBuilder = () => {
 
         {/* Main Content - Dog or Cat */}
         <>
-          {/* Compact header row: title + checkout button */}
-          <div className="bb-header-row" data-testid="bb-header" style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '12px',
-            marginBottom: '12px',
-            flexWrap: 'wrap'
-          }}>
-            <h1 style={{
-              fontFamily: "'Fraunces', Georgia, serif",
-              fontSize: 'clamp(22px, 2.6vw, 30px)',
-              fontWeight: '600',
-              margin: 0,
-              color: '#3B2A1A',
-              textTransform: 'none',
-              letterSpacing: 0
-            }}>
-              {viewMode === 'treats'
-                ? (petType === 'cat' ? 'Raw cat treats' : 'Raw dog treats')
-                : (petType === 'cat' ? 'Build your cat box' : 'Build your box')}
-            </h1>
+          {/* Compact action row: Checkout button (right-aligned, no header text) */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
             <button
               className="btn-cart-floating"
               onClick={() => setCartOpen(true)}
@@ -431,21 +424,8 @@ export const BoxBuilder = () => {
 
           {viewMode === 'food' && (
           <>
-          {/* Choose your box label */}
-          <div style={{
-            fontFamily: "'Barlow', sans-serif",
-            fontSize: '13px',
-            fontWeight: 700,
-            color: '#3B2A1A',
-            letterSpacing: 0,
-            textTransform: 'none',
-            marginBottom: '8px'
-          }}>
-            Choose your box
-          </div>
-
-          {/* Box Size Khaki Slider — only selected becomes brown pill */}
-          <div className="box-size-slider" data-testid="box-size-selector">
+          {/* Box size — thin row, page background, simple border, discount aligned with size */}
+          <div className="box-size-slider box-size-slider--thin" data-testid="box-size-selector">
             {BOX_OPTIONS.map(box => (
               <button
                 key={box.size}
@@ -453,10 +433,9 @@ export const BoxBuilder = () => {
                 data-testid={`box-size-${box.size}lb`}
                 className={`box-size-chip ${boxSize === box.size ? 'is-active' : ''}`}
               >
-                <span>{box.label}</span>
-                {box.discount > 0 && (
-                  <span className="box-size-chip-discount">{box.discount}%</span>
-                )}
+                <span className="box-size-chip-text">
+                  {box.label}{box.discount > 0 && <span className="box-size-chip-discount-inline"> · {box.discount}%</span>}
+                </span>
               </button>
             ))}
           </div>
@@ -478,7 +457,7 @@ export const BoxBuilder = () => {
                 {/* Comfort Dinner Collection - DOG */}
                 <div className="product-collection menu-collection">
                   <div className="menu-collection-header" data-testid="collection-header-comfort">
-                    <h3 className="menu-collection-title">COMFORT DINNER</h3>
+                    <h3 className="menu-collection-title">Comfort dinner</h3>
                     <p className="menu-collection-desc">Complete raw nutrition for dogs of all-life stages.</p>
                   </div>
                   
@@ -503,7 +482,7 @@ export const BoxBuilder = () => {
                 {/* Primal Feast Collection - DOG */}
                 <div className="product-collection menu-collection">
                   <div className="menu-collection-header" data-testid="collection-header-primal">
-                    <h3 className="menu-collection-title">PRIMAL FEAST</h3>
+                    <h3 className="menu-collection-title">Primal feast</h3>
                     <p className="menu-collection-desc">Whole prey raw meals made with 80% meat, 10% bone and 10% organ.</p>
                   </div>
 
@@ -539,7 +518,7 @@ export const BoxBuilder = () => {
                 {/* Royal Paws Collection - CAT */}
                 <div className="product-collection menu-collection">
                   <div className="menu-collection-header" data-testid="collection-header-royal">
-                    <h3 className="menu-collection-title">ROYAL PAWS DINNER</h3>
+                    <h3 className="menu-collection-title">Royal paws dinner</h3>
                     <p className="menu-collection-desc">Complete raw nutrition for cats of all life stages.</p>
                   </div>
                   
