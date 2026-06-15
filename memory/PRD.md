@@ -93,8 +93,25 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 ## Backlog
 - **P0** — Real images for the two `/new-to-raw` placeholders + Personalize section
 - **P1** — Treats sub-categorization (Meaty Bones / Head and Feet) currently single TreatsSection grouping
-- **P1** — TreatDetail.js page mirror the new ProductDetail layout (brand icons / Farm to Bowl / Personalize / FAQ)
 - **P1** — Shopify integration (replaces Stripe / current checkout)
 - **P2** — Unify the 2 cart systems (SlideCart via CartContext vs CartDrawer via BoxBuilder local state)
 - **P2** — Real .env keys (Cloudflare R2, Brevo, JWT)
 - **P2** — Wire `/about` email signup to Brevo
+
+## Changelog
+- **2026-02-15 — Uber Eats UI/UX overhaul (revised after user feedback)**
+  - Mobile-first 2-column product grid; product cards transparent (NOT khaki) with bottom border
+  - "+" add button anchored to **bottom-right of card content** (NOT on image); transforms to brown qty pill when item is added
+  - Box-size slider: khaki chips, **only selected** size is the brown pill; "Choose your box" label added above
+  - Category nav switched to text buttons; **only the active item** becomes a brown pill
+  - Removed the floating bottom "View basket" pill — header `Checkout` button retained (sharp, no shadow blur)
+  - Header cart badge bound to `sessionStorage` (proteins + treats) with Harvest-Gold styling
+  - Announcement bar now Aged Wood (`#3B2A1A`) with sentence-case copy
+  - Sentence case across the page; menu section headers (`COMFORT DINNER`) remain ALL CAPS
+  - Product detail (Uber-Eats): full-width hero, small 34px X close top-right, swipable badges, "Your box size" banner + "Change on menu" link (no size circles), live discount-aware price preview, Details/Notes tabs, floating "Add Xlb to your box · $Y" pill that returns to `/menu` after add
+  - Treat detail mirrors the same pattern
+  - Cart drawer: `+ Add items` button + primary CTA renamed `Go to checkout`; bottom "Save extra $X — subscribe & save 5%" section
+  - Checkout: per-item subscription pre-select (rendered when subscription is enabled)
+  - MealPlan + FeedingCalculator: small 34px X close top-right replaces the giant "Back" buttons
+  - Restored `/app/backend/.env` and `/app/frontend/.env` (services were down at session start)
+
