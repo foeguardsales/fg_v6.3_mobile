@@ -99,6 +99,16 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - **P2** — Wire `/about` email signup to Brevo
 
 ## Changelog
+- **2026-02-16 (PM) — Iteration 2 UI polish (square containers, harvest gold discount tab, slim cards)**
+  - **Home page** — All major container borderRadius reduced from 16/20px → **8px** (hero tri-image, Shop Collections cards, Why FoeGuard image, review-card, review-photo-card)
+  - **Menu page top nav** — Removed mustard background entirely; tabs now use clean cream-khaki active shade (#EFE6CC) + bottom underline. Slimmer mobile padding, max-width matches menu content
+  - **Box-size selector** — Removed all container backgrounds; clean text-only buttons ('6 lb', '18 lb', etc.). Active = bold + dark underline (transparent bg). Discount rendered as small harvest-gold (#C9A84C) **inline 'SAVE X%' tab** beside the size (10px uppercase)
+  - **% off → Save X%** — Global text replacement across cart discount badge, OrderSummary, product detail, account subscription manager
+  - **Menu cards reverted** — Mobile = **2-per-row VERTICAL** (image top, content below, + button OVERLAYS bottom-right of image via `top:-38px`); Desktop = **2-per-row HORIZONTAL** (image LEFT ~110px square, content RIGHT, + at bottom-right of content)
+  - **Product detail page** — Restructured right column to: Title → Price → Description → smaller harvest-gold UPPERCASE feature pills → Add to box (qty selector) → 'Box Selected: 6lb [SAVE X%] CHANGE ON MENU' (NO brackets around lb) → highlights as ✓ checks with mustard checks → collapsibles (Ingredients, Nutrition, Feeding, Product info, **Notes at BOTTOM**) → 3-icon trust row (100% Recyclable, Humanely Raised, Made in Canada) → `ProductFaqSection` at the very bottom in one large container. **Removed** Details/Notes tabs entirely. Image left now uses `position: sticky; top: 140px` for desktop scroll
+  - **Treat detail page** — Same Shopify restructure (smaller harvest-gold pills, benefit checks when data present, collapsibles with Notes at bottom, trust icon row). No FAQ section on treats by design
+  - **Testing**: iteration_15 → 14/15 PASS. One MINOR ('benefit checks' on /treat/<id> only renders when `treat.benefits` data exists — intentional). `retest_needed: false`
+
 - **2026-02-16 — Menu + Product/Treat UI overhaul (mustard brand restore)**
   - **Top nav (lifted mustard #C9A84C container)** — tabs renamed `Raw Food Menu | Build Your Meal Plan | Feeding Calculator`; light-khaki text on inactive, cream + underline on active (`.menu-top-nav-mustard`)
   - **Category tabs** — removed pill bg; selected = larger (16px) + bold + 2px gold underline (`#C9A84C`); inactive plain text in `.menu-category-text-btn`
