@@ -81,6 +81,10 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
   const total = discountedSubtotal + tax;
   const getTotalProteins = () => Object.values(selectedProteins).reduce((sum, data) => sum + data.qty, 0);
   const isBoxComplete = getTotalProteins() === boxSize;
+  const hasProteins = getTotalProteins() > 0;
+  const hasTreats = selectedTreats.length > 0;
+  // Allow checkout if: protein box is complete, OR cart has treats-only (no proteins started but treats present)
+  const canCheckout = isBoxComplete || (!hasProteins && hasTreats);
   const discount = DISCOUNT_RATES[boxSize] || 0;
 
   return (
@@ -471,10 +475,10 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             <button
               className="btn-primary"
               onClick={onProceed}
-              disabled={!isBoxComplete}
+              disabled={!canCheckout}
               data-testid="cart-proceed-checkout"
               style={{
-                background: isBoxComplete ? '#3B2A1A' : '#A89B7C',
+                background: canCheckout ? '#3B2A1A' : '#A89B7C',
                 color: '#F5F3EF',
                 padding: '14px 22px',
                 border: 'none',
@@ -482,12 +486,12 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 fontFamily: "'Barlow', sans-serif",
                 fontSize: '15px',
                 fontWeight: 700,
-                cursor: isBoxComplete ? 'pointer' : 'not-allowed',
+                cursor: canCheckout ? 'pointer' : 'not-allowed',
                 letterSpacing: 0,
                 textTransform: 'none'
               }}
             >
-              {isBoxComplete ? 'Go to checkout' : `Add ${boxSize - getTotalProteins()}lb more`}
+              {canCheckout ? 'Go to checkout' : `Add ${boxSize - getTotalProteins()}lb more`}
             </button>
           </div>
         </div>
@@ -526,7 +530,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
   const subCategories = [
     {
       key: 'meaty',
-      title: 'MEATY TREATS',
+      title: 'Meaty Treats',
       desc: isDog
         ? 'Slow-chew bones and chunks rich in marrow, cartilage and muscle — built to satisfy and support dental health.'
         : 'Bite-sized whole-muscle treats designed for natural prey instinct and dental support.',
@@ -534,7 +538,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
     },
     {
       key: 'heads',
-      title: 'HEADS AND FEET',
+      title: 'Heads and Feet',
       desc: isDog
         ? 'Whole-prey heads and feet — rich in cartilage, glucosamine and natural enrichment for serious chewers.'
         : 'Tiny heads and feet for natural chewing, cartilage and mental enrichment.',

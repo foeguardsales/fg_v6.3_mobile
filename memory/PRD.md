@@ -99,6 +99,20 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - **P2** — Wire `/about` email signup to Brevo
 
 ## Changelog
+- **2026-02-16 — Menu + Product/Treat UI overhaul (mustard brand restore)**
+  - **Top nav (lifted mustard #C9A84C container)** — tabs renamed `Raw Food Menu | Build Your Meal Plan | Feeding Calculator`; light-khaki text on inactive, cream + underline on active (`.menu-top-nav-mustard`)
+  - **Category tabs** — removed pill bg; selected = larger (16px) + bold + 2px gold underline (`#C9A84C`); inactive plain text in `.menu-category-text-btn`
+  - **Box-size selector** — added `Select Box Size:` label; new `.box-size-slider--mustard` with mustard-gold pill (#F0E1B5 inactive, #C9A84C active), border-radius 6px (slightly square), uniform min-width 110px desktop
+  - **Section headers** — Title Case across: `Comfort Dinner`, `Primal Feast`, `Royal Paws Dinner`, `Raw Dog Treats`, `Raw Cat Treats`, `Meaty Treats`, `Heads and Feet`
+  - **Top checkout button REMOVED** — replaced with single `.bb-floating-checkout` (fixed bottom-center, 8px radius, large 16-17px CHECKOUT → uppercase)
+  - **Menu product cards reverted to UberEats horizontal** — `.product-card-row` is now `grid-template-columns: 108px 1fr` (140px desktop). Mobile 1-col grid, desktop 2-col grid
+  - **Product detail page restructured to Shopify-style** — `.pd-shopify` 2-col grid (image left sticky, content right). Order: Title → Price → Description → 3 gold-mustard square feature pills (`#F0E1B5` bg, 4px radius) → `Box Selected: (X)lb CHANGE ON MENU` text-only (no cream container) → Quantity selector + Adds total. Tabs (Details | Notes) + collapsibles below
+  - **Treat detail mirrors Shopify layout** — image left + content right + Title → Price → Description → square gold pills → qty + Back to menu link
+  - **'Change on menu' / X close / Add now navigate to `/menu`** instead of `/build-box`
+  - **Treats-only checkout enabled** — `canCheckout = isBoxComplete || (!hasProteins && hasTreats)` in CartAndCheckout.js. Users can now check out treats without filling a protein box
+  - **Env restore** — Recreated `/app/backend/.env` (Stripe/Brevo/Cloudflare placeholders) and `/app/frontend/.env` (REACT_APP_BACKEND_URL)
+  - **Testing**: iteration_14 — 15/16 PASS on first run; both flagged issues (treats-only checkout, MEATY TREATS uppercase) fixed and verified
+
 - **2026-02-15 — Uber Eats UI/UX overhaul (revised after user feedback)**
   - Mobile-first 2-column product grid; product cards transparent (NOT khaki) with bottom border
   - "+" add button anchored to **bottom-right of card content** (NOT on image); transforms to brown qty pill when item is added
