@@ -239,14 +239,14 @@ export const TreatDetailPage = () => {
         }}
       />
 
-      {/* Small X close — top right */}
+      {/* Back button — standard top-left position */}
       <button
         onClick={handleBackToMenu}
         data-testid="treat-close-btn"
-        className="pd-uber-close"
-        aria-label="Close"
+        className="pd-uber-back"
+        aria-label="Back"
       >
-        <X size={18} strokeWidth={2.2} />
+        <ChevronLeft size={18} strokeWidth={2.2} /> Back
       </button>
 
       <div className="pd-uber">
@@ -343,7 +343,7 @@ export const TreatDetailPage = () => {
                   {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
                 </p>
               </CollapsibleSection>
-              <CollapsibleSection title="Notes">
+              <CollapsibleSection title="Order Notes">
                 <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
                   Add any special notes for your order.
                 </label>

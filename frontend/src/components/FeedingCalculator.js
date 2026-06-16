@@ -154,30 +154,15 @@ export const FeedingCalculator = ({ onComplete }) => {
   const hasSavedPets = savedPets.length > 0;
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px 20px 40px', position: 'relative' }}>
-      {/* Small X close — top right */}
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '60px 20px 40px', position: 'relative' }}>
+      {/* Back button — standard top-left */}
       <button
         onClick={() => navigate(-1)}
         data-testid="calc-close-btn"
-        aria-label="Close"
-        style={{
-          position: 'absolute',
-          top: '12px',
-          right: '12px',
-          width: '34px',
-          height: '34px',
-          borderRadius: '999px',
-          background: 'rgba(245,243,239,0.92)',
-          border: 'none',
-          color: '#3B2A1A',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 1px 4px rgba(0,0,0,0.1)'
-        }}
+        aria-label="Back"
+        className="pd-uber-back"
       >
-        <ArrowLeft size={18} />
+        <ArrowLeft size={18} strokeWidth={2.2} /> Back
       </button>
 
       <h2 style={{ fontSize: '36px', textAlign: 'center', marginBottom: '16px', fontFamily: "'Barlow', sans-serif", fontWeight: '700' }}>Feeding Calculator</h2>

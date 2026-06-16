@@ -513,14 +513,14 @@ export const ProductDetailPage = () => {
         }}
       />
 
-      {/* Small X close — top right (replaces giant back button) */}
+      {/* Back button — standard top-left position */}
       <button
         onClick={handleBackToMenu}
         data-testid="product-close-btn"
-        className="pd-uber-close"
-        aria-label="Close"
+        className="pd-uber-back"
+        aria-label="Back"
       >
-        <X size={18} strokeWidth={2.2} />
+        <ChevronLeft size={18} strokeWidth={2.2} /> Back
       </button>
 
       <div className="pd-uber">
@@ -551,7 +551,7 @@ export const ProductDetailPage = () => {
 
             {/* Feature pills — smaller harvest gold (Uber-Eats style) */}
             <div className="pd-shopify-features pd-shopify-features--mini" data-testid="product-badges">
-              <span className="pd-shopify-feature">All stages</span>
+              <span className="pd-shopify-feature">Dogs of all-life stages</span>
               <span className="pd-shopify-feature">Fresh-to-order</span>
               <span className="pd-shopify-feature">Human grade</span>
             </div>
@@ -651,7 +651,7 @@ export const ProductDetailPage = () => {
                   {product.product_information}
                 </p>
               </CollapsibleSection>
-              <CollapsibleSection title="Notes">
+              <CollapsibleSection title="Order Notes">
                 <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
                   Add any special notes for your order (e.g. remove an ingredient, preference).
                 </label>

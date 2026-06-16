@@ -342,22 +342,9 @@ export const BoxBuilder = () => {
   return (
     <>
       <Navbar />
-      {/* Full-width hero image — outside the padded container */}
-      <div className="bb-hero-outer" data-testid="bb-hero">
-        <img
-          src={viewMode === 'treats'
-            ? (petType === 'cat'
-                ? 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/7fyd6l6l_4.png'
-                : 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/0chc5rd7_customer%20image%203.jpg')
-            : (petType === 'cat'
-                ? 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/7fyd6l6l_4.png'
-                : 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/1olxgtz6_3.png')}
-          alt="FoeGuard"
-        />
-      </div>
       <div className="box-builder">
-        {/* Top Nav Tabs (mustard lifted container) — Raw Food Menu | Build Your Meal Plan | Feeding Calculator */}
-        <div className="menu-top-nav-mustard" data-testid="menu-top-nav">
+        {/* Top selector — slim selectable containers: Raw Dog Food | Meal Plan | Calculator */}
+        <div className="menu-top-nav-mustard menu-top-nav--boxed" data-testid="menu-top-nav">
           {topNavTabs.map((tab) => (
             <button
               key={tab.id}
@@ -639,11 +626,6 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter') goToProduct(); }}
     >
-      {/* Image */}
-      <div className="product-card-media">
-        <img src={productImage} alt={product.name} />
-      </div>
-
       {/* Stacked content */}
       <div className="product-card-content">
         <h4 className="product-card-title">{product.name}</h4>
@@ -662,16 +644,20 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
             )}
             <span className="price-unit">/ 6lb</span>
           </div>
+          <button
+            className="product-card-more"
+            onClick={(e) => { e.stopPropagation(); goToProduct(); }}
+            data-testid={`learn-more-${product.product_id}`}
+          >
+            See more
+          </button>
         </div>
-        <button
-          className="product-card-more"
-          onClick={(e) => { e.stopPropagation(); goToProduct(); }}
-          data-testid={`learn-more-${product.product_id}`}
-        >
-          See more
-        </button>
+      </div>
 
-        {/* + or qty pill — bottom right of card content */}
+      {/* Image — on RIGHT side (desktop), on TOP (mobile via CSS order) */}
+      <div className="product-card-media">
+        <img src={productImage} alt={product.name} />
+        {/* + or qty pill — overlays bottom-right of image */}
         {selectedQty === 0 ? (
           <button
             className="product-card-plus"
