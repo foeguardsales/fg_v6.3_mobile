@@ -99,6 +99,26 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - **P2** — Wire `/about` email signup to Brevo
 
 ## Changelog
+- **2026-02-16 (Eve) — Iteration 3 UI polish (image-card top nav, image-right cards, standardized back)**
+  - **Removed hero image** from /menu entirely
+  - **Top nav** redesigned as 3 LARGE image-background cards (Raw Food Menu / Build Your Meal Plan / Feeding Calculator) — shaded gradient overlay for legibility, gold 2px inset border on active, LEFT-aligned, min-height 120px desktop / 92px mobile
+  - **Category tabs** + **box-size selector** → all LEFT-aligned (no center)
+  - **Box-size buttons** → bordered (white bg, 1px #D8CFB8, radius 6px); active = shaded #EFE6CC + brown border (no underline); harvest-gold SAVE X% inline tab preserved
+  - **Menu top spacing** — `.box-builder` padding 28-40px top; collection header padding-bottom 18px for breathing room before product grid
+  - **Product cards** — image now on RIGHT (desktop, 130x130 column), content LEFT; mobile keeps image on TOP. + button (38×38 white circle with brown border, hover-invert) moved INSIDE `.product-card-media` with consistent 10px padding from bottom-right corner
+  - **'See more'** → inline RIGHT of price (flex space-between) on both viewports — slimmer vertical card
+  - **Standardized Back button** (`.pd-uber-back`) — fixed top:130/140px left:22/32px white pill — replaces X close on Product/Treat/Meal-Plan/Calculator pages. All four data-testids preserved
+  - **Meal-Plan + Calculator** pages get more top padding (60px) so content isn't cramped near navbar
+  - **Product detail**:
+    - Feature pills reverted to `Dogs of all-life stages`, `Fresh-to-order`, `Human grade`
+    - 'Box Selected: 6lb CHANGE ON MENU' — brackets removed
+    - 'Add to box' qty controls AND 'Adds' total now on SAME ROW, both 16px/36px height for visual parity
+    - 'Notes' → **'Order Notes'** collapsible (renamed)
+    - Trust icon row (Recycle / Heart / MapPin) — removed top + bottom border lines
+  - **Floating checkout** → small rounded PILL (border-radius 999px, padding 10-12px, font 13-14px) matching qty pill aesthetic
+  - **Fonts** — reverted from 'Lora' back to 'Barlow' (sans) / 'Fraunces' (serif headings)
+  - **Testing**: iteration_16 → **18/18 PASS** (one MINOR numeric note on floating pill being 1-2px larger than spec on desktop — purely cosmetic, pill shape verified)
+
 - **2026-02-16 (PM) — Iteration 2 UI polish (square containers, harvest gold discount tab, slim cards)**
   - **Home page** — All major container borderRadius reduced from 16/20px → **8px** (hero tri-image, Shop Collections cards, Why FoeGuard image, review-card, review-photo-card)
   - **Menu page top nav** — Removed mustard background entirely; tabs now use clean cream-khaki active shade (#EFE6CC) + bottom underline. Slimmer mobile padding, max-width matches menu content
