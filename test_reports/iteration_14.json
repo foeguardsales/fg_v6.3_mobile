@@ -1,0 +1,59 @@
+{
+  "summary": "Iteration 14 — FoeGuard Menu/Product/Treat UI redesign verified on desktop 1440x900 and mobile 390x844. 15/16 spec items PASS. ONE CRITICAL FAILURE: treats-only checkout is BLOCKED because the cart proceed button is disabled with 'Add 6lb more' when only treats (no proteins/box) are in the cart. All other spec items (mustard top nav, category text tabs, mustard box-size buttons, Title-Case section headers, horizontal 2-col desktop / 1-col mobile product cards, floating bottom Checkout, removal of old top checkout, Shopify-style product detail with image-left/content-right, gold square feature pills, text-only 'Box Selected' row, Change-on-menu link/X close navigation, /treat/{id} Shopify layout) verified PASS.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "CartDrawer / CartAndCheckout.js (~L471)", "issue": "Treats-only checkout blocked: [data-testid=cart-proceed-checkout] is DISABLED with text 'Add 6lb more' when the cart has only treats (selectedTreats) and no proteins/box. Spec explicitly requires treats-only checkout to proceed without filling the protein box.", "selector": "[data-testid=\"cart-proceed-checkout\"]", "priority": "CRITICAL"},
+      {"component": "Treats section subheader 'MEATY TREATS' (h4)", "issue": "Sub-section title 'MEATY TREATS' is rendered in ALL-CAPS (literal text). Spec asked headers in Title Case (e.g., 'Meaty Treats'). The parent section h3 'Raw Dog Treats' is correctly Title Case; only the inner h4 sub-label is uppercase.", "selector": "h4 (text='MEATY TREATS')", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verifications": {
+    "top_nav_mustard": {"bg": "#C9A84C (rgb(201,168,76))", "tabs": ["Raw Food Menu (active)", "Build Your Meal Plan", "Feeding Calculator"], "data-testid": "menu-top-nav PASS"},
+    "top_nav_navigation": {"meal-plan -> /meal-plan": "PASS", "calculator -> /calculator": "PASS"},
+    "category_tabs": {"data-testid": "menu-category-tabs PASS", "all_bg": "rgba(0,0,0,0) — NO pill PASS", "active_default": "Raw Dog Food PASS", "click_switches_active": "PASS (is-active class moves on click)"},
+    "box_size_buttons": {"label": "Select Box Size: PASS", "data-testid": "box-size-wrap PASS", "6lb_active": "bg rgb(201,168,76)=#C9A84C PASS", "inactive_bg": "rgb(240,225,181)=#F0E1B5", "radius": "6px PASS", "min_width": "~110px PASS"},
+    "section_headers": {"Comfort Dinner": "PASS Title Case", "Primal Feast": "PASS Title Case", "Raw Dog Treats h3": "PASS Title Case", "MEATY TREATS h4": "FAIL — uppercase"},
+    "desktop_grid": {"columns": "610px 610px (2-col on 1440)", "first_card_width": 610, "image_left": 96, "image_width": 140, "horizontal_layout": "PASS"},
+    "mobile_grid_390": {"columns": "358px (1-col)", "img_left": 16, "content_left": 138, "horizontal_layout": "PASS", "no_horizontal_scroll": "PASS"},
+    "floating_checkout": {"data-testid": "cart-button PASS", "text": "Checkout →", "position": "fixed", "bottom": "22px", "centered_desktop": "left 608.6 of 1440 vw, width 222.8 PASS", "centered_mobile": "left 99.3 of 390 vw, width 191.4 PASS"},
+    "old_top_btn": ".btn-cart-floating count = 0 PASS — removed",
+    "product_detail_shopify": {
+      "image_left": "rect.left=202, width=472",
+      "content_right": "rect.left=722, width=515",
+      "image_left_of_content": "PASS",
+      "feature_pills_count": 3,
+      "feature_pills_bg": "rgb(240,225,181)=#F0E1B5 PASS",
+      "feature_pills_radius": "4px PASS (slightly square, not round)",
+      "box_size_info_bg": "rgba(0,0,0,0) — NO cream container PASS",
+      "box_size_info_text": "'Box Selected:(6)lbChange on menu' PASS",
+      "change-box-size testid": "PASS, text 'Change on menu'",
+      "qty_display_initial": "6 lb PASS",
+      "product-close-btn -> /menu": "PASS",
+      "change-box-size -> /menu": "PASS"
+    },
+    "treat_detail": {"url": "/treat/treat-beef-rib", "has .pd-shopify": "PASS — same Shopify layout"},
+    "treats_only_checkout": "FAIL — cart proceed button disabled 'Add 6lb more' when only treats in cart"
+  },
+  "test_report_links": [],
+  "action_items": [
+    "CRITICAL: Allow checkout to proceed when cart contains ONLY treats (no proteins/box). The cart-proceed-checkout button in CartAndCheckout.js (~line 471) must enable when selectedTreats.length > 0 even if the protein box isn't filled. Currently shows 'Add 6lb more' and remains disabled, blocking the treats-only purchase flow that the spec explicitly requires.",
+    "Minor: Convert 'MEATY TREATS' (h4) inside TreatsSection to Title Case 'Meaty Treats' (or remove the all-caps literal) to match the rest of the new Title-Case header guideline.",
+    "(No retest required for the 15 PASS items; only retest the two flagged issues after fix.)"
+  ],
+  "critical_code_review_comments": [
+    "Cart proceed-checkout disabled rule appears to require protein box to be filled — does not branch for treats-only carts. This is the core blocker for the new flow.",
+    "All new data-testids (menu-top-nav, menu-category-tabs, box-size-wrap, box-size-*lb, cart-button, change-box-size, product-close-btn, product-add-to-box, learn-more-*, treat-*) render and are functional.",
+    "Old '.btn-cart-floating' top checkout fully removed (count=0) — no regression.",
+    "Mobile horizontal card layout works correctly (img 108px left, content right)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (not in scope)", "frontend": "15/16 ≈ 94% (one CRITICAL: treats-only checkout, one MEDIUM: meaty treats uppercase)"},
+  "test_credentials": "N/A — all routes public",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All UI/layout/colour spec items for /menu, /product/{id}, /treat/{id} verified on desktop 1440x900 and mobile 390x844. The single blocking bug is in CartAndCheckout.js around line 471 where [data-testid=cart-proceed-checkout] is hard-disabled with 'Add 6lb more' for any cart that doesn't have the protein box filled — this blocks the treats-only checkout. Fix: enable proceed when (selectedTreats.length > 0) even if proteins are empty/box not filled. The h4 'MEATY TREATS' inside TreatsSection (CartAndCheckout.js ~L635 vicinity) needs Title Case conversion. Re-run only those two flows after fix.",
+  "rca of the issue": "Cart proceed-checkout button in CartAndCheckout.js is gated on 'box completeness' (isBoxComplete === true, i.e. selected protein lbs === boxSize). When selectedProteins is empty, the gate computes 'Add Nlb more' regardless of whether treats are present. Reproduction: /menu → Raw Dog Treats → click + on any 2 treats → click bottom Checkout → cart opens with treats and subtotal but proceed button shows 'Add 6lb more' disabled. Mitigation: change the disabled condition to (selectedProteins empty AND selectedTreats empty) || (any proteins selected AND !isBoxComplete). Treats-only carts should always allow checkout."
+}

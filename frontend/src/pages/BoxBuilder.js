@@ -201,10 +201,10 @@ export const BoxBuilder = () => {
   };
 
   const bannerCards = [
-    { id: 'dog-food', title: 'Raw dog food', petType: 'dog', viewMode: 'food', active: petType === 'dog' && viewMode === 'food' },
-    { id: 'dog-treats', title: 'Raw dog treats', petType: 'dog', viewMode: 'treats', active: petType === 'dog' && viewMode === 'treats' },
-    { id: 'cat-food', title: 'Raw cat food', petType: 'cat', viewMode: 'food', active: petType === 'cat' && viewMode === 'food' },
-    { id: 'cat-treats', title: 'Raw cat treats', petType: 'cat', viewMode: 'treats', active: petType === 'cat' && viewMode === 'treats' }
+    { id: 'dog-food', title: 'Raw Dog Food', petType: 'dog', viewMode: 'food', active: petType === 'dog' && viewMode === 'food' },
+    { id: 'dog-treats', title: 'Raw Dog Treats', petType: 'dog', viewMode: 'treats', active: petType === 'dog' && viewMode === 'treats' },
+    { id: 'cat-food', title: 'Raw Cat Food', petType: 'cat', viewMode: 'food', active: petType === 'cat' && viewMode === 'food' },
+    { id: 'cat-treats', title: 'Raw Cat Treats', petType: 'cat', viewMode: 'treats', active: petType === 'cat' && viewMode === 'treats' }
   ];
 
   const handleCategoryClick = (card) => {
@@ -217,9 +217,9 @@ export const BoxBuilder = () => {
   };
 
   const topNavTabs = [
-    { id: 'menu', label: 'MENU', path: '/menu', active: true },
-    { id: 'meal-plan', label: 'MEAL PLAN', path: '/meal-plan', active: false },
-    { id: 'calculator', label: 'CALCULATOR', path: '/calculator', active: false }
+    { id: 'menu', label: 'Raw Food Menu', path: '/menu', active: true },
+    { id: 'meal-plan', label: 'Build Your Meal Plan', path: '/meal-plan', active: false },
+    { id: 'calculator', label: 'Feeding Calculator', path: '/calculator', active: false }
   ];
 
   // Calculate price for 6lb based on box size discount
@@ -356,45 +356,21 @@ export const BoxBuilder = () => {
         />
       </div>
       <div className="box-builder">
-        {/* Top Nav Tabs: MENU | MEAL PLAN | CALCULATOR — ALL CAPS */}
-        <div className="menu-top-nav-clean" data-testid="menu-top-nav">
+        {/* Top Nav Tabs (mustard lifted container) — Raw Food Menu | Build Your Meal Plan | Feeding Calculator */}
+        <div className="menu-top-nav-mustard" data-testid="menu-top-nav">
           {topNavTabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => !tab.active && navigate(tab.path)}
               data-testid={`top-nav-${tab.id}`}
-              style={{
-                fontFamily: "'Barlow', sans-serif",
-                fontSize: '14px',
-                fontWeight: tab.active ? 800 : 600,
-                color: tab.active ? '#3B2A1A' : '#8A7156',
-                background: 'none',
-                border: 'none',
-                padding: '10px 14px',
-                cursor: tab.active ? 'default' : 'pointer',
-                position: 'relative',
-                whiteSpace: 'nowrap',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase'
-              }}
+              className={`menu-top-nav-mustard-btn ${tab.active ? 'is-active' : ''}`}
             >
               {tab.label}
-              {tab.active && (
-                <span style={{
-                  position: 'absolute',
-                  bottom: '-2px',
-                  left: '14px',
-                  right: '14px',
-                  height: '2px',
-                  background: '#3B2A1A',
-                  borderRadius: '2px'
-                }} />
-              )}
             </button>
           ))}
         </div>
 
-        {/* Category Tabs: Dog Food | Dog Treats | Cat Food | Cat Treats — text only, selected = pill */}
+        {/* Category Tabs: Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats — text only, no pill */}
         <div className="menu-category-text" data-testid="menu-category-tabs">
           {bannerCards.map((card) => (
             <button
@@ -410,34 +386,25 @@ export const BoxBuilder = () => {
 
         {/* Main Content - Dog or Cat */}
         <>
-          {/* Compact action row: Checkout button (right-aligned, no header text) */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '8px' }}>
-            <button
-              className="btn-cart-floating"
-              onClick={() => setCartOpen(true)}
-              data-testid="cart-button"
-            >
-              Checkout
-              <span style={{ marginLeft: '4px', fontSize: '15px' }}>→</span>
-            </button>
-          </div>
-
           {viewMode === 'food' && (
           <>
-          {/* Box size — thin row, page background, simple border, discount aligned with size */}
-          <div className="box-size-slider box-size-slider--thin" data-testid="box-size-selector">
-            {BOX_OPTIONS.map(box => (
-              <button
-                key={box.size}
-                onClick={() => handleBoxSizeChange(box.size)}
-                data-testid={`box-size-${box.size}lb`}
-                className={`box-size-chip ${boxSize === box.size ? 'is-active' : ''}`}
-              >
-                <span className="box-size-chip-text">
-                  {box.label}{box.discount > 0 && <span className="box-size-chip-discount-inline"> · {box.discount}%</span>}
-                </span>
-              </button>
-            ))}
+          {/* Box size — "Select Box Size:" label + larger squared mustard buttons */}
+          <div className="bb-box-size-wrap" data-testid="box-size-wrap">
+            <span className="bb-box-size-label">Select Box Size:</span>
+            <div className="box-size-slider box-size-slider--mustard" data-testid="box-size-selector">
+              {BOX_OPTIONS.map(box => (
+                <button
+                  key={box.size}
+                  onClick={() => handleBoxSizeChange(box.size)}
+                  data-testid={`box-size-${box.size}lb`}
+                  className={`box-size-chip ${boxSize === box.size ? 'is-active' : ''}`}
+                >
+                  <span className="box-size-chip-text">
+                    {box.label}{box.discount > 0 && <span className="box-size-chip-discount-inline"> · {box.discount}%</span>}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
           </>
           )}
@@ -457,7 +424,7 @@ export const BoxBuilder = () => {
                 {/* Comfort Dinner Collection - DOG */}
                 <div className="product-collection menu-collection">
                   <div className="menu-collection-header" data-testid="collection-header-comfort">
-                    <h3 className="menu-collection-title">Comfort dinner</h3>
+                    <h3 className="menu-collection-title">Comfort Dinner</h3>
                     <p className="menu-collection-desc">Complete raw nutrition for dogs of all-life stages.</p>
                   </div>
                   
@@ -482,7 +449,7 @@ export const BoxBuilder = () => {
                 {/* Primal Feast Collection - DOG */}
                 <div className="product-collection menu-collection">
                   <div className="menu-collection-header" data-testid="collection-header-primal">
-                    <h3 className="menu-collection-title">Primal feast</h3>
+                    <h3 className="menu-collection-title">Primal Feast</h3>
                     <p className="menu-collection-desc">Whole prey raw meals made with 80% meat, 10% bone and 10% organ.</p>
                   </div>
 
@@ -518,7 +485,7 @@ export const BoxBuilder = () => {
                 {/* Royal Paws Collection - CAT */}
                 <div className="product-collection menu-collection">
                   <div className="menu-collection-header" data-testid="collection-header-royal">
-                    <h3 className="menu-collection-title">Royal paws dinner</h3>
+                    <h3 className="menu-collection-title">Royal Paws Dinner</h3>
                     <p className="menu-collection-desc">Complete raw nutrition for cats of all life stages.</p>
                   </div>
                   
@@ -596,6 +563,16 @@ export const BoxBuilder = () => {
             />
         </>
       </div>
+
+      {/* Floating bottom checkout — centered, large, sticky on scroll */}
+      <button
+        onClick={() => setCartOpen(true)}
+        data-testid="cart-button"
+        className="bb-floating-checkout"
+      >
+        Checkout →
+      </button>
+
       <Footer />
     </>
   );

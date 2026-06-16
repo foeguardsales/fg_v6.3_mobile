@@ -123,7 +123,7 @@ export const TreatDetailPage = () => {
   }, []);
 
   const handleBackToMenu = () => {
-    navigate('/build-box');
+    navigate('/menu');
   };
   
   // Discount rates by box size
@@ -171,7 +171,7 @@ export const TreatDetailPage = () => {
     }
 
     // Per spec: back to menu after add
-    navigate('/build-box');
+    navigate('/menu');
   };
 
   if (loading) {
@@ -212,7 +212,7 @@ export const TreatDetailPage = () => {
         selectedProteins={selectedProteins}
         selectedTreats={selectedTreats}
         products={products}
-        onProceed={() => navigate('/build-box')}
+        onProceed={() => navigate('/menu')}
         getDiscountedPrice={getDiscountedPrice}
         getBasePrice={getBasePrice}
         onAdjustProtein={(productId, productName, newQty) => {
@@ -250,49 +250,71 @@ export const TreatDetailPage = () => {
       </button>
 
       <div className="pd-uber">
-        {/* Full-width hero image */}
-        <div className="pd-uber-hero">
-          {currentImage ? (
-            <img src={currentImage} alt={treat.name} />
-          ) : (
-            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#6A4F35' }}>
-              <span>Image coming soon</span>
+        <div className="pd-shopify">
+          {/* Image left */}
+          <div className="pd-shopify-media">
+            {currentImage ? (
+              <img src={currentImage} alt={treat.name} />
+            ) : (
+              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#6A4F35' }}>
+                <span>Image coming soon</span>
+              </div>
+            )}
+          </div>
+
+          {/* Content right */}
+          <div className="pd-shopify-content">
+            <h1 className="pd-shopify-title">{treat.name}</h1>
+
+            {/* Price */}
+            <div className="pd-shopify-price-row" data-testid="treat-price">
+              <span className="pd-shopify-price">${(treat.price * quantity).toFixed(2)}</span>
+              {quantity > 1 && (
+                <span className="pd-shopify-price-unit">(${treat.price.toFixed(2)} ea)</span>
+              )}
             </div>
-          )}
+
+            <p className="pd-shopify-desc">
+              {treat.description || treat.quantity_description}
+            </p>
+
+            {/* Feature pills */}
+            <div className="pd-shopify-features">
+              <span className="pd-shopify-feature">Natural single-ingredient</span>
+              <span className="pd-shopify-feature">Dental support</span>
+              <span className="pd-shopify-feature">Mental enrichment</span>
+            </div>
+
+            {/* Qty selector */}
+            <div className="pd-shopify-qty-row">
+              <div>
+                <div className="pd-shopify-mini-label">Quantity</div>
+                <div className="pd-shopify-qty-controls">
+                  <button
+                    onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+                    disabled={quantity <= 1}
+                    className="pd-shopify-qty-btn"
+                    aria-label="Decrease"
+                  >−</button>
+                  <span data-testid="treat-qty" className="pd-shopify-qty-display">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="pd-shopify-qty-btn"
+                    aria-label="Increase"
+                  >+</button>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate('/menu')}
+                className="pd-shopify-change-link"
+              >
+                Back to menu
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="pd-uber-body">
-          <h1 className="pd-uber-title">{treat.name}</h1>
-          <p className="pd-uber-desc">
-            {treat.description || treat.quantity_description}
-          </p>
-
-          <div className="pd-uber-badges">
-            <span className="pd-uber-badge">Natural single-ingredient</span>
-            <span className="pd-uber-badge">Dental support</span>
-            <span className="pd-uber-badge">Mental enrichment</span>
-          </div>
-
-          {/* Price + qty selector */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '8px 0 16px' }}>
-            <span style={{ fontFamily: "'Barlow', sans-serif", fontSize: '20px', fontWeight: 800, color: '#3B2A1A' }}>
-              ${(treat.price * quantity).toFixed(2)}
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <button
-                onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                aria-label="Decrease"
-                style={{ width: 32, height: 32, borderRadius: '50%', border: '1.5px solid #3B2A1A', background: '#F5F3EF', color: '#3B2A1A', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >−</button>
-              <span data-testid="treat-qty" style={{ minWidth: 28, textAlign: 'center', fontFamily: "'Barlow', sans-serif", fontWeight: 700 }}>{quantity}</span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                aria-label="Increase"
-                style={{ width: 32, height: 32, borderRadius: '50%', border: '1.5px solid #3B2A1A', background: '#F5F3EF', color: '#3B2A1A', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >+</button>
-            </div>
-          </div>
-
           {/* Tabs */}
           <div className="detail-tabs" data-testid="detail-tabs">
             <button

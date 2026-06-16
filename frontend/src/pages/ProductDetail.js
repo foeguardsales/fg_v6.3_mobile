@@ -372,7 +372,7 @@ export const ProductDetailPage = () => {
   }, []);
 
   const handleBackToMenu = () => {
-    navigate('/build-box');
+    navigate('/menu');
   };
   
   // Discount rates by box size
@@ -425,7 +425,7 @@ export const ProductDetailPage = () => {
     }
 
     // Navigate back to the menu (per spec)
-    navigate('/build-box');
+    navigate('/menu');
   };
 
   if (loading) {
@@ -486,7 +486,7 @@ export const ProductDetailPage = () => {
         selectedProteins={selectedProteins}
         selectedTreats={selectedTreats}
         products={products}
-        onProceed={() => navigate('/build-box')}
+        onProceed={() => navigate('/menu')}
         getDiscountedPrice={getDiscountedPrice}
         getBasePrice={getBasePrice}
         onAdjustProtein={(productId, productName, newQty) => {
@@ -524,125 +524,95 @@ export const ProductDetailPage = () => {
       </button>
 
       <div className="pd-uber">
-        {/* Full-width hero image */}
-        <div className="pd-uber-hero">
-          <img src={productImage} alt={product.name} />
-          <span style={{
-            position: 'absolute',
-            top: '16px',
-            left: '16px',
-            background: lineColor,
-            color: '#F5F3EF',
-            padding: '5px 11px',
-            borderRadius: '999px',
-            fontFamily: "'Barlow', sans-serif",
-            fontSize: '10px',
-            fontWeight: '800',
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em'
-          }}>{lineName}</span>
-        </div>
-
-        <div className="pd-uber-body">
-          {/* Title */}
-          <h1 className="pd-uber-title">{product.name}</h1>
-
-          {/* Description */}
-          <p className="pd-uber-desc">
-            {product.description}
-          </p>
-
-          {/* Badges */}
-          <div className="pd-uber-badges" data-testid="product-badges">
-            <span className="pd-uber-badge">For dogs of all stages</span>
-            <span className="pd-uber-badge">Made fresh-to-order</span>
-            <span className="pd-uber-badge">Human grade &amp; organic</span>
+        <div className="pd-shopify">
+          {/* Image left */}
+          <div className="pd-shopify-media">
+            <img src={productImage} alt={product.name} />
           </div>
 
-          {/* Box-size info (set on menu page) + live pricing */}
-          <div style={{
-            marginTop: '10px',
-            padding: '12px 14px',
-            background: '#F0E9D6',
-            border: '1px solid #D8CFB8',
-            borderRadius: '10px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '12px',
-            flexWrap: 'wrap'
-          }} data-testid="box-size-info">
-            <div>
-              <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#6A4F35', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>Your box size</div>
-              <div style={{ fontFamily: "'Fraunces', Georgia, serif", fontSize: '20px', color: '#3B2A1A', fontWeight: 700, marginTop: '2px' }}>
-                {boxSize} lb
+          {/* Content right */}
+          <div className="pd-shopify-content">
+            {/* Title */}
+            <h1 className="pd-shopify-title">{product.name}</h1>
+
+            {/* Price */}
+            <div className="pd-shopify-price-row" data-testid="product-price">
+              <span className="pd-shopify-price">${getDiscountedPrice(product).toFixed(2)}</span>
+              <span className="pd-shopify-price-unit">/ 6 lb</span>
+              {sizeDiscount > 0 && (
+                <span className="pd-shopify-price-original">${getBasePrice(product).toFixed(2)}</span>
+              )}
+            </div>
+
+            {/* Description */}
+            <p className="pd-shopify-desc">
+              {product.description}
+            </p>
+
+            {/* Feature pills — gold, slightly square */}
+            <div className="pd-shopify-features" data-testid="product-badges">
+              <span className="pd-shopify-feature">For dogs of all stages</span>
+              <span className="pd-shopify-feature">Made fresh-to-order</span>
+              <span className="pd-shopify-feature">Human grade &amp; organic</span>
+            </div>
+
+            {/* Box Selected: + change on menu link */}
+            <div className="pd-shopify-boxsize" data-testid="box-size-info">
+              <span className="pd-shopify-boxsize-label">Box Selected:</span>
+              <span className="pd-shopify-boxsize-value">
+                ({boxSize})lb
                 {sizeDiscount > 0 && (
-                  <span style={{ marginLeft: '8px', fontSize: '12px', color: '#3B2A1A', background: '#C9A84C', padding: '2px 8px', borderRadius: '999px', fontWeight: 800 }}>
-                    {sizeDiscount}% off
-                  </span>
+                  <span className="pd-shopify-boxsize-discount"> · {sizeDiscount}% off</span>
+                )}
+              </span>
+              <button
+                onClick={() => navigate('/menu')}
+                data-testid="change-box-size"
+                className="pd-shopify-change-link"
+              >
+                Change on menu
+              </button>
+            </div>
+
+            {/* Quantity selector + live total */}
+            <div className="pd-shopify-qty-row">
+              <div>
+                <div className="pd-shopify-mini-label">Add to box</div>
+                <div className="pd-shopify-qty-controls">
+                  <button
+                    onClick={() => quantity > 6 && setQuantity(quantity - 6)}
+                    disabled={quantity <= 6}
+                    className="pd-shopify-qty-btn"
+                    data-testid="qty-decrease"
+                  >−</button>
+                  <span data-testid="qty-display" className="pd-shopify-qty-display">{quantity} lb</span>
+                  <button
+                    onClick={() => {
+                      const spaceLeft = boxSize - currentTotal;
+                      if (quantity + 6 <= spaceLeft) setQuantity(quantity + 6);
+                    }}
+                    disabled={quantity + 6 > (boxSize - currentTotal)}
+                    className="pd-shopify-qty-btn"
+                    data-testid="qty-increase"
+                  >+</button>
+                </div>
+              </div>
+              <div className="pd-shopify-adds">
+                <div className="pd-shopify-mini-label">Adds</div>
+                <span data-testid="qty-price-total" className="pd-shopify-adds-total">
+                  ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
+                </span>
+                {sizeDiscount > 0 && (
+                  <div className="pd-shopify-adds-original">
+                    ${(getBasePrice(product) * (quantity / 6)).toFixed(2)}
+                  </div>
                 )}
               </div>
             </div>
-            <button
-              onClick={() => navigate('/build-box')}
-              data-testid="change-box-size"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#3B2A1A',
-                fontFamily: "'Barlow', sans-serif",
-                fontSize: '12px',
-                fontWeight: 700,
-                textDecoration: 'underline',
-                cursor: 'pointer',
-                padding: 0
-              }}
-            >
-              Change on menu
-            </button>
           </div>
+        </div>
 
-          {/* Quantity selector + live total */}
-          <div style={{ marginTop: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
-            <div>
-              <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#6A4F35', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>Add to box</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
-                <button
-                  onClick={() => quantity > 6 && setQuantity(quantity - 6)}
-                  disabled={quantity <= 6}
-                  style={{ width: 34, height: 34, borderRadius: '50%', border: '1.5px solid #3B2A1A', background: '#F5F3EF', color: '#3B2A1A', fontSize: 18, fontWeight: 700, cursor: quantity <= 6 ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: quantity <= 6 ? 0.4 : 1 }}
-                  data-testid="qty-decrease"
-                >−</button>
-                <span data-testid="qty-display" style={{ minWidth: 50, textAlign: 'center', fontFamily: "'Barlow', sans-serif", fontSize: 16, fontWeight: 800, color: '#3B2A1A' }}>{quantity} lb</span>
-                <button
-                  onClick={() => {
-                    const spaceLeft = boxSize - currentTotal;
-                    if (quantity + 6 <= spaceLeft) setQuantity(quantity + 6);
-                  }}
-                  disabled={quantity + 6 > (boxSize - currentTotal)}
-                  style={{ width: 34, height: 34, borderRadius: '50%', border: '1.5px solid #3B2A1A', background: '#F5F3EF', color: '#3B2A1A', fontSize: 18, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: quantity + 6 > (boxSize - currentTotal) ? 0.4 : 1 }}
-                  data-testid="qty-increase"
-                >+</button>
-              </div>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#6A4F35', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>Adds</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', justifyContent: 'flex-end', marginTop: '2px' }}>
-                <span data-testid="qty-price-total" style={{ fontFamily: "'Barlow', sans-serif", fontSize: '22px', fontWeight: 800, color: '#3B2A1A' }}>
-                  ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
-                </span>
-                <span style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#6A4F35', fontWeight: 500 }}>
-                  (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
-                </span>
-              </div>
-              {sizeDiscount > 0 && (
-                <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '11px', color: '#8A7156', textDecoration: 'line-through' }}>
-                  ${(getBasePrice(product) * (quantity / 6)).toFixed(2)}
-                </div>
-              )}
-            </div>
-          </div>
-
+        <div className="pd-uber-body">
           {/* Tabs: Description | Notes */}
           <div className="detail-tabs" data-testid="detail-tabs">
             <button

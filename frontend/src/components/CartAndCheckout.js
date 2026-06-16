@@ -632,7 +632,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
       {/* Outer page title — hidden on dedicated treats tab (caller provides one) */}
       {!hideHeader && (
         <div className="menu-collection-header" data-testid="collection-header-treats">
-          <h3 className="menu-collection-title">Raw {isDog ? 'dog' : 'cat'} treats</h3>
+          <h3 className="menu-collection-title">Raw {isDog ? 'Dog' : 'Cat'} Treats</h3>
           <p className="menu-collection-desc">
             {isDog
               ? 'Enriching raw treats that support dental health, mental stimulation, and natural chewing.'
