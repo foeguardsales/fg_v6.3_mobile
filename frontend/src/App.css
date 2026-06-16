@@ -5141,45 +5141,49 @@ h2, h3, h4 {
 }
 .menu-top-nav-clean::-webkit-scrollbar { display: none; }
 
-/* ===== Mustard lifted top-nav (Raw Food Menu | Build Your Meal Plan | Feeding Calculator) ===== */
+/* ===== Top nav (Raw Food Menu | Build Your Meal Plan | Feeding Calculator) — clean, no mustard bg ===== */
 .menu-top-nav-mustard {
   display: flex;
-  gap: 0;
-  background: #C9A84C;
+  gap: 2px;
+  background: transparent;
   border-radius: 6px;
-  padding: 6px 8px;
-  margin: 4px 0 16px;
+  padding: 0;
+  margin: 0 auto 14px;
+  max-width: 100%;
   overflow-x: auto;
   scrollbar-width: none;
-  box-shadow: 0 2px 6px rgba(59, 42, 26, 0.08);
+  box-shadow: none;
+  border-bottom: 1px solid #E0D5BD;
 }
 .menu-top-nav-mustard::-webkit-scrollbar { display: none; }
 .menu-top-nav-mustard-btn {
   flex: 1;
   background: transparent;
   border: none;
-  padding: 10px 14px;
+  padding: 8px 10px;
   font-family: 'Barlow', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  color: #D8CFB8;
+  color: #8A7156;
   cursor: pointer;
   white-space: nowrap;
   letter-spacing: 0.02em;
   text-transform: none;
   position: relative;
   border-bottom: 2px solid transparent;
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease;
+  border-radius: 4px 4px 0 0;
 }
-.menu-top-nav-mustard-btn:hover { color: #F5F3EF; }
+.menu-top-nav-mustard-btn:hover { color: #3B2A1A; background: #EFE6CC; }
 .menu-top-nav-mustard-btn.is-active {
-  color: #F5F3EF;
-  font-weight: 700;
-  border-bottom-color: #F5F3EF;
+  color: #3B2A1A;
+  font-weight: 800;
+  border-bottom-color: #3B2A1A;
+  background: #EFE6CC;
   cursor: default;
 }
 @media (min-width: 760px) {
-  .menu-top-nav-mustard-btn { font-size: 15px; padding: 12px 18px; }
+  .menu-top-nav-mustard-btn { font-size: 14px; padding: 10px 14px; }
 }
 
 /* Category pills row */
@@ -5473,17 +5477,17 @@ h2, h3, h4 {
 }
 
 
-/* ===== Box-size selector (mustard, slightly-square, uniform, larger) ===== */
+/* ===== Box-size selector — clean text-only, no container; mustard "Save X%" mini tab beside size ===== */
 .bb-box-size-wrap {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin: 6px 0 22px;
+  margin: 6px 0 18px;
 }
 .bb-box-size-label {
   font-family: 'Barlow', sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #3B2A1A;
   letter-spacing: 0.02em;
@@ -5491,7 +5495,7 @@ h2, h3, h4 {
 }
 .box-size-slider--mustard {
   display: flex;
-  gap: 10px;
+  gap: 4px;
   flex-wrap: wrap;
   margin: 0;
   padding: 0;
@@ -5499,50 +5503,55 @@ h2, h3, h4 {
 }
 .box-size-slider--mustard .box-size-chip {
   flex: 0 0 auto;
-  min-width: 92px;
-  padding: 12px 18px;
-  background: #F0E1B5;
-  border: 1px solid #C9A84C;
-  border-radius: 6px;
-  color: #3B2A1A;
+  padding: 6px 10px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: #6A4F35;
   font-family: 'Barlow', sans-serif;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   letter-spacing: 0.02em;
   text-align: center;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  gap: 6px;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 .box-size-slider--mustard .box-size-chip:hover {
-  background: #E6D29A;
+  color: #3B2A1A;
 }
 .box-size-slider--mustard .box-size-chip.is-active {
-  background: #C9A84C;
-  border-color: #B8951F;
+  background: transparent;
   color: #3B2A1A;
+  font-weight: 800;
+  border-bottom-color: #3B2A1A;
 }
 .box-size-slider--mustard .box-size-chip-text {
   display: inline-flex;
-  align-items: baseline;
-  gap: 4px;
+  align-items: center;
+  gap: 6px;
 }
 .box-size-slider--mustard .box-size-chip-discount-inline {
-  font-size: 12px;
-  font-weight: 700;
-  color: #6A4F35;
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 800;
+  color: #3B2A1A;
+  background: #C9A84C;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .box-size-slider--mustard .box-size-chip.is-active .box-size-chip-discount-inline {
+  background: #C9A84C;
   color: #3B2A1A;
 }
 @media (min-width: 760px) {
-  .box-size-slider--mustard .box-size-chip {
-    min-width: 110px;
-    padding: 14px 22px;
-    font-size: 15px;
-  }
+  .box-size-slider--mustard .box-size-chip { font-size: 15px; padding: 8px 12px; }
 }
 
 /* ===== Floating bottom checkout — centered, large, sticky ===== */
@@ -5580,63 +5589,96 @@ h2, h3, h4 {
   }
 }
 
-/* ===== Product card — UberEats horizontal layout (image left + content right) ===== */
+/* ===== Product card — Mobile: 2-col vertical (image top, + overlays bottom-right of image); Desktop: 2-col horizontal (image left slim, content right with + bottom-right) ===== */
 .product-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
-  row-gap: 22px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  row-gap: 18px;
   border-top: none;
 }
 @media (min-width: 760px) {
   .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px;
-    row-gap: 28px;
+    gap: 24px;
+    row-gap: 22px;
   }
 }
 
+/* MOBILE: vertical card */
 .product-card-row {
-  display: grid;
-  grid-template-columns: 108px 1fr;
-  gap: 14px;
-  padding: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 0 10px;
   border-bottom: 1px solid #E0D5BD;
   background: transparent;
   border-radius: 0;
   overflow: visible;
   cursor: pointer;
   position: relative;
-  align-items: start;
-}
-@media (min-width: 760px) {
-  .product-card-row {
-    grid-template-columns: 140px 1fr;
-    gap: 18px;
-    padding: 0 0 18px;
-  }
 }
 .product-card-media {
   position: relative;
-  width: 108px;
-  height: 108px;
+  width: 100%;
   aspect-ratio: 1 / 1;
   flex-shrink: 0;
   background: transparent;
   border-radius: 8px;
   overflow: hidden;
-}
-@media (min-width: 760px) {
-  .product-card-media {
-    width: 140px;
-    height: 140px;
-  }
+  height: auto;
 }
 .product-card-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+.product-card-content {
+  min-width: 0;
+  padding: 4px 0 0;
+  position: relative;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+}
+/* Mobile: + button overlays bottom-right of image (top: -38px from content puts it on bottom of image) */
+.product-card-content > .product-card-plus,
+.product-card-content > .product-card-qty-pill {
+  position: absolute;
+  top: -38px;
+  right: 6px;
+  bottom: auto;
+  z-index: 3;
+}
+
+/* DESKTOP: horizontal card */
+@media (min-width: 760px) {
+  .product-card-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 14px;
+    padding: 0 0 14px;
+    align-items: start;
+  }
+  .product-card-media {
+    width: 110px;
+    height: 110px;
+    aspect-ratio: 1 / 1;
+  }
+  .product-card-content {
+    min-height: 110px;
+    padding-bottom: 34px;
+    padding-top: 0;
+  }
+  .product-card-content > .product-card-plus,
+  .product-card-content > .product-card-qty-pill {
+    position: absolute;
+    bottom: 2px;
+    right: 0;
+    top: auto;
+  }
 }
 
 /* ===== Shopify-style Product Detail (image left, content right, seamless) ===== */
@@ -5722,30 +5764,37 @@ h2, h3, h4 {
 }
 .pd-shopify-features {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
   margin: 0 0 22px;
 }
 .pd-shopify-feature {
   display: inline-flex;
   align-items: center;
-  background: #F0E1B5;
+  background: #C9A84C;
   color: #3B2A1A;
-  border: 1px solid #C9A84C;
+  border: none;
   font-family: 'Barlow', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 3px;
   letter-spacing: 0.02em;
   text-transform: none;
 }
+.pd-shopify-features--mini { margin: 0 0 18px; }
+.pd-shopify-features--mini .pd-shopify-feature {
+  font-size: 10px;
+  padding: 3px 8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
 .pd-shopify-boxsize {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 0 0 22px;
+  margin: 0 0 18px;
   padding: 0;
   background: transparent;
   border: none;
@@ -5759,15 +5808,21 @@ h2, h3, h4 {
 }
 .pd-shopify-boxsize-value {
   font-family: 'Barlow', sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   color: #3B2A1A;
-  font-weight: 700;
+  font-weight: 800;
 }
 .pd-shopify-boxsize-discount {
+  display: inline-flex;
   font-family: 'Barlow', sans-serif;
-  font-size: 13px;
-  color: #C9A84C;
-  font-weight: 700;
+  font-size: 10px;
+  color: #3B2A1A;
+  font-weight: 800;
+  background: #C9A84C;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .pd-shopify-change-link {
   background: transparent;
@@ -5862,4 +5917,71 @@ h2, h3, h4 {
     padding: 24px 32px 60px;
   }
 }
+
+
+/* === Product Detail extras: checks list, collapsibles wrapper, trust icons === */
+.pd-shopify-checks {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pd-shopify-checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: 'Rubik', 'Barlow', sans-serif;
+  font-size: 14px;
+  color: #3B2A1A;
+  line-height: 1.5;
+}
+.pd-shopify-checks li svg {
+  color: #C9A84C;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.pd-shopify-collapsibles {
+  margin: 0 0 24px;
+  border-top: 1px solid #E0D5BD;
+}
+
+.pd-shopify-trust {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 0 0 32px;
+  padding: 18px 0;
+  border-top: 1px solid #E0D5BD;
+  border-bottom: 1px solid #E0D5BD;
+}
+.pd-shopify-trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #3B2A1A;
+  letter-spacing: 0.02em;
+}
+.pd-shopify-trust-item svg {
+  color: #C9A84C;
+}
+@media (min-width: 760px) {
+  .pd-shopify-trust-item { font-size: 13px; }
+}
+
+/* Desktop: right column scrollable until image is reached — image is sticky already (set on .pd-shopify-media). */
+@media (min-width: 760px) {
+  .pd-shopify-media {
+    align-self: start;
+  }
+}
+
+/* Tighter qty-row spacing */
+.pd-shopify-qty-row { margin: 0 0 18px; }
 

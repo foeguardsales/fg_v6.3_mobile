@@ -1,0 +1,64 @@
+{
+  "summary": "Iteration 15 — FoeGuard menu/product/treat UI iteration-2 refinements verified on desktop 1440x900 and mobile 390x844. 14/15 spec items PASS. One MINOR spec deviation found: treat detail page is missing the highlight checklist (.pd-shopify-checks) between pills and collapsibles, although spec explicitly listed 'benefit checks' for treats. All other items (cream-active transparent top nav, text-only box-size selector with mustard SAVE badges, mustard #C9A84C 10px uppercase mini pills, NO '% off' anywhere — cart badge now 'Save 5%', desktop 2-col horizontal cards, mobile 2-col vertical cards with + overlay at image bottom-right, Box Selected 6lb without parens, mustard SAVE badge inline when 18+ lb, removed Details/Notes tabs, collapsibles order Ingredients→Nutrition→Feeding→Product Info→Notes with Notes at BOTTOM, trust row, sticky image position:sticky top:140px verified by scroll, FAQ ProductFaqSection at bottom of product but NOT on treats, home page review/collection borderRadius 8px not 16/20) all PASS.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "TreatDetail.js (/treat/<id>)", "issue": "Spec listed 'benefit checks' (the .pd-shopify-checks ✓ list of highlights) as part of the treat page layout, but the rendered treat detail page does NOT contain a .pd-shopify-checks element — content goes pills → quantity → 'Back to menu' → collapsibles directly. The food product page (.pd-shopify-checks present) has 4 mustard-check highlights; treats jump straight to collapsibles. Either render benefit checks on treats too, or remove that bullet from the spec.", "selector": ".pd-shopify-checks (missing on /treat/treat-beef-rib)", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verifications": {
+    "menu_top_nav": {"data-testid": "menu-top-nav PASS", "parent_bg": "rgba(0,0,0,0) PASS (no mustard)", "Raw Food Menu_active_bg": "rgb(239,230,204)=#EFE6CC PASS", "Raw Food Menu_active_border_bottom": "2px solid rgb(59,42,26) PASS", "Build Your Meal Plan_bg": "rgba(0,0,0,0) PASS", "Feeding Calculator_bg": "rgba(0,0,0,0) PASS", "mobile_height": "35px PASS slimmer", "mobile_width": "358 of 390vw PASS matches menu content"},
+    "box_size_selector": {"wrap_bg": "rgba(0,0,0,0) PASS no container", "6lb_active": {"bg": "rgba(0,0,0,0) TRANSPARENT PASS (not dark)", "font_weight": "800 PASS bold", "border_bottom": "2px solid rgb(59,42,26) PASS"}, "18lb_inactive": {"bg": "rgba(0,0,0,0)", "fw": "600", "no_border": "PASS"}, "save_badges": {"18lb": "SAVE 5% bg rgb(201,168,76)=#C9A84C, 10px PASS", "24lb": "SAVE 10% PASS", "36lb": "SAVE 15% PASS"}, "click_18lb_active_bg_still_transparent": "rgba(0,0,0,0) PASS — base CSS override works"},
+    "desktop_cards_1440": {"count": 16, "first_card_w": 612, "first_card_h": 157.5, "image_left": 96, "image_w": 110, "image_h": 110, "2_per_row": "PASS (same top)", "add_btn_pos": "top 108 left 580 = bottom-right of card"},
+    "mobile_cards_390": {"count": 16, "card1_dim": "172x296 at left 16 top 696", "card2_dim": "172x296 at left 202 top 696 — SAME row VERTICAL PASS", "image_in_card": "172x172 top:0 left:0 (image on top)", "add_btn": "32x32 absolute top:140 left:134 — overlays bottom-right of image PASS"},
+    "floating_cart": {"position": "fixed", "bottom": "22px", "centered": "left 608.6 of 1440vw PASS", "visible": true},
+    "product_detail_cd-chicken": {
+      "feature_pills": "3 pills bg rgb(201,168,76)=#C9A84C, fs 10px, text-transform uppercase PASS",
+      "detail_tabs_element": "FALSE — removed PASS",
+      "box_selected_text_6lb": "'Box Selected: 6lb CHANGE ON MENU' — NO parens PASS",
+      "box_selected_text_18lb": "'Box Selected: 18lb SAVE 5% CHANGE ON MENU' — NO parens PASS",
+      "save_badge_inline": "'SAVE 5%' bg rgb(201,168,76) fs 10px PASS",
+      "collapsibles_order": ["INGREDIENTS","NUTRITION FACTS","FEEDING GUIDE","PRODUCT INFO","NOTES"],
+      "notes_at_bottom": "PASS",
+      "notes_input_after_expand": "textarea present PASS",
+      "trust_row": ["100% Recyclable","Humanely Raised","Made in Canada"],
+      "image_position_css": "sticky top:140px PASS",
+      "image_sticky_scroll_test": "before scroll top=160, after window.scrollTo(0,400) top=160 — image stays sticky PASS",
+      "faq_section": "SECTION element width 1068 at top ~1180 containing 'FREQUENTLY ASKED' — one large container at bottom PASS",
+      "no_pct_off_anywhere_on_pd": "body.innerText.includes('% off') === false PASS",
+      "change-box-size click -> /menu": "PASS"
+    },
+    "treat_detail_treat-beef-rib": {
+      "shopify_layout": "PASS",
+      "pills": "3 pills SINGLE-INGREDIENT/DENTAL SUPPORT/ENRICHMENT bg rgb(201,168,76) fs 10px PASS",
+      "trust_row": "PASS",
+      "collapsibles_order_with_notes_at_bottom": ["Ingredients","Feeding guide","Product info","Notes"],
+      "faq_section": "NOT PRESENT — PASS (treats intentionally have no FAQ)",
+      "benefit_checks_pd-shopify-checks": "MISSING — spec listed but not rendered (MINOR)"
+    },
+    "cart_drawer": {"cart-discount-badge_text_when_18lb": "'Save 5%' PASS", "no_pct_off_in_body": "PASS"},
+    "landing_page_radii": {"review-card": "8px PASS", "review-photo-card": "8px PASS", "elements_with_16px_or_20px_borderRadius": "0 — PASS", "code_grep_LandingPage.js": "lines 659/784/891/1121/1177/1518 all '8px' PASS; 1008 and 1389 are still 12px (smaller secondary containers, acceptable)"}
+  },
+  "test_report_links": [],
+  "action_items": [
+    "MINOR: Decide whether to add the .pd-shopify-checks highlights list to /treat/<id> (between pills and collapsibles) to match the spec wording for treats, OR omit 'benefit checks' from treat-page spec since treats don't naturally have a 4-bullet highlight list. Currently treats render pills → quantity → 'Back to menu' → collapsibles."
+  ],
+  "critical_code_review_comments": [
+    "Excellent CSS specificity handling: base .box-size-slider .box-size-chip.is-active dark-bg rule is correctly overridden by .box-size-slider--mustard variant to keep active chip transparent. Verified 6lb active bg = rgba(0,0,0,0) — no regression.",
+    "Mobile 2-col vertical card layout with absolutely-positioned + button at top:140 left:134 (within 172x172 image area) correctly overlays the image's bottom-right corner — visual fits the design intent.",
+    "Cart discount badge globally renamed to 'Save X%' — body.innerText scan returns zero '% off' occurrences on /menu (cart open with 18lb), /product/{id}, and confirmed across cart/checkout/product flows.",
+    "Image left column uses position:sticky; top:140px — verified by scroll test (top stays 160 after 400px scroll). Good UX while right column scrolls.",
+    "All new data-testids (menu-top-nav, box-size-wrap, box-size-{6,18,24,36}lb, product-{id}, add-{id}, cart-button, change-box-size, cart-discount-badge) functional.",
+    "TreatDetail.js: missing .pd-shopify-checks (only design deviation found in iteration 15)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend only)", "frontend": "14/15 ≈ 93% — one MINOR deviation"},
+  "test_credentials": "N/A — all routes public",
+  "seed_data_creation": "None — used existing seeded products and treats",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All iteration-2 menu/product/treat/home UI refinements verified PASS except one MINOR: treats page lacks .pd-shopify-checks (highlight checklist between pills and collapsibles). Test all done with REACT_APP_BACKEND_URL preview origin. Key data-testids: menu-top-nav, box-size-wrap, box-size-{6,18,24,36}lb, product-{id}, add-{id}, treat-{id}, cart-button, cart-discount-badge, change-box-size, product-close-btn, product-notes-input (inside expanded Notes collapsible). The hot points verified: (a) box-size 6lb active bg TRANSPARENT not dark — base rule override working; (b) cart discount badge says 'Save X%' not '% off' globally; (c) box selected text shows 6lb without parentheses; (d) image position:sticky verified by scroll; (e) mobile + button overlays image bottom-right corner; (f) FAQ section only on product page, not treats; (g) Notes at BOTTOM of collapsibles with textarea inside.",
+  "rca of the issue": "Single deviation: TreatDetail.js render path does not include the <ul class='pd-shopify-checks'>...</ul> block that ProductDetail.js has (between the feature pills and the collapsibles). The product page maps an array of `highlights` to gold-check list items; treats do not have such a highlights array in their data or have it intentionally omitted. Mitigation: either add a small `treatHighlights` array per treat (e.g. ['Pasture-raised', 'Long-lasting chew', 'Mental enrichment']) and render the same .pd-shopify-checks block in TreatDetail.js, OR remove 'benefit checks' from the treat-page acceptance criteria — neither breaks functionality."
+}

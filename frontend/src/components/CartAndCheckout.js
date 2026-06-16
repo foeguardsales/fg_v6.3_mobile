@@ -151,7 +151,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             <span className="cart-box-size">{boxSize}lb Box</span>
             <span className="cart-box-progress">({getTotalProteins()}lb selected)</span>
             {discount > 0 && (
-              <span className="cart-discount-badge">{discount * 100}% off</span>
+              <span className="cart-discount-badge">Save {discount * 100}%</span>
             )}
           </div>
 
@@ -1085,7 +1085,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
       <div className="checkout-summary">
         <h3>Order Summary</h3>
         <div className="checkout-summary-row">
-          <span>{boxSize}lb Box {discount > 0 && `(${discount * 100}% off)`}</span>
+          <span>{boxSize}lb Box {discount > 0 && `(Save ${discount * 100}%)`}</span>
           <span>${subtotal.toFixed(2)}</span>
         </div>
         <div className="checkout-summary-row">

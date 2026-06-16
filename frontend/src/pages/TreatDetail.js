@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronLeft, X } from 'lucide-react';
+import { ChevronLeft, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { CartDrawer } from '../components/CartAndCheckout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
@@ -278,11 +278,11 @@ export const TreatDetailPage = () => {
               {treat.description || treat.quantity_description}
             </p>
 
-            {/* Feature pills */}
-            <div className="pd-shopify-features">
-              <span className="pd-shopify-feature">Natural single-ingredient</span>
+            {/* Feature pills — smaller harvest gold */}
+            <div className="pd-shopify-features pd-shopify-features--mini">
+              <span className="pd-shopify-feature">Single-ingredient</span>
               <span className="pd-shopify-feature">Dental support</span>
-              <span className="pd-shopify-feature">Mental enrichment</span>
+              <span className="pd-shopify-feature">Enrichment</span>
             </div>
 
             {/* Qty selector */}
@@ -311,80 +311,69 @@ export const TreatDetailPage = () => {
                 Back to menu
               </button>
             </div>
-          </div>
-        </div>
 
-        <div className="pd-uber-body">
-          {/* Tabs */}
-          <div className="detail-tabs" data-testid="detail-tabs">
-            <button
-              className={`detail-tab ${activeTab === 'description' ? 'is-active' : ''}`}
-              onClick={() => setActiveTab('description')}
-              data-testid="tab-description"
-            >Details</button>
-            <button
-              className={`detail-tab ${activeTab === 'notes' ? 'is-active' : ''}`}
-              onClick={() => setActiveTab('notes')}
-              data-testid="tab-notes"
-            >Notes</button>
-          </div>
+            {/* Benefits as checks */}
+            {treat.benefits && treat.benefits.length > 0 && (
+              <ul className="pd-shopify-checks" data-testid="treat-checks">
+                {treat.benefits.map((b, i) => (
+                  <li key={i}><Check size={16} strokeWidth={2.5} /> <span>{b}</span></li>
+                ))}
+              </ul>
+            )}
 
-          {activeTab === 'description' && (
-            <div data-testid="tab-pane-description">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 0, marginTop: '4px' }}>
-                {treat.ingredients && (
-                  <CollapsibleSection title="Ingredients">
-                    <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
-                      {typeof treat.ingredients === 'string' ? treat.ingredients : (treat.ingredients || []).join(', ')}
-                    </p>
-                  </CollapsibleSection>
-                )}
-                {treat.benefits && treat.benefits.length > 0 && (
-                  <CollapsibleSection title="Benefits">
-                    <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      {treat.benefits.map((b, i) => (
-                        <li key={i} style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.6' }}>{b}</li>
-                      ))}
-                    </ul>
-                  </CollapsibleSection>
-                )}
-                <CollapsibleSection title="Feeding guide">
-                  <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#3B2A1A', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Instructions</h4>
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>
-                    {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet.'}
-                  </p>
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 12px' }}>
-                    {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
-                  </p>
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
-                    For how much to feed, visit our{' '}
-                    <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
+            {/* Collapsibles */}
+            <div className="pd-shopify-collapsibles">
+              {treat.ingredients && (
+                <CollapsibleSection title="Ingredients">
+                  <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
+                    {typeof treat.ingredients === 'string' ? treat.ingredients : (treat.ingredients || []).join(', ')}
                   </p>
                 </CollapsibleSection>
-                <CollapsibleSection title="Product info">
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
-                    {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
-                  </p>
-                </CollapsibleSection>
+              )}
+              <CollapsibleSection title="Feeding guide">
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>
+                  {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet.'}
+                </p>
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 12px' }}>
+                  {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
+                </p>
+              </CollapsibleSection>
+              <CollapsibleSection title="Product info">
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
+                  {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
+                </p>
+              </CollapsibleSection>
+              <CollapsibleSection title="Notes">
+                <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
+                  Add any special notes for your order.
+                </label>
+                <textarea
+                  className="pd-uber-notes"
+                  value={orderNotes}
+                  onChange={(e) => setOrderNotes(e.target.value)}
+                  rows={4}
+                  placeholder="e.g. cut into smaller pieces, no additives…"
+                  data-testid="treat-notes-input"
+                />
+              </CollapsibleSection>
+            </div>
+
+            {/* 3 horizontal icons row */}
+            <div className="pd-shopify-trust" data-testid="treat-trust-row">
+              <div className="pd-shopify-trust-item">
+                <Recycle size={26} strokeWidth={1.8} />
+                <span>100% Recyclable</span>
+              </div>
+              <div className="pd-shopify-trust-item">
+                <Heart size={26} strokeWidth={1.8} />
+                <span>Humanely Raised</span>
+              </div>
+              <div className="pd-shopify-trust-item">
+                <MapPin size={26} strokeWidth={1.8} />
+                <span>Made in Canada</span>
               </div>
             </div>
-          )}
-
-          {activeTab === 'notes' && (
-            <div data-testid="tab-pane-notes" style={{ marginTop: '8px' }}>
-              <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
-                Add any special notes for your order.
-              </label>
-              <textarea
-                className="pd-uber-notes"
-                value={orderNotes}
-                onChange={(e) => setOrderNotes(e.target.value)}
-                rows={5}
-                placeholder="e.g. cut into smaller pieces, no additives…"
-                data-testid="treat-notes-input"
-              />
-            </div>
-          )}
+          </div>
         </div>
       </div>
 

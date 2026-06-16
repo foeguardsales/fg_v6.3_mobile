@@ -400,7 +400,8 @@ export const BoxBuilder = () => {
                   className={`box-size-chip ${boxSize === box.size ? 'is-active' : ''}`}
                 >
                   <span className="box-size-chip-text">
-                    {box.label}{box.discount > 0 && <span className="box-size-chip-discount-inline"> · {box.discount}%</span>}
+                    <span>{box.label}</span>
+                    {box.discount > 0 && <span className="box-size-chip-discount-inline">Save {box.discount}%</span>}
                   </span>
                 </button>
               ))}

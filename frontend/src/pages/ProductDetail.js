@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat, X } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { CartDrawer } from '../components/CartAndCheckout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -549,32 +549,14 @@ export const ProductDetailPage = () => {
               {product.description}
             </p>
 
-            {/* Feature pills — gold, slightly square */}
-            <div className="pd-shopify-features" data-testid="product-badges">
-              <span className="pd-shopify-feature">For dogs of all stages</span>
-              <span className="pd-shopify-feature">Made fresh-to-order</span>
-              <span className="pd-shopify-feature">Human grade &amp; organic</span>
+            {/* Feature pills — smaller harvest gold (Uber-Eats style) */}
+            <div className="pd-shopify-features pd-shopify-features--mini" data-testid="product-badges">
+              <span className="pd-shopify-feature">All stages</span>
+              <span className="pd-shopify-feature">Fresh-to-order</span>
+              <span className="pd-shopify-feature">Human grade</span>
             </div>
 
-            {/* Box Selected: + change on menu link */}
-            <div className="pd-shopify-boxsize" data-testid="box-size-info">
-              <span className="pd-shopify-boxsize-label">Box Selected:</span>
-              <span className="pd-shopify-boxsize-value">
-                ({boxSize})lb
-                {sizeDiscount > 0 && (
-                  <span className="pd-shopify-boxsize-discount"> · {sizeDiscount}% off</span>
-                )}
-              </span>
-              <button
-                onClick={() => navigate('/menu')}
-                data-testid="change-box-size"
-                className="pd-shopify-change-link"
-              >
-                Change on menu
-              </button>
-            </div>
-
-            {/* Quantity selector + live total */}
+            {/* Quantity selector — Add to box */}
             <div className="pd-shopify-qty-row">
               <div>
                 <div className="pd-shopify-mini-label">Add to box</div>
@@ -609,86 +591,102 @@ export const ProductDetailPage = () => {
                 )}
               </div>
             </div>
+
+            {/* Box Selected: 6lb [Save 5%] Change on menu (BELOW Add to box) */}
+            <div className="pd-shopify-boxsize" data-testid="box-size-info">
+              <span className="pd-shopify-boxsize-label">Box Selected:</span>
+              <span className="pd-shopify-boxsize-value">{boxSize}lb</span>
+              {sizeDiscount > 0 && (
+                <span className="pd-shopify-boxsize-discount">Save {sizeDiscount}%</span>
+              )}
+              <button
+                onClick={() => navigate('/menu')}
+                data-testid="change-box-size"
+                className="pd-shopify-change-link"
+              >
+                Change on menu
+              </button>
+            </div>
+
+            {/* Checks list (highlights as ✓) */}
+            {product.highlights && product.highlights.length > 0 && (
+              <ul className="pd-shopify-checks" data-testid="product-checks">
+                {product.highlights.map((h, i) => (
+                  <li key={i}><Check size={16} strokeWidth={2.5} /> <span>{h}</span></li>
+                ))}
+              </ul>
+            )}
+
+            {/* Collapsibles (Ingredients, Nutrition, Feeding, Product info, Notes) */}
+            <div className="pd-shopify-collapsibles" data-testid="product-collapsibles">
+              <CollapsibleSection title="Ingredients">
+                <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
+                  {typeof product.ingredients === 'string' ? product.ingredients : (product.ingredients || []).join(', ')}
+                </p>
+              </CollapsibleSection>
+              <CollapsibleSection title="Nutrition Facts">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                  {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
+                    <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #E8DDD0' }}>
+                      <span style={{ color: '#5A5A5A', fontSize: '13px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
+                      <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '13px' }}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </CollapsibleSection>
+              <CollapsibleSection title="Feeding Guide">
+                {product.feeding_guide && (
+                  <>
+                    <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>{product.feeding_guide.feeding}</p>
+                    <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 12px' }}>{product.feeding_guide.handling}</p>
+                    <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
+                      For how much to feed, visit our{' '}
+                      <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
+                    </p>
+                  </>
+                )}
+              </CollapsibleSection>
+              <CollapsibleSection title="Product info">
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
+                  {product.product_information}
+                </p>
+              </CollapsibleSection>
+              <CollapsibleSection title="Notes">
+                <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
+                  Add any special notes for your order (e.g. remove an ingredient, preference).
+                </label>
+                <textarea
+                  className="pd-uber-notes"
+                  value={orderNotes}
+                  onChange={(e) => setOrderNotes(e.target.value)}
+                  rows={4}
+                  placeholder="e.g. No bone, extra liver, cut into small pieces…"
+                  data-testid="product-notes-input"
+                />
+              </CollapsibleSection>
+            </div>
+
+            {/* 3 horizontal icons row */}
+            <div className="pd-shopify-trust" data-testid="product-trust-row">
+              <div className="pd-shopify-trust-item">
+                <Recycle size={26} strokeWidth={1.8} />
+                <span>100% Recyclable</span>
+              </div>
+              <div className="pd-shopify-trust-item">
+                <Heart size={26} strokeWidth={1.8} />
+                <span>Humanely Raised</span>
+              </div>
+              <div className="pd-shopify-trust-item">
+                <MapPin size={26} strokeWidth={1.8} />
+                <span>Made in Canada</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="pd-uber-body">
-          {/* Tabs: Description | Notes */}
-          <div className="detail-tabs" data-testid="detail-tabs">
-            <button
-              className={`detail-tab ${activeTab === 'description' ? 'is-active' : ''}`}
-              onClick={() => setActiveTab('description')}
-              data-testid="tab-description"
-            >Details</button>
-            <button
-              className={`detail-tab ${activeTab === 'notes' ? 'is-active' : ''}`}
-              onClick={() => setActiveTab('notes')}
-              data-testid="tab-notes"
-            >Notes</button>
-          </div>
-
-          {activeTab === 'description' && (
-            <div data-testid="tab-pane-description">
-              {product.highlights && product.highlights.length > 0 && (
-                <ul style={{ margin: '8px 0 16px', paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  {product.highlights.map((h, i) => (
-                    <li key={i} style={{ fontSize: '14px', color: '#3B2A1A', lineHeight: '1.6' }}>{h}</li>
-                  ))}
-                </ul>
-              )}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 0, marginTop: '4px' }}>
-                <CollapsibleSection title="Ingredients">
-                  <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: '0 0 12px' }}>
-                    {typeof product.ingredients === 'string' ? product.ingredients : (product.ingredients || []).join(', ')}
-                  </p>
-                </CollapsibleSection>
-                <CollapsibleSection title="Nutrition Facts">
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                    {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
-                      <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #E8DDD0' }}>
-                        <span style={{ color: '#5A5A5A', fontSize: '13px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
-                        <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '13px' }}>{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CollapsibleSection>
-                <CollapsibleSection title="Feeding Guide">
-                  {product.feeding_guide && (
-                    <>
-                      <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#3B2A1A', margin: '0 0 8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Instructions</h4>
-                      <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>{product.feeding_guide.feeding}</p>
-                      <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 12px' }}>{product.feeding_guide.handling}</p>
-                      <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
-                        For how much to feed, visit our{' '}
-                        <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
-                      </p>
-                    </>
-                  )}
-                </CollapsibleSection>
-                <CollapsibleSection title="Product info">
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
-                    {product.product_information}
-                  </p>
-                </CollapsibleSection>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'notes' && (
-            <div data-testid="tab-pane-notes" style={{ marginTop: '8px' }}>
-              <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
-                Add any special notes for your order (e.g. remove an ingredient, preference).
-              </label>
-              <textarea
-                className="pd-uber-notes"
-                value={orderNotes}
-                onChange={(e) => setOrderNotes(e.target.value)}
-                rows={5}
-                placeholder="e.g. No bone, extra liver, cut into small pieces…"
-                data-testid="product-notes-input"
-              />
-            </div>
-          )}
+        {/* FAQ section — bottom of product page, one large container (historical) */}
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '8px 16px 32px' }}>
+          <ProductFaqSection />
         </div>
       </div>
 

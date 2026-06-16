@@ -656,7 +656,7 @@ export const LandingPage = () => {
                   maxWidth: '720px',
                   width: '100%',
                   margin: '0 auto',
-                  borderRadius: '20px',
+                  borderRadius: '8px',
                   overflow: 'hidden'
                 }}
               >
@@ -781,7 +781,7 @@ export const LandingPage = () => {
                   style={{
                     background: COLORS.khaki,
                     border: 'none',
-                    borderRadius: '16px',
+                    borderRadius: '8px',
                     overflow: 'hidden',
                     cursor: 'pointer',
                     textAlign: 'left',
@@ -888,7 +888,7 @@ export const LandingPage = () => {
               {/* Image side — sized to roughly match benefit text block */}
               <div style={{
                 position: 'relative',
-                borderRadius: '20px',
+                borderRadius: '8px',
                 overflow: 'hidden',
                 maxHeight: '360px',
                 maxWidth: '360px',
@@ -1118,7 +1118,7 @@ export const LandingPage = () => {
                       width: CARD_W,
                       scrollSnapAlign: 'center',
                       background: COLORS.white,
-                      borderRadius: '16px',
+                      borderRadius: '8px',
                       border: `1px solid ${COLORS.khaki}`,
                       boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
                       overflow: 'hidden',
@@ -1174,7 +1174,7 @@ export const LandingPage = () => {
                         flex: '0 0 auto',
                         width: CARD_W,
                         scrollSnapAlign: 'center',
-                        borderRadius: '16px',
+                        borderRadius: '8px',
                         border: `1px solid ${COLORS.khaki}`,
                         boxShadow: '4px 4px 0px rgba(0,0,0,0.08)',
                         overflow: 'hidden',
