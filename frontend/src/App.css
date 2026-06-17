@@ -5148,15 +5148,16 @@ h2, h3, h4 {
 
 /* ===== Top nav (Raw Food Menu | Build Your Meal Plan | Feeding Calculator) — larger image-bg cards, left-aligned ===== */
 .menu-top-nav-mustard {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
   gap: 10px;
   background: transparent;
   border-radius: 0;
   padding: 0;
   margin: 0 0 22px;
   max-width: 100%;
-  overflow: visible;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   box-shadow: none;
   border-bottom: none;
@@ -5165,6 +5166,10 @@ h2, h3, h4 {
 .menu-top-nav-mustard::-webkit-scrollbar { display: none; }
 .menu-top-nav-mustard-btn {
   position: relative;
+  flex: 0 0 auto;
+  width: 78%;
+  max-width: 320px;
+  scroll-snap-align: start;
   background-color: #3B2A1A;
   background-size: cover;
   background-position: center;
@@ -5177,7 +5182,7 @@ h2, h3, h4 {
   font-weight: 700;
   color: #F5F3EF;
   cursor: pointer;
-  white-space: normal;
+  white-space: nowrap;
   letter-spacing: 0.02em;
   text-transform: none;
   border-radius: 8px;
@@ -5213,8 +5218,8 @@ h2, h3, h4 {
   background: linear-gradient(180deg, rgba(59,42,26,0.45) 0%, rgba(59,42,26,0.85) 100%);
 }
 @media (min-width: 760px) {
-  .menu-top-nav-mustard { gap: 14px; }
-  .menu-top-nav-mustard-btn { font-size: 16px; padding: 28px 22px; min-height: 120px; }
+  .menu-top-nav-mustard { gap: 14px; overflow: visible; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .menu-top-nav-mustard-btn { font-size: 16px; padding: 28px 22px; min-height: 120px; width: auto; max-width: none; }
 }
 
 /* Category pills row */
@@ -5468,7 +5473,7 @@ h2, h3, h4 {
   top: 0;
   background: #F5F3EF;
   z-index: 5;
-  border-bottom: 1px solid #3B2A1A;
+  border-bottom: none;
   justify-content: flex-start;
 }
 .menu-category-text::-webkit-scrollbar { display: none; }
@@ -5570,8 +5575,8 @@ h2, h3, h4 {
 .box-size-slider--mustard .box-size-chip {
   flex: 0 0 auto;
   padding: 10px 14px;
-  background: #FFFFFF;
-  border: 1px solid #D8CFB8;
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: 6px;
   color: #3B2A1A;
   font-family: 'Barlow', sans-serif;
@@ -5587,8 +5592,7 @@ h2, h3, h4 {
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 .box-size-slider--mustard .box-size-chip:hover {
-  background: #EFE6CC;
-  border-color: #C9A84C;
+  color: #6A4F35;
 }
 .box-size-slider--mustard .box-size-chip.is-active {
   background: #EFE6CC;
