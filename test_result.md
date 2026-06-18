@@ -407,6 +407,40 @@ frontend:
           - Removed the now-unused photo-tile loop / CUSTOMER_IMG counter
           Verified visually on desktop (1440x900) and mobile (390x844).
 
+  - task: "Cart closes on outside click & Product modal slider connected to menu"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/CartAndCheckout.js, /app/frontend/src/pages/ProductDetail.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: |
+          ✅ RE-TEST COMPLETED - BOTH FIXES NOW WORKING PERFECTLY
+          
+          **FIX 1 — CART CLOSES ON OUTSIDE CLICK: ✅ PASS**
+          - Cart drawer closes when clicking outside (coordinates 200, 400)
+          - Cart remains open when clicking inside
+          - Cart content scrolls properly
+          - Overlay is transparent (no page darkening)
+          
+          **FIX 2 — PRODUCT MODAL SLIDER CONNECTED TO MENU: ✅ PASS**
+          - Added Comfort Chicken to 18 lb on menu
+          - Opened product modal WITHOUT committing
+          - Modal quantity display correctly shows "18 lb" (NOT "6 lb")
+          - Floating button shows "Add 18lb to your box · $80.97"
+          - Modal is bottom-sheet style with grab handle, X button, rounded top corners
+          
+          **REGRESSION CHECK: ✅ PASS**
+          - Modal appears as bottom-sheet (anchored to bottom)
+          - Grey grab handle bar visible and functional
+          - Rounded top corners (18px border radius)
+          - X close button present
+          
+          Both critical fixes verified working correctly. No console errors detected.
+
   - task: "Subscription feature on /build-box page"
     implemented: true
     working: true
@@ -473,7 +507,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Redesigned Menu flow (Tim Hortons style) testing completed"
+    - "Cart closes on outside click & Product modal slider connected to menu - COMPLETED"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -923,3 +957,53 @@ agent_communication:
       - Cart scrolling works correctly
       - BUT: Cart overlay click handler not working
       - BUT: Product modal quantity not syncing with menu
+  
+  - agent: "testing"
+    message: |
+      ✅ RE-TEST COMPLETED - BOTH FIXES NOW WORKING PERFECTLY
+      
+      Re-tested the two specific fixes on the FoeGuard ordering flow at /menu.
+      
+      **FIX 1 — CART CLOSES ON OUTSIDE CLICK: ✅ PASS**
+      
+      Test Steps:
+      1. Added product to box (clicked + button 3 times for 18lb)
+      2. Opened cart via floating "Add to Basket" button
+      3. Verified cart drawer visible and page NOT darkened (transparent overlay)
+      4. Clicked outside cart at coordinates (200, 400)
+      5. ✅ VERIFIED: Cart drawer CLOSED (isOpen: false, transform shows slide-out)
+      6. Re-opened cart and clicked INSIDE drawer
+      7. ✅ VERIFIED: Cart remains open when clicking inside
+      8. ✅ VERIFIED: Cart content scrolls properly (879px scroll height vs 724px client height)
+      
+      **FIX 2 — PRODUCT MODAL SLIDER CONNECTED TO MENU: ✅ PASS**
+      
+      Test Steps:
+      1. Started fresh with clean sessionStorage
+      2. Added Comfort Chicken to 18 lb (clicked + button 3 times)
+      3. Verified menu card shows "18lb" and sessionStorage stores 18lb
+      4. WITHOUT committing, clicked product card body to open modal
+      5. ✅ VERIFIED: Modal quantity display shows "18 lb" (NOT "6 lb")
+      6. ✅ VERIFIED: Floating button shows "Add 18lb to your box · $80.97"
+      7. ✅ VERIFIED: Modal is bottom-sheet style with:
+         - Grey grab handle bar (visible)
+         - X close button present
+         - Rounded top corners (18px border radius)
+         - Anchored to bottom (bottom: 0px)
+      
+      **REGRESSION CHECK: ✅ PASS**
+      - Modal appears as bottom-sheet (anchored to bottom)
+      - Grey grab handle bar at top (visible and functional)
+      - Rounded top corners (18px)
+      - X close button present
+      
+      **CONSOLE ERRORS:**
+      ✓ No console errors detected during testing
+      
+      **FINAL VERDICT:**
+      ✅ FIX 1 (Cart closes on outside click): PASS
+      ✅ FIX 2 (Product modal slider connected to menu): PASS
+      ✅ Regression check: PASS
+      
+      Both critical fixes are now working correctly. The cart properly closes when clicking outside,
+      and the product modal quantity slider correctly initializes to the quantity already in the box.

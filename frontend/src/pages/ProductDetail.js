@@ -376,6 +376,14 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     return () => window.removeEventListener('foeguard:open-cart', open);
   }, []);
 
+  // Keep the size slider connected to the menu — once the product/id is known,
+  // start it at whatever quantity is already in the in-progress box.
+  useEffect(() => {
+    const saved = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+    const existing = saved[productId]?.qty;
+    if (existing && existing > 0) setQuantity(existing);
+  }, [productId, product]);
+
   const handleBackToMenu = () => {
     if (embedded && onClose) {
       onClose();

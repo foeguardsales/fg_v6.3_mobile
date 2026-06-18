@@ -49,6 +49,27 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
   const [promoError, setPromoError] = useState('');
   const [savedPets, setSavedPets] = useState([]);
   const navigate = useNavigate();
+  const drawerRef = useRef(null);
+
+  // Close the cart when clicking/tapping anywhere outside the drawer (robust,
+  // independent of overlay stacking). Delayed bind so the opening click is ignored.
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const handleDown = (e) => {
+      if (drawerRef.current && !drawerRef.current.contains(e.target)) {
+        onClose();
+      }
+    };
+    const t = setTimeout(() => {
+      document.addEventListener('mousedown', handleDown);
+      document.addEventListener('touchstart', handleDown);
+    }, 0);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener('mousedown', handleDown);
+      document.removeEventListener('touchstart', handleDown);
+    };
+  }, [isOpen, onClose]);
 
   // Load saved pets from localStorage
   useEffect(() => {
@@ -113,7 +134,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
   return (
     <>
       <div className={`cart-drawer-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
-      <div className={`cart-drawer ${isOpen ? 'open' : ''}`} data-testid="cart-drawer">
+      <div className={`cart-drawer ${isOpen ? 'open' : ''}`} data-testid="cart-drawer" ref={drawerRef}>
         <div className="cart-drawer-header">
           <h3 style={{ fontSize: '24px', color: '#c8102e', margin: 0 }}>Your Box</h3>
           <button onClick={onClose} className="cart-close-btn">×</button>
