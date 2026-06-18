@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap');
 
 /* Protein circle grid: 4 cols on desktop, 2 cols on mobile */
 @media (min-width: 768px) {
@@ -157,30 +158,30 @@ body {
   font-style: normal;
 }
 
-/* Heritage typography: Barlow SemiBold for headings, Lucida Grande for body text */
+/* Heritage typography: Barlow Semi Condensed (SemiBold) everywhere */
 :root {
-  --font-body: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
-  --font-heading: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-accent: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-accent: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* Default body = Lucida Grande 400 */
+/* Default body = Barlow Semi Condensed SemiBold */
 body {
   font-family: var(--font-body);
-  font-weight: 400;
+  font-weight: 600;
   background: #F5F3EF;
   color: #3B2A1A;
 }
-/* Headings = Barlow SemiBold (600) */
+/* Headings = Barlow Semi Condensed SemiBold */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading) !important;
   font-weight: 600 !important;
   color: #3B2A1A;
 }
-/* Body / paragraph text = Lucida Grande */
-p, li, blockquote, dd, dt, figcaption, small, .subtext {
+/* Body / paragraph text = Barlow Semi Condensed SemiBold */
+p, li, blockquote, dd, dt, figcaption, small, .subtext,
+button, input, select, textarea, label, a, span, div {
   font-family: var(--font-body) !important;
-  color: #3B2A1A;
 }
 
 /* ========== CSS VARIABLES ========== */

@@ -681,31 +681,29 @@ export const LandingPage = () => {
           }}>
             <div className="hero-text" style={{ maxWidth: '620px' }}>
               <h1 style={{
-                fontSize: 'clamp(36px, 5.4vw, 60px)',
+                fontSize: 'clamp(34px, 4.4vw, 48px)',
                 fontWeight: 600,
                 color: COLORS.cream,
-                lineHeight: '1.05',
+                lineHeight: '1.08',
                 marginBottom: '18px',
-                fontFamily: "'Barlow', sans-serif",
+                fontFamily: "'Barlow Semi Condensed', sans-serif",
                 letterSpacing: '-0.5px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)'
               }}>
-                Real Food For Pets. <br />
-                <span style={{ color: COLORS.cream }}>Raised Right </span>
-                <span style={{ color: COLORS.red }}>In Ontario.</span>
+                Restore Your Dog&apos;s Digestion, Energy and Comfort <span style={{ color: COLORS.red }}>from The Inside Out</span>
               </h1>
 
               <p style={{
-                fontSize: 'clamp(15px, 1.6vw, 18px)',
+                fontSize: 'clamp(15px, 1.6vw, 17px)',
                 color: COLORS.cream,
                 opacity: 0.94,
-                maxWidth: '520px',
-                margin: '0 0 28px',
-                lineHeight: '1.55',
+                maxWidth: '560px',
+                margin: '0 0 26px',
+                lineHeight: '1.65',
                 fontWeight: 400,
                 textShadow: '0 1px 6px rgba(0,0,0,0.45)'
               }}>
-                Farm-to-Bowl Human-Grade Raw Pet Food Delivery — begin to see a happier, healthier dog in days.
+                Begin to see a happier, healthier dog in days with Ontario&apos;s Farm-to-Bowl raw dog food delivery.
               </p>
 
               <button
@@ -719,7 +717,7 @@ export const LandingPage = () => {
                   borderRadius: '999px',
                   fontSize: '15px',
                   fontWeight: 700,
-                  fontFamily: "'Barlow', sans-serif",
+                  fontFamily: "'Barlow Semi Condensed', sans-serif",
                   cursor: 'pointer',
                   letterSpacing: '0.04em',
                   textTransform: 'uppercase',
