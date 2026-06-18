@@ -18,6 +18,29 @@ const DISCOUNT_RATES = {
 // Subscription discount rate
 const SUBSCRIPTION_DISCOUNT = 0.05; // 5% off
 
+// Split a box's proteins into the discounted in-box portion (up to the box size)
+// and any overflow that spills out as full-price loose products ("out of box").
+const splitBoxItems = (box, products, getBasePrice) => {
+  const cap = box.boxSize || 0;
+  let used = 0;
+  const inBox = [];
+  const overflow = [];
+  Object.entries(box.proteins || {}).forEach(([pid, data]) => {
+    if (!data.qty) return;
+    const product = (products || []).find(p => p.product_id === pid);
+    const perLb = product
+      ? (getBasePrice ? getBasePrice(product) : product.pricing.find(p => p.size_lb === 6)?.price || 0) / 6
+      : 0;
+    const remaining = Math.max(0, cap - used);
+    const discLbs = Math.min(data.qty, remaining);
+    const fullLbs = data.qty - discLbs;
+    if (discLbs > 0) inBox.push({ pid, name: data.name, qty: discLbs, perLb });
+    if (fullLbs > 0) overflow.push({ pid, name: data.name, qty: fullLbs, perLb });
+    used += data.qty;
+  });
+  return { inBox, overflow };
+};
+
 // Cart Drawer Component (slide-in from right)
 export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein, subscriptionPlan, onSubscriptionChange, basket = [], onRemoveBox }) => {
   const [promoCode, setPromoCode] = useState('');
@@ -55,19 +78,17 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
       setPromoDiscount(0);
     }
   };
-  // Price one box (its proteins at the box's own discount)
+  // Split a box's proteins into the discounted in-box portion (up to the box size)
+  // and any overflow that spills out as full-price loose products.
+  const splitBox = (box) => splitBoxItems(box, products, getBasePrice);
+
+  // Price one box: in-box lbs get the box discount, overflow is full price
   const boxSubtotal = (box) => {
-    let t = 0;
     const d = box.discount || 0;
-    Object.entries(box.proteins || {}).forEach(([productId, data]) => {
-      if (data.qty > 0) {
-        const product = products.find(p => p.product_id === productId);
-        if (product) {
-          const basePrice = getBasePrice ? getBasePrice(product) : product.pricing.find(p => p.size_lb === 6)?.price || 0;
-          t += basePrice * (1 - d) * (data.qty / 6);
-        }
-      }
-    });
+    const { inBox, overflow } = splitBox(box);
+    let t = 0;
+    inBox.forEach(it => { t += it.perLb * (1 - d) * it.qty; });
+    overflow.forEach(it => { t += it.perLb * it.qty; });
     return t;
   };
   const boxLbs = (box) => Object.values(box.proteins || {}).reduce((s, d) => s + (d.qty || 0), 0);
@@ -216,40 +237,58 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             </div>
           )}
 
-          {basket.map((box, bi) => (
-            <div key={box.id} data-testid={`cart-box-${bi}`} style={{ borderBottom: '1px solid #E8DDD0', paddingBottom: '12px', marginBottom: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                <div style={{ fontWeight: 700, color: '#3B2A1A', fontFamily: "'Barlow Semi Condensed', sans-serif", display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span>Box {bi + 1} · {box.boxSize}lb</span>
-                  {box.discount > 0 && (
-                    <span className="cart-discount-badge">Save {Math.round(box.discount * 100)}%</span>
+          {basket.map((box, bi) => {
+            const { inBox, overflow } = splitBox(box);
+            const d = box.discount || 0;
+            return (
+              <div key={box.id}>
+                <div data-testid={`cart-box-${bi}`} style={{ borderBottom: '1px solid #E8DDD0', paddingBottom: '12px', marginBottom: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                    <div style={{ fontWeight: 700, color: '#3B2A1A', fontFamily: "'Barlow Semi Condensed', sans-serif", display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span>Box {bi + 1} · {box.boxSize}lb</span>
+                      {d > 0 && (
+                        <span className="cart-discount-badge">Save {Math.round(d * 100)}%</span>
+                      )}
+                    </div>
+                    {onRemoveBox && (
+                      <button
+                        onClick={() => onRemoveBox(box.id)}
+                        title="Remove box"
+                        data-testid={`cart-remove-box-${bi}`}
+                        style={{ background: 'none', border: 'none', color: '#A41E34', cursor: 'pointer', fontSize: '20px', lineHeight: 1, padding: '4px 8px' }}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                  {inBox.map(it => (
+                    <div key={it.pid} className="cart-item" style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', fontSize: '14px' }}>
+                      <span style={{ color: '#3B2A1A' }}>{it.name} · {it.qty}lb</span>
+                      <span style={{ color: '#6A4F35' }}>${(it.perLb * (1 - d) * it.qty).toFixed(2)}</span>
+                    </div>
+                  ))}
+                  {inBox.length === 0 && (
+                    <div className="cart-item" style={{ padding: '5px 0', fontSize: '13px', color: '#8A7156' }}>Empty box</div>
                   )}
                 </div>
-                {onRemoveBox && (
-                  <button
-                    onClick={() => onRemoveBox(box.id)}
-                    title="Remove box"
-                    data-testid={`cart-remove-box-${bi}`}
-                    style={{ background: 'none', border: 'none', color: '#A41E34', cursor: 'pointer', fontSize: '20px', lineHeight: 1, padding: '4px 8px' }}
+                {/* Overflow beyond the box size → loose, full-price products (out of box) */}
+                {overflow.map(it => (
+                  <div
+                    key={`of-${box.id}-${it.pid}`}
+                    className="cart-item"
+                    data-testid={`cart-overflow-${it.pid}`}
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0 12px', fontSize: '14px', borderBottom: '1px solid #E8DDD0', marginBottom: '12px' }}
                   >
-                    ×
-                  </button>
-                )}
-              </div>
-              {Object.entries(box.proteins || {}).map(([pid, data]) => {
-                if (!data.qty) return null;
-                const product = products.find(p => p.product_id === pid);
-                const basePrice = product ? (getBasePrice ? getBasePrice(product) : product.pricing.find(p => p.size_lb === 6)?.price || 0) : 0;
-                const lineTotal = basePrice * (1 - (box.discount || 0)) * (data.qty / 6);
-                return (
-                  <div key={pid} className="cart-item" style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', fontSize: '14px' }}>
-                    <span style={{ color: '#3B2A1A' }}>{data.name} · {data.qty}lb</span>
-                    <span style={{ color: '#6A4F35' }}>${lineTotal.toFixed(2)}</span>
+                    <span style={{ color: '#3B2A1A' }}>
+                      {it.name} · {it.qty}lb{' '}
+                      <span style={{ color: '#8A7156', fontSize: '12px' }}>(out of box)</span>
+                    </span>
+                    <span style={{ color: '#6A4F35' }}>${(it.perLb * it.qty).toFixed(2)}</span>
                   </div>
-                );
-              })}
-            </div>
-          ))}
+                ))}
+              </div>
+            );
+          })}
           
           {selectedTreats.map(treat => (
             <div key={treat.treat_id} className="cart-item" data-testid={`cart-treat-${treat.treat_id}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -899,15 +938,9 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
     let total = 0;
     basket.forEach(box => {
       const d = box.discount || 0;
-      Object.entries(box.proteins || {}).forEach(([productId, data]) => {
-        if (data.qty > 0) {
-          const product = products.find(p => p.product_id === productId);
-          if (product) {
-            const basePrice = product.pricing.find(p => p.size_lb === 6)?.price || 0;
-            total += basePrice * (1 - d) * (data.qty / 6);
-          }
-        }
-      });
+      const { inBox, overflow } = splitBoxItems(box, products, null);
+      inBox.forEach(it => { total += it.perLb * (1 - d) * it.qty; });
+      overflow.forEach(it => { total += it.perLb * it.qty; });
     });
     selectedTreats.forEach(treat => { total += treat.price * (treat.quantity || 1); });
     return total;
@@ -943,22 +976,31 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
 
       const fullAddress = `${streetAddress}${unit ? ', ' + unit : ''}, ${city}, ${province} ${postalCode}, ${country}`;
 
-      const proteinsArray = basket.flatMap(box =>
-        Object.entries(box.proteins || {})
-          .filter(([_, data]) => data.qty > 0)
-          .map(([productId, data]) => {
-            const product = products.find(p => p.product_id === productId);
-            const basePrice = product?.pricing.find(p => p.size_lb === 6)?.price || 0;
-            const d = box.discount || 0;
-            return {
-              product_id: productId,
-              product_name: data.name,
-              protein_type: product?.protein_type,
-              quantity_lb: data.qty,
-              price: basePrice * (1 - d) * (data.qty / 6)
-            };
-          })
-      );
+      const proteinsArray = basket.flatMap(box => {
+        const d = box.discount || 0;
+        const { inBox, overflow } = splitBoxItems(box, products, null);
+        const byPid = {};
+        inBox.forEach(it => {
+          byPid[it.pid] = byPid[it.pid] || { name: it.name, qty: 0, price: 0 };
+          byPid[it.pid].qty += it.qty;
+          byPid[it.pid].price += it.perLb * (1 - d) * it.qty;
+        });
+        overflow.forEach(it => {
+          byPid[it.pid] = byPid[it.pid] || { name: it.name, qty: 0, price: 0 };
+          byPid[it.pid].qty += it.qty;
+          byPid[it.pid].price += it.perLb * it.qty;
+        });
+        return Object.entries(byPid).map(([productId, v]) => {
+          const product = products.find(p => p.product_id === productId);
+          return {
+            product_id: productId,
+            product_name: v.name,
+            protein_type: product?.protein_type,
+            quantity_lb: v.qty,
+            price: v.price
+          };
+        });
+      });
 
       const checkoutData = {
         customer_email: customerEmail,
@@ -1052,17 +1094,21 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
       <div className="checkout-summary">
         <h3>Order Summary</h3>
         {basket.map((box, bi) => {
-          let boxTotal = 0;
           const d = box.discount || 0;
-          Object.entries(box.proteins || {}).forEach(([pid, data]) => {
-            const product = products.find(p => p.product_id === pid);
-            const bp = product?.pricing.find(p => p.size_lb === 6)?.price || 0;
-            boxTotal += bp * (1 - d) * (data.qty / 6);
-          });
+          const { inBox, overflow } = splitBoxItems(box, products, null);
+          const boxTotal = inBox.reduce((s, it) => s + it.perLb * (1 - d) * it.qty, 0);
           return (
-            <div key={box.id} className="checkout-summary-row">
-              <span>Box {bi + 1} · {box.boxSize}lb {d > 0 && `(Save ${Math.round(d * 100)}%)`}</span>
-              <span>${boxTotal.toFixed(2)}</span>
+            <div key={box.id}>
+              <div className="checkout-summary-row">
+                <span>Box {bi + 1} · {box.boxSize}lb {d > 0 && `(Save ${Math.round(d * 100)}%)`}</span>
+                <span>${boxTotal.toFixed(2)}</span>
+              </div>
+              {overflow.map(it => (
+                <div key={`ofs-${box.id}-${it.pid}`} className="checkout-summary-row">
+                  <span>{it.name} · {it.qty}lb (out of box)</span>
+                  <span>${(it.perLb * it.qty).toFixed(2)}</span>
+                </div>
+              ))}
             </div>
           );
         })}

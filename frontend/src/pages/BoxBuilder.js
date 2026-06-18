@@ -723,7 +723,11 @@ export const BoxBuilder = () => {
       {activeProductId && (
         <ProductDetailModal
           productId={activeProductId}
-          onClose={() => setActiveProductId(null)}
+          onClose={() => {
+            setActiveProductId(null);
+            // Re-sync quantity changes made inside the modal back to the menu
+            setSelectedProteins(JSON.parse(sessionStorage.getItem('selectedProteins') || '{}'));
+          }}
         />
       )}
 
@@ -731,7 +735,10 @@ export const BoxBuilder = () => {
       {activeTreatId && (
         <TreatDetailModal
           treatId={activeTreatId}
-          onClose={() => setActiveTreatId(null)}
+          onClose={() => {
+            setActiveTreatId(null);
+            setSelectedTreats(JSON.parse(sessionStorage.getItem('selectedTreats') || '[]'));
+          }}
         />
       )}
 
@@ -843,7 +850,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
             ) : (
               <span className="price-regular">${basePerLb.toFixed(2)}</span>
             )}
-            <span className="price-unit">/ 1lb</span>
+            <span className="price-unit">/ 1 lb</span>
           </div>
           <button
             className="product-card-more"

@@ -433,7 +433,7 @@ export const TreatDetailModal = ({ treatId, onClose }) => {
 
   return (
     <div
-      className="bb-overlay"
+      className="bb-overlay bb-overlay--sheet"
       data-testid="treat-modal-overlay"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >

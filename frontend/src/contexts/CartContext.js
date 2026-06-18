@@ -86,7 +86,7 @@ export const SlideCart = () => {
 
   return (
     <>
-      <div onClick={() => setIsCartOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 998 }} />
+      <div onClick={() => setIsCartOpen(false)} style={{ position: 'fixed', inset: 0, background: 'transparent', zIndex: 998 }} />
 
       <div style={{
         position: 'fixed', top: '120px', right: 0, bottom: 0, width: '100%', maxWidth: '400px',

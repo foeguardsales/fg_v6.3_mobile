@@ -850,3 +850,76 @@ agent_communication:
       page (Task 1) — confirmed visually on desktop. Task 3 "Checkout"→"Add to Basket" already
       satisfied by the primary menu button.
       NOT YET tested via automation (awaiting user go-ahead for frontend testing).
+  - agent: "main"
+    message: |
+      Iteration 15 (continuation) — fixed CRITICAL cart bug + more UX:
+      1. CART BROKEN FIX: .cart-drawer-overlay had z-index 1000 while .cart-drawer had 999, so the
+         invisible overlay sat ON TOP of the drawer — every click hit the overlay (closing it) and
+         scrolling was blocked. Set drawer z-index to 1001. Also made both cart overlays transparent
+         (0 shade) per user request.
+      2. Funnel blur removed (backdrop-filter dropped from .menu-funnel-overlay).
+      3. Floating + cart buttons less rounded (12px → 6px).
+      4. Menu price unit "/ 1lb" → "/ 1 lb".
+      5. Product modal slider now CONNECTED to menu: initializes to the qty already in the box and
+         SETS (not stacks) on add; BoxBuilder re-syncs selections when a modal closes.
+      6. Product/Treat modal redesigned as a swipable bottom sheet: extends to the screen bottom,
+         top gap + visible grab handle (added missing .bb-sheet-grab CSS), rounded top corners only,
+         reduced image/header padding, mobile-friendly image height.
+      7. Cart OVERFLOW pricing: each box discounts only up to its box size; lbs beyond the box show
+         as full-price "out of box" loose products (shared splitBoxItems helper used in cart drawer,
+         checkout subtotal, order payload, and order summary for consistency).
+      Lint clean; webpack compiled. Needs frontend verification of the cart open/scroll/interact.
+  - agent: "testing"
+    message: |
+      ✅ CART & MENU FLOW TESTING COMPLETED - 2 CRITICAL ISSUES FOUND
+      
+      Tested the FoeGuard raw pet food ordering flow at /menu with desktop viewport 1440x900.
+      
+      **TEST 1 - CART OPENS, SCROLLS, AND IS INTERACTIVE:**
+      ✅ Cart opens correctly via "Add to Basket" button
+      ✅ Cart overlay is transparent (rgba(0, 0, 0, 0) - no darkening behind cart)
+      ✅ Clicking inside cart does NOT close it (correct behavior)
+      ✅ Cart content scrolls properly (826px scroll height vs 544px client height)
+      ❌ **CRITICAL ISSUE 1**: Clicking outside cart (on overlay) does NOT close it
+         - Overlay has onclick handler and correct z-index (1000)
+         - Clicked at coordinates (200, 400) - clearly outside drawer
+         - Cart remained visible (should have closed)
+         - X button works as alternative, but overlay click should also work
+      
+      **TEST 2 - OVERFLOW PRICING IN CART:**
+      ✅ "Box 1 · 18lb" with "Save 5%" badge displays correctly
+      ✅ Overflow item shows "(out of box)" label for 12lb at full price
+      ✅ Pricing split correctly: 18lb discounted + 12lb full price
+      ✅ Overflow pricing implementation working perfectly
+      
+      **TEST 3 - UNLIMITED PRODUCTS:**
+      ✅ + buttons are NOT disabled after exceeding box size
+      ✅ Can continue adding products beyond box capacity
+      
+      **TEST 4 - PRODUCT MODAL (BOTTOM SHEET) + SLIDER CONNECTED:**
+      ✅ Modal opens as bottom-sheet style with grab handle
+      ✅ Close X button present and functional
+      ✅ Floating "Add to box" button visible
+      ❌ **CRITICAL ISSUE 2**: Modal quantity NOT connected to menu
+         - Added 30lb of Comfort Chicken to box on menu
+         - sessionStorage contains correct data (qty: 30)
+         - But modal shows "6 lb" instead of "30 lb"
+         - Modal should initialize to existing box quantity, not default to 6lb
+         - Root cause: ProductDetail useState initialization not reading productId correctly
+      
+      **CONSOLE ERRORS:**
+      ✓ No console errors detected during testing
+      
+      **SCREENSHOTS:**
+      - 01_menu_loaded.png - Menu with funnel dismissed
+      - 03_cart_opened.png - Cart drawer with overflow pricing
+      - 06_overflow_pricing.png - Detailed view of overflow items
+      - 07_product_modal_opened.png - Modal showing incorrect 6lb quantity
+      
+      **SUMMARY:**
+      - 2 out of 4 tests have critical failures
+      - Overflow pricing works perfectly (main fix successful)
+      - Cart transparency works correctly (no darkening)
+      - Cart scrolling works correctly
+      - BUT: Cart overlay click handler not working
+      - BUT: Product modal quantity not syncing with menu

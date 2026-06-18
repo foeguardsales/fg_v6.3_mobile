@@ -322,7 +322,11 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
   const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
   
-  const [quantity, setQuantity] = useState(6);
+  // Slider starts at whatever is already in the box for this product (connected to the menu)
+  const [quantity, setQuantity] = useState(() => {
+    const existing = initialProteins[productId]?.qty;
+    return existing && existing > 0 ? existing : 6;
+  });
   const [cartOpen, setCartOpen] = useState(false);
   const [boxSize, setBoxSize] = useState(initialBoxSize);
   const [selectedProteins, setSelectedProteins] = useState(initialProteins);
@@ -400,12 +404,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   };
   
   const handleAddToCart = () => {
-    // No cap — customers can add as many lbs as they like to the box.
+    // Connected to the menu — SET this product's box quantity to the slider value
+    // (the slider already reflects what's in the box, so we don't stack on top).
     const updatedProteins = { ...selectedProteins };
-    const currentQty = updatedProteins[product.product_id]?.qty || 0;
 
     updatedProteins[product.product_id] = {
-      qty: currentQty + quantity,
+      qty: quantity,
       name: product.name
     };
     
@@ -733,7 +737,7 @@ export const ProductDetailModal = ({ productId, onClose }) => {
 
   return (
     <div
-      className="bb-overlay"
+      className="bb-overlay bb-overlay--sheet"
       data-testid="product-modal-overlay"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
