@@ -329,11 +329,7 @@ export const BoxBuilder = () => {
 
   // Handle box size change - reset selections if they exceed new size
   const handleBoxSizeChange = (newSize) => {
-    const currentTotal = getTotalSelectedLbs();
-    if (currentTotal > newSize) {
-      // Reset selections if they exceed new box size
-      setSelectedProteins({});
-    }
+    // Box size only sets the discount tier — selections are never capped or reset.
     setBoxSize(newSize);
     sessionStorage.setItem('boxSize', newSize.toString());
     // Close auto-opened top-sheet on first interaction
@@ -378,13 +374,12 @@ export const BoxBuilder = () => {
     }
   };
 
-  const canAdd = (productId) => {
-    const currentQty = selectedProteins[productId]?.qty || 0;
-    const totalSelected = getTotalSelectedLbs();
-    return totalSelected + 6 <= boxSize && currentQty + 6 <= boxSize;
+  const canAdd = () => {
+    // Unlimited — the chosen box size only sets the discount tier/minimum,
+    // customers can keep adding as many products as they like.
+    return true;
   };
 
-  const isBoxComplete = getTotalSelectedLbs() === boxSize;
 
   if (orderComplete) {
     return (
@@ -710,20 +705,18 @@ export const BoxBuilder = () => {
         </>
       </div>
 
-      {/* Floating bottom checkout — centered, large, sticky on scroll */}
+      {/* Floating bottom button — always actionable.
+          Box started → commit it to basket (no size cap). Otherwise → open basket
+          (so treats-only customers can always reach checkout). */}
       <button
         onClick={() => {
-          if (getTotalSelectedLbs() > 0 && isBoxComplete) addBoxToBasket();
+          if (getTotalSelectedLbs() > 0) addBoxToBasket();
           else setCartOpen(true);
         }}
         data-testid="cart-button"
         className="bb-floating-checkout"
       >
-        {getTotalSelectedLbs() > 0 && isBoxComplete
-          ? 'Add to Basket'
-          : getTotalSelectedLbs() > 0
-            ? `Add ${boxSize - getTotalSelectedLbs()}lb more`
-            : 'View Basket'}
+        {getTotalSelectedLbs() > 0 ? 'Add to Basket' : 'View Basket'}
       </button>
 
       {/* Inline Product Modal — replaces /product/:id navigation */}

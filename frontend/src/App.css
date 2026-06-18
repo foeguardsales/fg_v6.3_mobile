@@ -103,7 +103,6 @@
 html {
   /* Prevent pull-to-refresh and overscroll bounce */
   overscroll-behavior-y: none;
-  -webkit-overflow-scrolling: touch;
   /* Prevent text size adjustment on orientation change */
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
@@ -116,8 +115,6 @@ body {
   overscroll-behavior-y: none;
   /* Prevent horizontal scroll */
   overflow-x: hidden;
-  /* Smooth scrolling */
-  -webkit-overflow-scrolling: touch;
   /* Prevent tap highlight */
   -webkit-tap-highlight-color: transparent;
   /* Prevent text selection on UI elements */
@@ -141,7 +138,6 @@ body {
   width: 100%;
   /* Prevent overscroll */
   overscroll-behavior-y: none;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* Prevent horizontal overflow on all elements */
@@ -5439,9 +5435,9 @@ h2, h3, h4 {
 }
 .pd-uber-add {
   position: fixed;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: 16px;
+  right: 16px;
   width: auto;
   margin: 0;
   background: #3B2A1A;
@@ -5653,9 +5649,9 @@ h2, h3, h4 {
 /* ===== Floating bottom checkout — rounded pill, qty-pill style ===== */
 .bb-floating-checkout {
   position: fixed;
-  bottom: 12px;
-  left: 12px;
-  right: 12px;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: 16px;
+  right: 16px;
   width: auto;
   margin: 0;
   background: #3B2A1A;
@@ -6737,7 +6733,6 @@ h2, h3, h4 {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 36px 20px 0;
-  -webkit-overflow-scrolling: touch;
 }
 @media (min-width: 760px) {
   .bb-overlay-scroll { padding: 40px 28px 0; }

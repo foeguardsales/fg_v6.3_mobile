@@ -828,3 +828,25 @@ agent_communication:
       5. Menu category tabs: reduced VERTICAL spacing (box-builder top padding + .menu-category-text padding/margin + button vertical padding).
       6. Verified funnel→Feeding Calculator keeps Selection = "Raw Food Menu".
       NOTE: backend/.env + frontend/.env were recreated after container restart (mocked 3rd-party keys, same as prior setup). No backend logic changed; not retested.
+  - agent: "main"
+    message: |
+      Iteration 14 (continuation, separate account) — restored wiped .env files (recovered from
+      git + placeholder Cloudflare R2 keys; frontend REACT_APP_BACKEND_URL repointed to current
+      container preview endpoint). Site back up. Then frontend-only UX fixes:
+      1. CART BLUR FIX: removed `-webkit-overflow-scrolling: touch` from #root/html/body and
+         .bb-overlay-scroll. This is the known cause of position:fixed overlays (the slide-in cart)
+         rasterizing the whole page blurry on iOS/Safari. (CSS-only; verify on a real iOS device.)
+      2. UNLIMITED PRODUCTS (BoxBuilder + ProductDetail): removed box-size caps. canAdd() always
+         true; handleBoxSizeChange no longer resets on exceed; ProductDetail handleAddToCart +
+         qty selector + floating button no longer capped. Box size now only sets the discount tier.
+      3. ADD TO BASKET ENABLED AT ALL TIMES: floating menu button = "Add to Basket" when box has
+         any lbs (commits regardless of completeness) else "View Basket" (treats-only path).
+         Menu already resets after add-to-basket; treats remain independent.
+      4. Removed repetitive strike-through discount in product page "Adds" size-total (kept Save%
+         beside the per-lb header price).
+      5. Floating buttons (.pd-uber-add + .bb-floating-checkout) now float higher with
+         calc(18px + safe-area-inset-bottom) bottom + 16px sides.
+      Lint clean; webpack compiled (1 pre-existing warning). Image already top-aligned on product
+      page (Task 1) — confirmed visually on desktop. Task 3 "Checkout"→"Add to Basket" already
+      satisfied by the primary menu button.
+      NOT YET tested via automation (awaiting user go-ahead for frontend testing).

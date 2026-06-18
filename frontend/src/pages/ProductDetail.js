@@ -400,22 +400,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   };
   
   const handleAddToCart = () => {
-    // Calculate current total in box
-    const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-    const spaceLeft = boxSize - currentTotal;
-    
-    // Don't add if no space
-    if (spaceLeft <= 0) return;
-    
-    // Add product to cart
+    // No cap — customers can add as many lbs as they like to the box.
     const updatedProteins = { ...selectedProteins };
     const currentQty = updatedProteins[product.product_id]?.qty || 0;
-    
-    // Cap quantity at remaining space
-    const addQty = Math.min(quantity, spaceLeft);
-    
+
     updatedProteins[product.product_id] = {
-      qty: currentQty + addQty,
+      qty: currentQty + quantity,
       name: product.name
     };
     
@@ -484,8 +474,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   };
 
   // Calculate current totals for live price/discount display
-  const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-  const isBoxFull = currentTotal >= boxSize;
   const sizeDiscount = (DISCOUNT_RATES[boxSize] || 0) * 100;
 
   const collectionInfo = getCollectionInfo();
@@ -593,11 +581,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                   >−</button>
                   <span data-testid="qty-display" className="pd-shopify-qty-display">{quantity} lb</span>
                   <button
-                    onClick={() => {
-                      const spaceLeft = boxSize - currentTotal;
-                      if (quantity + 6 <= spaceLeft) setQuantity(quantity + 6);
-                    }}
-                    disabled={quantity + 6 > (boxSize - currentTotal)}
+                    onClick={() => setQuantity(quantity + 6)}
                     className="pd-shopify-qty-btn"
                     data-testid="qty-increase"
                   >+</button>
@@ -608,11 +592,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 <span data-testid="qty-price-total" className="pd-shopify-adds-total">
                   ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
                 </span>
-                {sizeDiscount > 0 && (
-                  <div className="pd-shopify-adds-original">
-                    ${(getBasePrice(product) * (quantity / 6)).toFixed(2)}
-                  </div>
-                )}
               </div>
             </div>
 
@@ -711,14 +690,13 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
         </div>
       </div>
 
-      {/* Floating "Add to your box" pill */}
+      {/* Floating "Add to your box" pill — no upper cap */}
       <button
         onClick={handleAddToCart}
-        disabled={isBoxFull}
         className={`pd-uber-add ${embedded ? 'pd-uber-add--inline' : ''}`}
         data-testid="product-add-to-box"
       >
-        {isBoxFull ? 'Box full' : `Add ${quantity}lb to your box · $${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}`}
+        {`Add ${quantity}lb to your box · $${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}`}
       </button>
 
       {!embedded && <Footer />}
