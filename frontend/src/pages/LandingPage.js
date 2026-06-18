@@ -779,22 +779,22 @@ export const LandingPage = () => {
                   key={i}
                   onClick={() => navigate(card.path)}
                   style={{
-                    background: COLORS.khaki,
-                    border: 'none',
+                    background: COLORS.cream,
+                    border: `1px solid ${COLORS.khaki}`,
                     borderRadius: '8px',
                     overflow: 'hidden',
                     cursor: 'pointer',
                     textAlign: 'left',
                     transition: 'all 0.3s ease',
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.06)'
+                    boxShadow: 'none'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-6px)';
-                    e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.12)';
+                    e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.08)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
                   <div style={{

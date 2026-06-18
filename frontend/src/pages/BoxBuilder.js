@@ -3,7 +3,9 @@ import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
-import { Calculator, Wheat, PawPrint } from 'lucide-react';
+import { Calculator, Wheat, PawPrint, X } from 'lucide-react';
+import { ProductDetailModal } from './ProductDetail';
+import { FeedingCalculator } from '../components/FeedingCalculator';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -50,7 +52,17 @@ export const BoxBuilder = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
-  const [viewMode, setViewMode] = useState('food'); // 'food' or 'treats'
+  const [viewMode, setViewMode] = useState('all'); // 'food' | 'treats' | 'all'
+
+  // Mini top-sheet (auto-opens once per session on /menu landing)
+  const [topSheetOpen, setTopSheetOpen] = useState(false);
+  const [topSheetSeen, setTopSheetSeen] = useState(false);
+
+  // Inline product modal state — replaces /product/:id navigation
+  const [activeProductId, setActiveProductId] = useState(null);
+
+  // Inline calculator modal state — replaces /calculator navigation
+  const [calcOpen, setCalcOpen] = useState(false);
   
   // Load from sessionStorage on mount
   const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 6;
@@ -80,6 +92,15 @@ export const BoxBuilder = () => {
       setShowCheckout(true);
     } else if (step === 'success') {
       setOrderComplete(true);
+    }
+  }, []);
+
+  // Auto-open top-sheet once per session when landing on /menu
+  useEffect(() => {
+    const isMenuLanding = window.location.pathname === '/menu' || window.location.pathname === '/build-box';
+    const seen = sessionStorage.getItem('foeguard_menu_topsheet_seen');
+    if (isMenuLanding && !seen) {
+      setTopSheetOpen(true);
     }
   }, []);
 
@@ -201,6 +222,7 @@ export const BoxBuilder = () => {
   };
 
   const bannerCards = [
+    { id: 'full-menu', title: 'Full Menu', petType: 'dog', viewMode: 'all', active: petType === 'dog' && viewMode === 'all' },
     { id: 'dog-food', title: 'Raw Dog Food', petType: 'dog', viewMode: 'food', active: petType === 'dog' && viewMode === 'food' },
     { id: 'dog-treats', title: 'Raw Dog Treats', petType: 'dog', viewMode: 'treats', active: petType === 'dog' && viewMode === 'treats' },
     { id: 'cat-food', title: 'Raw Cat Food', petType: 'cat', viewMode: 'food', active: petType === 'cat' && viewMode === 'food' },
@@ -248,6 +270,11 @@ export const BoxBuilder = () => {
     }
     setBoxSize(newSize);
     sessionStorage.setItem('boxSize', newSize.toString());
+    // Close auto-opened top-sheet on first interaction
+    if (topSheetOpen) {
+      setTopSheetOpen(false);
+      sessionStorage.setItem('foeguard_menu_topsheet_seen', '1');
+    }
   };
 
   const handleUpdateProtein = (productId, productName, quantity) => {
@@ -339,16 +366,47 @@ export const BoxBuilder = () => {
   const primalFeastProducts = products.filter(p => p.product_line === 'primal_feast');
   const royalPawsProducts = products.filter(p => p.product_line === 'royal_paws');
 
+  // Box size — show whenever viewing food OR all (Full Menu)
+  const showBoxSize = viewMode === 'food' || viewMode === 'all';
+
   return (
     <>
       <Navbar />
-      <div className="box-builder">
+      <div className="box-builder box-builder--narrow">
+        {/* Mini Top-Sheet (auto-opens on /menu landing) */}
+        <MenuTopSheet
+          open={topSheetOpen}
+          onClose={() => {
+            setTopSheetOpen(false);
+            sessionStorage.setItem('foeguard_menu_topsheet_seen', '1');
+          }}
+          onCalculator={() => {
+            setTopSheetOpen(false);
+            sessionStorage.setItem('foeguard_menu_topsheet_seen', '1');
+            setCalcOpen(true);
+          }}
+          onMealPlan={() => {
+            setTopSheetOpen(false);
+            sessionStorage.setItem('foeguard_menu_topsheet_seen', '1');
+            navigate('/meal-plan');
+          }}
+          getBasePrice={getBasePrice}
+          products={products}
+        />
+
         {/* Top selector — slim selectable containers: Raw Dog Food | Meal Plan | Calculator */}
         <div className="menu-top-nav-mustard menu-top-nav--boxed" data-testid="menu-top-nav">
           {topNavTabs.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => !tab.active && navigate(tab.path)}
+              onClick={() => {
+                if (tab.active) return;
+                if (tab.id === 'calculator') {
+                  setCalcOpen(true);
+                } else {
+                  navigate(tab.path);
+                }
+              }}
               data-testid={`top-nav-${tab.id}`}
               className={`menu-top-nav-mustard-btn ${tab.active ? 'is-active' : ''}`}
             >
@@ -373,12 +431,12 @@ export const BoxBuilder = () => {
 
         {/* Main Content - Dog or Cat */}
         <>
-          {viewMode === 'food' && (
+          {showBoxSize && (
           <>
-          {/* Box size — "Select Box Size:" label + larger squared mustard buttons */}
-          <div className="bb-box-size-wrap" data-testid="box-size-wrap">
+          {/* Box size — "Select Box Size:" label + larger full-width clean-border buttons */}
+          <div className="bb-box-size-wrap bb-box-size-wrap--stacked" data-testid="box-size-wrap">
             <span className="bb-box-size-label">Select Box Size:</span>
-            <div className="box-size-slider box-size-slider--mustard" data-testid="box-size-selector">
+            <div className="box-size-slider box-size-slider--mustard box-size-slider--clean" data-testid="box-size-selector">
               {BOX_OPTIONS.map(box => (
                 <button
                   key={box.size}
@@ -412,6 +470,7 @@ export const BoxBuilder = () => {
                 {/* Comfort Dinner Collection - DOG */}
                 <div className="product-collection menu-collection">
                   <div className="menu-collection-header" data-testid="collection-header-comfort">
+                    <div className="menu-collection-banner" style={{ backgroundImage: `url(${COLLECTION_IMAGES.comfort_dinner})` }} aria-hidden="true" />
                     <h3 className="menu-collection-title">Comfort Dinner</h3>
                     <p className="menu-collection-desc">Complete raw nutrition for dogs of all-life stages.</p>
                   </div>
@@ -429,6 +488,7 @@ export const BoxBuilder = () => {
                         boxSize={boxSize}
                         navigate={navigate}
                         petType={petType}
+                        onOpenProduct={(pid) => setActiveProductId(pid)}
                       />
                     ))}
                   </div>
@@ -437,6 +497,7 @@ export const BoxBuilder = () => {
                 {/* Primal Feast Collection - DOG */}
                 <div className="product-collection menu-collection">
                   <div className="menu-collection-header" data-testid="collection-header-primal">
+                    <div className="menu-collection-banner" style={{ backgroundImage: `url(${COLLECTION_IMAGES.primal_feast})` }} aria-hidden="true" />
                     <h3 className="menu-collection-title">Primal Feast</h3>
                     <p className="menu-collection-desc">Whole prey raw meals made with 80% meat, 10% bone and 10% organ.</p>
                   </div>
@@ -454,6 +515,7 @@ export const BoxBuilder = () => {
                         boxSize={boxSize}
                         navigate={navigate}
                         petType={petType}
+                        onOpenProduct={(pid) => setActiveProductId(pid)}
                       />
                     ))}
                   </div>
@@ -473,6 +535,7 @@ export const BoxBuilder = () => {
                 {/* Royal Paws Collection - CAT */}
                 <div className="product-collection menu-collection">
                   <div className="menu-collection-header" data-testid="collection-header-royal">
+                    <div className="menu-collection-banner" style={{ backgroundImage: `url(${COLLECTION_IMAGES.royal_paws})` }} aria-hidden="true" />
                     <h3 className="menu-collection-title">Royal Paws Dinner</h3>
                     <p className="menu-collection-desc">Complete raw nutrition for cats of all life stages.</p>
                   </div>
@@ -490,6 +553,7 @@ export const BoxBuilder = () => {
                         boxSize={boxSize}
                         navigate={navigate}
                         petType={petType}
+                        onOpenProduct={(pid) => setActiveProductId(pid)}
                       />
                     ))}
                   </div>
@@ -561,16 +625,47 @@ export const BoxBuilder = () => {
         Checkout →
       </button>
 
+      {/* Inline Product Modal — replaces /product/:id navigation */}
+      {activeProductId && (
+        <ProductDetailModal
+          productId={activeProductId}
+          onClose={() => setActiveProductId(null)}
+        />
+      )}
+
+      {/* Inline Calculator Modal */}
+      {calcOpen && (
+        <div className="bb-overlay" data-testid="calculator-overlay">
+          <div className="bb-overlay-panel" role="dialog" aria-modal="true">
+            <button
+              className="bb-overlay-close"
+              onClick={() => setCalcOpen(false)}
+              data-testid="calc-overlay-close"
+              aria-label="Close"
+            >
+              <X size={22} />
+            </button>
+            <FeedingCalculator
+              embedded
+              onComplete={() => setCalcOpen(false)}
+            />
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );
 };
 
 // Product Card Component
-const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType }) => {
+const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType, onOpenProduct }) => {
   const basePrice = getBasePrice(product);
   const discountedPrice = getDiscountedPrice(basePrice);
   const hasDiscount = boxSize > 6;
+  // Per-lb prices (pricing stored as 6lb base price)
+  const basePerLb = basePrice / 6;
+  const discountedPerLb = discountedPrice / 6;
   
   // Product image URL - use the uploaded comfort dinner image for all products
   const productImage = 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';
@@ -598,6 +693,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const isSelected = selectedQty > 0;
 
   const goToProduct = () => {
+    if (onOpenProduct) {
+      onOpenProduct(product.product_id);
+      return;
+    }
     const root = document.getElementById('root');
     const scrollPos = root ? root.scrollTop : window.scrollY;
     sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
@@ -636,13 +735,13 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
           <div className="product-card-price">
             {hasDiscount ? (
               <>
-                <span className="price-original">${basePrice.toFixed(2)}</span>
-                <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
+                <span className="price-original">${basePerLb.toFixed(2)}</span>
+                <span className="price-discounted">${discountedPerLb.toFixed(2)}</span>
               </>
             ) : (
-              <span className="price-regular">${basePrice.toFixed(2)}</span>
+              <span className="price-regular">${basePerLb.toFixed(2)}</span>
             )}
-            <span className="price-unit">/ 6lb</span>
+            <span className="price-unit">/ 1lb</span>
           </div>
           <button
             className="product-card-more"
@@ -694,5 +793,97 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         )}
       </div>
     </div>
+  );
+};
+
+
+// ===== Mini Top-Sheet (hangs from top, auto-opens once on menu landing) =====
+const MenuTopSheet = ({ open, onClose, onCalculator, onMealPlan, getBasePrice, products }) => {
+  // Build per-collection lowest per-lb price
+  const buildLowest = (line) => {
+    const lineProducts = (products || []).filter(p => p.product_line === line);
+    if (lineProducts.length === 0) return null;
+    let lowest = Infinity;
+    lineProducts.forEach(p => {
+      const base = getBasePrice(p);
+      const perLb = base / 6;
+      if (perLb < lowest) lowest = perLb;
+    });
+    return lowest === Infinity ? null : lowest;
+  };
+  const comfortLow = buildLowest('comfort_dinner');
+  const primalLow = buildLowest('primal_feast');
+  const royalLow = buildLowest('royal_paws');
+
+  return (
+    <>
+      <div
+        className={`menu-topsheet-backdrop ${open ? 'is-open' : ''}`}
+        onClick={onClose}
+        data-testid="topsheet-backdrop"
+      />
+      <div
+        className={`menu-topsheet ${open ? 'is-open' : ''}`}
+        role="dialog"
+        aria-hidden={!open}
+        data-testid="menu-topsheet"
+      >
+        <button
+          className="menu-topsheet-close"
+          onClick={onClose}
+          data-testid="topsheet-close"
+          aria-label="Close"
+        >
+          <X size={20} />
+        </button>
+        <h3 className="menu-topsheet-title">Shop <span>Farm Fresh</span></h3>
+        <p className="menu-topsheet-sub">Free delivery on orders over $100 in the GTA (up to 30km)</p>
+
+        <div className="menu-topsheet-cards">
+          {comfortLow != null && (
+            <div className="menu-topsheet-card" data-testid="topsheet-card-comfort">
+              <span className="menu-topsheet-card-name">Comfort Dinner</span>
+              <span className="menu-topsheet-card-price">from ${comfortLow.toFixed(2)}/lb</span>
+            </div>
+          )}
+          {primalLow != null && (
+            <div className="menu-topsheet-card" data-testid="topsheet-card-primal">
+              <span className="menu-topsheet-card-name">Primal Feast</span>
+              <span className="menu-topsheet-card-price">from ${primalLow.toFixed(2)}/lb</span>
+            </div>
+          )}
+          {royalLow != null && (
+            <div className="menu-topsheet-card" data-testid="topsheet-card-royal">
+              <span className="menu-topsheet-card-name">Royal Paws (Cat)</span>
+              <span className="menu-topsheet-card-price">from ${royalLow.toFixed(2)}/lb</span>
+            </div>
+          )}
+        </div>
+
+        <div className="menu-topsheet-actions">
+          <button
+            className="menu-topsheet-btn menu-topsheet-btn--outline"
+            onClick={onClose}
+            data-testid="topsheet-shop-raw"
+          >
+            Shop Raw Food
+          </button>
+          <button
+            className="menu-topsheet-btn menu-topsheet-btn--solid"
+            onClick={onMealPlan}
+            data-testid="topsheet-meal-plan"
+          >
+            Meal Plan
+          </button>
+        </div>
+        <button
+          className="menu-topsheet-calc-link"
+          onClick={onCalculator}
+          data-testid="topsheet-calculator-link"
+        >
+          Calculator
+        </button>
+      </div>
+    </>
   );
 };

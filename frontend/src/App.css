@@ -5609,7 +5609,7 @@ h2, h3, h4 {
   display: inline-flex;
   font-size: 10px;
   font-weight: 800;
-  color: #3B2A1A;
+  color: #D8CFB8;
   background: #C9A84C;
   padding: 2px 6px;
   border-radius: 3px;
@@ -5619,7 +5619,7 @@ h2, h3, h4 {
 }
 .box-size-slider--mustard .box-size-chip.is-active .box-size-chip-discount-inline {
   background: #C9A84C;
-  color: #3B2A1A;
+  color: #D8CFB8;
 }
 @media (min-width: 760px) {
   .box-size-slider--mustard .box-size-chip { font-size: 15px; padding: 12px 18px; }
@@ -6097,3 +6097,260 @@ h2, h3, h4 {
 /* Tighter qty-row spacing */
 .pd-shopify-qty-row { margin: 0 0 12px; }
 
+
+
+/* ===== Box builder — narrow desktop (Task 2.4) ===== */
+.box-builder.box-builder--narrow {
+  max-width: 980px;
+}
+@media (min-width: 1100px) {
+  .box-builder.box-builder--narrow {
+    max-width: 920px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+/* ===== Collection banner header image — thin rectangle ===== */
+.menu-collection-banner {
+  width: 100%;
+  height: 90px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+@media (min-width: 760px) {
+  .menu-collection-banner { height: 120px; }
+}
+
+/* ===== Description clamp — strictly 2 lines (Task 2.5) ===== */
+.menu-collection-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===== Box size selector — full-mobile-width, clean border, no shade (Task 2.6) ===== */
+.bb-box-size-wrap--stacked {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+}
+.box-size-slider--clean {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .box-size-slider--clean {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.box-size-slider--clean.box-size-slider--mustard .box-size-chip {
+  width: 100%;
+  background: transparent;
+  border: 1.5px solid #C9BFA6;
+  color: #3B2A1A;
+  padding: 14px 12px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px;
+  justify-content: center;
+}
+.box-size-slider--clean.box-size-slider--mustard .box-size-chip.is-active {
+  background: transparent;
+  border-color: #3B2A1A;
+  color: #3B2A1A;
+}
+
+/* ===== Mini Top-Sheet (Task 3) ===== */
+.menu-topsheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 14, 6, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 1500;
+}
+.menu-topsheet-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.menu-topsheet {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -110%);
+  width: 100%;
+  max-width: 520px;
+  background: #F5F3EF;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+  padding: 22px 22px 20px;
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 1600;
+  border: 1px solid #D8CFB8;
+  border-top: none;
+}
+.menu-topsheet.is-open {
+  transform: translate(-50%, 90px);
+}
+@media (min-width: 760px) {
+  .menu-topsheet.is-open {
+    transform: translate(-50%, 130px);
+  }
+}
+.menu-topsheet-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #3B2A1A;
+  padding: 6px;
+  border-radius: 50%;
+}
+.menu-topsheet-close:hover { background: rgba(0,0,0,0.05); }
+.menu-topsheet-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #3B2A1A;
+  margin: 0 0 4px;
+  text-align: center;
+}
+.menu-topsheet-title span {
+  color: #C8102E;
+}
+.menu-topsheet-sub {
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  color: #6A4F35;
+  text-align: center;
+  margin: 0 0 14px;
+}
+.menu-topsheet-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.menu-topsheet-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: white;
+  border: 1px solid #D8CFB8;
+  border-radius: 8px;
+  font-family: 'Barlow', sans-serif;
+}
+.menu-topsheet-card-name {
+  font-weight: 600;
+  color: #3B2A1A;
+  font-size: 14px;
+}
+.menu-topsheet-card-price {
+  font-weight: 700;
+  color: #C8102E;
+  font-size: 13px;
+}
+.menu-topsheet-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.menu-topsheet-btn {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+.menu-topsheet-btn--outline {
+  background: transparent;
+  border: 1.5px solid #3B2A1A;
+  color: #3B2A1A;
+}
+.menu-topsheet-btn--outline:hover { background: rgba(0,0,0,0.04); }
+.menu-topsheet-btn--solid {
+  background: #D8CFB8;
+  border: 1.5px solid #D8CFB8;
+  color: #3B2A1A;
+}
+.menu-topsheet-btn--solid:hover { background: #CBC1A6; }
+.menu-topsheet-calc-link {
+  display: block;
+  margin: 0 auto;
+  background: transparent;
+  border: none;
+  color: #6A4F35;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 6px 12px;
+}
+
+/* ===== Inline overlay (product modal + calculator modal) ===== */
+.bb-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 14, 6, 0.55);
+  z-index: 1700;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 24px 0;
+}
+.bb-overlay-panel {
+  position: relative;
+  background: #F5F3EF;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 16px;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  padding: 36px 18px 24px;
+  overflow: hidden;
+}
+@media (min-width: 760px) {
+  .bb-overlay-panel { padding: 40px 28px 28px; }
+}
+.bb-overlay-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  border: 1px solid #D8CFB8;
+  cursor: pointer;
+  color: #3B2A1A;
+  padding: 6px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.bb-overlay-close:hover { background: #EFE6CC; }
+.pd-uber.pd-uber--modal { padding: 0; }
+.pd-uber-add--inline {
+  position: static !important;
+  width: 100%;
+  margin-top: 12px;
+  display: block;
+}

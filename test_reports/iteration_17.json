@@ -1,0 +1,60 @@
+{
+  "summary": "Frontend-only verification of BoxBuilder /menu redesign: top-sheet auto-open, category 'Full Menu' first, collection banners, per-1lb pricing, box-size styling, inline ProductDetailModal, inline FeedingCalculator overlay with Save/multi-pet, and discount badge color. 15/16 assertions PASS; 1 partial.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Auto-close top-sheet on box-size click",
+        "issue": "Code path works when click event is dispatched directly to the box-size button (handleBoxSizeChange closes the sheet and sets sessionStorage flag). However during a real mouse click while the top-sheet is open, the .menu-topsheet-backdrop element (z-index above menu, pointer-events:auto, onClick=onClose) intercepts the click at those coordinates — so the box-size button is not reachable via genuine pointer interaction until the sheet is closed. This makes the 'select box size auto-closes top-sheet' requirement effectively a dead code path under normal UX. Suggest either removing the backdrop onClick capture or removing the auto-close branch in handleBoxSizeChange.",
+        "affected_selectors": ["[data-testid='menu-topsheet']", "[data-testid='topsheet-backdrop']", "[data-testid='box-size-18lb']"]
+      }
+    ],
+    "design_issues": []
+  },
+  "verified_features": {
+    "topsheet_autoopen_fresh_session": true,
+    "topsheet_testids_present": ["menu-topsheet","topsheet-close","topsheet-shop-raw","topsheet-meal-plan","topsheet-calculator-link","topsheet-card-comfort","topsheet-card-primal"],
+    "topsheet_headline_text": "Shop Farm Fresh",
+    "topsheet_subline_text": "Free delivery on orders over $100 in the GTA (up to 30km)",
+    "topsheet_close_sets_session_flag": "foeguard_menu_topsheet_seen=1",
+    "topsheet_no_reopen_on_reload": true,
+    "topsheet_calculator_link_opens_calc_overlay": true,
+    "category_full_menu_is_first_and_active_default": true,
+    "collection_banner_class_present": ".menu-collection-banner (2 banners on Full Menu view: Comfort Dinner + Primal Feast)",
+    "product_price_unit_is_per_1lb": true,
+    "box_size_testids_present_dog": ["box-size-6lb","box-size-18lb","box-size-24lb","box-size-36lb"],
+    "discount_badge_text_color": "rgb(216, 207, 184)  // #D8CFB8 khaki — matches spec",
+    "product_card_opens_inline_modal_not_navigation": true,
+    "url_stays_on_menu_when_product_modal_open": "/menu",
+    "product_modal_per_1lb_price_visible": "$4.50 / 1 lb",
+    "product_modal_close_testid": "product-modal-close present",
+    "add_to_box_from_modal_writes_session_and_closes": "selectedProteins={cd-chicken:{qty:6,name:'Comfort Chicken'}}",
+    "calculator_opens_via_top_nav_inline": true,
+    "url_stays_on_menu_when_calc_open": "/menu",
+    "calculator_labels": ["Pet Name","Pet type","Age (years)","Weight (lbs)","Activity Level"],
+    "calculator_single_pet_title": "Pet (no '1')",
+    "calculator_header_logged_out_copy": "Saved for this browser session.",
+    "calc_save_button_text": "Save",
+    "calc_save_closes_overlay_and_persists_session": "foeguard_saved_pets in sessionStorage",
+    "multi_pet_titles_after_add": ["Pet 1","Pet 2"],
+    "multi_pet_saved_count": 2,
+    "multi_pet_names_persisted": ["Buddy","Whiskers"]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "(Optional / Minor) Revisit auto-close-top-sheet-on-box-size: backdrop intercepts the click so the spec's 'selecting any box size while top-sheet is open auto-closes it' is unreachable via real pointer events. Either drop backdrop click-through or simply rely on the existing close X (which already works). No functional regression — selection still works as soon as user dismisses the sheet."
+  ],
+  "critical_code_review_comments": [
+    "BoxBuilder.js is 890 lines — consider splitting MenuTopSheet, ProductCard, and overlay logic into their own files for maintainability (>700 line threshold).",
+    "useEffect with empty dependency arrays at L96 and L105 have known eslint react-hooks/exhaustive-deps warnings flagged by E1; they are acceptable since they're one-shot mount effects but could be silenced with eslint-disable-next-line comments for cleanliness.",
+    "MenuTopSheet backdrop captures clicks site-wide; consider lowering its z-index after open transition or using pointer-events:none + a transparent click-trap only on the panel."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend-only run)", "frontend": "94%"},
+  "seed_data_creation": "None. Used existing seeded products (cd-chicken etc.). All test artifacts written only to sessionStorage and cleared between runs.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Top-sheet auto-open is gated by sessionStorage key 'foeguard_menu_topsheet_seen'. Always clear sessionStorage before re-testing. Product cards open inline modal — page never navigates to /product/:id. Calculator opens inline via [data-testid='top-nav-calculator'] or [data-testid='topsheet-calculator-link'] — both verified. Save button uses [data-testid='calc-save-btn'] and persists to sessionStorage key 'foeguard_saved_pets' for logged-out users (array of pet objects). Multi-pet titles flip from 'Pet' to 'Pet 1'/'Pet 2' upon clicking calc-add-pet.",
+  "rca of the issue": "The 'box-size click auto-closes top-sheet' requirement: the MenuTopSheet renders a sibling .menu-topsheet-backdrop with onClick=onClose layered above the box-builder content. When the user attempts to click box-size-18lb under the open sheet, the click event lands on the backdrop first (which closes the sheet) rather than the box-size button. The handleBoxSizeChange auto-close branch is therefore unreachable through a real click. Verified by dispatching a synthetic 'click' event directly on the box-size button — the sheet did close and the session flag was set. Mitigation: either (a) accept the backdrop-closes-sheet behaviour and remove the now-dead branch in handleBoxSizeChange, or (b) set backdrop pointer-events:none so user clicks pass through to box-size and the handler takes over."
+}
