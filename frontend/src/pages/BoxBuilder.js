@@ -429,8 +429,9 @@ export const BoxBuilder = () => {
             navigate('/meal-plan');
           }}
           onCalculator={() => {
-            sessionStorage.setItem('foeguard_selection', 'calculator');
-            setSelectionId('calculator');
+            // Calculator opens as modal over /menu — underlying selection stays Raw Food Menu
+            sessionStorage.setItem('foeguard_selection', 'shop-raw');
+            setSelectionId('shop-raw');
             setFunnelOpen(false);
             setCalcOpen(true);
           }}

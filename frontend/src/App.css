@@ -158,16 +158,16 @@ body {
   font-style: normal;
 }
 
-/* Heritage typography: Barlow Semi Condensed (SemiBold) everywhere */
+/* Heritage typography: Barlow Semi Condensed (SemiBold) for headings/accents, Lucida Grande for paragraphs */
 :root {
-  --font-body: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
   --font-heading: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-accent: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* Default body = Barlow Semi Condensed SemiBold */
+/* Default body — neutral Barlow Semi Condensed; paragraphs swap to Lucida via the rule below */
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-weight: 600;
   background: #F5F3EF;
   color: #3B2A1A;
@@ -178,10 +178,14 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600 !important;
   color: #3B2A1A;
 }
-/* Body / paragraph text = Barlow Semi Condensed SemiBold */
-p, li, blockquote, dd, dt, figcaption, small, .subtext,
-button, input, select, textarea, label, a, span, div {
+/* Paragraph text = Lucida Grande */
+p, li, blockquote, dd, dt, figcaption, small, .subtext {
   font-family: var(--font-body) !important;
+  color: #3B2A1A;
+}
+/* Buttons / inputs / labels / accents = Barlow Semi Condensed */
+button, input, select, textarea, label, a, span {
+  font-family: var(--font-heading);
 }
 
 /* ========== CSS VARIABLES ========== */
@@ -5507,9 +5511,11 @@ h2, h3, h4 {
   border-bottom-color: #3B2A1A;
 }
 @media (min-width: 760px) {
-  .menu-category-text-btn { font-size: 15px; }
+  .menu-category-text-btn { font-size: 15px; margin-right: 6px; padding: 6px 2px 8px; }
   .menu-category-text-btn.is-active { font-size: 17px; }
 }
+/* Tighter spacing for mobile category tabs */
+.menu-category-text-btn { margin-right: 8px; padding: 6px 2px 8px; }
 
 /* Swipable badges on product detail (mobile) */
 .pd-uber-badges {
@@ -6725,5 +6731,78 @@ button.btn-secondary {
 .box-size-chip-from,
 input, select, textarea {
   font-family: var(--font-body) !important;
+}
+
+
+/* ===== Universal page X-close (top-right) — matches modal X style for consistency ===== */
+.page-close-x {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: white;
+  border: 1px solid #D8CFB8;
+  cursor: pointer;
+  color: #3B2A1A;
+  padding: 6px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: background 0.15s;
+}
+.page-close-x:hover { background: #EFE6CC; }
+
+/* ===== Treat sub-category headers — plain text, no banner ===== */
+.treats-subcat-header {
+  padding: 0 0 8px;
+  margin-bottom: 4px;
+}
+.treats-subcat-title {
+  font-size: clamp(18px, 2vw, 22px) !important;
+  margin: 0 0 4px !important;
+  color: #3B2A1A !important;
+}
+.treats-subcat-desc {
+  font-size: 13px;
+  color: #6A4F35;
+  margin: 0;
+}
+
+/* ===== Feeding Calculator — compact mobile spacing ===== */
+@media (max-width: 759px) {
+  .feeding-calc {
+    padding: 14px 14px 22px !important;
+  }
+  .feeding-calc h2 {
+    font-size: 24px !important;
+    margin-bottom: 8px !important;
+  }
+  .feeding-calc > p {
+    margin-bottom: 16px !important;
+    font-size: 13px !important;
+  }
+  .calc-pet-card {
+    padding: 14px !important;
+    margin-bottom: 12px !important;
+    gap: 10px !important;
+    border-radius: 10px !important;
+  }
+  .calc-pet-card .form-group {
+    margin-bottom: 0 !important;
+  }
+  .calc-pet-card .form-group label {
+    font-size: 12px !important;
+    margin-bottom: 4px !important;
+  }
+  .calc-pet-card input,
+  .calc-pet-card select {
+    padding: 10px 12px !important;
+    font-size: 14px !important;
+    border-radius: 8px !important;
+  }
 }
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronLeft, ChevronRight, Check, Plus, Trash2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Plus, Trash2, X } from 'lucide-react';
 import axios from 'axios';
 import { SelectionBreadcrumb } from './BoxBuilder';
 
@@ -967,14 +967,14 @@ export const MealPlanPage = () => {
         }}
       />
       <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '60px 20px 40px', position: 'relative' }}>
-        {/* Back button — standard top-left */}
+        {/* Top-right X close — matches the X used on Calculator + Product modals */}
         <button
           onClick={() => navigate('/menu')}
           data-testid="meal-plan-close-btn"
-          aria-label="Back"
-          className="pd-uber-back"
+          aria-label="Close"
+          className="page-close-x"
         >
-          <ChevronLeft size={18} strokeWidth={2.2} /> Back
+          <X size={22} />
         </button>
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           {/* Progress Bar */}
