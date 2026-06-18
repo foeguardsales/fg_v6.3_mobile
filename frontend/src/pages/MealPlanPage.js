@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronRight, Check, Plus, Trash2 } from 'lucide-react';
 import axios from 'axios';
+import { SelectionBreadcrumb } from './BoxBuilder';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
@@ -958,6 +959,13 @@ export const MealPlanPage = () => {
   return (
     <>
       <Navbar />
+      <SelectionBreadcrumb
+        label="Build a Meal Plan"
+        onEdit={() => {
+          sessionStorage.removeItem('foeguard_selection');
+          navigate('/menu');
+        }}
+      />
       <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '60px 20px 40px', position: 'relative' }}>
         {/* Back button — standard top-left */}
         <button
