@@ -61,7 +61,7 @@ export const AboutPage = () => {
 
   const titleStyle = {
     textTransform: 'none',
-    fontFamily: "'Barlow', sans-serif",
+    fontFamily: "'Barlow Semi Condensed', sans-serif",
     letterSpacing: '-0.4px'
   };
 

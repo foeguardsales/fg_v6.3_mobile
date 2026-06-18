@@ -18,7 +18,7 @@ export const OrderChoicePage = () => {
         padding: '60px 20px'
       }}>
         <h1 style={{
-          fontFamily: "'Barlow', sans-serif",
+          fontFamily: "'Barlow Semi Condensed', sans-serif",
           fontSize: 'clamp(28px, 5vw, 42px)',
           fontWeight: '600',
           color: '#2B2B2B',
@@ -29,7 +29,7 @@ export const OrderChoicePage = () => {
           How would you like to order?
         </h1>
         <p style={{
-          fontFamily: "'Barlow', sans-serif",
+          fontFamily: "'Barlow Semi Condensed', sans-serif",
           fontSize: '18px',
           color: '#666',
           marginBottom: '48px',
@@ -89,7 +89,7 @@ export const OrderChoicePage = () => {
               padding: '28px'
             }}>
               <p style={{
-                fontFamily: "'Barlow', sans-serif",
+                fontFamily: "'Barlow Semi Condensed', sans-serif",
                 fontSize: '14px',
                 color: 'rgba(255,255,255,0.9)',
                 marginBottom: '12px'
@@ -101,7 +101,7 @@ export const OrderChoicePage = () => {
                 color: '#c8102e',
                 padding: '14px 28px',
                 borderRadius: '8px',
-                fontFamily: "'Barlow', sans-serif",
+                fontFamily: "'Barlow Semi Condensed', sans-serif",
                 fontWeight: '700',
                 fontSize: '17px',
                 textAlign: 'center',
@@ -155,7 +155,7 @@ export const OrderChoicePage = () => {
               padding: '28px'
             }}>
               <p style={{
-                fontFamily: "'Barlow', sans-serif",
+                fontFamily: "'Barlow Semi Condensed', sans-serif",
                 fontSize: '14px',
                 color: 'rgba(255,255,255,0.9)',
                 marginBottom: '12px'
@@ -167,7 +167,7 @@ export const OrderChoicePage = () => {
                 color: '#c8102e',
                 padding: '14px 28px',
                 borderRadius: '8px',
-                fontFamily: "'Barlow', sans-serif",
+                fontFamily: "'Barlow Semi Condensed', sans-serif",
                 fontWeight: '700',
                 fontSize: '17px',
                 textAlign: 'center',

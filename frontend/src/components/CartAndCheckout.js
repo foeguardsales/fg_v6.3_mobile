@@ -440,10 +440,10 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 style={{ marginTop: '2px', accentColor: '#3B2A1A', width: '18px', height: '18px' }}
               />
               <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '14px', fontWeight: 700, color: '#3B2A1A' }}>
+                <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '14px', fontWeight: 700, color: '#3B2A1A' }}>
                   Save extra ${(subtotal * SUBSCRIPTION_DISCOUNT).toFixed(2)} — subscribe &amp; save 5%
                 </div>
-                <div style={{ fontFamily: "'Barlow', sans-serif", fontSize: '12px', color: '#6A4F35', marginTop: '2px' }}>
+                <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '12px', color: '#6A4F35', marginTop: '2px' }}>
                   Free delivery. Pause, skip, or cancel anytime.
                 </div>
               </div>
@@ -463,7 +463,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 color: '#3B2A1A',
                 padding: '12px 18px',
                 borderRadius: '999px',
-                fontFamily: "'Barlow', sans-serif",
+                fontFamily: "'Barlow Semi Condensed', sans-serif",
                 fontSize: '13px',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -483,7 +483,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 padding: '14px 22px',
                 border: 'none',
                 borderRadius: '999px',
-                fontFamily: "'Barlow', sans-serif",
+                fontFamily: "'Barlow Semi Condensed', sans-serif",
                 fontSize: '15px',
                 fontWeight: 700,
                 cursor: canCheckout ? 'pointer' : 'not-allowed',

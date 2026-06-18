@@ -245,7 +245,7 @@ export const MealPlanPage = () => {
     if (step === 1) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow', sans-serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', sans-serif", textTransform: 'none' }}>
             How many dogs do you have?
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -353,7 +353,7 @@ export const MealPlanPage = () => {
     if (step === 2) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow', sans-serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', sans-serif", textTransform: 'none' }}>
             Where {dogs.length === 1 ? `does ${capitalizeName(dogs[0].name)}` : `do ${formatDogNames(dogs)}`} live?
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -396,7 +396,7 @@ export const MealPlanPage = () => {
     if (step === 3) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow', sans-serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', sans-serif", textTransform: 'none' }}>
             Tell us about {formatDogNames(dogs)}
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -476,7 +476,7 @@ export const MealPlanPage = () => {
     if (step === 4) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow', sans-serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', sans-serif", textTransform: 'none' }}>
             What breed {dogs.length === 1 ? `is ${capitalizeName(dogs[0].name)}` : `are ${formatDogNames(dogs)}`}?
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -552,7 +552,7 @@ export const MealPlanPage = () => {
     if (step === 5) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow', sans-serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', sans-serif", textTransform: 'none' }}>
             Describe {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s` : 'their'} body condition
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -613,7 +613,7 @@ export const MealPlanPage = () => {
     if (step === 6) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow', sans-serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', sans-serif", textTransform: 'none' }}>
             Weight & lifestyle
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -697,7 +697,7 @@ export const MealPlanPage = () => {
     if (step === 7) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow', sans-serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', sans-serif", textTransform: 'none' }}>
             Any health issues or dietary needs?
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -772,7 +772,7 @@ export const MealPlanPage = () => {
               }}>
                 <Check size={40} color="#2E7D32" />
               </div>
-              <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', fontFamily: "'Barlow', sans-serif", textTransform: 'none' }}>
+              <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', fontFamily: "'Barlow Semi Condensed', sans-serif", textTransform: 'none' }}>
                 Profile Saved!
               </h1>
               <p style={{ color: '#666', fontSize: '16px' }}>
@@ -854,7 +854,7 @@ export const MealPlanPage = () => {
 
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow', sans-serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', sans-serif", textTransform: 'none' }}>
             Save Your Profile
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>

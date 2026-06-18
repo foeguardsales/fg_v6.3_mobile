@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, Check, Trash2 } from 'lucide-react';
+import { Save, Check, Trash2, X } from 'lucide-react';
 import { useAuth } from '../lib/useAuth';
 
 const DEFAULT_PET = () => ({
@@ -144,19 +144,19 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
     >
       {!embedded && (
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/menu')}
           data-testid="calc-close-btn"
-          aria-label="Back"
-          className="pd-uber-back"
+          aria-label="Close"
+          className="page-close-x"
         >
-          <ArrowLeft size={18} strokeWidth={2.2} /> Back
+          <X size={22} />
         </button>
       )}
 
-      <h2 style={{ fontSize: '32px', textAlign: 'center', marginBottom: '12px', fontFamily: "'Barlow', sans-serif", fontWeight: 700 }}>
+      <h2 style={{ fontSize: '32px', textAlign: 'center', marginBottom: '12px', fontFamily: "'Barlow Semi Condensed', sans-serif", fontWeight: 700 }}>
         Feeding Calculator
       </h2>
-      <p style={{ textAlign: 'center', color: '#666', marginBottom: '28px', fontFamily: "'Barlow', sans-serif" }}>
+      <p style={{ textAlign: 'center', color: '#666', marginBottom: '28px', fontFamily: "'Barlow Semi Condensed', sans-serif" }}>
         Tell us about your pet(s) to get personalized feeding recommendations.
         {isAuthenticated
           ? ' Saved to your account.'
@@ -179,7 +179,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ fontSize: '18px', color: '#c8102e', margin: 0, fontFamily: "'Barlow', sans-serif" }}>
+            <h3 style={{ fontSize: '18px', color: '#c8102e', margin: 0, fontFamily: "'Barlow Semi Condensed', sans-serif" }}>
               {pets.length > 1 ? `Pet ${index + 1}` : 'Pet'}
             </h3>
             {pets.length > 1 && (

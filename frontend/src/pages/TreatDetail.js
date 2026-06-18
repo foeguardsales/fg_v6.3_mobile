@@ -28,7 +28,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           cursor: 'pointer',
-          fontFamily: "'Barlow', sans-serif",
+          fontFamily: "'Barlow Semi Condensed', sans-serif",
           fontSize: '18px',
           fontWeight: '600',
           color: '#2B2B2B',
@@ -344,7 +344,7 @@ export const TreatDetailPage = () => {
                 </p>
               </CollapsibleSection>
               <CollapsibleSection title="Order Notes">
-                <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
                   Add any special notes for your order.
                 </label>
                 <textarea

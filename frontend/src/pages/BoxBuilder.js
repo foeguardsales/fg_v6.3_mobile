@@ -488,7 +488,8 @@ export const BoxBuilder = () => {
                 onToggleTreat={handleToggleTreat}
                 petType={petType}
                 navigate={navigate}
-                hideHeader={true}
+                hideHeader={false}
+                showCategoryDescriptions={true}
               />
             ) : petType === 'dog' ? (
               <>

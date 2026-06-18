@@ -149,7 +149,7 @@ const ModernNavbar = () => {
           textAlign: 'center',
           padding: '8px 16px',
           fontSize: '13px',
-          fontFamily: "'Barlow', sans-serif",
+          fontFamily: "'Barlow Semi Condensed', sans-serif",
           fontWeight: '600',
           letterSpacing: '0.02em',
           textTransform: 'none'
@@ -306,7 +306,7 @@ const ModernNavbar = () => {
                           fontWeight: '700',
                           letterSpacing: '0.08em',
                           textTransform: 'uppercase',
-                          fontFamily: "'Barlow', sans-serif",
+                          fontFamily: "'Barlow Semi Condensed', sans-serif",
                           color: COLORS.cream
                         }}
                       >
@@ -337,7 +337,7 @@ const ModernNavbar = () => {
                                 fontWeight: '500',
                                 letterSpacing: '0.06em',
                                 textTransform: 'uppercase',
-                                fontFamily: "'Barlow', sans-serif",
+                                fontFamily: "'Barlow Semi Condensed', sans-serif",
                                 color: COLORS.cream
                               }}
                             >
@@ -365,7 +365,7 @@ const ModernNavbar = () => {
                         fontWeight: '700',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
-                        fontFamily: "'Barlow', sans-serif",
+                        fontFamily: "'Barlow Semi Condensed', sans-serif",
                         color: COLORS.cream
                       }}
                     >
@@ -392,7 +392,7 @@ const ModernNavbar = () => {
                   fontWeight: '600',
                   letterSpacing: '0.06em',
                   textTransform: 'uppercase',
-                  fontFamily: "'Barlow', sans-serif",
+                  fontFamily: "'Barlow Semi Condensed', sans-serif",
                   color: COLORS.cream
                 }}
               >
@@ -464,7 +464,7 @@ const ModernFooter = () => {
     cursor: 'pointer',
     opacity: 0.85,
     textAlign: 'left',
-    fontFamily: "'Barlow', sans-serif"
+    fontFamily: "'Barlow Semi Condensed', sans-serif"
   };
 
   const footerHeadingStyle = {
@@ -754,7 +754,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '32px',
               color: COLORS.charcoal,
-              fontFamily: "'Barlow', sans-serif"
+              fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
               Shop <span style={{ color: COLORS.red }}>Farm Fresh</span>
             </h2>
@@ -862,7 +862,7 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 lineHeight: 1.25,
                 marginBottom: '16px',
-                fontFamily: "'Barlow', sans-serif"
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
                 Why <span style={{ color: COLORS.red }}>FoeGuard</span> Raw?
               </h2>
@@ -873,7 +873,7 @@ export const LandingPage = () => {
                 opacity: 0.85,
                 lineHeight: 1.6,
                 margin: '0 0 14px',
-                fontFamily: "'Barlow', sans-serif"
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
                 Give your best friend their best life with <span style={{ color: COLORS.red, fontWeight: 600 }}>100% Canadian</span> whole-food raw nutrition made for carnivores.
               </p>
@@ -884,7 +884,7 @@ export const LandingPage = () => {
                 opacity: 0.85,
                 lineHeight: 1.6,
                 margin: 0,
-                fontFamily: "'Barlow', sans-serif"
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
                 By delivering directly to you, we&apos;re able to invest more into fresher ingredients, premium cuts and complete meals without the retail markups, vague labels or low-quality meat. Something you and your doggo can both feel good about.
               </p>
@@ -948,7 +948,7 @@ export const LandingPage = () => {
                           fontWeight: 800,
                           color: COLORS.charcoal,
                           margin: '0 0 4px',
-                          fontFamily: "'Barlow', sans-serif"
+                          fontFamily: "'Barlow Semi Condensed', sans-serif"
                         }}>
                           {item.title}
                         </h4>
@@ -982,7 +982,7 @@ export const LandingPage = () => {
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
                 marginBottom: '12px',
-                fontFamily: "'Barlow', sans-serif",
+                fontFamily: "'Barlow Semi Condensed', sans-serif",
                 lineHeight: 1.25,
                 color: COLORS.white
               }}>
@@ -1042,7 +1042,7 @@ export const LandingPage = () => {
                       fontSize: '15px',
                       fontWeight: '700',
                       marginBottom: '4px',
-                      fontFamily: "'Barlow', sans-serif",
+                      fontFamily: "'Barlow Semi Condensed', sans-serif",
                       lineHeight: 1.3,
                       color: COLORS.cream,
                       letterSpacing: '0.02em'
@@ -1090,7 +1090,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '12px',
               color: COLORS.charcoal,
-              fontFamily: "'Barlow', sans-serif"
+              fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
               Hear from Happy <span style={{ color: COLORS.red }}>FoeGuardians</span>
             </h2>
@@ -1169,7 +1169,7 @@ export const LandingPage = () => {
                         fontWeight: '700',
                         color: COLORS.red,
                         margin: 0,
-                        fontFamily: "'Barlow', sans-serif"
+                        fontFamily: "'Barlow Semi Condensed', sans-serif"
                       }}>
                         — {r.name}
                       </p>
@@ -1218,7 +1218,7 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 lineHeight: 1.25,
                 marginBottom: '12px',
-                fontFamily: "'Barlow', sans-serif"
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
                 Pick Your Dog&apos;s Favourites From <span style={{ color: COLORS.red }}>8+ Delicious Meat Options</span>
               </h2>
@@ -1229,7 +1229,7 @@ export const LandingPage = () => {
                 lineHeight: 1.6,
                 margin: 0,
                 fontWeight: 400,
-                fontFamily: "'Barlow', sans-serif"
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
                 Each meal has its own unique flavour and nutritional value.
               </p>
@@ -1296,7 +1296,7 @@ export const LandingPage = () => {
                     fontSize: '15px',
                     fontWeight: 700,
                     color: COLORS.charcoal,
-                    fontFamily: "'Barlow', sans-serif"
+                    fontFamily: "'Barlow Semi Condensed', sans-serif"
                   }}>{p.label}</span>
                 </button>
               ))}
@@ -1333,7 +1333,7 @@ export const LandingPage = () => {
                 fontWeight: '700',
                 color: COLORS.charcoal,
                 marginBottom: '20px',
-                fontFamily: "'Barlow', sans-serif"
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
                 Raw Feeding is a <span style={{ color: COLORS.red }}>Family Tradition</span>
               </h2>
@@ -1389,7 +1389,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '36px',
               color: COLORS.charcoal,
-              fontFamily: "'Barlow', sans-serif"
+              fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
               Frequently Asked <span style={{ color: COLORS.red }}>Questions</span>
             </h2>
@@ -1458,7 +1458,7 @@ export const LandingPage = () => {
               fontWeight: '700',
               marginBottom: '16px',
               color: COLORS.cream,
-              fontFamily: "'Barlow', sans-serif"
+              fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
               See the FoeGuard Difference
             </h2>
@@ -1512,7 +1512,7 @@ export const LandingPage = () => {
                     margin: 0,
                     color: COLORS.cream,
                     opacity: 0.95,
-                    fontFamily: "'Barlow', sans-serif"
+                    fontFamily: "'Barlow Semi Condensed', sans-serif"
                   }}>
                     {line}
                   </p>
@@ -1532,7 +1532,7 @@ export const LandingPage = () => {
                 fontWeight: '700',
                 cursor: 'pointer',
                 boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
-                fontFamily: "'Barlow', sans-serif"
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translate(-2px, -2px)';

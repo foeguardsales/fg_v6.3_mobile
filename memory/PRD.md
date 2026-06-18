@@ -182,3 +182,12 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
   - MealPlan + FeedingCalculator: small 34px X close top-right replaces the giant "Back" buttons
   - Restored `/app/backend/.env` and `/app/frontend/.env` (services were down at session start)
 
+
+### Jun 2026 — Iteration 13: Continuation typography + menu/calculator polish
+- **Fonts** — All remaining hardcoded `'Barlow'` / `'Rubik'` literals (CSS + inline JS) swapped to **Barlow Semi Condensed**; paragraph/body text remains **Lucida Grande** (global `p,li,...` rule). Two-font system now fully consistent.
+- **Treats** — Dedicated "Raw Dog Treats" / "Raw Cat Treats" tab now shows the SINGLE title banner (was missing); subcategories (Meaty Treats / Heads and Feet) remain plain text, no images.
+- **Calculator close** — `FeedingCalculator` (non-embedded /calculator page) now uses the same top-right circular **X (`page-close-x`)** as the Meal Plan page → navigates to `/menu` (replaced the old top-left "← Back"). Consistent close affordance across pages + modals.
+- **Calculator mobile** — Tightened `@media (max-width:759px)` compact spacing (card gap 8px, input padding 9px, smaller heading/label margins) for a denser mobile form.
+- **Menu category tabs** — Reduced VERTICAL spacing (box-builder top padding 28→10px mobile / 40→18px desktop; `.menu-category-text` padding/margin trimmed; button vertical padding reduced). Horizontal spacing left as-is.
+- **Calc selection** — Verified: choosing "Feeding Calculator" from the funnel keeps the persistent Selection = "Raw Food Menu" (calc opens as modal over /menu).
+- Recreated lost `backend/.env` + `frontend/.env` (mocked third-party keys per existing setup) after container restart; backend reseeds 24 products / 17 treats on startup.

@@ -41,7 +41,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
-          fontFamily: "'Barlow', sans-serif",
+          fontFamily: "'Barlow Semi Condensed', sans-serif",
           fontSize: '15px',
           fontWeight: '700',
           color: '#2B2B2B',
@@ -95,7 +95,7 @@ const ProductBrandIcons = () => {
             <Icon size={22} color="#3B2A1A" strokeWidth={1.8} />
           </div>
           <span style={{
-            fontFamily: "'Barlow', sans-serif",
+            fontFamily: "'Barlow Semi Condensed', sans-serif",
             fontSize: '12px',
             fontWeight: 600,
             color: '#3B2A1A',
@@ -118,7 +118,7 @@ const FarmToBowlSection = () => {
   return (
     <section data-testid="farm-to-bowl-section" style={{ marginTop: '56px' }}>
       <h2 style={{
-        fontFamily: "'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+        fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
         color: '#3B2A1A',
@@ -136,7 +136,7 @@ const FarmToBowlSection = () => {
             boxShadow: 'none'
           }}>
             <h3 style={{
-              fontFamily: "'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+              fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
               fontSize: '22px',
               fontWeight: 600,
               color: '#C8102E',
@@ -175,7 +175,7 @@ const PersonalizeSection = ({ navigate }) => {
         alignItems: 'center',
         justifyContent: 'center',
         color: '#6A4F35',
-        fontFamily: "'Barlow', sans-serif",
+        fontFamily: "'Barlow Semi Condensed', sans-serif",
         fontSize: '13px',
         textTransform: 'uppercase',
         letterSpacing: '0.05em'
@@ -188,7 +188,7 @@ const PersonalizeSection = ({ navigate }) => {
       </div>
       <div>
         <h2 style={{
-          fontFamily: "'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+          fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
           fontSize: 'clamp(26px, 3.2vw, 36px)',
           fontWeight: 600,
           color: '#3B2A1A',
@@ -207,7 +207,7 @@ const PersonalizeSection = ({ navigate }) => {
             color: '#FFFFFF',
             border: 'none',
             borderRadius: '999px',
-            fontFamily: "'Barlow', sans-serif",
+            fontFamily: "'Barlow Semi Condensed', sans-serif",
             fontWeight: 700,
             fontSize: '15px',
             cursor: 'pointer',
@@ -251,7 +251,7 @@ const ProductFaqSection = () => {
   return (
     <section data-testid="product-faq-section" style={{ marginTop: '48px', marginBottom: '32px' }}>
       <h2 style={{
-        fontFamily: "'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+        fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
         color: '#3B2A1A',
@@ -285,7 +285,7 @@ const ProductFaqSection = () => {
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
-                  fontFamily: "'Barlow', sans-serif",
+                  fontFamily: "'Barlow Semi Condensed', sans-serif",
                   fontSize: '15px',
                   fontWeight: 700,
                   color: '#2B2B2B',
@@ -673,7 +673,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 </p>
               </CollapsibleSection>
               <CollapsibleSection title="Order Notes">
-                <label style={{ display: 'block', fontFamily: "'Barlow', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
                   Add any special notes for your order (e.g. remove an ingredient, preference).
                 </label>
                 <textarea

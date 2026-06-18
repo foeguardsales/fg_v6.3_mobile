@@ -818,3 +818,13 @@ agent_communication:
       
       **Production Ready:**
       The redesigned menu flow is fully functional and ready for production use.
+  - agent: "main"
+    message: |
+      Iteration 13 (continuation) — frontend-only UI polish completed & visually verified:
+      1. Fonts: all leftover hardcoded 'Barlow'/'Rubik' → 'Barlow Semi Condensed'; paragraphs = Lucida Grande (global rule).
+      2. Treats: dedicated Raw Dog/Cat Treats tab now shows the single title banner; subcategories (Meaty Treats / Heads and Feet) are plain text (no banner images).
+      3. Calculator page: replaced top-left "Back" with identical top-right X (page-close-x) → /menu, matching Meal Plan + modals.
+      4. Calculator mobile: tightened @media(max-width:759px) compact spacing (verified inputPad 9px, card gap 8px at 390px).
+      5. Menu category tabs: reduced VERTICAL spacing (box-builder top padding + .menu-category-text padding/margin + button vertical padding).
+      6. Verified funnel→Feeding Calculator keeps Selection = "Raw Food Menu".
+      NOTE: backend/.env + frontend/.env were recreated after container restart (mocked 3rd-party keys, same as prior setup). No backend logic changed; not retested.
