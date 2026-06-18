@@ -310,8 +310,9 @@ const ProductFaqSection = () => {
   );
 };
 
-export const ProductDetailPage = () => {
-  const { productId } = useParams();
+export const ProductDetailPage = ({ productId: propProductId = null, embedded = false, onClose = null }) => {
+  const params = useParams();
+  const productId = propProductId || params.productId;
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -372,6 +373,10 @@ export const ProductDetailPage = () => {
   }, []);
 
   const handleBackToMenu = () => {
+    if (embedded && onClose) {
+      onClose();
+      return;
+    }
     navigate('/menu');
   };
   
@@ -425,10 +430,22 @@ export const ProductDetailPage = () => {
     }
 
     // Navigate back to the menu (per spec)
-    navigate('/menu');
+    if (embedded && onClose) {
+      onClose();
+    } else {
+      navigate('/menu');
+    }
   };
 
   if (loading) {
+    if (embedded) {
+      return (
+        <div className="product-detail-loading">
+          <div className="loading-spinner"></div>
+          <p>Loading product...</p>
+        </div>
+      );
+    }
     return (
       <>
         <Navbar />
@@ -478,50 +495,54 @@ export const ProductDetailPage = () => {
 
   return (
     <>
-      <Navbar />
-      <CartDrawer
-        isOpen={cartOpen}
-        onClose={() => setCartOpen(false)}
-        boxSize={boxSize}
-        selectedProteins={selectedProteins}
-        selectedTreats={selectedTreats}
-        products={products}
-        onProceed={() => navigate('/menu')}
-        getDiscountedPrice={getDiscountedPrice}
-        getBasePrice={getBasePrice}
-        onAdjustProtein={(productId, productName, newQty) => {
-          setSelectedProteins(prev => {
-            const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
-            sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
-            return updated;
-          });
-        }}
-        onRemoveProtein={(productId) => {
-          setSelectedProteins(prev => {
-            const updated = { ...prev };
-            delete updated[productId];
-            sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
-            return updated;
-          });
-        }}
-        onRemoveTreat={(treatId) => {
-          setSelectedTreats(prev => {
-            const updated = prev.filter(t => t.treat_id !== treatId);
-            sessionStorage.setItem('selectedTreats', JSON.stringify(updated));
-            return updated;
-          });
-        }}
-      />
+      {!embedded && (
+        <>
+          <Navbar />
+          <CartDrawer
+            isOpen={cartOpen}
+            onClose={() => setCartOpen(false)}
+            boxSize={boxSize}
+            selectedProteins={selectedProteins}
+            selectedTreats={selectedTreats}
+            products={products}
+            onProceed={() => navigate('/menu')}
+            getDiscountedPrice={getDiscountedPrice}
+            getBasePrice={getBasePrice}
+            onAdjustProtein={(productId, productName, newQty) => {
+              setSelectedProteins(prev => {
+                const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
+                sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                return updated;
+              });
+            }}
+            onRemoveProtein={(productId) => {
+              setSelectedProteins(prev => {
+                const updated = { ...prev };
+                delete updated[productId];
+                sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                return updated;
+              });
+            }}
+            onRemoveTreat={(treatId) => {
+              setSelectedTreats(prev => {
+                const updated = prev.filter(t => t.treat_id !== treatId);
+                sessionStorage.setItem('selectedTreats', JSON.stringify(updated));
+                return updated;
+              });
+            }}
+          />
 
-      {/* Back button — standard top-left position */}
-      <button
-        onClick={handleBackToMenu}
-        data-testid="product-close-btn"
-        className="pd-uber-back"
-        aria-label="Back"
-      >
-        <ChevronLeft size={18} strokeWidth={2.2} /> Back
-      </button>
+          {/* Back button — standard top-left position (only when on a dedicated page, not modal) */}
+          <button
+            onClick={handleBackToMenu}
+            data-testid="product-close-btn"
+            className="pd-uber-back"
+            aria-label="Back"
+          >
+            <ChevronLeft size={18} strokeWidth={2.2} /> Back
+          </button>
+        </>
+      )}
 
       <div className="pd-uber">
         <div className="pd-shopify">
@@ -694,89 +715,34 @@ export const ProductDetailPage = () => {
       <button
         onClick={handleAddToCart}
         disabled={isBoxFull}
-        className="pd-uber-add"
+        className={`pd-uber-add ${embedded ? 'pd-uber-add--inline' : ''}`}
         data-testid="product-add-to-box"
       >
         {isBoxFull ? 'Box full' : `Add ${quantity}lb to your box · $${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}`}
       </button>
 
-      <Footer />
+      {!embedded && <Footer />}
     </>
   );
 };
 
 
-// ===== Inline Product Detail Modal — same content as page, but rendered as overlay =====
+
+// ===== Inline Product Detail Modal — renders the full ProductDetailPage inside an overlay =====
 export const ProductDetailModal = ({ productId, onClose }) => {
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 6;
-  const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
-
-  const [quantity, setQuantity] = useState(6);
-  const [boxSize, setBoxSize] = useState(initialBoxSize);
-  const [selectedProteins, setSelectedProteins] = useState(initialProteins);
-  const [orderNotes, setOrderNotes] = useState('');
-
   useEffect(() => {
-    setLoading(true);
-    axios.get(`${API}/products/${productId}`)
-      .then(res => setProduct(res.data))
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
-    // Lock body scroll while open
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = prev; };
-  }, [productId]);
-
-  const DISCOUNT_RATES = { 6: 0, 18: 0.05, 24: 0.10, 36: 0.15 };
-
-  const getBasePrice = (prod) => {
-    const pricing = prod?.pricing?.find(p => p.size_lb === 6);
-    return pricing ? pricing.price : 0;
-  };
-
-  const getDiscountedPrice = (prod) => {
-    const basePrice = getBasePrice(prod);
-    const discount = DISCOUNT_RATES[boxSize] || 0;
-    return basePrice * (1 - discount);
-  };
-
-  const currentTotal = Object.values(selectedProteins).reduce((sum, p) => sum + p.qty, 0);
-  const isBoxFull = currentTotal >= boxSize;
-  const sizeDiscount = (DISCOUNT_RATES[boxSize] || 0) * 100;
-
-  const handleAddToCart = () => {
-    if (!product) return;
-    const spaceLeft = boxSize - currentTotal;
-    if (spaceLeft <= 0) return;
-
-    const updatedProteins = { ...selectedProteins };
-    const currentQty = updatedProteins[product.product_id]?.qty || 0;
-    const addQty = Math.min(quantity, spaceLeft);
-
-    updatedProteins[product.product_id] = {
-      qty: currentQty + addQty,
-      name: product.name
-    };
-
-    sessionStorage.setItem('selectedProteins', JSON.stringify(updatedProteins));
-    sessionStorage.setItem('boxSize', boxSize.toString());
-
-    if (orderNotes) {
-      const existing = JSON.parse(sessionStorage.getItem('productNotes') || '{}');
-      existing[product.product_id] = orderNotes;
-      sessionStorage.setItem('productNotes', JSON.stringify(existing));
-    }
-
-    onClose();
-  };
+  }, []);
 
   return (
-    <div className="bb-overlay" data-testid="product-modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="bb-overlay-panel" role="dialog" aria-modal="true">
+    <div
+      className="bb-overlay"
+      data-testid="product-modal-overlay"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="bb-overlay-panel bb-overlay-panel--product" role="dialog" aria-modal="true">
         <button
           className="bb-overlay-close"
           onClick={onClose}
@@ -785,124 +751,11 @@ export const ProductDetailModal = ({ productId, onClose }) => {
         >
           <X size={22} />
         </button>
-
-        {loading || !product ? (
-          <div className="product-detail-loading"><p>Loading product...</p></div>
-        ) : (
-          <div className="pd-uber pd-uber--modal">
-            <div className="pd-shopify">
-              <div className="pd-shopify-media">
-                <img src={proteinImages[product.protein_type] || proteinImages.chicken} alt={product.name} />
-              </div>
-              <div className="pd-shopify-content">
-                <h1 className="pd-shopify-title">{product.name}</h1>
-                <div className="pd-shopify-price-row" data-testid="product-price">
-                  <span className="pd-shopify-price">${(getDiscountedPrice(product) / 6).toFixed(2)}</span>
-                  <span className="pd-shopify-price-unit">/ 1 lb</span>
-                  {sizeDiscount > 0 && (
-                    <span className="pd-shopify-price-original">${(getBasePrice(product) / 6).toFixed(2)}</span>
-                  )}
-                </div>
-                <p className="pd-shopify-desc">{product.description}</p>
-
-                <div className="pd-shopify-features pd-shopify-features--mini">
-                  <span className="pd-shopify-feature">Dogs of all-life stages</span>
-                  <span className="pd-shopify-feature">Fresh-to-order</span>
-                  <span className="pd-shopify-feature">Human grade</span>
-                </div>
-
-                <div className="pd-shopify-qty-row">
-                  <div>
-                    <div className="pd-shopify-mini-label">Add to box</div>
-                    <div className="pd-shopify-qty-controls">
-                      <button
-                        onClick={() => quantity > 6 && setQuantity(quantity - 6)}
-                        disabled={quantity <= 6}
-                        className="pd-shopify-qty-btn"
-                        data-testid="qty-decrease"
-                      >−</button>
-                      <span data-testid="qty-display" className="pd-shopify-qty-display">{quantity} lb</span>
-                      <button
-                        onClick={() => {
-                          const spaceLeft = boxSize - currentTotal;
-                          if (quantity + 6 <= spaceLeft) setQuantity(quantity + 6);
-                        }}
-                        disabled={quantity + 6 > (boxSize - currentTotal)}
-                        className="pd-shopify-qty-btn"
-                        data-testid="qty-increase"
-                      >+</button>
-                    </div>
-                  </div>
-                  <div className="pd-shopify-adds">
-                    <div className="pd-shopify-mini-label">Adds</div>
-                    <span className="pd-shopify-adds-total">
-                      ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
-                    </span>
-                    {sizeDiscount > 0 && (
-                      <div className="pd-shopify-adds-original">
-                        ${(getBasePrice(product) * (quantity / 6)).toFixed(2)}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="pd-shopify-boxsize">
-                  <span className="pd-shopify-boxsize-label">Box Selected:</span>
-                  <span className="pd-shopify-boxsize-value">{boxSize}lb</span>
-                  {sizeDiscount > 0 && (
-                    <span className="pd-shopify-boxsize-discount">Save {sizeDiscount}%</span>
-                  )}
-                </div>
-
-                {product.highlights && product.highlights.length > 0 && (
-                  <ul className="pd-shopify-checks">
-                    {product.highlights.map((h, i) => (
-                      <li key={i}><Check size={16} strokeWidth={2.5} /> <span>{h}</span></li>
-                    ))}
-                  </ul>
-                )}
-
-                <div className="pd-shopify-collapsibles">
-                  <CollapsibleSection title="Ingredients">
-                    <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
-                      {typeof product.ingredients === 'string' ? product.ingredients : (product.ingredients || []).join(', ')}
-                    </p>
-                  </CollapsibleSection>
-                  <CollapsibleSection title="Nutrition Facts">
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                      {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
-                        <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #E8DDD0' }}>
-                          <span style={{ color: '#5A5A5A', fontSize: '13px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
-                          <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '13px' }}>{value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CollapsibleSection>
-                  <CollapsibleSection title="Order Notes">
-                    <textarea
-                      className="pd-uber-notes"
-                      value={orderNotes}
-                      onChange={(e) => setOrderNotes(e.target.value)}
-                      rows={3}
-                      placeholder="e.g. No bone, extra liver…"
-                      data-testid="product-notes-input"
-                    />
-                  </CollapsibleSection>
-                </div>
-
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isBoxFull}
-                  className="pd-uber-add pd-uber-add--inline"
-                  data-testid="product-add-to-box"
-                >
-                  {isBoxFull ? 'Box full' : `Add ${quantity}lb to your box · $${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}`}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        <div className="bb-overlay-scroll">
+          <ProductDetailPage productId={productId} embedded onClose={onClose} />
+        </div>
       </div>
     </div>
   );
 };
+

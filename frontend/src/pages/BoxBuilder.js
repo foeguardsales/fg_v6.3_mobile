@@ -52,11 +52,14 @@ export const BoxBuilder = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
-  const [viewMode, setViewMode] = useState('all'); // 'food' | 'treats' | 'all'
+  const [viewMode, setViewMode] = useState('food'); // 'food' | 'treats'
 
   // Mini top-sheet (auto-opens once per session on /menu landing)
   const [topSheetOpen, setTopSheetOpen] = useState(false);
   const [topSheetSeen, setTopSheetSeen] = useState(false);
+
+  // Funnel choice block — large 3-option chooser shown above menu on first landing
+  const [funnelOpen, setFunnelOpen] = useState(true);
 
   // Inline product modal state — replaces /product/:id navigation
   const [activeProductId, setActiveProductId] = useState(null);
@@ -95,12 +98,11 @@ export const BoxBuilder = () => {
     }
   }, []);
 
-  // Auto-open top-sheet once per session when landing on /menu
+  // Auto-skip the funnel if user previously dismissed it (within session)
   useEffect(() => {
-    const isMenuLanding = window.location.pathname === '/menu' || window.location.pathname === '/build-box';
-    const seen = sessionStorage.getItem('foeguard_menu_topsheet_seen');
-    if (isMenuLanding && !seen) {
-      setTopSheetOpen(true);
+    const seen = sessionStorage.getItem('foeguard_menu_funnel_seen');
+    if (seen) {
+      setFunnelOpen(false);
     }
   }, []);
 
@@ -222,7 +224,6 @@ export const BoxBuilder = () => {
   };
 
   const bannerCards = [
-    { id: 'full-menu', title: 'Full Menu', petType: 'dog', viewMode: 'all', active: petType === 'dog' && viewMode === 'all' },
     { id: 'dog-food', title: 'Raw Dog Food', petType: 'dog', viewMode: 'food', active: petType === 'dog' && viewMode === 'food' },
     { id: 'dog-treats', title: 'Raw Dog Treats', petType: 'dog', viewMode: 'treats', active: petType === 'dog' && viewMode === 'treats' },
     { id: 'cat-food', title: 'Raw Cat Food', petType: 'cat', viewMode: 'food', active: petType === 'cat' && viewMode === 'food' },
@@ -259,6 +260,24 @@ export const BoxBuilder = () => {
   // Calculate total lbs selected
   const getTotalSelectedLbs = () => {
     return Object.values(selectedProteins).reduce((sum, data) => sum + data.qty, 0);
+  };
+
+  // Cheapest per-lb price for chicken at a given box size (for box-size selector subtext)
+  const getCheapestChickenPerLbForBox = (sizeLb) => {
+    if (!products || products.length === 0) return null;
+    const chicken = products.filter(p => p.protein_type === 'chicken');
+    let cheapest = Infinity;
+    chicken.forEach(p => {
+      // pricing is stored per 6lb size base; the discounted price for this box size = base * (1 - discountRate)
+      const tier = p.pricing?.find(t => t.size_lb === 6) || p.pricing?.[0];
+      if (!tier) return;
+      const base = tier.price;
+      const discount = DISCOUNT_RATES[sizeLb] || 0;
+      const discounted = base * (1 - discount);
+      const perLb = discounted / 6;
+      if (perLb < cheapest) cheapest = perLb;
+    });
+    return cheapest === Infinity ? null : cheapest;
   };
 
   // Handle box size change - reset selections if they exceed new size
@@ -366,54 +385,31 @@ export const BoxBuilder = () => {
   const primalFeastProducts = products.filter(p => p.product_line === 'primal_feast');
   const royalPawsProducts = products.filter(p => p.product_line === 'royal_paws');
 
-  // Box size — show whenever viewing food OR all (Full Menu)
-  const showBoxSize = viewMode === 'food' || viewMode === 'all';
+  // Box size — show only on food view
+  const showBoxSize = viewMode === 'food';
 
   return (
     <>
       <Navbar />
       <div className="box-builder box-builder--narrow">
-        {/* Mini Top-Sheet (auto-opens on /menu landing) */}
-        <MenuTopSheet
-          open={topSheetOpen}
-          onClose={() => {
-            setTopSheetOpen(false);
-            sessionStorage.setItem('foeguard_menu_topsheet_seen', '1');
-          }}
-          onCalculator={() => {
-            setTopSheetOpen(false);
-            sessionStorage.setItem('foeguard_menu_topsheet_seen', '1');
-            setCalcOpen(true);
-          }}
-          onMealPlan={() => {
-            setTopSheetOpen(false);
-            sessionStorage.setItem('foeguard_menu_topsheet_seen', '1');
-            navigate('/meal-plan');
-          }}
-          getBasePrice={getBasePrice}
-          products={products}
-        />
-
-        {/* Top selector — slim selectable containers: Raw Dog Food | Meal Plan | Calculator */}
-        <div className="menu-top-nav-mustard menu-top-nav--boxed" data-testid="menu-top-nav">
-          {topNavTabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => {
-                if (tab.active) return;
-                if (tab.id === 'calculator') {
-                  setCalcOpen(true);
-                } else {
-                  navigate(tab.path);
-                }
-              }}
-              data-testid={`top-nav-${tab.id}`}
-              className={`menu-top-nav-mustard-btn ${tab.active ? 'is-active' : ''}`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        {/* Funnel: shown as first thing on /menu before the menu itself */}
+        {funnelOpen && (
+          <MenuFunnel
+            onShopRaw={() => {
+              setFunnelOpen(false);
+              sessionStorage.setItem('foeguard_menu_funnel_seen', '1');
+            }}
+            onMealPlan={() => {
+              sessionStorage.setItem('foeguard_menu_funnel_seen', '1');
+              navigate('/meal-plan');
+            }}
+            onCalculator={() => {
+              setFunnelOpen(false);
+              sessionStorage.setItem('foeguard_menu_funnel_seen', '1');
+              setCalcOpen(true);
+            }}
+          />
+        )}
 
         {/* Category Tabs: Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats — text only, no pill */}
         <div className="menu-category-text" data-testid="menu-category-tabs">
@@ -433,23 +429,26 @@ export const BoxBuilder = () => {
         <>
           {showBoxSize && (
           <>
-          {/* Box size — "Select Box Size:" label + larger full-width clean-border buttons */}
+          {/* Box size — label + clean equal-style buttons with size + from-price */}
           <div className="bb-box-size-wrap bb-box-size-wrap--stacked" data-testid="box-size-wrap">
             <span className="bb-box-size-label">Select Box Size:</span>
             <div className="box-size-slider box-size-slider--mustard box-size-slider--clean" data-testid="box-size-selector">
-              {BOX_OPTIONS.map(box => (
-                <button
-                  key={box.size}
-                  onClick={() => handleBoxSizeChange(box.size)}
-                  data-testid={`box-size-${box.size}lb`}
-                  className={`box-size-chip ${boxSize === box.size ? 'is-active' : ''}`}
-                >
-                  <span className="box-size-chip-text">
-                    <span>{box.label}</span>
-                    {box.discount > 0 && <span className="box-size-chip-discount-inline">Save {box.discount}%</span>}
-                  </span>
-                </button>
-              ))}
+              {BOX_OPTIONS.map(box => {
+                const fromPerLb = getCheapestChickenPerLbForBox(box.size);
+                return (
+                  <button
+                    key={box.size}
+                    onClick={() => handleBoxSizeChange(box.size)}
+                    data-testid={`box-size-${box.size}lb`}
+                    className={`box-size-chip ${boxSize === box.size ? 'is-active' : ''}`}
+                  >
+                    <span className="box-size-chip-size">{box.label}</span>
+                    {fromPerLb != null && (
+                      <span className="box-size-chip-from">from ${fromPerLb.toFixed(2)}/lb</span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
           </>
@@ -469,10 +468,16 @@ export const BoxBuilder = () => {
               <>
                 {/* Comfort Dinner Collection - DOG */}
                 <div className="product-collection menu-collection">
-                  <div className="menu-collection-header" data-testid="collection-header-comfort">
-                    <div className="menu-collection-banner" style={{ backgroundImage: `url(${COLLECTION_IMAGES.comfort_dinner})` }} aria-hidden="true" />
-                    <h3 className="menu-collection-title">Comfort Dinner</h3>
-                    <p className="menu-collection-desc">Complete raw nutrition for dogs of all-life stages.</p>
+                  <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-comfort">
+                    <div
+                      className="menu-collection-banner menu-collection-banner--overlay"
+                      style={{ backgroundImage: `url(${COLLECTION_IMAGES.comfort_dinner})` }}
+                    >
+                      <div className="menu-collection-banner-text">
+                        <h3 className="menu-collection-title">Comfort Dinner</h3>
+                        <p className="menu-collection-desc">Complete raw nutrition for dogs of all-life stages.</p>
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="product-grid">
@@ -496,10 +501,16 @@ export const BoxBuilder = () => {
 
                 {/* Primal Feast Collection - DOG */}
                 <div className="product-collection menu-collection">
-                  <div className="menu-collection-header" data-testid="collection-header-primal">
-                    <div className="menu-collection-banner" style={{ backgroundImage: `url(${COLLECTION_IMAGES.primal_feast})` }} aria-hidden="true" />
-                    <h3 className="menu-collection-title">Primal Feast</h3>
-                    <p className="menu-collection-desc">Whole prey raw meals made with 80% meat, 10% bone and 10% organ.</p>
+                  <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-primal">
+                    <div
+                      className="menu-collection-banner menu-collection-banner--overlay"
+                      style={{ backgroundImage: `url(${COLLECTION_IMAGES.primal_feast})` }}
+                    >
+                      <div className="menu-collection-banner-text">
+                        <h3 className="menu-collection-title">Primal Feast</h3>
+                        <p className="menu-collection-desc">Whole prey raw meals made with 80% meat, 10% bone and 10% organ.</p>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="product-grid">
@@ -534,10 +545,16 @@ export const BoxBuilder = () => {
               <>
                 {/* Royal Paws Collection - CAT */}
                 <div className="product-collection menu-collection">
-                  <div className="menu-collection-header" data-testid="collection-header-royal">
-                    <div className="menu-collection-banner" style={{ backgroundImage: `url(${COLLECTION_IMAGES.royal_paws})` }} aria-hidden="true" />
-                    <h3 className="menu-collection-title">Royal Paws Dinner</h3>
-                    <p className="menu-collection-desc">Complete raw nutrition for cats of all life stages.</p>
+                  <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-royal">
+                    <div
+                      className="menu-collection-banner menu-collection-banner--overlay"
+                      style={{ backgroundImage: `url(${COLLECTION_IMAGES.royal_paws})` }}
+                    >
+                      <div className="menu-collection-banner-text">
+                        <h3 className="menu-collection-title">Royal Paws Dinner</h3>
+                        <p className="menu-collection-desc">Complete raw nutrition for cats of all life stages.</p>
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="product-grid">
@@ -797,93 +814,55 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 };
 
 
-// ===== Mini Top-Sheet (hangs from top, auto-opens once on menu landing) =====
-const MenuTopSheet = ({ open, onClose, onCalculator, onMealPlan, getBasePrice, products }) => {
-  // Build per-collection lowest per-lb price
-  const buildLowest = (line) => {
-    const lineProducts = (products || []).filter(p => p.product_line === line);
-    if (lineProducts.length === 0) return null;
-    let lowest = Infinity;
-    lineProducts.forEach(p => {
-      const base = getBasePrice(p);
-      const perLb = base / 6;
-      if (perLb < lowest) lowest = perLb;
-    });
-    return lowest === Infinity ? null : lowest;
-  };
-  const comfortLow = buildLowest('comfort_dinner');
-  const primalLow = buildLowest('primal_feast');
-  const royalLow = buildLowest('royal_paws');
+// ===== Menu Funnel — first thing on /menu, large 3-option chooser =====
+const MenuFunnel = ({ onShopRaw, onMealPlan, onCalculator }) => {
+  const options = [
+    {
+      id: 'shop-raw',
+      label: 'Raw Food Menu',
+      sub: 'Browse every meal & treat. Build your own box.',
+      image: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/a5bhlhqi_5.png',
+      onClick: onShopRaw
+    },
+    {
+      id: 'meal-plan',
+      label: 'Build a Meal Plan',
+      sub: 'Personalized plan based on your dog\u2019s profile.',
+      image: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/wtts10dz_4.png',
+      onClick: onMealPlan
+    },
+    {
+      id: 'calculator',
+      label: 'Feeding Calculator',
+      sub: 'Get a portion recommendation in seconds.',
+      image: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/u0taocl0_6.png',
+      onClick: onCalculator
+    }
+  ];
 
   return (
-    <>
-      <div
-        className={`menu-topsheet-backdrop ${open ? 'is-open' : ''}`}
-        onClick={onClose}
-        data-testid="topsheet-backdrop"
-      />
-      <div
-        className={`menu-topsheet ${open ? 'is-open' : ''}`}
-        role="dialog"
-        aria-hidden={!open}
-        data-testid="menu-topsheet"
-      >
-        <button
-          className="menu-topsheet-close"
-          onClick={onClose}
-          data-testid="topsheet-close"
-          aria-label="Close"
-        >
-          <X size={20} />
-        </button>
-        <h3 className="menu-topsheet-title">Shop <span>Farm Fresh</span></h3>
-        <p className="menu-topsheet-sub">Free delivery on orders over $100 in the GTA (up to 30km)</p>
-
-        <div className="menu-topsheet-cards">
-          {comfortLow != null && (
-            <div className="menu-topsheet-card" data-testid="topsheet-card-comfort">
-              <span className="menu-topsheet-card-name">Comfort Dinner</span>
-              <span className="menu-topsheet-card-price">from ${comfortLow.toFixed(2)}/lb</span>
-            </div>
-          )}
-          {primalLow != null && (
-            <div className="menu-topsheet-card" data-testid="topsheet-card-primal">
-              <span className="menu-topsheet-card-name">Primal Feast</span>
-              <span className="menu-topsheet-card-price">from ${primalLow.toFixed(2)}/lb</span>
-            </div>
-          )}
-          {royalLow != null && (
-            <div className="menu-topsheet-card" data-testid="topsheet-card-royal">
-              <span className="menu-topsheet-card-name">Royal Paws (Cat)</span>
-              <span className="menu-topsheet-card-price">from ${royalLow.toFixed(2)}/lb</span>
-            </div>
-          )}
-        </div>
-
-        <div className="menu-topsheet-actions">
+    <section className="menu-funnel" data-testid="menu-funnel">
+      <h1 className="menu-funnel-title">How would you like to order?</h1>
+      <p className="menu-funnel-sub">
+        Choose the path that works best for you and your pet — browse the full menu, build a custom meal plan, or get a fast portion recommendation.
+      </p>
+      <div className="menu-funnel-grid">
+        {options.map(opt => (
           <button
-            className="menu-topsheet-btn menu-topsheet-btn--outline"
-            onClick={onClose}
-            data-testid="topsheet-shop-raw"
+            key={opt.id}
+            className="menu-funnel-card"
+            onClick={opt.onClick}
+            data-testid={`funnel-${opt.id}`}
+            style={{ backgroundImage: `url(${opt.image})` }}
           >
-            Shop Raw Food
+            <div className="menu-funnel-card-overlay" />
+            <div className="menu-funnel-card-text">
+              <h3 className="menu-funnel-card-title">{opt.label}</h3>
+              <p className="menu-funnel-card-sub">{opt.sub}</p>
+            </div>
           </button>
-          <button
-            className="menu-topsheet-btn menu-topsheet-btn--solid"
-            onClick={onMealPlan}
-            data-testid="topsheet-meal-plan"
-          >
-            Meal Plan
-          </button>
-        </div>
-        <button
-          className="menu-topsheet-calc-link"
-          onClick={onCalculator}
-          data-testid="topsheet-calculator-link"
-        >
-          Calculator
-        </button>
+        ))}
       </div>
-    </>
+    </section>
   );
 };

@@ -565,7 +565,27 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
         role={navigate ? 'button' : undefined}
         tabIndex={navigate ? 0 : undefined}
       >
-        {/* Image */}
+        {/* Stacked content — content first so image ends up on the right on desktop */}
+        <div className="product-card-content">
+          <h4 className="product-card-title">{treat.name}</h4>
+          <p className="product-card-desc">{treat.quantity_description}</p>
+          <div className="product-card-meta">
+            <div className="product-card-price">
+              <span className="price-regular">${treat.price.toFixed(2)}</span>
+            </div>
+            {navigate && (
+              <button
+                className="product-card-more"
+                onClick={(e) => { e.stopPropagation(); goToTreat(); }}
+                data-testid={`learn-more-treat-${treat.treat_id}`}
+              >
+                See more
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Image — on the right (desktop), on top (mobile) */}
         <div className="product-card-media">
           {treat.images && treat.images.length > 0 ? (
             <img
@@ -576,28 +596,8 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
           ) : (
             <div style={{ width: '100%', height: '100%', background: '#E8DFC8' }} />
           )}
-        </div>
 
-        {/* Stacked content */}
-        <div className="product-card-content">
-          <h4 className="product-card-title">{treat.name}</h4>
-          <p className="product-card-desc">{treat.quantity_description}</p>
-          <div className="product-card-meta">
-            <div className="product-card-price">
-              <span className="price-regular">${treat.price.toFixed(2)}</span>
-            </div>
-          </div>
-          {navigate && (
-            <button
-              className="product-card-more"
-              onClick={(e) => { e.stopPropagation(); goToTreat(); }}
-              data-testid={`learn-more-treat-${treat.treat_id}`}
-            >
-              See more
-            </button>
-          )}
-
-          {/* + / qty pill — bottom right */}
+          {/* + / qty pill — bottom right of image */}
           {quantity === 0 ? (
             <button
               className="product-card-plus"
@@ -631,27 +631,51 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
     );
   };
 
+  // Banner images — same style as meal collections (image + overlay text)
+  const TREATS_BANNER = {
+    dog: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/1olxgtz6_3.png',
+    cat: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/7fyd6l6l_4.png'
+  };
+  const SUBCAT_BANNER = {
+    meaty: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/wtts10dz_4.png',
+    heads: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/u0taocl0_6.png'
+  };
+
   return (
     <div className="treats-section menu-collection">
       {/* Outer page title — hidden on dedicated treats tab (caller provides one) */}
       {!hideHeader && (
-        <div className="menu-collection-header" data-testid="collection-header-treats">
-          <h3 className="menu-collection-title">Raw {isDog ? 'Dog' : 'Cat'} Treats</h3>
-          <p className="menu-collection-desc">
-            {isDog
-              ? 'Enriching raw treats that support dental health, mental stimulation, and natural chewing.'
-              : "Natural whole-prey treats designed to support your cat's instinct to hunt and chew."}
-          </p>
+        <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-treats">
+          <div
+            className="menu-collection-banner menu-collection-banner--overlay"
+            style={{ backgroundImage: `url(${TREATS_BANNER[isDog ? 'dog' : 'cat']})` }}
+          >
+            <div className="menu-collection-banner-text">
+              <h3 className="menu-collection-title">Raw {isDog ? 'Dog' : 'Cat'} Treats</h3>
+              <p className="menu-collection-desc">
+                {isDog
+                  ? 'Enriching raw treats that support dental health, mental stimulation, and natural chewing.'
+                  : "Natural whole-prey treats designed to support your cat's instinct to hunt and chew."}
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
       {subCategories.map(sc => (
         <div key={sc.key} className="treats-subcategory" style={{ marginTop: '28px' }}>
-          <div className="menu-collection-header" data-testid={`treats-subcat-${sc.key}`} style={{ paddingBottom: '8px' }}>
-            <h4 className="menu-collection-title" style={{ fontSize: 'clamp(20px, 2.2vw, 26px)', margin: '0 0 4px' }}>{sc.title}</h4>
-            {showCategoryDescriptions && (
-              <p className="menu-collection-desc">{sc.desc}</p>
-            )}
+          <div className="menu-collection-header menu-collection-header--banner" data-testid={`treats-subcat-${sc.key}`}>
+            <div
+              className="menu-collection-banner menu-collection-banner--overlay"
+              style={{ backgroundImage: `url(${SUBCAT_BANNER[sc.key]})` }}
+            >
+              <div className="menu-collection-banner-text">
+                <h4 className="menu-collection-title">{sc.title}</h4>
+                {showCategoryDescriptions && (
+                  <p className="menu-collection-desc">{sc.desc}</p>
+                )}
+              </div>
+            </div>
           </div>
           <div className="product-grid">
             {sc.items.map(renderTreatCard)}

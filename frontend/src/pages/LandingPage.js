@@ -142,10 +142,10 @@ const ModernNavbar = () => {
         zIndex: 1000,
         background: COLORS.red
       }}>
-        {/* Top announcement bar — Aged Wood */}
+        {/* Top announcement bar — Khaki */}
         <div style={{
-          background: COLORS.agedWood,
-          color: COLORS.cream,
+          background: COLORS.khaki,
+          color: COLORS.charcoal,
           textAlign: 'center',
           padding: '8px 16px',
           fontSize: '13px',
@@ -412,10 +412,10 @@ const TrustMarquee = () => {
   
   return (
     <div style={{
-      background: COLORS.forestGreen,
+      background: COLORS.charcoal,
       color: COLORS.cream,
       overflow: 'hidden',
-      padding: '6px 0',
+      padding: '14px 0',
       marginTop: '0'
     }}>
       <div style={{
@@ -636,55 +636,33 @@ export const LandingPage = () => {
       <SlideCart />
       
       <main>
-        {/* HERO SECTION */}
+        {/* HERO SECTION — single large banner with bottom fade into dark trust marquee */}
         <section style={{
           background: COLORS.khaki,
-          padding: '32px 20px 32px',
+          padding: '32px 20px 0',
           position: 'relative',
           overflow: 'hidden'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
             <div className="hero-layout">
-              {/* Tri-Image Layout — comes first in source (mobile shows image first) */}
+              {/* Single large banner image */}
               <div
                 className="hero-tri-image hero-fade-in hero-images"
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: '2fr 1fr',
-                  gap: '0px',
-                  aspectRatio: '3 / 2',
-                  maxWidth: '720px',
+                  position: 'relative',
                   width: '100%',
+                  maxWidth: '720px',
                   margin: '0 auto',
                   borderRadius: '8px',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  aspectRatio: '3 / 2'
                 }}
               >
-                {/* Large image on left — square (matches full container height) */}
-                <div style={{ overflow: 'hidden', position: 'relative' }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=800&fit=crop"
-                    alt="Happy dog"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                  />
-                </div>
-                {/* Two square images stacked on right — no gap */}
-                <div style={{ display: 'grid', gridTemplateRows: '1fr 1fr', gap: '0px' }}>
-                  <div style={{ overflow: 'hidden' }}>
-                    <img
-                      src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop"
-                      alt="Raw food"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    />
-                  </div>
-                  <div style={{ overflow: 'hidden' }}>
-                    <img
-                      src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=400&fit=crop"
-                      alt="Dogs playing"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    />
-                  </div>
-                </div>
+                <img
+                  src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1400&h=900&fit=crop"
+                  alt="Happy dog"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
               </div>
 
               {/* Hero Text — on desktop CSS reorders this to the left of the image */}
@@ -725,6 +703,22 @@ export const LandingPage = () => {
               </div>
             </div>
           </div>
+          {/* Bottom fade — khaki to charcoal seamlessly merges into the trust marquee */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: '120px',
+              background: `linear-gradient(180deg, rgba(216,207,184,0) 0%, ${COLORS.charcoal} 100%)`,
+              pointerEvents: 'none',
+              zIndex: 2
+            }}
+          />
+          {/* Spacer so content above the fade has room */}
+          <div aria-hidden="true" style={{ height: '60px' }} />
         </section>
 
         {/* TRUST MARQUEE */}

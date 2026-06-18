@@ -98,6 +98,29 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - **P2** — Real .env keys (Cloudflare R2, Brevo, JWT)
 - **P2** — Wire `/about` email signup to Brevo
 
+
+### Feb 2026 — Iteration 17: Menu funnel + Inline product modal + Calculator overlay + Typography refresh
+- **Global fonts swapped** — Headers/subheaders/accents → **Barlow SemiBold** (600) via `--font-heading`; body text → **Lucida Grande** via `--font-body`. Fraunces removed as default heading family (still allowed inline where explicitly set).
+- **Announcement bar** — switched from Aged Wood `#3B2A1A` to Khaki `#D8CFB8` (charcoal text)
+- **Landing hero redesign** — Replaced the tri-image hero with a **single large banner image** (text still on the left). Bottom of hero now fades khaki → charcoal seamlessly into the Trust Marquee, which is now full **dark brown** (charcoal `#3B2A1A`) instead of forest green
+- **Shop Farm Fresh cards** — Removed solid khaki backgrounds; cards now use cream bg + 1px khaki border (lighter, cleaner look)
+- **Menu Funnel (NEW)** — `/menu` opens with a large 3-option funnel (Raw Food Menu / Build a Meal Plan / Feeding Calculator) shown as full-width image cards with text overlays (vertical stack on mobile). Dismissed automatically once user picks an option per session via `sessionStorage.foeguard_menu_funnel_seen`. Replaces the old small "image-bg tabs" strip
+- **Collection headers — banner overlay** — Comfort Dinner / Primal Feast / Royal Paws / Raw Treats / Meaty Treats / Heads and Feet now all render with the banner image as the background and title + description **overlaid** with a left-to-right fade gradient
+- **Treats refactored** — TreatsSection cards now mirror the meal `ProductCard` exactly (content left, image right, qty pill bottom-right of image). Treat headers (main + sub-categories) use the same banner-overlay design as meal collections
+- **Box-size selector** — Removed the harvest-gold "Save N%" pill. New layout: 4 equal-ish tiles (6lb narrower at 0.7fr; 18/24/36 wider at 1fr each) using a horizontal grid on mobile (no longer 2x2 vertical). Each tile shows the centered size (Barlow SemiBold) and a smaller "from $X.XX/lb" line below (chicken cheapest per-lb at that box size)
+- **Per-1lb pricing** — Product cards display `$X.XX / 1lb` (computed as basePrice/6) instead of the per-6lb base price
+- **Inline Product Modal** — Clicking a product card on /menu now opens an overlay modal that renders the **full ProductDetailPage** content (image left stationary, scrollable content right, FAQs, Farm-to-Bowl, Personalize, all original tabs/collapsibles). ProductDetailPage gained an `embedded` prop + `onClose` callback so the same component drives both `/product/:id` and the modal
+- **Inline Calculator** — Clicking the Feeding Calculator option (from funnel or menu) now opens an overlay modal with the rewritten `FeedingCalculator`:
+  - "Pet 1" → "Pet" (only "Pet N" when multiple pets exist)
+  - "Life Stage" → "Pet type"
+  - Vertical/straight stacked input cards
+  - Single **Save** button (no more "Continue to Box Builder")
+  - localStorage when authenticated (persistent across sessions) / sessionStorage when logged out (per-session)
+  - Multi-pet support (array)
+- **/menu desktop width** — bumped from 980px → **1100px** for better breathing room while still narrower than 1200
+- **Gold discount badge text** — `#3B2A1A` → `#D8CFB8` (khaki) for readability on the harvest gold background — though now hidden by the new box-size layout
+- **Removed "Full Menu" tab** (was added briefly then removed per user feedback) — category tabs revert to Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats
+
 ## Changelog
 - **2026-02-16 (Eve) — Iteration 3 UI polish (image-card top nav, image-right cards, standardized back)**
   - **Removed hero image** from /menu entirely

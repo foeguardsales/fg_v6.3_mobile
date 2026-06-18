@@ -1,6 +1,7 @@
 /* FoeGuard - Modern Farmhouse Design System */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap');
 
 /* Protein circle grid: 4 cols on desktop, 2 cols on mobile */
 @media (min-width: 768px) {
@@ -156,28 +157,29 @@ body {
   font-style: normal;
 }
 
-/* Heritage typography: Fraunces 600 (serif) for headings, Barlow for body/buttons/labels */
+/* Heritage typography: Barlow SemiBold for headings, Lucida Grande for body text */
 :root {
-  --font-body: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-heading: "'Fraunces'", Georgia, 'Times New Roman', serif;
+  --font-body: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
+  --font-heading: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-accent: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* Default body = Barlow 400 */
+/* Default body = Lucida Grande 400 */
 body {
   font-family: var(--font-body);
   font-weight: 400;
   background: #F5F3EF;
   color: #3B2A1A;
 }
-/* Headings = Fraunces 600 */
+/* Headings = Barlow SemiBold (600) */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Fraunces', Georgia, 'Times New Roman', serif !important;
-  font-weight: 600;
+  font-family: var(--font-heading) !important;
+  font-weight: 600 !important;
   color: #3B2A1A;
 }
-/* Body / paragraph text = Barlow with Aged Wood */
+/* Body / paragraph text = Lucida Grande */
 p, li, blockquote, dd, dt, figcaption, small, .subtext {
-  font-family: 'Barlow', sans-serif !important;
+  font-family: var(--font-body) !important;
   color: #3B2A1A;
 }
 
@@ -6099,29 +6101,76 @@ h2, h3, h4 {
 
 
 
-/* ===== Box builder — narrow desktop (Task 2.4) ===== */
+/* ===== Box builder — wider desktop (Task 2.4 revised) ===== */
 .box-builder.box-builder--narrow {
-  max-width: 980px;
+  max-width: 1100px;
 }
 @media (min-width: 1100px) {
   .box-builder.box-builder--narrow {
-    max-width: 920px;
-    padding-left: 48px;
-    padding-right: 48px;
+    max-width: 1100px;
+    padding-left: 32px;
+    padding-right: 32px;
   }
 }
 
-/* ===== Collection banner header image — thin rectangle ===== */
+/* ===== Collection banner header — image with left-fade text overlay ===== */
+.menu-collection-header--banner {
+  padding: 0;
+  margin-bottom: 14px;
+}
 .menu-collection-banner {
   width: 100%;
-  height: 90px;
+  height: 110px;
   background-size: cover;
   background-position: center;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  border-radius: 10px;
+  margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
 }
 @media (min-width: 760px) {
-  .menu-collection-banner { height: 120px; }
+  .menu-collection-banner { height: 150px; }
+}
+.menu-collection-banner--overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(20,14,6,0.78) 0%, rgba(20,14,6,0.55) 38%, rgba(20,14,6,0.18) 70%, rgba(20,14,6,0) 100%);
+  pointer-events: none;
+}
+.menu-collection-banner-text {
+  position: relative;
+  z-index: 1;
+  padding: 18px 18px 14px;
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+}
+.menu-collection-banner-text .menu-collection-title {
+  color: #F5F3EF;
+  margin: 0 0 4px;
+  font-family: 'Fraunces', Georgia, serif !important;
+  font-size: clamp(22px, 2.4vw, 28px) !important;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+.menu-collection-banner-text .menu-collection-desc {
+  color: #F5F3EF;
+  opacity: 0.94;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media (min-width: 760px) {
+  .menu-collection-banner-text .menu-collection-desc { font-size: 14px; }
 }
 
 /* ===== Description clamp — strictly 2 lines (Task 2.5) ===== */
@@ -6132,7 +6181,7 @@ h2, h3, h4 {
   overflow: hidden;
 }
 
-/* ===== Box size selector — full-mobile-width, clean border, no shade (Task 2.6) ===== */
+/* ===== Box size selector — centered size + from-price subtext, no save badge ===== */
 .bb-box-size-wrap--stacked {
   display: flex;
   flex-direction: column;
@@ -6142,13 +6191,14 @@ h2, h3, h4 {
 }
 .box-size-slider--clean {
   display: grid !important;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  grid-template-columns: 0.7fr 1fr 1fr 1fr;
+  gap: 8px;
   width: 100%;
 }
 @media (min-width: 640px) {
   .box-size-slider--clean {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 0.7fr 1fr 1fr 1fr;
+    gap: 12px;
   }
 }
 .box-size-slider--clean.box-size-slider--mustard .box-size-chip {
@@ -6156,15 +6206,52 @@ h2, h3, h4 {
   background: transparent;
   border: 1.5px solid #C9BFA6;
   color: #3B2A1A;
-  padding: 14px 12px;
-  font-size: 15px;
-  font-weight: 700;
+  padding: 12px 8px;
   border-radius: 10px;
   justify-content: center;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  min-height: 64px;
+}
+@media (min-width: 640px) {
+  .box-size-slider--clean.box-size-slider--mustard .box-size-chip {
+    padding: 14px 10px;
+    min-height: 76px;
+  }
 }
 .box-size-slider--clean.box-size-slider--mustard .box-size-chip.is-active {
   background: transparent;
   border-color: #3B2A1A;
+  color: #3B2A1A;
+}
+.box-size-chip-size {
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #3B2A1A;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+@media (min-width: 640px) {
+  .box-size-chip-size { font-size: 18px; }
+}
+.box-size-chip-from {
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #6A4F35;
+  opacity: 0.95;
+  line-height: 1.1;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+@media (min-width: 640px) {
+  .box-size-chip-from { font-size: 12px; }
+}
+.box-size-slider--clean.box-size-slider--mustard .box-size-chip.is-active .box-size-chip-from {
   color: #3B2A1A;
 }
 
@@ -6354,3 +6441,152 @@ h2, h3, h4 {
   margin-top: 12px;
   display: block;
 }
+
+/* ===== Menu Funnel — first thing on /menu (3 big choice cards) ===== */
+.menu-funnel {
+  width: 100%;
+  margin: 0 0 32px;
+  padding: 12px 0 8px;
+}
+.menu-funnel-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 600;
+  color: #3B2A1A;
+  margin: 0 0 10px;
+  text-align: center;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+.menu-funnel-sub {
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
+  color: #6A4F35;
+  margin: 0 auto 24px;
+  text-align: center;
+  max-width: 640px;
+  line-height: 1.55;
+}
+.menu-funnel-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 760px) {
+  .menu-funnel-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+}
+.menu-funnel-card {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  border-radius: 14px;
+  background-size: cover;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  text-align: left;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+@media (min-width: 760px) {
+  .menu-funnel-card { min-height: 280px; }
+}
+.menu-funnel-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.16);
+}
+.menu-funnel-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20,14,6,0) 35%, rgba(20,14,6,0.78) 100%);
+  pointer-events: none;
+}
+.menu-funnel-card-text {
+  position: relative;
+  z-index: 1;
+  padding: 18px 20px 20px;
+  color: #F5F3EF;
+  width: 100%;
+}
+.menu-funnel-card-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(22px, 2.6vw, 28px);
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: #F5F3EF;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+.menu-funnel-card-sub {
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  margin: 0;
+  color: #F5F3EF;
+  opacity: 0.94;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===== Product modal: keep image stationary, content scrolls (reuse ProductDetailPage) ===== */
+.bb-overlay-panel--product {
+  max-width: 1100px;
+  padding: 0;
+  background: #F5F3EF;
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.bb-overlay-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 36px 20px 24px;
+  -webkit-overflow-scrolling: touch;
+}
+@media (min-width: 760px) {
+  .bb-overlay-scroll { padding: 40px 28px 28px; }
+}
+/* Inside the modal, neutralize the .pd-uber-back fixed positioning */
+.bb-overlay-panel--product .pd-uber-back { display: none; }
+
+
+/* ===== Global font enforcement (overrides inline styles where needed) =====
+   Headers / subheaders / accents → Barlow SemiBold
+   Body text → Lucida Grande
+*/
+.menu-collection-title,
+.menu-funnel-title,
+.menu-funnel-card-title,
+.pd-shopify-title,
+.product-card-title,
+.box-size-chip-size,
+.bb-box-size-label,
+button.btn-primary,
+button.btn-secondary {
+  font-family: var(--font-heading) !important;
+  font-weight: 600 !important;
+}
+.menu-collection-desc,
+.menu-funnel-sub,
+.menu-funnel-card-sub,
+.product-card-desc,
+.product-card-meta,
+.product-card-price,
+.box-size-chip-from,
+input, select, textarea {
+  font-family: var(--font-body) !important;
+}
+
