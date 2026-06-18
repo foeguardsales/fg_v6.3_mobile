@@ -19,7 +19,7 @@ const DISCOUNT_RATES = {
 const SUBSCRIPTION_DISCOUNT = 0.05; // 5% off
 
 // Cart Drawer Component (slide-in from right)
-export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein, subscriptionPlan, onSubscriptionChange }) => {
+export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein, subscriptionPlan, onSubscriptionChange, basket = [], onRemoveBox }) => {
   const [promoCode, setPromoCode] = useState('');
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [specialInstructions, setSpecialInstructions] = useState('');
@@ -55,22 +55,27 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
       setPromoDiscount(0);
     }
   };
-  const calculateSubtotal = () => {
-    let total = 0;
-    const discount = DISCOUNT_RATES[boxSize] || 0;
-    
-    Object.entries(selectedProteins).forEach(([productId, data]) => {
+  // Price one box (its proteins at the box's own discount)
+  const boxSubtotal = (box) => {
+    let t = 0;
+    const d = box.discount || 0;
+    Object.entries(box.proteins || {}).forEach(([productId, data]) => {
       if (data.qty > 0) {
         const product = products.find(p => p.product_id === productId);
         if (product) {
           const basePrice = getBasePrice ? getBasePrice(product) : product.pricing.find(p => p.size_lb === 6)?.price || 0;
-          const pricePerSixLb = basePrice * (1 - discount);
-          const quantity = data.qty / 6;
-          total += pricePerSixLb * quantity;
+          t += basePrice * (1 - d) * (data.qty / 6);
         }
       }
     });
-    selectedTreats.forEach(treat => { total += treat.price; });
+    return t;
+  };
+  const boxLbs = (box) => Object.values(box.proteins || {}).reduce((s, d) => s + (d.qty || 0), 0);
+
+  const calculateSubtotal = () => {
+    let total = 0;
+    basket.forEach(box => { total += boxSubtotal(box); });
+    selectedTreats.forEach(treat => { total += treat.price * (treat.quantity || 1); });
     return total;
   };
 
@@ -79,12 +84,9 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
   const discountedSubtotal = subtotal - subscriptionDiscount;
   const tax = discountedSubtotal * 0.13;
   const total = discountedSubtotal + tax;
-  const getTotalProteins = () => Object.values(selectedProteins).reduce((sum, data) => sum + data.qty, 0);
-  const isBoxComplete = getTotalProteins() === boxSize;
-  const hasProteins = getTotalProteins() > 0;
+  const basketLbs = basket.reduce((s, b) => s + boxLbs(b), 0);
   const hasTreats = selectedTreats.length > 0;
-  // Allow checkout if: protein box is complete, OR cart has treats-only (no proteins started but treats present)
-  const canCheckout = isBoxComplete || (!hasProteins && hasTreats);
+  const canCheckout = basket.length > 0 || hasTreats;
   const discount = DISCOUNT_RATES[boxSize] || 0;
 
   return (
@@ -148,10 +150,9 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
           )}
 
           <div className="cart-box-info">
-            <span className="cart-box-size">{boxSize}lb Box</span>
-            <span className="cart-box-progress">({getTotalProteins()}lb selected)</span>
-            {discount > 0 && (
-              <span className="cart-discount-badge">Save {discount * 100}%</span>
+            <span className="cart-box-size">{basket.length} {basket.length === 1 ? 'Box' : 'Boxes'}</span>
+            {basketLbs > 0 && (
+              <span className="cart-box-progress">({basketLbs}lb total)</span>
             )}
           </div>
 
@@ -209,102 +210,46 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             </div>
           )}
           
-          {Object.entries(selectedProteins).map(([productId, data]) => {
-            if (data.qty === 0) return null;
-            const product = products.find(p => p.product_id === productId);
-            if (!product) return null;
-            const basePrice = getBasePrice ? getBasePrice(product) : product.pricing.find(p => p.size_lb === 6)?.price || 0;
-            const pricePerSixLb = basePrice * (1 - discount);
-            const quantity = data.qty / 6;
-            const itemTotal = pricePerSixLb * quantity;
-            
-            return (
-              <div key={productId} className="cart-item" data-testid={`cart-item-${productId}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0' }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>{data.name}</div>
-                  <div style={{ fontSize: '14px', color: '#666' }}>${itemTotal.toFixed(2)}</div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  {onAdjustProtein && (
-                    <>
-                      <button
-                        onClick={() => {
-                          const newQty = Math.max(0, data.qty - 6);
-                          if (newQty === 0) {
-                            onRemoveProtein(productId);
-                          } else {
-                            onAdjustProtein(productId, product.name, newQty);
-                          }
-                        }}
-                        style={{
-                          width: '28px',
-                          height: '28px',
-                          borderRadius: '50%',
-                          border: '1px solid #88302F',
-                          background: '#fff',
-                          color: '#88302F',
-                          fontSize: '16px',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        −
-                      </button>
-                      <span style={{ minWidth: '50px', textAlign: 'center', fontSize: '14px', fontWeight: '600' }}>
-                        {data.qty} lb
-                      </span>
-                      <button
-                        onClick={() => {
-                          const currentTotal = Object.values(selectedProteins).reduce((sum, d) => sum + d.qty, 0);
-                          const spaceLeft = boxSize - currentTotal;
-                          if (spaceLeft >= 6) {
-                            onAdjustProtein(productId, product.name, data.qty + 6);
-                          }
-                        }}
-                        disabled={Object.values(selectedProteins).reduce((sum, d) => sum + d.qty, 0) + 6 > boxSize}
-                        style={{
-                          width: '28px',
-                          height: '28px',
-                          borderRadius: '50%',
-                          border: '1px solid #88302F',
-                          background: '#fff',
-                          color: '#88302F',
-                          fontSize: '16px',
-                          cursor: Object.values(selectedProteins).reduce((sum, d) => sum + d.qty, 0) + 6 > boxSize ? 'not-allowed' : 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          opacity: Object.values(selectedProteins).reduce((sum, d) => sum + d.qty, 0) + 6 > boxSize ? 0.4 : 1
-                        }}
-                      >
-                        +
-                      </button>
-                    </>
-                  )}
-                  {onRemoveProtein && (
-                    <button
-                      onClick={() => onRemoveProtein(productId)}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: '#A41E34',
-                        cursor: 'pointer',
-                        fontSize: '20px',
-                        padding: '4px 8px',
-                        lineHeight: 1,
-                        marginLeft: '4px'
-                      }}
-                      title="Remove"
-                    >
-                      ×
-                    </button>
+          {basket.length === 0 && selectedTreats.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '28px 0', color: '#8A7156', fontSize: '14px' }}>
+              Your basket is empty. Build a box on the menu and tap &quot;Add to Basket&quot;.
+            </div>
+          )}
+
+          {basket.map((box, bi) => (
+            <div key={box.id} data-testid={`cart-box-${bi}`} style={{ borderBottom: '1px solid #E8DDD0', paddingBottom: '12px', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <div style={{ fontWeight: 700, color: '#3B2A1A', fontFamily: "'Barlow Semi Condensed', sans-serif", display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>Box {bi + 1} · {box.boxSize}lb</span>
+                  {box.discount > 0 && (
+                    <span className="cart-discount-badge">Save {Math.round(box.discount * 100)}%</span>
                   )}
                 </div>
+                {onRemoveBox && (
+                  <button
+                    onClick={() => onRemoveBox(box.id)}
+                    title="Remove box"
+                    data-testid={`cart-remove-box-${bi}`}
+                    style={{ background: 'none', border: 'none', color: '#A41E34', cursor: 'pointer', fontSize: '20px', lineHeight: 1, padding: '4px 8px' }}
+                  >
+                    ×
+                  </button>
+                )}
               </div>
-            );
-          })}
+              {Object.entries(box.proteins || {}).map(([pid, data]) => {
+                if (!data.qty) return null;
+                const product = products.find(p => p.product_id === pid);
+                const basePrice = product ? (getBasePrice ? getBasePrice(product) : product.pricing.find(p => p.size_lb === 6)?.price || 0) : 0;
+                const lineTotal = basePrice * (1 - (box.discount || 0)) * (data.qty / 6);
+                return (
+                  <div key={pid} className="cart-item" style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', fontSize: '14px' }}>
+                    <span style={{ color: '#3B2A1A' }}>{data.name} · {data.qty}lb</span>
+                    <span style={{ color: '#6A4F35' }}>${lineTotal.toFixed(2)}</span>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
           
           {selectedTreats.map(treat => (
             <div key={treat.treat_id} className="cart-item" data-testid={`cart-treat-${treat.treat_id}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -491,7 +436,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 textTransform: 'none'
               }}
             >
-              {canCheckout ? 'Go to checkout' : `Add ${boxSize - getTotalProteins()}lb more`}
+              {canCheckout ? 'Go to checkout' : 'Add a box to your basket'}
             </button>
           </div>
         </div>
@@ -816,7 +761,7 @@ const stripeElementStyle = {
   },
 };
 
-export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, products, onSuccess, subscriptionPlan: initialSubscriptionPlan }) => {
+export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, products, onSuccess, subscriptionPlan: initialSubscriptionPlan, basket = [] }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -952,20 +897,22 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
 
   const calculateSubtotal = () => {
     let total = 0;
-    Object.entries(selectedProteins).forEach(([productId, data]) => {
-      if (data.qty > 0) {
-        const product = products.find(p => p.product_id === productId);
-        if (product) {
-          const basePrice = product.pricing.find(p => p.size_lb === 6)?.price || 0;
-          const pricePerSixLb = basePrice * (1 - discount);
-          const quantity = data.qty / 6;
-          total += pricePerSixLb * quantity;
+    basket.forEach(box => {
+      const d = box.discount || 0;
+      Object.entries(box.proteins || {}).forEach(([productId, data]) => {
+        if (data.qty > 0) {
+          const product = products.find(p => p.product_id === productId);
+          if (product) {
+            const basePrice = product.pricing.find(p => p.size_lb === 6)?.price || 0;
+            total += basePrice * (1 - d) * (data.qty / 6);
+          }
         }
-      }
+      });
     });
-    selectedTreats.forEach(treat => { total += treat.price; });
+    selectedTreats.forEach(treat => { total += treat.price * (treat.quantity || 1); });
     return total;
   };
+  const basketLbs = basket.reduce((s, b) => s + Object.values(b.proteins || {}).reduce((a, d) => a + (d.qty || 0), 0), 0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -996,21 +943,22 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
 
       const fullAddress = `${streetAddress}${unit ? ', ' + unit : ''}, ${city}, ${province} ${postalCode}, ${country}`;
 
-      const proteinsArray = Object.entries(selectedProteins)
-        .filter(([_, data]) => data.qty > 0)
-        .map(([productId, data]) => {
-          const product = products.find(p => p.product_id === productId);
-          const basePrice = product.pricing.find(p => p.size_lb === 6)?.price || 0;
-          const pricePerSixLb = basePrice * (1 - discount);
-          const quantity = data.qty / 6;
-          return {
-            product_id: productId,
-            product_name: data.name,
-            protein_type: product.protein_type,
-            quantity_lb: data.qty,
-            price: pricePerSixLb * quantity
-          };
-        });
+      const proteinsArray = basket.flatMap(box =>
+        Object.entries(box.proteins || {})
+          .filter(([_, data]) => data.qty > 0)
+          .map(([productId, data]) => {
+            const product = products.find(p => p.product_id === productId);
+            const basePrice = product?.pricing.find(p => p.size_lb === 6)?.price || 0;
+            const d = box.discount || 0;
+            return {
+              product_id: productId,
+              product_name: data.name,
+              protein_type: product?.protein_type,
+              quantity_lb: data.qty,
+              price: basePrice * (1 - d) * (data.qty / 6)
+            };
+          })
+      );
 
       const checkoutData = {
         customer_email: customerEmail,
@@ -1026,13 +974,13 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
           country
         },
         delivery_date: deliveryDate,
-        box_size_lb: boxSize,
+        box_size_lb: basketLbs || boxSize,
         proteins: proteinsArray,
-        treats: selectedTreats.map(t => ({ treat_id: t.treat_id, name: t.name, quantity: 1, price: t.price })),
+        treats: selectedTreats.map(t => ({ treat_id: t.treat_id, name: t.name, quantity: t.quantity || 1, price: t.price })),
         subtotal, 
         tax, 
         total,
-        box_discount: discount * 100,
+        box_discount: 0,
         is_subscription: isSubscription,
         subscription_frequency: isSubscription ? subscriptionFrequency : null,
         order_notes: orderNotes
@@ -1103,10 +1051,27 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
       {/* Order Summary */}
       <div className="checkout-summary">
         <h3>Order Summary</h3>
-        <div className="checkout-summary-row">
-          <span>{boxSize}lb Box {discount > 0 && `(Save ${discount * 100}%)`}</span>
-          <span>${subtotal.toFixed(2)}</span>
-        </div>
+        {basket.map((box, bi) => {
+          let boxTotal = 0;
+          const d = box.discount || 0;
+          Object.entries(box.proteins || {}).forEach(([pid, data]) => {
+            const product = products.find(p => p.product_id === pid);
+            const bp = product?.pricing.find(p => p.size_lb === 6)?.price || 0;
+            boxTotal += bp * (1 - d) * (data.qty / 6);
+          });
+          return (
+            <div key={box.id} className="checkout-summary-row">
+              <span>Box {bi + 1} · {box.boxSize}lb {d > 0 && `(Save ${Math.round(d * 100)}%)`}</span>
+              <span>${boxTotal.toFixed(2)}</span>
+            </div>
+          );
+        })}
+        {selectedTreats.length > 0 && (
+          <div className="checkout-summary-row">
+            <span>Treats ({selectedTreats.reduce((s, t) => s + (t.quantity || 1), 0)})</span>
+            <span>${selectedTreats.reduce((s, t) => s + t.price * (t.quantity || 1), 0).toFixed(2)}</span>
+          </div>
+        )}
         <div className="checkout-summary-row">
           <span>Tax (13%)</span>
           <span>${tax.toFixed(2)}</span>

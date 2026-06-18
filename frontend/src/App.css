@@ -2388,12 +2388,11 @@ h2, h3, h4 {
 .cart-drawer-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(43, 43, 43, 0.5);
+  background: rgba(43, 43, 43, 0.45);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   z-index: 1000;
-  backdrop-filter: blur(4px);
 }
 
 .cart-drawer-overlay.open {
@@ -5440,16 +5439,16 @@ h2, h3, h4 {
 }
 .pd-uber-add {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  margin: 0 auto;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  width: auto;
+  margin: 0;
   background: #3B2A1A;
   color: #F5F3EF;
   border: none;
-  border-radius: 0;
-  padding: 17px 24px;
+  border-radius: 12px;
+  padding: 16px 24px;
   font-family: 'Barlow Semi Condensed', sans-serif;
   font-size: 16px;
   font-weight: 700;
@@ -5457,7 +5456,7 @@ h2, h3, h4 {
   text-transform: uppercase;
   cursor: pointer;
   z-index: 998;
-  box-shadow: 0 -2px 16px rgba(0,0,0,0.16);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.22);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5466,12 +5465,12 @@ h2, h3, h4 {
 }
 @media (min-width: 760px) {
   .pd-uber-add {
-    max-width: 1232px;
     left: 50%;
     right: auto;
     transform: translateX(-50%);
     bottom: 16px;
-    border-radius: 12px;
+    width: 100%;
+    max-width: 1232px;
     font-size: 17px;
     padding: 18px 32px;
   }
@@ -5654,23 +5653,23 @@ h2, h3, h4 {
 /* ===== Floating bottom checkout — rounded pill, qty-pill style ===== */
 .bb-floating-checkout {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  margin: 0 auto;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  width: auto;
+  margin: 0;
   background: #3B2A1A;
   color: #F5F3EF;
   border: none;
-  border-radius: 0;
-  padding: 17px 24px;
+  border-radius: 12px;
+  padding: 16px 24px;
   font-family: 'Barlow Semi Condensed', sans-serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.04em;
   cursor: pointer;
   z-index: 998;
-  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5680,16 +5679,16 @@ h2, h3, h4 {
 }
 .bb-floating-checkout:hover {
   background: #2B1E12;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
 }
 @media (min-width: 760px) {
   .bb-floating-checkout {
-    max-width: 1232px;
     left: 50%;
     right: auto;
     transform: translateX(-50%);
     bottom: 16px;
-    border-radius: 12px;
+    width: 100%;
+    max-width: 1232px;
     padding: 18px 32px;
     font-size: 17px;
   }
@@ -5826,53 +5825,42 @@ h2, h3, h4 {
 
 /* ===== Shopify-style Product Detail (image left, content right, seamless) ===== */
 .pd-shopify {
-  display: block;
-  padding: 18px 16px 120px;
-  max-width: 760px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+  padding: 20px 16px 120px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 @media (min-width: 760px) {
   .pd-shopify {
-    padding: 28px 24px 130px;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.25fr);
+    gap: 44px;
+    padding: 28px 32px 130px;
+    align-items: start;
   }
 }
-/* Header row — image sits inline (beside) the title + price, at the TOP */
-.pd-head {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 0 0 18px;
-}
-.pd-head-media {
-  flex-shrink: 0;
-  width: 104px;
-  height: 104px;
-  border-radius: 10px;
-  overflow: hidden;
+.pd-shopify-media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
   background: #E8DFC8;
+  border-radius: 8px;
+  overflow: hidden;
+  align-self: start;
 }
 @media (min-width: 760px) {
-  .pd-head-media { width: 150px; height: 150px; }
+  .pd-shopify-media {
+    max-height: 520px;
+    position: static;
+    top: auto;
+  }
 }
-.pd-head-media img {
+.pd-shopify-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-.pd-head-info {
-  min-width: 0;
-  flex: 1;
-}
-.pd-head-info .pd-shopify-title {
-  font-size: clamp(20px, 5.4vw, 30px);
-  margin: 0 0 6px;
-}
-.pd-head-info .pd-shopify-price-row {
-  margin: 0;
-}
-/* legacy media column — no longer rendered */
-.pd-shopify-media { display: none; }
 .pd-shopify-content {
   min-width: 0;
 }
@@ -6482,23 +6470,22 @@ h2, h3, h4 {
 .pd-uber.pd-uber--modal { padding: 0; }
 .pd-uber-add--inline {
   position: sticky !important;
-  bottom: 0;
-  left: 0 !important;
-  right: 0 !important;
+  bottom: 12px;
+  left: auto !important;
+  right: auto !important;
   transform: none !important;
   display: flex !important;
-  width: calc(100% + 40px) !important;
+  width: 100% !important;
   max-width: none !important;
-  margin: 18px -20px 0 !important;
-  border-radius: 0 !important;
+  margin: 18px 0 12px !important;
+  border-radius: 12px !important;
   z-index: 6;
 }
 @media (min-width: 760px) {
   .pd-uber-add--inline {
-    width: calc(100% + 56px) !important;
-    margin: 18px -28px 0 !important;
-    bottom: 0;
-    border-radius: 0 !important;
+    bottom: 14px;
+    margin: 18px 0 14px !important;
+    border-radius: 12px !important;
   }
 }
 

@@ -71,6 +71,43 @@ export const BoxBuilder = () => {
   // Inline treat modal state — replaces /treat/:id navigation
   const [activeTreatId, setActiveTreatId] = useState(null);
 
+  // Basket — committed boxes. Each box keeps its own size + discount.
+  const [basket, setBasket] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem('foeguard_basket') || '[]'); }
+    catch (e) { return []; }
+  });
+
+  const persistBasket = (next) => {
+    setBasket(next);
+    sessionStorage.setItem('foeguard_basket', JSON.stringify(next));
+  };
+
+  const addBoxToBasket = () => {
+    const lbs = getTotalSelectedLbs();
+    if (lbs > 0) {
+      const box = {
+        id: `box_${Date.now()}`,
+        boxSize,
+        discount: (petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES)[boxSize] || 0,
+        petType,
+        proteins: { ...selectedProteins },
+        subscriptionPlan
+      };
+      persistBasket([...basket, box]);
+      // Reset the menu for the next box
+      setSelectedProteins({});
+      sessionStorage.setItem('selectedProteins', JSON.stringify({}));
+      setBoxSize(6);
+      sessionStorage.setItem('boxSize', '6');
+      setSubscriptionPlan(null);
+    }
+    setCartOpen(true);
+  };
+
+  const removeBoxFromBasket = (id) => {
+    persistBasket(basket.filter(b => b.id !== id));
+  };
+
   // Inline calculator modal state — replaces /calculator navigation
   const [calcOpen, setCalcOpen] = useState(false);
   
@@ -380,8 +417,12 @@ export const BoxBuilder = () => {
             selectedTreats={selectedTreats}
             products={products}
             subscriptionPlan={subscriptionPlan}
+            basket={basket}
             onSuccess={() => {
               setOrderComplete(true);
+              persistBasket([]);
+              setSelectedTreats([]);
+              sessionStorage.setItem('selectedTreats', JSON.stringify([]));
               setSearchParams({ step: 'success' });
             }}
           />
@@ -629,6 +670,8 @@ export const BoxBuilder = () => {
               selectedProteins={selectedProteins}
               selectedTreats={selectedTreats}
               products={products}
+              basket={basket}
+              onRemoveBox={removeBoxFromBasket}
               onProceed={() => { 
                 setCartOpen(false); 
                 setShowCheckout(true);
@@ -669,11 +712,18 @@ export const BoxBuilder = () => {
 
       {/* Floating bottom checkout — centered, large, sticky on scroll */}
       <button
-        onClick={() => setCartOpen(true)}
+        onClick={() => {
+          if (getTotalSelectedLbs() > 0 && isBoxComplete) addBoxToBasket();
+          else setCartOpen(true);
+        }}
         data-testid="cart-button"
         className="bb-floating-checkout"
       >
-        Checkout →
+        {getTotalSelectedLbs() > 0 && isBoxComplete
+          ? 'Add to Basket'
+          : getTotalSelectedLbs() > 0
+            ? `Add ${boxSize - getTotalSelectedLbs()}lb more`
+            : 'View Basket'}
       </button>
 
       {/* Inline Product Modal — replaces /product/:id navigation */}

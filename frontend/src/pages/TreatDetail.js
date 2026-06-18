@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
@@ -267,28 +267,25 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
 
       <div className="pd-uber">
         <div className="pd-shopify">
-          {/* Content (single column) */}
+          {/* Image left */}
+          <div className="pd-shopify-media">
+            {currentImage ? (
+              <img src={currentImage} alt={treat.name} />
+            ) : (
+              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#6A4F35', fontSize: '13px' }}>
+                Image coming soon
+              </div>
+            )}
+          </div>
+
+          {/* Content right */}
           <div className="pd-shopify-content">
-            {/* Header — image inline with title + price */}
-            <div className="pd-head">
-              <div className="pd-head-media">
-                {currentImage ? (
-                  <img src={currentImage} alt={treat.name} />
-                ) : (
-                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#6A4F35', fontSize: '12px' }}>
-                    Image soon
-                  </div>
-                )}
-              </div>
-              <div className="pd-head-info">
-                <h1 className="pd-shopify-title">{treat.name}</h1>
-                <div className="pd-shopify-price-row" data-testid="treat-price">
-                  <span className="pd-shopify-price">${(treat.price * quantity).toFixed(2)}</span>
-                  {quantity > 1 && (
-                    <span className="pd-shopify-price-unit">(${treat.price.toFixed(2)} ea)</span>
-                  )}
-                </div>
-              </div>
+            <h1 className="pd-shopify-title">{treat.name}</h1>
+            <div className="pd-shopify-price-row" data-testid="treat-price">
+              <span className="pd-shopify-price">${(treat.price * quantity).toFixed(2)}</span>
+              {quantity > 1 && (
+                <span className="pd-shopify-price-unit">(${treat.price.toFixed(2)} ea)</span>
+              )}
             </div>
 
             {/* Description */}
@@ -411,11 +408,28 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
 
 // ===== Inline Treat Detail Modal — same overlay as the meal product modal =====
 export const TreatDetailModal = ({ treatId, onClose }) => {
+  const [dragY, setDragY] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const startY = useRef(null);
+
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = prev; };
   }, []);
+
+  const onTouchStart = (e) => { startY.current = e.touches[0].clientY; setDragging(true); };
+  const onTouchMove = (e) => {
+    if (startY.current == null) return;
+    const dy = e.touches[0].clientY - startY.current;
+    if (dy > 0) setDragY(dy);
+  };
+  const onTouchEnd = () => {
+    setDragging(false);
+    if (dragY > 90) { onClose(); return; }
+    setDragY(0);
+    startY.current = null;
+  };
 
   return (
     <div
@@ -423,7 +437,21 @@ export const TreatDetailModal = ({ treatId, onClose }) => {
       data-testid="treat-modal-overlay"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bb-overlay-panel bb-overlay-panel--product" role="dialog" aria-modal="true">
+      <div
+        className="bb-overlay-panel bb-overlay-panel--product"
+        role="dialog"
+        aria-modal="true"
+        style={{ transform: dragY ? `translateY(${dragY}px)` : undefined, transition: dragging ? 'none' : 'transform 0.25s ease' }}
+      >
+        <div
+          className="bb-sheet-grab"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          aria-hidden="true"
+        >
+          <span />
+        </div>
         <button
           className="bb-overlay-close"
           onClick={onClose}

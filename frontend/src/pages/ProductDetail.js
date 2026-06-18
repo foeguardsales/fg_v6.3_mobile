@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
@@ -546,23 +546,26 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
 
       <div className="pd-uber">
         <div className="pd-shopify">
-          {/* Content (single column) */}
+          {/* Image left */}
+          <div className="pd-shopify-media">
+            <img src={productImage} alt={product.name} />
+          </div>
+
+          {/* Content right */}
           <div className="pd-shopify-content">
-            {/* Header — image inline with title + price */}
-            <div className="pd-head">
-              <div className="pd-head-media">
-                <img src={productImage} alt={product.name} />
-              </div>
-              <div className="pd-head-info">
-                <h1 className="pd-shopify-title">{product.name}</h1>
-                <div className="pd-shopify-price-row" data-testid="product-price">
-                  <span className="pd-shopify-price">${getDiscountedPrice(product).toFixed(2)}</span>
-                  <span className="pd-shopify-price-unit">/ 6 lb</span>
-                  {sizeDiscount > 0 && (
-                    <span className="pd-shopify-price-original">${getBasePrice(product).toFixed(2)}</span>
-                  )}
-                </div>
-              </div>
+            {/* Title */}
+            <h1 className="pd-shopify-title">{product.name}</h1>
+
+            {/* Price — per 1 lb (full box total shown below in Adds) */}
+            <div className="pd-shopify-price-row" data-testid="product-price">
+              <span className="pd-shopify-price">${(getDiscountedPrice(product) / 6).toFixed(2)}</span>
+              <span className="pd-shopify-price-unit">/ 1 lb</span>
+              {sizeDiscount > 0 && (
+                <>
+                  <span className="pd-shopify-price-original">${(getBasePrice(product) / 6).toFixed(2)}</span>
+                  <span className="pd-shopify-boxsize-discount">Save {sizeDiscount}%</span>
+                </>
+              )}
             </div>
 
             {/* Description */}
@@ -617,9 +620,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             <div className="pd-shopify-boxsize" data-testid="box-size-info">
               <span className="pd-shopify-boxsize-label">Box Selected:</span>
               <span className="pd-shopify-boxsize-value">{boxSize}lb</span>
-              {sizeDiscount > 0 && (
-                <span className="pd-shopify-boxsize-discount">Save {sizeDiscount}%</span>
-              )}
               <button
                 onClick={() => navigate('/menu')}
                 data-testid="change-box-size"
@@ -730,11 +730,28 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
 
 // ===== Inline Product Detail Modal — renders the full ProductDetailPage inside an overlay =====
 export const ProductDetailModal = ({ productId, onClose }) => {
+  const [dragY, setDragY] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const startY = useRef(null);
+
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = prev; };
   }, []);
+
+  const onTouchStart = (e) => { startY.current = e.touches[0].clientY; setDragging(true); };
+  const onTouchMove = (e) => {
+    if (startY.current == null) return;
+    const dy = e.touches[0].clientY - startY.current;
+    if (dy > 0) setDragY(dy);
+  };
+  const onTouchEnd = () => {
+    setDragging(false);
+    if (dragY > 90) { onClose(); return; }
+    setDragY(0);
+    startY.current = null;
+  };
 
   return (
     <div
@@ -742,7 +759,21 @@ export const ProductDetailModal = ({ productId, onClose }) => {
       data-testid="product-modal-overlay"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bb-overlay-panel bb-overlay-panel--product" role="dialog" aria-modal="true">
+      <div
+        className="bb-overlay-panel bb-overlay-panel--product"
+        role="dialog"
+        aria-modal="true"
+        style={{ transform: dragY ? `translateY(${dragY}px)` : undefined, transition: dragging ? 'none' : 'transform 0.25s ease' }}
+      >
+        <div
+          className="bb-sheet-grab"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          aria-hidden="true"
+        >
+          <span />
+        </div>
         <button
           className="bb-overlay-close"
           onClick={onClose}
