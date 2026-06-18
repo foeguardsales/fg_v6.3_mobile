@@ -636,74 +636,27 @@ export const LandingPage = () => {
       <SlideCart />
       
       <main>
-        {/* HERO SECTION — single large banner with bottom fade into dark trust marquee */}
+        {/* HERO SECTION — full-bleed background image with left text overlay + bottom fade to dark */}
         <section style={{
-          background: COLORS.khaki,
-          padding: '32px 20px 0',
           position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          background: `${COLORS.charcoal} url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
+          minHeight: '680px',
+          display: 'flex',
+          alignItems: 'center',
+          marginTop: '-120px'
         }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-            <div className="hero-layout">
-              {/* Single large banner image */}
-              <div
-                className="hero-tri-image hero-fade-in hero-images"
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  maxWidth: '720px',
-                  margin: '0 auto',
-                  borderRadius: '8px',
-                  overflow: 'hidden',
-                  aspectRatio: '3 / 2'
-                }}
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1400&h=900&fit=crop"
-                  alt="Happy dog"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
-              </div>
-
-              {/* Hero Text — on desktop CSS reorders this to the left of the image */}
-              <div className="hero-text">
-                <h1 style={{
-                  fontSize: 'clamp(34px, 4.4vw, 48px)',
-                  fontWeight: '700',
-                  color: COLORS.charcoal,
-                  lineHeight: '1.08',
-                  marginBottom: '18px',
-                  fontFamily: "'Barlow', sans-serif",
-                  letterSpacing: '-0.5px'
-                }}>
-                  Restore Your Dog&apos;s Digestion, Energy and Comfort <span style={{ color: COLORS.red }}>from The Inside Out</span>
-                </h1>
-
-                <p style={{
-                  fontSize: 'clamp(15px, 1.6vw, 17px)',
-                  color: COLORS.charcoal,
-                  opacity: 0.85,
-                  maxWidth: '560px',
-                  margin: '0 0 26px',
-                  lineHeight: '1.65',
-                  fontWeight: 400
-                }}>
-                  Begin to see a happier, healthier dog in days with Ontario&apos;s Farm-to-Bowl raw dog food delivery.
-                </p>
-
-                {/* Shop Now Button - Lifted dimensional style */}
-                <button
-                  onClick={() => navigate('/menu')}
-                  style={liftedButtonStyle}
-                  onMouseEnter={(e) => liftedButtonHover(e, true)}
-                  onMouseLeave={(e) => liftedButtonHover(e, false)}
-                >
-                  Shop Now
-                </button>
-              </div>
-            </div>
-          </div>
-          {/* Bottom fade — khaki to charcoal seamlessly merges into the trust marquee */}
+          {/* Left fade overlay — makes text readable on the image */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `linear-gradient(90deg, rgba(20,14,6,0.62) 0%, rgba(20,14,6,0.38) 35%, rgba(20,14,6,0.08) 60%, rgba(20,14,6,0) 80%)`,
+              pointerEvents: 'none'
+            }}
+          />
+          {/* Bottom fade — fully transparent at top so no visible seam, fades to charcoal at the bottom merging into TrustMarquee */}
           <div
             aria-hidden="true"
             style={{
@@ -711,14 +664,81 @@ export const LandingPage = () => {
               left: 0,
               right: 0,
               bottom: 0,
-              height: '120px',
-              background: `linear-gradient(180deg, rgba(216,207,184,0) 0%, ${COLORS.charcoal} 100%)`,
-              pointerEvents: 'none',
-              zIndex: 2
+              height: '40%',
+              background: `linear-gradient(180deg, rgba(59,42,26,0) 0%, rgba(59,42,26,0.6) 60%, ${COLORS.charcoal} 100%)`,
+              pointerEvents: 'none'
             }}
           />
-          {/* Spacer so content above the fade has room */}
-          <div aria-hidden="true" style={{ height: '60px' }} />
+
+          {/* Content */}
+          <div style={{
+            position: 'relative',
+            zIndex: 1,
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '200px 24px 140px',
+            width: '100%'
+          }}>
+            <div className="hero-text" style={{ maxWidth: '620px' }}>
+              <h1 style={{
+                fontSize: 'clamp(36px, 5.4vw, 60px)',
+                fontWeight: 600,
+                color: COLORS.cream,
+                lineHeight: '1.05',
+                marginBottom: '18px',
+                fontFamily: "'Barlow', sans-serif",
+                letterSpacing: '-0.5px',
+                textShadow: '0 3px 14px rgba(0,0,0,0.35)'
+              }}>
+                Real Food For Pets. <br />
+                <span style={{ color: COLORS.cream }}>Raised Right </span>
+                <span style={{ color: COLORS.red }}>In Ontario.</span>
+              </h1>
+
+              <p style={{
+                fontSize: 'clamp(15px, 1.6vw, 18px)',
+                color: COLORS.cream,
+                opacity: 0.94,
+                maxWidth: '520px',
+                margin: '0 0 28px',
+                lineHeight: '1.55',
+                fontWeight: 400,
+                textShadow: '0 1px 6px rgba(0,0,0,0.45)'
+              }}>
+                Farm-to-Bowl Human-Grade Raw Pet Food Delivery — begin to see a happier, healthier dog in days.
+              </p>
+
+              <button
+                onClick={() => navigate('/menu')}
+                data-testid="hero-shop-now"
+                style={{
+                  background: COLORS.cream,
+                  color: COLORS.charcoal,
+                  border: 'none',
+                  padding: '16px 36px',
+                  borderRadius: '999px',
+                  fontSize: '15px',
+                  fontWeight: 700,
+                  fontFamily: "'Barlow', sans-serif",
+                  cursor: 'pointer',
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
+                  transition: 'transform 0.18s ease, box-shadow 0.18s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 12px 28px rgba(0,0,0,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.25)';
+                }}
+              >
+                Shop Now
+              </button>
+            </div>
+          </div>
         </section>
 
         {/* TRUST MARQUEE */}

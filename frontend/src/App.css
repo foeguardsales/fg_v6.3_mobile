@@ -1846,7 +1846,7 @@ h2, h3, h4 {
   margin-bottom: 4px;
 }
 .menu-collection-title {
-  font-family: 'Fraunces', Georgia, serif !important;
+  font-family: var(--font-heading) !important;
   font-size: clamp(20px, 2.4vw, 26px) !important;
   font-weight: 600;
   color: #3B2A1A;
@@ -1898,7 +1898,7 @@ h2, h3, h4 {
   }
 }
 .product-card-title {
-  font-family: 'Fraunces', Georgia, serif !important;
+  font-family: var(--font-heading) !important;
   font-size: 15px !important;
   font-weight: 600;
   color: #3B2A1A;
@@ -5384,7 +5384,7 @@ h2, h3, h4 {
   .pd-uber-body { padding: 28px 24px; max-width: 760px; margin: 0 auto; }
 }
 .pd-uber-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-heading);
   font-size: clamp(24px, 3.4vw, 32px);
   color: #3B2A1A;
   margin: 0 0 10px;
@@ -5832,7 +5832,7 @@ h2, h3, h4 {
   min-width: 0;
 }
 .pd-shopify-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-heading);
   font-size: clamp(26px, 3.4vw, 36px);
   color: #3B2A1A;
   margin: 0 0 12px;
@@ -6151,9 +6151,9 @@ h2, h3, h4 {
 .menu-collection-banner-text .menu-collection-title {
   color: #F5F3EF;
   margin: 0 0 4px;
-  font-family: 'Fraunces', Georgia, serif !important;
+  font-family: var(--font-heading) !important;
   font-size: clamp(22px, 2.4vw, 28px) !important;
-  font-weight: 600;
+  font-weight: 600 !important;
   letter-spacing: 0;
   text-shadow: 0 2px 8px rgba(0,0,0,0.35);
 }
@@ -6306,7 +6306,7 @@ h2, h3, h4 {
 }
 .menu-topsheet-close:hover { background: rgba(0,0,0,0.05); }
 .menu-topsheet-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-heading);
   font-size: 22px;
   font-weight: 600;
   color: #3B2A1A;
@@ -6449,7 +6449,7 @@ h2, h3, h4 {
   padding: 12px 0 8px;
 }
 .menu-funnel-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-heading);
   font-size: clamp(28px, 4vw, 40px);
   font-weight: 600;
   color: #3B2A1A;
@@ -6516,7 +6516,7 @@ h2, h3, h4 {
   width: 100%;
 }
 .menu-funnel-card-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: var(--font-heading);
   font-size: clamp(22px, 2.6vw, 28px);
   font-weight: 600;
   margin: 0 0 6px;

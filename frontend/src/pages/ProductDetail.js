@@ -118,7 +118,7 @@ const FarmToBowlSection = () => {
   return (
     <section data-testid="farm-to-bowl-section" style={{ marginTop: '56px' }}>
       <h2 style={{
-        fontFamily: "'Fraunces', Georgia, serif",
+        fontFamily: "'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
         color: '#3B2A1A',
@@ -136,7 +136,7 @@ const FarmToBowlSection = () => {
             boxShadow: 'none'
           }}>
             <h3 style={{
-              fontFamily: "'Fraunces', Georgia, serif",
+              fontFamily: "'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif",
               fontSize: '22px',
               fontWeight: 600,
               color: '#C8102E',
@@ -188,7 +188,7 @@ const PersonalizeSection = ({ navigate }) => {
       </div>
       <div>
         <h2 style={{
-          fontFamily: "'Fraunces', Georgia, serif",
+          fontFamily: "'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif",
           fontSize: 'clamp(26px, 3.2vw, 36px)',
           fontWeight: 600,
           color: '#3B2A1A',
@@ -251,7 +251,7 @@ const ProductFaqSection = () => {
   return (
     <section data-testid="product-faq-section" style={{ marginTop: '48px', marginBottom: '32px' }}>
       <h2 style={{
-        fontFamily: "'Fraunces', Georgia, serif",
+        fontFamily: "'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
         color: '#3B2A1A',

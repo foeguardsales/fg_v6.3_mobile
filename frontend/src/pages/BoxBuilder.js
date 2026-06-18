@@ -54,12 +54,15 @@ export const BoxBuilder = () => {
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
   const [viewMode, setViewMode] = useState('food'); // 'food' | 'treats'
 
-  // Mini top-sheet (auto-opens once per session on /menu landing)
+  // Mini top-sheet (legacy, no longer used)
   const [topSheetOpen, setTopSheetOpen] = useState(false);
   const [topSheetSeen, setTopSheetSeen] = useState(false);
 
-  // Funnel choice block — large 3-option chooser shown above menu on first landing
-  const [funnelOpen, setFunnelOpen] = useState(true);
+  // Funnel overlay — full-screen choice picker shown on first menu landing
+  // Stays as a re-openable selector via Edit button after dismissal
+  const initialSelection = sessionStorage.getItem('foeguard_selection') || null;
+  const [funnelOpen, setFunnelOpen] = useState(!initialSelection);
+  const [selectionId, setSelectionId] = useState(initialSelection || 'shop-raw');
 
   // Inline product modal state — replaces /product/:id navigation
   const [activeProductId, setActiveProductId] = useState(null);
@@ -98,11 +101,14 @@ export const BoxBuilder = () => {
     }
   }, []);
 
-  // Auto-skip the funnel if user previously dismissed it (within session)
+  // Auto-skip the funnel if user previously made a selection (within session)
   useEffect(() => {
-    const seen = sessionStorage.getItem('foeguard_menu_funnel_seen');
-    if (seen) {
+    const sel = sessionStorage.getItem('foeguard_selection');
+    if (sel) {
       setFunnelOpen(false);
+      setSelectionId(sel);
+    } else {
+      setFunnelOpen(true);
     }
   }, []);
 
@@ -391,25 +397,44 @@ export const BoxBuilder = () => {
   return (
     <>
       <Navbar />
+
+      {/* Selection breadcrumb — visible after funnel is dismissed */}
+      {!funnelOpen && (
+        <SelectionBreadcrumb
+          label={
+            selectionId === 'meal-plan' ? 'Build a Meal Plan'
+            : selectionId === 'calculator' ? 'Feeding Calculator'
+            : 'Raw Food Menu'
+          }
+          onEdit={() => setFunnelOpen(true)}
+        />
+      )}
+
       <div className="box-builder box-builder--narrow">
-        {/* Funnel: shown as first thing on /menu before the menu itself */}
-        {funnelOpen && (
-          <MenuFunnel
-            onShopRaw={() => {
-              setFunnelOpen(false);
-              sessionStorage.setItem('foeguard_menu_funnel_seen', '1');
-            }}
-            onMealPlan={() => {
-              sessionStorage.setItem('foeguard_menu_funnel_seen', '1');
-              navigate('/meal-plan');
-            }}
-            onCalculator={() => {
-              setFunnelOpen(false);
-              sessionStorage.setItem('foeguard_menu_funnel_seen', '1');
-              setCalcOpen(true);
-            }}
-          />
-        )}
+        {/* Funnel overlay: full-screen choice picker hovering above the menu */}
+        <MenuFunnel
+          open={funnelOpen}
+          dismissable={!!sessionStorage.getItem('foeguard_selection')}
+          selectedId={selectionId}
+          onClose={() => setFunnelOpen(false)}
+          onShopRaw={() => {
+            sessionStorage.setItem('foeguard_selection', 'shop-raw');
+            setSelectionId('shop-raw');
+            setFunnelOpen(false);
+          }}
+          onMealPlan={() => {
+            sessionStorage.setItem('foeguard_selection', 'meal-plan');
+            setSelectionId('meal-plan');
+            setFunnelOpen(false);
+            navigate('/meal-plan');
+          }}
+          onCalculator={() => {
+            sessionStorage.setItem('foeguard_selection', 'calculator');
+            setSelectionId('calculator');
+            setFunnelOpen(false);
+            setCalcOpen(true);
+          }}
+        />
 
         {/* Category Tabs: Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats — text only, no pill */}
         <div className="menu-category-text" data-testid="menu-category-tabs">
@@ -814,8 +839,8 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 };
 
 
-// ===== Menu Funnel — first thing on /menu, large 3-option chooser =====
-const MenuFunnel = ({ onShopRaw, onMealPlan, onCalculator }) => {
+// ===== Menu Funnel Overlay — hovers above /menu on first landing =====
+const MenuFunnel = ({ open, onShopRaw, onMealPlan, onCalculator, onClose, dismissable = true, selectedId = null }) => {
   const options = [
     {
       id: 'shop-raw',
@@ -840,29 +865,64 @@ const MenuFunnel = ({ onShopRaw, onMealPlan, onCalculator }) => {
     }
   ];
 
+  if (!open) return null;
+
   return (
-    <section className="menu-funnel" data-testid="menu-funnel">
-      <h1 className="menu-funnel-title">How would you like to order?</h1>
-      <p className="menu-funnel-sub">
-        Choose the path that works best for you and your pet — browse the full menu, build a custom meal plan, or get a fast portion recommendation.
-      </p>
-      <div className="menu-funnel-grid">
-        {options.map(opt => (
+    <div className="menu-funnel-overlay" data-testid="menu-funnel-overlay">
+      <div className="menu-funnel-overlay-inner">
+        {dismissable && (
           <button
-            key={opt.id}
-            className="menu-funnel-card"
-            onClick={opt.onClick}
-            data-testid={`funnel-${opt.id}`}
-            style={{ backgroundImage: `url(${opt.image})` }}
+            className="menu-funnel-overlay-close"
+            onClick={onClose}
+            aria-label="Close"
+            data-testid="menu-funnel-close"
           >
-            <div className="menu-funnel-card-overlay" />
-            <div className="menu-funnel-card-text">
-              <h3 className="menu-funnel-card-title">{opt.label}</h3>
-              <p className="menu-funnel-card-sub">{opt.sub}</p>
-            </div>
+            <X size={22} />
           </button>
-        ))}
+        )}
+        <h1 className="menu-funnel-title">How would you like to order?</h1>
+        <p className="menu-funnel-sub">
+          Choose the path that works best for you and your pet — browse the full menu, build a custom meal plan, or get a fast portion recommendation.
+        </p>
+        <div className="menu-funnel-grid">
+          {options.map(opt => (
+            <button
+              key={opt.id}
+              className={`menu-funnel-card ${selectedId === opt.id ? 'is-selected' : ''}`}
+              onClick={opt.onClick}
+              data-testid={`funnel-${opt.id}`}
+              style={{ backgroundImage: `url(${opt.image})` }}
+            >
+              <div className="menu-funnel-card-overlay" />
+              <div className="menu-funnel-card-text">
+                <h3 className="menu-funnel-card-title">{opt.label}</h3>
+                <p className="menu-funnel-card-sub">{opt.sub}</p>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
-    </section>
+    </div>
+  );
+};
+
+// ===== Selection breadcrumb — sticky pill under navbar showing current choice + Edit =====
+export const SelectionBreadcrumb = ({ label, onEdit }) => {
+  return (
+    <div className="selection-breadcrumb" data-testid="selection-breadcrumb">
+      <div className="selection-breadcrumb-inner">
+        <span className="selection-breadcrumb-label">
+          <span className="selection-breadcrumb-prefix">Selection:</span>
+          <span className="selection-breadcrumb-title">{label}</span>
+        </span>
+        <button
+          className="selection-breadcrumb-edit"
+          onClick={onEdit}
+          data-testid="selection-breadcrumb-edit"
+        >
+          Edit
+        </button>
+      </div>
+    </div>
   );
 };
