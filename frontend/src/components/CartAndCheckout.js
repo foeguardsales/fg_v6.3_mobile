@@ -502,7 +502,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
 
 export const CartPopup = CartDrawer;
 
-export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', navigate, hideHeader = false, showCategoryDescriptions = false }) => {
+export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', navigate, hideHeader = false, showCategoryDescriptions = false, onOpenTreat = null }) => {
   const [treats, setTreats] = useState([]);
 
   useEffect(() => {
@@ -550,20 +550,22 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
     const selectedTreat = selectedTreats.find(t => t.treat_id === treat.treat_id);
     const quantity = selectedTreat ? selectedTreat.quantity : 0;
     const goToTreat = () => {
+      if (onOpenTreat) { onOpenTreat(treat.treat_id); return; }
       if (!navigate) return;
       const root = document.getElementById('root');
       const scrollPos = root ? root.scrollTop : window.scrollY;
       sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
       navigate(`/treat/${treat.treat_id}`);
     };
+    const clickable = !!(navigate || onOpenTreat);
     return (
       <div
         key={treat.treat_id}
         className={`product-card-row ${quantity > 0 ? 'is-selected' : ''}`}
         data-testid={`treat-${treat.treat_id}`}
-        onClick={navigate ? goToTreat : undefined}
-        role={navigate ? 'button' : undefined}
-        tabIndex={navigate ? 0 : undefined}
+        onClick={clickable ? goToTreat : undefined}
+        role={clickable ? 'button' : undefined}
+        tabIndex={clickable ? 0 : undefined}
       >
         {/* Stacked content — content first so image ends up on the right on desktop */}
         <div className="product-card-content">
@@ -573,7 +575,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             <div className="product-card-price">
               <span className="price-regular">${treat.price.toFixed(2)}</span>
             </div>
-            {navigate && (
+            {clickable && (
               <button
                 className="product-card-more"
                 onClick={(e) => { e.stopPropagation(); goToTreat(); }}
@@ -1437,7 +1439,7 @@ export const OrderSuccess = () => {
       <div className="success-icon">✓</div>
       <h1 style={{ fontSize: '36px', color: '#556B2F', marginBottom: '16px' }}>Order Confirmed!</h1>
       <p style={{ fontSize: '18px', color: '#666', marginBottom: '30px' }}>
-        Thank you for your order. You'll receive a confirmation email shortly.
+        Thank you for your order. You&apos;ll receive a confirmation email shortly.
       </p>
       <button 
         className="btn-primary" 

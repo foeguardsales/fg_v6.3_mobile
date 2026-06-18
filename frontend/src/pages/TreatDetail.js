@@ -2,48 +2,47 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
-import { ChevronLeft, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ChevronUp, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { CartDrawer } from '../components/CartAndCheckout';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+const API = `${BACKEND_URL}/api`;
 
+// Shared collapsible — identical design to the meal product detail
 const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
     <div style={{
-      border: '1px solid #E8DDD0',
-      borderRadius: '12px',
-      overflow: 'hidden',
-      background: '#fff'
+      background: 'transparent',
+      borderRadius: 0,
+      borderBottom: '1px solid #E8DDD0',
+      overflow: 'hidden'
     }}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         style={{
           width: '100%',
-          padding: '20px 24px',
-          background: 'transparent',
-          border: 'none',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          padding: '18px 0',
+          background: 'transparent',
+          border: 'none',
           cursor: 'pointer',
           fontFamily: "'Barlow Semi Condensed', sans-serif",
-          fontSize: '18px',
-          fontWeight: '600',
+          fontSize: '15px',
+          fontWeight: '700',
           color: '#2B2B2B',
-          textAlign: 'left'
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase'
         }}
       >
-        {title}
-        <span style={{
-          fontSize: '24px',
-          transition: 'transform 0.3s ease',
-          transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)'
-        }}>▼</span>
+        <span>{title}</span>
+        {isOpen ? <ChevronUp size={18} color="#c8102e" /> : <ChevronDown size={18} color="#c8102e" />}
       </button>
       {isOpen && (
-        <div style={{ padding: '0 24px 24px 24px' }}>
+        <div style={{ padding: '0 0 22px' }}>
           {children}
         </div>
       )}
@@ -51,22 +50,22 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
   );
 };
 
-export const TreatDetailPage = () => {
-  const { treatId } = useParams();
+export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false, onClose = null }) => {
+  const params = useParams();
+  const treatId = propTreatId || params.treatId;
   const navigate = useNavigate();
   const [treat, setTreat] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [selectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [cartOpen, setCartOpen] = useState(false);
   const [orderNotes, setOrderNotes] = useState('');
-  const [activeTab, setActiveTab] = useState('description');
-  
+
   // Initialize from sessionStorage immediately
   const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
   const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
   const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
-  
+
   const [boxSize, setBoxSize] = useState(initialBoxSize);
   const [selectedProteins, setSelectedProteins] = useState(initialProteins);
   const [selectedTreats, setSelectedTreats] = useState(initialTreats);
@@ -75,25 +74,23 @@ export const TreatDetailPage = () => {
   useEffect(() => {
     const root = document.getElementById('root');
     if (root) root.scrollTop = 0;
-    
-    // Sync with sessionStorage whenever the page becomes visible
+
     const syncFromStorage = () => {
       const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
       const savedProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
       const savedTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
-      
+
       if (savedBoxSize && savedBoxSize !== boxSize) setBoxSize(savedBoxSize);
       setSelectedProteins(savedProteins);
       setSelectedTreats(savedTreats);
     };
-    
-    // Sync on mount and when window regains focus
+
     syncFromStorage();
     window.addEventListener('focus', syncFromStorage);
-    
+
     const fetchTreat = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/api/treats`);
+        const response = await axios.get(`${API}/treats`);
         const foundTreat = response.data.find(t => t.treat_id === treatId);
         setTreat(foundTreat);
       } catch (error) {
@@ -102,14 +99,13 @@ export const TreatDetailPage = () => {
         setLoading(false);
       }
     };
-    
-    // Load all products for pricing
-    axios.get(`${BACKEND_URL}/api/products`)
+
+    axios.get(`${API}/products`)
       .then(res => setProducts(res.data))
       .catch(err => console.error('Error loading products:', err));
-    
+
     fetchTreat();
-    
+
     return () => {
       window.removeEventListener('focus', syncFromStorage);
     };
@@ -123,33 +119,31 @@ export const TreatDetailPage = () => {
   }, []);
 
   const handleBackToMenu = () => {
+    if (embedded && onClose) {
+      onClose();
+      return;
+    }
     navigate('/menu');
   };
-  
-  // Discount rates by box size
-  const DISCOUNT_RATES = {
-    12: 0,
-    18: 0.05,
-    24: 0.10,
-    30: 0.15
-  };
-  
+
+  // Discount rates by box size (used only for product pricing in the cart drawer)
+  const DISCOUNT_RATES = { 6: 0, 18: 0.05, 24: 0.10, 36: 0.15 };
+
   const getBasePrice = (prod) => {
     const pricing = prod.pricing.find(p => p.size_lb === 6);
     return pricing ? pricing.price : 0;
   };
-  
+
   const getDiscountedPrice = (prod) => {
     const basePrice = getBasePrice(prod);
     const discount = DISCOUNT_RATES[boxSize] || 0;
     return basePrice * (1 - discount);
   };
-  
+
   const handleAddToCart = () => {
-    // Add treat to cart
     const updatedTreats = [...selectedTreats];
     const existingIndex = updatedTreats.findIndex(t => t.treat_id === treat.treat_id);
-    
+
     if (existingIndex >= 0) {
       updatedTreats[existingIndex].quantity = quantity;
     } else {
@@ -160,7 +154,7 @@ export const TreatDetailPage = () => {
         quantity: quantity
       });
     }
-    
+
     sessionStorage.setItem('selectedTreats', JSON.stringify(updatedTreats));
     sessionStorage.setItem('boxSize', boxSize.toString());
 
@@ -170,11 +164,22 @@ export const TreatDetailPage = () => {
       sessionStorage.setItem('treatNotes', JSON.stringify(existing));
     }
 
-    // Per spec: back to menu after add
-    navigate('/menu');
+    if (embedded && onClose) {
+      onClose();
+    } else {
+      navigate('/menu');
+    }
   };
 
   if (loading) {
+    if (embedded) {
+      return (
+        <div className="product-detail-loading">
+          <div className="loading-spinner"></div>
+          <p>Loading...</p>
+        </div>
+      );
+    }
     return (
       <>
         <Navbar />
@@ -185,6 +190,13 @@ export const TreatDetailPage = () => {
   }
 
   if (!treat) {
+    if (embedded) {
+      return (
+        <div style={{ padding: '60px 20px', textAlign: 'center' }}>
+          <h2>Treat not found</h2>
+        </div>
+      );
+    }
     return (
       <>
         <Navbar />
@@ -204,82 +216,88 @@ export const TreatDetailPage = () => {
 
   return (
     <>
-      <Navbar />
-      <CartDrawer
-        isOpen={cartOpen}
-        onClose={() => setCartOpen(false)}
-        boxSize={boxSize}
-        selectedProteins={selectedProteins}
-        selectedTreats={selectedTreats}
-        products={products}
-        onProceed={() => navigate('/menu')}
-        getDiscountedPrice={getDiscountedPrice}
-        getBasePrice={getBasePrice}
-        onAdjustProtein={(productId, productName, newQty) => {
-          setSelectedProteins(prev => {
-            const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
-            sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
-            return updated;
-          });
-        }}
-        onRemoveProtein={(productId) => {
-          setSelectedProteins(prev => {
-            const updated = { ...prev };
-            delete updated[productId];
-            sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
-            return updated;
-          });
-        }}
-        onRemoveTreat={(treatId) => {
-          setSelectedTreats(prev => {
-            const updated = prev.filter(t => t.treat_id !== treatId);
-            sessionStorage.setItem('selectedTreats', JSON.stringify(updated));
-            return updated;
-          });
-        }}
-      />
+      {!embedded && (
+        <>
+          <Navbar />
+          <CartDrawer
+            isOpen={cartOpen}
+            onClose={() => setCartOpen(false)}
+            boxSize={boxSize}
+            selectedProteins={selectedProteins}
+            selectedTreats={selectedTreats}
+            products={products}
+            onProceed={() => navigate('/menu')}
+            getDiscountedPrice={getDiscountedPrice}
+            getBasePrice={getBasePrice}
+            onAdjustProtein={(productId, productName, newQty) => {
+              setSelectedProteins(prev => {
+                const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
+                sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                return updated;
+              });
+            }}
+            onRemoveProtein={(productId) => {
+              setSelectedProteins(prev => {
+                const updated = { ...prev };
+                delete updated[productId];
+                sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                return updated;
+              });
+            }}
+            onRemoveTreat={(tid) => {
+              setSelectedTreats(prev => {
+                const updated = prev.filter(t => t.treat_id !== tid);
+                sessionStorage.setItem('selectedTreats', JSON.stringify(updated));
+                return updated;
+              });
+            }}
+          />
 
-      {/* Back button — standard top-left position */}
-      <button
-        onClick={handleBackToMenu}
-        data-testid="treat-close-btn"
-        className="pd-uber-back"
-        aria-label="Back"
-      >
-        <ChevronLeft size={18} strokeWidth={2.2} /> Back
-      </button>
+          {/* Back button — standard top-left position (dedicated page only) */}
+          <button
+            onClick={handleBackToMenu}
+            data-testid="treat-close-btn"
+            className="pd-uber-back"
+            aria-label="Back"
+          >
+            <ChevronLeft size={18} strokeWidth={2.2} /> Back
+          </button>
+        </>
+      )}
 
       <div className="pd-uber">
         <div className="pd-shopify">
-          {/* Image left */}
-          <div className="pd-shopify-media">
-            {currentImage ? (
-              <img src={currentImage} alt={treat.name} />
-            ) : (
-              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#6A4F35' }}>
-                <span>Image coming soon</span>
-              </div>
-            )}
-          </div>
-
-          {/* Content right */}
+          {/* Content (single column) */}
           <div className="pd-shopify-content">
-            <h1 className="pd-shopify-title">{treat.name}</h1>
-
-            {/* Price */}
-            <div className="pd-shopify-price-row" data-testid="treat-price">
-              <span className="pd-shopify-price">${(treat.price * quantity).toFixed(2)}</span>
-              {quantity > 1 && (
-                <span className="pd-shopify-price-unit">(${treat.price.toFixed(2)} ea)</span>
-              )}
+            {/* Header — image inline with title + price */}
+            <div className="pd-head">
+              <div className="pd-head-media">
+                {currentImage ? (
+                  <img src={currentImage} alt={treat.name} />
+                ) : (
+                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#6A4F35', fontSize: '12px' }}>
+                    Image soon
+                  </div>
+                )}
+              </div>
+              <div className="pd-head-info">
+                <h1 className="pd-shopify-title">{treat.name}</h1>
+                <div className="pd-shopify-price-row" data-testid="treat-price">
+                  <span className="pd-shopify-price">${(treat.price * quantity).toFixed(2)}</span>
+                  {quantity > 1 && (
+                    <span className="pd-shopify-price-unit">(${treat.price.toFixed(2)} ea)</span>
+                  )}
+                </div>
+              </div>
             </div>
 
+            {/* Description */}
             <p className="pd-shopify-desc">
               {treat.description || treat.quantity_description}
             </p>
 
-            {/* Feature pills — smaller harvest gold */}
-            <div className="pd-shopify-features pd-shopify-features--mini">
+            {/* Feature pills */}
+            <div className="pd-shopify-features pd-shopify-features--mini" data-testid="treat-badges">
               <span className="pd-shopify-feature">Single-ingredient</span>
               <span className="pd-shopify-feature">Dental support</span>
               <span className="pd-shopify-feature">Enrichment</span>
@@ -294,22 +312,22 @@ export const TreatDetailPage = () => {
                     onClick={() => quantity > 1 && setQuantity(quantity - 1)}
                     disabled={quantity <= 1}
                     className="pd-shopify-qty-btn"
+                    data-testid="treat-qty-decrease"
                     aria-label="Decrease"
                   >−</button>
                   <span data-testid="treat-qty" className="pd-shopify-qty-display">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     className="pd-shopify-qty-btn"
+                    data-testid="treat-qty-increase"
                     aria-label="Increase"
                   >+</button>
                 </div>
               </div>
-              <button
-                onClick={() => navigate('/menu')}
-                className="pd-shopify-change-link"
-              >
-                Back to menu
-              </button>
+              <div className="pd-shopify-adds">
+                <div className="pd-shopify-mini-label">Adds</div>
+                <span className="pd-shopify-adds-total">${(treat.price * quantity).toFixed(2)}</span>
+              </div>
             </div>
 
             {/* Benefits as checks */}
@@ -321,8 +339,8 @@ export const TreatDetailPage = () => {
               </ul>
             )}
 
-            {/* Collapsibles */}
-            <div className="pd-shopify-collapsibles">
+            {/* Collapsibles — identical design to meals */}
+            <div className="pd-shopify-collapsibles" data-testid="treat-collapsibles">
               {treat.ingredients && (
                 <CollapsibleSection title="Ingredients">
                   <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
@@ -330,11 +348,11 @@ export const TreatDetailPage = () => {
                   </p>
                 </CollapsibleSection>
               )}
-              <CollapsibleSection title="Feeding guide">
+              <CollapsibleSection title="Feeding Guide">
                 <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>
                   {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet.'}
                 </p>
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 12px' }}>
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
                   {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
                 </p>
               </CollapsibleSection>
@@ -377,16 +395,47 @@ export const TreatDetailPage = () => {
         </div>
       </div>
 
-      {/* Floating "Add to your box" pill */}
+      {/* Sticky full-width "Add to your box" button */}
       <button
         onClick={handleAddToCart}
-        className="pd-uber-add"
+        className={`pd-uber-add ${embedded ? 'pd-uber-add--inline' : ''}`}
         data-testid="treat-add-to-box"
       >
-        Add to your box
+        Add {quantity} to your box · ${(treat.price * quantity).toFixed(2)}
       </button>
 
-      <Footer />
+      {!embedded && <Footer />}
     </>
+  );
+};
+
+// ===== Inline Treat Detail Modal — same overlay as the meal product modal =====
+export const TreatDetailModal = ({ treatId, onClose }) => {
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  return (
+    <div
+      className="bb-overlay"
+      data-testid="treat-modal-overlay"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="bb-overlay-panel bb-overlay-panel--product" role="dialog" aria-modal="true">
+        <button
+          className="bb-overlay-close"
+          onClick={onClose}
+          data-testid="treat-modal-close"
+          aria-label="Close"
+        >
+          <X size={22} />
+        </button>
+        <div className="bb-overlay-scroll">
+          <TreatDetailPage treatId={treatId} embedded onClose={onClose} />
+        </div>
+      </div>
+    </div>
   );
 };

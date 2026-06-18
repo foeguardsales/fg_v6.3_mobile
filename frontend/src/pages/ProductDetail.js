@@ -546,23 +546,23 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
 
       <div className="pd-uber">
         <div className="pd-shopify">
-          {/* Image left */}
-          <div className="pd-shopify-media">
-            <img src={productImage} alt={product.name} />
-          </div>
-
-          {/* Content right */}
+          {/* Content (single column) */}
           <div className="pd-shopify-content">
-            {/* Title */}
-            <h1 className="pd-shopify-title">{product.name}</h1>
-
-            {/* Price */}
-            <div className="pd-shopify-price-row" data-testid="product-price">
-              <span className="pd-shopify-price">${getDiscountedPrice(product).toFixed(2)}</span>
-              <span className="pd-shopify-price-unit">/ 6 lb</span>
-              {sizeDiscount > 0 && (
-                <span className="pd-shopify-price-original">${getBasePrice(product).toFixed(2)}</span>
-              )}
+            {/* Header — image inline with title + price */}
+            <div className="pd-head">
+              <div className="pd-head-media">
+                <img src={productImage} alt={product.name} />
+              </div>
+              <div className="pd-head-info">
+                <h1 className="pd-shopify-title">{product.name}</h1>
+                <div className="pd-shopify-price-row" data-testid="product-price">
+                  <span className="pd-shopify-price">${getDiscountedPrice(product).toFixed(2)}</span>
+                  <span className="pd-shopify-price-unit">/ 6 lb</span>
+                  {sizeDiscount > 0 && (
+                    <span className="pd-shopify-price-original">${getBasePrice(product).toFixed(2)}</span>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Description */}
@@ -580,7 +580,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             {/* Quantity selector — Add to box */}
             <div className="pd-shopify-qty-row">
               <div>
-                <div className="pd-shopify-mini-label">Add to box</div>
+                <div className="pd-shopify-mini-label">Size</div>
                 <div className="pd-shopify-qty-controls">
                   <button
                     onClick={() => quantity > 6 && setQuantity(quantity - 6)}

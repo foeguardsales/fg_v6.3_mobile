@@ -191,3 +191,11 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - **Menu category tabs** — Reduced VERTICAL spacing (box-builder top padding 28→10px mobile / 40→18px desktop; `.menu-category-text` padding/margin trimmed; button vertical padding reduced). Horizontal spacing left as-is.
 - **Calc selection** — Verified: choosing "Feeding Calculator" from the funnel keeps the persistent Selection = "Raw Food Menu" (calc opens as modal over /menu).
 - Recreated lost `backend/.env` + `frontend/.env` (mocked third-party keys per existing setup) after container restart; backend reseeds 24 products / 17 treats on startup.
+
+### Jun 2026 — Iteration 14: Product/treat container redesign + unified bottom CTAs
+- **Detail header** — Product & treat detail (modal + page) now use a single-column layout with the image INLINE beside the title/price at the TOP (`.pd-head` / `.pd-head-media` / `.pd-head-info`), replacing the old image-in-its-own-column block.
+- **"Size" label** — Meal product quantity selector label changed from "Add to box" → "Size".
+- **Sticky full-width Add button** — `.pd-uber-add` is now a large bottom bar: edge-to-edge fixed on the dedicated page; in the modal (`--inline`) it's `position: sticky` and spans the FULL modal panel width (calc(100% + padding) with negative margins), staying pinned at the bottom while scrolling.
+- **Menu checkout button** — `.bb-floating-checkout` redesigned to match: full-width edge-to-edge bar on mobile, menu-width (max 1232px) centered bar on desktop.
+- **Treats == meals** — Treats now open in a MODAL (`TreatDetailModal`) identical to the meal product modal (was a separate `/treat/:id` page). `TreatDetailPage` gained `embedded`/`onClose` props; its collapsibles (Ingredients / Feeding Guide / Product Info / Order Notes) now use the SAME borderless chevron design as meals. `TreatsSection` accepts `onOpenTreat`; BoxBuilder renders `TreatDetailModal` via `activeTreatId`.
+- Design is now unified across ALL menu items (meals + treats).

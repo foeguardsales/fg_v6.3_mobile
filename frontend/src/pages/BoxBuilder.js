@@ -5,6 +5,7 @@ import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
 import { Calculator, Wheat, PawPrint, X } from 'lucide-react';
 import { ProductDetailModal } from './ProductDetail';
+import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -66,6 +67,9 @@ export const BoxBuilder = () => {
 
   // Inline product modal state — replaces /product/:id navigation
   const [activeProductId, setActiveProductId] = useState(null);
+
+  // Inline treat modal state — replaces /treat/:id navigation
+  const [activeTreatId, setActiveTreatId] = useState(null);
 
   // Inline calculator modal state — replaces /calculator navigation
   const [calcOpen, setCalcOpen] = useState(false);
@@ -490,6 +494,7 @@ export const BoxBuilder = () => {
                 navigate={navigate}
                 hideHeader={false}
                 showCategoryDescriptions={true}
+                onOpenTreat={(tid) => setActiveTreatId(tid)}
               />
             ) : petType === 'dog' ? (
               <>
@@ -566,6 +571,7 @@ export const BoxBuilder = () => {
                   petType="dog"
                   navigate={navigate}
                   showCategoryDescriptions={true}
+                  onOpenTreat={(tid) => setActiveTreatId(tid)}
                 />
               </>
             ) : (
@@ -610,6 +616,7 @@ export const BoxBuilder = () => {
                   petType="cat"
                   navigate={navigate}
                   showCategoryDescriptions={true}
+                  onOpenTreat={(tid) => setActiveTreatId(tid)}
                 />
               </>
             )}
@@ -674,6 +681,14 @@ export const BoxBuilder = () => {
         <ProductDetailModal
           productId={activeProductId}
           onClose={() => setActiveProductId(null)}
+        />
+      )}
+
+      {/* Inline Treat Modal — same overlay/design as meals */}
+      {activeTreatId && (
+        <TreatDetailModal
+          treatId={activeTreatId}
+          onClose={() => setActiveTreatId(null)}
         />
       )}
 
