@@ -39,6 +39,15 @@ const CAT_BOX_OPTIONS = [
   { size: 12, label: '12 lb', discount: 5 }
 ];
 
+// Determine the discount tier from the ACTUAL total lbs in the box.
+// The box auto-upgrades through the tiers as the customer adds more.
+const getTierFromLbs = (lbs, rates) => {
+  const sizes = Object.keys(rates).map(Number).sort((a, b) => a - b);
+  let chosen = { size: sizes[0], rate: rates[sizes[0]] };
+  sizes.forEach(s => { if (lbs >= s) chosen = { size: s, rate: rates[s] }; });
+  return chosen;
+};
+
 // Collection banner images
 const COLLECTION_IMAGES = {
   dog: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/1olxgtz6_3.png',
@@ -85,10 +94,11 @@ export const BoxBuilder = () => {
   const addBoxToBasket = () => {
     const lbs = getTotalSelectedLbs();
     if (lbs > 0) {
+      const tier = getTierFromLbs(lbs, (petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES));
       const box = {
         id: `box_${Date.now()}`,
-        boxSize,
-        discount: (petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES)[boxSize] || 0,
+        boxSize: tier.size,
+        discount: tier.rate,
         petType,
         proteins: { ...selectedProteins },
         subscriptionPlan
@@ -106,6 +116,16 @@ export const BoxBuilder = () => {
 
   const removeBoxFromBasket = (id) => {
     persistBasket(basket.filter(b => b.id !== id));
+  };
+
+  // Edit a committed box: load its selections back onto the menu and remove it from the basket
+  const editBoxFromBasket = (box) => {
+    setPetType(box.petType || 'dog');
+    setSelectedProteins({ ...(box.proteins || {}) });
+    sessionStorage.setItem('selectedProteins', JSON.stringify(box.proteins || {}));
+    if (box.subscriptionPlan) setSubscriptionPlan(box.subscriptionPlan);
+    persistBasket(basket.filter(b => b.id !== box.id));
+    setCartOpen(false);
   };
 
   // Inline calculator modal state — replaces /calculator navigation
@@ -292,10 +312,10 @@ export const BoxBuilder = () => {
     { id: 'calculator', label: 'Feeding Calculator', path: '/calculator', active: false }
   ];
 
-  // Calculate price for 6lb based on box size discount
+  // Calculate price for 6lb based on the discount tier reached by total lbs
   const getDiscountedPrice = (basePrice) => {
-    const discount = DISCOUNT_RATES[boxSize] || 0;
-    return basePrice * (1 - discount);
+    const { rate } = getTierFromLbs(getTotalSelectedLbs(), DISCOUNT_RATES);
+    return basePrice * (1 - rate);
   };
 
   // Get base 6lb price for a product
@@ -308,6 +328,16 @@ export const BoxBuilder = () => {
   const getTotalSelectedLbs = () => {
     return Object.values(selectedProteins).reduce((sum, data) => sum + data.qty, 0);
   };
+
+  // Auto-upgrade the displayed box size to the tier reached by the current total lbs
+  useEffect(() => {
+    const tier = getTierFromLbs(getTotalSelectedLbs(), DISCOUNT_RATES);
+    if (tier.size !== boxSize) {
+      setBoxSize(tier.size);
+      sessionStorage.setItem('boxSize', tier.size.toString());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProteins, petType]);
 
   // Cheapest per-lb price for chicken at a given box size (for box-size selector subtext)
   const getCheapestChickenPerLbForBox = (sizeLb) => {
@@ -667,6 +697,7 @@ export const BoxBuilder = () => {
               products={products}
               basket={basket}
               onRemoveBox={removeBoxFromBasket}
+              onEditBox={editBoxFromBasket}
               onProceed={() => { 
                 setCartOpen(false); 
                 setShowCheckout(true);
@@ -716,7 +747,7 @@ export const BoxBuilder = () => {
         data-testid="cart-button"
         className="bb-floating-checkout"
       >
-        {getTotalSelectedLbs() > 0 ? 'Add to Basket' : 'View Basket'}
+        {getTotalSelectedLbs() > 0 ? 'Add to Basket' : 'Add to Basket'}
       </button>
 
       {/* Inline Product Modal — replaces /product/:id navigation */}

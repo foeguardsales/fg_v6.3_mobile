@@ -42,7 +42,7 @@ const splitBoxItems = (box, products, getBasePrice) => {
 };
 
 // Cart Drawer Component (slide-in from right)
-export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein, subscriptionPlan, onSubscriptionChange, basket = [], onRemoveBox }) => {
+export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein, subscriptionPlan, onSubscriptionChange, basket = [], onRemoveBox, onEditBox }) => {
   const [promoCode, setPromoCode] = useState('');
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [specialInstructions, setSpecialInstructions] = useState('');
@@ -99,17 +99,31 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
       setPromoDiscount(0);
     }
   };
-  // Split a box's proteins into the discounted in-box portion (up to the box size)
-  // and any overflow that spills out as full-price loose products.
-  const splitBox = (box) => splitBoxItems(box, products, getBasePrice);
+  // Per-lb price for a product (base 6lb price / 6)
+  const productPerLb = (pid) => {
+    const product = products.find(p => p.product_id === pid);
+    if (!product) return 0;
+    const base = getBasePrice ? getBasePrice(product) : (product.pricing.find(p => p.size_lb === 6)?.price || 0);
+    return base / 6;
+  };
 
-  // Price one box: in-box lbs get the box discount, overflow is full price
+  // Price one box — the whole box gets its tier discount
   const boxSubtotal = (box) => {
     const d = box.discount || 0;
-    const { inBox, overflow } = splitBox(box);
     let t = 0;
-    inBox.forEach(it => { t += it.perLb * (1 - d) * it.qty; });
-    overflow.forEach(it => { t += it.perLb * it.qty; });
+    Object.entries(box.proteins || {}).forEach(([pid, data]) => {
+      if (!data.qty) return;
+      t += productPerLb(pid) * (1 - d) * data.qty;
+    });
+    return t;
+  };
+  // Full (undiscounted) price of a box, for savings calc
+  const boxFull = (box) => {
+    let t = 0;
+    Object.entries(box.proteins || {}).forEach(([pid, data]) => {
+      if (!data.qty) return;
+      t += productPerLb(pid) * data.qty;
+    });
     return t;
   };
   const boxLbs = (box) => Object.values(box.proteins || {}).reduce((s, d) => s + (d.qty || 0), 0);
@@ -122,21 +136,31 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
   };
 
   const subtotal = calculateSubtotal();
+  // Total savings from box (bulk) discounts
+  const boxSavings = basket.reduce((s, box) => s + (boxFull(box) - boxSubtotal(box)), 0);
   const subscriptionDiscount = subscriptionPlan ? subtotal * SUBSCRIPTION_DISCOUNT : 0;
+  const totalSavings = boxSavings + subscriptionDiscount;
   const discountedSubtotal = subtotal - subscriptionDiscount;
   const tax = discountedSubtotal * 0.13;
   const total = discountedSubtotal + tax;
   const basketLbs = basket.reduce((s, b) => s + boxLbs(b), 0);
   const hasTreats = selectedTreats.length > 0;
   const canCheckout = basket.length > 0 || hasTreats;
-  const discount = DISCOUNT_RATES[boxSize] || 0;
+  // Each box = 1 item, each treat line = 1 item
+  const itemCount = basket.length + selectedTreats.length;
+
+  // Subscription delivery schedule (weeks) parsed from the plan string
+  const subWeeks = (() => {
+    const m = typeof subscriptionPlan === 'string' && subscriptionPlan.match(/every_(\d+)_weeks/);
+    return m ? parseInt(m[1], 10) : 2;
+  })();
 
   return (
     <>
       <div className={`cart-drawer-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
       <div className={`cart-drawer ${isOpen ? 'open' : ''}`} data-testid="cart-drawer" ref={drawerRef}>
         <div className="cart-drawer-header">
-          <h3 style={{ fontSize: '24px', color: '#c8102e', margin: 0 }}>Your Box</h3>
+          <h3 style={{ fontSize: '24px', color: '#c8102e', margin: 0 }}>Your Basket</h3>
           <button onClick={onClose} className="cart-close-btn">×</button>
         </div>
         
@@ -192,66 +216,9 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
           )}
 
           <div className="cart-box-info">
-            <span className="cart-box-size">{basket.length} {basket.length === 1 ? 'Box' : 'Boxes'}</span>
-            {basketLbs > 0 && (
-              <span className="cart-box-progress">({basketLbs}lb total)</span>
-            )}
+            <span className="cart-box-size">{itemCount} {itemCount === 1 ? 'item' : 'items'}</span>
           </div>
 
-          {/* Subscription Badge */}
-          {subscriptionPlan && (
-            <div style={{
-              background: 'linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%)',
-              borderRadius: '12px',
-              padding: '12px 16px',
-              marginBottom: '16px',
-              border: '2px solid #5F7C5A',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <div>
-                <div style={{ 
-                  fontSize: '14px', 
-                  fontWeight: '700', 
-                  color: '#2E7D32',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}>
-                  <span style={{ fontSize: '16px' }}>✓</span>
-                  Subscription: {(() => {
-                    const m = typeof subscriptionPlan === 'string' && subscriptionPlan.match(/every_(\d+)_weeks/);
-                    if (m) {
-                      const n = parseInt(m[1], 10);
-                      return n === 1 ? 'Every week' : `Every ${n} weeks`;
-                    }
-                    return subscriptionPlan === 'biweekly' ? 'Every 2 weeks' : 'Monthly';
-                  })()}
-                </div>
-                <div style={{ fontSize: '12px', color: '#5F7C5A', marginTop: '2px' }}>
-                  5% discount applied • Free delivery
-                </div>
-              </div>
-              {onSubscriptionChange && (
-                <button
-                  onClick={() => onSubscriptionChange(null)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#666',
-                    fontSize: '18px',
-                    cursor: 'pointer',
-                    padding: '4px'
-                  }}
-                  title="Remove subscription"
-                >
-                  ×
-                </button>
-              )}
-            </div>
-          )}
-          
           {basket.length === 0 && selectedTreats.length === 0 && (
             <div style={{ textAlign: 'center', padding: '28px 0', color: '#8A7156', fontSize: '14px' }}>
               Your basket is empty. Build a box on the menu and tap &quot;Add to Basket&quot;.
@@ -259,18 +226,25 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
           )}
 
           {basket.map((box, bi) => {
-            const { inBox, overflow } = splitBox(box);
             const d = box.discount || 0;
+            const proteinEntries = Object.entries(box.proteins || {}).filter(([, data]) => data.qty > 0);
             return (
-              <div key={box.id}>
-                <div data-testid={`cart-box-${bi}`} style={{ borderBottom: '1px solid #E8DDD0', paddingBottom: '12px', marginBottom: '12px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                    <div style={{ fontWeight: 700, color: '#3B2A1A', fontFamily: "'Barlow Semi Condensed', sans-serif", display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span>Box {bi + 1} · {box.boxSize}lb</span>
-                      {d > 0 && (
-                        <span className="cart-discount-badge">Save {Math.round(d * 100)}%</span>
-                      )}
-                    </div>
+              <div key={box.id} data-testid={`cart-box-${bi}`} style={{ borderBottom: '1px solid #E8DDD0', paddingBottom: '12px', marginBottom: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <span style={{ fontWeight: 700, color: '#3B2A1A', fontFamily: "'Barlow Semi Condensed', sans-serif" }}>
+                    {box.boxSize}lb Box
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    {onEditBox && (
+                      <button
+                        onClick={() => onEditBox(box)}
+                        title="Edit this box"
+                        data-testid={`cart-edit-box-${bi}`}
+                        style={{ background: 'none', border: 'none', color: '#3B2A1A', cursor: 'pointer', fontSize: '13px', fontWeight: 700, textDecoration: 'underline', padding: '4px 6px', fontFamily: "'Barlow Semi Condensed', sans-serif" }}
+                      >
+                        Edit
+                      </button>
+                    )}
                     {onRemoveBox && (
                       <button
                         onClick={() => onRemoveBox(box.id)}
@@ -282,31 +256,16 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                       </button>
                     )}
                   </div>
-                  {inBox.map(it => (
-                    <div key={it.pid} className="cart-item" style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', fontSize: '14px' }}>
-                      <span style={{ color: '#3B2A1A' }}>{it.name} · {it.qty}lb</span>
-                      <span style={{ color: '#6A4F35' }}>${(it.perLb * (1 - d) * it.qty).toFixed(2)}</span>
-                    </div>
-                  ))}
-                  {inBox.length === 0 && (
-                    <div className="cart-item" style={{ padding: '5px 0', fontSize: '13px', color: '#8A7156' }}>Empty box</div>
-                  )}
                 </div>
-                {/* Overflow beyond the box size → loose, full-price products (out of box) */}
-                {overflow.map(it => (
-                  <div
-                    key={`of-${box.id}-${it.pid}`}
-                    className="cart-item"
-                    data-testid={`cart-overflow-${it.pid}`}
-                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0 12px', fontSize: '14px', borderBottom: '1px solid #E8DDD0', marginBottom: '12px' }}
-                  >
-                    <span style={{ color: '#3B2A1A' }}>
-                      {it.name} · {it.qty}lb{' '}
-                      <span style={{ color: '#8A7156', fontSize: '12px' }}>(out of box)</span>
-                    </span>
-                    <span style={{ color: '#6A4F35' }}>${(it.perLb * it.qty).toFixed(2)}</span>
+                {proteinEntries.map(([pid, data]) => (
+                  <div key={pid} className="cart-item" style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', fontSize: '14px' }}>
+                    <span style={{ color: '#3B2A1A' }}>{data.name} · {data.qty}lb</span>
+                    <span style={{ color: '#6A4F35' }}>${(productPerLb(pid) * (1 - d) * data.qty).toFixed(2)}</span>
                   </div>
                 ))}
+                {proteinEntries.length === 0 && (
+                  <div className="cart-item" style={{ padding: '5px 0', fontSize: '13px', color: '#8A7156' }}>Empty box</div>
+                )}
               </div>
             );
           })}
@@ -337,16 +296,52 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             </div>
           ))}
           
-          <div className="cart-divider" />
-          
+          {/* Subscribe & Save — above the subtotal, reveals a delivery-schedule dropdown when checked */}
+          {onSubscriptionChange && (
+            <div data-testid="cart-subscribe-save" style={{ margin: '4px 0 12px', padding: '12px 14px', background: '#F5F3EF', border: '1px solid #D8CFB8', borderRadius: '8px' }}>
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={!!subscriptionPlan}
+                  onChange={(e) => onSubscriptionChange(e.target.checked ? 'every_2_weeks' : null)}
+                  data-testid="cart-subscribe-checkbox"
+                  style={{ marginTop: '2px', accentColor: '#3B2A1A', width: '18px', height: '18px' }}
+                />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '14px', fontWeight: 700, color: '#3B2A1A' }}>
+                    Subscribe &amp; save 5%
+                  </div>
+                  <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '12px', color: '#6A4F35', marginTop: '2px' }}>
+                    Free delivery. Pause, skip, or cancel anytime.
+                  </div>
+                </div>
+              </label>
+              {subscriptionPlan && (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #E8DDD0' }}>
+                  <span style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#3B2A1A', fontWeight: 600 }}>Delivery Schedule</span>
+                  <select
+                    value={subWeeks}
+                    onChange={(e) => onSubscriptionChange(`every_${e.target.value}_weeks`)}
+                    data-testid="cart-subscribe-schedule"
+                    style={{ padding: '8px 10px', border: '1.5px solid #D8CFB8', borderRadius: '6px', background: '#fff', fontSize: '13px', color: '#3B2A1A', fontFamily: "'Barlow Semi Condensed', sans-serif", cursor: 'pointer' }}
+                  >
+                    {[1, 2, 3, 4, 5, 6].map(n => (
+                      <option key={n} value={n}>Every {n} {n === 1 ? 'week' : 'weeks'}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="cart-item">
             <span>Subtotal</span>
             <span data-testid="cart-subtotal">${subtotal.toFixed(2)}</span>
           </div>
-          {subscriptionPlan && subscriptionDiscount > 0 && (
+          {totalSavings > 0 && (
             <div className="cart-item" style={{ color: '#2E7D32' }}>
-              <span>Subscription Discount (5%)</span>
-              <span>-${subscriptionDiscount.toFixed(2)}</span>
+              <span>You save</span>
+              <span data-testid="cart-savings">-${totalSavings.toFixed(2)}</span>
             </div>
           )}
           {promoDiscount > 0 && (
@@ -365,7 +360,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
           </div>
           
           {/* Promo Code Section */}
-          <div style={{ marginTop: '16px', padding: '16px 0', borderTop: '1px solid #E8DDD0' }}>
+          <div style={{ marginTop: '12px' }}>
             <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', marginBottom: '8px' }}>Promo Code</label>
             <div style={{ display: 'flex', gap: '8px' }}>
               <input
@@ -420,40 +415,6 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
               }}
             />
           </div>
-
-          {/* Subscribe & Save — bottom of cart, seamless */}
-          {onSubscriptionChange && (
-            <label
-              data-testid="cart-subscribe-save"
-              style={{
-                marginTop: '20px',
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '12px',
-                padding: '14px 16px',
-                background: '#E8DFC8',
-                border: '1px solid #D8CFB8',
-                borderRadius: '12px',
-                cursor: 'pointer'
-              }}
-            >
-              <input
-                type="checkbox"
-                checked={!!subscriptionPlan}
-                onChange={(e) => onSubscriptionChange(e.target.checked ? 'every_2_weeks' : null)}
-                data-testid="cart-subscribe-checkbox"
-                style={{ marginTop: '2px', accentColor: '#3B2A1A', width: '18px', height: '18px' }}
-              />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '14px', fontWeight: 700, color: '#3B2A1A' }}>
-                  Save extra ${(subtotal * SUBSCRIPTION_DISCOUNT).toFixed(2)} — subscribe &amp; save 5%
-                </div>
-                <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '12px', color: '#6A4F35', marginTop: '2px' }}>
-                  Free delivery. Pause, skip, or cancel anytime.
-                </div>
-              </div>
-            </label>
-          )}
         </div>
         
         <div className="cart-drawer-footer">
@@ -467,7 +428,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 border: '1.5px solid #3B2A1A',
                 color: '#3B2A1A',
                 padding: '12px 18px',
-                borderRadius: '999px',
+                borderRadius: '6px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif",
                 fontSize: '13px',
                 fontWeight: 700,
