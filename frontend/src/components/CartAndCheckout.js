@@ -18,29 +18,6 @@ const DISCOUNT_RATES = {
 // Subscription discount rate
 const SUBSCRIPTION_DISCOUNT = 0.05; // 5% off
 
-// Split a box's proteins into the discounted in-box portion (up to the box size)
-// and any overflow that spills out as full-price loose products ("out of box").
-const splitBoxItems = (box, products, getBasePrice) => {
-  const cap = box.boxSize || 0;
-  let used = 0;
-  const inBox = [];
-  const overflow = [];
-  Object.entries(box.proteins || {}).forEach(([pid, data]) => {
-    if (!data.qty) return;
-    const product = (products || []).find(p => p.product_id === pid);
-    const perLb = product
-      ? (getBasePrice ? getBasePrice(product) : product.pricing.find(p => p.size_lb === 6)?.price || 0) / 6
-      : 0;
-    const remaining = Math.max(0, cap - used);
-    const discLbs = Math.min(data.qty, remaining);
-    const fullLbs = data.qty - discLbs;
-    if (discLbs > 0) inBox.push({ pid, name: data.name, qty: discLbs, perLb });
-    if (fullLbs > 0) overflow.push({ pid, name: data.name, qty: fullLbs, perLb });
-    used += data.qty;
-  });
-  return { inBox, overflow };
-};
-
 // Cart Drawer Component (slide-in from right)
 export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selectedTreats, products, onProceed, getDiscountedPrice, getBasePrice, onRemoveProtein, onRemoveTreat, onAdjustProtein, subscriptionPlan, onSubscriptionChange, basket = [], onRemoveBox, onEditBox }) => {
   const [promoCode, setPromoCode] = useState('');
@@ -448,7 +425,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 color: '#F5F3EF',
                 padding: '14px 22px',
                 border: 'none',
-                borderRadius: '999px',
+                borderRadius: '6px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif",
                 fontSize: '15px',
                 fontWeight: 700,
@@ -920,9 +897,12 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
     let total = 0;
     basket.forEach(box => {
       const d = box.discount || 0;
-      const { inBox, overflow } = splitBoxItems(box, products, null);
-      inBox.forEach(it => { total += it.perLb * (1 - d) * it.qty; });
-      overflow.forEach(it => { total += it.perLb * it.qty; });
+      Object.entries(box.proteins || {}).forEach(([productId, data]) => {
+        if (!data.qty) return;
+        const product = products.find(p => p.product_id === productId);
+        const perLb = product ? (product.pricing.find(p => p.size_lb === 6)?.price || 0) / 6 : 0;
+        total += perLb * (1 - d) * data.qty;
+      });
     });
     selectedTreats.forEach(treat => { total += treat.price * (treat.quantity || 1); });
     return total;
@@ -960,28 +940,19 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
 
       const proteinsArray = basket.flatMap(box => {
         const d = box.discount || 0;
-        const { inBox, overflow } = splitBoxItems(box, products, null);
-        const byPid = {};
-        inBox.forEach(it => {
-          byPid[it.pid] = byPid[it.pid] || { name: it.name, qty: 0, price: 0 };
-          byPid[it.pid].qty += it.qty;
-          byPid[it.pid].price += it.perLb * (1 - d) * it.qty;
-        });
-        overflow.forEach(it => {
-          byPid[it.pid] = byPid[it.pid] || { name: it.name, qty: 0, price: 0 };
-          byPid[it.pid].qty += it.qty;
-          byPid[it.pid].price += it.perLb * it.qty;
-        });
-        return Object.entries(byPid).map(([productId, v]) => {
-          const product = products.find(p => p.product_id === productId);
-          return {
-            product_id: productId,
-            product_name: v.name,
-            protein_type: product?.protein_type,
-            quantity_lb: v.qty,
-            price: v.price
-          };
-        });
+        return Object.entries(box.proteins || {})
+          .filter(([, data]) => data.qty > 0)
+          .map(([productId, data]) => {
+            const product = products.find(p => p.product_id === productId);
+            const perLb = product ? (product.pricing.find(p => p.size_lb === 6)?.price || 0) / 6 : 0;
+            return {
+              product_id: productId,
+              product_name: data.name,
+              protein_type: product?.protein_type,
+              quantity_lb: data.qty,
+              price: perLb * (1 - d) * data.qty
+            };
+          });
       });
 
       const checkoutData = {
@@ -1077,20 +1048,17 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
         <h3>Order Summary</h3>
         {basket.map((box, bi) => {
           const d = box.discount || 0;
-          const { inBox, overflow } = splitBoxItems(box, products, null);
-          const boxTotal = inBox.reduce((s, it) => s + it.perLb * (1 - d) * it.qty, 0);
+          let boxTotal = 0;
+          Object.entries(box.proteins || {}).forEach(([pid, data]) => {
+            if (!data.qty) return;
+            const product = products.find(p => p.product_id === pid);
+            const perLb = product ? (product.pricing.find(p => p.size_lb === 6)?.price || 0) / 6 : 0;
+            boxTotal += perLb * (1 - d) * data.qty;
+          });
           return (
-            <div key={box.id}>
-              <div className="checkout-summary-row">
-                <span>Box {bi + 1} · {box.boxSize}lb {d > 0 && `(Save ${Math.round(d * 100)}%)`}</span>
-                <span>${boxTotal.toFixed(2)}</span>
-              </div>
-              {overflow.map(it => (
-                <div key={`ofs-${box.id}-${it.pid}`} className="checkout-summary-row">
-                  <span>{it.name} · {it.qty}lb (out of box)</span>
-                  <span>${(it.perLb * it.qty).toFixed(2)}</span>
-                </div>
-              ))}
+            <div key={box.id} className="checkout-summary-row">
+              <span>{box.boxSize}lb Box {d > 0 && `(Save ${Math.round(d * 100)}%)`}</span>
+              <span>${boxTotal.toFixed(2)}</span>
             </div>
           );
         })}

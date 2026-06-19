@@ -336,7 +336,6 @@ export const BoxBuilder = () => {
       setBoxSize(tier.size);
       sessionStorage.setItem('boxSize', tier.size.toString());
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProteins, petType]);
 
   // Cheapest per-lb price for chicken at a given box size (for box-size selector subtext)

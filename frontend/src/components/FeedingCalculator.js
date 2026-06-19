@@ -169,13 +169,13 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
           className="calc-pet-card"
           style={{
             background: 'white',
-            border: '1px solid #D8CFB8',
+            border: '1px solid #E5E7E6',
             borderRadius: '12px',
-            padding: '22px',
-            marginBottom: '16px',
+            padding: '18px',
+            marginBottom: '10px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '14px'
+            gap: '12px'
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -268,9 +268,9 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
           {pet.name && pet.age_months && pet.weight && (
             <div style={{
               padding: '14px',
-              background: '#FFF9F5',
+              background: '#FAFAF8',
               borderRadius: '8px',
-              border: '1px solid #D2B48C'
+              border: '1px solid #E5E7E6'
             }}>
               <strong style={{ color: '#c8102e' }}>{pet.name}&apos;s Recommendation:</strong>
               <p style={{ margin: '6px 0 0 0', color: '#555' }}>
@@ -335,7 +335,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
             alignItems: 'center',
             gap: '8px',
             padding: '14px 36px',
-            background: showSaveSuccess ? '#4CAF50' : (isComplete ? '#c8102e' : '#E8DDD0'),
+            background: showSaveSuccess ? '#4CAF50' : (isComplete ? '#c8102e' : '#DADADA'),
             border: 'none',
             borderRadius: '10px',
             color: 'white',
@@ -359,7 +359,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
               gap: '8px',
               padding: '14px 22px',
               background: 'white',
-              border: '2px solid #E8DDD0',
+              border: '2px solid #E5E7E6',
               borderRadius: '10px',
               color: '#666',
               fontSize: '15px',

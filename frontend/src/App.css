@@ -6276,6 +6276,7 @@ h2, h3, h4 {
   line-height: 1.1;
   letter-spacing: 0;
   white-space: nowrap;
+  margin-top: 6px;
 }
 @media (min-width: 640px) {
   .box-size-chip-from { font-size: 12px; }
