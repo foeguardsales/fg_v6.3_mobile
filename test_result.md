@@ -1027,6 +1027,23 @@ agent_communication:
       - Product modal: bottom-sheet (anchored to bottom, grab handle, rounded top, X close), and the
         size slider initializes to the qty already in the box (18lb, not 6lb) — connected to the menu.
       No console errors.
+  - agent: "main"
+    message: |
+      Iteration 16 (continuation) — cart redesign + smart discount, all verified via automated testing:
+      1. SMART AUTO-TIER DISCOUNT: discount now scales with ACTUAL total lbs (not the tapped box size).
+         As you add, the box auto-upgrades 6→18→24→36 and the whole box gets that tier's rate
+         (18-23=5%, 24-35=10%, 36+=15%). Fixes "6lb box but 18lb wasn't discounted". Removed the
+         old full-price "out of box" overflow (everything in the box gets the tier rate now).
+      2. Cart: "Your Box"→"Your Basket"; "# Boxes (lb)"→"# items" (box=1 item, treat=1 item);
+         box row "Box 1 · 18lb (Save%)"→"18lb Box" (badge removed); per-box Edit link reopens the
+         box on the menu; "You save" line under Subtotal; removed dividers above subtotal/promo.
+      3. Subscribe moved ABOVE subtotal; removed green popup; checkbox now reveals an inline
+         "Delivery Schedule" dropdown (Every 1–6 weeks).
+      4. Floating menu button label is always "Add to Basket"; cart Add items/Checkout buttons
+         squared-off (6px).
+      5. Box selector: "from $/lb" spaced lower (margin-top).
+      6. Feeding Calculator: khaki borders/fills → neutral grey, tighter spacing.
+      Lint clean; webpack compiled; testing agent: ALL 6 scenarios PASS, no console errors.
   - agent: "testing"
     message: |
       ✅ CART & MENU FLOW TESTING COMPLETED - 2 CRITICAL ISSUES FOUND
