@@ -249,7 +249,7 @@ const ProductFaqSection = () => {
   ];
   const [openIdx, setOpenIdx] = useState(0);
   return (
-    <section data-testid="product-faq-section" style={{ marginTop: '48px', marginBottom: '32px' }}>
+    <section data-testid="product-faq-section" style={{ marginTop: '28px', marginBottom: '8px' }}>
       <h2 style={{
         fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
@@ -688,7 +688,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
         </div>
 
         {/* FAQ section — bottom of product page, one large container (historical) */}
-        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '8px 16px 32px' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '8px 16px 8px' }}>
           <ProductFaqSection />
         </div>
       </div>

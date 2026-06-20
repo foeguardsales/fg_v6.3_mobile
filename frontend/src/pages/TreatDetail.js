@@ -295,27 +295,9 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
           {/* Content right */}
           <div className="pd-shopify-content">
             <h1 className="pd-shopify-title">{treat.name}</h1>
-            <div className="pd-shopify-price-row" data-testid="treat-price">
-              <span className="pd-shopify-price">${(treat.price * quantity).toFixed(2)}</span>
-              {quantity > 1 && (
-                <span className="pd-shopify-price-unit">(${treat.price.toFixed(2)} ea)</span>
-              )}
-            </div>
 
-            {/* Description — paragraph only (bullets moved to the checks list) */}
-            <p className="pd-shopify-desc">
-              {descParagraph || treat.quantity_description}
-            </p>
-
-            {/* Feature pills */}
-            <div className="pd-shopify-features pd-shopify-features--mini" data-testid="treat-badges">
-              <span className="pd-shopify-feature">Single-ingredient</span>
-              <span className="pd-shopify-feature">Dental support</span>
-              <span className="pd-shopify-feature">Enrichment</span>
-            </div>
-
-            {/* Qty selector */}
-            <div className="pd-shopify-qty-row">
+            {/* Quantity + Price (replaces the old top price) */}
+            <div className="pd-shopify-qty-row" data-testid="treat-price">
               <div>
                 <div className="pd-shopify-mini-label">Quantity</div>
                 <div className="pd-shopify-qty-controls">
@@ -339,6 +321,18 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
                 <div className="pd-shopify-mini-label">Price</div>
                 <span className="pd-shopify-adds-total">${(treat.price * quantity).toFixed(2)}</span>
               </div>
+            </div>
+
+            {/* Description — paragraph only (bullets moved to the checks list) */}
+            <p className="pd-shopify-desc">
+              {descParagraph || treat.quantity_description}
+            </p>
+
+            {/* Feature pills */}
+            <div className="pd-shopify-features pd-shopify-features--mini" data-testid="treat-badges">
+              <span className="pd-shopify-feature">Single-ingredient</span>
+              <span className="pd-shopify-feature">Dental support</span>
+              <span className="pd-shopify-feature">Enrichment</span>
             </div>
 
             {/* Bullet features rendered as checks (same as meals) */}

@@ -1943,7 +1943,7 @@ h2, h3, h4 {
 .product-card-price .price-regular,
 .product-card-price .price-discounted {
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   color: #3B2A1A;
 }
 .product-card-price .price-original {
@@ -1956,6 +1956,10 @@ h2, h3, h4 {
   font-size: 11px;
   color: #8A7156;
   font-weight: 500;
+}
+.product-card-price .price-unit strong {
+  font-weight: 800;
+  color: #3B2A1A;
 }
 .product-card-more {
   background: transparent;
@@ -5310,7 +5314,7 @@ h2, h3, h4 {
 .pd-uber {
   background: #F5F3EF;
   min-height: 100vh;
-  padding: 0 0 100px;
+  padding: 0 0 80px;
 }
 .pd-uber-hero {
   width: 100%;
@@ -5848,8 +5852,13 @@ h2, h3, h4 {
   .pd-shopify-media {
     max-height: 520px;
     position: sticky;
-    top: 100px;
+    top: 120px;
   }
+}
+/* Inside the product/treat modal the navbar isn't overlapping, so pin the image
+   near the top of the modal scroll area (keeps it high while the right side scrolls). */
+.bb-overlay-scroll .pd-shopify-media {
+  top: 16px;
 }
 .pd-shopify-media img {
   width: 100%;
@@ -6035,7 +6044,7 @@ h2, h3, h4 {
 .pd-shopify-adds-total {
   font-family: 'Barlow Semi Condensed', sans-serif;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   color: #3B2A1A;
   display: inline-flex;
   align-items: center;
@@ -6935,9 +6944,9 @@ input, select, textarea {
 /* ----- Stock Up & Save — compact collapsible discount guide ----- */
 .stock-up {
   margin: 2px 0 16px;
-  border: 1px solid #D8CFB8;
+  border: 1px solid #C7BC9E;
   border-radius: 8px;
-  background: #FFFFFF;
+  background: #D8CFB8;
   overflow: hidden;
 }
 .stock-up-toggle {
@@ -6977,12 +6986,12 @@ input, select, textarea {
 }
 .stock-up-body {
   padding: 0 14px 14px;
-  border-top: 1px solid #F0E8DA;
+  border-top: 1px solid rgba(59, 42, 26, 0.15);
 }
 .stock-up-intro {
   font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif;
   font-size: 12.5px;
-  color: #6A4F35;
+  color: #5A4225;
   line-height: 1.5;
   margin: 10px 0 12px;
 }
@@ -6996,13 +7005,13 @@ input, select, textarea {
   align-items: center;
   gap: 7px;
   padding: 7px 12px;
-  border: 1px solid #E0D5BD;
+  border: 1px solid rgba(59, 42, 26, 0.25);
   border-radius: 6px;
-  background: #F5F3EF;
+  background: rgba(255, 255, 255, 0.35);
 }
 .stock-up-tier.is-reached {
   border-color: #3B2A1A;
-  background: #EFE6CC;
+  background: rgba(255, 255, 255, 0.65);
 }
 .stock-up-tier-check {
   display: inline-flex;
@@ -7045,6 +7054,7 @@ input, select, textarea {
   text-transform: none;
 }
 .bb-floating-label { flex: 1; text-align: center; }
+.bb-floating-lbs { font-weight: 800; }
 .bb-floating-checkout--counter::after {
   content: '';
   min-width: 56px;
@@ -7057,9 +7067,8 @@ input, select, textarea {
   right: 16px;
   z-index: 998;
   margin: 0 auto;
-  background: #FFFFFF;
-  border: 1px solid #D8CFB8;
-  border-left: 4px solid #C9A84C;
+  background: #D8CFB8;
+  border: 1px solid #C7BC9E;
   border-radius: 6px;
   padding: 8px 14px;
   font-family: 'Barlow Semi Condensed', sans-serif;

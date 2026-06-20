@@ -416,9 +416,15 @@ export const BoxBuilder = () => {
         {/* Funnel overlay: full-screen choice picker hovering above the menu */}
         <MenuFunnel
           open={funnelOpen}
-          dismissable={!!sessionStorage.getItem('foeguard_selection')}
+          dismissable={true}
           selectedId={selectionId}
-          onClose={() => setFunnelOpen(false)}
+          onClose={() => {
+            if (!sessionStorage.getItem('foeguard_selection')) {
+              sessionStorage.setItem('foeguard_selection', 'shop-raw');
+              setSelectionId('shop-raw');
+            }
+            setFunnelOpen(false);
+          }}
           onShopRaw={() => {
             sessionStorage.setItem('foeguard_selection', 'shop-raw');
             setSelectionId('shop-raw');
@@ -659,10 +665,11 @@ export const BoxBuilder = () => {
             <button
               onClick={openBasket}
               data-testid="cart-button"
-              className="bb-floating-checkout bb-floating-checkout--counter"
+              className="bb-floating-checkout"
             >
-              <span className="bb-floating-count" data-testid="floating-lb-count">{lbs} lb</span>
-              <span className="bb-floating-label">{lbs > 0 ? 'Add to Basket' : 'View Basket'}</span>
+              {lbs > 0 ? (
+                <><span className="bb-floating-lbs">{lbs} lb</span> · Add to Basket</>
+              ) : 'Add to Basket'}
             </button>
           </>
         );
@@ -721,7 +728,13 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const basePrice = getBasePrice(product);
   const discountedPrice = getDiscountedPrice(basePrice);
   const hasDiscount = discountedPrice < basePrice - 0.001;
-  // Pricing is stored as the 6lb base price — show the 6lb price (not per-1lb)
+  // Pricing is stored as the 6lb base price. Show /1lb by default; once a quantity
+  // is selected, show the full price for that amount.
+  const basePerLb = basePrice / 6;
+  const discountedPerLb = discountedPrice / 6;
+  const displayQty = selectedQty > 0 ? selectedQty : 1;
+  const showPrice = discountedPerLb * displayQty;
+  const showOriginal = basePerLb * displayQty;
   
   // Product image URL - use the uploaded comfort dinner image for all products
   const productImage = 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';
@@ -791,13 +804,13 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
           <div className="product-card-price">
             {hasDiscount ? (
               <>
-                <span className="price-original">${basePrice.toFixed(2)}</span>
-                <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
+                <span className="price-original">${showOriginal.toFixed(2)}</span>
+                <span className="price-discounted">${showPrice.toFixed(2)}</span>
               </>
             ) : (
-              <span className="price-regular">${basePrice.toFixed(2)}</span>
+              <span className="price-regular">${showPrice.toFixed(2)}</span>
             )}
-            <span className="price-unit">/ 6 lb</span>
+            <span className="price-unit">/ {displayQty} <strong>lb</strong></span>
           </div>
           <button
             className="product-card-more"
@@ -884,16 +897,14 @@ const MenuFunnel = ({ open, onShopRaw, onMealPlan, onCalculator, onClose, dismis
   return (
     <div className="menu-funnel-overlay" data-testid="menu-funnel-overlay">
       <div className="menu-funnel-overlay-inner">
-        {dismissable && (
-          <button
-            className="menu-funnel-overlay-close"
-            onClick={onClose}
-            aria-label="Close"
-            data-testid="menu-funnel-close"
-          >
-            <X size={22} />
-          </button>
-        )}
+        <button
+          className="menu-funnel-overlay-close"
+          onClick={onClose}
+          aria-label="Close"
+          data-testid="menu-funnel-close"
+        >
+          <X size={22} />
+        </button>
         <h1 className="menu-funnel-title">How would you like to order?</h1>
         <p className="menu-funnel-sub">
           Choose the path that works best for you and your pet — browse the full menu, build a custom meal plan, or get a fast portion recommendation.

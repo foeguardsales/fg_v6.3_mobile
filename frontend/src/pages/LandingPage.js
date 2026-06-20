@@ -714,7 +714,7 @@ export const LandingPage = () => {
                   color: COLORS.charcoal,
                   border: 'none',
                   padding: '16px 36px',
-                  borderRadius: '999px',
+                  borderRadius: '8px',
                   fontSize: '15px',
                   fontWeight: 700,
                   fontFamily: "'Barlow Semi Condensed', sans-serif",
