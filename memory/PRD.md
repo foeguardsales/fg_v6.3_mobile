@@ -199,3 +199,10 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - **Menu checkout button** — `.bb-floating-checkout` redesigned to match: full-width edge-to-edge bar on mobile, menu-width (max 1232px) centered bar on desktop.
 - **Treats == meals** — Treats now open in a MODAL (`TreatDetailModal`) identical to the meal product modal (was a separate `/treat/:id` page). `TreatDetailPage` gained `embedded`/`onClose` props; its collapsibles (Ingredients / Feeding Guide / Product Info / Order Notes) now use the SAME borderless chevron design as meals. `TreatsSection` accepts `onOpenTreat`; BoxBuilder renders `TreatDetailModal` via `activeTreatId`.
 - Design is now unified across ALL menu items (meals + treats).
+
+### Jun 2026 — Iteration 18: Removed box builder → seamless single-basket menu
+- **No more "boxes"** — `/menu` accumulates meals in one `selectedProteins` basket; floating button opens the cart (lb counter + incentive nudge above it). Cart shows individual meal lines (stepper + remove) + treats.
+- **Discount tiers (dog)** changed to 12-23=5% / 24-35=10% / 36+=15% (derived live from total meal lbs). Cat unchanged (12=5%). Box-size selector replaced by a small **Stock Up & Save** collapsible guide.
+- **Product detail** — top per-lb price removed; **Size + Price** moved under the title (inits from menu qty, saves edits on back). Collapsibles moved **full-width** below the sticky image, reordered: Ingredients / Nutritional Analysis / Product Information / Feeding Guide / Notes. Titles semibold, prices lighter. "Add Xlb to Basket" (no "box").
+- **Treats** — bullet (•/-) description lines parsed into the checkmark feature list.
+- **Feeding Calculator / Meal Plan** — removed khaki/white nested containers → transparent bg + thin brown (#3B2A1A) borders (seamless); calculator single "Pet" title removed; meal-plan container-within-container flattened.

@@ -214,6 +214,20 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
   const images = treat.images || (treat.image ? [treat.image] : []);
   const currentImage = images[selectedImageIndex] || treat.image;
 
+  // Split the description: plain paragraph vs. bullet lines (• or -).
+  // Bullet lines become the checkmark feature list (same as meal product pages).
+  const rawDesc = treat.description || treat.quantity_description || '';
+  const descLines = rawDesc.split('\n');
+  const descParagraph = descLines
+    .filter(l => !/^\s*[•\-]/.test(l))
+    .join(' ')
+    .trim();
+  const descFeatures = descLines
+    .filter(l => /^\s*[•\-]/.test(l))
+    .map(l => l.replace(/^\s*[•\-]\s*/, '').trim())
+    .filter(Boolean);
+  const featureList = (treat.benefits && treat.benefits.length) ? treat.benefits : descFeatures;
+
   return (
     <>
       {!embedded && (
@@ -288,9 +302,9 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
               )}
             </div>
 
-            {/* Description */}
+            {/* Description — paragraph only (bullets moved to the checks list) */}
             <p className="pd-shopify-desc">
-              {treat.description || treat.quantity_description}
+              {descParagraph || treat.quantity_description}
             </p>
 
             {/* Feature pills */}
@@ -322,56 +336,19 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
                 </div>
               </div>
               <div className="pd-shopify-adds">
-                <div className="pd-shopify-mini-label">Adds</div>
+                <div className="pd-shopify-mini-label">Price</div>
                 <span className="pd-shopify-adds-total">${(treat.price * quantity).toFixed(2)}</span>
               </div>
             </div>
 
-            {/* Benefits as checks */}
-            {treat.benefits && treat.benefits.length > 0 && (
+            {/* Bullet features rendered as checks (same as meals) */}
+            {featureList && featureList.length > 0 && (
               <ul className="pd-shopify-checks" data-testid="treat-checks">
-                {treat.benefits.map((b, i) => (
+                {featureList.map((b, i) => (
                   <li key={i}><Check size={16} strokeWidth={2.5} /> <span>{b}</span></li>
                 ))}
               </ul>
             )}
-
-            {/* Collapsibles — identical design to meals */}
-            <div className="pd-shopify-collapsibles" data-testid="treat-collapsibles">
-              {treat.ingredients && (
-                <CollapsibleSection title="Ingredients">
-                  <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
-                    {typeof treat.ingredients === 'string' ? treat.ingredients : (treat.ingredients || []).join(', ')}
-                  </p>
-                </CollapsibleSection>
-              )}
-              <CollapsibleSection title="Feeding Guide">
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>
-                  {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet.'}
-                </p>
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
-                  {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
-                </p>
-              </CollapsibleSection>
-              <CollapsibleSection title="Product info">
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
-                  {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
-                </p>
-              </CollapsibleSection>
-              <CollapsibleSection title="Order Notes">
-                <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
-                  Add any special notes for your order.
-                </label>
-                <textarea
-                  className="pd-uber-notes"
-                  value={orderNotes}
-                  onChange={(e) => setOrderNotes(e.target.value)}
-                  rows={4}
-                  placeholder="e.g. cut into smaller pieces, no additives…"
-                  data-testid="treat-notes-input"
-                />
-              </CollapsibleSection>
-            </div>
 
             {/* 3 horizontal icons row */}
             <div className="pd-shopify-trust" data-testid="treat-trust-row">
@@ -390,6 +367,45 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
             </div>
           </div>
         </div>
+
+        {/* Full-width collapsibles — image stays stationary above until these are reached */}
+        <div className="pd-shopify-full">
+          <div className="pd-shopify-collapsibles" data-testid="treat-collapsibles">
+            {treat.ingredients && (
+              <CollapsibleSection title="Ingredients" defaultOpen>
+                <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
+                  {typeof treat.ingredients === 'string' ? treat.ingredients : (treat.ingredients || []).join(', ')}
+                </p>
+              </CollapsibleSection>
+            )}
+            <CollapsibleSection title="Product Information">
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
+                {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
+              </p>
+            </CollapsibleSection>
+            <CollapsibleSection title="Feeding Guide">
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>
+                {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet.'}
+              </p>
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
+                {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
+              </p>
+            </CollapsibleSection>
+            <CollapsibleSection title="Notes">
+              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
+                Add any special notes for your order.
+              </label>
+              <textarea
+                className="pd-uber-notes"
+                value={orderNotes}
+                onChange={(e) => setOrderNotes(e.target.value)}
+                rows={4}
+                placeholder="e.g. cut into smaller pieces, no additives…"
+                data-testid="treat-notes-input"
+              />
+            </CollapsibleSection>
+          </div>
+        </div>
       </div>
 
       {/* Sticky full-width "Add to your box" button */}
@@ -398,7 +414,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
         className={`pd-uber-add ${embedded ? 'pd-uber-add--inline' : ''}`}
         data-testid="treat-add-to-box"
       >
-        Add {quantity} to your box · ${(treat.price * quantity).toFixed(2)}
+        Add {quantity} to Basket · ${(treat.price * quantity).toFixed(2)}
       </button>
 
       {!embedded && <Footer />}

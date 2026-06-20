@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
-import { Calculator, Wheat, PawPrint, X } from 'lucide-react';
+import { Calculator, Wheat, PawPrint, X, ChevronDown, ChevronUp, Check, Tag } from 'lucide-react';
 import { ProductDetailModal } from './ProductDetail';
 import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
@@ -11,41 +11,48 @@ import { FeedingCalculator } from '../components/FeedingCalculator';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Discount rates by box size - DOG
+// Bulk discount tiers keyed by the TOTAL lbs of meals in the basket - DOG
 const DOG_DISCOUNT_RATES = {
-  6: 0,
-  18: 0.05,
+  0: 0,
+  12: 0.05,
   24: 0.10,
   36: 0.15
 };
 
-// Discount rates by box size - CAT
+// Bulk discount tiers - CAT (unchanged, smaller scheme)
 const CAT_DISCOUNT_RATES = {
-  6: 0,
+  0: 0,
   12: 0.05
 };
 
-// Box size options - DOG
-const DOG_BOX_OPTIONS = [
-  { size: 6, label: '6 lb', discount: 0 },
-  { size: 18, label: '18 lb', discount: 5 },
-  { size: 24, label: '24 lb', discount: 10 },
-  { size: 36, label: '36 lb', discount: 15 }
+// Stock-up-&-save guide rows (informational only — not a selection) - DOG
+const DOG_TIER_GUIDE = [
+  { size: 12, discount: 5 },
+  { size: 24, discount: 10 },
+  { size: 36, discount: 15 }
 ];
 
-// Box size options - CAT
-const CAT_BOX_OPTIONS = [
-  { size: 6, label: '6 lb', discount: 0 },
-  { size: 12, label: '12 lb', discount: 5 }
+// Guide rows - CAT
+const CAT_TIER_GUIDE = [
+  { size: 12, discount: 5 }
 ];
 
-// Determine the discount tier from the ACTUAL total lbs in the box.
-// The box auto-upgrades through the tiers as the customer adds more.
+// Determine the discount tier from the ACTUAL total lbs of meals in the basket.
 const getTierFromLbs = (lbs, rates) => {
   const sizes = Object.keys(rates).map(Number).sort((a, b) => a - b);
   let chosen = { size: sizes[0], rate: rates[sizes[0]] };
   sizes.forEach(s => { if (lbs >= s) chosen = { size: s, rate: rates[s] }; });
   return chosen;
+};
+
+// Next tier above the current lbs — drives the "add N lb more for X% off" nudge
+const getNextTier = (lbs, rates) => {
+  const sizes = Object.keys(rates).map(Number).sort((a, b) => a - b);
+  for (let i = 0; i < sizes.length; i++) {
+    const s = sizes[i];
+    if (lbs < s && rates[s] > 0) return { size: s, rate: rates[s] };
+  }
+  return null;
 };
 
 // Collection banner images
@@ -80,53 +87,9 @@ export const BoxBuilder = () => {
   // Inline treat modal state — replaces /treat/:id navigation
   const [activeTreatId, setActiveTreatId] = useState(null);
 
-  // Basket — committed boxes. Each box keeps its own size + discount.
-  const [basket, setBasket] = useState(() => {
-    try { return JSON.parse(sessionStorage.getItem('foeguard_basket') || '[]'); }
-    catch (e) { return []; }
-  });
-
-  const persistBasket = (next) => {
-    setBasket(next);
-    sessionStorage.setItem('foeguard_basket', JSON.stringify(next));
-  };
-
-  const addBoxToBasket = () => {
-    const lbs = getTotalSelectedLbs();
-    if (lbs > 0) {
-      const tier = getTierFromLbs(lbs, (petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES));
-      const box = {
-        id: `box_${Date.now()}`,
-        boxSize: tier.size,
-        discount: tier.rate,
-        petType,
-        proteins: { ...selectedProteins },
-        subscriptionPlan
-      };
-      persistBasket([...basket, box]);
-      // Reset the menu for the next box
-      setSelectedProteins({});
-      sessionStorage.setItem('selectedProteins', JSON.stringify({}));
-      setBoxSize(6);
-      sessionStorage.setItem('boxSize', '6');
-      setSubscriptionPlan(null);
-    }
-    setCartOpen(true);
-  };
-
-  const removeBoxFromBasket = (id) => {
-    persistBasket(basket.filter(b => b.id !== id));
-  };
-
-  // Edit a committed box: load its selections back onto the menu and remove it from the basket
-  const editBoxFromBasket = (box) => {
-    setPetType(box.petType || 'dog');
-    setSelectedProteins({ ...(box.proteins || {}) });
-    sessionStorage.setItem('selectedProteins', JSON.stringify(box.proteins || {}));
-    if (box.subscriptionPlan) setSubscriptionPlan(box.subscriptionPlan);
-    persistBasket(basket.filter(b => b.id !== box.id));
-    setCartOpen(false);
-  };
+  // No more "boxes" — selectedProteins IS the running basket of meals and the
+  // bulk discount is derived live from the total lbs of meals selected.
+  const openBasket = () => setCartOpen(true);
 
   // Inline calculator modal state — replaces /calculator navigation
   const [calcOpen, setCalcOpen] = useState(false);
@@ -148,9 +111,9 @@ export const BoxBuilder = () => {
   const [subscriptionPlan, setSubscriptionPlan] = useState(null); // null or 'every_N_weeks'
   const [subOpen, setSubOpen] = useState(false); // collapsible toggle
 
-  // Get current discount rates and box options based on pet type
+  // Get current discount rates and tier guide based on pet type
   const DISCOUNT_RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
-  const BOX_OPTIONS = petType === 'cat' ? CAT_BOX_OPTIONS : DOG_BOX_OPTIONS;
+  const TIER_GUIDE = petType === 'cat' ? CAT_TIER_GUIDE : DOG_TIER_GUIDE;
 
   // Check URL parameters on mount to restore state after refresh
   useEffect(() => {
@@ -338,36 +301,6 @@ export const BoxBuilder = () => {
     }
   }, [selectedProteins, petType]);
 
-  // Cheapest per-lb price for chicken at a given box size (for box-size selector subtext)
-  const getCheapestChickenPerLbForBox = (sizeLb) => {
-    if (!products || products.length === 0) return null;
-    const chicken = products.filter(p => p.protein_type === 'chicken');
-    let cheapest = Infinity;
-    chicken.forEach(p => {
-      // pricing is stored per 6lb size base; the discounted price for this box size = base * (1 - discountRate)
-      const tier = p.pricing?.find(t => t.size_lb === 6) || p.pricing?.[0];
-      if (!tier) return;
-      const base = tier.price;
-      const discount = DISCOUNT_RATES[sizeLb] || 0;
-      const discounted = base * (1 - discount);
-      const perLb = discounted / 6;
-      if (perLb < cheapest) cheapest = perLb;
-    });
-    return cheapest === Infinity ? null : cheapest;
-  };
-
-  // Handle box size change - reset selections if they exceed new size
-  const handleBoxSizeChange = (newSize) => {
-    // Box size only sets the discount tier — selections are never capped or reset.
-    setBoxSize(newSize);
-    sessionStorage.setItem('boxSize', newSize.toString());
-    // Close auto-opened top-sheet on first interaction
-    if (topSheetOpen) {
-      setTopSheetOpen(false);
-      sessionStorage.setItem('foeguard_menu_topsheet_seen', '1');
-    }
-  };
-
   const handleUpdateProtein = (productId, productName, quantity) => {
     setSelectedProteins(prev => {
       const updated = { 
@@ -441,10 +374,10 @@ export const BoxBuilder = () => {
             selectedTreats={selectedTreats}
             products={products}
             subscriptionPlan={subscriptionPlan}
-            basket={basket}
             onSuccess={() => {
               setOrderComplete(true);
-              persistBasket([]);
+              setSelectedProteins({});
+              sessionStorage.setItem('selectedProteins', JSON.stringify({}));
               setSelectedTreats([]);
               sessionStorage.setItem('selectedTreats', JSON.stringify([]));
               setSearchParams({ step: 'success' });
@@ -522,32 +455,9 @@ export const BoxBuilder = () => {
 
         {/* Main Content - Dog or Cat */}
         <>
-          {showBoxSize && (
-          <>
-          {/* Box size — label + clean equal-style buttons with size + from-price */}
-          <div className="bb-box-size-wrap bb-box-size-wrap--stacked" data-testid="box-size-wrap">
-            <span className="bb-box-size-label">Select Box Size:</span>
-            <div className="box-size-slider box-size-slider--mustard box-size-slider--clean" data-testid="box-size-selector">
-              {BOX_OPTIONS.map(box => {
-                const fromPerLb = getCheapestChickenPerLbForBox(box.size);
-                return (
-                  <button
-                    key={box.size}
-                    onClick={() => handleBoxSizeChange(box.size)}
-                    data-testid={`box-size-${box.size}lb`}
-                    className={`box-size-chip ${boxSize === box.size ? 'is-active' : ''}`}
-                  >
-                    <span className="box-size-chip-size">{box.label}</span>
-                    {fromPerLb != null && (
-                      <span className="box-size-chip-from">from ${fromPerLb.toFixed(2)}/lb</span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          </>
-          )}
+            {showBoxSize && (
+              <StockUpSave guide={TIER_GUIDE} currentLbs={getTotalSelectedLbs()} />
+            )}
 
             {loading ? (
               <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
@@ -694,9 +604,7 @@ export const BoxBuilder = () => {
               selectedProteins={selectedProteins}
               selectedTreats={selectedTreats}
               products={products}
-              basket={basket}
-              onRemoveBox={removeBoxFromBasket}
-              onEditBox={editBoxFromBasket}
+              petType={petType}
               onProceed={() => { 
                 setCartOpen(false); 
                 setShowCheckout(true);
@@ -735,19 +643,30 @@ export const BoxBuilder = () => {
         </>
       </div>
 
-      {/* Floating bottom button — always actionable.
-          Box started → commit it to basket (no size cap). Otherwise → open basket
-          (so treats-only customers can always reach checkout). */}
-      <button
-        onClick={() => {
-          if (getTotalSelectedLbs() > 0) addBoxToBasket();
-          else setCartOpen(true);
-        }}
-        data-testid="cart-button"
-        className="bb-floating-checkout"
-      >
-        {getTotalSelectedLbs() > 0 ? 'Add to Basket' : 'Add to Basket'}
-      </button>
+      {/* Floating bottom button — opens the basket. Shows a live lb counter on the
+          left and a small incentive card above nudging the next discount tier. */}
+      {(() => {
+        const lbs = getTotalSelectedLbs();
+        const next = getNextTier(lbs, DISCOUNT_RATES);
+        const needed = next ? next.size - lbs : 0;
+        return (
+          <>
+            {lbs > 0 && next && needed > 0 && (
+              <div className="bb-incentive" data-testid="discount-incentive">
+                Add <strong>{needed} lb</strong> more for <strong>{next.rate * 100}% off</strong>
+              </div>
+            )}
+            <button
+              onClick={openBasket}
+              data-testid="cart-button"
+              className="bb-floating-checkout bb-floating-checkout--counter"
+            >
+              <span className="bb-floating-count" data-testid="floating-lb-count">{lbs} lb</span>
+              <span className="bb-floating-label">{lbs > 0 ? 'Add to Basket' : 'View Basket'}</span>
+            </button>
+          </>
+        );
+      })()}
 
       {/* Inline Product Modal — replaces /product/:id navigation */}
       {activeProductId && (
@@ -801,10 +720,8 @@ export const BoxBuilder = () => {
 const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType, onOpenProduct }) => {
   const basePrice = getBasePrice(product);
   const discountedPrice = getDiscountedPrice(basePrice);
-  const hasDiscount = boxSize > 6;
-  // Per-lb prices (pricing stored as 6lb base price)
-  const basePerLb = basePrice / 6;
-  const discountedPerLb = discountedPrice / 6;
+  const hasDiscount = discountedPrice < basePrice - 0.001;
+  // Pricing is stored as the 6lb base price — show the 6lb price (not per-1lb)
   
   // Product image URL - use the uploaded comfort dinner image for all products
   const productImage = 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';
@@ -874,13 +791,13 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
           <div className="product-card-price">
             {hasDiscount ? (
               <>
-                <span className="price-original">${basePerLb.toFixed(2)}</span>
-                <span className="price-discounted">${discountedPerLb.toFixed(2)}</span>
+                <span className="price-original">${basePrice.toFixed(2)}</span>
+                <span className="price-discounted">${discountedPrice.toFixed(2)}</span>
               </>
             ) : (
-              <span className="price-regular">${basePerLb.toFixed(2)}</span>
+              <span className="price-regular">${basePrice.toFixed(2)}</span>
             )}
-            <span className="price-unit">/ 1 lb</span>
+            <span className="price-unit">/ 6 lb</span>
           </div>
           <button
             className="product-card-more"
@@ -1020,6 +937,56 @@ export const SelectionBreadcrumb = ({ label, onEdit }) => {
           Edit
         </button>
       </div>
+    </div>
+  );
+};
+
+
+// ===== Stock Up & Save — compact collapsible discount guide (replaces box selector) =====
+const StockUpSave = ({ guide = [], currentLbs = 0 }) => {
+  const [open, setOpen] = useState(false);
+  const maxOff = guide.length ? guide[guide.length - 1].discount : 0;
+  return (
+    <div className={`stock-up ${open ? 'is-open' : ''}`} data-testid="stock-up-save">
+      <button
+        type="button"
+        className="stock-up-toggle"
+        onClick={() => setOpen(o => !o)}
+        data-testid="stock-up-toggle"
+        aria-expanded={open}
+      >
+        <span className="stock-up-toggle-left">
+          <Tag size={16} strokeWidth={2} />
+          <span className="stock-up-toggle-title">Stock Up &amp; Save</span>
+          <span className="stock-up-toggle-meta">up to {maxOff}% off</span>
+        </span>
+        {open ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+      </button>
+      {open && (
+        <div className="stock-up-body" data-testid="stock-up-body">
+          <p className="stock-up-intro">
+            Add more meals to your basket and the whole order is discounted automatically — no codes, no commitment.
+          </p>
+          <div className="stock-up-tiers">
+            {guide.map(tier => {
+              const reached = currentLbs >= tier.size;
+              return (
+                <div
+                  key={tier.size}
+                  className={`stock-up-tier ${reached ? 'is-reached' : ''}`}
+                  data-testid={`stock-up-tier-${tier.size}`}
+                >
+                  <span className="stock-up-tier-check">
+                    {reached ? <Check size={14} strokeWidth={3} /> : null}
+                  </span>
+                  <span className="stock-up-tier-size">{tier.size}lb+</span>
+                  <span className="stock-up-tier-off">{tier.discount}% off</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

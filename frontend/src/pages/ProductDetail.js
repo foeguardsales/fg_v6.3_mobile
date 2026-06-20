@@ -385,6 +385,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   }, [productId, product]);
 
   const handleBackToMenu = () => {
+    // Persist edits to a meal that's already in the basket when leaving (per spec).
+    const existing = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+    if (existing[productId]?.qty > 0 && product) {
+      existing[productId] = { qty: quantity, name: product.name };
+      sessionStorage.setItem('selectedProteins', JSON.stringify(existing));
+    }
     if (embedded && onClose) {
       onClose();
       return;
@@ -392,24 +398,29 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     navigate('/menu');
   };
   
-  // Discount rates by box size
-  const DISCOUNT_RATES = {
-    6: 0,
-    18: 0.05,
-    24: 0.10,
-    36: 0.15
+  // Bulk discount tiers keyed by total lbs of meals in the basket
+  const DOG_DISCOUNT_RATES = { 0: 0, 12: 0.05, 24: 0.10, 36: 0.15 };
+  const CAT_DISCOUNT_RATES = { 0: 0, 12: 0.05 };
+  const getTierFromLbs = (lbs, rates) => {
+    const sizes = Object.keys(rates).map(Number).sort((a, b) => a - b);
+    let chosen = { size: sizes[0], rate: rates[sizes[0]] };
+    sizes.forEach(s => { if (lbs >= s) chosen = { size: s, rate: rates[s] }; });
+    return chosen;
   };
-  
+  const isCat = product?.product_line === 'royal_paws';
+  const RATES = isCat ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
+  // Effective lbs = other meals already in the basket + this product's chosen size
+  const otherLbs = Object.entries(selectedProteins || {})
+    .filter(([pid]) => pid !== productId)
+    .reduce((s, [, d]) => s + (d.qty || 0), 0);
+  const bulkRate = getTierFromLbs(otherLbs + quantity, RATES).rate;
+
   const getBasePrice = (prod) => {
     const pricing = prod.pricing.find(p => p.size_lb === 6);
     return pricing ? pricing.price : 0;
   };
-  
-  const getDiscountedPrice = (prod) => {
-    const basePrice = getBasePrice(prod);
-    const discount = DISCOUNT_RATES[boxSize] || 0;
-    return basePrice * (1 - discount);
-  };
+
+  const getDiscountedPrice = (prod) => getBasePrice(prod) * (1 - bulkRate);
   
   const handleAddToCart = () => {
     // Connected to the menu — SET this product's box quantity to the slider value
@@ -486,7 +497,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   };
 
   // Calculate current totals for live price/discount display
-  const sizeDiscount = (DISCOUNT_RATES[boxSize] || 0) * 100;
+  const sizeDiscount = bulkRate * 100;
 
   const collectionInfo = getCollectionInfo();
   const lineName = collectionInfo.name;
@@ -556,32 +567,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             {/* Title */}
             <h1 className="pd-shopify-title">{product.name}</h1>
 
-            {/* Price — per 1 lb (full box total shown below in Adds) */}
-            <div className="pd-shopify-price-row" data-testid="product-price">
-              <span className="pd-shopify-price">${(getDiscountedPrice(product) / 6).toFixed(2)}</span>
-              <span className="pd-shopify-price-unit">/ 1 lb</span>
-              {sizeDiscount > 0 && (
-                <>
-                  <span className="pd-shopify-price-original">${(getBasePrice(product) / 6).toFixed(2)}</span>
-                  <span className="pd-shopify-boxsize-discount">Save {sizeDiscount}%</span>
-                </>
-              )}
-            </div>
-
-            {/* Description */}
-            <p className="pd-shopify-desc">
-              {product.description}
-            </p>
-
-            {/* Feature pills — smaller harvest gold (Uber-Eats style) */}
-            <div className="pd-shopify-features pd-shopify-features--mini" data-testid="product-badges">
-              <span className="pd-shopify-feature">Dogs of all-life stages</span>
-              <span className="pd-shopify-feature">Fresh-to-order</span>
-              <span className="pd-shopify-feature">Human grade</span>
-            </div>
-
-            {/* Quantity selector — Add to box */}
-            <div className="pd-shopify-qty-row">
+            {/* Size + Price (replaces the old top per-lb price; follows the menu qty) */}
+            <div className="pd-shopify-qty-row" data-testid="product-price">
               <div>
                 <div className="pd-shopify-mini-label">Size</div>
                 <div className="pd-shopify-qty-controls">
@@ -600,24 +587,26 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 </div>
               </div>
               <div className="pd-shopify-adds">
-                <div className="pd-shopify-mini-label">Adds</div>
+                <div className="pd-shopify-mini-label">Price</div>
                 <span data-testid="qty-price-total" className="pd-shopify-adds-total">
                   ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
                 </span>
+                {sizeDiscount > 0 && (
+                  <span className="pd-shopify-adds-save" data-testid="product-save-badge">{sizeDiscount}% off</span>
+                )}
               </div>
             </div>
 
-            {/* Box Selected: 6lb [Save 5%] Change on menu (BELOW Add to box) */}
-            <div className="pd-shopify-boxsize" data-testid="box-size-info">
-              <span className="pd-shopify-boxsize-label">Box Selected:</span>
-              <span className="pd-shopify-boxsize-value">{boxSize}lb</span>
-              <button
-                onClick={() => navigate('/menu')}
-                data-testid="change-box-size"
-                className="pd-shopify-change-link"
-              >
-                Change on menu
-              </button>
+            {/* Description */}
+            <p className="pd-shopify-desc">
+              {product.description}
+            </p>
+
+            {/* Feature pills — smaller harvest gold (Uber-Eats style) */}
+            <div className="pd-shopify-features pd-shopify-features--mini" data-testid="product-badges">
+              <span className="pd-shopify-feature">Dogs of all-life stages</span>
+              <span className="pd-shopify-feature">Fresh-to-order</span>
+              <span className="pd-shopify-feature">Human grade</span>
             </div>
 
             {/* Checks list (highlights as ✓) */}
@@ -628,55 +617,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 ))}
               </ul>
             )}
-
-            {/* Collapsibles (Ingredients, Nutrition, Feeding, Product info, Notes) */}
-            <div className="pd-shopify-collapsibles" data-testid="product-collapsibles">
-              <CollapsibleSection title="Ingredients">
-                <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
-                  {typeof product.ingredients === 'string' ? product.ingredients : (product.ingredients || []).join(', ')}
-                </p>
-              </CollapsibleSection>
-              <CollapsibleSection title="Nutrition Facts">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                  {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
-                    <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #E8DDD0' }}>
-                      <span style={{ color: '#5A5A5A', fontSize: '13px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
-                      <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '13px' }}>{value}</span>
-                    </div>
-                  ))}
-                </div>
-              </CollapsibleSection>
-              <CollapsibleSection title="Feeding Guide">
-                {product.feeding_guide && (
-                  <>
-                    <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>{product.feeding_guide.feeding}</p>
-                    <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 12px' }}>{product.feeding_guide.handling}</p>
-                    <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
-                      For how much to feed, visit our{' '}
-                      <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
-                    </p>
-                  </>
-                )}
-              </CollapsibleSection>
-              <CollapsibleSection title="Product info">
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
-                  {product.product_information}
-                </p>
-              </CollapsibleSection>
-              <CollapsibleSection title="Order Notes">
-                <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
-                  Add any special notes for your order (e.g. remove an ingredient, preference).
-                </label>
-                <textarea
-                  className="pd-uber-notes"
-                  value={orderNotes}
-                  onChange={(e) => setOrderNotes(e.target.value)}
-                  rows={4}
-                  placeholder="e.g. No bone, extra liver, cut into small pieces…"
-                  data-testid="product-notes-input"
-                />
-              </CollapsibleSection>
-            </div>
 
             {/* 3 horizontal icons row */}
             <div className="pd-shopify-trust" data-testid="product-trust-row">
@@ -696,6 +636,57 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
           </div>
         </div>
 
+        {/* Full-width collapsibles — image stays stationary above until these are reached */}
+        <div className="pd-shopify-full">
+          <div className="pd-shopify-collapsibles" data-testid="product-collapsibles">
+            <CollapsibleSection title="Ingredients" defaultOpen>
+              <p style={{ fontSize: '14px', color: '#3D3D3D', lineHeight: '1.7', margin: 0 }}>
+                {typeof product.ingredients === 'string' ? product.ingredients : (product.ingredients || []).join(', ')}
+              </p>
+            </CollapsibleSection>
+            <CollapsibleSection title="Nutritional Analysis">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+                {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
+                  <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #E8DDD0' }}>
+                    <span style={{ color: '#5A5A5A', fontSize: '13px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
+                    <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '13px' }}>{value}</span>
+                  </div>
+                ))}
+              </div>
+            </CollapsibleSection>
+            <CollapsibleSection title="Product Information">
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0, whiteSpace: 'pre-line' }}>
+                {product.product_information}
+              </p>
+            </CollapsibleSection>
+            <CollapsibleSection title="Feeding Guide">
+              {product.feeding_guide && (
+                <>
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 10px' }}>{product.feeding_guide.feeding}</p>
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: '0 0 12px' }}>{product.feeding_guide.handling}</p>
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3D3D3D', margin: 0 }}>
+                    For how much to feed, visit our{' '}
+                    <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
+                  </p>
+                </>
+              )}
+            </CollapsibleSection>
+            <CollapsibleSection title="Notes">
+              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#6A4F35', marginBottom: '6px' }}>
+                Add any special notes for your order (e.g. remove an ingredient, preference).
+              </label>
+              <textarea
+                className="pd-uber-notes"
+                value={orderNotes}
+                onChange={(e) => setOrderNotes(e.target.value)}
+                rows={4}
+                placeholder="e.g. No bone, extra liver, cut into small pieces…"
+                data-testid="product-notes-input"
+              />
+            </CollapsibleSection>
+          </div>
+        </div>
+
         {/* FAQ section — bottom of product page, one large container (historical) */}
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '8px 16px 32px' }}>
           <ProductFaqSection />
@@ -708,7 +699,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
         className={`pd-uber-add ${embedded ? 'pd-uber-add--inline' : ''}`}
         data-testid="product-add-to-box"
       >
-        {`Add ${quantity}lb to your box · $${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}`}
+        {`Add ${quantity}lb to Basket · $${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}`}
       </button>
 
       {!embedded && <Footer />}

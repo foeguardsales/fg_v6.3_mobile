@@ -168,8 +168,8 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
           key={pet.id}
           className="calc-pet-card"
           style={{
-            background: 'white',
-            border: '1px solid #E5E7E6',
+            background: 'transparent',
+            border: '1px solid #3B2A1A',
             borderRadius: '12px',
             padding: '18px',
             marginBottom: '10px',
@@ -178,11 +178,11 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
             gap: '12px'
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ fontSize: '18px', color: '#c8102e', margin: 0, fontFamily: "'Barlow Semi Condensed', sans-serif" }}>
-              {pets.length > 1 ? `Pet ${index + 1}` : 'Pet'}
-            </h3>
-            {pets.length > 1 && (
+          {pets.length > 1 && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ fontSize: '18px', color: '#c8102e', margin: 0, fontFamily: "'Barlow Semi Condensed', sans-serif" }}>
+                {`Pet ${index + 1}`}
+              </h3>
               <button
                 onClick={() => removePet(pet.id)}
                 aria-label="Remove pet"
@@ -190,8 +190,8 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
               >
                 ×
               </button>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Vertical, straight stack of inputs */}
           <div className="form-group">
@@ -211,7 +211,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
               value={pet.species}
               onChange={(e) => updatePet(pet.id, 'species', e.target.value)}
               data-testid={`calc-species-${index}`}
-              style={{ width: '100%', padding: '14px 16px', border: '2px solid #E5E7E6', borderRadius: '10px', fontSize: '16px' }}
+              style={{ width: '100%', padding: '14px 16px', border: '1.5px solid #3B2A1A', borderRadius: '10px', fontSize: '16px', background: 'transparent' }}
             >
               <option value="dog">Dog</option>
               <option value="cat">Cat</option>
@@ -257,7 +257,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
               value={pet.activity}
               onChange={(e) => updatePet(pet.id, 'activity', e.target.value)}
               data-testid={`calc-activity-${index}`}
-              style={{ width: '100%', padding: '14px 16px', border: '2px solid #E5E7E6', borderRadius: '10px', fontSize: '16px' }}
+              style={{ width: '100%', padding: '14px 16px', border: '1.5px solid #3B2A1A', borderRadius: '10px', fontSize: '16px', background: 'transparent' }}
             >
               <option value="low">Low (mostly resting)</option>
               <option value="moderate">Moderate (regular walks)</option>
@@ -268,9 +268,9 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
           {pet.name && pet.age_months && pet.weight && (
             <div style={{
               padding: '14px',
-              background: '#FAFAF8',
+              background: 'transparent',
               borderRadius: '8px',
-              border: '1px solid #E5E7E6'
+              border: '1px solid #3B2A1A'
             }}>
               <strong style={{ color: '#c8102e' }}>{pet.name}&apos;s Recommendation:</strong>
               <p style={{ margin: '6px 0 0 0', color: '#555' }}>
@@ -358,8 +358,8 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
               alignItems: 'center',
               gap: '8px',
               padding: '14px 22px',
-              background: 'white',
-              border: '2px solid #E5E7E6',
+              background: 'transparent',
+              border: '1.5px solid #3B2A1A',
               borderRadius: '10px',
               color: '#666',
               fontSize: '15px',

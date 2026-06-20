@@ -1943,7 +1943,7 @@ h2, h3, h4 {
 .product-card-price .price-regular,
 .product-card-price .price-discounted {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 500;
   color: #3B2A1A;
 }
 .product-card-price .price-original {
@@ -5824,7 +5824,7 @@ h2, h3, h4 {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 22px;
-  padding: 20px 16px 120px;
+  padding: 20px 16px 24px;
   max-width: 1100px;
   margin: 0 auto;
 }
@@ -5832,7 +5832,7 @@ h2, h3, h4 {
   .pd-shopify {
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.25fr);
     gap: 44px;
-    padding: 28px 32px 130px;
+    padding: 28px 32px 28px;
     align-items: start;
   }
 }
@@ -5847,8 +5847,8 @@ h2, h3, h4 {
 @media (min-width: 760px) {
   .pd-shopify-media {
     max-height: 520px;
-    position: static;
-    top: auto;
+    position: sticky;
+    top: 100px;
   }
 }
 .pd-shopify-media img {
@@ -6035,11 +6035,26 @@ h2, h3, h4 {
 .pd-shopify-adds-total {
   font-family: 'Barlow Semi Condensed', sans-serif;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 500;
   color: #3B2A1A;
   display: inline-flex;
   align-items: center;
   height: 36px;
+}
+.pd-shopify-adds-save {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  margin-left: 8px;
+  background: #C9A84C;
+  color: #3B2A1A;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0 7px;
+  border-radius: 3px;
 }
 .pd-shopify-adds-original {
   font-family: 'Barlow Semi Condensed', sans-serif;
@@ -6909,5 +6924,266 @@ input, select, textarea {
     padding: 11px !important;
     margin-bottom: 12px !important;
   }
+}
+
+
+/* ============================================================
+   Menu refactor (no box builder): Stock Up & Save, incentive,
+   floating basket counter, individual cart lines, full-width specs
+   ============================================================ */
+
+/* ----- Stock Up & Save — compact collapsible discount guide ----- */
+.stock-up {
+  margin: 2px 0 16px;
+  border: 1px solid #D8CFB8;
+  border-radius: 8px;
+  background: #FFFFFF;
+  overflow: hidden;
+}
+.stock-up-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #3B2A1A;
+}
+.stock-up-toggle-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.stock-up-toggle-left svg { color: #C8102E; flex-shrink: 0; }
+.stock-up-toggle-title {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.stock-up-toggle-meta {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #3B2A1A;
+  background: #C9A84C;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+.stock-up-body {
+  padding: 0 14px 14px;
+  border-top: 1px solid #F0E8DA;
+}
+.stock-up-intro {
+  font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif;
+  font-size: 12.5px;
+  color: #6A4F35;
+  line-height: 1.5;
+  margin: 10px 0 12px;
+}
+.stock-up-tiers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.stock-up-tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid #E0D5BD;
+  border-radius: 6px;
+  background: #F5F3EF;
+}
+.stock-up-tier.is-reached {
+  border-color: #3B2A1A;
+  background: #EFE6CC;
+}
+.stock-up-tier-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: #2E7D32;
+}
+.stock-up-tier-size {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3B2A1A;
+}
+.stock-up-tier-off {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #C8102E;
+}
+
+/* ----- Floating basket button with lb counter + incentive card ----- */
+.bb-floating-checkout--counter {
+  justify-content: space-between;
+  gap: 12px;
+}
+.bb-floating-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  padding: 5px 10px;
+  background: rgba(245, 243, 239, 0.16);
+  border: 1px solid rgba(245, 243, 239, 0.32);
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.bb-floating-label { flex: 1; text-align: center; }
+.bb-floating-checkout--counter::after {
+  content: '';
+  min-width: 56px;
+}
+
+.bb-incentive {
+  position: fixed;
+  bottom: calc(82px + env(safe-area-inset-bottom));
+  left: 16px;
+  right: 16px;
+  z-index: 998;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border: 1px solid #D8CFB8;
+  border-left: 4px solid #C9A84C;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 13px;
+  color: #3B2A1A;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+.bb-incentive strong { color: #C8102E; font-weight: 800; }
+@media (min-width: 760px) {
+  .bb-incentive {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: calc(84px + env(safe-area-inset-bottom));
+    width: auto;
+    max-width: 420px;
+  }
+}
+
+/* ----- Cart: individual meal lines + mini qty stepper ----- */
+.cart-box-info {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cart-box-lbs {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2E7D32;
+}
+.cart-line {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid #F0E8DA;
+}
+.cart-line-info { min-width: 0; display: flex; flex-direction: column; }
+.cart-line-name {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3B2A1A;
+}
+.cart-line-sub { font-size: 12px; color: #8A7156; }
+.cart-line-right { display: flex; align-items: center; gap: 10px; }
+.cart-line-price {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 14px;
+  color: #6A4F35;
+  min-width: 56px;
+  text-align: right;
+}
+.cart-line-remove {
+  background: none;
+  border: none;
+  color: #A41E34;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 4px;
+}
+.cart-qty-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #D8CFB8;
+  border-radius: 6px;
+  padding: 2px 6px;
+  background: #F5F3EF;
+}
+.cart-qty-mini button {
+  background: none;
+  border: none;
+  color: #3B2A1A;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  width: 18px;
+  height: 22px;
+}
+.cart-qty-mini span {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #3B2A1A;
+  min-width: 34px;
+  text-align: center;
+}
+
+/* ----- Product/treat detail: full-width specs below sticky image ----- */
+.pd-shopify-full {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px 8px;
+}
+@media (min-width: 760px) {
+  .pd-shopify-full { padding: 0 32px 8px; }
+}
+.pd-shopify-full .pd-shopify-collapsibles {
+  margin: 0;
+}
+
+
+/* ----- Feeding Calculator — seamless brown-bordered fields ----- */
+.calc-pet-card input,
+.calc-pet-card select,
+.feeding-calc .form-group input,
+.feeding-calc .form-group select {
+  border: 1.5px solid #3B2A1A !important;
+  background: transparent !important;
+  color: #3B2A1A;
+}
+.calc-pet-card input:focus,
+.calc-pet-card select:focus,
+.feeding-calc .form-group input:focus,
+.feeding-calc .form-group select:focus {
+  outline: none;
+  border-color: #C8102E !important;
 }
 

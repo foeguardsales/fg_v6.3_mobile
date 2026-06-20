@@ -575,7 +575,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Updated cart + discount logic - COMPLETED"
+    - "Menu/cart refactor (no box builder) — needs frontend retest"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -1148,3 +1148,34 @@ agent_communication:
       
       Both critical fixes are now working correctly. The cart properly closes when clicking outside,
       and the product modal quantity slider correctly initializes to the quantity already in the box.
+
+  - agent: "main"
+    message: |
+      Iteration 18 — MAJOR menu/cart redesign (no box builder) + product/treat pages + calc/meal-plan polish.
+      Frontend-only. Lint clean (pre-existing unescaped-apostrophe warnings in MealPlanPage only).
+      Verified visually via screenshots (menu, cart, product modal, calculator, meal plan).
+
+      1) REMOVED BOX BUILDER: /menu no longer commits "boxes". selectedProteins is the single
+         running basket; "Add to Basket" floating button just opens the cart (no reset/stacking).
+      2) DISCOUNT TIERS (dog): 12-23lb=5%, 24-35lb=10%, 36+lb=15% (was 6/18/24/36). Cat unchanged
+         (12lb=5%). Discount derived live from total meal lbs.
+      3) STOCK UP & SAVE: small collapsible guide replaces the box-size selector (informational
+         tier list, highlights reached tiers).
+      4) FLOATING BUTTON: lb counter on left + "Add to Basket"; thin incentive card floats above
+         ("Add N lb more for X% off"). Desktop button max-width 1232 (slightly wider than 1100 menu).
+      5) CART/CHECKOUT: now render individual meal lines (qty stepper + remove) + treats, no boxes.
+         Empty state "No items in basket". Checkout button "No items in basket" when empty.
+      6) MENU CARD PRICE: shows the 6lb price ("/ 6 lb"), strike-through when a tier discount applies.
+         Product titles semibold, prices lighter weight.
+      7) PRODUCT DETAIL: removed top per-lb price; Size + Price moved under title (inits from menu qty,
+         saves edits on back for items already in basket). Collapsibles moved FULL-WIDTH below the
+         sticky image, reordered/renamed: Ingredients, Nutritional Analysis, Product Information,
+         Feeding Guide, Notes. Floating "Add Xlb to Basket" (removed "to your box").
+      8) TREAT DETAIL: bullet (•/-) lines parsed out of the description into the checkmark feature
+         list (meal style). Collapsibles full-width. "Add X to Basket".
+      9) FEEDING CALCULATOR: removed single "Pet" title; cards/inputs = transparent bg + thin brown
+         (#3B2A1A) borders (seamless). MEAL PLAN: removed container-within-container (outer white
+         cards → transparent), brown borders, matching the calculator.
+
+      NOTE: Stripe/Brevo/Cloudflare keys are MOCKED placeholders (restored after container reset),
+      so live checkout payment will not complete. Not yet run through the automated frontend agent.
