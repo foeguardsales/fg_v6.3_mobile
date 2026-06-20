@@ -1954,8 +1954,8 @@ h2, h3, h4 {
 }
 .product-card-price .price-unit {
   font-size: 11px;
-  color: #8A7156;
-  font-weight: 500;
+  color: #3B2A1A;
+  font-weight: 800;
 }
 .product-card-price .price-unit strong {
   font-weight: 800;
@@ -6044,7 +6044,7 @@ h2, h3, h4 {
 .pd-shopify-adds-total {
   font-family: 'Barlow Semi Condensed', sans-serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
   color: #3B2A1A;
   display: inline-flex;
   align-items: center;

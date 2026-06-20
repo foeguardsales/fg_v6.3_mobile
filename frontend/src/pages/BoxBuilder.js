@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
-import { Calculator, Wheat, PawPrint, X, ChevronDown, ChevronUp, Check, Tag } from 'lucide-react';
+import { Calculator, Wheat, PawPrint, X, ChevronDown, ChevronUp, Tag } from 'lucide-react';
 import { ProductDetailModal } from './ProductDetail';
 import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
@@ -987,9 +987,6 @@ const StockUpSave = ({ guide = [], currentLbs = 0 }) => {
                   className={`stock-up-tier ${reached ? 'is-reached' : ''}`}
                   data-testid={`stock-up-tier-${tier.size}`}
                 >
-                  <span className="stock-up-tier-check">
-                    {reached ? <Check size={14} strokeWidth={3} /> : null}
-                  </span>
                   <span className="stock-up-tier-size">{tier.size}lb+</span>
                   <span className="stock-up-tier-off">{tier.discount}% off</span>
                 </div>
