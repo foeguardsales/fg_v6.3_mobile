@@ -5470,7 +5470,7 @@ h2, h3, h4 {
     transform: translateX(-50%);
     bottom: 16px;
     width: 100%;
-    max-width: 1232px;
+    max-width: 1100px;
     font-size: 17px;
     padding: 18px 32px;
   }
@@ -5688,7 +5688,7 @@ h2, h3, h4 {
     transform: translateX(-50%);
     bottom: 16px;
     width: 100%;
-    max-width: 1232px;
+    max-width: 1100px;
     padding: 18px 32px;
     font-size: 17px;
   }
@@ -7010,8 +7010,8 @@ input, select, textarea {
   background: rgba(255, 255, 255, 0.35);
 }
 .stock-up-tier.is-reached {
-  border-color: #3B2A1A;
-  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(59, 42, 26, 0.25);
+  background: rgba(255, 255, 255, 0.35);
 }
 .stock-up-tier-check {
   display: inline-flex;
@@ -7067,8 +7067,8 @@ input, select, textarea {
   right: 16px;
   z-index: 998;
   margin: 0 auto;
-  background: #D8CFB8;
-  border: 1px solid #C7BC9E;
+  background: #E8DFC8;
+  border: 1px solid #D8CFB8;
   border-radius: 6px;
   padding: 8px 14px;
   font-family: 'Barlow Semi Condensed', sans-serif;
@@ -7077,7 +7077,7 @@ input, select, textarea {
   text-align: center;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
-.bb-incentive strong { color: #C8102E; font-weight: 800; }
+.bb-incentive strong { color: #3B2A1A; font-weight: 800; }
 @media (min-width: 760px) {
   .bb-incentive {
     left: 50%;
