@@ -459,15 +459,6 @@ export const BoxBuilder = () => {
           ))}
         </div>
 
-        {/* SEO heading — changes based on selected category */}
-        <h1 className="menu-seo-heading" data-testid="menu-seo-heading">
-          {viewMode === 'treats'
-            ? (petType === 'cat' ? 'Enriching Raw Cat Treats' : 'Enriching Raw Dog Treats')
-            : (petType === 'cat'
-                ? 'Complete Raw Cat Food Nutrition for All-Life Stages'
-                : 'Complete Raw Dog Food Nutrition for All-Life Stages')}
-        </h1>
-
         {/* Main Content - Dog or Cat */}
         <>
             {showBoxSize && (
@@ -497,7 +488,7 @@ export const BoxBuilder = () => {
                     >
                       <div className="menu-collection-banner-text">
                         <h3 className="menu-collection-title">Comfort Dinner</h3>
-                        <p className="menu-collection-desc">Complete raw nutrition for dogs of all-life stages.</p>
+                        <p className="menu-collection-desc">Complete raw food for dogs of all-life stages.</p>
                       </div>
                     </div>
                   </div>
@@ -530,7 +521,7 @@ export const BoxBuilder = () => {
                     >
                       <div className="menu-collection-banner-text">
                         <h3 className="menu-collection-title">Primal Feast</h3>
-                        <p className="menu-collection-desc">Whole prey raw meals made with 80% meat, 10% bone and 10% organ.</p>
+                        <p className="menu-collection-desc">Whole prey raw pet food made with 80% meat, 10% bone and 10% organ.</p>
                       </div>
                     </div>
                   </div>
@@ -575,13 +566,46 @@ export const BoxBuilder = () => {
                     >
                       <div className="menu-collection-banner-text">
                         <h3 className="menu-collection-title">Royal Paws Dinner</h3>
-                        <p className="menu-collection-desc">Complete raw nutrition for cats of all life stages.</p>
+                        <p className="menu-collection-desc">Complete raw food for cats of all-life stages.</p>
                       </div>
                     </div>
                   </div>
                   
                   <div className="product-grid">
                     {royalPawsProducts.map(product => (
+                      <ProductCard 
+                        key={product.product_id}
+                        product={product}
+                        selectedQty={selectedProteins[product.product_id]?.qty || 0}
+                        onUpdate={handleUpdateProtein}
+                        canAdd={canAdd(product.product_id)}
+                        getDiscountedPrice={getDiscountedPrice}
+                        getBasePrice={getBasePrice}
+                        boxSize={boxSize}
+                        navigate={navigate}
+                        petType={petType}
+                        onOpenProduct={(pid) => setActiveProductId(pid)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Primal Feast Collection - CAT (same line as dog, 80/10/10 base) */}
+                <div className="product-collection menu-collection">
+                  <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-primal-cat">
+                    <div
+                      className="menu-collection-banner menu-collection-banner--overlay"
+                      style={{ backgroundImage: `url(${COLLECTION_IMAGES.primal_feast})` }}
+                    >
+                      <div className="menu-collection-banner-text">
+                        <h3 className="menu-collection-title">Primal Feast</h3>
+                        <p className="menu-collection-desc">Whole prey raw pet food made with 80% meat, 10% bone and 10% organ.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="product-grid">
+                    {primalFeastProducts.map(product => (
                       <ProductCard 
                         key={product.product_id}
                         product={product}
@@ -684,6 +708,11 @@ export const BoxBuilder = () => {
                 <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
                 <span className="bb-floating-sep">·</span>
                 <span className="bb-floating-action">Add {lbs > 0 ? `${lbs}lb ` : ''}to Cart</span>
+                {rate > 0 && (
+                  <span className="bb-floating-save" data-testid="floating-save-badge">
+                    Save {Math.round(rate * 100)}%
+                  </span>
+                )}
               </>
             ) : 'Add to Cart'}
           </button>
@@ -800,11 +829,12 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
     if (canAdd) onUpdate(product.product_id, product.name, 6);
   };
 
-  // Always display the 6lb pack price with per-lb price in parens (e.g. $32.94 ($5.49/lb))
-  const sixPackPrice = discountedPrice; // already 6lb base
-  const sixPackOriginal = basePrice;
-  const perLbDiscounted = discountedPerLb;
-  const perLbOriginal = basePerLb;
+  // Display the price for the currently selected qty (default 6lb pack when none selected).
+  // The per-lb price reflects the CURRENT bulk-discount tier across ALL selected meals,
+  // so adding a new product is automatically discounted if the cart already hit a tier.
+  const effectiveLbs = selectedQty > 0 ? selectedQty : 6;
+  const lineTotal = discountedPerLb * effectiveLbs;
+  const perLbDisplay = discountedPerLb;
 
   return (
     <div 
@@ -818,7 +848,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       {/* Image — on RIGHT side (desktop), on TOP (mobile via CSS order) */}
       <div className="product-card-media">
         <img src={productImage} alt={product.name} />
-        {/* + or qty pill — centered over the image */}
+        {/* + or qty pill — bottom-right of image */}
         {selectedQty === 0 ? (
           <button
             className="product-card-plus"
@@ -860,18 +890,8 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         <h4 className="product-card-title">{product.name}</h4>
 
         <div className="product-card-price">
-          {hasDiscount ? (
-            <>
-              <span className="price-original">${sixPackOriginal.toFixed(2)}</span>
-              <span className="price-discounted">${sixPackPrice.toFixed(2)}</span>
-              <span className="price-unit">(${perLbDiscounted.toFixed(2)}/<strong>lb</strong>)</span>
-            </>
-          ) : (
-            <>
-              <span className="price-regular">${sixPackPrice.toFixed(2)}</span>
-              <span className="price-unit">(${perLbDiscounted.toFixed(2)}/<strong>lb</strong>)</span>
-            </>
-          )}
+          <span className="price-regular">${lineTotal.toFixed(2)}</span>
+          <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
         </div>
 
         <p className="product-card-desc">

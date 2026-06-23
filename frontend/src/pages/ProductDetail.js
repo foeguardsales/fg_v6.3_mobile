@@ -591,6 +591,9 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 <span data-testid="qty-price-total" className="pd-shopify-adds-total">
                   ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
                 </span>
+                <span className="pd-shopify-adds-perlb" data-testid="qty-price-perlb">
+                  (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
+                </span>
                 {sizeDiscount > 0 && (
                   <span className="pd-shopify-adds-save" data-testid="product-save-badge">{sizeDiscount}% off</span>
                 )}

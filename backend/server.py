@@ -275,7 +275,10 @@ async def get_products(pet_type: str = None):
     if pet_type == "dog":
         query = {"product_line": {"$in": ["comfort_dinner", "primal_feast"]}}
     elif pet_type == "cat":
-        query = {"product_line": "royal_paws"}
+        query = {"$or": [
+            {"product_line": "royal_paws"},
+            {"product_line": "primal_feast"}
+        ]}
     products = await db.products.find(query, {"_id": 0}).to_list(100)
     return products
 

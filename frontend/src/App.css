@@ -1960,8 +1960,8 @@ h2, h3, h4 {
   font-weight: 500;
 }
 .product-card-price .price-unit strong {
-  font-weight: 700;
-  color: #3B2A1A;
+  font-weight: 500;
+  color: #6A4F35;
 }
 @media (min-width: 760px) {
   .product-card-price .price-regular,
@@ -2007,19 +2007,18 @@ h2, h3, h4 {
   display: block;
 }
 
-/* + add button — Uber Eats style: floating circle, CENTERED over image, well-padded */
+/* + add button — Uber Eats style: floating circle, bottom-right of image, well-padded */
 .product-card-plus {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 48px;
-  height: 48px;
+  bottom: 8px;
+  right: 8px;
+  width: 38px;
+  height: 38px;
   border-radius: 999px;
   background: #FFFFFF;
-  border: 1.5px solid #3B2A1A;
+  border: 1px solid #3B2A1A;
   color: #3B2A1A;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -2028,7 +2027,7 @@ h2, h3, h4 {
   z-index: 4;
   line-height: 1;
   padding: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.14);
   transition: background 0.15s ease, color 0.15s ease;
 }
 .product-card-plus:hover {
@@ -2040,21 +2039,20 @@ h2, h3, h4 {
   cursor: not-allowed;
 }
 
-/* Qty pill when item is selected — CENTERED over image */
+/* Qty pill when item is selected — bottom right of image */
 .product-card-qty-pill {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 8px;
+  right: 8px;
   background: #3B2A1A;
   border: none;
   border-radius: 999px;
-  padding: 4px 6px;
+  padding: 3px 4px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   z-index: 4;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.14);
 }
 .product-card-qty-pill .qty-btn-mini {
   width: 22px;
@@ -5787,15 +5785,15 @@ h2, h3, h4 {
 }
 .product-card-more:hover { color: #6A4F35; }
 
-/* Mobile: + button and qty pill are CENTERED over image */
+/* Mobile: + button and qty pill stay bottom-right of image (well-padded) */
 .product-card-media > .product-card-plus,
 .product-card-media > .product-card-qty-pill {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  transform: translate(-50%, -50%);
+  bottom: 8px;
+  right: 8px;
+  top: auto;
+  left: auto;
+  transform: none;
   z-index: 4;
 }
 
@@ -5827,14 +5825,14 @@ h2, h3, h4 {
     margin-top: auto;
     align-items: center;
   }
-  /* + button and qty pill stay CENTERED over image (same as mobile) */
+  /* + button and qty pill stay bottom-right of image (well-padded) */
   .product-card-media > .product-card-plus,
   .product-card-media > .product-card-qty-pill {
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    transform: translate(-50%, -50%);
+    top: auto;
+    left: auto;
+    right: 8px;
+    bottom: 8px;
+    transform: none;
   }
 }
 
@@ -6079,6 +6077,16 @@ h2, h3, h4 {
   text-transform: uppercase;
   padding: 0 7px;
   border-radius: 3px;
+}
+.pd-shopify-adds-perlb {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6A4F35;
+  margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
 }
 .pd-shopify-adds-original {
   font-family: 'Barlow Semi Condensed', sans-serif;
@@ -7212,20 +7220,7 @@ input, select, textarea {
 }
 
 
-/* ===== Menu SEO heading (H1) — sits below category tabs, above collections ===== */
-.menu-seo-heading {
-  font-family: var(--font-heading);
-  font-size: clamp(22px, 3.6vw, 30px);
-  font-weight: 700;
-  color: #3B2A1A;
-  margin: 8px 0 18px;
-  letter-spacing: 0;
-  line-height: 1.2;
-  text-transform: none;
-}
-@media (min-width: 760px) {
-  .menu-seo-heading { margin: 12px 0 24px; }
-}
+/* ===== Menu SEO heading — REMOVED per user request (use Shopify Headless for SEO) ===== */
 
 /* ===== Floating Add-to-Cart button — parts ===== */
 .bb-floating-checkout {
@@ -7235,6 +7230,24 @@ input, select, textarea {
 .bb-floating-total { font-weight: 700; }
 .bb-floating-sep { opacity: 0.6; padding: 0 2px; }
 .bb-floating-action { font-weight: 700; }
+.bb-floating-save {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  padding: 3px 8px;
+  background: #C9A84C;
+  color: #3B2A1A;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+@media (min-width: 760px) {
+  .bb-floating-save { font-size: 12px; padding: 4px 10px; }
+}
 
 /* qty pill: keep "lb" unit visually consistent with the number */
 .qty-display-mini .qty-lb-unit {
