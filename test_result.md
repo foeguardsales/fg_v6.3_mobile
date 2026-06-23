@@ -1151,6 +1151,22 @@ agent_communication:
 
   - agent: "main"
     message: |
+      Iteration 19 (continuation) — cart line collection prefix:
+      - Added `getCollectionLabel(productId)` helper in BOTH CartDrawer and CheckoutForm that
+        resolves product.product_line → display name ("Comfort Dinner" / "Primal Feast" / "Royal Paws").
+      - Cart drawer: each meal row now shows a small uppercase tagline ABOVE the protein name
+        (e.g. "COMFORT DINNER" / "Royal Paws") so a Comfort Chicken, Primal Chicken and Royal Paws
+        Chicken are visually distinct — the original ambiguity the user flagged.
+      - Checkout Order Summary: prefix inlined as "Comfort Dinner — Free-Range Chicken · 6lb".
+      - Same prefix applied to the per-item Subscribe checklist in checkout.
+      - No data-model change; purely presentational using the products[] catalog already passed in.
+      - Verified visually with 3 simultaneous Chickens in cart (Comfort / Primal / Royal Paws) and
+        in the checkout Order Summary; lint clean.
+      NOTE: backend/.env + frontend/.env were re-restored after another container reset (placeholder
+      Stripe/Brevo/Cloudflare R2 keys, REACT_APP_BACKEND_URL repointed to current preview endpoint).
+      No backend logic changed.
+  - agent: "main"
+    message: |
       Iteration 18 — MAJOR menu/cart redesign (no box builder) + product/treat pages + calc/meal-plan polish.
       Frontend-only. Lint clean (pre-existing unescaped-apostrophe warnings in MealPlanPage only).
       Verified visually via screenshots (menu, cart, product modal, calculator, meal plan).

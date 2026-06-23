@@ -86,6 +86,20 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
     return base / 6;
   };
 
+  // Display label for a product line (collection) so the cart row can show
+  // e.g. "Royal Paws — Free-Range Chicken" instead of just "Free-Range Chicken".
+  // This prevents collisions across collections (a dog Chicken vs a cat Chicken).
+  const COLLECTION_LABELS = {
+    comfort_dinner: 'Comfort Dinner',
+    primal_feast: 'Primal Feast',
+    royal_paws: 'Royal Paws'
+  };
+  const getCollectionLabel = (pid) => {
+    const product = products.find(p => p.product_id === pid);
+    if (!product) return '';
+    return COLLECTION_LABELS[product.product_line] || '';
+  };
+
   // Single unified discount tier — applies regardless of pet type / mix
   const RATES = DISCOUNT_RATES;
 
@@ -194,10 +208,19 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             </div>
           )}
 
-          {proteinEntriesAll.map(([pid, data]) => (
+          {proteinEntriesAll.map(([pid, data]) => {
+            const collectionLabel = getCollectionLabel(pid);
+            return (
             <div key={pid} className="cart-item cart-line" data-testid={`cart-protein-${pid}`}>
               <div className="cart-line-info">
-                <span className="cart-line-name">{data.name}</span>
+                <span className="cart-line-name">
+                  {collectionLabel && (
+                    <span className="cart-line-collection" style={{ display: 'block', fontSize: '11px', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#8A6F4F', marginBottom: '2px' }}>
+                      {collectionLabel}
+                    </span>
+                  )}
+                  {data.name}
+                </span>
                 <span className="cart-line-sub">{data.qty} lb</span>
               </div>
               <div className="cart-line-right">
@@ -227,7 +250,8 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 )}
               </div>
             </div>
-          ))}
+            );
+          })}
           
           {selectedTreats.map(treat => (
             <div key={treat.treat_id} className="cart-item" data-testid={`cart-treat-${treat.treat_id}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -789,6 +813,18 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
     return p ? (p.pricing.find(z => z.size_lb === 6)?.price || 0) / 6 : 0;
   };
 
+  // Collection label so the summary row matches the cart (e.g. "Royal Paws — Free-Range Chicken")
+  const COLLECTION_LABELS = {
+    comfort_dinner: 'Comfort Dinner',
+    primal_feast: 'Primal Feast',
+    royal_paws: 'Royal Paws'
+  };
+  const getCollectionLabel = (pid) => {
+    const p = products.find(x => x.product_id === pid);
+    if (!p) return '';
+    return COLLECTION_LABELS[p.product_line] || '';
+  };
+
   // Setup Payment Request Button for Apple Pay / Google Pay
   useEffect(() => {
     if (!stripe) return;
@@ -1024,12 +1060,16 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
       {/* Order Summary */}
       <div className="checkout-summary">
         <h3>Order Summary</h3>
-        {checkoutProteinEntries.map(([pid, data]) => (
+        {checkoutProteinEntries.map(([pid, data]) => {
+          const collectionLabel = getCollectionLabel(pid);
+          const displayName = collectionLabel ? `${collectionLabel} — ${data.name}` : data.name;
+          return (
           <div key={pid} className="checkout-summary-row">
-            <span>{data.name} · {data.qty}lb</span>
+            <span>{displayName} · {data.qty}lb</span>
             <span>${(perLb(pid) * (1 - bulkRate) * data.qty).toFixed(2)}</span>
           </div>
-        ))}
+          );
+        })}
         {bulkRate > 0 && (
           <div className="checkout-summary-row" style={{ color: '#6A4F35', fontSize: '13px' }}>
             <span>Bulk discount ({Math.round(bulkRate * 100)}% • {totalMealLbs}lb)</span>
@@ -1236,7 +1276,10 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
                   Subscribe to these items:
                 </label>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  {Object.entries(selectedProteins).filter(([, d]) => d.qty > 0).map(([pid, d]) => (
+                  {Object.entries(selectedProteins).filter(([, d]) => d.qty > 0).map(([pid, d]) => {
+                    const collectionLabel = getCollectionLabel(pid);
+                    const displayName = collectionLabel ? `${collectionLabel} — ${d.name}` : d.name;
+                    return (
                     <label key={pid} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#3B2A1A' }}>
                       <input
                         type="checkbox"
@@ -1244,9 +1287,10 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
                         onChange={() => toggleSubItem(`p:${pid}`)}
                         data-testid={`sub-item-${pid}`}
                       />
-                      <span>{d.name} <span style={{ color: '#6A4F35' }}>· {d.qty}lb</span></span>
+                      <span>{displayName} <span style={{ color: '#6A4F35' }}>· {d.qty}lb</span></span>
                     </label>
-                  ))}
+                    );
+                  })}
                   {selectedTreats.map(t => (
                     <label key={t.treat_id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#3B2A1A' }}>
                       <input
