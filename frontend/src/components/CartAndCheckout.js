@@ -128,7 +128,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
       <div className={`cart-drawer-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
       <div className={`cart-drawer ${isOpen ? 'open' : ''}`} data-testid="cart-drawer" ref={drawerRef}>
         <div className="cart-drawer-header">
-          <h3 style={{ fontSize: '24px', color: '#c8102e', margin: 0 }}>Your Basket</h3>
+          <h3 style={{ fontSize: '24px', color: '#3B2A1A', margin: 0, fontWeight: 700 }}>Your Cart</h3>
           <button onClick={onClose} className="cart-close-btn">×</button>
         </div>
         
@@ -194,7 +194,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
 
           {!canCheckout && (
             <div style={{ textAlign: 'center', padding: '28px 0', color: '#8A7156', fontSize: '14px' }}>
-              No items in basket. Add meals or treats from the menu.
+              No items in cart. Add meals or treats from the menu.
             </div>
           )}
 
@@ -420,7 +420,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 textTransform: 'none'
               }}
             >
-              {canCheckout ? 'Go to checkout' : 'No items in basket'}
+              {canCheckout ? 'Go to checkout' : 'No items in cart'}
             </button>
           </div>
         </div>

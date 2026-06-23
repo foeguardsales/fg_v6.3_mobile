@@ -459,6 +459,15 @@ export const BoxBuilder = () => {
           ))}
         </div>
 
+        {/* SEO heading — changes based on selected category */}
+        <h1 className="menu-seo-heading" data-testid="menu-seo-heading">
+          {viewMode === 'treats'
+            ? (petType === 'cat' ? 'Enriching Raw Cat Treats' : 'Enriching Raw Dog Treats')
+            : (petType === 'cat'
+                ? 'Complete Raw Cat Food Nutrition for All-Life Stages'
+                : 'Complete Raw Dog Food Nutrition for All-Life Stages')}
+        </h1>
+
         {/* Main Content - Dog or Cat */}
         <>
             {showBoxSize && (
@@ -649,29 +658,35 @@ export const BoxBuilder = () => {
         </>
       </div>
 
-      {/* Floating bottom button — opens the basket. Shows a live lb counter on the
-          left and a small incentive card above nudging the next discount tier. */}
+      {/* Floating bottom button — opens the cart. Shows running $total and "Add Xlb to Cart". */}
       {(() => {
         const lbs = getTotalSelectedLbs();
-        const next = getNextTier(lbs, DISCOUNT_RATES);
-        const needed = next ? next.size - lbs : 0;
+        // Compute meal subtotal (with bulk discount) + treats subtotal — matches the cart math
+        const proteinFull = Object.entries(selectedProteins || {}).reduce((s, [pid, d]) => {
+          const product = products.find(p => p.product_id === pid);
+          if (!product) return s;
+          const base = getBasePrice ? getBasePrice(product) : (product.pricing.find(pp => pp.size_lb === 6)?.price || 0);
+          return s + (base / 6) * (d.qty || 0);
+        }, 0);
+        const { rate } = getTierFromLbs(lbs, DISCOUNT_RATES);
+        const proteinDiscounted = proteinFull * (1 - rate);
+        const treatsTotal = (selectedTreats || []).reduce((s, t) => s + (t.price || 0) * (t.quantity || 1), 0);
+        const runningTotal = proteinDiscounted + treatsTotal;
+        const hasItems = lbs > 0 || (selectedTreats && selectedTreats.length > 0);
         return (
-          <>
-            {lbs > 0 && next && needed > 0 && (
-              <div className="bb-incentive" data-testid="discount-incentive">
-                Add <strong>{needed} lb</strong> more for <strong>{next.rate * 100}% off</strong>
-              </div>
-            )}
-            <button
-              onClick={openBasket}
-              data-testid="cart-button"
-              className="bb-floating-checkout"
-            >
-              {lbs > 0 ? (
-                <><span className="bb-floating-lbs">{lbs} lb</span> · Add to Basket</>
-              ) : 'Add to Basket'}
-            </button>
-          </>
+          <button
+            onClick={openBasket}
+            data-testid="cart-button"
+            className="bb-floating-checkout"
+          >
+            {hasItems ? (
+              <>
+                <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
+                <span className="bb-floating-sep">·</span>
+                <span className="bb-floating-action">Add {lbs > 0 ? `${lbs}lb ` : ''}to Cart</span>
+              </>
+            ) : 'Add to Cart'}
+          </button>
         );
       })()}
 
@@ -785,6 +800,12 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
     if (canAdd) onUpdate(product.product_id, product.name, 6);
   };
 
+  // Always display the 6lb pack price with per-lb price in parens (e.g. $32.94 ($5.49/lb))
+  const sixPackPrice = discountedPrice; // already 6lb base
+  const sixPackOriginal = basePrice;
+  const perLbDiscounted = discountedPerLb;
+  const perLbOriginal = basePerLb;
+
   return (
     <div 
       className={`product-card-row ${isSelected ? 'is-selected' : ''}`}
@@ -794,45 +815,17 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter') goToProduct(); }}
     >
-      {/* Stacked content */}
-      <div className="product-card-content">
-        <h4 className="product-card-title">{product.name}</h4>
-        <p className="product-card-desc">
-          {product.mini_description || product.description.split('.')[0]}
-        </p>
-        <div className="product-card-meta">
-          <div className="product-card-price">
-            {hasDiscount ? (
-              <>
-                <span className="price-original">${showOriginal.toFixed(2)}</span>
-                <span className="price-discounted">${showPrice.toFixed(2)}</span>
-              </>
-            ) : (
-              <span className="price-regular">${showPrice.toFixed(2)}</span>
-            )}
-            <span className="price-unit">/ {displayQty} <strong>lb</strong></span>
-          </div>
-          <button
-            className="product-card-more"
-            onClick={(e) => { e.stopPropagation(); goToProduct(); }}
-            data-testid={`learn-more-${product.product_id}`}
-          >
-            See more
-          </button>
-        </div>
-      </div>
-
       {/* Image — on RIGHT side (desktop), on TOP (mobile via CSS order) */}
       <div className="product-card-media">
         <img src={productImage} alt={product.name} />
-        {/* + or qty pill — overlays bottom-right of image */}
+        {/* + or qty pill — centered over the image */}
         {selectedQty === 0 ? (
           <button
             className="product-card-plus"
             onClick={stopAndAdd}
             disabled={!canAdd}
             data-testid={`add-${product.product_id}`}
-            aria-label="Add to box"
+            aria-label="Add to cart"
           >
             +
           </button>
@@ -847,7 +840,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
               −
             </button>
             <span className="qty-display-mini" data-testid={`qty-${product.product_id}`}>
-              {selectedQty}lb
+              {selectedQty}<span className="qty-lb-unit">lb</span>
             </span>
             <button
               className="qty-btn-mini"
@@ -860,6 +853,38 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
             </button>
           </div>
         )}
+      </div>
+
+      {/* Stacked content: Title → Price → Description → See More */}
+      <div className="product-card-content">
+        <h4 className="product-card-title">{product.name}</h4>
+
+        <div className="product-card-price">
+          {hasDiscount ? (
+            <>
+              <span className="price-original">${sixPackOriginal.toFixed(2)}</span>
+              <span className="price-discounted">${sixPackPrice.toFixed(2)}</span>
+              <span className="price-unit">(${perLbDiscounted.toFixed(2)}/<strong>lb</strong>)</span>
+            </>
+          ) : (
+            <>
+              <span className="price-regular">${sixPackPrice.toFixed(2)}</span>
+              <span className="price-unit">(${perLbDiscounted.toFixed(2)}/<strong>lb</strong>)</span>
+            </>
+          )}
+        </div>
+
+        <p className="product-card-desc">
+          {product.mini_description || product.description.split('.')[0]}
+        </p>
+
+        <button
+          className="product-card-more"
+          onClick={(e) => { e.stopPropagation(); goToProduct(); }}
+          data-testid={`learn-more-${product.product_id}`}
+        >
+          See more
+        </button>
       </div>
     </div>
   );

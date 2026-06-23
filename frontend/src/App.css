@@ -1817,10 +1817,10 @@ h2, h3, h4 {
   margin: 0;
 }
 
-/* Product Grid — Uber Eats style: 2-col on mobile, 3-col desktop */
+/* Product Grid — Uber Eats style: 1-col mobile, 3-col desktop */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 14px;
   row-gap: 22px;
   border-top: none;
@@ -1900,8 +1900,8 @@ h2, h3, h4 {
 }
 .product-card-title {
   font-family: var(--font-heading) !important;
-  font-size: 15px !important;
-  font-weight: 600;
+  font-size: 16px !important;
+  font-weight: 700;
   color: #3B2A1A;
   margin: 0 0 4px;
   letter-spacing: 0;
@@ -1909,21 +1909,21 @@ h2, h3, h4 {
   line-height: 1.2;
 }
 @media (min-width: 760px) {
-  .product-card-title { font-size: 17px !important; }
+  .product-card-title { font-size: 18px !important; }
 }
 .product-card-desc {
   font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   color: #6A4F35;
   line-height: 1.4;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 @media (min-width: 760px) {
-  .product-card-desc { font-size: 13px !important; }
+  .product-card-desc { font-size: 14px !important; }
 }
 .product-card-meta {
   display: flex;
@@ -1936,39 +1936,49 @@ h2, h3, h4 {
 .product-card-price {
   display: inline-flex;
   align-items: baseline;
-  gap: 4px;
+  gap: 6px;
   font-family: 'Barlow Semi Condensed', sans-serif;
   flex-wrap: wrap;
+  margin: 2px 0;
 }
 .product-card-price .price-regular,
 .product-card-price .price-discounted {
-  font-size: 15px;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 700;
   color: #3B2A1A;
 }
 .product-card-price .price-original {
-  font-size: 12px;
+  font-size: 13px;
   color: #8A7156;
   text-decoration: line-through;
   margin-right: 2px;
+  font-weight: 500;
 }
 .product-card-price .price-unit {
-  font-size: 11px;
-  color: #3B2A1A;
-  font-weight: 800;
+  font-size: 13px;
+  color: #6A4F35;
+  font-weight: 500;
 }
 .product-card-price .price-unit strong {
-  font-weight: 800;
+  font-weight: 700;
   color: #3B2A1A;
+}
+@media (min-width: 760px) {
+  .product-card-price .price-regular,
+  .product-card-price .price-discounted,
+  .product-card-price .price-original,
+  .product-card-price .price-unit {
+    font-size: 14px;
+  }
 }
 .product-card-more {
   background: transparent;
   border: none;
   padding: 0;
   font-family: 'Barlow Semi Condensed', sans-serif;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  color: #6A4F35;
+  color: #3B2A1A;
   cursor: pointer;
   letter-spacing: 0;
   text-transform: none;
@@ -1977,7 +1987,7 @@ h2, h3, h4 {
   margin-top: 2px;
   display: inline-block;
 }
-.product-card-more:hover { color: #3B2A1A; }
+.product-card-more:hover { color: #6A4F35; }
 
 .product-card-media {
   position: relative;
@@ -1997,18 +2007,19 @@ h2, h3, h4 {
   display: block;
 }
 
-/* + add button — Uber Eats style: floating circle, bottom-right of image, well-padded */
+/* + add button — Uber Eats style: floating circle, CENTERED over image, well-padded */
 .product-card-plus {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 38px;
-  height: 38px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
   border-radius: 999px;
   background: #FFFFFF;
-  border: 1px solid #3B2A1A;
+  border: 1.5px solid #3B2A1A;
   color: #3B2A1A;
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -2017,7 +2028,7 @@ h2, h3, h4 {
   z-index: 4;
   line-height: 1;
   padding: 0;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.14);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
   transition: background 0.15s ease, color 0.15s ease;
 }
 .product-card-plus:hover {
@@ -2029,20 +2040,21 @@ h2, h3, h4 {
   cursor: not-allowed;
 }
 
-/* Qty pill when item is selected — bottom right */
+/* Qty pill when item is selected — CENTERED over image */
 .product-card-qty-pill {
   position: absolute;
-  bottom: -4px;
-  right: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: #3B2A1A;
   border: none;
   border-radius: 999px;
-  padding: 3px 4px;
+  padding: 4px 6px;
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  z-index: 2;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  gap: 4px;
+  z-index: 4;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
 }
 .product-card-qty-pill .qty-btn-mini {
   width: 22px;
@@ -5694,12 +5706,12 @@ h2, h3, h4 {
   }
 }
 
-/* ===== Product card — Mobile: 2-col vertical (image top, See more right of price, + overlays image); Desktop: 2-col horizontal (image RIGHT, content LEFT) ===== */
+/* ===== Product card — Mobile: 1-col vertical (image top, + centered over image, content below); Desktop: 2-col horizontal (image RIGHT, content LEFT) ===== */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  row-gap: 18px;
+  grid-template-columns: 1fr;
+  gap: 0;
+  row-gap: 28px;
   border-top: none;
 }
 @media (min-width: 760px) {
@@ -5710,32 +5722,33 @@ h2, h3, h4 {
   }
 }
 
-/* MOBILE: vertical card */
+/* MOBILE: horizontal card — content LEFT, image RIGHT (app-style list row) */
 .product-card-row {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 0 0 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  gap: 14px;
+  padding: 0 0 22px;
   border-bottom: 1px solid #E0D5BD;
   background: transparent;
   border-radius: 0;
   overflow: visible;
   cursor: pointer;
   position: relative;
+  align-items: start;
 }
-/* On mobile, image should appear ABOVE content even though it's the 2nd DOM child */
+/* On mobile: content first (left), media second (right) */
+.product-card-row > .product-card-content { order: 0; }
 .product-card-row > .product-card-media { order: 1; }
-.product-card-row > .product-card-content { order: 2; }
 
 .product-card-media {
   position: relative;
-  width: 100%;
+  width: 112px;
+  height: 112px;
   aspect-ratio: 1 / 1;
   flex-shrink: 0;
-  background: transparent;
-  border-radius: 8px;
+  background: #FFFFFF;
+  border-radius: 10px;
   overflow: hidden;
-  height: auto;
 }
 .product-card-media img {
   width: 100%;
@@ -5745,46 +5758,45 @@ h2, h3, h4 {
 }
 .product-card-content {
   min-width: 0;
-  padding: 4px 0 0;
+  padding: 0;
   position: relative;
-  min-height: auto;
+  min-height: 112px;
   display: flex;
   flex-direction: column;
+  gap: 4px;
   padding-bottom: 0;
 }
 
-/* Mobile: place "See more" inline to the right of the price, in .product-card-meta */
+/* Mobile: "See more" sits at the bottom of the content column, not inline */
 .product-card-meta {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  margin: 2px 0 0;
+  display: contents;
 }
 .product-card-more {
   background: transparent;
   border: none;
   color: #3B2A1A;
   font-family: 'Barlow Semi Condensed', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   text-decoration: underline;
   padding: 0;
   cursor: pointer;
-  margin: 0;
+  margin: 2px 0 0;
   white-space: nowrap;
+  align-self: flex-start;
 }
 .product-card-more:hover { color: #6A4F35; }
 
-/* Mobile: + button overlays image bottom-right (inside .product-card-media which has position: relative) */
+/* Mobile: + button and qty pill are CENTERED over image */
 .product-card-media > .product-card-plus,
 .product-card-media > .product-card-qty-pill {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  top: auto;
-  left: auto;
-  z-index: 3;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  z-index: 4;
 }
 
 /* DESKTOP: horizontal card — image RIGHT, content LEFT */
@@ -5797,7 +5809,7 @@ h2, h3, h4 {
     align-items: start;
   }
   .product-card-row > .product-card-content { order: 0; }
-  .product-card-row > .product-card-media { order: 0; }
+  .product-card-row > .product-card-media { order: 1; }
   .product-card-media {
     width: 130px;
     height: 130px;
@@ -5815,11 +5827,14 @@ h2, h3, h4 {
     margin-top: auto;
     align-items: center;
   }
-  /* + button stays bottom-right of image with the same 10/10 padding */
+  /* + button and qty pill stay CENTERED over image (same as mobile) */
   .product-card-media > .product-card-plus,
   .product-card-media > .product-card-qty-pill {
-    bottom: 8px;
-    right: 8px;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -7195,4 +7210,52 @@ input, select, textarea {
   outline: none;
   border-color: #C8102E !important;
 }
+
+
+/* ===== Menu SEO heading (H1) — sits below category tabs, above collections ===== */
+.menu-seo-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 3.6vw, 30px);
+  font-weight: 700;
+  color: #3B2A1A;
+  margin: 8px 0 18px;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: none;
+}
+@media (min-width: 760px) {
+  .menu-seo-heading { margin: 12px 0 24px; }
+}
+
+/* ===== Floating Add-to-Cart button — parts ===== */
+.bb-floating-checkout {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+.bb-floating-total { font-weight: 700; }
+.bb-floating-sep { opacity: 0.6; padding: 0 2px; }
+.bb-floating-action { font-weight: 700; }
+
+/* qty pill: keep "lb" unit visually consistent with the number */
+.qty-display-mini .qty-lb-unit {
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 1px;
+  opacity: 0.9;
+}
+
+/* ===== Cart drawer — brown theme overrides ===== */
+.cart-drawer-header h3 { color: #3B2A1A !important; }
+.cart-box-info { border-bottom-color: #C8B89C !important; }
+.cart-total {
+  color: #3B2A1A !important;
+  border-top: 2px solid #3B2A1A !important;
+}
+/* Brown dividers around totals / promo / instructions sections */
+.cart-drawer-content .cart-item { border-bottom: 1px solid #E0D5BD; }
+.cart-line { border-bottom: 1px solid #E0D5BD !important; }
+
+/* Cart line: bold product names, semi-bold prices */
+.cart-line-name { font-weight: 700 !important; }
+.cart-line-price { font-weight: 600 !important; color: #3B2A1A !important; }
 

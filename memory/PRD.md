@@ -9,6 +9,20 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 
 ## What's Implemented (Feb 2026)
 
+### 2026-02-23 — Menu mobile redesign + cart copy refresh
+- **Mobile menu**: switched to 1-product-per-row vertical grid (app-style list); content (Title → Price → Description → See More) on the left, image on the right
+- **Product cards**: '+' add button now CENTERED over the image's white background; qty pill also centered when item is selected
+- **Pricing display**: every card shows the 6lb pack price with per-lb in parens, e.g. `$32.94 ($5.49/lb)` — strike-through 6lb original price still shown when bulk discount applies
+- **Font hierarchy**: price / `/lb` / description / "See more" unified at 13px mobile / 14px desktop, all brown `#3B2A1A`–`#6A4F35`
+- **SEO H1**: added category-aware heading below the tabs
+  - Raw Dog Food → "Complete Raw Dog Food Nutrition for All-Life Stages"
+  - Raw Dog Treats → "Enriching Raw Dog Treats"
+  - Raw Cat Food → "Complete Raw Cat Food Nutrition for All-Life Stages"
+  - Raw Cat Treats → "Enriching Raw Cat Treats"
+- **Floating cart button**: removed the "Add X lb more for Y% off" incentive nudge container; button now reads `$Total · Add Xlb to Cart` (lowercase "to Cart", brown bg unchanged)
+- **Cart drawer**: "Your Basket" → **Your Cart** (brown `#3B2A1A`, not red); "No items in basket" → "No items in cart"; product names bold, prices semi-bold; total / promo / cart-line dividers switched to brown
+- **Schema markup + anchor wrapping**: SKIPPED — user is moving to Shopify Headless and will handle SEO/structured data there
+
 ### Marketing pages
 - **/** Landing — hero (solid khaki `#D8CFB8`), Shop Farm Fresh (cream + khaki pills), Why FoeGuard Raw (clean rows w/ khaki dividers + small image), Family Tradition story, Customers Notice Benefits (locked 3×2 on desktop), reviews, footer
 - **/about** — About Us hero / Our Story / 3-image farm grid / See the FoeGuard Difference / Nature Nurtured by Science / **Our Ingredients** (8 protein cards) / smaller signup CTA
