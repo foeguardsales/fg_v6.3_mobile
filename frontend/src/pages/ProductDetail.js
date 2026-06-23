@@ -398,22 +398,19 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     navigate('/menu');
   };
   
-  // Bulk discount tiers keyed by total lbs of meals in the basket
-  const DOG_DISCOUNT_RATES = { 0: 0, 12: 0.05, 24: 0.10, 36: 0.15 };
-  const CAT_DISCOUNT_RATES = { 0: 0, 12: 0.05 };
+  // Unified bulk discount tiers — applies to TOTAL meal lbs across all pet types
+  const DISCOUNT_RATES = { 0: 0, 12: 0.05, 24: 0.10, 36: 0.15 };
   const getTierFromLbs = (lbs, rates) => {
     const sizes = Object.keys(rates).map(Number).sort((a, b) => a - b);
     let chosen = { size: sizes[0], rate: rates[sizes[0]] };
     sizes.forEach(s => { if (lbs >= s) chosen = { size: s, rate: rates[s] }; });
     return chosen;
   };
-  const isCat = product?.product_line === 'royal_paws';
-  const RATES = isCat ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
   // Effective lbs = other meals already in the basket + this product's chosen size
   const otherLbs = Object.entries(selectedProteins || {})
     .filter(([pid]) => pid !== productId)
     .reduce((s, [, d]) => s + (d.qty || 0), 0);
-  const bulkRate = getTierFromLbs(otherLbs + quantity, RATES).rate;
+  const bulkRate = getTierFromLbs(otherLbs + quantity, DISCOUNT_RATES).rate;
 
   const getBasePrice = (prod) => {
     const pricing = prod.pricing.find(p => p.size_lb === 6);

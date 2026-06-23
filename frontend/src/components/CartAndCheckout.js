@@ -7,9 +7,8 @@ import { Trash2, Edit2 } from 'lucide-react';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Bulk discount tiers keyed by TOTAL lbs of meals in the basket
-const DOG_DISCOUNT_RATES = { 0: 0, 12: 0.05, 24: 0.10, 36: 0.15 };
-const CAT_DISCOUNT_RATES = { 0: 0, 12: 0.05 };
+// Unified bulk discount tiers — applies to TOTAL meal lbs in cart regardless of pet type
+const DISCOUNT_RATES = { 0: 0, 12: 0.05, 24: 0.10, 36: 0.15 };
 
 const getTierFromLbs = (lbs, rates) => {
   const sizes = Object.keys(rates).map(Number).sort((a, b) => a - b);
@@ -87,11 +86,8 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
     return base / 6;
   };
 
-  // Detect a cat basket from the selected meals' product line
-  const isCat = petType === 'cat' || Object.keys(selectedProteins || {}).some(pid =>
-    products.find(p => p.product_id === pid)?.product_line === 'royal_paws'
-  );
-  const RATES = isCat ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
+  // Single unified discount tier — applies regardless of pet type / mix
+  const RATES = DISCOUNT_RATES;
 
   // Live total lbs of meals + the bulk-discount tier reached
   const proteinEntriesAll = Object.entries(selectedProteins || {}).filter(([, d]) => d.qty > 0);
@@ -783,11 +779,8 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
     setSubscriptionItems(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
   };
 
-  // Bulk-discount tier derived live from the total lbs of meals
-  const isCat = Object.keys(selectedProteins || {}).some(pid =>
-    products.find(p => p.product_id === pid)?.product_line === 'royal_paws'
-  );
-  const RATES = isCat ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
+  // Bulk-discount tier derived live from the total lbs of meals (unified across pet types)
+  const RATES = DISCOUNT_RATES;
   const checkoutProteinEntries = Object.entries(selectedProteins || {}).filter(([, d]) => d.qty > 0);
   const totalMealLbs = checkoutProteinEntries.reduce((s, [, d]) => s + d.qty, 0);
   const bulkRate = getTierFromLbs(totalMealLbs, RATES).rate;

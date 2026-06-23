@@ -11,7 +11,8 @@ import { FeedingCalculator } from '../components/FeedingCalculator';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Bulk discount tiers keyed by the TOTAL lbs of meals in the basket - DOG
+// Bulk discount tiers keyed by the TOTAL lbs of meals in the basket
+// One unified tier scheme across all pet types — dog + cat meals are pooled.
 const DOG_DISCOUNT_RATES = {
   0: 0,
   12: 0.05,
@@ -19,10 +20,12 @@ const DOG_DISCOUNT_RATES = {
   36: 0.15
 };
 
-// Bulk discount tiers - CAT (unchanged, smaller scheme)
+// CAT now uses the same 3-tier scheme as DOG (mix-and-match allowed)
 const CAT_DISCOUNT_RATES = {
   0: 0,
-  12: 0.05
+  12: 0.05,
+  24: 0.10,
+  36: 0.15
 };
 
 // Stock-up-&-save guide rows (informational only — not a selection) - DOG
@@ -32,9 +35,11 @@ const DOG_TIER_GUIDE = [
   { size: 36, discount: 15 }
 ];
 
-// Guide rows - CAT
+// CAT guide rows now mirror DOG (same 3 tiers)
 const CAT_TIER_GUIDE = [
-  { size: 12, discount: 5 }
+  { size: 12, discount: 5 },
+  { size: 24, discount: 10 },
+  { size: 36, discount: 15 }
 ];
 
 // Determine the discount tier from the ACTUAL total lbs of meals in the basket.
@@ -147,9 +152,11 @@ export const BoxBuilder = () => {
     const loadData = async () => {
       setLoading(true);
       try {
+        // Fetch ALL products (both pet types) so the cart can look up cross-pet items.
+        // Display filtering by product_line happens client-side below.
         const [productsRes, treatsRes] = await Promise.all([
-          axios.get(`${API}/products?pet_type=${petType}`),
-          axios.get(`${API}/treats?pet_type=${petType}`)
+          axios.get(`${API}/products`),
+          axios.get(`${API}/treats`)
         ]);
         setProducts(productsRes.data);
         setTreats(treatsRes.data);
@@ -160,7 +167,7 @@ export const BoxBuilder = () => {
       }
     };
     loadData();
-  }, [petType]);
+  }, []); // load once — products/treats don't change with pet type anymore
 
   // Restore scroll position after loading completes
   useEffect(() => {
@@ -247,8 +254,7 @@ export const BoxBuilder = () => {
   // Reset selections when pet type changes
   const handlePetTypeChange = (newPetType) => {
     setPetType(newPetType);
-    setSelectedProteins({});
-    setSelectedTreats([]);
+    // Cart persists across pet types — discount tiers apply to combined meal lbs.
     // Set default box size for new pet type
     setBoxSize(newPetType === 'cat' ? 6 : 6);
   };
@@ -261,10 +267,7 @@ export const BoxBuilder = () => {
   ];
 
   const handleCategoryClick = (card) => {
-    if (card.petType !== petType) {
-      setSelectedProteins({});
-      setSelectedTreats([]);
-    }
+    // Cart persists across pet types — no clearing on category switch
     setPetType(card.petType);
     setViewMode(card.viewMode);
   };
