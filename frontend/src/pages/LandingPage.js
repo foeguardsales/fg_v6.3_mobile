@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus, Sprout, Leaf, ChefHat, Award } from 'lucide-react';
+import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus, Sprout, Leaf, ChefHat, Award, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useCart, SlideCart } from '../contexts/CartContext';
 
 // FoeGuard Brand Colors — Farm Palette
@@ -585,20 +585,20 @@ export const LandingPage = () => {
 
   const faqs = [
     {
+      q: "What is raw food?",
+      a: "Raw food is uncooked, unprocessed food that contains all the nutrients your dog needs to be healthy and happy. It mimics the diet of a dog's wild ancestors and provides a complete, balanced meal."
+    },
+    {
       q: "Is raw food safe for my dog?",
-      a: "Yes! Our raw food is made in an Ontario Regulated Human Food Kitchen with the same safety standards as human food. We use only human-grade, ethically sourced ingredients."
+      a: "Yes, raw food is safe when prepared correctly and handled hygienically. FoeGuard Raw follows strict safety protocols to ensure the highest quality and safety of our meals."
     },
     {
-      q: "How do I transition my dog to raw?",
-      a: "We recommend a gradual transition over 7-10 days, mixing increasing amounts of raw food with their current diet. Our team is always here to help guide you through the process."
+      q: "How much does FoeGuard Raw cost?",
+      a: "The cost of FoeGuard Raw varies depending on your dog's size, age, and activity level. You can get a personalized quote by filling out our meal plan quiz."
     },
     {
-      q: "How is the food shipped?",
-      a: "All orders are shipped frozen in insulated packaging with dry ice to ensure freshness. We deliver directly to your door across Ontario."
-    },
-    {
-      q: "Can I pause or cancel my subscription?",
-      a: "Absolutely! Your meal plan is completely customizable. Pause, skip, change, or cancel anytime with no commitments or hidden fees."
+      q: "How do I transition my dog to raw food?",
+      a: "We provide detailed transition guides to help you slowly introduce raw food to your dog's diet, minimizing any digestive upset."
     }
   ];
 
@@ -690,7 +690,7 @@ export const LandingPage = () => {
                 letterSpacing: '-0.5px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)'
               }}>
-                Restore Your Dog&apos;s Digestion, Energy and Comfort <span style={{ color: COLORS.red }}>from The Inside Out</span>
+                A healthier dog starts with <span style={{ color: COLORS.red }}>real food.</span>
               </h1>
 
               <p style={{
@@ -703,7 +703,7 @@ export const LandingPage = () => {
                 fontWeight: 400,
                 textShadow: '0 1px 6px rgba(0,0,0,0.45)'
               }}>
-                Begin to see a happier, healthier dog in days with Ontario&apos;s Farm-to-Bowl raw dog food delivery.
+                Better digestion, more energy, and a happier dog — see the difference in days with Ontario&apos;s #1 fresh-made raw dog food.
               </p>
 
               <button
@@ -735,6 +735,20 @@ export const LandingPage = () => {
               >
                 Shop Now
               </button>
+              <p
+                data-testid="hero-guarantee"
+                style={{
+                  fontSize: '13px',
+                  color: COLORS.cream,
+                  opacity: 0.9,
+                  margin: '14px 0 0',
+                  lineHeight: 1.55,
+                  textShadow: '0 1px 6px rgba(0,0,0,0.45)',
+                  maxWidth: '460px'
+                }}
+              >
+                14-day guarantee — not happy? Return unused packs for a full refund.
+              </p>
             </div>
           </div>
         </section>
@@ -773,7 +787,7 @@ export const LandingPage = () => {
                   cta: 'Get Started'
                 },
                 {
-                  title: 'Raw Dog Food',
+                  title: 'Raw Dog Food Menu',
                   desc: 'Fresh food that is easy to portion and serve, ensuring balanced, nutritious meals every day.',
                   image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
                   path: '/menu',
@@ -864,18 +878,18 @@ export const LandingPage = () => {
                 marginBottom: '16px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
-                Why <span style={{ color: COLORS.red }}>FoeGuard</span> Raw?
+                Why <span style={{ color: COLORS.red }}>FoeGuard</span> Raw
               </h2>
               <p style={{
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
-                fontWeight: 400,
+                fontWeight: 600,
                 color: COLORS.charcoal,
-                opacity: 0.85,
-                lineHeight: 1.6,
+                opacity: 0.95,
+                lineHeight: 1.5,
                 margin: '0 0 14px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
-                Give your best friend their best life with <span style={{ color: COLORS.red, fontWeight: 600 }}>100% Canadian</span> whole-food raw nutrition made for carnivores.
+                From our Acton farm to your dog&apos;s bowl.
               </p>
               <p style={{
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
@@ -886,7 +900,7 @@ export const LandingPage = () => {
                 margin: 0,
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
-                By delivering directly to you, we&apos;re able to invest more into fresher ingredients, premium cuts and complete meals without the retail markups, vague labels or low-quality meat. Something you and your doggo can both feel good about.
+                We raise and grow almost all of our ingredients. Every meal is made fresh weekly in our human-grade kitchen. No retail markups, no vague labels, no low-quality meat. Just real, complete meals you and your dog can both feel good about.
               </p>
             </div>
 
@@ -920,7 +934,7 @@ export const LandingPage = () => {
                   { Icon: Sprout, title: 'Farm Fresh', desc: 'Locally sourced and hand-crafted in small batches every week.' },
                   { Icon: Leaf, title: '100% Organic', desc: 'Raised on open pastures, clean feed and without hormones, fillers or additives.' },
                   { Icon: ChefHat, title: 'Human Grade', desc: 'Real food meals prepared in our Ontario regulated human food kitchen.' },
-                  { Icon: Award, title: 'Complete Nutrition', desc: 'Biologically appropriate and made to AAFCO standards. No balancing or supplements needed.' }
+                  { Icon: Award, title: 'Complete Nutrition', desc: 'Biologically appropriate (BARF) and made to AAFCO standards. No balancing or supplements needed.' }
                 ].map((item, i, arr) => {
                   const Icon = item.Icon;
                   const isLast = i === arr.length - 1;
@@ -996,7 +1010,7 @@ export const LandingPage = () => {
                 lineHeight: 1.6,
                 color: COLORS.softBg
               }}>
-                Here&apos;s what you can expect from real food nutrition:
+                Here&apos;s what real customers are saying about FoeGuard Raw.
               </p>
             </div>
 
@@ -1073,6 +1087,203 @@ export const LandingPage = () => {
                 Learn More
               </button>
             </div>
+          </div>
+        </section>
+
+        {/* SECTION 6 — DOES YOUR DOG NEED FOEGUARD RAW? */}
+        <section style={{
+          background: COLORS.cream,
+          padding: '60px 20px'
+        }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
+              <h2 style={{
+                fontSize: 'clamp(30px, 3.6vw, 40px)',
+                fontWeight: '700',
+                color: COLORS.charcoal,
+                lineHeight: 1.25,
+                marginBottom: '12px',
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
+              }}>
+                Does Your Dog Need <span style={{ color: COLORS.red }}>FoeGuard Raw?</span>
+              </h2>
+            </div>
+
+            <div
+              data-testid="does-your-dog-need-grid"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                gap: '14px',
+                maxWidth: '980px',
+                margin: '0 auto'
+              }}
+            >
+              {[
+                'Your dog is prone to upset stomach.',
+                'Your dog has seasonal allergies.',
+                'Your dog has dull fur or dry skin.',
+                'Your dog is overweight or underweight.',
+                'Your dog needs more energy.',
+                'Your dog is a picky eater.',
+                'Your dog has bad breath.'
+              ].map((line, i) => (
+                <div key={i} style={{
+                  background: COLORS.white,
+                  border: `1px solid ${COLORS.khaki}`,
+                  borderRadius: '12px',
+                  padding: '18px 18px',
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px',
+                  boxShadow: '3px 3px 0px rgba(0,0,0,0.05)'
+                }}>
+                  <AlertCircle size={22} color={COLORS.red} style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <p style={{
+                    margin: 0,
+                    fontSize: '15px',
+                    color: COLORS.charcoal,
+                    lineHeight: 1.5,
+                    fontFamily: "'Barlow Semi Condensed', sans-serif"
+                  }}>
+                    {line}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 7 — FRESH INGREDIENTS, PREPARED WITH CARE */}
+        <section style={{
+          background: COLORS.white,
+          padding: '60px 20px'
+        }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 32px' }}>
+              <h2 style={{
+                fontSize: 'clamp(30px, 3.6vw, 40px)',
+                fontWeight: '700',
+                color: COLORS.charcoal,
+                lineHeight: 1.25,
+                marginBottom: '12px',
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
+              }}>
+                Fresh Ingredients, <span style={{ color: COLORS.red }}>Prepared with Care</span>
+              </h2>
+              <p style={{
+                fontSize: 'clamp(15px, 1.8vw, 17px)',
+                color: COLORS.charcoal,
+                opacity: 0.82,
+                lineHeight: 1.6,
+                margin: '0 0 18px',
+                fontWeight: 400,
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
+              }}>
+                See what makes FoeGuard Raw meals so nutritious and delicious.
+              </p>
+              <p style={{
+                fontSize: '15px',
+                color: COLORS.charcoal,
+                opacity: 0.85,
+                lineHeight: 1.7,
+                margin: 0
+              }}>
+                Our ingredients are sourced from trusted, local farms and are carefully prepared in our human-grade kitchen. We use only fresh, whole foods that are packed with nutrients your dog needs to thrive.
+              </p>
+            </div>
+
+            <ul
+              data-testid="fresh-ingredients-list"
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: '0 auto',
+                maxWidth: '720px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}
+            >
+              {[
+                'High-quality protein sources like beef, chicken, turkey, lamb and fish.',
+                'Wholesome vegetables and fruits for essential vitamins and minerals.',
+                'Healthy fats for a shiny coat and healthy skin.',
+                'No artificial preservatives, colors or flavors.',
+                'No fillers like corn, wheat, or soy.'
+              ].map((line, i) => (
+                <li key={i} style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px',
+                  padding: '14px 18px',
+                  background: COLORS.cream,
+                  border: `1px solid ${COLORS.khaki}`,
+                  borderRadius: '10px'
+                }}>
+                  <CheckCircle2 size={22} color={COLORS.red} style={{ flexShrink: 0, marginTop: '1px' }} />
+                  <span style={{
+                    fontSize: '15px',
+                    color: COLORS.charcoal,
+                    lineHeight: 1.55,
+                    fontFamily: "'Barlow Semi Condensed', sans-serif"
+                  }}>
+                    {line}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* SECTION 8 — YOUR MEAL PLAN IS READY! */}
+        <section style={{
+          background: COLORS.softBg,
+          padding: '60px 20px'
+        }}>
+          <div style={{ maxWidth: '780px', margin: '0 auto', textAlign: 'center' }}>
+            <h2 style={{
+              fontSize: 'clamp(30px, 3.6vw, 40px)',
+              fontWeight: '700',
+              color: COLORS.charcoal,
+              lineHeight: 1.25,
+              marginBottom: '12px',
+              fontFamily: "'Barlow Semi Condensed', sans-serif"
+            }}>
+              Your Meal Plan is <span style={{ color: COLORS.red }}>Ready!</span>
+            </h2>
+            <p style={{
+              fontSize: 'clamp(15px, 1.8vw, 17px)',
+              color: COLORS.charcoal,
+              opacity: 0.82,
+              lineHeight: 1.6,
+              margin: '0 0 16px',
+              fontWeight: 400,
+              fontFamily: "'Barlow Semi Condensed', sans-serif"
+            }}>
+              The easiest way to feed your dog the best food possible.
+            </p>
+            <p style={{
+              fontSize: '15px',
+              color: COLORS.charcoal,
+              opacity: 0.85,
+              lineHeight: 1.7,
+              margin: '0 0 28px',
+              maxWidth: '620px',
+              marginLeft: 'auto',
+              marginRight: 'auto'
+            }}>
+              Simply answer a few questions about your dog and we&apos;ll create a personalized meal plan tailored to their specific needs. You&apos;ll know exactly how much to feed and what to feed.
+            </p>
+            <button
+              data-testid="meal-plan-cta"
+              onClick={() => navigate('/meal-plan')}
+              style={liftedButtonStyle}
+              onMouseEnter={(e) => liftedButtonHover(e, true)}
+              onMouseLeave={(e) => liftedButtonHover(e, false)}
+            >
+              Get Started Now
+            </button>
           </div>
         </section>
 
@@ -1380,19 +1591,33 @@ export const LandingPage = () => {
         {/* FAQ SECTION */}
         <section style={{
           background: COLORS.white,
-          padding: '60px 20px'
+          padding: '60px 20px 80px'
         }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 style={{
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
-              marginBottom: '36px',
+              marginBottom: '10px',
               color: COLORS.charcoal,
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
               Frequently Asked <span style={{ color: COLORS.red }}>Questions</span>
             </h2>
+            <p
+              data-testid="faq-sub"
+              style={{
+                fontSize: 'clamp(15px, 1.8vw, 17px)',
+                color: COLORS.charcoal,
+                opacity: 0.82,
+                lineHeight: 1.6,
+                textAlign: 'center',
+                margin: '0 0 36px',
+                fontFamily: "'Barlow Semi Condensed', sans-serif"
+              }}
+            >
+              Here are some common questions about FoeGuard Raw.
+            </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {faqs.map((faq, i) => (
@@ -1442,109 +1667,18 @@ export const LandingPage = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* FINAL CTA */}
-        <section style={{
-          background: `linear-gradient(135deg, ${COLORS.red} 0%, ${COLORS.redOverlay} 100%)`,
-          padding: '80px 20px',
-          textAlign: 'center',
-          color: COLORS.cream
-        }}>
-          <div style={{ maxWidth: '760px', margin: '0 auto' }}>
-            <h2 style={{
-              fontSize: 'clamp(30px, 3.6vw, 40px)',
-              fontWeight: '700',
-              marginBottom: '16px',
-              color: COLORS.cream,
-              fontFamily: "'Barlow Semi Condensed', sans-serif"
-            }}>
-              See the FoeGuard Difference
-            </h2>
-            <p style={{
-              fontSize: 'clamp(16px, 1.8vw, 19px)',
-              marginBottom: '32px',
-              opacity: 0.95,
-              color: COLORS.cream,
-              lineHeight: 1.55
-            }}>
-              Discover the meals that work for your dog, not against them.
-            </p>
-
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-              width: 'fit-content',
-              maxWidth: '100%',
-              margin: '0 auto 40px',
-              textAlign: 'left'
-            }}>
-              {[
-                'Build your box or your own meal plan. Pause, change or cancel anytime.',
-                'Watch your dog thrive as digestion, weight, energy and allergies start to improve.',
-                'We deliver straight to your door. Subscribe to save and never run out of food.'
-              ].map((line, i) => (
-                <div key={i} style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '12px',
-                  textAlign: 'left'
-                }}>
-                  <span style={{
-                    flexShrink: 0,
-                    width: '22px',
-                    height: '22px',
-                    borderRadius: '50%',
-                    background: COLORS.cream,
-                    color: COLORS.red,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '13px',
-                    fontWeight: 800,
-                    marginTop: '2px'
-                  }}>✓</span>
-                  <p style={{
-                    fontSize: '15px',
-                    lineHeight: 1.6,
-                    margin: 0,
-                    color: COLORS.cream,
-                    opacity: 0.95,
-                    fontFamily: "'Barlow Semi Condensed', sans-serif"
-                  }}>
-                    {line}
-                  </p>
-                </div>
-              ))}
+            <div style={{ textAlign: 'center', marginTop: '36px' }}>
+              <button
+                data-testid="faq-contact-us"
+                onClick={() => navigate('/contact')}
+                style={liftedButtonStyle}
+                onMouseEnter={(e) => liftedButtonHover(e, true)}
+                onMouseLeave={(e) => liftedButtonHover(e, false)}
+              >
+                Contact Us
+              </button>
             </div>
-
-            <button
-              onClick={() => navigate('/menu')}
-              style={{
-                background: COLORS.white,
-                color: COLORS.red,
-                border: 'none',
-                padding: '18px 48px',
-                borderRadius: '8px',
-                fontSize: '17px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translate(-2px, -2px)';
-                e.currentTarget.style.boxShadow = '6px 6px 0px rgba(0,0,0,0.25)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translate(0, 0)';
-                e.currentTarget.style.boxShadow = '4px 4px 0px rgba(0,0,0,0.2)';
-              }}
-            >
-              Shop Now
-            </button>
           </div>
         </section>
       </main>

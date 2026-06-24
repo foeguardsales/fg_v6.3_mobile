@@ -156,6 +156,158 @@ backend:
           API verified: All treats return complete data including description, ingredients, feeding_guide, product_information
 
 frontend:
+  - task: "Landing page copy refresh (sections 1, 3, 4, 5, 6, 7, 8, 9)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: |
+          Copy-only refresh of the home page (no design/placement changes) per user-supplied
+          new landing-page copy. Specifically:
+          1. HERO (sec 1): H1 → "A healthier dog starts with real food."; sub → "Better digestion,
+             more energy, and a happier dog — see the difference in days with Ontario's #1
+             fresh-made raw dog food."; ADDED guarantee microcopy under the Shop Now CTA:
+             "14-day guarantee — not happy? Return unused packs for a full refund."
+             (data-testid="hero-guarantee").
+          2. TRUST MARQUEE (sec 2): unchanged.
+          3. COLLECTION CARDS (sec 3): "Raw Dog Food" → "Raw Dog Food Menu" (single title swap;
+             desc unchanged). Meaty Treats card untouched.
+          4. WHY FOEGUARD RAW (sec 4): heading "Why FoeGuard Raw?" → "Why FoeGuard Raw" (no `?`);
+             new sub line above body "From our Acton farm to your dog's bowl."; both body
+             paragraphs replaced with single new paragraph; Complete Nutrition bullet now reads
+             "Biologically appropriate (BARF) and made to AAFCO standards...".
+          5. CUSTOMERS NOTICE BENEFITS IN 2 WEEKS (sec 5): subhead updated to "Here's what real
+             customers are saying about FoeGuard Raw." (checklist below unchanged per "don't
+             change placement").
+          6. NEW — DOES YOUR DOG NEED FOEGUARD RAW? (sec 6): inserted right after sec 5.
+             7-symptom card grid (upset stomach, allergies, dull fur/dry skin, weight,
+             energy, picky eater, bad breath) with AlertCircle icons.
+             data-testid="does-your-dog-need-grid".
+          7. NEW — FRESH INGREDIENTS, PREPARED WITH CARE (sec 7): inserted after sec 6. Heading,
+             sub, body paragraph + 5-item check list (proteins, veg/fruit, fats, no
+             preservatives, no fillers). data-testid="fresh-ingredients-list".
+          8. NEW — YOUR MEAL PLAN IS READY! (sec 8): inserted after sec 7. Heading + sub + body
+             + "Get Started Now" CTA routing to /meal-plan. data-testid="meal-plan-cta".
+          9. FAQ (sec 9): added subhead "Here are some common questions about FoeGuard Raw."
+             (data-testid="faq-sub"); replaced all 4 FAQ entries (What is raw food / Is raw food
+             safe / How much does it cost / How do I transition); appended a "Contact Us" button
+             routing to /contact (data-testid="faq-contact-us").
+          - REMOVED entirely: the "See the FoeGuard Difference" final red CTA section
+            (per user note "9 is replacement for the footer section").
+          Imports: added AlertCircle + CheckCircle2 from lucide-react. Lint clean, webpack
+          compiled. Existing Reviews carousel / 8+ Meat Options / "Raw Feeding is a Family
+          Tradition" sections were NOT touched (not in user's new copy + user said not to
+          change placement). Visual screenshot confirmed hero renders correctly.
+          NOTE: backend/.env + frontend/.env were re-restored (placeholder Stripe/Brevo/
+          Cloudflare R2 keys, REACT_APP_BACKEND_URL repointed to current preview endpoint)
+          after container reset.
+      - working: true
+        agent: "testing"
+        comment: |
+          ✅ COMPREHENSIVE COPY REFRESH TESTING COMPLETED - ALL REQUIREMENTS MET (100% PASS)
+          
+          Tested landing page copy refresh at desktop (1440x900) and mobile (390x844) viewports.
+          Verified all 9 sections, structural changes, removal check, and regression checks.
+          
+          **SECTION 1 — HERO: ✅ PASS**
+          - H1 contains "A healthier dog starts with": ✅ PASS
+          - H1 contains "real food.": ✅ PASS
+          - "real food." is in red span: ✅ PASS
+          - Subheader text correct: ✅ PASS ("Better digestion, more energy, and a happier dog — see the difference in days with Ontario's #1 fresh-made raw dog food.")
+          - Shop Now button present: ✅ PASS (button displays "SHOP NOW" and routes to /menu)
+          - Guarantee microcopy present: ✅ PASS (data-testid="hero-guarantee")
+          - Guarantee text correct: ✅ PASS ("14-day guarantee — not happy? Return unused packs for a full refund.")
+          
+          **SECTION 2 — TRUST MARQUEE: ✅ PASS**
+          - Marquee scrolls with trust badges (Farm Fresh, 100% Canadian, Family Owned, Organic, Human Grade)
+          
+          **SECTION 3 — SHOP FARM FRESH CARDS: ✅ PASS**
+          - "Build Your Meal Plan" card present: ✅ PASS
+          - "Raw Dog Food Menu" card present: ✅ PASS (NOT "Raw Dog Food")
+          - "Meaty Treats" card present: ✅ PASS
+          
+          **SECTION 4 — WHY FOEGUARD RAW: ✅ PASS**
+          - Heading "Why FoeGuard Raw" (NO question mark): ✅ PASS
+          - Sub-headline "From our Acton farm to your dog's bowl.": ✅ PASS
+          - Body contains "We raise and grow almost all of our ingredients.": ✅ PASS
+          - Complete Nutrition bullet contains "(BARF)": ✅ PASS ("Biologically appropriate (BARF) and made to AAFCO standards...")
+          
+          **SECTION 5 — CUSTOMERS NOTICE BENEFITS IN 2 WEEKS: ✅ PASS**
+          - Heading "Customers Notice Benefits in Just 2 Weeks": ✅ PASS
+          - Sub-headline "Here's what real customers are saying about FoeGuard Raw.": ✅ PASS
+          - 6-item benefits checklist present: ✅ PASS (Improved Digestibility, Healthier Skin & Coat, More Stable Energy, Muscle Condition Improves, Smaller Firm Stools, Stronger Cleaner Teeth)
+          
+          **SECTION 6 — DOES YOUR DOG NEED FOEGUARD RAW? (NEW): ✅ PASS**
+          - Heading contains "Does Your Dog Need" and "FoeGuard Raw?": ✅ PASS
+          - Grid with data-testid="does-your-dog-need-grid": ✅ PASS
+          - All 7 items present: ✅ PASS (7/7 found)
+            1. "Your dog is prone to upset stomach." ✓
+            2. "Your dog has seasonal allergies." ✓
+            3. "Your dog has dull fur or dry skin." ✓
+            4. "Your dog is overweight or underweight." ✓
+            5. "Your dog needs more energy." ✓
+            6. "Your dog is a picky eater." ✓
+            7. "Your dog has bad breath." ✓
+          
+          **SECTION 7 — FRESH INGREDIENTS, PREPARED WITH CARE (NEW): ✅ PASS**
+          - Heading contains "Fresh Ingredients" and "Prepared with Care": ✅ PASS
+          - Sub-headline "See what makes FoeGuard Raw meals so nutritious and delicious.": ✅ PASS
+          - Body contains "sourced from trusted, local farms": ✅ PASS
+          - List with data-testid="fresh-ingredients-list": ✅ PASS
+          - All 5 items present: ✅ PASS (5/5 found)
+            1. "High-quality protein sources like beef, chicken, turkey, lamb and fish." ✓
+            2. "Wholesome vegetables and fruits for essential vitamins and minerals." ✓
+            3. "Healthy fats for a shiny coat and healthy skin." ✓
+            4. "No artificial preservatives, colors or flavors." ✓
+            5. "No fillers like corn, wheat, or soy." ✓
+          
+          **SECTION 8 — YOUR MEAL PLAN IS READY! (NEW): ✅ PASS**
+          - Heading contains "Your Meal Plan is" and "Ready!": ✅ PASS
+          - Sub-headline "The easiest way to feed your dog the best food possible.": ✅ PASS
+          - Body contains "Simply answer a few questions about your dog": ✅ PASS
+          - Button "Get Started Now" (data-testid="meal-plan-cta") navigates to /meal-plan: ✅ PASS
+          
+          **SECTION 9 — FREQUENTLY ASKED QUESTIONS (UPDATED): ✅ PASS**
+          - Heading "Frequently Asked Questions": ✅ PASS
+          - Sub-headline (data-testid="faq-sub") "Here are some common questions about FoeGuard Raw.": ✅ PASS
+          - All 4 FAQs present in correct order: ✅ PASS (4/4 found)
+            1. "What is raw food?" ✓
+            2. "Is raw food safe for my dog?" ✓
+            3. "How much does FoeGuard Raw cost?" ✓
+            4. "How do I transition my dog to raw food?" ✓
+          - Each FAQ expands when clicked: ✅ PASS
+          - "Contact Us" button (data-testid="faq-contact-us") navigates to /contact: ✅ PASS
+          
+          **REMOVAL CHECK: ✅ PASS**
+          - "See the FoeGuard Difference" phrase NOT present anywhere on page: ✅ PASS (correctly removed)
+          
+          **REGRESSION CHECKS: ✅ PASS**
+          - Reviews carousel "Hear from Happy FoeGuardians": ✅ PASS (still present)
+          - Protein grid "Pick Your Dog's Favourites From 8+ Delicious Meat Options": ✅ PASS (still present)
+          - About block "Raw Feeding is a Family Tradition": ✅ PASS (still present)
+          - Footer: ✅ PASS (still renders)
+          
+          **MOBILE TESTING (390x844): ✅ PASS**
+          - Hero H1 + subhead + Shop Now + guarantee microcopy all visible: ✅ PASS
+          - No horizontal scroll: ✅ PASS
+          - New sections 6, 7, 8 readable and stack gracefully: ✅ PASS
+          - Card grids stack to single column on mobile: ✅ PASS
+          
+          **CONSOLE ERRORS: ✅ PASS**
+          - No console errors found (only expected Stripe test-mode 401 / Cloudflare CDN noise)
+          
+          **SCREENSHOTS CAPTURED:**
+          - Desktop: Full page, Hero, Collection Cards, Why FoeGuard Raw, Benefits, Does Your Dog Need, Fresh Ingredients, Meal Plan Ready, FAQ, Reviews Carousel, Protein Grid, About Block, Footer
+          - Mobile: Hero, New Sections, Full Page
+          
+          **OVERALL VERDICT:**
+          All 43 checklist items verified and passed. Copy refresh is production-ready with no issues found.
+
   - task: "Redesigned Menu flow - Tim Hortons style (/menu)"
     implemented: true
     working: true
@@ -574,8 +726,7 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Menu/cart refactor (no box builder) — needs frontend retest"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -1195,3 +1346,19 @@ agent_communication:
 
       NOTE: Stripe/Brevo/Cloudflare keys are MOCKED placeholders (restored after container reset),
       so live checkout payment will not complete. Not yet run through the automated frontend agent.
+  - agent: "testing"
+    message: |
+      ✅ LANDING PAGE COPY REFRESH TESTING COMPLETED - ALL REQUIREMENTS MET (100% PASS)
+      
+      Comprehensive testing of landing page copy refresh completed successfully at desktop (1440x900) 
+      and mobile (390x844) viewports. All 43 checklist items verified and passed.
+      
+      **SUMMARY:**
+      - All 9 sections verified with correct copy
+      - 3 new sections added successfully (sections 6, 7, 8)
+      - 1 section removed successfully ("See the FoeGuard Difference")
+      - All regression checks passed (Reviews, Protein grid, About block, Footer)
+      - Mobile responsive design working perfectly
+      - No console errors found
+      
+      Ready for production deployment.
