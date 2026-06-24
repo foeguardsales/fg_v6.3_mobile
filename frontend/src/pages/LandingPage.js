@@ -839,7 +839,6 @@ export const LandingPage = () => {
                     <p style={{
                       fontSize: '14px',
                       color: COLORS.charcoal,
-                      opacity: 0.7,
                       lineHeight: '1.5',
                       marginBottom: '16px'
                     }}>
@@ -884,7 +883,6 @@ export const LandingPage = () => {
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
                 fontWeight: 600,
                 color: COLORS.charcoal,
-                opacity: 0.95,
                 lineHeight: 1.5,
                 margin: '0 0 14px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
@@ -895,7 +893,6 @@ export const LandingPage = () => {
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
                 fontWeight: 400,
                 color: COLORS.charcoal,
-                opacity: 0.85,
                 lineHeight: 1.6,
                 margin: 0,
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
@@ -969,7 +966,6 @@ export const LandingPage = () => {
                         <p style={{
                           fontSize: '14px',
                           color: COLORS.charcoal,
-                          opacity: 0.78,
                           margin: 0,
                           lineHeight: 1.55
                         }}>
@@ -1108,7 +1104,7 @@ export const LandingPage = () => {
             }}>
               Hear from Happy <span style={{ color: COLORS.red }}>FoeGuardians</span>
             </h2>
-            <p style={{ textAlign: 'center', color: COLORS.charcoal, opacity: 0.85, marginBottom: '32px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '15px' }}>
+            <p style={{ textAlign: 'center', color: COLORS.charcoal, marginBottom: '32px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '15px' }}>
               93% of FoeGuardians reported a healthy change in digestion, coat, allergies or energy. Real food, real results.
             </p>
           </div>
@@ -1239,7 +1235,6 @@ export const LandingPage = () => {
               <p style={{
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
                 color: COLORS.charcoal,
-                opacity: 0.82,
                 lineHeight: 1.6,
                 margin: 0,
                 fontWeight: 400,
@@ -1431,7 +1426,6 @@ export const LandingPage = () => {
                       padding: '0 24px 20px',
                       fontSize: '15px',
                       color: COLORS.charcoal,
-                      opacity: 0.8,
                       lineHeight: '1.6'
                     }}>
                       {faq.a}
