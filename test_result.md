@@ -651,6 +651,35 @@ frontend:
           - All functionality working as expected
           - Discount calculations accurate
 
+  - task: "Landing page cleanup - remove 3 sections and update benefits list"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: |
+          ✅ VERIFIED - All 3 cleanup requirements met perfectly:
+          1. "nutrient absorption" phrase removed (does not appear anywhere)
+          2. All 4 removed section headings/phrases confirmed absent:
+             - "Does Your Dog Need"
+             - "Fresh Ingredients, Prepared with Care"
+             - "Your Meal Plan is Ready"
+             - "Get Started Now" button
+          3. Benefits list under "Customers Notice Benefits in Just 2 Weeks" contains
+             EXACTLY the 5 required items (no extras):
+             - Shinier, softer coat
+             - Healthier digestion
+             - More energy
+             - Better breath
+             - Less shedding
+          
+          Tested at desktop (1280x900) viewport. No other testing performed as requested.
+          Landing page cleanup is production-ready.
+
   - task: "Updated cart + discount logic - smart auto-tier, basket UI, subscribe dropdown"
     implemented: true
     working: true
@@ -1362,3 +1391,50 @@ agent_communication:
       - No console errors found
       
       Ready for production deployment.
+  - agent: "main"
+    message: |
+      Iteration 20 (continuation) — landing page cleanup:
+      Removed 3 sections that were added by mistake (sections 6, 7, 8):
+      - "Does Your Dog Need FoeGuard Raw?" (7-symptom card grid)
+      - "Fresh Ingredients, Prepared with Care" (5-item checklist)
+      - "Your Meal Plan is Ready!" (CTA section with "Get Started Now" button)
+      
+      Updated section 5 "Customers Notice Benefits in Just 2 Weeks":
+      - Replaced 6-item benefits checklist with shorter 5-item list:
+        1. Shinier, softer coat
+        2. Healthier digestion
+        3. More energy
+        4. Better breath
+        5. Less shedding
+      
+      Removed phrase "nutrient absorption" from anywhere on the page.
+      
+      Ready for testing agent to verify these specific changes only.
+  - agent: "testing"
+    message: |
+      ✅ LANDING PAGE CLEANUP VERIFICATION COMPLETED - ALL 3 CHECKS PASSED
+      
+      Verified the landing page cleanup at desktop (1280x900) as requested.
+      Performed ONLY the 3 specific checks without clicking or testing other functionality.
+      
+      **CHECK 1 — "nutrient absorption" phrase removal: ✅ PASS**
+      - Verified "nutrient absorption" does NOT appear anywhere on the landing page
+      
+      **CHECK 2 — Removed sections verification: ✅ PASS**
+      - "Does Your Dog Need" does NOT appear ✓
+      - "Fresh Ingredients, Prepared with Care" does NOT appear ✓
+      - "Your Meal Plan is Ready" does NOT appear ✓
+      - "Get Started Now" button does NOT appear ✓
+      
+      **CHECK 3 — Benefits list verification: ✅ PASS**
+      - Found "Customers Notice Benefits in Just 2 Weeks" section ✓
+      - Contains EXACTLY 5 items (no extras): ✓
+        1. Shinier, softer coat ✓
+        2. Healthier digestion ✓
+        3. More energy ✓
+        4. Better breath ✓
+        5. Less shedding ✓
+      - No old benefits from previous 6-item list found ✓
+      
+      **OVERALL RESULT:**
+      All 3 verification checks passed. The landing page cleanup is correct and complete.

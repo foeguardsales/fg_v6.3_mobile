@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus, Sprout, Leaf, ChefHat, Award, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus, Sprout, Leaf, ChefHat, Award } from 'lucide-react';
 import { useCart, SlideCart } from '../contexts/CartContext';
 
 // FoeGuard Brand Colors — Farm Palette
@@ -1020,12 +1020,11 @@ export const LandingPage = () => {
               marginBottom: '36px'
             }}>
               {[
-                { title: 'Improved Digestibility', desc: 'Less gas, less bloat, more comfort.' },
-                { title: 'Healthier Skin & Coat', desc: 'From real nutrient absorption that\u2019s long lasting.' },
-                { title: 'More Stable Energy', desc: 'No peaks and crashes from filler and synthetic inputs.' },
-                { title: 'Muscle Condition Improves', desc: 'Without overfeeding or additional toppers.' },
-                { title: 'Smaller, Firm Stools', desc: 'A direct sign of higher ingredient bioavailability.' },
-                { title: 'Stronger, Cleaner Teeth', desc: 'Less chewing residue and plaque.' }
+                { title: 'Shinier, softer coat' },
+                { title: 'Healthier digestion' },
+                { title: 'More energy' },
+                { title: 'Better breath' },
+                { title: 'Less shedding' }
               ].map((benefit, i) => (
                 <div key={i} style={{
                   background: 'rgba(255,255,255,0.08)',
@@ -1033,7 +1032,7 @@ export const LandingPage = () => {
                   padding: '18px 18px',
                   borderRadius: '12px',
                   display: 'flex',
-                  alignItems: 'flex-start',
+                  alignItems: 'center',
                   gap: '12px',
                   textAlign: 'left'
                 }}>
@@ -1048,25 +1047,17 @@ export const LandingPage = () => {
                     justifyContent: 'center',
                     flexShrink: 0,
                     fontSize: '14px',
-                    fontWeight: '700',
-                    marginTop: '2px'
+                    fontWeight: '700'
                   }}>✓</div>
                   <div>
                     <div style={{
                       fontSize: '15px',
                       fontWeight: '700',
-                      marginBottom: '4px',
                       fontFamily: "'Barlow Semi Condensed', sans-serif",
                       lineHeight: 1.3,
                       color: COLORS.cream,
                       letterSpacing: '0.02em'
                     }}>{benefit.title}</div>
-                    <div style={{
-                      fontSize: '13px',
-                      opacity: 0.9,
-                      lineHeight: 1.5,
-                      color: COLORS.softBg
-                    }}>{benefit.desc}</div>
                   </div>
                 </div>
               ))}
@@ -1087,203 +1078,6 @@ export const LandingPage = () => {
                 Learn More
               </button>
             </div>
-          </div>
-        </section>
-
-        {/* SECTION 6 — DOES YOUR DOG NEED FOEGUARD RAW? */}
-        <section style={{
-          background: COLORS.cream,
-          padding: '60px 20px'
-        }}>
-          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
-              <h2 style={{
-                fontSize: 'clamp(30px, 3.6vw, 40px)',
-                fontWeight: '700',
-                color: COLORS.charcoal,
-                lineHeight: 1.25,
-                marginBottom: '12px',
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
-              }}>
-                Does Your Dog Need <span style={{ color: COLORS.red }}>FoeGuard Raw?</span>
-              </h2>
-            </div>
-
-            <div
-              data-testid="does-your-dog-need-grid"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-                gap: '14px',
-                maxWidth: '980px',
-                margin: '0 auto'
-              }}
-            >
-              {[
-                'Your dog is prone to upset stomach.',
-                'Your dog has seasonal allergies.',
-                'Your dog has dull fur or dry skin.',
-                'Your dog is overweight or underweight.',
-                'Your dog needs more energy.',
-                'Your dog is a picky eater.',
-                'Your dog has bad breath.'
-              ].map((line, i) => (
-                <div key={i} style={{
-                  background: COLORS.white,
-                  border: `1px solid ${COLORS.khaki}`,
-                  borderRadius: '12px',
-                  padding: '18px 18px',
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '12px',
-                  boxShadow: '3px 3px 0px rgba(0,0,0,0.05)'
-                }}>
-                  <AlertCircle size={22} color={COLORS.red} style={{ flexShrink: 0, marginTop: '2px' }} />
-                  <p style={{
-                    margin: 0,
-                    fontSize: '15px',
-                    color: COLORS.charcoal,
-                    lineHeight: 1.5,
-                    fontFamily: "'Barlow Semi Condensed', sans-serif"
-                  }}>
-                    {line}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION 7 — FRESH INGREDIENTS, PREPARED WITH CARE */}
-        <section style={{
-          background: COLORS.white,
-          padding: '60px 20px'
-        }}>
-          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 32px' }}>
-              <h2 style={{
-                fontSize: 'clamp(30px, 3.6vw, 40px)',
-                fontWeight: '700',
-                color: COLORS.charcoal,
-                lineHeight: 1.25,
-                marginBottom: '12px',
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
-              }}>
-                Fresh Ingredients, <span style={{ color: COLORS.red }}>Prepared with Care</span>
-              </h2>
-              <p style={{
-                fontSize: 'clamp(15px, 1.8vw, 17px)',
-                color: COLORS.charcoal,
-                opacity: 0.82,
-                lineHeight: 1.6,
-                margin: '0 0 18px',
-                fontWeight: 400,
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
-              }}>
-                See what makes FoeGuard Raw meals so nutritious and delicious.
-              </p>
-              <p style={{
-                fontSize: '15px',
-                color: COLORS.charcoal,
-                opacity: 0.85,
-                lineHeight: 1.7,
-                margin: 0
-              }}>
-                Our ingredients are sourced from trusted, local farms and are carefully prepared in our human-grade kitchen. We use only fresh, whole foods that are packed with nutrients your dog needs to thrive.
-              </p>
-            </div>
-
-            <ul
-              data-testid="fresh-ingredients-list"
-              style={{
-                listStyle: 'none',
-                padding: 0,
-                margin: '0 auto',
-                maxWidth: '720px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px'
-              }}
-            >
-              {[
-                'High-quality protein sources like beef, chicken, turkey, lamb and fish.',
-                'Wholesome vegetables and fruits for essential vitamins and minerals.',
-                'Healthy fats for a shiny coat and healthy skin.',
-                'No artificial preservatives, colors or flavors.',
-                'No fillers like corn, wheat, or soy.'
-              ].map((line, i) => (
-                <li key={i} style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '12px',
-                  padding: '14px 18px',
-                  background: COLORS.cream,
-                  border: `1px solid ${COLORS.khaki}`,
-                  borderRadius: '10px'
-                }}>
-                  <CheckCircle2 size={22} color={COLORS.red} style={{ flexShrink: 0, marginTop: '1px' }} />
-                  <span style={{
-                    fontSize: '15px',
-                    color: COLORS.charcoal,
-                    lineHeight: 1.55,
-                    fontFamily: "'Barlow Semi Condensed', sans-serif"
-                  }}>
-                    {line}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* SECTION 8 — YOUR MEAL PLAN IS READY! */}
-        <section style={{
-          background: COLORS.softBg,
-          padding: '60px 20px'
-        }}>
-          <div style={{ maxWidth: '780px', margin: '0 auto', textAlign: 'center' }}>
-            <h2 style={{
-              fontSize: 'clamp(30px, 3.6vw, 40px)',
-              fontWeight: '700',
-              color: COLORS.charcoal,
-              lineHeight: 1.25,
-              marginBottom: '12px',
-              fontFamily: "'Barlow Semi Condensed', sans-serif"
-            }}>
-              Your Meal Plan is <span style={{ color: COLORS.red }}>Ready!</span>
-            </h2>
-            <p style={{
-              fontSize: 'clamp(15px, 1.8vw, 17px)',
-              color: COLORS.charcoal,
-              opacity: 0.82,
-              lineHeight: 1.6,
-              margin: '0 0 16px',
-              fontWeight: 400,
-              fontFamily: "'Barlow Semi Condensed', sans-serif"
-            }}>
-              The easiest way to feed your dog the best food possible.
-            </p>
-            <p style={{
-              fontSize: '15px',
-              color: COLORS.charcoal,
-              opacity: 0.85,
-              lineHeight: 1.7,
-              margin: '0 0 28px',
-              maxWidth: '620px',
-              marginLeft: 'auto',
-              marginRight: 'auto'
-            }}>
-              Simply answer a few questions about your dog and we&apos;ll create a personalized meal plan tailored to their specific needs. You&apos;ll know exactly how much to feed and what to feed.
-            </p>
-            <button
-              data-testid="meal-plan-cta"
-              onClick={() => navigate('/meal-plan')}
-              style={liftedButtonStyle}
-              onMouseEnter={(e) => liftedButtonHover(e, true)}
-              onMouseLeave={(e) => liftedButtonHover(e, false)}
-            >
-              Get Started Now
-            </button>
           </div>
         </section>
 
