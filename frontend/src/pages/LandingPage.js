@@ -585,20 +585,28 @@ export const LandingPage = () => {
 
   const faqs = [
     {
-      q: "Is raw food safe for my dog?",
-      a: "Yes! Our raw food is made in an Ontario Regulated Human Food Kitchen with the same safety standards as human food. We use only human-grade, ethically sourced ingredients."
+      q: "How much raw should I feed?",
+      a: (
+        <>
+          Adults feed roughly 2–3.5% of body weight per day; puppies feed more (up to 10–13% at 2–4 months, scaling down with age). Use our <a href="/calculator" style={{ color: COLORS.red, fontWeight: 700, textDecoration: 'underline' }}>feeding calculator</a> for a personalized portion in seconds.
+        </>
+      )
     },
     {
-      q: "How do I transition my dog to raw?",
-      a: "We recommend a gradual transition over 7-10 days, mixing increasing amounts of raw food with their current diet. Our team is always here to help guide you through the process."
+      q: "How to transition my dog or cat to raw?",
+      a: "We recommend a 7–10 day gradual transition, mixing increasing amounts of FoeGuard with your pet's current food until they're on 100% raw. Feed slightly smaller portions during the switch, watch stool consistency, and skip introducing new treats. Our team is one message away if you need help."
     },
     {
-      q: "How is the food shipped?",
-      a: "All orders are shipped frozen in insulated packaging with dry ice to ensure freshness. We deliver directly to your door across Ontario."
+      q: "Can puppies/seniors eat raw food?",
+      a: "Absolutely — both thrive on it. Our Comfort Dinner line is complete & balanced for all life stages (AAFCO). Puppies need more food per kg of body weight and specially ground recipes for easy digestion — we carry puppy-friendly options across every protein."
     },
     {
-      q: "Can I pause or cancel my subscription?",
-      a: "Absolutely! Your meal plan is completely customizable. Pause, skip, change, or cancel anytime with no commitments or hidden fees."
+      q: "Are your meals complete and balanced?",
+      a: "Yes. Our Comfort Dinner recipes are complete and balanced to AAFCO standards — no supplementation needed. Primal Feast follows a traditional 80/10/10 raw ratio and is designed for rotational feeding or topping where you can add your own supplementation."
+    },
+    {
+      q: "Where do your ingredients come from?",
+      a: "All of our meats are sourced directly from our own farm in Acton, ON and a small group of hand-picked Ontario partners we know personally. Every recipe is prepared in our government-regulated, human-grade kitchen — high quality, consistent and fully traceable."
     }
   ];
 
@@ -747,7 +755,7 @@ export const LandingPage = () => {
                   maxWidth: '460px'
                 }}
               >
-                14-day guarantee — not happy? Return unused packs for a full refund.
+                Happy dog guarantee — return any unused packs within 14 days for a full refund.
               </p>
             </div>
           </div>
@@ -1439,7 +1447,7 @@ export const LandingPage = () => {
 
         {/* SECTION 9 — READY TO MAKE THE SWITCH? (final CTA) */}
         <section style={{
-          background: `linear-gradient(135deg, ${COLORS.red} 0%, ${COLORS.redOverlay} 100%)`,
+          background: COLORS.redOverlay,
           padding: '80px 20px',
           textAlign: 'center',
           color: COLORS.cream

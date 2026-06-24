@@ -99,12 +99,12 @@ const FAQ_CATEGORIES = [
     title: 'Delivery & Storage',
     items: [
       {
-        q: 'Where do you ship?',
-        a: 'Across Ontario, Canada. Free shipping on orders over $149.'
+        q: 'Where do you deliver?',
+        a: 'In the Greater Toronto Area and beyond (minimum order restrictions or an additional delivery fee may be required). Free delivery on orders over $100 (within a 30 km radius).'
       },
       {
-        q: 'How is the food shipped?',
-        a: 'We don\u2019t use insulated boxes or third-party couriers. Every order is flash-frozen straight out of our regulated human-grade kitchen and personally delivered to your door, so meals stay solid and fresh from our freezer to yours.'
+        q: 'How is the food delivered?',
+        a: 'Every order is flash-frozen straight out of our regulated human-grade kitchen and personally delivered to your door, so meals stay solid and fresh from our freezer to yours. No third-party couriers.'
       },
       {
         q: 'How long does the food last?',
@@ -121,11 +121,11 @@ const FAQ_CATEGORIES = [
     items: [
       {
         q: 'Are FoeGuard meals complete and balanced?',
-        a: 'Comfort Dinner recipes are complete and balanced (AAFCO). Primal Feast uses an 80/10/10 ratio designed for rotational feeding or topping. Always check the label.'
+        a: 'Comfort Dinner recipes are complete and balanced (AAFCO). Primal Feast uses an 80/10/10 ratio designed for rotational feeding or topping.'
       },
       {
         q: 'What if my dog has allergies?',
-        a: 'Use our Meal Plan quiz to flag allergens — we\u2019ll surface novel-protein options like Duck, Rabbit or Venison and skip any recipes containing your dog\u2019s triggers.'
+        a: 'Use our Meal Plan quiz to flag allergens — we\u2019ll surface novel-protein options like Duck or Rabbit and skip any recipes containing your dog\u2019s triggers.'
       },
       {
         q: 'What benefits does raw feeding have?',
@@ -220,22 +220,12 @@ export const FaqPage = () => {
               fontWeight: 800,
               color: COLORS.charcoal,
               lineHeight: 1.15,
-              marginBottom: '16px',
+              marginBottom: '0',
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
               Everything you need to know,<br />
-              <span style={{ color: COLORS.red }}>before you switch to raw.</span>
+              <span style={{ color: COLORS.red }}>before you switch to FoeGuard Raw.</span>
             </h1>
-            <p style={{
-              fontSize: '17px',
-              color: COLORS.charcoal,
-              opacity: 0.8,
-              maxWidth: '560px',
-              margin: '0 auto',
-              lineHeight: 1.6
-            }}>
-              Honest answers from real farmers, nutritionists and dog parents — no marketing fluff.
-            </p>
           </div>
         </section>
 
