@@ -1438,3 +1438,121 @@ agent_communication:
       
       **OVERALL RESULT:**
       All 3 verification checks passed. The landing page cleanup is correct and complete.
+  - agent: "main"
+    message: |
+      Iteration 17 (continuation) — Landing page copy revisions completed:
+      
+      1. SECTION 5 (Benefits) — Restored original 6-card design:
+         - Changed sub-heading from "Here's what real customers are saying about FoeGuard Raw." 
+           back to "Here's what you can expect from real food nutrition:"
+         - Replaced 5-item list (Shinier coat, Healthier digestion, More energy, Better breath, 
+           Less shedding) with original 6 benefit cards:
+           1. Improved Digestibility — Less gas, less bloat, more comfort.
+           2. Healthier Skin & Coat — Real nutrients absorbed from the inside out.
+           3. More Stable Energy — No crashes from fillers or artificial ingredients.
+           4. Muscle Condition Improves — Without overfeeding or additional toppers.
+           5. Smaller, Firm Stools — A sign your dog is actually absorbing what they eat.
+           6. Stronger, Cleaner Teeth — Less chewing residue and plaque buildup over time.
+         - Each card shows: green ✓ circle + bold title + description line (original design)
+      
+      2. SECTION 6 (Reviews) — Updated sub-heading:
+         - Changed from "Real reviews from real pet parents" 
+           to "93% of FoeGuardians reported a healthy change in digestion, coat, allergies or 
+           energy. Real food, real results."
+      
+      3. SECTION 7 (Protein options) — Updated sub-heading:
+         - Changed from "Each meal has its own unique flavour and nutritional value." 
+           to "Every protein is raised on our farm — each with its own flavour, benefits and 
+           nutritional profile."
+      
+      4. SECTION 8 (About story) — Replaced body paragraph:
+         - Removed references to "award-winning German Shepherd breeders" and "FoeGuard was 
+           created for the community, by the community. Our passion became our profession."
+         - New body: "FoeGuard started because of one dog. When we couldn't find raw food made 
+           to our standards as third-generation farmers, we made it ourselves. Before long our 
+           neighbours were asking for meals — then their friends were too. What started on our 
+           small farm in Acton grew into something bigger, built by the community, for the 
+           community."
+      
+      5. SECTION 9 (Final CTA) — Added new red gradient footer block:
+         - Heading: "Ready to make the switch?"
+         - Sub: "Your dog's first fresh meal is one click away."
+         - Button: "Shop Now" (data-testid="final-cta-shop-now") routing to /menu
+         - Positioned after FAQ section, before footer
+      
+      6. FAQ SECTION — Reverted to original 4 questions:
+         - Removed: "What is raw food?" / "How much does FoeGuard Raw cost?" / sub-heading 
+           "Here are some common questions about FoeGuard Raw." / "Contact Us" button
+         - Kept only: "Is raw food safe for my dog?" / "How do I transition my dog to raw?" / 
+           "How is the food shipped?" / "Can I pause or cancel my subscription?"
+      
+      Ready for testing agent to verify all sections with minimal DOM verification (no clicks).
+  - agent: "testing"
+    message: |
+      ✅ LANDING PAGE COPY VERIFICATION COMPLETED - 100% PASS (ALL REQUIREMENTS MET)
+      
+      Performed minimal verification on FoeGuard landing page (/) as requested.
+      Checked rendered DOM/text only - NO clicks, NO other testing.
+      
+      **DESIGN CHECK: ✅ PASS**
+      - Section "Customers Notice Benefits in Just 2 Weeks" shows original card design
+      - Each card has: green ✓ circle (rgb(122, 154, 122)) + bold title (font-weight: 700) + 
+        smaller description line below (font-size: 13px)
+      - NOT just a one-line title - full card structure verified
+      
+      **SECTION 5 — Sub-heading and benefit cards: ✅ PASS**
+      - Sub-heading reads exactly: "Here's what you can expect from real food nutrition:"
+      - 6 benefit cards present in correct order with exact titles + descriptions:
+        1. Improved Digestibility — Less gas, less bloat, more comfort. ✓
+        2. Healthier Skin & Coat — Real nutrients absorbed from the inside out. ✓
+        3. More Stable Energy — No crashes from fillers or artificial ingredients. ✓
+        4. Muscle Condition Improves — Without overfeeding or additional toppers. ✓
+        5. Smaller, Firm Stools — A sign your dog is actually absorbing what they eat. ✓
+        6. Stronger, Cleaner Teeth — Less chewing residue and plaque buildup over time. ✓
+      - Phrase "nutrient absorption" does NOT appear ✓
+      - Phrase "nutrients absorbed" appears (this is OK and expected) ✓
+      
+      **SECTION 6 — Reviews sub-heading: ✅ PASS**
+      - Heading "Hear from Happy FoeGuardians" found ✓
+      - Sub-paragraph reads exactly: "93% of FoeGuardians reported a healthy change in 
+        digestion, coat, allergies or energy. Real food, real results." ✓
+      - Old text "Real reviews from real pet parents" does NOT appear ✓
+      
+      **SECTION 7 — Protein options sub-heading: ✅ PASS**
+      - Heading "Pick Your Dog's Favourites From 8+ Delicious Meat Options" found ✓
+      - Sub-paragraph reads exactly: "Every protein is raised on our farm — each with its own 
+        flavour, benefits and nutritional profile." ✓
+      - Old text "Each meal has its own unique flavour and nutritional value." does NOT appear ✓
+      
+      **SECTION 8 — About story body: ✅ PASS**
+      - Heading "Raw Feeding is a Family Tradition" found ✓
+      - Body text matches exactly (single paragraph as required) ✓
+      - Phrases "award-winning German Shepherd breeders" and "FoeGuard was created for the 
+        community, by the community. Our passion became our profession." do NOT appear ✓
+      
+      **SECTION 9 — Final CTA (red footer block): ✅ PASS**
+      - Red gradient section found near bottom (after FAQ) ✓
+      - Background: linear-gradient(135deg, rgb(200, 16, 46) 0%, rgb(157, 13, 35) 100%) ✓
+      - Heading: "Ready to make the switch?" ✓
+      - Sub: "Your dog's first fresh meal is one click away." ✓
+      - Button: "Shop Now" (data-testid="final-cta-shop-now") routing to /menu ✓
+      
+      **FAQ REVERTED: ✅ PASS**
+      - All 4 correct questions present:
+        1. Is raw food safe for my dog? ✓
+        2. How do I transition my dog to raw? ✓
+        3. How is the food shipped? ✓
+        4. Can I pause or cancel my subscription? ✓
+      - Wrong questions do NOT appear:
+        - "What is raw food?" ✓
+        - "How much does FoeGuard Raw cost?" ✓
+      - Sub "Here are some common questions about FoeGuard Raw." does NOT appear ✓
+      - "Contact Us" button (data-testid="faq-contact-us") does NOT appear ✓
+      
+      **SCREENSHOTS CAPTURED:**
+      - section_5_benefits.png — Shows 6 benefit cards with green checkmarks visible
+      - section_9_final_cta.png — Shows red final CTA section with FAQ above
+      
+      **OVERALL RESULT:**
+      All verification checks passed (100% success rate). Every requirement met exactly as 
+      specified. Landing page copy revisions are correct and production-ready.
