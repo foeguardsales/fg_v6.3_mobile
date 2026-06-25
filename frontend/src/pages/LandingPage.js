@@ -21,19 +21,25 @@ const COLORS = {
 };
 
 // Lifted Button Style (compact site-wide standard)
+// Lifted Button Style (like Oma's - bordered with shadow on one side)
+// Unified across the site — all CTAs use this exact format (Shop Now, Learn More, More About Us, etc.)
 const liftedButtonStyle = {
   background: COLORS.red,
   color: COLORS.white,
   border: 'none',
-  padding: '10px 22px',
+  padding: '14px 32px',
   borderRadius: '8px',
-  fontSize: '13px',
+  fontSize: '15px',
   fontWeight: '600',
+  letterSpacing: '0.04em',
+  textTransform: 'uppercase',
+  fontFamily: "'Barlow Semi Condensed', sans-serif",
   cursor: 'pointer',
-  boxShadow: '3px 3px 0px rgba(0,0,0,0.18)',
+  boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
   transition: 'all 0.2s ease',
   position: 'relative',
-  lineHeight: 1.2
+  lineHeight: 1.15,
+  display: 'inline-block'
 };
 
 const liftedButtonHover = (e, isHover) => {
@@ -651,7 +657,7 @@ export const LandingPage = () => {
           position: 'relative',
           overflow: 'hidden',
           background: `${COLORS.charcoal} url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
-          minHeight: '680px',
+          minHeight: 'clamp(440px, 56vw, 560px)',
           display: 'flex',
           alignItems: 'center',
           marginTop: '-120px'
@@ -686,16 +692,16 @@ export const LandingPage = () => {
             zIndex: 1,
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: '200px 24px 140px',
+            padding: 'clamp(150px, 17vw, 190px) 24px clamp(40px, 4.5vw, 56px)',
             width: '100%'
           }}>
             <div className="hero-text" style={{ maxWidth: '620px' }}>
               <h1 style={{
-                fontSize: 'clamp(34px, 4.4vw, 48px)',
+                fontSize: 'clamp(26px, 4.6vw, 48px)',
                 fontWeight: 600,
                 color: COLORS.cream,
-                lineHeight: '1.08',
-                marginBottom: '18px',
+                lineHeight: '1.1',
+                marginBottom: '12px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif",
                 letterSpacing: '-0.5px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)'
@@ -704,12 +710,12 @@ export const LandingPage = () => {
               </h1>
 
               <p style={{
-                fontSize: 'clamp(15px, 1.6vw, 17px)',
+                fontSize: 'clamp(14px, 1.6vw, 16px)',
                 color: COLORS.cream,
                 opacity: 0.94,
-                maxWidth: '560px',
-                margin: '0 0 26px',
-                lineHeight: '1.65',
+                maxWidth: '520px',
+                margin: '0 0 18px',
+                lineHeight: '1.55',
                 fontWeight: 400,
                 textShadow: '0 1px 6px rgba(0,0,0,0.45)'
               }}>
@@ -722,10 +728,7 @@ export const LandingPage = () => {
                 style={{
                   ...liftedButtonStyle,
                   background: COLORS.cream,
-                  color: COLORS.charcoal,
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
-                  fontFamily: "'Barlow Semi Condensed', sans-serif"
+                  color: COLORS.charcoal
                 }}
                 onMouseEnter={(e) => liftedButtonHover(e, true)}
                 onMouseLeave={(e) => liftedButtonHover(e, false)}
@@ -735,11 +738,11 @@ export const LandingPage = () => {
               <p
                 data-testid="hero-guarantee"
                 style={{
-                  fontSize: '13px',
+                  fontSize: '12.5px',
                   color: COLORS.cream,
                   opacity: 0.9,
-                  margin: '14px 0 0',
-                  lineHeight: 1.55,
+                  margin: '10px 0 0',
+                  lineHeight: 1.5,
                   textShadow: '0 1px 6px rgba(0,0,0,0.45)',
                   maxWidth: '460px'
                 }}
@@ -756,14 +759,14 @@ export const LandingPage = () => {
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
           background: COLORS.cream,
-          padding: '40px 20px 60px'
+          padding: '40px 20px 56px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <h2 style={{
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
-              marginBottom: '32px',
+              marginBottom: '28px',
               color: COLORS.charcoal,
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
@@ -854,11 +857,11 @@ export const LandingPage = () => {
         {/* WHY FOEGUARD RAW? */}
         <section style={{
           background: COLORS.white,
-          padding: '60px 20px'
+          padding: '40px 20px 56px'
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             {/* Headline */}
-            <div style={{ textAlign: 'center', marginBottom: '40px', maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '28px', maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
@@ -973,11 +976,11 @@ export const LandingPage = () => {
         {/* BENEFITS SECTION */}
         <section style={{
           background: COLORS.forestGreen,
-          padding: '60px 20px',
+          padding: '40px 20px 56px',
           color: COLORS.cream
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
+            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 28px' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
@@ -1003,7 +1006,7 @@ export const LandingPage = () => {
             <div className="benefits-2week-grid" style={{
               display: 'grid',
               gap: '14px',
-              marginBottom: '36px'
+              marginBottom: '28px'
             }}>
               {[
                 { title: 'Improved Digestibility', desc: 'Less gas, less bloat, more comfort.' },
@@ -1079,7 +1082,7 @@ export const LandingPage = () => {
         {/* REVIEWS SECTION — uniform card horizontal feed (uma's pride style) */}
         <section style={{
           background: COLORS.cream,
-          padding: '60px 0',
+          padding: '40px 0 56px',
           position: 'relative',
           overflow: 'hidden'
         }}>
@@ -1088,13 +1091,13 @@ export const LandingPage = () => {
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
-              marginBottom: '12px',
+              marginBottom: '10px',
               color: COLORS.charcoal,
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
               Hear from Happy <span style={{ color: COLORS.red }}>FoeGuardians</span>
             </h2>
-            <p style={{ textAlign: 'center', color: COLORS.charcoal, marginBottom: '32px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '15px' }}>
+            <p style={{ textAlign: 'center', color: COLORS.charcoal, marginBottom: '24px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '15px' }}>
               93% of FoeGuardians reported a healthy change in digestion, coat, allergies or energy. Real food, real results.
             </p>
           </div>
@@ -1208,10 +1211,10 @@ export const LandingPage = () => {
         {/* PROTEIN OPTIONS — 8+ Meat Options */}
         <section style={{
           background: COLORS.white,
-          padding: '60px 20px'
+          padding: '40px 20px 56px'
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 36px' }}>
+            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 28px' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
@@ -1275,7 +1278,7 @@ export const LandingPage = () => {
                 >
                   <div style={{
                     width: '100%',
-                    aspectRatio: '1 / 1',
+                    aspectRatio: '4 / 3',
                     borderRadius: '12px',
                     overflow: 'hidden',
                     background: 'transparent',
@@ -1309,17 +1312,17 @@ export const LandingPage = () => {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            minHeight: '500px'
+            minHeight: '420px'
           }}>
             {/* Image side with overlay */}
             <div style={{
               background: `linear-gradient(135deg, ${COLORS.redOverlay}dd 0%, ${COLORS.red}cc 100%), url(https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&h=600&fit=crop) center/cover`,
-              minHeight: '400px'
+              minHeight: '320px'
             }} />
 
             {/* Content side */}
             <div style={{
-              padding: '60px 40px',
+              padding: '40px 28px 48px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center'
@@ -1328,7 +1331,7 @@ export const LandingPage = () => {
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
                 color: COLORS.charcoal,
-                marginBottom: '20px',
+                marginBottom: '16px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
                 Raw Feeding is a <span style={{ color: COLORS.red }}>Family Tradition</span>
@@ -1336,8 +1339,8 @@ export const LandingPage = () => {
               <p style={{
                 fontSize: '16px',
                 color: COLORS.charcoal,
-                lineHeight: '1.8',
-                marginBottom: '32px'
+                lineHeight: '1.7',
+                marginBottom: '24px'
               }}>
                 FoeGuard started because of one dog. When we couldn&apos;t find raw food made to our standards as third-generation farmers, we made it ourselves. Before long our neighbours were asking for meals — then their friends were too. What started on our small farm in Acton grew into something bigger, built by the community, for the community.
               </p>
@@ -1360,14 +1363,14 @@ export const LandingPage = () => {
         {/* FAQ SECTION */}
         <section style={{
           background: COLORS.white,
-          padding: '60px 20px 80px'
+          padding: '40px 20px 56px'
         }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 style={{
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
-              marginBottom: '36px',
+              marginBottom: '28px',
               color: COLORS.charcoal,
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
@@ -1427,7 +1430,7 @@ export const LandingPage = () => {
         {/* SECTION 9 — READY TO MAKE THE SWITCH? (final CTA) */}
         <section style={{
           background: COLORS.redOverlay,
-          padding: '80px 20px',
+          padding: '48px 20px 56px',
           textAlign: 'center',
           color: COLORS.cream
         }}>
@@ -1435,7 +1438,7 @@ export const LandingPage = () => {
             <h2 style={{
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
-              marginBottom: '16px',
+              marginBottom: '14px',
               color: COLORS.cream,
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
@@ -1443,7 +1446,7 @@ export const LandingPage = () => {
             </h2>
             <p style={{
               fontSize: 'clamp(16px, 1.8vw, 19px)',
-              marginBottom: '32px',
+              marginBottom: '24px',
               opacity: 0.95,
               color: COLORS.cream,
               lineHeight: 1.55
@@ -1456,8 +1459,7 @@ export const LandingPage = () => {
               style={{
                 ...liftedButtonStyle,
                 background: COLORS.cream,
-                color: COLORS.redOverlay,
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
+                color: COLORS.redOverlay
               }}
               onMouseEnter={(e) => liftedButtonHover(e, true)}
               onMouseLeave={(e) => liftedButtonHover(e, false)}
