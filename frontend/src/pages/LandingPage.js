@@ -1242,8 +1242,7 @@ export const LandingPage = () => {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '20px 12px',
-              justifyItems: 'center',
+              gap: '24px 16px',
               maxWidth: '900px',
               margin: '0 auto'
             }} className="protein-grid">
@@ -1268,27 +1267,24 @@ export const LandingPage = () => {
                     cursor: 'pointer',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '10px'
+                    alignItems: 'stretch',
+                    gap: '10px',
+                    textAlign: 'left'
                   }}
                   onMouseEnter={(e) => {
-                    const el = e.currentTarget.querySelector('div');
-                    if (el) el.style.transform = 'translateY(-3px)';
+                    e.currentTarget.style.opacity = '0.92';
                   }}
                   onMouseLeave={(e) => {
-                    const el = e.currentTarget.querySelector('div');
-                    if (el) el.style.transform = 'translateY(0)';
+                    e.currentTarget.style.opacity = '1';
                   }}
                 >
                   <div style={{
-                    width: '120px',
-                    height: '120px',
-                    borderRadius: '50%',
-                    background: COLORS.softBg,
-                    border: `3px solid ${COLORS.khaki}`,
+                    width: '100%',
+                    aspectRatio: '1 / 1',
+                    borderRadius: '12px',
                     overflow: 'hidden',
-                    transition: 'transform 0.2s ease',
-                    boxShadow: '3px 3px 0px rgba(0,0,0,0.08)'
+                    background: 'transparent',
+                    transition: 'opacity 0.2s ease'
                   }}>
                     <img
                       src={p.url}
@@ -1297,10 +1293,11 @@ export const LandingPage = () => {
                     />
                   </div>
                   <span style={{
-                    fontSize: '15px',
+                    fontSize: '16px',
                     fontWeight: 700,
                     color: COLORS.charcoal,
-                    fontFamily: "'Barlow Semi Condensed', sans-serif"
+                    fontFamily: "'Barlow Semi Condensed', sans-serif",
+                    textAlign: 'left'
                   }}>{p.label}</span>
                 </button>
               ))}

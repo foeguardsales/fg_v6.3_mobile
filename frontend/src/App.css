@@ -3948,36 +3948,32 @@ h2, h3, h4 {
   max-width: 1100px;
   margin: 0 auto;
 }
-@media (min-width: 700px) {
-  .about-proteins-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (min-width: 1024px) {
-  .about-proteins-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
 .about-protein-card {
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 16px;
-  padding: 22px 18px 24px;
-  text-align: center;
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  text-align: left;
+  box-shadow: none;
+  transition: opacity 0.2s ease;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
 .about-protein-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1);
+  transform: none;
+  box-shadow: none;
+  opacity: 0.92;
 }
 .about-protein-img-wrap {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
   overflow: hidden;
-  background: var(--soft-bg, #EDE3D2);
-  border: 3px solid var(--khaki, #D8CFB8);
-  margin-bottom: 14px;
+  background: transparent;
+  border: none;
+  margin-bottom: 12px;
   flex-shrink: 0;
 }
 .about-protein-img-wrap img {
@@ -3990,18 +3986,19 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', sans-serif;
   font-weight: 700;
   font-size: 18px;
-  color: var(--charcoal, #2A2A2A);
-  margin: 0 0 8px;
+  color: var(--charcoal, #3B2A1A);
+  margin: 0 0 6px;
   letter-spacing: -0.2px;
   text-transform: none;
+  text-align: left;
 }
 .about-protein-desc {
   font-family: 'Public Sans', sans-serif !important;
   font-size: 14px;
   line-height: 1.55;
-  color: var(--charcoal, #2A2A2A);
-  opacity: 0.78;
+  color: var(--charcoal, #3B2A1A);
   margin: 0;
+  text-align: left;
 }
 
 .about-roots {
@@ -6764,6 +6761,95 @@ h2, h3, h4 {
   overflow: hidden;
 }
 
+/* ===== Menu Funnel — NEW: 2-column menu-item style cards (matches /menu product rows) ===== */
+.menu-funnel-grid--two {
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+@media (min-width: 760px) {
+  .menu-funnel-grid--two {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+}
+
+.menu-funnel-card-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 0 14px;
+  border: none;
+  border-bottom: 1px solid #E0D5BD;
+  background: transparent;
+  border-radius: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: opacity 0.18s ease;
+}
+.menu-funnel-card-row:hover { opacity: 0.92; }
+.menu-funnel-card-row.is-selected { background: transparent; }
+
+.menu-funnel-card-row-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: transparent;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.menu-funnel-card-row-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.menu-funnel-card-row-content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.menu-funnel-card-row-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  color: #3B2A1A;
+  margin: 0 0 4px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+@media (min-width: 760px) {
+  .menu-funnel-card-row-title { font-size: 20px; }
+}
+.menu-funnel-card-row-sub {
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 14px;
+  color: #6A4F35;
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* ===== Feeding-calculator link inline with category strip ===== */
+.menu-category-calc-link {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #6A4F35;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 6px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  letter-spacing: 0;
+}
+.menu-category-calc-link:hover { color: #3B2A1A; }
+@media (max-width: 600px) {
+  .menu-category-calc-link { font-size: 12px; padding: 2px 4px; }
+}
+
 /* ===== Product modal: keep image stationary, content scrolls (reuse ProductDetailPage) ===== */
 .bb-overlay-panel--product {
   max-width: 1100px;
@@ -7202,21 +7288,23 @@ input, select, textarea {
 }
 
 
-/* ----- Feeding Calculator — seamless brown-bordered fields ----- */
+/* ----- Feeding Calculator — clean hairline-bordered fields, no outer container ----- */
 .calc-pet-card input,
 .calc-pet-card select,
 .feeding-calc .form-group input,
 .feeding-calc .form-group select {
-  border: 1.5px solid #3B2A1A !important;
-  background: transparent !important;
+  border: 1px solid #D8CFB8 !important;
+  background: #fff !important;
   color: #3B2A1A;
+  border-radius: 8px;
 }
 .calc-pet-card input:focus,
 .calc-pet-card select:focus,
 .feeding-calc .form-group input:focus,
 .feeding-calc .form-group select:focus {
   outline: none;
-  border-color: #C8102E !important;
+  border-color: #3B2A1A !important;
+  box-shadow: 0 0 0 2px rgba(59, 42, 26, 0.08);
 }
 
 

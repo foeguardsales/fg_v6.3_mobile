@@ -439,16 +439,9 @@ export const BoxBuilder = () => {
             setFunnelOpen(false);
             navigate('/meal-plan');
           }}
-          onCalculator={() => {
-            // Calculator opens as modal over /menu — underlying selection stays Raw Food Menu
-            sessionStorage.setItem('foeguard_selection', 'shop-raw');
-            setSelectionId('shop-raw');
-            setFunnelOpen(false);
-            setCalcOpen(true);
-          }}
         />
 
-        {/* Category Tabs: Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats — text only, no pill */}
+        {/* Category Tabs: Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats + Feeding Calculator link on the right */}
         <div className="menu-category-text" data-testid="menu-category-tabs">
           {bannerCards.map((card) => (
             <button
@@ -460,6 +453,15 @@ export const BoxBuilder = () => {
               {card.title}
             </button>
           ))}
+          <button
+            data-testid="category-calculator-link"
+            onClick={() => setCalcOpen(true)}
+            className="menu-category-calc-link"
+            aria-label="Open feeding calculator"
+            type="button"
+          >
+            Feeding calculator
+          </button>
         </div>
 
         {/* Main Content - Dog or Cat */}
@@ -915,7 +917,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
 
 // ===== Menu Funnel Overlay — hovers above /menu on first landing =====
-const MenuFunnel = ({ open, onShopRaw, onMealPlan, onCalculator, onClose, dismissable = true, selectedId = null }) => {
+const MenuFunnel = ({ open, onShopRaw, onMealPlan, onClose, dismissable = true, selectedId = null }) => {
   const options = [
     {
       id: 'shop-raw',
@@ -930,13 +932,6 @@ const MenuFunnel = ({ open, onShopRaw, onMealPlan, onCalculator, onClose, dismis
       sub: 'Personalized plan based on your dog\u2019s profile.',
       image: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/wtts10dz_4.png',
       onClick: onMealPlan
-    },
-    {
-      id: 'calculator',
-      label: 'Feeding Calculator',
-      sub: 'Get a portion recommendation in seconds.',
-      image: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/u0taocl0_6.png',
-      onClick: onCalculator
     }
   ];
 
@@ -955,21 +950,22 @@ const MenuFunnel = ({ open, onShopRaw, onMealPlan, onCalculator, onClose, dismis
         </button>
         <h1 className="menu-funnel-title">How would you like to order?</h1>
         <p className="menu-funnel-sub">
-          Choose the path that works best for you and your pet — browse the full menu, build a custom meal plan, or get a fast portion recommendation.
+          Choose the path that works best for you and your pet — browse our full menu or build a custom meal plan.
         </p>
-        <div className="menu-funnel-grid">
+        <div className="menu-funnel-grid menu-funnel-grid--two">
           {options.map(opt => (
             <button
               key={opt.id}
-              className={`menu-funnel-card ${selectedId === opt.id ? 'is-selected' : ''}`}
+              className={`menu-funnel-card-row ${selectedId === opt.id ? 'is-selected' : ''}`}
               onClick={opt.onClick}
               data-testid={`funnel-${opt.id}`}
-              style={{ backgroundImage: `url(${opt.image})` }}
             >
-              <div className="menu-funnel-card-overlay" />
-              <div className="menu-funnel-card-text">
-                <h3 className="menu-funnel-card-title">{opt.label}</h3>
-                <p className="menu-funnel-card-sub">{opt.sub}</p>
+              <div className="menu-funnel-card-row-media">
+                <img src={opt.image} alt={opt.label} />
+              </div>
+              <div className="menu-funnel-card-row-content">
+                <h3 className="menu-funnel-card-row-title">{opt.label}</h3>
+                <p className="menu-funnel-card-row-sub">{opt.sub}</p>
               </div>
             </button>
           ))}

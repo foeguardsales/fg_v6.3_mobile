@@ -169,10 +169,10 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
           className="calc-pet-card"
           style={{
             background: 'transparent',
-            border: '1px solid #3B2A1A',
-            borderRadius: '12px',
-            padding: '18px',
-            marginBottom: '10px',
+            border: 'none',
+            borderRadius: 0,
+            padding: 0,
+            marginBottom: pets.length > 1 ? '24px' : '0',
             display: 'flex',
             flexDirection: 'column',
             gap: '12px'
@@ -211,7 +211,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
               value={pet.species}
               onChange={(e) => updatePet(pet.id, 'species', e.target.value)}
               data-testid={`calc-species-${index}`}
-              style={{ width: '100%', padding: '14px 16px', border: '1.5px solid #3B2A1A', borderRadius: '10px', fontSize: '16px', background: 'transparent' }}
+              style={{ width: '100%', padding: '14px 16px', border: '1px solid #D8CFB8', borderRadius: '8px', fontSize: '16px', background: '#fff' }}
             >
               <option value="dog">Dog</option>
               <option value="cat">Cat</option>
@@ -257,7 +257,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
               value={pet.activity}
               onChange={(e) => updatePet(pet.id, 'activity', e.target.value)}
               data-testid={`calc-activity-${index}`}
-              style={{ width: '100%', padding: '14px 16px', border: '1.5px solid #3B2A1A', borderRadius: '10px', fontSize: '16px', background: 'transparent' }}
+              style={{ width: '100%', padding: '14px 16px', border: '1px solid #D8CFB8', borderRadius: '8px', fontSize: '16px', background: '#fff' }}
             >
               <option value="low">Low (mostly resting)</option>
               <option value="moderate">Moderate (regular walks)</option>
