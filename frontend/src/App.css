@@ -3934,7 +3934,7 @@ h2, h3, h4 {
 }
 
 .about-section {
-  padding: 80px 24px;
+  padding: 60px 24px;
 }
 
 /* === Our 8 Proteins (AboutPage) === */
@@ -4895,7 +4895,7 @@ h2, h3, h4 {
   
   .about-section,
   .ntf-section {
-    padding: 60px 24px;
+    padding: 48px 24px;
   }
   
   .comparison-table th,
@@ -6573,24 +6573,20 @@ h2, h3, h4 {
 }
 .menu-funnel-overlay-close:hover { background: #EFE6CC; }
 
-/* Title in overlay — khaki accent on header */
+/* Title in overlay — plain, integrated with menu (no chip background) */
 .menu-funnel-overlay .menu-funnel-title {
   font-family: var(--font-heading);
-  font-size: clamp(30px, 4.4vw, 44px);
-  font-weight: 600;
-  color: #D8CFB8;
-  margin: 0 0 12px;
+  font-size: clamp(26px, 3.6vw, 36px);
+  font-weight: 700;
+  color: #3B2A1A;
+  margin: 0 0 8px;
   text-align: center;
-  letter-spacing: -0.5px;
-  line-height: 1.12;
-  background: #3B2A1A;
-  padding: 18px 22px;
-  border-radius: 10px;
-  display: block;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;
+  letter-spacing: -0.4px;
+  line-height: 1.15;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  text-transform: none;
 }
 .menu-funnel-overlay .menu-funnel-sub {
   font-family: var(--font-body);
@@ -6773,29 +6769,46 @@ h2, h3, h4 {
   }
 }
 
+/* ===== Funnel cards — match in-menu mobile product-card-row exactly ===== */
+/* Thinner rectangles, image right (112×112), content left, 1 per row at ALL viewports */
+.menu-funnel-grid--two {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  grid-template-columns: none !important;
+  max-width: 720px;
+  margin: 0 auto;
+}
 .menu-funnel-card-row {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0 0 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  gap: 14px;
+  padding: 22px 0;
   border: none;
   border-bottom: 1px solid #E0D5BD;
   background: transparent;
   border-radius: 0;
   cursor: pointer;
   text-align: left;
+  align-items: center;
   transition: opacity 0.18s ease;
+  margin: 0;
+  width: 100%;
 }
+.menu-funnel-card-row:first-of-type { border-top: 1px solid #E0D5BD; }
 .menu-funnel-card-row:hover { opacity: 0.92; }
 .menu-funnel-card-row.is-selected { background: transparent; }
 
 .menu-funnel-card-row-media {
   position: relative;
-  width: 100%;
+  width: 112px;
+  height: 112px;
   aspect-ratio: 1 / 1;
-  background: transparent;
-  border-radius: 12px;
+  background: #FFFFFF;
+  border-radius: 10px;
   overflow: hidden;
+  order: 1;
+  flex-shrink: 0;
 }
 .menu-funnel-card-row-media img {
   width: 100%;
@@ -6805,28 +6818,30 @@ h2, h3, h4 {
 }
 
 .menu-funnel-card-row-content {
+  min-width: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  order: 0;
+  justify-content: center;
 }
 .menu-funnel-card-row-title {
   font-family: var(--font-heading);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: #3B2A1A;
   margin: 0 0 4px;
   line-height: 1.2;
   letter-spacing: 0;
-}
-@media (min-width: 760px) {
-  .menu-funnel-card-row-title { font-size: 20px; }
+  text-transform: none;
 }
 .menu-funnel-card-row-sub {
-  font-family: 'Barlow Semi Condensed', sans-serif;
-  font-size: 14px;
+  font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif;
+  font-size: 13px;
   color: #6A4F35;
   margin: 0;
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 /* ===== Feeding-calculator link inline with category strip ===== */

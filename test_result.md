@@ -103,6 +103,138 @@
 #====================================================================================================
 
 user_problem_statement: |
+  Round 2 frontend edits for FoeGuard menu/meal-plan/header polish.
+  
+  Latest user clarification (Round 2 - item 2):
+  "For the menu prepage, the funnel cards should be containers the SAME SIZE AND DESIGN as the
+  product containers in the menu — thinner rectangles in vertical format, 1 per row, same as the
+  menu looks on MOBILE." (i.e. mobile product-card-row treatment at every viewport.)
+  
+  Edits in this batch:
+  1. Our Ingredients (About page) — 2-col grid at all viewports (already in place; verified).
+  2. /menu funnel — restyle funnel cards to match mobile product-card-row (112×112 image RIGHT,
+     content LEFT, hairline khaki bottom divider, 1-per-row at every viewport). Softened funnel
+     title chip → plain heading.
+  3. Feeding calculator + Meal-plan steps — strip dark borders + outer white containers; hairline
+     1px khaki (#D8CFB8) on inputs only.
+  4. Meal-plan step 1 — moved progress bar from top → bottom (other steps keep it at top).
+  5. Page headers — removed slightly-cream gradient overlay band on NewToRawPage, FaqPage,
+     DeliveryPage hero sections (plain cream now).
+  6. Section spacing — normalized About + New To Raw vertical padding to landing-page rhythm
+     (60px desktop / 48px mobile).
+
+frontend:
+  - task: "Menu funnel cards match in-menu mobile product-card-row design"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.css (.menu-funnel-grid--two, .menu-funnel-card-row*)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Restyled .menu-funnel-card-row to a thin horizontal row (1fr | 112px grid, image right,
+            content left, top + bottom hairline #E0D5BD divider, transparent bg). Grid now flex-column
+            with no gap so cards stack vertically 1-per-row. Same treatment at ALL viewports (mobile
+            menu look universal). Title chip removed in favour of plain centered heading. Verify on
+            /menu desktop + mobile that the two cards look identical in size + structure to a single
+            mobile product-card-row tile.
+
+  - task: "Meal-plan steps — drop dark borders + outer white containers"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/MealPlanPage.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Replaced every per-dog `background:white, borderRadius:16px, padding:24px, boxShadow:...`
+            wrapper across steps 3–7 with transparent/zero-radius/no-shadow. Lightened all
+            `1px solid #3B2A1A` → `1px solid #D8CFB8` and `2px solid #c8102e` → `1.5px solid #c8102e`.
+
+  - task: "Meal-plan step 1 progress bar → bottom"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/MealPlanPage.js (lines ~980-1080)"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Conditional render: progress bar appears at top ONLY for step !== 1, and at the bottom
+            (below content + nav buttons) when step === 1. Steps 2..N keep the bar at top.
+
+  - task: "Remove cream gradient overlay on page headers"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/NewToRawPage.js, FaqPage.js, DeliveryPage.js"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Replaced `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)` hero
+            backgrounds with plain `COLORS.cream` so the H1 sits flush on the page background
+            (no tinted band).
+
+  - task: "Normalize section padding on /about + /new-to-raw"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.css (.about-section, ntf-section), NewToRawPage.js"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            About sections: 80px → 60px desktop / 60 → 48px mobile. New To Raw sections: 64px → 60px
+            to match the landing-page section rhythm.
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "Menu funnel cards match in-menu mobile product-card-row design"
+    - "Meal-plan steps — drop dark borders + outer white containers"
+    - "Meal-plan step 1 progress bar → bottom"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: |
+        Round 2 edits applied. Primary fix to verify: /menu funnel cards must visually MATCH a
+        mobile product-card-row tile (thin horizontal row, 112×112 image on the right, content
+        on the left, hairline khaki dividers above + below the row, transparent background,
+        stacked 1-per-row). The two options are "Raw Food Menu" and "Build a Meal Plan".
+        
+        Also verify:
+        - /meal-plan step 1: progress bar (Step X of N) appears at the BOTTOM of the page,
+          not the top.
+        - /meal-plan steps 2-7: progress bar at TOP, dog cards have NO white container /
+          shadow / dark border (transparent surfaces, hairline khaki only on inputs/buttons).
+        - /new-to-raw, /faq, /delivery: hero H1 section is plain cream (no cream→softBg gradient
+          tint band).
+        
+        REACT_APP_BACKEND_URL was corrected after envs were restored — use the preview URL from
+        /app/frontend/.env for testing.
+
+user_problem_statement: |
   FoeGuard Raw Pet Food e-commerce application - Continuation from another Emergent chat.
   Current task: Fix the reviews panel on the landing page so all review cards are the same size,
   remove the red border around the middle/featured one, and make it look nice on mobile

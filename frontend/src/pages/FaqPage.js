@@ -268,7 +268,7 @@ export const FaqPage = () => {
       <main style={{ background: COLORS.cream, minHeight: '80vh' }}>
         {/* Hero */}
         <section style={{
-          background: `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)`,
+          background: COLORS.cream,
           padding: '60px 20px 40px',
           textAlign: 'center'
         }}>
