@@ -1042,7 +1042,7 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 7
+  test_sequence: 8
   run_ui: false
 
 test_plan:
@@ -1052,6 +1052,29 @@ test_plan:
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "testing"
+    message: |
+      ✅ TRUSTMARQUEE BACKGROUND COLOR FIX VERIFIED - PASS
+      
+      **Test Scope:**
+      Single bug fix verification for TrustMarquee background color on FoeGuard landing page.
+      
+      **Bug Fixed:**
+      The marquee strip (containing trust badges: "Farm Fresh", "100% Canadian", "Family Owned", 
+      "Organic", "Human Grade") now has the correct brown background color #3B2A1A to match 
+      the hero's bottom-fade color (previously was charcoal #2C2C2C).
+      
+      **Testing Results:**
+      ✅ Mobile (390×800): Background color rgb(59, 42, 26) - PASS
+      ✅ Desktop (1440×900): Background color rgb(59, 42, 26) - PASS
+      ✅ Visual verification: No visible seam between hero and marquee - PASS
+      ✅ Code verification: LandingPage.js line 423 has correct value - PASS
+      
+      **Conclusion:**
+      The fix is production-ready. The TrustMarquee background color is correctly set to 
+      brown #3B2A1A, creating a seamless transition from the hero's bottom-fade to the 
+      marquee strip. No issues found.
+  
   - agent: "testing"
     message: |
       ✅ VISUAL STYLE CHECK COMPLETED - ALL TESTS PASSED
@@ -2021,3 +2044,56 @@ agent_communication:
       **OVERALL RESULT:**
       All three bug fixes verified and working correctly. No issues found.
       All CSS changes are production-ready.
+
+  - task: "TrustMarquee background color fix (brown #3B2A1A)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js (TrustMarquee component)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - TrustMarquee background color fix is CORRECT
+            
+            **Bug Description:**
+            The marquee strip (containing "Farm Fresh", "100% Canadian", "Family Owned", 
+            "Organic", "Human Grade") needed to have background color #3B2A1A (brown) to 
+            match the hero's bottom-fade color. Previously it was charcoal #2C2C2C.
+            
+            **Testing Performed:**
+            - Tested at Mobile viewport (390×800)
+            - Tested at Desktop viewport (1440×900)
+            - Located TrustMarquee element successfully at both viewports
+            - Verified computed background-color using getComputedStyle
+            
+            **Test Results:**
+            
+            MOBILE (390×800):
+            - Element found: DIV, 390.0px × 49.4px, overflow: hidden
+            - Background color: rgb(59, 42, 26) ✓
+            - Expected: rgb(59, 42, 26) [Brown #3B2A1A] ✓
+            - PASS ✅
+            
+            DESKTOP (1440×900):
+            - Element found: DIV, 1440.0px × 49.4px, overflow: hidden
+            - Background color: rgb(59, 42, 26) ✓
+            - Expected: rgb(59, 42, 26) [Brown #3B2A1A] ✓
+            - PASS ✅
+            
+            **Visual Verification:**
+            - Screenshots captured showing hero → marquee transition
+            - No visible color seam between hero bottom-fade and marquee top
+            - Marquee appears as warm dark brown (not neutral charcoal/black)
+            - The hero's bottom-fade merges seamlessly into the marquee strip
+            
+            **Code Verification:**
+            Confirmed in /app/frontend/src/pages/LandingPage.js line 423:
+            `background: '#3B2A1A'` is correctly set in the TrustMarquee component.
+            
+            **Conclusion:**
+            The fix has been successfully implemented and verified. The TrustMarquee 
+            background color is now brown #3B2A1A, matching the hero's bottom-fade 
+            color exactly. No issues found.

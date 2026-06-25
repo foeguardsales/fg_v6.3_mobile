@@ -414,13 +414,13 @@ const ModernNavbar = () => {
   );
 };
 
-// Trust Badge Marquee
+// Trust Badge Marquee — uses the warm brown so the hero's bottom-fade merges seamlessly
 const TrustMarquee = () => {
   const badges = ['Farm Fresh', '100% Canadian', 'Family Owned', 'Organic', 'Human Grade'];
   
   return (
     <div style={{
-      background: COLORS.charcoal,
+      background: '#3B2A1A',
       color: COLORS.cream,
       overflow: 'hidden',
       padding: '14px 0',
