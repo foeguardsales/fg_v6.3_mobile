@@ -1875,3 +1875,149 @@ agent_communication:
       **OVERALL RESULT:**
       All verification checks passed (100% success rate). Every requirement met exactly as 
       specified. Landing page copy revisions are correct and production-ready.
+
+  - task: "BUG FIX 1 — Build Your Meal Plan card image cropping on desktop/tablet"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css (.shop-farm-fresh-img)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - Build Your Meal Plan card image cropping fix working perfectly
+            
+            **TABLET (820 × 1180):**
+            - ✅ Both card images have same height: 240px
+            - ✅ Background position: 50% 0% (center top - preserves top of image)
+            - ✅ Titles perfectly aligned (0.0px difference)
+            - ✅ Dog's head/face visible, top of image NOT cut off
+            
+            **DESKTOP (1440 × 900):**
+            - ✅ Both card images have same height: 240px
+            - ✅ Background position: 50% 0% (center top - preserves top of image)
+            - ✅ Titles perfectly aligned (0.0px difference)
+            - ✅ Dog's head/face visible, top of image NOT cut off
+            
+            **VERIFICATION:**
+            The CSS fix `background-position: center top !important;` is working correctly.
+            Both "Build Your Meal Plan" and "Raw Dog Food Menu" cards have identical image
+            heights (240px) and their titles/descriptions/CTAs are horizontally aligned on
+            the same y-lines. The dog photo in "Build Your Meal Plan" card shows the full
+            head/face with no cropping at the top.
+
+  - task: "BUG FIX 2 — Hero H1 wraps to 2 lines on desktop AS WELL as mobile"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js (hero H1)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - Hero H1 line wrapping fix working perfectly
+            
+            **MOBILE (390 × 800):**
+            - ✅ H1 text: "A healthier dog starts with real food."
+            - ✅ Height: 71.375px, Line height: 35.7px
+            - ✅ Calculated lines: 2 (EXACTLY 2 LINES)
+            
+            **TABLET (820 × 1180):**
+            - ✅ Height: 110.1875px, Line height: 55.104px
+            - ✅ Calculated lines: 2 (EXACTLY 2 LINES)
+            
+            **DESKTOP (1440 × 900):**
+            - ✅ Height: 117.59375px, Line height: 58.8px
+            - ✅ Calculated lines: 2 (EXACTLY 2 LINES)
+            
+            **VERIFICATION:**
+            The H1 heading wraps to EXACTLY 2 lines on all three viewport sizes (mobile,
+            tablet, desktop). The text is not a single line on any viewport, and not more
+            than 2 lines either. The wrap point varies slightly by viewport but the line
+            count is consistently 2 across all screen sizes.
+
+  - task: "BUG FIX 3 — Hero image overlay color back to BROWN (#3B2A1A), not CHARCOAL (#2C2C2C)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js (hero overlays)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - Hero overlay color fix working perfectly
+            
+            **HERO SECTION BACKGROUND:**
+            - ✅ Contains BROWN color: rgb(59, 42, 26) / #3B2A1A
+            - ✅ Does NOT contain charcoal: rgb(44, 44, 44) / #2C2C2C
+            - ✅ Does NOT contain old brown: rgb(20, 14, 6)
+            
+            **LEFT FADE OVERLAY (Overlay 1):**
+            - ✅ Uses BROWN gradient: rgba(59, 42, 26, 0.62) → rgba(59, 42, 26, 0)
+            - ✅ Does NOT contain charcoal color
+            
+            **BOTTOM FADE OVERLAY (Overlay 2):**
+            - ✅ Uses BROWN gradient: rgba(59, 42, 26, 0) → rgb(59, 42, 26)
+            - ✅ Does NOT contain charcoal color
+            
+            **VERIFICATION:**
+            Both the hero section background and the two overlay divs (left fade and bottom
+            fade) use the correct BROWN color (#3B2A1A / rgb(59, 42, 26)). No traces of
+            charcoal (#2C2C2C) or the old deeper brown (rgb(20, 14, 6)) were found in any
+            of the gradient stops. The fade looks warm/brown, not cool/black. The transition
+            to the trust marquee is smooth and maintains the brown tone.
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 8
+  run_ui: false
+
+test_plan:
+  current_focus: []
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "testing"
+    message: |
+      ✅ THREE BUG FIX VERIFICATION COMPLETED - ALL PASSED (100% SUCCESS)
+      
+      Verified three specific bug fixes on the FoeGuard landing page as requested.
+      
+      **BUG 1 — Build Your Meal Plan Card Image Cropping: ✅ PASS**
+      - Tested on tablet (820×1180) and desktop (1440×900)
+      - Both card images have identical height (240px)
+      - Background position is "center top" (50% 0%) - preserves top of image
+      - Dog's head/face fully visible, no cropping at top
+      - Titles perfectly aligned horizontally (0px difference)
+      - Screenshots: bug1_tablet_shop_farm_fresh.png, bug1_desktop_shop_farm_fresh.png
+      
+      **BUG 2 — Hero H1 Line Wrapping: ✅ PASS**
+      - Tested on mobile (390×800), tablet (820×1180), desktop (1440×900)
+      - H1 "A healthier dog starts with real food." wraps to EXACTLY 2 lines on ALL viewports
+      - Mobile: 71.375px height ÷ 35.7px line-height = 2 lines
+      - Tablet: 110.1875px height ÷ 55.104px line-height = 2 lines
+      - Desktop: 117.59375px height ÷ 58.8px line-height = 2 lines
+      - Screenshots: bug2_mobile_hero.png, bug2_tablet_hero.png, bug2_desktop_hero.png
+      
+      **BUG 3 — Hero Overlay Color (Brown vs Charcoal): ✅ PASS**
+      - Tested on mobile (390×800)
+      - Hero section background uses BROWN: rgb(59, 42, 26) / #3B2A1A ✓
+      - Left fade overlay uses BROWN gradient: rgba(59,42,26,0.62) → rgba(59,42,26,0) ✓
+      - Bottom fade overlay uses BROWN gradient: rgba(59,42,26,0) → rgb(59,42,26) ✓
+      - NO traces of charcoal (44,44,44 / #2C2C2C) found ✓
+      - NO traces of old brown (20,14,6) found ✓
+      - Fade looks warm/brown, not cool/black ✓
+      - Screenshot: bug3_hero_overlay_transition.png
+      
+      **OVERALL RESULT:**
+      All three bug fixes verified and working correctly. No issues found.
+      All CSS changes are production-ready.

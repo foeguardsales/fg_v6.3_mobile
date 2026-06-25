@@ -656,23 +656,23 @@ export const LandingPage = () => {
         <section style={{
           position: 'relative',
           overflow: 'hidden',
-          background: `${COLORS.charcoal} url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
+          background: `#3B2A1A url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
           minHeight: 'clamp(440px, 56vw, 560px)',
           display: 'flex',
           alignItems: 'center',
           marginTop: '-120px'
         }}>
-          {/* Left fade overlay — makes text readable on the image */}
+          {/* Left fade overlay — makes text readable on the image (warm brown tones) */}
           <div
             aria-hidden="true"
             style={{
               position: 'absolute',
               inset: 0,
-              background: `linear-gradient(90deg, rgba(20,14,6,0.62) 0%, rgba(20,14,6,0.38) 35%, rgba(20,14,6,0.08) 60%, rgba(20,14,6,0) 80%)`,
+              background: `linear-gradient(90deg, rgba(59,42,26,0.62) 0%, rgba(59,42,26,0.38) 35%, rgba(59,42,26,0.08) 60%, rgba(59,42,26,0) 80%)`,
               pointerEvents: 'none'
             }}
           />
-          {/* Bottom fade — fully transparent at top so no visible seam, fades to charcoal at the bottom merging into TrustMarquee */}
+          {/* Bottom fade — fully transparent at top so no visible seam, fades to brown at the bottom merging into TrustMarquee */}
           <div
             aria-hidden="true"
             style={{
@@ -681,7 +681,7 @@ export const LandingPage = () => {
               right: 0,
               bottom: 0,
               height: '40%',
-              background: `linear-gradient(180deg, rgba(59,42,26,0) 0%, rgba(59,42,26,0.6) 60%, ${COLORS.charcoal} 100%)`,
+              background: `linear-gradient(180deg, rgba(59,42,26,0) 0%, rgba(59,42,26,0.6) 60%, #3B2A1A 100%)`,
               pointerEvents: 'none'
             }}
           />
@@ -695,9 +695,9 @@ export const LandingPage = () => {
             padding: 'clamp(140px, 16vw, 180px) 24px clamp(36px, 4vw, 56px)',
             width: '100%'
           }}>
-            <div className="hero-text" style={{ maxWidth: '540px' }}>
+            <div className="hero-text" style={{ maxWidth: '620px' }}>
               <h1 style={{
-                fontSize: 'clamp(34px, 8.4vw, 56px)',
+                fontSize: 'clamp(34px, 6.4vw, 56px)',
                 fontWeight: 700,
                 color: COLORS.cream,
                 lineHeight: '1.05',
@@ -705,7 +705,7 @@ export const LandingPage = () => {
                 fontFamily: "'Barlow Semi Condensed', sans-serif",
                 letterSpacing: '-0.5px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
-                maxWidth: '380px'
+                maxWidth: '560px'
               }}>
                 A healthier dog starts with real food.
               </h1>
@@ -833,7 +833,7 @@ export const LandingPage = () => {
                 >
                   <div className="shop-farm-fresh-img" style={{
                     height: '200px',
-                    background: `url(${card.image}) center/cover`
+                    background: `url(${card.image}) center top / cover no-repeat`
                   }} />
                   <div className="shop-farm-fresh-body" style={{ padding: '24px' }}>
                     <h3 style={{

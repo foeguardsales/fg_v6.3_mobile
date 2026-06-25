@@ -368,6 +368,27 @@ h2, h3, h4 {
 /* Shop Farm Fresh — 2-up on every viewport, tighter on mobile */
 .shop-farm-fresh-grid {
   grid-template-columns: repeat(2, 1fr) !important;
+  align-items: stretch !important;
+}
+.shop-farm-fresh-grid > button {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100%;
+}
+.shop-farm-fresh-img {
+  background-position: center top !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
+.shop-farm-fresh-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 760px) {
+  .shop-farm-fresh-img {
+    height: 240px !important;
+  }
 }
 @media (max-width: 600px) {
   .shop-farm-fresh-grid {
