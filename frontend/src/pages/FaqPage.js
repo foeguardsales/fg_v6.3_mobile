@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, ChevronUp, MessageCircle } from 'lucide-react';
 import { ModernNavbar, ModernFooter, COLORS, liftedButtonStyle, liftedButtonHover } from './LandingPage';
 import { SlideCart } from '../contexts/CartContext';
@@ -121,6 +121,17 @@ const FAQ_CATEGORIES = [
     title: 'Ordering & Subscriptions',
     items: [
       {
+        slug: 'happy-dog-guarantee',
+        q: 'What is the Happy Dog Guarantee?',
+        a: (
+          <>
+            <p style={{ margin: '0 0 10px' }}>If your dog doesn&apos;t love their FoeGuard meals, you can return any unused, unopened packs within <strong>14 days</strong> of delivery for a full refund — no questions asked.</p>
+            <p style={{ margin: '0 0 10px' }}>To start a return, simply email <a href="mailto:info@foeguard.com" style={{ color: '#2C2C2C', textDecoration: 'underline' }}>info@foeguard.com</a> within the 14-day window with your order number. We&apos;ll arrange the pickup of any sealed, frozen packs and refund the value of those packs back to your original payment method within 5&ndash;7 business days.</p>
+            <p style={{ margin: 0 }}><em>Opened packs cannot be returned for food-safety reasons, but our team will always help troubleshoot transition issues first — most dogs love it once they get past day 1.</em></p>
+          </>
+        )
+      },
+      {
         q: 'Can I pause, skip or cancel my subscription?',
         a: 'Yes — fully flexible. Manage delivery dates, swap proteins or cancel anytime from your account. No hidden fees, no commitments.'
       },
@@ -209,11 +220,13 @@ const FAQ_CATEGORIES = [
   }
 ];
 
-const AccordionItem = ({ q, a, isOpen, onToggle }) => (
+const AccordionItem = ({ q, a, isOpen, onToggle, anchorId }) => (
   <div
+    id={anchorId}
     style={{
       borderBottom: `1px solid ${COLORS.khaki}`,
-      padding: '0'
+      padding: '0',
+      scrollMarginTop: '120px'
     }}
   >
     <button
@@ -259,7 +272,30 @@ const AccordionItem = ({ q, a, isOpen, onToggle }) => (
 
 export const FaqPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [openKey, setOpenKey] = useState('0-0');
+
+  // Deep-link support: read hash on mount, find matching FAQ slug, open it + scroll
+  useEffect(() => {
+    const raw = (location.hash || window.location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    let matchKey = null;
+    FAQ_CATEGORIES.forEach((cat, catIdx) => {
+      cat.items.forEach((it, i) => {
+        if (it.slug === raw) matchKey = `${catIdx}-${i}`;
+      });
+    });
+    if (matchKey) {
+      setOpenKey(matchKey);
+      // Scroll to the question after it renders
+      const tryScroll = () => {
+        const el = document.getElementById(`faq-${raw}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      setTimeout(tryScroll, 60);
+      setTimeout(tryScroll, 300);
+    }
+  }, [location.hash]);
 
   return (
     <>
@@ -321,6 +357,7 @@ export const FaqPage = () => {
                 }}>
                   {cat.items.map((it, i) => {
                     const key = `${catIdx}-${i}`;
+                    const anchorId = it.slug ? `faq-${it.slug}` : undefined;
                     return (
                       <AccordionItem
                         key={key}
@@ -328,6 +365,7 @@ export const FaqPage = () => {
                         a={it.a}
                         isOpen={openKey === key}
                         onToggle={() => setOpenKey(openKey === key ? null : key)}
+                        anchorId={anchorId}
                       />
                     );
                   })}

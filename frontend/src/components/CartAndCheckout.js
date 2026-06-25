@@ -603,7 +603,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
       )}
 
       {subCategories.map(sc => (
-        <div key={sc.key} className="treats-subcategory" style={{ marginTop: '28px' }}>
+        <div key={sc.key} className="treats-subcategory" style={{ marginTop: '12px' }}>
           <div className="menu-collection-header treats-subcat-header" data-testid={`treats-subcat-${sc.key}`}>
             <h4 className="menu-collection-title treats-subcat-title">{sc.title}</h4>
             {showCategoryDescriptions && (

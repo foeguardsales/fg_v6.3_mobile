@@ -692,19 +692,20 @@ export const LandingPage = () => {
             zIndex: 1,
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: 'clamp(150px, 17vw, 190px) 24px clamp(40px, 4.5vw, 56px)',
+            padding: 'clamp(140px, 16vw, 180px) 24px clamp(36px, 4vw, 56px)',
             width: '100%'
           }}>
-            <div className="hero-text" style={{ maxWidth: '620px' }}>
+            <div className="hero-text" style={{ maxWidth: '540px' }}>
               <h1 style={{
-                fontSize: 'clamp(26px, 4.6vw, 48px)',
-                fontWeight: 600,
+                fontSize: 'clamp(34px, 8.4vw, 56px)',
+                fontWeight: 700,
                 color: COLORS.cream,
-                lineHeight: '1.1',
+                lineHeight: '1.05',
                 marginBottom: '12px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif",
                 letterSpacing: '-0.5px',
-                textShadow: '0 3px 14px rgba(0,0,0,0.35)'
+                textShadow: '0 3px 14px rgba(0,0,0,0.35)',
+                maxWidth: '380px'
               }}>
                 A healthier dog starts with real food.
               </h1>
@@ -713,7 +714,7 @@ export const LandingPage = () => {
                 fontSize: 'clamp(14px, 1.6vw, 16px)',
                 color: COLORS.cream,
                 opacity: 0.94,
-                maxWidth: '520px',
+                maxWidth: '460px',
                 margin: '0 0 18px',
                 lineHeight: '1.55',
                 fontWeight: 400,
@@ -740,14 +741,28 @@ export const LandingPage = () => {
                 style={{
                   fontSize: '12.5px',
                   color: COLORS.cream,
-                  opacity: 0.9,
+                  opacity: 0.92,
                   margin: '10px 0 0',
                   lineHeight: 1.5,
                   textShadow: '0 1px 6px rgba(0,0,0,0.45)',
                   maxWidth: '460px'
                 }}
               >
-                Happy dog guarantee — return any unused packs within 14 days for a full refund.
+                A happy dog or your money back &mdash; guaranteed.{' '}
+                <a
+                  href="/faq#happy-dog-guarantee"
+                  data-testid="hero-guarantee-terms"
+                  onClick={(e) => { e.preventDefault(); navigate('/faq#happy-dog-guarantee'); }}
+                  style={{
+                    color: COLORS.cream,
+                    opacity: 0.85,
+                    textDecoration: 'underline',
+                    fontSize: '11.5px',
+                    marginLeft: '4px'
+                  }}
+                >
+                  see terms
+                </a>
               </p>
             </div>
           </div>
