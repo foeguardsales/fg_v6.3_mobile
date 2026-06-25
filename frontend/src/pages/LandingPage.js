@@ -12,7 +12,7 @@ const COLORS = {
   softBg: '#E8DFC8',       // Straw
   khaki: '#D8CFB8',
   khakiDark: '#A89B7C',
-  charcoal: '#3B2A1A',     // Aged Wood (was #2C2C2C)
+  charcoal: '#2C2C2C',     // Unified charcoal text colour site-wide (replaces brown brown)
   forestGreen: '#2F4538',
   lightGreen: '#7A9A7A',   // Sage / Light green for Comfort
   harvestGold: '#C9A84C',  // Accent only — badges
@@ -706,7 +706,7 @@ export const LandingPage = () => {
                 letterSpacing: '-0.5px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)'
               }}>
-                A healthier dog starts with <span style={{ color: COLORS.khaki }}>real food.</span>
+                A healthier dog starts with real food.
               </h1>
 
               <p style={{
@@ -759,18 +759,18 @@ export const LandingPage = () => {
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
           background: COLORS.cream,
-          padding: '40px 20px 56px'
+          padding: '28px 20px 36px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <h2 style={{
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
-              marginBottom: '28px',
+              marginBottom: '20px',
               color: COLORS.charcoal,
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
-              Shop <span style={{ color: COLORS.red }}>Farm Fresh</span>
+              Shop Farm Fresh
             </h2>
 
             <div style={{
@@ -857,11 +857,11 @@ export const LandingPage = () => {
         {/* WHY FOEGUARD RAW? */}
         <section style={{
           background: COLORS.white,
-          padding: '40px 20px 56px'
+          padding: '28px 20px 36px'
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             {/* Headline */}
-            <div style={{ textAlign: 'center', marginBottom: '28px', maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '20px', maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
@@ -870,7 +870,7 @@ export const LandingPage = () => {
                 marginBottom: '16px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
-                Why <span style={{ color: COLORS.red }}>FoeGuard</span> Raw
+                Why FoeGuard Raw
               </h2>
               <p style={{
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
@@ -976,11 +976,11 @@ export const LandingPage = () => {
         {/* BENEFITS SECTION */}
         <section style={{
           background: COLORS.forestGreen,
-          padding: '40px 20px 56px',
+          padding: '28px 20px 36px',
           color: COLORS.cream
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 28px' }}>
+            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 20px' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
@@ -1006,7 +1006,7 @@ export const LandingPage = () => {
             <div className="benefits-2week-grid" style={{
               display: 'grid',
               gap: '14px',
-              marginBottom: '28px'
+              marginBottom: '20px'
             }}>
               {[
                 { title: 'Improved Digestibility', desc: 'Less gas, less bloat, more comfort.' },
@@ -1082,7 +1082,7 @@ export const LandingPage = () => {
         {/* REVIEWS SECTION — uniform card horizontal feed (uma's pride style) */}
         <section style={{
           background: COLORS.cream,
-          padding: '40px 0 56px',
+          padding: '28px 0 36px',
           position: 'relative',
           overflow: 'hidden'
         }}>
@@ -1091,13 +1091,13 @@ export const LandingPage = () => {
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
-              marginBottom: '10px',
+              marginBottom: '8px',
               color: COLORS.charcoal,
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
-              Hear from Happy <span style={{ color: COLORS.red }}>FoeGuardians</span>
+              Hear from Happy FoeGuardians
             </h2>
-            <p style={{ textAlign: 'center', color: COLORS.charcoal, marginBottom: '24px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '15px' }}>
+            <p style={{ textAlign: 'center', color: COLORS.charcoal, marginBottom: '18px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '15px' }}>
               93% of FoeGuardians reported a healthy change in digestion, coat, allergies or energy. Real food, real results.
             </p>
           </div>
@@ -1211,10 +1211,10 @@ export const LandingPage = () => {
         {/* PROTEIN OPTIONS — 8+ Meat Options */}
         <section style={{
           background: COLORS.white,
-          padding: '40px 20px 56px'
+          padding: '28px 20px 36px'
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 28px' }}>
+            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 20px' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
@@ -1223,7 +1223,7 @@ export const LandingPage = () => {
                 marginBottom: '12px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
-                Pick Your Dog&apos;s Favourites From <span style={{ color: COLORS.red }}>8+ Delicious Meat Options</span>
+                Pick Your Dog&apos;s Favourites From 8+ Delicious Meat Options
               </h2>
               <p style={{
                 fontSize: 'clamp(15px, 1.8vw, 17px)',
@@ -1322,7 +1322,7 @@ export const LandingPage = () => {
 
             {/* Content side */}
             <div style={{
-              padding: '40px 28px 48px',
+              padding: '28px 24px 32px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center'
@@ -1331,16 +1331,16 @@ export const LandingPage = () => {
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: '700',
                 color: COLORS.charcoal,
-                marginBottom: '16px',
+                marginBottom: '12px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}>
-                Raw Feeding is a <span style={{ color: COLORS.red }}>Family Tradition</span>
+                Raw Feeding is a Family Tradition
               </h2>
               <p style={{
                 fontSize: '16px',
                 color: COLORS.charcoal,
-                lineHeight: '1.7',
-                marginBottom: '24px'
+                lineHeight: '1.65',
+                marginBottom: '20px'
               }}>
                 FoeGuard started because of one dog. When we couldn&apos;t find raw food made to our standards as third-generation farmers, we made it ourselves. Before long our neighbours were asking for meals — then their friends were too. What started on our small farm in Acton grew into something bigger, built by the community, for the community.
               </p>
@@ -1363,18 +1363,18 @@ export const LandingPage = () => {
         {/* FAQ SECTION */}
         <section style={{
           background: COLORS.white,
-          padding: '40px 20px 56px'
+          padding: '28px 20px 36px'
         }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 style={{
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
               textAlign: 'center',
-              marginBottom: '28px',
+              marginBottom: '20px',
               color: COLORS.charcoal,
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
-              Frequently Asked <span style={{ color: COLORS.red }}>Questions</span>
+              Frequently Asked Questions
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -1430,7 +1430,7 @@ export const LandingPage = () => {
         {/* SECTION 9 — READY TO MAKE THE SWITCH? (final CTA) */}
         <section style={{
           background: COLORS.redOverlay,
-          padding: '48px 20px 56px',
+          padding: '32px 20px 36px',
           textAlign: 'center',
           color: COLORS.cream
         }}>
@@ -1438,7 +1438,7 @@ export const LandingPage = () => {
             <h2 style={{
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: '700',
-              marginBottom: '14px',
+              marginBottom: '12px',
               color: COLORS.cream,
               fontFamily: "'Barlow Semi Condensed', sans-serif"
             }}>
@@ -1446,7 +1446,7 @@ export const LandingPage = () => {
             </h2>
             <p style={{
               fontSize: 'clamp(16px, 1.8vw, 19px)',
-              marginBottom: '24px',
+              marginBottom: '20px',
               opacity: 0.95,
               color: COLORS.cream,
               lineHeight: 1.55

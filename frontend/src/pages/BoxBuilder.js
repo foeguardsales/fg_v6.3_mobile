@@ -917,26 +917,18 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         )}
       </div>
 
-      {/* Stacked content: Title → Price → Description → See More */}
+      {/* Stacked content: Title → Description → Price (tap card to open detail) */}
       <div className="product-card-content">
         <h4 className="product-card-title">{product.name}</h4>
-
-        <div className="product-card-price">
-          <span className="price-regular">${lineTotal.toFixed(2)}</span>
-          <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
-        </div>
 
         <p className="product-card-desc">
           {product.mini_description || product.description.split('.')[0]}
         </p>
 
-        <button
-          className="product-card-more"
-          onClick={(e) => { e.stopPropagation(); goToProduct(); }}
-          data-testid={`learn-more-${product.product_id}`}
-        >
-          See more
-        </button>
+        <div className="product-card-price">
+          <span className="price-regular">${lineTotal.toFixed(2)}</span>
+          <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
+        </div>
       </div>
     </div>
   );

@@ -138,7 +138,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
       <div className={`cart-drawer-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
       <div className={`cart-drawer ${isOpen ? 'open' : ''}`} data-testid="cart-drawer" ref={drawerRef}>
         <div className="cart-drawer-header">
-          <h3 style={{ fontSize: '24px', color: '#3B2A1A', margin: 0, fontWeight: 700 }}>Your Cart</h3>
+          <h3 style={{ fontSize: '24px', color: '#2C2C2C', margin: 0, fontWeight: 700 }}>Your Cart</h3>
           <button onClick={onClose} className="cart-close-btn">×</button>
         </div>
         
@@ -291,22 +291,22 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                   style={{ marginTop: '2px', accentColor: '#3B2A1A', width: '18px', height: '18px' }}
                 />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '14px', fontWeight: 700, color: '#3B2A1A' }}>
+                  <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '14px', fontWeight: 700, color: '#2C2C2C' }}>
                     Subscribe &amp; save 5%
                   </div>
-                  <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '12px', color: '#6A4F35', marginTop: '2px' }}>
+                  <div style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '12px', color: '#2C2C2C', marginTop: '2px' }}>
                     Free delivery. Pause, skip, or cancel anytime.
                   </div>
                 </div>
               </label>
               {subscriptionPlan && (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #E8DDD0' }}>
-                  <span style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#3B2A1A', fontWeight: 600 }}>Delivery Schedule</span>
+                  <span style={{ fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#2C2C2C', fontWeight: 600 }}>Delivery Schedule</span>
                   <select
                     value={subWeeks}
                     onChange={(e) => onSubscriptionChange(`every_${e.target.value}_weeks`)}
                     data-testid="cart-subscribe-schedule"
-                    style={{ padding: '8px 10px', border: '1.5px solid #D8CFB8', borderRadius: '6px', background: '#fff', fontSize: '13px', color: '#3B2A1A', fontFamily: "'Barlow Semi Condensed', sans-serif", cursor: 'pointer' }}
+                    style={{ padding: '8px 10px', border: '1.5px solid #D8CFB8', borderRadius: '6px', background: '#fff', fontSize: '13px', color: '#2C2C2C', fontFamily: "'Barlow Semi Condensed', sans-serif", cursor: 'pointer' }}
                   >
                     {[1, 2, 3, 4, 5, 6].map(n => (
                       <option key={n} value={n}>Every {n} {n === 1 ? 'week' : 'weeks'}</option>
@@ -409,7 +409,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
               style={{
                 background: 'transparent',
                 border: '1.5px solid #3B2A1A',
-                color: '#3B2A1A',
+                color: '#2C2C2C',
                 padding: '12px 18px',
                 borderRadius: '6px',
                 fontFamily: "'Barlow Semi Condensed', sans-serif",
@@ -520,19 +520,8 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
         <div className="product-card-content">
           <h4 className="product-card-title">{treat.name}</h4>
           <p className="product-card-desc">{treat.quantity_description}</p>
-          <div className="product-card-meta">
-            <div className="product-card-price">
-              <span className="price-regular">${treat.price.toFixed(2)}</span>
-            </div>
-            {clickable && (
-              <button
-                className="product-card-more"
-                onClick={(e) => { e.stopPropagation(); goToTreat(); }}
-                data-testid={`learn-more-treat-${treat.treat_id}`}
-              >
-                See more
-              </button>
-            )}
+          <div className="product-card-price">
+            <span className="price-regular">${treat.price.toFixed(2)}</span>
           </div>
         </div>
 
@@ -1071,7 +1060,7 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
           );
         })}
         {bulkRate > 0 && (
-          <div className="checkout-summary-row" style={{ color: '#6A4F35', fontSize: '13px' }}>
+          <div className="checkout-summary-row" style={{ color: '#2C2C2C', fontSize: '13px' }}>
             <span>Bulk discount ({Math.round(bulkRate * 100)}% • {totalMealLbs}lb)</span>
             <span>applied</span>
           </div>
@@ -1280,26 +1269,26 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
                     const collectionLabel = getCollectionLabel(pid);
                     const displayName = collectionLabel ? `${collectionLabel} — ${d.name}` : d.name;
                     return (
-                    <label key={pid} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#3B2A1A' }}>
+                    <label key={pid} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#2C2C2C' }}>
                       <input
                         type="checkbox"
                         checked={subscriptionItems.includes(`p:${pid}`)}
                         onChange={() => toggleSubItem(`p:${pid}`)}
                         data-testid={`sub-item-${pid}`}
                       />
-                      <span>{displayName} <span style={{ color: '#6A4F35' }}>· {d.qty}lb</span></span>
+                      <span>{displayName} <span style={{ color: '#2C2C2C' }}>· {d.qty}lb</span></span>
                     </label>
                     );
                   })}
                   {selectedTreats.map(t => (
-                    <label key={t.treat_id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#3B2A1A' }}>
+                    <label key={t.treat_id} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#2C2C2C' }}>
                       <input
                         type="checkbox"
                         checked={subscriptionItems.includes(`t:${t.treat_id}`)}
                         onChange={() => toggleSubItem(`t:${t.treat_id}`)}
                         data-testid={`sub-item-${t.treat_id}`}
                       />
-                      <span>{t.name} <span style={{ color: '#6A4F35' }}>· x{t.quantity || 1}</span></span>
+                      <span>{t.name} <span style={{ color: '#2C2C2C' }}>· x{t.quantity || 1}</span></span>
                     </label>
                   ))}
                 </div>
