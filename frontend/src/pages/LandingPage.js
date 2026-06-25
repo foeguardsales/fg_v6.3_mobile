@@ -718,28 +718,15 @@ export const LandingPage = () => {
                 onClick={() => navigate('/menu')}
                 data-testid="hero-shop-now"
                 style={{
+                  ...liftedButtonStyle,
                   background: COLORS.cream,
                   color: COLORS.charcoal,
-                  border: 'none',
-                  padding: '16px 36px',
-                  borderRadius: '8px',
-                  fontSize: '15px',
-                  fontWeight: 700,
-                  fontFamily: "'Barlow Semi Condensed', sans-serif",
-                  cursor: 'pointer',
                   letterSpacing: '0.04em',
                   textTransform: 'uppercase',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
-                  transition: 'transform 0.18s ease, box-shadow 0.18s ease'
+                  fontFamily: "'Barlow Semi Condensed', sans-serif"
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 12px 28px rgba(0,0,0,0.3)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.25)';
-                }}
+                onMouseEnter={(e) => liftedButtonHover(e, true)}
+                onMouseLeave={(e) => liftedButtonHover(e, false)}
               >
                 Shop Now
               </button>
@@ -1475,25 +1462,13 @@ export const LandingPage = () => {
               data-testid="final-cta-shop-now"
               onClick={() => navigate('/menu')}
               style={{
-                background: COLORS.white,
-                color: COLORS.red,
-                border: 'none',
-                padding: '18px 48px',
-                borderRadius: '8px',
-                fontSize: '17px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
+                ...liftedButtonStyle,
+                background: COLORS.cream,
+                color: COLORS.redOverlay,
                 fontFamily: "'Barlow Semi Condensed', sans-serif"
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translate(-2px, -2px)';
-                e.currentTarget.style.boxShadow = '6px 6px 0px rgba(0,0,0,0.25)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translate(0, 0)';
-                e.currentTarget.style.boxShadow = '4px 4px 0px rgba(0,0,0,0.2)';
-              }}
+              onMouseEnter={(e) => liftedButtonHover(e, true)}
+              onMouseLeave={(e) => liftedButtonHover(e, false)}
             >
               Shop Now
             </button>

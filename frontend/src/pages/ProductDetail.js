@@ -227,24 +227,28 @@ const PersonalizeSection = ({ navigate }) => {
 const ProductFaqSection = () => {
   const faqs = [
     {
-      q: 'How do I transition my dog to raw?',
-      a: 'Most dogs do best with a short 5–7 day transition. Start with 25% raw / 75% current food on day 1–2, then 50/50 on day 3–4, 75/25 on day 5–6, and full raw by day 7. Some dogs (especially puppies) can switch cold-turkey. Feed at room temperature, watch stool quality, and reach out if anything seems off.'
+      q: 'How much raw should I feed?',
+      a: (
+        <>
+          Adults feed roughly 2–3.5% of body weight per day; puppies feed more (up to 10–13% at 2–4 months, scaling down with age). Use our <a href="/calculator" style={{ color: '#C8102E', fontWeight: 700, textDecoration: 'underline' }}>feeding calculator</a> for a personalized portion in seconds.
+        </>
+      )
     },
     {
-      q: 'How do I thaw and store FoeGuard meals?',
-      a: 'Thaw in the fridge for 24 hours before feeding. Once thawed, meals stay fresh in the fridge for up to 3 days. Refreeze unopened patties only — never refreeze thawed meat. Keep frozen at -18°C until ready.'
+      q: 'How to transition my dog or cat to raw?',
+      a: "We recommend a 7–10 day gradual transition, mixing increasing amounts of FoeGuard with your pet's current food until they're on 100% raw. Feed slightly smaller portions during the switch, watch stool consistency, and skip introducing new treats. Our team is one message away if you need help."
     },
     {
-      q: 'How long does delivery take?',
-      a: 'Orders placed by Sunday night ship Tuesday and arrive within 1–3 business days anywhere in Ontario. Free delivery in the GTA on orders over $100.'
+      q: 'Can puppies/seniors eat raw food?',
+      a: "Absolutely — both thrive on it. Our Comfort Dinner line is complete & balanced for all life stages (AAFCO). Puppies need more food per kg of body weight and specially ground recipes for easy digestion — we carry puppy-friendly options across every protein."
     },
     {
-      q: 'Is raw food safe to handle?',
-      a: 'Yes — handle raw pet food the same way you would raw meat for your own kitchen. Wash your hands, bowls, and prep surfaces with hot soapy water after feeding. We also follow human-grade USDA-style food safety standards in our kitchen.'
+      q: 'Are your meals complete and balanced?',
+      a: "Yes. Our Comfort Dinner recipes are complete and balanced to AAFCO standards — no supplementation needed. Primal Feast follows a traditional 80/10/10 raw ratio and is designed for rotational feeding or topping where you can add your own supplementation."
     },
     {
-      q: 'How long does a box last?',
-      a: 'It depends on your dog&apos;s weight and box size. A 6lb box feeds an average 25lb dog for about 1 week; a 36lb box feeds the same dog for 6 weeks. Use our feeding calculator for an exact estimate.'
+      q: 'Where do your ingredients come from?',
+      a: "All of our meats are sourced directly from our own farm in Acton, ON and a small group of hand-picked Ontario partners we know personally. Every recipe is prepared in our government-regulated, human-grade kitchen — high quality, consistent and fully traceable."
     }
   ];
   const [openIdx, setOpenIdx] = useState(0);

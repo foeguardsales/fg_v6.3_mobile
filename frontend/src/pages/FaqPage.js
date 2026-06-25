@@ -30,7 +30,7 @@ const FAQ_CATEGORIES = [
         )
       },
       {
-        q: 'How do I transition my pet?',
+        q: 'How to introduce raw to your pet?',
         a: (
           <>
             <p style={{ margin: '0 0 12px' }}>Because our meals are nutrient-dense and minimally processed, a thoughtful transition helps avoid digestive upset. We recommend the following approaches:</p>
@@ -73,8 +73,47 @@ const FAQ_CATEGORIES = [
         )
       },
       {
-        q: 'Can puppies and senior dogs eat raw?',
-        a: 'Absolutely. Our Comfort Dinner line is complete & balanced for all life stages (AAFCO). For puppies, simply feed slightly more per kg of body weight using our calculator.'
+        q: 'Can puppies eat raw dog food?',
+        a: 'Not only can your puppies eat raw, but they thrive on it! Raw food is great for puppies, adults & seniors. However, puppies require certain nutrients to enable healthy growth as well as specially grounded recipes to ensure they are easily digested. We carry a variety of puppy recipes for every protein to ensure your mini FoeGuardian gets the right nutrition.'
+      },
+      {
+        q: 'Should I feed my dog raw or kibble?',
+        a: 'In most circumstances, since dogs, cats and ferrets are all carnivores, they thrive on raw diets. The ingredients used in kibble contain high salt content, processed additives and lack the whole proteins that a properly balanced raw food provides.'
+      },
+      {
+        q: 'Where does your meat come from?',
+        a: 'All of our meats are sourced directly from our own farm and hand-picked local partners around Ontario to ensure recipes are high quality, consistent and fully customizable.'
+      }
+    ]
+  },
+  {
+    title: 'Feeding Guide',
+    items: [
+      {
+        q: 'Feeding guide for dogs and puppies',
+        a: (
+          <>
+            <p style={{ margin: '0 0 12px' }}>Remember that every FoeGuardian is unique and may require different recommendations depending on exercise, age &amp; health. Regularly weigh your pets and adjust their food based on their weight.</p>
+            <p style={{ margin: '0 0 12px' }}>Start at the minimum recommendations. Add or remove portions as needed.</p>
+            <p style={{ margin: '0 0 12px' }}>As a general rule of thumb, if you can feel their ribs without added pressure they are <strong>underweight</strong>. If you cannot feel their ribs with added pressure they are likely <strong>overweight</strong>.</p>
+            <p style={{ margin: '0 0 6px', fontWeight: 600 }}>Here is a simple guide to get you started — percentages are based off of total body weight:</p>
+            <ul style={{ margin: '0 0 12px 20px', padding: 0 }}>
+              <li>Adult Dogs (1 year or over) — 2–3.5%</li>
+              <li>Puppies (2–4 months) — 10–13%</li>
+              <li>Puppies (4–8 months) — 6–10%</li>
+              <li>Puppies (8–12 months) — 3–6%</li>
+            </ul>
+            <p style={{ margin: 0 }}>For a personalized portion in seconds, try our <a href="/calculator" style={{ color: COLORS.red, fontWeight: 700, textDecoration: 'underline' }}>feeding calculator</a>.</p>
+          </>
+        )
+      },
+      {
+        q: 'How often should you feed raw?',
+        a: 'We recommend feeding raw 6 days per week with 1 day being a \u2018reset\u2019 day where your FoeGuard should receive a treat or meal replacement instead of a meal.'
+      },
+      {
+        q: 'Can I mix raw with kibble?',
+        a: 'We don\u2019t recommend doing so, as your pets digest raw very differently than kibble. If you do decide to mix, please try to feed 2 separate meals at different times of the day.'
       }
     ]
   },
@@ -113,6 +152,20 @@ const FAQ_CATEGORIES = [
       {
         q: 'What if my order arrives partially thawed?',
         a: 'If meals are still cold to the touch, they are safe to refreeze immediately. If anything looks off, email info@foeguard.com within 48 hours and we\u2019ll make it right.'
+      },
+      {
+        q: 'How do I defrost, store and handle raw meat?',
+        a: (
+          <>
+            <p style={{ margin: '0 0 10px' }}><strong>Defrost:</strong> Overnight in the fridge or in room-temperature water until raw meat is fully defrosted.</p>
+            <p style={{ margin: '0 0 10px' }}><strong>Store:</strong> Our raw recipes should be stored in the freezer and can be kept in the fridge up to 4 days after defrosting. Colours of our recipes may change slightly, however that is due to oxidization and will not have any negative effects on your FoeGuard.</p>
+            <p style={{ margin: 0 }}><strong>Handle:</strong> Always wash your hands with warm soapy water prior to and after handling any raw meat.</p>
+          </>
+        )
+      },
+      {
+        q: 'Where are you located and do you deliver?',
+        a: 'Our dispatch facility is located in Acton, ON and we provide raw pet food delivery throughout the GTA. Please contact us at 905-466-7787 or sales@foeguard.com for any inquiries.'
       }
     ]
   },
@@ -126,6 +179,22 @@ const FAQ_CATEGORIES = [
       {
         q: 'What if my dog has allergies?',
         a: 'Use our Meal Plan quiz to flag allergens — we\u2019ll surface novel-protein options like Duck or Rabbit and skip any recipes containing your dog\u2019s triggers.'
+      },
+      {
+        q: 'Do I need to add supplementation to your food?',
+        a: 'At FoeGuard we believe in creating accessibility for all pet owners. This is why we offer a variety of dinners that are already nutritionally balanced so our FoeGuardians don\u2019t have to worry about supplementation or day-to-day feeding. We also provide full personalization and protein-based Primal Feast meals where customers can add their own supplementation.'
+      },
+      {
+        q: 'Does raw feeding affect my dog\u2019s allergies or digestive issues?',
+        a: 'Unlike kibble, raw offers all-natural ingredients which diminish many allergic reactions that pets normally have to preservatives, additives and other by-products that can negatively affect your FoeGuardian.'
+      },
+      {
+        q: 'Why is my pet drinking less water on raw?',
+        a: 'Due to the high salt content in kibble, pets drink drastically more water after eating dry pet food in comparison to FoeGuard raw, which acts as a natural moisturizer and replenishes your pet for better health.'
+      },
+      {
+        q: 'Why is my pet eating less on raw?',
+        a: 'With raw feeding you will notice that your FoeGuard is eating less and that their stool is much smaller than before. Unlike kibble, there are no additives in our recipes, enabling all of the nutrients to be absorbed by your pet. This also prevents your pet from overeating and maintains a diet that is naturally healthy to them.'
       },
       {
         q: 'What benefits does raw feeding have?',
