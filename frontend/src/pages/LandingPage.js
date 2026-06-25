@@ -20,43 +20,45 @@ const COLORS = {
   white: '#F5F3EF'         // No pure white surfaces
 };
 
-// Lifted Button Style (like Oma's - bordered with shadow on one side)
+// Lifted Button Style (compact site-wide standard)
 const liftedButtonStyle = {
   background: COLORS.red,
   color: COLORS.white,
   border: 'none',
-  padding: '16px 36px',
+  padding: '10px 22px',
   borderRadius: '8px',
-  fontSize: '15px',
+  fontSize: '13px',
   fontWeight: '600',
   cursor: 'pointer',
-  boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
+  boxShadow: '3px 3px 0px rgba(0,0,0,0.18)',
   transition: 'all 0.2s ease',
-  position: 'relative'
+  position: 'relative',
+  lineHeight: 1.2
 };
 
 const liftedButtonHover = (e, isHover) => {
   if (isHover) {
     e.currentTarget.style.transform = 'translate(-2px, -2px)';
-    e.currentTarget.style.boxShadow = '6px 6px 0px rgba(0,0,0,0.25)';
+    e.currentTarget.style.boxShadow = '5px 5px 0px rgba(0,0,0,0.22)';
   } else {
     e.currentTarget.style.transform = 'translate(0, 0)';
-    e.currentTarget.style.boxShadow = '4px 4px 0px rgba(0,0,0,0.2)';
+    e.currentTarget.style.boxShadow = '3px 3px 0px rgba(0,0,0,0.18)';
   }
 };
 
-// Outline Lifted Button
+// Outline Lifted Button (compact)
 const outlineButtonStyle = {
   background: 'transparent',
   color: COLORS.red,
-  border: `2px solid ${COLORS.red}`,
-  padding: '14px 32px',
+  border: `1.5px solid ${COLORS.red}`,
+  padding: '9px 20px',
   borderRadius: '8px',
-  fontSize: '15px',
+  fontSize: '13px',
   fontWeight: '600',
   cursor: 'pointer',
-  boxShadow: '3px 3px 0px rgba(200,16,46,0.3)',
-  transition: 'all 0.2s ease'
+  boxShadow: '3px 3px 0px rgba(200,16,46,0.25)',
+  transition: 'all 0.2s ease',
+  lineHeight: 1.2
 };
 
 // FoeGuard Logo Component — round red badge (no ring)
@@ -698,7 +700,7 @@ export const LandingPage = () => {
                 letterSpacing: '-0.5px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)'
               }}>
-                A healthier dog starts with <span style={{ color: COLORS.red }}>real food.</span>
+                A healthier dog starts with <span style={{ color: COLORS.khaki }}>real food.</span>
               </h1>
 
               <p style={{
@@ -770,9 +772,9 @@ export const LandingPage = () => {
 
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '24px'
-            }}>
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '14px'
+            }} className="shop-farm-fresh-grid">
               {[
                 {
                   title: 'Build Your Meal Plan',
@@ -787,13 +789,6 @@ export const LandingPage = () => {
                   image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
                   path: '/menu',
                   cta: 'Order Now'
-                },
-                {
-                  title: 'Meaty Treats',
-                  desc: 'Raw treats add a nutritional boost to any diet. Perfect as rewards or training tools.',
-                  image: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&h=300&fit=crop',
-                  path: '/menu/treats',
-                  cta: 'Shop Now'
                 }
               ].map((card, i) => (
                 <button
@@ -818,11 +813,11 @@ export const LandingPage = () => {
                     e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
-                  <div style={{
+                  <div className="shop-farm-fresh-img" style={{
                     height: '200px',
                     background: `url(${card.image}) center/cover`
                   }} />
-                  <div style={{ padding: '24px' }}>
+                  <div className="shop-farm-fresh-body" style={{ padding: '24px' }}>
                     <h3 style={{
                       fontSize: '20px',
                       fontWeight: '700',

@@ -254,6 +254,8 @@ export const BoxBuilder = () => {
   // Reset selections when pet type changes
   const handlePetTypeChange = (newPetType) => {
     setPetType(newPetType);
+    // Remember the current menu pet view so ProductDetail can attribute primal_feast properly
+    sessionStorage.setItem('foeguard_menu_pet', newPetType);
     // Cart persists across pet types — discount tiers apply to combined meal lbs.
     // Set default box size for new pet type
     setBoxSize(newPetType === 'cat' ? 6 : 6);
@@ -278,9 +280,20 @@ export const BoxBuilder = () => {
     { id: 'calculator', label: 'Feeding Calculator', path: '/calculator', active: false }
   ];
 
-  // Calculate price for 6lb based on the discount tier reached by total lbs
-  const getDiscountedPrice = (basePrice) => {
-    const { rate } = getTierFromLbs(getTotalSelectedLbs(), DISCOUNT_RATES);
+  // Determine a product's pet bucket for discount-tier accounting.
+  // comfort_dinner → dog only; royal_paws → cat only; primal_feast can live in either basket
+  // (we tag it with the user's active view at the time it's added).
+  const productPetBucket = (product, fallback = petType) => {
+    if (!product) return fallback;
+    if (product.product_line === 'comfort_dinner') return 'dog';
+    if (product.product_line === 'royal_paws') return 'cat';
+    return fallback;
+  };
+
+  // Calculate price for 6lb based on the discount tier reached by total lbs IN THIS PET BUCKET.
+  // pet defaults to the active view (petType). Dog basket and cat basket have SEPARATE tiers.
+  const getDiscountedPrice = (basePrice, pet = petType) => {
+    const { rate } = getTierFromLbs(getTotalSelectedLbsForPet(pet), DISCOUNT_RATES);
     return basePrice * (1 - rate);
   };
 
@@ -290,14 +303,22 @@ export const BoxBuilder = () => {
     return tier.price;
   };
 
-  // Calculate total lbs selected
+  // Total lbs selected — overall (used for cart-level UI only)
   const getTotalSelectedLbs = () => {
-    return Object.values(selectedProteins).reduce((sum, data) => sum + data.qty, 0);
+    return Object.values(selectedProteins).reduce((sum, data) => sum + (data.qty || 0), 0);
   };
 
-  // Auto-upgrade the displayed box size to the tier reached by the current total lbs
+  // Per-pet-bucket lbs total (drives the per-pet discount tier).
+  // Legacy entries with no petType are assumed to be 'dog'.
+  const getTotalSelectedLbsForPet = (pet) => {
+    return Object.values(selectedProteins)
+      .filter(d => (d.petType || 'dog') === pet)
+      .reduce((sum, data) => sum + (data.qty || 0), 0);
+  };
+
+  // Auto-upgrade the displayed box size to the tier reached by the CURRENT view's lbs
   useEffect(() => {
-    const tier = getTierFromLbs(getTotalSelectedLbs(), DISCOUNT_RATES);
+    const tier = getTierFromLbs(getTotalSelectedLbsForPet(petType), DISCOUNT_RATES);
     if (tier.size !== boxSize) {
       setBoxSize(tier.size);
       sessionStorage.setItem('boxSize', tier.size.toString());
@@ -306,12 +327,18 @@ export const BoxBuilder = () => {
 
   const handleUpdateProtein = (productId, productName, quantity) => {
     setSelectedProteins(prev => {
-      const updated = { 
-        ...prev, 
-        [productId]: { qty: quantity, name: productName }
-      };
-      sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
-      return updated;
+      const next = { ...prev };
+      if (quantity <= 0) {
+        delete next[productId];
+      } else {
+        const existing = prev[productId] || {};
+        // Find the product in the loaded catalog so we can lock pet bucket from product_line
+        const fullProduct = products.find(pp => pp.product_id === productId);
+        const pet = productPetBucket(fullProduct, existing.petType || petType);
+        next[productId] = { qty: quantity, name: productName, petType: pet };
+      }
+      sessionStorage.setItem('selectedProteins', JSON.stringify(next));
+      return next;
     });
   };
 

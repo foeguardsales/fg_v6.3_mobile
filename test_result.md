@@ -124,6 +124,117 @@ user_problem_statement: |
      (60px desktop / 48px mobile).
 
 frontend:
+  - task: "Funnel overlay must be FULLY OPAQUE (no see-through menu background)"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.css (.menu-funnel-overlay)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Changed background from rgba(245,243,239,0.98) → solid #F5F3EF so the BoxBuilder
+            (menu) underneath is no longer visible while the funnel is open.
+
+  - task: "Menu funnel cards — bigger header font + slimmer row height"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.css (.menu-funnel-card-row*)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Title 16/18px → 20/22px (Barlow Semi Condensed, -0.2px tracking). Image dropped
+            112→96 sq. Row padding 22→14, no min-height — gets the slimmer "less-spaced" feel.
+            Bottom + top hairline khaki dividers preserved.
+
+  - task: "Remove '% off' badge beside price on product detail page"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/ProductDetail.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Deleted the `<span class="pd-shopify-adds-save">{sizeDiscount}% off</span>` rendered
+            beside the per-lb price. The discounted unit price still updates as tiers unlock.
+
+  - task: "Mix-match discount pricing — separate dog vs cat baskets"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/BoxBuilder.js + ProductDetail.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Each protein entry now stores `petType` ('dog' | 'cat'). Tagging rules:
+              - comfort_dinner → always dog
+              - royal_paws → always cat
+              - primal_feast → tagged with the user's active view at the time it was added
+                (also persisted via sessionStorage.foeguard_menu_pet for ProductDetail).
+            getDiscountedPrice(basePrice, pet=petType) and getTotalSelectedLbsForPet(pet)
+            compute the tier from THAT pet's lbs only, so adding 24 lb of chicken (dog) puts
+            EVERY other dog meal at 10% off — even a fresh 6 lb pick of beef — but does NOT
+            discount cat meals. Treats are excluded from the tier math.
+            ProductDetail mirrors the same logic so the displayed total + per-lb match the
+            in-menu cards.
+
+  - task: "Universal smaller button standard (home-page sizing)"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.css (.btn-primary/.btn-secondary*), LandingPage.js (liftedButtonStyle/outlineButtonStyle)"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Lifted/primary buttons: padding 16×36 → 10×22, font 15→13, radius 8px, lighter
+            shadow. Outline buttons: padding 14×32 → 9×20, font 15→13, 1.5px border.
+            Site-wide .btn-primary/.btn-secondary/.btn-secondary-large now share the same
+            compact spec.
+
+  - task: "Landing — remove Meaty Treats card; 2-per-row Shop Farm Fresh on every viewport"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/LandingPage.js, App.css (.shop-farm-fresh-*)"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Removed the 3rd "Meaty Treats" card. Grid fixed at `repeat(2,1fr)` on all
+            viewports (was auto-fit minmax 280px). Mobile-only CSS shrinks the image to 120px,
+            tightens padding/typography, clamps body to 3 lines so the two cards sit side-by-side
+            without overflow on small screens.
+
+  - task: "Landing — 'real food.' span color red → khaki"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/LandingPage.js"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Hero H1 highlight `<span style={{color:COLORS.red}}>real food.</span>` → khaki.
+
   - task: "Menu funnel cards match in-menu mobile product-card-row design"
     implemented: true
     working: "NA"
@@ -135,12 +246,9 @@ frontend:
         - working: "NA"
           agent: "main"
           comment: |
-            Restyled .menu-funnel-card-row to a thin horizontal row (1fr | 112px grid, image right,
-            content left, top + bottom hairline #E0D5BD divider, transparent bg). Grid now flex-column
-            with no gap so cards stack vertically 1-per-row. Same treatment at ALL viewports (mobile
-            menu look universal). Title chip removed in favour of plain centered heading. Verify on
-            /menu desktop + mobile that the two cards look identical in size + structure to a single
-            mobile product-card-row tile.
+            Funnel grid is single-column flex stack (no 2-up). Each card is the same horizontal
+            row as a mobile product-card-row: image RIGHT, content LEFT, hairline khaki divider
+            above + below. Universal (every viewport).
 
   - task: "Meal-plan steps — drop dark borders + outer white containers"
     implemented: true
@@ -153,14 +261,14 @@ frontend:
         - working: "NA"
           agent: "main"
           comment: |
-            Replaced every per-dog `background:white, borderRadius:16px, padding:24px, boxShadow:...`
+            Replaced every per-dog `background:white, borderRadius:16px, padding:24px, boxShadow`
             wrapper across steps 3–7 with transparent/zero-radius/no-shadow. Lightened all
-            `1px solid #3B2A1A` → `1px solid #D8CFB8` and `2px solid #c8102e` → `1.5px solid #c8102e`.
+            dark `#3B2A1A` borders to hairline khaki `#D8CFB8`.
 
   - task: "Meal-plan step 1 progress bar → bottom"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/pages/MealPlanPage.js (lines ~980-1080)"
+    file: "/app/frontend/src/pages/MealPlanPage.js"
     stuck_count: 0
     priority: "medium"
     needs_retesting: true
@@ -168,8 +276,8 @@ frontend:
         - working: "NA"
           agent: "main"
           comment: |
-            Conditional render: progress bar appears at top ONLY for step !== 1, and at the bottom
-            (below content + nav buttons) when step === 1. Steps 2..N keep the bar at top.
+            Progress bar appears at top ONLY for step !== 1; on step 1 it renders below the
+            content + nav buttons.
 
   - task: "Remove cream gradient overlay on page headers"
     implemented: true
@@ -182,57 +290,54 @@ frontend:
         - working: "NA"
           agent: "main"
           comment: |
-            Replaced `linear-gradient(135deg, ${COLORS.cream} 0%, ${COLORS.softBg} 100%)` hero
-            backgrounds with plain `COLORS.cream` so the H1 sits flush on the page background
-            (no tinted band).
-
-  - task: "Normalize section padding on /about + /new-to-raw"
-    implemented: true
-    working: "NA"
-    file: "/app/frontend/src/App.css (.about-section, ntf-section), NewToRawPage.js"
-    stuck_count: 0
-    priority: "low"
-    needs_retesting: true
-    status_history:
-        - working: "NA"
-          agent: "main"
-          comment: |
-            About sections: 80px → 60px desktop / 60 → 48px mobile. New To Raw sections: 64px → 60px
-            to match the landing-page section rhythm.
+            Hero backgrounds now plain `COLORS.cream` — no tinted gradient band above the H1.
 
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: true
 
 test_plan:
   current_focus:
-    - "Menu funnel cards match in-menu mobile product-card-row design"
-    - "Meal-plan steps — drop dark borders + outer white containers"
-    - "Meal-plan step 1 progress bar → bottom"
+    - "Funnel overlay must be FULLY OPAQUE (no see-through menu background)"
+    - "Mix-match discount pricing — separate dog vs cat baskets"
+    - "Menu funnel cards — bigger header font + slimmer row height"
+    - "Remove '% off' badge beside price on product detail page"
+    - "Universal smaller button standard (home-page sizing)"
+    - "Landing — remove Meaty Treats card; 2-per-row Shop Farm Fresh on every viewport"
+    - "Landing — 'real food.' span color red → khaki"
   stuck_tasks: []
   test_all: false
-  test_priority: "high_first"
+  test_priority: "stuck_first"
 
 agent_communication:
     - agent: "main"
       message: |
-        Round 2 edits applied. Primary fix to verify: /menu funnel cards must visually MATCH a
-        mobile product-card-row tile (thin horizontal row, 112×112 image on the right, content
-        on the left, hairline khaki dividers above + below the row, transparent background,
-        stacked 1-per-row). The two options are "Raw Food Menu" and "Build a Meal Plan".
+        Round 2 batch shipped. Highest-risk item is the mix-match discount pricing — please
+        verify with these scenarios on /menu:
         
-        Also verify:
-        - /meal-plan step 1: progress bar (Step X of N) appears at the BOTTOM of the page,
-          not the top.
-        - /meal-plan steps 2-7: progress bar at TOP, dog cards have NO white container /
-          shadow / dark border (transparent surfaces, hairline khaki only on inputs/buttons).
-        - /new-to-raw, /faq, /delivery: hero H1 section is plain cream (no cream→softBg gradient
-          tint band).
+        1. Open /menu → "Raw Food Menu" → Raw Dog Food tab. Add 24 lb of Chicken (dog/comfort
+           dinner). Verify the per-lb price on ALL other dog products (beef, turkey, lamb, etc.)
+           drops to the 10% tier — even a fresh 6 lb pick of Beef should show the discounted
+           per-lb, not the regular one.
+        2. Switch to Raw Cat Food tab. Verify cat products show ORIGINAL (non-discounted)
+           prices — dog basket lbs must NOT subsidise cat basket.
+        3. Add 24 lb of a cat product. Verify cat products now show 10% off independently;
+           dog tier should still reflect dog lbs only.
+        4. Treats: adding treats must NEVER change the meal-tier discount.
         
-        REACT_APP_BACKEND_URL was corrected after envs were restored — use the preview URL from
-        /app/frontend/.env for testing.
+        Other items to verify:
+        - /menu funnel opens FULLY OPAQUE (cannot see the menu page background through the
+          overlay). Title is plain charcoal, no chip background. Two funnel rows are slimmer
+          (96px image, ~14px vertical padding) with a bigger 20–22px title.
+        - /product/:id → no "% off" badge beside the per-lb price.
+        - /                 → hero "Shop Now" CTA + Shop Farm Fresh "Get Started/Order Now"
+          buttons are compact (10–11px tall padding, 13px font). On mobile the Shop Farm Fresh
+          section is 2-per-row (Meaty Treats removed).
+        - Hero H1 "real food." highlight is KHAKI, not red.
+        
+        REACT_APP_BACKEND_URL is corrected. Use the preview URL from /app/frontend/.env.
 
 user_problem_statement: |
   FoeGuard Raw Pet Food e-commerce application - Continuation from another Emergent chat.

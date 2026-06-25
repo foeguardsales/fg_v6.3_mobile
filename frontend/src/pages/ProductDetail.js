@@ -392,7 +392,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     // Persist edits to a meal that's already in the basket when leaving (per spec).
     const existing = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
     if (existing[productId]?.qty > 0 && product) {
-      existing[productId] = { qty: quantity, name: product.name };
+      existing[productId] = { qty: quantity, name: product.name, petType: existing[productId].petType || productPet };
       sessionStorage.setItem('selectedProteins', JSON.stringify(existing));
     }
     if (embedded && onClose) {
@@ -402,7 +402,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     navigate('/menu');
   };
   
-  // Unified bulk discount tiers — applies to TOTAL meal lbs across all pet types
+  // Unified bulk discount tiers — applies to TOTAL meal lbs WITHIN THIS PET BUCKET.
+  // Dog and cat baskets have SEPARATE discount tiers.
   const DISCOUNT_RATES = { 0: 0, 12: 0.05, 24: 0.10, 36: 0.15 };
   const getTierFromLbs = (lbs, rates) => {
     const sizes = Object.keys(rates).map(Number).sort((a, b) => a - b);
@@ -410,9 +411,17 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     sizes.forEach(s => { if (lbs >= s) chosen = { size: s, rate: rates[s] }; });
     return chosen;
   };
-  // Effective lbs = other meals already in the basket + this product's chosen size
+  // Determine this product's pet bucket from product_line; primal_feast can live in either basket
+  // → use the last menu view stored in sessionStorage as a fallback.
+  const productPet = (() => {
+    if (!product) return 'dog';
+    if (product.product_line === 'comfort_dinner') return 'dog';
+    if (product.product_line === 'royal_paws') return 'cat';
+    return sessionStorage.getItem('foeguard_menu_pet') || 'dog';
+  })();
+  // Effective lbs for THIS product's tier = other meals in the SAME pet bucket + this product's chosen qty
   const otherLbs = Object.entries(selectedProteins || {})
-    .filter(([pid]) => pid !== productId)
+    .filter(([pid, d]) => pid !== productId && (d.petType || 'dog') === productPet)
     .reduce((s, [, d]) => s + (d.qty || 0), 0);
   const bulkRate = getTierFromLbs(otherLbs + quantity, DISCOUNT_RATES).rate;
 
@@ -430,7 +439,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
 
     updatedProteins[product.product_id] = {
       qty: quantity,
-      name: product.name
+      name: product.name,
+      petType: productPet
     };
     
     sessionStorage.setItem('selectedProteins', JSON.stringify(updatedProteins));
@@ -595,9 +605,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 <span className="pd-shopify-adds-perlb" data-testid="qty-price-perlb">
                   (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
                 </span>
-                {sizeDiscount > 0 && (
-                  <span className="pd-shopify-adds-save" data-testid="product-save-badge">{sizeDiscount}% off</span>
-                )}
               </div>
             </div>
 

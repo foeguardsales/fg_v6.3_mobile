@@ -364,30 +364,63 @@ h2, h3, h4 {
   }
 }
 
-/* ========== BUTTONS ========== */
+/* ========== BUTTONS — compact site-wide standard ========== */
+/* Shop Farm Fresh — 2-up on every viewport, tighter on mobile */
+.shop-farm-fresh-grid {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+@media (max-width: 600px) {
+  .shop-farm-fresh-grid {
+    gap: 10px !important;
+  }
+  .shop-farm-fresh-img {
+    height: 120px !important;
+  }
+  .shop-farm-fresh-body {
+    padding: 12px !important;
+  }
+  .shop-farm-fresh-body h3 {
+    font-size: 15px !important;
+    margin-bottom: 4px !important;
+  }
+  .shop-farm-fresh-body p {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 8px !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .shop-farm-fresh-body span {
+    font-size: 12px !important;
+  }
+}
+
 .btn-primary {
   background: var(--barn-red);
   color: var(--text-inverse);
   border: none;
-  padding: 16px 36px;
-  border-radius: 100px;
+  padding: 10px 22px;
+  border-radius: 8px;
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 16px rgba(164, 30, 52, 0.25);
+  box-shadow: 0 2px 8px rgba(164, 30, 52, 0.18);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 
 .btn-primary:hover {
   background: var(--barn-red-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(164, 30, 52, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(164, 30, 52, 0.25);
 }
 
 .btn-primary:active {
@@ -404,14 +437,15 @@ h2, h3, h4 {
 .btn-secondary {
   background: transparent;
   color: var(--barn-red);
-  border: 2px solid var(--barn-red);
-  padding: 14px 32px;
-  border-radius: 100px;
+  border: 1.5px solid var(--barn-red);
+  padding: 9px 20px;
+  border-radius: 8px;
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
+  line-height: 1.2;
 }
 
 .btn-secondary:hover {
@@ -422,20 +456,21 @@ h2, h3, h4 {
 .btn-secondary-large {
   background: transparent;
   color: var(--barn-red);
-  border: 2px solid var(--barn-red);
-  padding: 18px 48px;
-  border-radius: 100px;
+  border: 1.5px solid var(--barn-red);
+  padding: 10px 24px;
+  border-radius: 8px;
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
+  line-height: 1.2;
 }
 
 .btn-secondary-large:hover {
   background: var(--barn-red);
   color: var(--text-inverse);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 /* ========== LANDING PAGE ========== */
@@ -6535,7 +6570,7 @@ h2, h3, h4 {
   position: fixed;
   inset: 0;
   z-index: 1800;
-  background: rgba(245, 243, 239, 0.98);
+  background: #F5F3EF;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -6770,7 +6805,6 @@ h2, h3, h4 {
 }
 
 /* ===== Funnel cards — match in-menu mobile product-card-row exactly ===== */
-/* Thinner rectangles, image right (112×112), content left, 1 per row at ALL viewports */
 .menu-funnel-grid--two {
   display: flex !important;
   flex-direction: column !important;
@@ -6781,9 +6815,9 @@ h2, h3, h4 {
 }
 .menu-funnel-card-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 112px;
+  grid-template-columns: minmax(0, 1fr) 96px;
   gap: 14px;
-  padding: 22px 0;
+  padding: 14px 0;
   border: none;
   border-bottom: 1px solid #E0D5BD;
   background: transparent;
@@ -6801,8 +6835,8 @@ h2, h3, h4 {
 
 .menu-funnel-card-row-media {
   position: relative;
-  width: 112px;
-  height: 112px;
+  width: 96px;
+  height: 96px;
   aspect-ratio: 1 / 1;
   background: #FFFFFF;
   border-radius: 10px;
@@ -6822,19 +6856,22 @@ h2, h3, h4 {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   order: 0;
   justify-content: center;
 }
 .menu-funnel-card-row-title {
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   color: #3B2A1A;
-  margin: 0 0 4px;
-  line-height: 1.2;
-  letter-spacing: 0;
+  margin: 0 0 2px;
+  line-height: 1.15;
+  letter-spacing: -0.2px;
   text-transform: none;
+}
+@media (min-width: 760px) {
+  .menu-funnel-card-row-title { font-size: 22px; }
 }
 .menu-funnel-card-row-sub {
   font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif;
