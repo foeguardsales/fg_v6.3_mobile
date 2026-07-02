@@ -2385,3 +2385,91 @@ agent_communication:
       The bug fix is production-ready. All animations/transitions are removed sitewide 
       (instant mobile app feel) while preserving the loading spinner animation. No 
       category-switch glitch detected.
+
+  - agent: "testing"
+    message: |
+      ✅ TWO BUG FIX VERIFICATION COMPLETED - BOTH PASSED (100% SUCCESS)
+      
+      Verified two specific bug fixes on the FoeGuard site at mobile viewport (390×820).
+      
+      **BUG 1 — Rotating Badge Marquee (Trust Strip) Animation: ✅ PASS**
+      
+      **Issue:** The trust badges strip below the hero (containing "FARM FRESH", "100% CANADIAN", 
+      "FAMILY-RUN", "ORGANIC", "HUMAN GRADE") was not moving/scrolling after animations were 
+      globally removed. It should slide horizontally.
+      
+      **Testing Performed:**
+      - Located `.trust-marquee-track` element successfully
+      - Verified computed animation properties using getComputedStyle
+      - Measured actual badge movement over 1 second using getBoundingClientRect
+      
+      **Test Results:**
+      
+      Animation Properties:
+      - animation-name: marquee ✓
+      - animation-duration: 24s ✓ (NOT 0s)
+      - animation-timing-function: linear ✓
+      - animation-iteration-count: infinite ✓
+      - animation-play-state: running ✓
+      
+      Movement Verification:
+      - First position X: -36.56px
+      - Second position X (after 1s): -44.69px
+      - Movement: 8.125px LEFT ✓
+      - Direction: Correct (moving left as expected) ✓
+      
+      **Conclusion:**
+      ✅ PASS - The trust marquee animation is WORKING correctly. Badges are scrolling 
+      horizontally at the expected speed (24s duration). The animation was successfully 
+      preserved when global animations were removed.
+      
+      ---
+      
+      **BUG 2 — No Glitch When Clicking "Build a Meal Plan" on /menu Funnel: ✅ PASS**
+      
+      **Issue:** When the funnel overlay is showing on `/menu` and user taps "Build a Meal Plan", 
+      they briefly see the raw food menu behind before the meal plan page loads. This glitch 
+      should be eliminated.
+      
+      **Testing Performed:**
+      - Cleared sessionStorage to ensure funnel appears
+      - Navigated to /menu and verified funnel overlay displays
+      - Verified overlay background is fully opaque
+      - Located "Build a Meal Plan" card
+      - Clicked card and captured screenshots at 50ms and 200ms during transition
+      - Verified final URL is /meal-plan
+      
+      **Test Results:**
+      
+      Funnel Overlay Opacity:
+      - Background: rgb(245, 243, 239) none repeat scroll 0% 0% ✓
+      - Background color: rgb(245, 243, 239) [#F5F3EF] ✓
+      - Opacity: 1 ✓
+      - FULLY OPAQUE (no alpha channel) ✓
+      
+      Transition Analysis:
+      - Screenshot at 50ms: Shows meal plan page ("How many dogs do you have?") ✓
+      - Screenshot at 200ms: Shows meal plan page (same content) ✓
+      - NO raw food menu content visible in either screenshot ✓
+      - NO "Free-Range Chicken", "Comfort Dinner", or "Stock Up & Save" text visible ✓
+      - Clean transition from funnel → meal plan page ✓
+      
+      Navigation:
+      - Final URL: https://fc4d5d9f-3852-44de-a7df-6192c91e58e2.preview.emergentagent.com/meal-plan ✓
+      - Successfully navigated to /meal-plan ✓
+      
+      **Conclusion:**
+      ✅ PASS - The menu funnel transition is CLEAN with NO glitch. The funnel overlay is 
+      fully opaque (#F5F3EF with no transparency), and during the transition to /meal-plan, 
+      the raw food menu content is never visible. The user goes directly from the funnel 
+      screen to the meal plan page without seeing any intermediate content.
+      
+      ---
+      
+      **OVERALL RESULT:**
+      Both bug fixes verified and working correctly. No issues found.
+      - Trust marquee animation: WORKING (8.125px/sec movement, 24s duration)
+      - Menu funnel transition: CLEAN (no glitch, fully opaque overlay)
+      
+      All fixes are production-ready.
+

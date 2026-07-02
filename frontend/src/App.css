@@ -377,15 +377,27 @@ h2, h3, h4 {
 }
 
 /* ========== BUTTONS — compact site-wide standard ========== */
-/* Shop Farm Fresh — 2-up on every viewport, tighter on mobile */
+/* Shop Farm Fresh — mobile: horizontal scroll snap; desktop: 3-col grid */
 .shop-farm-fresh-grid {
-  grid-template-columns: repeat(2, 1fr) !important;
-  align-items: stretch !important;
+  display: flex !important;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 4px 0 8px;
+  margin: 0 -20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
-.shop-farm-fresh-grid > button {
+.shop-farm-fresh-grid::-webkit-scrollbar { display: none; }
+.shop-farm-fresh-card {
+  flex: 0 0 82%;
+  max-width: 320px;
+  scroll-snap-align: start;
   display: flex !important;
   flex-direction: column !important;
-  height: 100%;
+  min-height: 320px;
 }
 .shop-farm-fresh-img {
   background-position: center top !important;
@@ -398,35 +410,45 @@ h2, h3, h4 {
   flex-direction: column;
 }
 @media (min-width: 760px) {
+  .shop-farm-fresh-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+  }
+  .shop-farm-fresh-card {
+    flex: 1 1 auto;
+    max-width: none;
+    min-height: 380px;
+  }
   .shop-farm-fresh-img {
     height: 240px !important;
   }
 }
 @media (max-width: 600px) {
-  .shop-farm-fresh-grid {
-    gap: 10px !important;
-  }
   .shop-farm-fresh-img {
-    height: 120px !important;
+    height: 180px !important;
   }
   .shop-farm-fresh-body {
-    padding: 12px !important;
+    padding: 16px !important;
   }
   .shop-farm-fresh-body h3 {
-    font-size: 15px !important;
-    margin-bottom: 4px !important;
+    font-size: 18px !important;
+    margin-bottom: 6px !important;
   }
   .shop-farm-fresh-body p {
-    font-size: 12px !important;
-    line-height: 1.4 !important;
-    margin-bottom: 8px !important;
+    font-size: 13.5px !important;
+    line-height: 1.45 !important;
+    margin-bottom: 12px !important;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
   .shop-farm-fresh-body span {
-    font-size: 12px !important;
+    font-size: 13px !important;
   }
 }
 
@@ -6629,14 +6651,33 @@ h2, h3, h4 {
   animation-duration: 0s !important;
   animation-delay: 0s !important;
 }
-/* Keep the spinner animation for loading states */
+/* Keep the spinner + marquee animations */
 .spinner, .loading-spinner, [class*="spin"] {
   animation-duration: 0.8s !important;
 }
+.trust-marquee-track,
+[style*="marquee"] {
+  animation-duration: 24s !important;
+}
 
-/* Hero — bottom-align text on mobile so it sits above the marquee, keep centered on desktop */
+/* Hero — bottom-left on mobile, centered vertically on desktop */
 @media (max-width: 760px) {
   section.hero-section { align-items: flex-end !important; }
+  section.hero-section .hero-text {
+    max-width: 100% !important;
+  }
+  section.hero-section > div {
+    padding-top: 40px !important;
+    padding-bottom: 32px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  section.hero-section h1 {
+    max-width: 320px !important;
+  }
+  section.hero-section p {
+    max-width: 340px !important;
+  }
 }
 
 .menu-funnel-overlay {

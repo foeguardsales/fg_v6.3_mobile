@@ -426,9 +426,9 @@ const TrustMarquee = () => {
       padding: '14px 0',
       marginTop: '0'
     }}>
-      <div style={{
+      <div className="trust-marquee-track" style={{
         display: 'flex',
-        animation: 'marquee 12s linear infinite',
+        animation: 'marquee 24s linear infinite',
         whiteSpace: 'nowrap'
       }}>
         {[...badges, ...badges, ...badges, ...badges, ...badges, ...badges].map((badge, i) => (
@@ -791,7 +791,7 @@ export const LandingPage = () => {
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
           background: COLORS.cream,
-          padding: '28px 20px 36px'
+          padding: '18px 20px 36px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <h2 style={{
@@ -805,16 +805,12 @@ export const LandingPage = () => {
               Shop Farm Fresh
             </h2>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '14px'
-            }} className="shop-farm-fresh-grid">
+            <div className="shop-farm-fresh-grid">
               {[
                 {
                   title: 'Build your meal plan',
                   desc: 'Take our simple quiz to receive your customized raw feeding plan in seconds.',
-                  image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=300&fit=crop',
+                  image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop',
                   path: '/meal-plan',
                   selection: 'meal-plan',
                   cta: 'Get Started'
@@ -822,9 +818,18 @@ export const LandingPage = () => {
                 {
                   title: 'Raw Dog Food menu',
                   desc: 'Fresh food that is easy to portion and serve, ensuring balanced, nutritious meals every day.',
-                  image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
+                  image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop',
                   path: '/menu',
                   selection: 'shop-raw',
+                  cta: 'Order Now'
+                },
+                {
+                  title: 'Raw Cat Food menu',
+                  desc: 'Complete raw meals crafted for cats — high-protein, taurine-rich and made fresh from our farm.',
+                  image: 'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=600&h=400&fit=crop',
+                  path: '/menu',
+                  selection: 'shop-raw',
+                  petType: 'cat',
                   cta: 'Order Now'
                 }
               ].map((card, i) => (
@@ -832,8 +837,11 @@ export const LandingPage = () => {
                   key={i}
                   onClick={() => {
                     if (card.selection) sessionStorage.setItem('foeguard_selection', card.selection);
+                    if (card.petType) sessionStorage.setItem('foeguard_pet_type', card.petType);
+                    else sessionStorage.removeItem('foeguard_pet_type');
                     navigate(card.path);
                   }}
+                  className="shop-farm-fresh-card"
                   style={{
                     background: COLORS.cream,
                     border: `1px solid ${COLORS.khaki}`,
@@ -841,16 +849,7 @@ export const LandingPage = () => {
                     overflow: 'hidden',
                     cursor: 'pointer',
                     textAlign: 'left',
-                    transition: 'all 0.3s ease',
                     boxShadow: 'none'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px)';
-                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.06)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
                   <div className="shop-farm-fresh-img" style={{
@@ -1016,7 +1015,7 @@ export const LandingPage = () => {
                 lineHeight: 1.2,
                 color: COLORS.white
               }}>
-                Customers Notice Benefits in Just 2 Weeks
+                Customers Start to See Benefits in Just 2 Weeks
               </h2>
               <p style={{
                 fontSize: 'clamp(15px, 1.8vw, 17px)',

@@ -462,8 +462,7 @@ export const BoxBuilder = () => {
           }}
           onMealPlan={() => {
             sessionStorage.setItem('foeguard_selection', 'meal-plan');
-            setSelectionId('meal-plan');
-            setFunnelOpen(false);
+            // Navigate FIRST (leave funnel open so no flash of menu content behind)
             navigate('/meal-plan');
           }}
         />
