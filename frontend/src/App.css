@@ -6622,6 +6622,23 @@ h2, h3, h4 {
 }
 
 /* ===== Menu Funnel Overlay — full-screen modal hovering above /menu ===== */
+/* ========== KILL ALL TRANSITIONS/ANIMATIONS FOR APP-LIKE INSTANT UX ========== */
+*, *::before, *::after {
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+}
+/* Keep the spinner animation for loading states */
+.spinner, .loading-spinner, [class*="spin"] {
+  animation-duration: 0.8s !important;
+}
+
+/* Hero — bottom-align text on mobile so it sits above the marquee, keep centered on desktop */
+@media (max-width: 760px) {
+  section.hero-section { align-items: flex-end !important; }
+}
+
 .menu-funnel-overlay {
   position: fixed;
   inset: 0;

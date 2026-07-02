@@ -664,15 +664,18 @@ export const LandingPage = () => {
       
       <main>
         {/* HERO SECTION — full-bleed background image with left text overlay + bottom fade to dark */}
-        <section style={{
-          position: 'relative',
-          overflow: 'hidden',
-          background: `#3B2A1A url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
-          minHeight: 'clamp(540px, 140vw, 640px)',
-          display: 'flex',
-          alignItems: 'center',
-          marginTop: '-120px'
-        }}>
+        <section
+          className="hero-section"
+          style={{
+            position: 'relative',
+            overflow: 'hidden',
+            background: `#3B2A1A url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
+            minHeight: 'clamp(540px, 140vw, 640px)',
+            display: 'flex',
+            alignItems: 'center',
+            marginTop: '-120px'
+          }}
+        >
           {/* Left fade overlay — makes text readable on the image (warm brown tones) */}
           <div
             aria-hidden="true"
@@ -703,7 +706,7 @@ export const LandingPage = () => {
             zIndex: 1,
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: 'clamp(140px, 16vw, 180px) 24px clamp(36px, 4vw, 56px)',
+            padding: 'clamp(140px, 16vw, 180px) 24px clamp(24px, 3vw, 44px)',
             width: '100%'
           }}>
             <div className="hero-text" style={{ maxWidth: '620px' }}>
