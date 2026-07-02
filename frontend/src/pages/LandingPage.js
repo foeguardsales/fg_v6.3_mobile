@@ -428,7 +428,7 @@ const TrustMarquee = () => {
     }}>
       <div className="trust-marquee-track" style={{
         display: 'flex',
-        animation: 'marquee 24s linear infinite',
+        animation: 'marquee 12s linear infinite',
         whiteSpace: 'nowrap'
       }}>
         {[...badges, ...badges, ...badges, ...badges, ...badges, ...badges].map((badge, i) => (
@@ -711,7 +711,7 @@ export const LandingPage = () => {
           }}>
             <div className="hero-text" style={{ maxWidth: '620px' }}>
               <h1 style={{
-                fontSize: 'clamp(28px, 4.5vw, 44px)',
+                fontSize: 'clamp(32px, 5vw, 48px)',
                 fontWeight: 600,
                 color: COLORS.cream,
                 lineHeight: '1.15',
@@ -810,7 +810,7 @@ export const LandingPage = () => {
                 {
                   title: 'Build your meal plan',
                   desc: 'Take our simple quiz to receive your customized raw feeding plan in seconds.',
-                  image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop',
+                  image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&h=400&fit=crop&auto=format',
                   path: '/meal-plan',
                   selection: 'meal-plan',
                   cta: 'Get Started'
@@ -818,15 +818,15 @@ export const LandingPage = () => {
                 {
                   title: 'Raw Dog Food menu',
                   desc: 'Fresh food that is easy to portion and serve, ensuring balanced, nutritious meals every day.',
-                  image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop',
+                  image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop&auto=format',
                   path: '/menu',
                   selection: 'shop-raw',
                   cta: 'Order Now'
                 },
                 {
                   title: 'Raw Cat Food menu',
-                  desc: 'Complete raw meals crafted for cats — high-protein, taurine-rich and made fresh from our farm.',
-                  image: 'https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=600&h=400&fit=crop',
+                  desc: 'Complete raw meals crafted for cats &mdash; high-protein, taurine-rich and made fresh from our farm.',
+                  image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&h=400&fit=crop&auto=format',
                   path: '/menu',
                   selection: 'shop-raw',
                   petType: 'cat',

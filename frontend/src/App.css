@@ -380,29 +380,28 @@ h2, h3, h4 {
 /* Shop Farm Fresh — mobile: horizontal scroll snap; desktop: 3-col grid */
 .shop-farm-fresh-grid {
   display: flex !important;
-  gap: 14px;
+  gap: 12px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 4px 0 8px;
+  padding: 4px 20px 8px;
   margin: 0 -20px;
-  padding-left: 20px;
-  padding-right: 20px;
 }
 .shop-farm-fresh-grid::-webkit-scrollbar { display: none; }
 .shop-farm-fresh-card {
-  flex: 0 0 82%;
-  max-width: 320px;
-  scroll-snap-align: start;
+  flex: 0 0 68%;
+  max-width: 260px;
+  scroll-snap-align: center;
   display: flex !important;
   flex-direction: column !important;
-  min-height: 320px;
+  min-height: 300px;
 }
 .shop-farm-fresh-img {
-  background-position: center top !important;
+  background-position: center !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
+  background-color: #EDEAE7;
 }
 .shop-farm-fresh-body {
   flex: 1 1 auto;
@@ -424,31 +423,31 @@ h2, h3, h4 {
     min-height: 380px;
   }
   .shop-farm-fresh-img {
-    height: 240px !important;
+    height: 200px !important;
   }
 }
 @media (max-width: 600px) {
   .shop-farm-fresh-img {
-    height: 180px !important;
+    height: 150px !important;
   }
   .shop-farm-fresh-body {
-    padding: 16px !important;
+    padding: 14px !important;
   }
   .shop-farm-fresh-body h3 {
-    font-size: 18px !important;
+    font-size: 16px !important;
     margin-bottom: 6px !important;
   }
   .shop-farm-fresh-body p {
-    font-size: 13.5px !important;
-    line-height: 1.45 !important;
-    margin-bottom: 12px !important;
+    font-size: 12.5px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 10px !important;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
   .shop-farm-fresh-body span {
-    font-size: 13px !important;
+    font-size: 12px !important;
   }
 }
 
@@ -6676,28 +6675,10 @@ h2, h3, h4 {
 }
 .trust-marquee-track,
 [style*="marquee"] {
-  animation-duration: 24s !important;
+  animation-duration: 12s !important;
 }
 
-/* Hero — bottom-left on mobile, centered vertically on desktop */
-@media (max-width: 760px) {
-  section.hero-section { align-items: flex-end !important; }
-  section.hero-section .hero-text {
-    max-width: 100% !important;
-  }
-  section.hero-section > div {
-    padding-top: 40px !important;
-    padding-bottom: 32px !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-  section.hero-section h1 {
-    max-width: 320px !important;
-  }
-  section.hero-section p {
-    max-width: 340px !important;
-  }
-}
+/* Hero — centered vertically, larger H1 sizing for mobile */
 
 .menu-funnel-overlay {
   position: fixed;
