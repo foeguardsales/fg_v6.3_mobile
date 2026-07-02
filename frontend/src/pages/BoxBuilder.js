@@ -116,21 +116,32 @@ export const BoxBuilder = () => {
   const [subscriptionPlan, setSubscriptionPlan] = useState(null); // null or 'every_N_weeks'
   const [subOpen, setSubOpen] = useState(false); // collapsible toggle
 
-  // Restore menu scroll position on mount + save on unmount / scroll
+  // Restore menu scroll position on mount + save on scroll (both window + #root, since App may use either)
   useEffect(() => {
+    const getScroller = () => document.getElementById('root') || document.scrollingElement || document.documentElement;
     const savedY = parseInt(sessionStorage.getItem('menu_scroll_y') || '0', 10);
     if (savedY > 0) {
-      // Wait for products/layout to render, then restore
-      const restore = () => window.scrollTo({ top: savedY, left: 0, behavior: 'auto' });
+      const restore = () => {
+        const el = getScroller();
+        if (el) el.scrollTop = savedY;
+        window.scrollTo({ top: savedY, left: 0, behavior: 'auto' });
+      };
       setTimeout(restore, 0);
       setTimeout(restore, 150);
       setTimeout(restore, 400);
     }
     const onScroll = () => {
-      sessionStorage.setItem('menu_scroll_y', String(window.scrollY || window.pageYOffset || 0));
+      const el = getScroller();
+      const y = (el && el.scrollTop) || window.scrollY || window.pageYOffset || 0;
+      sessionStorage.setItem('menu_scroll_y', String(y));
     };
+    const root = document.getElementById('root');
+    if (root) root.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      if (root) root.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   // Get current discount rates and tier guide based on pet type
