@@ -2480,8 +2480,8 @@ frontend:
   - task: "BUG 1 — Scroll position preserved when returning to /menu"
     implemented: true
     working: false
-    file: "/app/frontend/src/pages/BoxBuilder.js (lines 120-145)"
-    stuck_count: 1
+    file: "/app/frontend/src/pages/BoxBuilder.js (lines 120-162), /app/frontend/src/pages/ProductDetail.js (lines 750-754)"
+    stuck_count: 2
     priority: "high"
     needs_retesting: true
     status_history:
@@ -2562,6 +2562,91 @@ frontend:
             - ProductDetailModal sets document.body.style.overflow = 'hidden' when open (line 752)
             - This might interfere with scroll restoration, but main issue is missing restoration logic
             - ProductCard component uses different sessionStorage key 'menuScrollPosition' (line 874) - should be unified
+        
+        - working: false
+          agent: "testing"
+          comment: |
+            ❌ THIRD RE-TEST FAILED - Root cause identified: Scroll resets when modal OPENS, not closes
+            
+            **Test Results (Mobile 390x820):**
+            - Scrolled #root to Y=700 ✓
+            - sessionStorage.menu_scroll_y correctly saved as 700 ✓
+            - Opened product modal ✓
+            - **CRITICAL: Scroll position BEFORE closing modal: 0px** ❌
+            - Closed modal ✓
+            - Final scroll position: 0px ❌
+            - sessionStorage.menu_scroll_y after close: 0 (was overwritten) ❌
+            
+            **Root Cause Identified:**
+            
+            The scroll position is being RESET when the modal OPENS, not when it closes:
+            
+            1. User scrolls to Y=700 → sessionStorage.menu_scroll_y = 700 ✓
+            2. User clicks product card → ProductDetailModal opens
+            3. ProductDetailModal useEffect runs (ProductDetail.js line 750-754):
+               - Sets document.body.style.overflow = 'hidden'
+               - This causes #root to scroll back to top (Y=0) ❌
+            4. Scroll listener detects the change and updates sessionStorage.menu_scroll_y = 0 ❌
+            5. User closes modal
+            6. Restoration logic tries to restore scroll from sessionStorage (which is now 0) ❌
+            
+            **The Fix Implemented (lines 147-162) is Correct BUT:**
+            
+            The useEffect watching activeProductId/activeTreatId (lines 147-162) is correctly implemented
+            and DOES run when the modal closes. However, it's trying to restore scroll position from
+            sessionStorage.menu_scroll_y, which has been overwritten to 0 when the modal opened.
+            
+            **Required Fix:**
+            
+            The scroll position needs to be SAVED and LOCKED when the modal opens, and the scroll
+            listener should be DISABLED while the modal is open. Two approaches:
+            
+            **Option 1: Save scroll before modal opens, disable listener while open**
+            ```javascript
+            // In BoxBuilder.js, modify the scroll listener setup (lines 133-144)
+            const onScroll = () => {
+              // Don't update sessionStorage if modal is open
+              if (activeProductId !== null || activeTreatId !== null) return;
+              const el = getScroller();
+              const y = (el && el.scrollTop) || window.scrollY || window.pageYOffset || 0;
+              sessionStorage.setItem('menu_scroll_y', String(y));
+            };
+            ```
+            
+            **Option 2: Save scroll position when modal opens**
+            ```javascript
+            // Add a new useEffect that saves scroll when modal opens
+            useEffect(() => {
+              if (activeProductId !== null || activeTreatId !== null) {
+                // Modal is opening - save current scroll position
+                const el = document.getElementById('root') || document.scrollingElement;
+                const y = (el && el.scrollTop) || 0;
+                sessionStorage.setItem('menu_scroll_y_locked', String(y));
+              }
+            }, [activeProductId, activeTreatId]);
+            
+            // Then modify restoration logic (lines 147-162) to use locked value
+            useEffect(() => {
+              if (activeProductId === null && activeTreatId === null) {
+                const savedY = parseInt(sessionStorage.getItem('menu_scroll_y_locked') || '0', 10);
+                if (savedY > 0) {
+                  const restore = () => {
+                    const el = document.getElementById('root') || document.scrollingElement;
+                    if (el) el.scrollTop = savedY;
+                    window.scrollTo({ top: savedY, left: 0, behavior: 'auto' });
+                  };
+                  setTimeout(restore, 0);
+                  setTimeout(restore, 50);
+                  setTimeout(restore, 200);
+                  // Clear the locked value after restoration
+                  sessionStorage.removeItem('menu_scroll_y_locked');
+                }
+              }
+            }, [activeProductId, activeTreatId]);
+            ```
+            
+            **Recommendation:** Option 1 is simpler and cleaner. Just prevent the scroll listener
+            from updating sessionStorage while the modal is open.
 
   - task: "BUG 2 — Product page CTA button matches menu cart button design"
     implemented: true
@@ -2626,125 +2711,83 @@ test_plan:
 agent_communication:
   - agent: "testing"
     message: |
-      ⚠️ THREE BUG FIX VERIFICATION COMPLETED - 1 PASSED, 1 FAILED, 1 CANNOT TEST
+      ❌ BUG 1 FINAL RE-TEST FAILED - ROOT CAUSE IDENTIFIED
       
-      Tested three specific bug fixes on FoeGuard site at mobile viewport (390 x 820).
+      **Test Scope:** Mobile viewport 390 x 820, testing scroll position preservation on modal close.
       
-      **CRITICAL FAILURE:**
-      
-      ❌ BUG 1 — Scroll position preservation is BROKEN
-      
-      The scroll position is NOT being preserved when:
-      1. Opening/closing product modal
-      2. Navigating away and back to /menu
-      
-      **Root Cause:**
-      - App uses #root element for scrolling (body is position:fixed)
-      - Code incorrectly uses window.scrollY (always 0)
-      - Scroll listener attached to wrong element (window instead of #root)
-      - sessionStorage.menu_scroll_y never gets set
-      
-      **Fix Required in BoxBuilder.js lines 129-132:**
-      ```javascript
-      // WRONG (current):
-      const onScroll = () => {
-        sessionStorage.setItem('menu_scroll_y', String(window.scrollY || window.pageYOffset || 0));
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      
-      // CORRECT (needed):
-      const onScroll = () => {
-        const root = document.getElementById('root');
-        sessionStorage.setItem('menu_scroll_y', String(root ? root.scrollTop : 0));
-      };
-      const root = document.getElementById('root');
-      if (root) root.addEventListener('scroll', onScroll, { passive: true });
-      
-      // Also update cleanup:
-      return () => {
-        const root = document.getElementById('root');
-        if (root) root.removeEventListener('scroll', onScroll);
-      };
-      ```
-      
-      **SUCCESS:**
-      
-      ✅ BUG 2 — Product CTA button design is PERFECT
-      - All classes, structure, styling correct
-      - Matches menu cart button design
-      - Production-ready
-      
-      **CANNOT VERIFY:**
-      
-      ⚠️ BUG 3 — Swipe gesture code is correct but cannot test touch in headless browser
-      - Code implementation verified correct
-      - Touch event handlers properly attached
-      - Logic correct: dismiss only when scrollTop <= 0
-      - Needs manual testing on real device
-  
-  - agent: "testing"
-    message: |
-      ⚠️ BUG 1 RE-TEST COMPLETED - PARTIAL FIX, STILL FAILING
-      
-      Re-tested Bug 1 (scroll position preservation) on FoeGuard site at mobile viewport (390 x 820).
-      
-      **TEST RESULTS:**
-      
-      ❌ TEST 1A (Modal open/close): FAILED
-      - Scrolled to Y=700 on /menu ✓
+      **Test Results:**
+      - Scrolled #root to Y=700 ✓
       - sessionStorage.menu_scroll_y correctly saved as 700 ✓
       - Opened product modal ✓
+      - **CRITICAL FINDING: Scroll position BEFORE closing modal: 0px** ❌
       - Closed modal ✓
-      - Scroll position after close: 0px (expected ~700px) ❌
-      - **FAIL: Scroll jumped to top when modal closed**
+      - Final scroll position: 0px ❌
+      - sessionStorage.menu_scroll_y after close: 0 (overwritten from 700) ❌
       
-      ✅ TEST 1B (Full navigation): PASSED
-      - Scrolled to Y=800 on /menu ✓
-      - sessionStorage.menu_scroll_y correctly saved as 800 ✓
-      - Navigated to / (home) ✓
-      - Navigated back to /menu ✓
-      - Scroll position after navigation: 800px (expected ~800px) ✅
-      - **PASS: Scroll preserved across full page navigation**
+      **ROOT CAUSE IDENTIFIED:**
       
-      **ROOT CAUSE:**
+      The scroll position is being RESET when the modal OPENS, not when it closes.
       
-      The scroll restoration logic (BoxBuilder.js lines 120-145) ONLY runs on component mount.
-      It does NOT run when the modal closes (activeProductId state change from value → null).
+      **Sequence of Events:**
+      1. User scrolls to Y=700 → sessionStorage.menu_scroll_y = 700 ✓
+      2. User clicks product card → ProductDetailModal opens
+      3. ProductDetailModal useEffect runs (ProductDetail.js lines 750-754):
+         ```javascript
+         useEffect(() => {
+           const prev = document.body.style.overflow;
+           document.body.style.overflow = 'hidden';  // ← This resets #root scroll to 0
+           return () => { document.body.style.overflow = prev; };
+         }, []);
+         ```
+      4. Setting body overflow='hidden' causes #root to scroll back to top (Y=0) ❌
+      5. Scroll listener detects the change and updates sessionStorage.menu_scroll_y = 0 ❌
+      6. User closes modal
+      7. Restoration logic (lines 147-162) tries to restore from sessionStorage (which is now 0) ❌
       
-      Current behavior:
-      1. ✓ Scroll listeners correctly save position to sessionStorage.menu_scroll_y
-      2. ✓ On mount (full navigation), scroll position is restored
-      3. ❌ When modal closes, NO restoration logic runs
+      **The Current Fix (lines 147-162) is Correct BUT Insufficient:**
       
-      **FIX REQUIRED:**
+      The useEffect watching activeProductId/activeTreatId IS correctly implemented and DOES run
+      when the modal closes. However, it's trying to restore scroll position from sessionStorage,
+      which has been overwritten to 0 when the modal opened.
       
-      Add a useEffect that watches activeProductId and restores scroll when modal closes:
+      **REQUIRED FIX:**
+      
+      The scroll listener must be DISABLED while the modal is open to prevent sessionStorage from
+      being overwritten. Modify the onScroll function in BoxBuilder.js (lines 133-136):
       
       ```javascript
-      // Add after line 145 in BoxBuilder.js
-      useEffect(() => {
-        // Restore scroll position when modal closes
-        if (activeProductId === null) {
-          const savedY = parseInt(sessionStorage.getItem('menu_scroll_y') || '0', 10);
-          if (savedY > 0) {
-            setTimeout(() => {
-              const root = document.getElementById('root');
-              if (root) root.scrollTop = savedY;
-              window.scrollTo({ top: savedY, left: 0, behavior: 'auto' });
-            }, 50);
-          }
-        }
-      }, [activeProductId]);
+      const onScroll = () => {
+        // Don't update sessionStorage if modal is open (prevents overwriting saved position)
+        if (activeProductId !== null || activeTreatId !== null) return;
+        const el = getScroller();
+        const y = (el && el.scrollTop) || window.scrollY || window.pageYOffset || 0;
+        sessionStorage.setItem('menu_scroll_y', String(y));
+      };
       ```
       
-      **ADDITIONAL ISSUES:**
-      - ProductCard component uses different sessionStorage key 'menuScrollPosition' (line 874)
-      - Should unify to use 'menu_scroll_y' consistently
-      - ProductDetailModal sets document.body.overflow='hidden' (line 752) - might interfere
+      **Alternative Fix (if above doesn't work):**
       
-      **SUMMARY:**
-      - Scroll saving: ✅ Working
-      - Scroll restoration on navigation: ✅ Working
-      - Scroll restoration on modal close: ❌ Not implemented
+      Save scroll position to a separate "locked" key when modal opens:
       
-      Main agent needs to add modal close restoration logic.
+      ```javascript
+      // Add new useEffect to save scroll when modal opens
+      useEffect(() => {
+        if (activeProductId !== null || activeTreatId !== null) {
+          // Modal is opening - lock current scroll position
+          const el = document.getElementById('root') || document.scrollingElement;
+          const y = (el && el.scrollTop) || 0;
+          sessionStorage.setItem('menu_scroll_y_locked', String(y));
+        }
+      }, [activeProductId, activeTreatId]);
+      
+      // Modify restoration logic (lines 149-161) to use locked value
+      if (activeProductId === null && activeTreatId === null) {
+        const savedY = parseInt(sessionStorage.getItem('menu_scroll_y_locked') || '0', 10);
+        // ... rest of restoration logic
+        // Clear locked value after restoration
+        sessionStorage.removeItem('menu_scroll_y_locked');
+      }
+      ```
+      
+      **Recommendation:** First approach (disabling scroll listener while modal is open) is simpler
+      and cleaner. The restoration logic (lines 147-162) is already correct and doesn't need changes.

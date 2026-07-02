@@ -144,6 +144,23 @@ export const BoxBuilder = () => {
     };
   }, []);
 
+  // Restore scroll position when the product/treat modal closes (so user returns to where they left off)
+  useEffect(() => {
+    if (activeProductId === null && activeTreatId === null) {
+      const savedY = parseInt(sessionStorage.getItem('menu_scroll_y') || '0', 10);
+      if (savedY > 0) {
+        const restore = () => {
+          const el = document.getElementById('root') || document.scrollingElement || document.documentElement;
+          if (el) el.scrollTop = savedY;
+          window.scrollTo({ top: savedY, left: 0, behavior: 'auto' });
+        };
+        setTimeout(restore, 0);
+        setTimeout(restore, 50);
+        setTimeout(restore, 200);
+      }
+    }
+  }, [activeProductId, activeTreatId]);
+
   // Get current discount rates and tier guide based on pet type
   const DISCOUNT_RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
   const TIER_GUIDE = petType === 'cat' ? CAT_TIER_GUIDE : DOG_TIER_GUIDE;
