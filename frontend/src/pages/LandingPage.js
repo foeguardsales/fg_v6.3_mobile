@@ -835,7 +835,7 @@ export const LandingPage = () => {
                     navigate(card.path);
                   }}
                   style={{
-                    background: '#DDD8D2',
+                    background: COLORS.cream,
                     border: `1px solid ${COLORS.khaki}`,
                     borderRadius: '8px',
                     overflow: 'hidden',
