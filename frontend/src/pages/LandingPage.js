@@ -668,7 +668,7 @@ export const LandingPage = () => {
           position: 'relative',
           overflow: 'hidden',
           background: `#3B2A1A url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
-          minHeight: 'clamp(440px, 56vw, 560px)',
+          minHeight: 'clamp(540px, 140vw, 640px)',
           display: 'flex',
           alignItems: 'center',
           marginTop: '-120px'
