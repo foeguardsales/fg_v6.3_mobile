@@ -2473,3 +2473,152 @@ agent_communication:
       
       All fixes are production-ready.
 
+
+
+
+frontend:
+  - task: "BUG 1 — Scroll position preserved when returning to /menu"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/pages/BoxBuilder.js (lines 120-134)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: |
+            ❌ FAILED - Scroll position is NOT being preserved
+            
+            **Test Results:**
+            - TEST 1A (Modal close): Scrolled to Y=700, closed modal, scroll jumped to Y=0
+            - TEST 1B (Navigation): Scrolled to Y=800, navigated away/back, scroll jumped to Y=0
+            - sessionStorage.menu_scroll_y is always None (not being set)
+            
+            **Root Cause:**
+            - App uses position:fixed body with #root as scroll container
+            - Code uses window.scrollY (always 0 with fixed body)
+            - Scroll listener attached to window, but scrolling happens on #root
+            - sessionStorage never receives correct scroll value
+            
+            **Fix Required:**
+            Change lines 129-132 in BoxBuilder.js to listen to #root scroll instead of window scroll.
+
+  - task: "BUG 2 — Product page CTA button matches menu cart button design"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/ProductDetail.js (lines 711-733)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASSED - Product CTA button design is correct
+            
+            **Test Results:**
+            - Has correct classes: bb-floating-checkout, bb-floating-checkout--inline ✓
+            - Contains all required spans: .bb-floating-total, .bb-floating-sep, .bb-floating-action ✓
+            - Position: sticky, bottom: 12px ✓
+            - Background: rgb(59, 42, 26) matches menu cart button ✓
+            - NO pd-uber-add element found ✓
+            
+            All requirements met. Production-ready.
+
+  - task: "BUG 3 — Swipe-down gesture on product modal works from anywhere when scrolled to top"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/ProductDetail.js (lines 756-778)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: |
+            ⚠️ CODE VERIFIED - Cannot test touch gestures in headless browser
+            
+            **Code Verification:**
+            - Touch event handlers exist and are correctly implemented ✓
+            - onTouchStart checks if scrollTop <= 0 ✓
+            - onTouchMove tracks downward drag only when at top ✓
+            - onTouchEnd dismisses if dragY > threshold (200px) ✓
+            - Modal structure verified: .bb-overlay-panel, .bb-overlay-scroll ✓
+            
+            **Limitation:**
+            Touch gestures cannot be tested in headless Playwright. Code implementation 
+            is correct based on review. Actual touch behavior needs manual testing on 
+            real mobile device.
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 9
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "BUG 1 — Scroll position preserved when returning to /menu"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "testing"
+    message: |
+      ⚠️ THREE BUG FIX VERIFICATION COMPLETED - 1 PASSED, 1 FAILED, 1 CANNOT TEST
+      
+      Tested three specific bug fixes on FoeGuard site at mobile viewport (390 x 820).
+      
+      **CRITICAL FAILURE:**
+      
+      ❌ BUG 1 — Scroll position preservation is BROKEN
+      
+      The scroll position is NOT being preserved when:
+      1. Opening/closing product modal
+      2. Navigating away and back to /menu
+      
+      **Root Cause:**
+      - App uses #root element for scrolling (body is position:fixed)
+      - Code incorrectly uses window.scrollY (always 0)
+      - Scroll listener attached to wrong element (window instead of #root)
+      - sessionStorage.menu_scroll_y never gets set
+      
+      **Fix Required in BoxBuilder.js lines 129-132:**
+      ```javascript
+      // WRONG (current):
+      const onScroll = () => {
+        sessionStorage.setItem('menu_scroll_y', String(window.scrollY || window.pageYOffset || 0));
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      
+      // CORRECT (needed):
+      const onScroll = () => {
+        const root = document.getElementById('root');
+        sessionStorage.setItem('menu_scroll_y', String(root ? root.scrollTop : 0));
+      };
+      const root = document.getElementById('root');
+      if (root) root.addEventListener('scroll', onScroll, { passive: true });
+      
+      // Also update cleanup:
+      return () => {
+        const root = document.getElementById('root');
+        if (root) root.removeEventListener('scroll', onScroll);
+      };
+      ```
+      
+      **SUCCESS:**
+      
+      ✅ BUG 2 — Product CTA button design is PERFECT
+      - All classes, structure, styling correct
+      - Matches menu cart button design
+      - Production-ready
+      
+      **CANNOT VERIFY:**
+      
+      ⚠️ BUG 3 — Swipe gesture code is correct but cannot test touch in headless browser
+      - Code implementation verified correct
+      - Touch event handlers properly attached
+      - Logic correct: dismiss only when scrollTop <= 0
+      - Needs manual testing on real device

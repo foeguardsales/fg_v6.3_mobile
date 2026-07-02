@@ -802,7 +802,7 @@ export const LandingPage = () => {
               color: COLORS.charcoal,
               fontFamily: "'Lora', serif"
             }}>
-              Shop Farm Fresh
+              Shop farm fresh
             </h2>
 
             <div className="shop-farm-fresh-grid">

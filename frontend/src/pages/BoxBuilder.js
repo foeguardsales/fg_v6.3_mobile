@@ -116,6 +116,23 @@ export const BoxBuilder = () => {
   const [subscriptionPlan, setSubscriptionPlan] = useState(null); // null or 'every_N_weeks'
   const [subOpen, setSubOpen] = useState(false); // collapsible toggle
 
+  // Restore menu scroll position on mount + save on unmount / scroll
+  useEffect(() => {
+    const savedY = parseInt(sessionStorage.getItem('menu_scroll_y') || '0', 10);
+    if (savedY > 0) {
+      // Wait for products/layout to render, then restore
+      const restore = () => window.scrollTo({ top: savedY, left: 0, behavior: 'auto' });
+      setTimeout(restore, 0);
+      setTimeout(restore, 150);
+      setTimeout(restore, 400);
+    }
+    const onScroll = () => {
+      sessionStorage.setItem('menu_scroll_y', String(window.scrollY || window.pageYOffset || 0));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   // Get current discount rates and tier guide based on pet type
   const DISCOUNT_RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
   const TIER_GUIDE = petType === 'cat' ? CAT_TIER_GUIDE : DOG_TIER_GUIDE;

@@ -708,14 +708,29 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
         </div>
       </div>
 
-      {/* Floating "Add to your box" pill — no upper cap */}
-      <button
-        onClick={handleAddToCart}
-        className={`pd-uber-add ${embedded ? 'pd-uber-add--inline' : ''}`}
-        data-testid="product-add-to-box"
-      >
-        {`Add ${quantity}lb to Basket · $${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}`}
-      </button>
+      {/* Floating cart bar — matches the menu page's cart button (bb-floating-checkout) */}
+      {(() => {
+        const totalPrice = getDiscountedPrice(product) * (quantity / 6);
+        const basePriceLb = product.pricing?.find(p => p.size_lb === 6)?.price || 0;
+        const discountedLb = getDiscountedPrice(product);
+        const savePct = basePriceLb > 0 ? Math.round((1 - discountedLb / basePriceLb) * 100) : 0;
+        return (
+          <button
+            onClick={handleAddToCart}
+            className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
+            data-testid="product-add-to-box"
+          >
+            <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
+            <span className="bb-floating-sep">·</span>
+            <span className="bb-floating-action">Add {quantity}lb to Cart</span>
+            {savePct > 0 && (
+              <span className="bb-floating-save" data-testid="floating-save-badge">
+                Save {savePct}%
+              </span>
+            )}
+          </button>
+        );
+      })()}
 
       {!embedded && <Footer />}
     </>
@@ -729,6 +744,8 @@ export const ProductDetailModal = ({ productId, onClose }) => {
   const [dragY, setDragY] = useState(0);
   const [dragging, setDragging] = useState(false);
   const startY = useRef(null);
+  const startedAtTop = useRef(false);
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -736,17 +753,28 @@ export const ProductDetailModal = ({ productId, onClose }) => {
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  const onTouchStart = (e) => { startY.current = e.touches[0].clientY; setDragging(true); };
+  const onTouchStart = (e) => {
+    // Allow swipe-to-dismiss only when the inner scroller is at the top;
+    // otherwise let the user scroll content normally.
+    const scrollEl = scrollRef.current;
+    startedAtTop.current = !scrollEl || scrollEl.scrollTop <= 0;
+    startY.current = e.touches[0].clientY;
+    setDragging(true);
+  };
   const onTouchMove = (e) => {
-    if (startY.current == null) return;
+    if (startY.current == null || !startedAtTop.current) return;
     const dy = e.touches[0].clientY - startY.current;
     if (dy > 0) setDragY(dy);
   };
   const onTouchEnd = () => {
     setDragging(false);
-    if (dragY > 90) { onClose(); return; }
+    // Threshold: 30% of viewport height OR 200px (whichever is smaller)
+    const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
+    const threshold = Math.min(vh * 0.3, 200);
+    if (startedAtTop.current && dragY > threshold) { onClose(); return; }
     setDragY(0);
     startY.current = null;
+    startedAtTop.current = false;
   };
 
   return (
@@ -759,15 +787,12 @@ export const ProductDetailModal = ({ productId, onClose }) => {
         className="bb-overlay-panel bb-overlay-panel--product"
         role="dialog"
         aria-modal="true"
-        style={{ transform: dragY ? `translateY(${dragY}px)` : undefined, transition: dragging ? 'none' : 'transform 0.25s ease' }}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        style={{ transform: dragY ? `translateY(${dragY}px)` : undefined, transition: dragging ? 'none' : 'transform 0.2s ease' }}
       >
-        <div
-          className="bb-sheet-grab"
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-          aria-hidden="true"
-        >
+        <div className="bb-sheet-grab" aria-hidden="true">
           <span />
         </div>
         <button
@@ -778,7 +803,7 @@ export const ProductDetailModal = ({ productId, onClose }) => {
         >
           <X size={22} />
         </button>
-        <div className="bb-overlay-scroll">
+        <div className="bb-overlay-scroll" ref={scrollRef}>
           <ProductDetailPage productId={productId} embedded onClose={onClose} />
         </div>
       </div>

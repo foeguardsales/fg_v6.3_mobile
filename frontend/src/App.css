@@ -6643,6 +6643,25 @@ h2, h3, h4 {
   }
 }
 
+/* Floating cart button on the product detail page (both full page + inline modal) — inherits bb-floating-checkout styling */
+.bb-floating-checkout--inline {
+  position: sticky !important;
+  bottom: 12px;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+  width: calc(100% - 24px) !important;
+  max-width: none !important;
+  margin: 18px 12px 12px !important;
+  z-index: 6;
+}
+@media (min-width: 760px) {
+  .bb-floating-checkout--inline {
+    bottom: 14px;
+    margin: 18px 16px 14px !important;
+  }
+}
+
 /* ===== Menu Funnel Overlay — full-screen modal hovering above /menu ===== */
 /* ========== KILL ALL TRANSITIONS/ANIMATIONS FOR APP-LIKE INSTANT UX ========== */
 *, *::before, *::after {
