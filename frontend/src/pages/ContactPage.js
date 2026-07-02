@@ -28,7 +28,7 @@ export const ContactPage = () => {
       <div className="contact-page">
         <div className="contact-container">
           <div className="contact-form-section">
-            <h1 style={{ fontFamily: "'Barlow Semi Condensed', sans-serif" }}>Contact Us</h1>
+            <h1 style={{ fontFamily: "'Lora', serif" }}>Contact Us</h1>
             <p className="contact-intro">
               We love getting inquiries about new products, recommendations and custom recipes. 
               Feel free to reach out through the form below or directly at our contact information.

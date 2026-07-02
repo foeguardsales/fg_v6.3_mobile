@@ -76,7 +76,7 @@ export const BoxSizeSelector = ({ onSelectSize, selectedSize }) => {
             data-testid={`box-size-${box.size}lb`}
           >
             <h3>{box.size} lbs</h3>
-            <p style={{ fontSize: '20px', fontWeight: '600', color: '#2C2C2C', marginTop: '12px' }}>
+            <p style={{ fontSize: '20px', fontWeight: '600', color: '#3B2A1A', marginTop: '12px' }}>
               From ${box.basePrice.toFixed(2)}
             </p>
             {box.savings > 0 && (

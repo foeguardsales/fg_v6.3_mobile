@@ -37,7 +37,7 @@ const StepCard = ({ idx, icon: Icon, title, body }) => (
       fontWeight: 700,
       color: COLORS.charcoal,
       marginBottom: '8px',
-      fontFamily: "'Barlow Semi Condensed', sans-serif"
+      fontFamily: "'Lora', serif"
     }}>{title}</h3>
     <p style={{
       fontSize: '14px',
@@ -99,7 +99,7 @@ export const DeliveryPage = () => {
               color: COLORS.charcoal,
               lineHeight: 1.15,
               marginBottom: '16px',
-              fontFamily: "'Barlow Semi Condensed', sans-serif"
+              fontFamily: "'Lora', serif"
             }}>
               From our kitchen,<br />
               <span style={{ color: COLORS.red }}>to your dog’s bowl.</span>
@@ -134,7 +134,7 @@ export const DeliveryPage = () => {
             color: COLORS.charcoal,
             marginBottom: '40px',
             textAlign: 'center',
-            fontFamily: "'Barlow Semi Condensed', sans-serif"
+            fontFamily: "'Lora', serif"
           }}>
             How your <span style={{ color: COLORS.red }}>FoeGuard order</span> arrives
           </h2>
@@ -179,7 +179,7 @@ export const DeliveryPage = () => {
                 fontWeight: 800,
                 color: COLORS.charcoal,
                 marginBottom: '20px',
-                fontFamily: "'Barlow Semi Condensed', sans-serif",
+                fontFamily: "'Lora', serif",
                 lineHeight: 1.15
               }}>
                 Shipping at a glance
@@ -211,7 +211,7 @@ export const DeliveryPage = () => {
             fontWeight: 800,
             color: COLORS.charcoal,
             marginBottom: '24px',
-            fontFamily: "'Barlow Semi Condensed', sans-serif",
+            fontFamily: "'Lora', serif",
             textAlign: 'center'
           }}>
             Delivery zones across Ontario
@@ -259,7 +259,7 @@ export const DeliveryPage = () => {
               fontWeight: 800,
               color: COLORS.charcoal,
               marginBottom: '24px',
-              fontFamily: "'Barlow Semi Condensed', sans-serif",
+              fontFamily: "'Lora', serif",
               textAlign: 'center'
             }}>
               How to <span style={{ color: COLORS.red }}>store + thaw</span> your meals
@@ -302,7 +302,7 @@ export const DeliveryPage = () => {
             fontWeight: 800,
             color: COLORS.charcoal,
             marginBottom: '12px',
-            fontFamily: "'Barlow Semi Condensed', sans-serif"
+            fontFamily: "'Lora', serif"
           }}>
             Ready to give your dog real food?
           </h3>

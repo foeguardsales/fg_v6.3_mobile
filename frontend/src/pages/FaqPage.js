@@ -126,7 +126,7 @@ const FAQ_CATEGORIES = [
         a: (
           <>
             <p style={{ margin: '0 0 10px' }}>If your dog doesn&apos;t love their FoeGuard meals, you can return any unused, unopened packs within <strong>14 days</strong> of delivery for a full refund — no questions asked.</p>
-            <p style={{ margin: '0 0 10px' }}>To start a return, simply email <a href="mailto:info@foeguard.com" style={{ color: '#2C2C2C', textDecoration: 'underline' }}>info@foeguard.com</a> within the 14-day window with your order number. We&apos;ll arrange the pickup of any sealed, frozen packs and refund the value of those packs back to your original payment method within 5&ndash;7 business days.</p>
+            <p style={{ margin: '0 0 10px' }}>To start a return, simply email <a href="mailto:info@foeguard.com" style={{ color: '#3B2A1A', textDecoration: 'underline' }}>info@foeguard.com</a> within the 14-day window with your order number. We&apos;ll arrange the pickup of any sealed, frozen packs and refund the value of those packs back to your original payment method within 5&ndash;7 business days.</p>
             <p style={{ margin: 0 }}><em>Opened packs cannot be returned for food-safety reasons, but our team will always help troubleshoot transition issues first — most dogs love it once they get past day 1.</em></p>
           </>
         )
@@ -249,7 +249,7 @@ const AccordionItem = ({ q, a, isOpen, onToggle, anchorId }) => (
         fontSize: '17px',
         fontWeight: 600,
         color: COLORS.charcoal,
-        fontFamily: "'Barlow Semi Condensed', sans-serif"
+        fontFamily: "'Lora', serif"
       }}>{q}</span>
       {isOpen
         ? <ChevronUp size={22} color={COLORS.red} />
@@ -326,7 +326,7 @@ export const FaqPage = () => {
               color: COLORS.charcoal,
               lineHeight: 1.15,
               marginBottom: '0',
-              fontFamily: "'Barlow Semi Condensed', sans-serif"
+              fontFamily: "'Lora', serif"
             }}>
               Everything you need to know,<br />
               <span style={{ color: COLORS.red }}>before you switch to FoeGuard Raw.</span>
@@ -346,7 +346,7 @@ export const FaqPage = () => {
                   letterSpacing: '0.12em',
                   color: COLORS.red,
                   marginBottom: '8px',
-                  fontFamily: "'Barlow Semi Condensed', sans-serif"
+                  fontFamily: "'Lora', serif"
                 }}>{cat.title}</h2>
                 <div style={{
                   background: COLORS.white,
@@ -390,7 +390,7 @@ export const FaqPage = () => {
                 fontWeight: 700,
                 marginBottom: '8px',
                 color: COLORS.charcoal,
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
+                fontFamily: "'Lora', serif"
               }}>Still have questions?</h3>
               <p style={{
                 fontSize: '15px',

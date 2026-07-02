@@ -53,7 +53,7 @@ export const AdminLogin = () => {
       }}>
         <h1 style={{
           fontSize: '32px',
-          fontFamily: "'Barlow Semi Condensed', sans-serif",
+          fontFamily: "'Lora', serif",
           marginBottom: '8px',
           textAlign: 'center',
           color: '#2B2B2B'
@@ -75,7 +75,7 @@ export const AdminLogin = () => {
               display: 'block',
               marginBottom: '8px',
               fontWeight: '600',
-              color: '#2C2C2C'
+              color: '#3B2A1A'
             }}>
               Email
             </label>
@@ -101,7 +101,7 @@ export const AdminLogin = () => {
               display: 'block',
               marginBottom: '8px',
               fontWeight: '600',
-              color: '#2C2C2C'
+              color: '#3B2A1A'
             }}>
               Password
             </label>

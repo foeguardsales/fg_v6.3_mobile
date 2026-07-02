@@ -30,7 +30,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
-          fontFamily: "'Barlow Semi Condensed', sans-serif",
+          fontFamily: "'Lora', serif",
           fontSize: '15px',
           fontWeight: '700',
           color: '#2B2B2B',
@@ -286,7 +286,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
             {currentImage ? (
               <img src={currentImage} alt={treat.name} />
             ) : (
-              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#2C2C2C', fontSize: '13px' }}>
+              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#3B2A1A', fontSize: '13px' }}>
                 Image coming soon
               </div>
             )}
@@ -367,26 +367,26 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
           <div className="pd-shopify-collapsibles" data-testid="treat-collapsibles">
             {treat.ingredients && (
               <CollapsibleSection title="Ingredients" defaultOpen>
-                <p style={{ fontSize: '14px', color: '#2C2C2C', lineHeight: '1.7', margin: 0 }}>
+                <p style={{ fontSize: '14px', color: '#3B2A1A', lineHeight: '1.7', margin: 0 }}>
                   {typeof treat.ingredients === 'string' ? treat.ingredients : (treat.ingredients || []).join(', ')}
                 </p>
               </CollapsibleSection>
             )}
             <CollapsibleSection title="Product Information">
-              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: 0, whiteSpace: 'pre-line' }}>
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: 0, whiteSpace: 'pre-line' }}>
                 {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
               </p>
             </CollapsibleSection>
             <CollapsibleSection title="Feeding Guide">
-              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: '0 0 10px' }}>
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: '0 0 10px' }}>
                 {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet.'}
               </p>
-              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: 0 }}>
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: 0 }}>
                 {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
               </p>
             </CollapsibleSection>
             <CollapsibleSection title="Notes">
-              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#2C2C2C', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontFamily: "'Lora', serif", fontSize: '13px', color: '#3B2A1A', marginBottom: '6px' }}>
                 Add any special notes for your order.
               </label>
               <textarea

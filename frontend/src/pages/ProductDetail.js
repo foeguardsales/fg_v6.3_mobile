@@ -41,7 +41,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
-          fontFamily: "'Barlow Semi Condensed', sans-serif",
+          fontFamily: "'Lora', serif",
           fontSize: '15px',
           fontWeight: '700',
           color: '#2B2B2B',
@@ -92,13 +92,13 @@ const ProductBrandIcons = () => {
             justifyContent: 'center',
             background: '#F5F3EF'
           }}>
-            <Icon size={22} color="#2C2C2C" strokeWidth={1.8} />
+            <Icon size={22} color="#3B2A1A" strokeWidth={1.8} />
           </div>
           <span style={{
-            fontFamily: "'Barlow Semi Condensed', sans-serif",
+            fontFamily: "'Lora', serif",
             fontSize: '12px',
             fontWeight: 600,
-            color: '#2C2C2C',
+            color: '#3B2A1A',
             lineHeight: 1.25,
             maxWidth: '110px'
           }}>{label}</span>
@@ -118,10 +118,10 @@ const FarmToBowlSection = () => {
   return (
     <section data-testid="farm-to-bowl-section" style={{ marginTop: '56px' }}>
       <h2 style={{
-        fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+        fontFamily: "'Lora', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
-        color: '#2C2C2C',
+        color: '#3B2A1A',
         margin: '0 0 24px',
         textTransform: 'uppercase',
         letterSpacing: '0.04em'
@@ -136,14 +136,14 @@ const FarmToBowlSection = () => {
             boxShadow: 'none'
           }}>
             <h3 style={{
-              fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+              fontFamily: "'Lora', 'Helvetica Neue', Helvetica, Arial, sans-serif",
               fontSize: '22px',
               fontWeight: 600,
               color: '#C8102E',
               margin: '0 0 12px',
               textTransform: 'none'
             }}>{c.title}</h3>
-            <p style={{ fontSize: '15px', color: '#2C2C2C', lineHeight: 1.65, margin: 0 }}>{c.body}</p>
+            <p style={{ fontSize: '15px', color: '#3B2A1A', lineHeight: 1.65, margin: 0 }}>{c.body}</p>
           </div>
         ))}
       </div>
@@ -174,8 +174,8 @@ const PersonalizeSection = ({ navigate }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#2C2C2C',
-        fontFamily: "'Barlow Semi Condensed', sans-serif",
+        color: '#3B2A1A',
+        fontFamily: "'Lora', serif",
         fontSize: '13px',
         textTransform: 'uppercase',
         letterSpacing: '0.05em'
@@ -188,14 +188,14 @@ const PersonalizeSection = ({ navigate }) => {
       </div>
       <div>
         <h2 style={{
-          fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+          fontFamily: "'Lora', 'Helvetica Neue', Helvetica, Arial, sans-serif",
           fontSize: 'clamp(26px, 3.2vw, 36px)',
           fontWeight: 600,
-          color: '#2C2C2C',
+          color: '#3B2A1A',
           margin: '0 0 16px',
           textTransform: 'none'
         }}>Personalize Your Recipe</h2>
-        <p style={{ fontSize: '16px', color: '#2C2C2C', lineHeight: 1.7, margin: '0 0 20px' }}>
+        <p style={{ fontSize: '16px', color: '#3B2A1A', lineHeight: 1.7, margin: '0 0 20px' }}>
           We craft every recipe by hand, so customization is easy — whether you&apos;re matching a favourite meal or building one from scratch. Perfect for picky eaters, sensitive stomachs, and food allergies.
         </p>
         <button
@@ -207,7 +207,7 @@ const PersonalizeSection = ({ navigate }) => {
             color: '#FFFFFF',
             border: 'none',
             borderRadius: '999px',
-            fontFamily: "'Barlow Semi Condensed', sans-serif",
+            fontFamily: "'Lora', serif",
             fontWeight: 700,
             fontSize: '15px',
             cursor: 'pointer',
@@ -255,10 +255,10 @@ const ProductFaqSection = () => {
   return (
     <section data-testid="product-faq-section" style={{ marginTop: '28px', marginBottom: '8px' }}>
       <h2 style={{
-        fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+        fontFamily: "'Lora', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
-        color: '#2C2C2C',
+        color: '#3B2A1A',
         margin: '0 0 16px',
         textTransform: 'uppercase',
         letterSpacing: '0.04em'
@@ -289,7 +289,7 @@ const ProductFaqSection = () => {
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
-                  fontFamily: "'Barlow Semi Condensed', sans-serif",
+                  fontFamily: "'Lora', serif",
                   fontSize: '15px',
                   fontWeight: 700,
                   color: '#2B2B2B',
@@ -301,7 +301,7 @@ const ProductFaqSection = () => {
                 {isOpen ? <ChevronUp size={18} color="#c8102e" /> : <ChevronDown size={18} color="#c8102e" />}
               </button>
               {isOpen && (
-                <div style={{ padding: '0 0 22px', fontSize: '14px', color: '#2C2C2C', lineHeight: 1.7 }}>
+                <div style={{ padding: '0 0 22px', fontSize: '14px', color: '#3B2A1A', lineHeight: 1.7 }}>
                   {f.a}
                 </div>
               )}
@@ -655,7 +655,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
         <div className="pd-shopify-full">
           <div className="pd-shopify-collapsibles" data-testid="product-collapsibles">
             <CollapsibleSection title="Ingredients" defaultOpen>
-              <p style={{ fontSize: '14px', color: '#2C2C2C', lineHeight: '1.7', margin: 0 }}>
+              <p style={{ fontSize: '14px', color: '#3B2A1A', lineHeight: '1.7', margin: 0 }}>
                 {typeof product.ingredients === 'string' ? product.ingredients : (product.ingredients || []).join(', ')}
               </p>
             </CollapsibleSection>
@@ -670,24 +670,24 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               </div>
             </CollapsibleSection>
             <CollapsibleSection title="Product Information">
-              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: 0, whiteSpace: 'pre-line' }}>
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: 0, whiteSpace: 'pre-line' }}>
                 {product.product_information}
               </p>
             </CollapsibleSection>
             <CollapsibleSection title="Feeding Guide">
               {product.feeding_guide && (
                 <>
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: '0 0 10px' }}>{product.feeding_guide.feeding}</p>
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: '0 0 12px' }}>{product.feeding_guide.handling}</p>
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: 0 }}>
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: '0 0 10px' }}>{product.feeding_guide.feeding}</p>
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: '0 0 12px' }}>{product.feeding_guide.handling}</p>
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: 0 }}>
                     For how much to feed, visit our{' '}
-                    <a href="/calculator" style={{ color: '#2C2C2C', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
+                    <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
                   </p>
                 </>
               )}
             </CollapsibleSection>
             <CollapsibleSection title="Notes">
-              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', sans-serif", fontSize: '13px', color: '#2C2C2C', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontFamily: "'Lora', serif", fontSize: '13px', color: '#3B2A1A', marginBottom: '6px' }}>
                 Add any special notes for your order (e.g. remove an ingredient, preference).
               </label>
               <textarea

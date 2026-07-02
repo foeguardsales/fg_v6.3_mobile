@@ -12,7 +12,7 @@ const COLORS = {
   softBg: '#E8DFC8',       // Straw
   khaki: '#D8CFB8',
   khakiDark: '#A89B7C',
-  charcoal: '#2C2C2C',     // Unified charcoal text colour site-wide (replaces brown brown)
+  charcoal: '#3B2A1A',     // Unified charcoal text colour site-wide (replaces brown brown)
   forestGreen: '#2F4538',
   lightGreen: '#7A9A7A',   // Sage / Light green for Comfort
   harvestGold: '#C9A84C',  // Accent only — badges
@@ -29,11 +29,11 @@ const liftedButtonStyle = {
   border: 'none',
   padding: '14px 32px',
   borderRadius: '8px',
-  fontSize: '15px',
+  fontSize: '16px',
   fontWeight: '600',
   letterSpacing: '0.04em',
   textTransform: 'uppercase',
-  fontFamily: "'Barlow Semi Condensed', sans-serif",
+  fontFamily: "'Barlow', sans-serif",
   cursor: 'pointer',
   boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
   transition: 'all 0.2s ease',
@@ -157,8 +157,8 @@ const ModernNavbar = () => {
           textAlign: 'center',
           padding: '8px 16px',
           fontSize: '13px',
-          fontFamily: "'Barlow Semi Condensed', sans-serif",
-          fontWeight: '600',
+          fontFamily: "'Barlow', sans-serif",
+          fontWeight: '500',
           letterSpacing: '0.02em',
           textTransform: 'none'
         }}>
@@ -314,7 +314,7 @@ const ModernNavbar = () => {
                           fontWeight: '700',
                           letterSpacing: '0.08em',
                           textTransform: 'uppercase',
-                          fontFamily: "'Barlow Semi Condensed', sans-serif",
+                          fontFamily: "'Barlow', sans-serif",
                           color: COLORS.cream
                         }}
                       >
@@ -345,7 +345,7 @@ const ModernNavbar = () => {
                                 fontWeight: '500',
                                 letterSpacing: '0.06em',
                                 textTransform: 'uppercase',
-                                fontFamily: "'Barlow Semi Condensed', sans-serif",
+                                fontFamily: "'Barlow', sans-serif",
                                 color: COLORS.cream
                               }}
                             >
@@ -373,7 +373,7 @@ const ModernNavbar = () => {
                         fontWeight: '700',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
-                        fontFamily: "'Barlow Semi Condensed', sans-serif",
+                        fontFamily: "'Barlow', sans-serif",
                         color: COLORS.cream
                       }}
                     >
@@ -400,7 +400,7 @@ const ModernNavbar = () => {
                   fontWeight: '600',
                   letterSpacing: '0.06em',
                   textTransform: 'uppercase',
-                  fontFamily: "'Barlow Semi Condensed', sans-serif",
+                  fontFamily: "'Barlow', sans-serif",
                   color: COLORS.cream
                 }}
               >
@@ -416,7 +416,7 @@ const ModernNavbar = () => {
 
 // Trust Badge Marquee — uses the warm brown so the hero's bottom-fade merges seamlessly
 const TrustMarquee = () => {
-  const badges = ['Farm Fresh', '100% Canadian', 'Family Owned', 'Organic', 'Human Grade'];
+  const badges = ['Farm Fresh', '100% Canadian', 'Family-Run', 'Organic', 'Human Grade'];
   
   return (
     <div style={{
@@ -472,16 +472,17 @@ const ModernFooter = () => {
     cursor: 'pointer',
     opacity: 0.85,
     textAlign: 'left',
-    fontFamily: "'Barlow Semi Condensed', sans-serif"
+    fontFamily: "'Barlow', sans-serif"
   };
 
   const footerHeadingStyle = {
     fontSize: '14px',
-    fontWeight: '800',
+    fontWeight: '700',
     marginBottom: '14px',
     color: COLORS.cream,
     letterSpacing: '0.04em',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    fontFamily: "'Barlow', sans-serif"
   };
 
   return (
@@ -500,8 +501,8 @@ const ModernFooter = () => {
           <div style={{ marginBottom: '12px' }}>
             <FoeGuardLogo size="default" />
           </div>
-          <p style={{ fontSize: '13px', lineHeight: '1.6', color: COLORS.cream, opacity: 0.85, marginBottom: '20px' }}>
-            Ontario&apos;s #1 farm-fresh raw dog food delivery. Real, fresh, complete nutrition for your best friend.
+          <p style={{ fontSize: '13px', lineHeight: '1.6', color: COLORS.cream, opacity: 0.85, marginBottom: '20px', fontFamily: "'Barlow', sans-serif" }}>
+            FoeGuard Raw Pet Food &mdash; Feeding All Carnivores.
           </p>
           <div style={{ display: 'flex', gap: '10px' }}>
             {['Instagram', 'Facebook'].map(social => (
@@ -698,29 +699,30 @@ export const LandingPage = () => {
             <div className="hero-text" style={{ maxWidth: '620px' }}>
               <h1 style={{
                 fontSize: 'clamp(34px, 6.4vw, 56px)',
-                fontWeight: 700,
+                fontWeight: 600,
                 color: COLORS.cream,
-                lineHeight: '1.05',
-                marginBottom: '12px',
-                fontFamily: "'Barlow Semi Condensed', sans-serif",
+                lineHeight: '1.1',
+                marginBottom: '14px',
+                fontFamily: "'Lora', serif",
                 letterSpacing: '-0.5px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
-                maxWidth: '560px'
+                maxWidth: '620px'
               }}>
-                A healthier dog starts with real food.
+                The freshest meal your dog has ever eaten &mdash; made just for them.
               </h1>
 
               <p style={{
-                fontSize: 'clamp(14px, 1.6vw, 16px)',
+                fontSize: 'clamp(15px, 1.7vw, 17px)',
                 color: COLORS.cream,
                 opacity: 0.94,
-                maxWidth: '460px',
-                margin: '0 0 18px',
+                maxWidth: '520px',
+                margin: '0 0 20px',
                 lineHeight: '1.55',
                 fontWeight: 400,
+                fontFamily: "'Barlow', sans-serif",
                 textShadow: '0 1px 6px rgba(0,0,0,0.45)'
               }}>
-                Better digestion, more energy, and a happier dog — see the difference in days with Ontario&apos;s #1 fresh-made raw dog food.
+                We grow it, make it fresh to your order and deliver it ourselves &mdash; 100% organic, human grade ingredients from our Ontario farm to your dog&apos;s bowl.
               </p>
 
               <button
@@ -728,8 +730,8 @@ export const LandingPage = () => {
                 data-testid="hero-shop-now"
                 style={{
                   ...liftedButtonStyle,
-                  background: COLORS.cream,
-                  color: COLORS.charcoal
+                  background: COLORS.red,
+                  color: COLORS.cream
                 }}
                 onMouseEnter={(e) => liftedButtonHover(e, true)}
                 onMouseLeave={(e) => liftedButtonHover(e, false)}
@@ -739,11 +741,12 @@ export const LandingPage = () => {
               <p
                 data-testid="hero-guarantee"
                 style={{
-                  fontSize: '12.5px',
+                  fontSize: '13px',
                   color: COLORS.cream,
                   opacity: 0.92,
-                  margin: '10px 0 0',
+                  margin: '12px 0 0',
                   lineHeight: 1.5,
+                  fontFamily: "'Barlow', sans-serif",
                   textShadow: '0 1px 6px rgba(0,0,0,0.45)',
                   maxWidth: '460px'
                 }}
@@ -757,11 +760,12 @@ export const LandingPage = () => {
                     color: COLORS.cream,
                     opacity: 0.85,
                     textDecoration: 'underline',
-                    fontSize: '11.5px',
-                    marginLeft: '4px'
+                    fontSize: '12px',
+                    marginLeft: '4px',
+                    fontFamily: "'Barlow', sans-serif"
                   }}
                 >
-                  see terms
+                  See terms.
                 </a>
               </p>
             </div>
@@ -783,7 +787,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '20px',
               color: COLORS.charcoal,
-              fontFamily: "'Barlow Semi Condensed', sans-serif"
+              fontFamily: "'Lora', serif"
             }}>
               Shop Farm Fresh
             </h2>
@@ -795,7 +799,7 @@ export const LandingPage = () => {
             }} className="shop-farm-fresh-grid">
               {[
                 {
-                  title: 'Build Your Meal Plan',
+                  title: 'Build your meal plan',
                   desc: 'Take our simple quiz to receive your customized raw feeding plan in seconds.',
                   image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=300&fit=crop',
                   path: '/meal-plan',
@@ -813,7 +817,7 @@ export const LandingPage = () => {
                   key={i}
                   onClick={() => navigate(card.path)}
                   style={{
-                    background: COLORS.cream,
+                    background: '#DDD8D2',
                     border: `1px solid ${COLORS.khaki}`,
                     borderRadius: '8px',
                     overflow: 'hidden',
@@ -823,8 +827,8 @@ export const LandingPage = () => {
                     boxShadow: 'none'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-6px)';
-                    e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.08)';
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.06)';
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
@@ -879,31 +883,21 @@ export const LandingPage = () => {
             <div style={{ textAlign: 'center', marginBottom: '20px', maxWidth: '820px', marginLeft: 'auto', marginRight: 'auto' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
-                fontWeight: '700',
-                color: COLORS.charcoal,
-                lineHeight: 1.25,
-                marginBottom: '16px',
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
-              }}>
-                Why FoeGuard Raw
-              </h2>
-              <p style={{
-                fontSize: 'clamp(15px, 1.8vw, 17px)',
                 fontWeight: 600,
                 color: COLORS.charcoal,
-                lineHeight: 1.5,
-                margin: '0 0 14px',
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
+                lineHeight: 1.2,
+                marginBottom: '14px',
+                fontFamily: "'Lora', serif"
               }}>
                 From our Acton farm to your dog&apos;s bowl.
-              </p>
+              </h2>
               <p style={{
-                fontSize: 'clamp(15px, 1.8vw, 17px)',
+                fontSize: 'clamp(15px, 1.7vw, 17px)',
                 fontWeight: 400,
                 color: COLORS.charcoal,
                 lineHeight: 1.6,
                 margin: 0,
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
+                fontFamily: "'Barlow', sans-serif"
               }}>
                 We raise and grow almost all of our ingredients. Every meal is made fresh weekly in our human-grade kitchen. No retail markups, no vague labels, no low-quality meat. Just real, complete meals you and your dog can both feel good about.
               </p>
@@ -967,7 +961,7 @@ export const LandingPage = () => {
                           fontWeight: 800,
                           color: COLORS.charcoal,
                           margin: '0 0 4px',
-                          fontFamily: "'Barlow Semi Condensed', sans-serif"
+                          fontFamily: "'Lora', serif"
                         }}>
                           {item.title}
                         </h4>
@@ -998,10 +992,10 @@ export const LandingPage = () => {
             <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 20px' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
-                fontWeight: '700',
+                fontWeight: 600,
                 marginBottom: '12px',
-                fontFamily: "'Barlow Semi Condensed', sans-serif",
-                lineHeight: 1.25,
+                fontFamily: "'Lora', serif",
+                lineHeight: 1.2,
                 color: COLORS.white
               }}>
                 Customers Notice Benefits in Just 2 Weeks
@@ -1060,7 +1054,7 @@ export const LandingPage = () => {
                       fontSize: '15px',
                       fontWeight: '700',
                       marginBottom: '4px',
-                      fontFamily: "'Barlow Semi Condensed', sans-serif",
+                      fontFamily: "'Barlow', sans-serif",
                       lineHeight: 1.3,
                       color: COLORS.cream,
                       letterSpacing: '0.02em'
@@ -1108,12 +1102,12 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '8px',
               color: COLORS.charcoal,
-              fontFamily: "'Barlow Semi Condensed', sans-serif"
+              fontFamily: "'Lora', serif"
             }}>
               Hear from Happy FoeGuardians
             </h2>
-            <p style={{ textAlign: 'center', color: COLORS.charcoal, marginBottom: '18px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '15px' }}>
-              93% of FoeGuardians reported a healthy change in digestion, coat, allergies or energy. Real food, real results.
+            <p style={{ textAlign: 'center', color: COLORS.charcoal, marginBottom: '18px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '16px', fontFamily: "'Barlow', sans-serif" }}>
+              Real food shows real results.
             </p>
           </div>
 
@@ -1187,7 +1181,7 @@ export const LandingPage = () => {
                         fontWeight: '700',
                         color: COLORS.red,
                         margin: 0,
-                        fontFamily: "'Barlow Semi Condensed', sans-serif"
+                        fontFamily: "'Lora', serif"
                       }}>
                         — {r.name}
                       </p>
@@ -1232,23 +1226,23 @@ export const LandingPage = () => {
             <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 20px' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
-                fontWeight: '700',
+                fontWeight: 600,
                 color: COLORS.charcoal,
-                lineHeight: 1.25,
+                lineHeight: 1.2,
                 marginBottom: '12px',
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
+                fontFamily: "'Lora', serif"
               }}>
-                Pick Your Dog&apos;s Favourites From 8+ Delicious Meat Options
+                Pick your dog&apos;s favourites from 8 proteins
               </h2>
               <p style={{
-                fontSize: 'clamp(15px, 1.8vw, 17px)',
+                fontSize: 'clamp(15px, 1.7vw, 17px)',
                 color: COLORS.charcoal,
                 lineHeight: 1.6,
                 margin: 0,
                 fontWeight: 400,
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
+                fontFamily: "'Barlow', sans-serif"
               }}>
-                Every protein is raised on our farm — each with its own flavour, benefits and nutritional profile.
+                Every protein is raised on our farm &mdash; each with its own flavour, benefits and nutritional profile.
               </p>
             </div>
 
@@ -1309,7 +1303,7 @@ export const LandingPage = () => {
                     fontSize: '16px',
                     fontWeight: 700,
                     color: COLORS.charcoal,
-                    fontFamily: "'Barlow Semi Condensed', sans-serif",
+                    fontFamily: "'Barlow', sans-serif",
                     textAlign: 'left'
                   }}>{p.label}</span>
                 </button>
@@ -1344,20 +1338,31 @@ export const LandingPage = () => {
             }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
-                fontWeight: '700',
+                fontWeight: 600,
                 color: COLORS.charcoal,
-                marginBottom: '12px',
-                fontFamily: "'Barlow Semi Condensed', sans-serif"
+                marginBottom: '14px',
+                fontFamily: "'Lora', serif",
+                lineHeight: 1.2
               }}>
-                Raw Feeding is a Family Tradition
+                Where real food became a family tradition
               </h2>
               <p style={{
                 fontSize: '16px',
                 color: COLORS.charcoal,
                 lineHeight: '1.65',
-                marginBottom: '20px'
+                marginBottom: '14px',
+                fontFamily: "'Barlow', sans-serif"
               }}>
-                FoeGuard started because of one dog. When we couldn&apos;t find raw food made to our standards as third-generation farmers, we made it ourselves. Before long our neighbours were asking for meals — then their friends were too. What started on our small farm in Acton grew into something bigger, built by the community, for the community.
+                FoeGuard started because of one dog. When we couldn&apos;t find raw food made to our standards as third-generation farmers, we made it ourselves. Before long our neighbours were asking for meals &mdash; then their friends were too.
+              </p>
+              <p style={{
+                fontSize: '16px',
+                color: COLORS.charcoal,
+                lineHeight: '1.65',
+                marginBottom: '20px',
+                fontFamily: "'Barlow', sans-serif"
+              }}>
+                What started on our small farm in Acton grew into something bigger &mdash; built by the community, for the community. If you&apos;re here reading this, your story might not be so different.
               </p>
               <button
                 onClick={() => navigate('/about')}
@@ -1387,7 +1392,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '20px',
               color: COLORS.charcoal,
-              fontFamily: "'Barlow Semi Condensed', sans-serif"
+              fontFamily: "'Lora', serif"
             }}>
               Frequently Asked Questions
             </h2>
@@ -1452,29 +1457,31 @@ export const LandingPage = () => {
           <div style={{ maxWidth: '760px', margin: '0 auto' }}>
             <h2 style={{
               fontSize: 'clamp(30px, 3.6vw, 40px)',
-              fontWeight: '700',
+              fontWeight: 600,
               marginBottom: '12px',
               color: COLORS.cream,
-              fontFamily: "'Barlow Semi Condensed', sans-serif"
+              fontFamily: "'Lora', serif",
+              lineHeight: 1.2
             }}>
-              Ready to make the switch?
+              Your dog&apos;s healthiest days start now.
             </h2>
             <p style={{
               fontSize: 'clamp(16px, 1.8vw, 19px)',
               marginBottom: '20px',
               opacity: 0.95,
               color: COLORS.cream,
-              lineHeight: 1.55
+              lineHeight: 1.55,
+              fontFamily: "'Barlow', sans-serif"
             }}>
-              Your dog&apos;s first fresh meal is one click away.
+              Farm-fresh, made to order raw meals &mdash; raised right here in Ontario.
             </p>
             <button
               data-testid="final-cta-shop-now"
               onClick={() => navigate('/menu')}
               style={{
                 ...liftedButtonStyle,
-                background: COLORS.cream,
-                color: COLORS.redOverlay
+                background: COLORS.red,
+                color: COLORS.cream
               }}
               onMouseEnter={(e) => liftedButtonHover(e, true)}
               onMouseLeave={(e) => liftedButtonHover(e, false)}

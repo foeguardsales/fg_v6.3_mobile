@@ -87,7 +87,7 @@ export const AdminDashboard = () => {
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '40px 20px' }}>
           {/* Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-            <h1 style={{ fontSize: '36px', fontFamily: "'Barlow Semi Condensed', sans-serif", color: '#2B2B2B' }}>
+            <h1 style={{ fontSize: '36px', fontFamily: "'Lora', serif", color: '#2B2B2B' }}>
               Admin Dashboard
             </h1>
             <button
@@ -151,7 +151,7 @@ export const AdminDashboard = () => {
                       style={{ 
                         padding: '10px 20px', 
                         background: filter === f ? '#c8102e' : 'white', 
-                        color: filter === f ? 'white' : '#2C2C2C', 
+                        color: filter === f ? 'white' : '#3B2A1A', 
                         border: '2px solid #c8102e', 
                         borderRadius: '8px', 
                         cursor: 'pointer', 

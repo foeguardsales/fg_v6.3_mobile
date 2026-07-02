@@ -156,33 +156,45 @@ body {
 
 /* Heritage typography: Barlow Semi Condensed (SemiBold) for headings/accents, Lucida Grande for paragraphs */
 :root {
-  --font-body: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
-  --font-heading: 'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-accent: 'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-accent: 'Lora', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* Default body — neutral Barlow Semi Condensed; paragraphs swap to Lucida via the rule below */
+/* Default body — Barlow 400 site-wide; headings switch to Lora via the rules below */
 body {
-  font-family: var(--font-heading);
-  font-weight: 600;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
   background: #F5F3EF;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
-/* Headings = Barlow Semi Condensed SemiBold */
+/* Headings = Lora 600, min 22px */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading) !important;
   font-weight: 600 !important;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
-/* Paragraph text = Lucida Grande */
-p, li, blockquote, dd, dt, figcaption, small, .subtext {
+h1 { font-size: max(28px, 1em); }
+h2 { font-size: max(24px, 1em); }
+h3, h4, h5, h6 { font-size: max(22px, 1em); }
+/* Paragraph text = Barlow 400, min 16px */
+p, li, blockquote, dd, dt, figcaption, .subtext {
   font-family: var(--font-body) !important;
-  color: #2C2C2C;
+  color: #3B2A1A;
+  font-weight: 400;
 }
-/* Buttons / inputs / labels / accents = Barlow Semi Condensed */
+/* Labels + disclaimers min 12px */
+small, .small, .disclaimer, .label, label {
+  font-family: var(--font-body) !important;
+  font-size: max(12px, 0.75em);
+}
+/* Buttons / inputs / labels / accents = Barlow */
 button, input, select, textarea, label, a, span {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
 }
+/* Bold emphasis uses Barlow 600 */
+strong, b { font-weight: 600; }
 
 /* ========== CSS VARIABLES ========== */
 :root {
@@ -216,9 +228,9 @@ button, input, select, textarea, label, a, span {
   --pure-white: #FFFFFF;       /* Use only when truly needed */
   
   /* Text Colors — Aged Wood replaces charcoal */
-  --charcoal: #2C2C2C;
-  --charcoal-light: #2C2C2C;
-  --text-secondary: #2C2C2C;
+  --charcoal: #3B2A1A;
+  --charcoal-light: #3B2A1A;
+  --text-secondary: #3B2A1A;
   --text-muted: #8A7156;
   --text-inverse: #F5F3EF;
   
@@ -537,7 +549,7 @@ h2, h3, h4 {
 }
 
 .hero-title {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: clamp(38px, 5vw, 52px);
   font-weight: normal;
   color: var(--text-inverse);
@@ -1508,7 +1520,7 @@ h2, h3, h4 {
   border: none;
   padding: 8px 14px;
   border-radius: 999px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -1612,7 +1624,7 @@ h2, h3, h4 {
 
 .box-size-tab:hover {
   border-color: var(--barn-red);
-  background: #F0ECE6;
+  background: #F5F3EF;
 }
 
 .box-size-tab.active {
@@ -1689,10 +1701,10 @@ h2, h3, h4 {
   margin: 0;
 }
 .bb-subscribe-label {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 15px;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -1705,7 +1717,7 @@ h2, h3, h4 {
   padding: 7px 16px;
   border-radius: 6px;
   border: 1.5px solid #2B2B2B;
-  background: #F0ECE6;
+  background: #F5F3EF;
   color: #2B2B2B;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1738,7 +1750,7 @@ h2, h3, h4 {
   border-radius: 8px;
   border: 1.5px solid #D8CFB8;
   background: #FFFFFF;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 500;
   color: #2B2B2B;
@@ -1756,7 +1768,7 @@ h2, h3, h4 {
   gap: 10px;
   font-size: 13px;
   color: #2B2B2B;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
 }
 .bb-subscribe-tick {
   color: var(--barn-red);
@@ -1909,15 +1921,15 @@ h2, h3, h4 {
   font-family: var(--font-heading) !important;
   font-size: clamp(20px, 2.4vw, 26px) !important;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 4px;
   letter-spacing: 0;
   text-transform: none !important;
 }
 .menu-collection-desc {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0;
   line-height: 1.5;
   max-width: 720px;
@@ -1954,7 +1966,7 @@ h2, h3, h4 {
   font-family: var(--font-heading) !important;
   font-size: 15px !important;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 2px;
   letter-spacing: 0;
   text-transform: none;
@@ -1964,9 +1976,9 @@ h2, h3, h4 {
   .product-card-title { font-size: 17px !important; }
 }
 .product-card-desc {
-  font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif !important;
+  font-family: 'Barlow', 'Lora', serif !important;
   font-size: 12.5px !important;
-  color: #2C2C2C;
+  color: #3B2A1A;
   line-height: 1.35;
   margin: 0 0 2px;
   display: -webkit-box;
@@ -1989,7 +2001,7 @@ h2, h3, h4 {
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   flex-wrap: wrap;
   margin: 2px 0;
 }
@@ -1997,7 +2009,7 @@ h2, h3, h4 {
 .product-card-price .price-discounted {
   font-size: 13px;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .product-card-price .price-original {
   font-size: 13px;
@@ -2008,12 +2020,12 @@ h2, h3, h4 {
 }
 .product-card-price .price-unit {
   font-size: 13px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-weight: 500;
 }
 .product-card-price .price-unit strong {
   font-weight: 500;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 @media (min-width: 760px) {
   .product-card-price .price-regular,
@@ -2027,10 +2039,10 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   padding: 0;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
   cursor: pointer;
   letter-spacing: 0;
   text-transform: none;
@@ -2039,7 +2051,7 @@ h2, h3, h4 {
   margin-top: 2px;
   display: inline-block;
 }
-.product-card-more:hover { color: #2C2C2C; }
+.product-card-more:hover { color: #3B2A1A; }
 
 .product-card-media {
   position: relative;
@@ -2069,7 +2081,7 @@ h2, h3, h4 {
   border-radius: 999px;
   background: #FFFFFF;
   border: 1px solid #3B2A1A;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-size: 22px;
   font-weight: 700;
   cursor: pointer;
@@ -2130,7 +2142,7 @@ h2, h3, h4 {
   cursor: not-allowed;
 }
 .product-card-qty-pill .qty-display-mini {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 12px;
   font-weight: 700;
   color: #F5F3EF;
@@ -2151,7 +2163,7 @@ h2, h3, h4 {
   border: 1.5px solid #3B2A1A;
   font-size: 20px;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -2197,7 +2209,7 @@ h2, h3, h4 {
   border-radius: 6px;
   border: none;
   background: transparent;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -2211,10 +2223,10 @@ h2, h3, h4 {
 }
 .product-card-qty .qty-btn-mini:disabled { opacity: 0.35; cursor: not-allowed; }
 .product-card-qty .qty-display-mini {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
   min-width: 32px;
   text-align: center;
 }
@@ -2402,7 +2414,7 @@ h2, h3, h4 {
 }
 
 .treat-info h4 {
-  font-family: 'Barlow Semi Condensed', sans-serif !important;
+  font-family: 'Lora', serif !important;
   font-size: 17px !important;
   font-weight: 700;
   color: #2B2B2B;
@@ -4035,7 +4047,7 @@ h2, h3, h4 {
   display: block;
 }
 .about-protein-label {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-weight: 700;
   font-size: 18px;
   color: var(--charcoal, #3B2A1A);
@@ -4045,7 +4057,7 @@ h2, h3, h4 {
   text-align: left;
 }
 .about-protein-desc {
-  font-family: 'Public Sans', sans-serif !important;
+  font-family: 'Barlow', sans-serif !important;
   font-size: 14px;
   line-height: 1.55;
   color: var(--charcoal, #3B2A1A);
@@ -5054,7 +5066,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 999px;
   padding: 14px 26px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
@@ -5072,7 +5084,7 @@ h2, h3, h4 {
 }
 .basket-pill .basket-count {
   background: #C9A84C;
-  color: #2C2C2C;
+  color: #3B2A1A;
   border-radius: 999px;
   padding: 2px 10px;
   font-size: 13px;
@@ -5087,7 +5099,7 @@ h2, h3, h4 {
   top: 2px;
   right: 2px;
   background: #C9A84C;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-size: 10px;
   font-weight: 800;
   min-width: 18px;
@@ -5102,7 +5114,7 @@ h2, h3, h4 {
 
 /* Menu pill buttons — aged wood bg / khaki text */
 .menu-pill {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 700;
   color: #D8CFB8;
@@ -5121,7 +5133,7 @@ h2, h3, h4 {
 }
 .menu-pill.is-active {
   background: #C9A84C;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 
 /* Khaki slider for box size on menu (legacy) */
@@ -5139,10 +5151,10 @@ h2, h3, h4 {
   flex: 0 0 auto;
   padding: 8px 16px;
   background: #D8CFB8;
-  color: #2C2C2C;
+  color: #3B2A1A;
   border: none;
   border-radius: 999px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -5158,7 +5170,7 @@ h2, h3, h4 {
 }
 .box-size-slider .box-size-chip-discount {
   background: #C9A84C;
-  color: #2C2C2C;
+  color: #3B2A1A;
   padding: 1px 6px;
   border-radius: 999px;
   font-size: 10px;
@@ -5176,7 +5188,7 @@ h2, h3, h4 {
 .box-size-slider--thin .box-size-chip {
   background: transparent;
   border: 1px solid #C9BFA6;
-  color: #2C2C2C;
+  color: #3B2A1A;
   padding: 5px 12px;
   font-size: 12px;
   font-weight: 700;
@@ -5184,7 +5196,7 @@ h2, h3, h4 {
 }
 .box-size-slider--thin .box-size-chip.is-active {
   background: #3B2A1A;
-  border-color: #2C2C2C;
+  border-color: #3B2A1A;
   color: #F5F3EF;
 }
 .box-size-slider--thin .box-size-chip-text { display: inline-flex; align-items: baseline; gap: 4px; }
@@ -5235,14 +5247,14 @@ h2, h3, h4 {
   width: 78%;
   max-width: 320px;
   scroll-snap-align: start;
-  background-color: #2C2C2C;
+  background-color: #3B2A1A;
   background-size: cover;
   background-position: center;
   background-blend-mode: multiply;
   background-repeat: no-repeat;
   border: 1px solid #3B2A1A;
   padding: 22px 16px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 700;
   color: #F5F3EF;
@@ -5311,8 +5323,8 @@ h2, h3, h4 {
   border-radius: 50%;
   border: 1.5px solid #D8CFB8;
   background: #F5F3EF;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -5326,12 +5338,12 @@ h2, h3, h4 {
   padding: 0;
 }
 .size-circle:hover {
-  border-color: #2C2C2C;
+  border-color: #3B2A1A;
 }
 .size-circle.is-active {
   background: #3B2A1A;
   color: #D8CFB8;
-  border-color: #2C2C2C;
+  border-color: #3B2A1A;
 }
 .size-circle-discount {
   font-size: 9px;
@@ -5355,18 +5367,18 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   padding: 10px 14px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
   cursor: pointer;
   position: relative;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
 }
 .detail-tab.is-active {
-  color: #2C2C2C;
-  border-bottom-color: #2C2C2C;
+  color: #3B2A1A;
+  border-bottom-color: #3B2A1A;
 }
 
 /* Product detail page — Uber Eats full-width */
@@ -5400,7 +5412,7 @@ h2, h3, h4 {
   border-radius: 999px;
   background: rgba(245,243,239,0.92);
   border: none;
-  color: #2C2C2C;
+  color: #3B2A1A;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -5421,8 +5433,8 @@ h2, h3, h4 {
   padding: 8px 14px 8px 10px;
   background: #FFFFFF;
   border: 1px solid #D8CFB8;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -5449,7 +5461,7 @@ h2, h3, h4 {
 .pd-uber-title {
   font-family: var(--font-heading);
   font-size: clamp(24px, 3.4vw, 32px);
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 10px;
   font-weight: 600;
   line-height: 1.15;
@@ -5458,7 +5470,7 @@ h2, h3, h4 {
 .pd-uber-desc {
   font-size: 15px;
   line-height: 1.6;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 14px;
 }
 .pd-uber-badges {
@@ -5472,8 +5484,8 @@ h2, h3, h4 {
   align-items: center;
   gap: 6px;
   background: #E8DFC8;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 11px;
   font-weight: 700;
   padding: 6px 12px;
@@ -5486,15 +5498,15 @@ h2, h3, h4 {
   border: 1px solid #D8CFB8;
   border-radius: 10px;
   padding: 12px 14px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   resize: vertical;
   background: #FFFFFF;
 }
 .pd-uber-notes:focus {
   outline: none;
-  border-color: #2C2C2C;
+  border-color: #3B2A1A;
 }
 .pd-uber-add {
   position: fixed;
@@ -5508,7 +5520,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 6px;
   padding: 16px 24px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -5565,10 +5577,10 @@ h2, h3, h4 {
 .menu-category-text-btn {
   background: transparent;
   border: none;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 500;
-  color: #2C2C2C;
+  color: #3B2A1A;
   padding: 2px 4px 5px;
   border-radius: 0;
   cursor: pointer;
@@ -5580,13 +5592,13 @@ h2, h3, h4 {
   margin-right: 14px;
   transition: color 0.15s ease;
 }
-.menu-category-text-btn:hover { color: #2C2C2C; }
+.menu-category-text-btn:hover { color: #3B2A1A; }
 .menu-category-text-btn.is-active {
   background: transparent;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-weight: 700;
   font-size: 16px;
-  border-bottom-color: #2C2C2C;
+  border-bottom-color: #3B2A1A;
 }
 @media (min-width: 760px) {
   .menu-category-text-btn { font-size: 15px; margin-right: 6px; padding: 2px 2px 6px; }
@@ -5643,10 +5655,10 @@ h2, h3, h4 {
   max-width: 100%;
 }
 .bb-box-size-label {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
   letter-spacing: 0.01em;
   flex-shrink: 0;
 }
@@ -5665,8 +5677,8 @@ h2, h3, h4 {
   background: transparent;
   border: 1px solid transparent;
   border-radius: 6px;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -5679,12 +5691,12 @@ h2, h3, h4 {
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 .box-size-slider--mustard .box-size-chip:hover {
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .box-size-slider--mustard .box-size-chip.is-active {
   background: #EFE6CC;
-  border-color: #2C2C2C;
-  color: #2C2C2C;
+  border-color: #3B2A1A;
+  color: #3B2A1A;
   font-weight: 700;
 }
 .box-size-slider--mustard .box-size-chip-text {
@@ -5702,7 +5714,7 @@ h2, h3, h4 {
   border-radius: 3px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
 }
 .box-size-slider--mustard .box-size-chip.is-active .box-size-chip-discount-inline {
   background: #C9A84C;
@@ -5725,7 +5737,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 6px;
   padding: 16px 24px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -5833,8 +5845,8 @@ h2, h3, h4 {
 .product-card-more {
   background: transparent;
   border: none;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 600;
   text-decoration: underline;
@@ -5844,7 +5856,7 @@ h2, h3, h4 {
   white-space: nowrap;
   align-self: flex-start;
 }
-.product-card-more:hover { color: #2C2C2C; }
+.product-card-more:hover { color: #3B2A1A; }
 
 /* Mobile: + button and qty pill stay bottom-right of image (well-padded) */
 .product-card-media > .product-card-plus,
@@ -5950,10 +5962,10 @@ h2, h3, h4 {
   min-width: 0;
 }
 .pd-shopify-collection {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.72;
@@ -5963,7 +5975,7 @@ h2, h3, h4 {
 .pd-shopify-title {
   font-family: var(--font-heading);
   font-size: clamp(26px, 3.4vw, 36px);
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 12px;
   font-weight: 600;
   line-height: 1.15;
@@ -5977,28 +5989,28 @@ h2, h3, h4 {
   flex-wrap: wrap;
 }
 .pd-shopify-price {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 26px;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .pd-shopify-price-unit {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-weight: 500;
 }
 .pd-shopify-price-original {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 15px;
   color: #8A7156;
   text-decoration: line-through;
 }
 .pd-shopify-desc {
-  font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Barlow', 'Lora', serif;
   font-size: 15px;
   line-height: 1.65;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 20px;
 }
 .pd-shopify-features {
@@ -6011,9 +6023,9 @@ h2, h3, h4 {
   display: inline-flex;
   align-items: center;
   background: #C9A84C;
-  color: #2C2C2C;
+  color: #3B2A1A;
   border: none;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 11px;
   font-weight: 700;
   padding: 4px 9px;
@@ -6039,23 +6051,23 @@ h2, h3, h4 {
   border: none;
 }
 .pd-shopify-boxsize-label {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
 .pd-shopify-boxsize-value {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 15px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-weight: 800;
 }
 .pd-shopify-boxsize-discount {
   display: inline-flex;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 10px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-weight: 800;
   background: #C9A84C;
   padding: 2px 7px;
@@ -6066,8 +6078,8 @@ h2, h3, h4 {
 .pd-shopify-change-link {
   background: transparent;
   border: none;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -6077,7 +6089,7 @@ h2, h3, h4 {
   text-decoration: underline;
   margin-left: 6px;
 }
-.pd-shopify-change-link:hover { color: #2C2C2C; }
+.pd-shopify-change-link:hover { color: #3B2A1A; }
 .pd-shopify-qty-row {
   display: flex;
   align-items: flex-start;
@@ -6087,9 +6099,9 @@ h2, h3, h4 {
   margin: 0 0 12px;
 }
 .pd-shopify-mini-label {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 11px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 700;
@@ -6106,7 +6118,7 @@ h2, h3, h4 {
   border-radius: 6px;
   border: 1.5px solid #3B2A1A;
   background: #F5F3EF;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
@@ -6123,20 +6135,20 @@ h2, h3, h4 {
 .pd-shopify-qty-display {
   min-width: 54px;
   text-align: center;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 16px;
   font-weight: 800;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 /* Adds — same line as Add to box, slimmer, left-aligned */
 .pd-shopify-adds {
   text-align: left;
 }
 .pd-shopify-adds-total {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 16px;
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
   display: inline-flex;
   align-items: center;
   height: 36px;
@@ -6147,8 +6159,8 @@ h2, h3, h4 {
   height: 22px;
   margin-left: 8px;
   background: #C9A84C;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -6157,17 +6169,17 @@ h2, h3, h4 {
   border-radius: 3px;
 }
 .pd-shopify-adds-perlb {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 500;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin-left: 6px;
   display: inline-flex;
   align-items: center;
   height: 36px;
 }
 .pd-shopify-adds-original {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 12px;
   color: #8A7156;
   text-decoration: line-through;
@@ -6200,9 +6212,9 @@ h2, h3, h4 {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Barlow', 'Lora', serif;
   font-size: 14px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   line-height: 1.5;
 }
 .pd-shopify-checks li svg {
@@ -6230,10 +6242,10 @@ h2, h3, h4 {
   align-items: center;
   text-align: center;
   gap: 8px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 12px;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
   letter-spacing: 0.02em;
 }
 .pd-shopify-trust-item svg {
@@ -6301,7 +6313,7 @@ h2, h3, h4 {
   height: auto;
 }
 .menu-collection-banner-text .menu-collection-title {
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 4px;
   font-family: var(--font-heading) !important;
   font-size: clamp(20px, 2.4vw, 26px) !important;
@@ -6310,7 +6322,7 @@ h2, h3, h4 {
   text-shadow: none;
 }
 .menu-collection-banner-text .menu-collection-desc {
-  color: #2C2C2C;
+  color: #3B2A1A;
   opacity: 1;
   margin: 0;
   font-size: 13px;
@@ -6357,7 +6369,7 @@ h2, h3, h4 {
   width: 100%;
   background: transparent;
   border: 1.5px solid #C9BFA6;
-  color: #2C2C2C;
+  color: #3B2A1A;
   padding: 12px 8px;
   border-radius: 10px;
   justify-content: center;
@@ -6376,14 +6388,14 @@ h2, h3, h4 {
 }
 .box-size-slider--clean.box-size-slider--mustard .box-size-chip.is-active {
   background: transparent;
-  border-color: #2C2C2C;
-  color: #2C2C2C;
+  border-color: #3B2A1A;
+  color: #3B2A1A;
 }
 .box-size-chip-size {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 16px;
   font-weight: 800;
-  color: #2C2C2C;
+  color: #3B2A1A;
   letter-spacing: 0.01em;
   line-height: 1.1;
 }
@@ -6391,10 +6403,10 @@ h2, h3, h4 {
   .box-size-chip-size { font-size: 18px; }
 }
 .box-size-chip-from {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 10px;
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
   opacity: 0.95;
   line-height: 1.1;
   letter-spacing: 0;
@@ -6405,7 +6417,7 @@ h2, h3, h4 {
   .box-size-chip-from { font-size: 12px; }
 }
 .box-size-slider--clean.box-size-slider--mustard .box-size-chip.is-active .box-size-chip-from {
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 
 /* ===== Mini Top-Sheet (Task 3) ===== */
@@ -6453,7 +6465,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #2C2C2C;
+  color: #3B2A1A;
   padding: 6px;
   border-radius: 50%;
 }
@@ -6462,7 +6474,7 @@ h2, h3, h4 {
   font-family: var(--font-heading);
   font-size: 22px;
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 4px;
   text-align: center;
 }
@@ -6470,9 +6482,9 @@ h2, h3, h4 {
   color: #C8102E;
 }
 .menu-topsheet-sub {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 12px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   text-align: center;
   margin: 0 0 14px;
 }
@@ -6490,11 +6502,11 @@ h2, h3, h4 {
   background: white;
   border: 1px solid #D8CFB8;
   border-radius: 8px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
 }
 .menu-topsheet-card-name {
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-size: 14px;
 }
 .menu-topsheet-card-price {
@@ -6511,7 +6523,7 @@ h2, h3, h4 {
 .menu-topsheet-btn {
   padding: 12px 14px;
   border-radius: 10px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
@@ -6520,13 +6532,13 @@ h2, h3, h4 {
 .menu-topsheet-btn--outline {
   background: transparent;
   border: 1.5px solid #3B2A1A;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .menu-topsheet-btn--outline:hover { background: rgba(0,0,0,0.04); }
 .menu-topsheet-btn--solid {
   background: #D8CFB8;
   border: 1.5px solid #D8CFB8;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .menu-topsheet-btn--solid:hover { background: #CBC1A6; }
 .menu-topsheet-calc-link {
@@ -6534,8 +6546,8 @@ h2, h3, h4 {
   margin: 0 auto;
   background: transparent;
   border: none;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 12px;
   font-weight: 600;
   text-decoration: underline;
@@ -6576,7 +6588,7 @@ h2, h3, h4 {
   background: white;
   border: 1px solid #D8CFB8;
   cursor: pointer;
-  color: #2C2C2C;
+  color: #3B2A1A;
   padding: 6px;
   border-radius: 50%;
   width: 36px;
@@ -6639,7 +6651,7 @@ h2, h3, h4 {
   background: white;
   border: 1px solid #D8CFB8;
   cursor: pointer;
-  color: #2C2C2C;
+  color: #3B2A1A;
   padding: 8px;
   border-radius: 50%;
   width: 40px;
@@ -6657,7 +6669,7 @@ h2, h3, h4 {
   font-family: var(--font-heading);
   font-size: clamp(26px, 3.6vw, 36px);
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 8px;
   text-align: center;
   letter-spacing: -0.4px;
@@ -6670,7 +6682,7 @@ h2, h3, h4 {
 .menu-funnel-overlay .menu-funnel-sub {
   font-family: var(--font-body);
   font-size: 15px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 auto 28px;
   text-align: center;
   max-width: 640px;
@@ -6706,10 +6718,10 @@ h2, h3, h4 {
   gap: 8px;
   font-family: var(--font-body);
   font-size: 13px;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .selection-breadcrumb-prefix {
-  color: #2C2C2C;
+  color: #3B2A1A;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -6718,12 +6730,12 @@ h2, h3, h4 {
 .selection-breadcrumb-title {
   font-weight: 700;
   font-size: 14px;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .selection-breadcrumb-edit {
   background: transparent;
   border: 1px solid #3B2A1A;
-  color: #2C2C2C;
+  color: #3B2A1A;
   padding: 6px 14px;
   border-radius: 999px;
   font-family: var(--font-body);
@@ -6749,7 +6761,7 @@ h2, h3, h4 {
   font-family: var(--font-heading);
   font-size: clamp(28px, 4vw, 40px);
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 10px;
   text-align: center;
   letter-spacing: -0.5px;
@@ -6758,7 +6770,7 @@ h2, h3, h4 {
 .menu-funnel-sub {
   font-family: var(--font-body);
   font-size: 15px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 auto 24px;
   text-align: center;
   max-width: 640px;
@@ -6823,7 +6835,7 @@ h2, h3, h4 {
   line-height: 1.15;
 }
 .menu-funnel-card-sub {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
   margin: 0;
   color: #F5F3EF;
@@ -6908,7 +6920,7 @@ h2, h3, h4 {
   font-family: var(--font-heading);
   font-size: 20px;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0 0 2px;
   line-height: 1.15;
   letter-spacing: -0.2px;
@@ -6918,9 +6930,9 @@ h2, h3, h4 {
   .menu-funnel-card-row-title { font-size: 22px; }
 }
 .menu-funnel-card-row-sub {
-  font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Barlow', 'Lora', serif;
   font-size: 13px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0;
   line-height: 1.4;
 }
@@ -6930,8 +6942,8 @@ h2, h3, h4 {
   margin-left: auto;
   background: transparent;
   border: none;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 600;
   padding: 4px 6px;
@@ -6941,7 +6953,7 @@ h2, h3, h4 {
   white-space: nowrap;
   letter-spacing: 0;
 }
-.menu-category-calc-link:hover { color: #2C2C2C; }
+.menu-category-calc-link:hover { color: #3B2A1A; }
 @media (max-width: 600px) {
   .menu-category-calc-link { font-size: 12px; padding: 2px 4px; }
 }
@@ -7070,7 +7082,7 @@ input, select, textarea {
   background: white;
   border: 1px solid #D8CFB8;
   cursor: pointer;
-  color: #2C2C2C;
+  color: #3B2A1A;
   padding: 6px;
   border-radius: 50%;
   width: 36px;
@@ -7095,11 +7107,11 @@ input, select, textarea {
 .treats-subcat-title {
   font-size: clamp(18px, 2vw, 22px) !important;
   margin: 0 0 6px !important;
-  color: #2C2C2C !important;
+  color: #3B2A1A !important;
 }
 .treats-subcat-desc {
   font-size: 13px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   margin: 0;
 }
 
@@ -7171,7 +7183,7 @@ input, select, textarea {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .stock-up-toggle-left {
   display: inline-flex;
@@ -7180,18 +7192,18 @@ input, select, textarea {
 }
 .stock-up-toggle-left svg { color: #C8102E; flex-shrink: 0; }
 .stock-up-toggle-title {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 .stock-up-toggle-meta {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #2C2C2C;
+  color: #3B2A1A;
   background: #C9A84C;
   padding: 2px 7px;
   border-radius: 3px;
@@ -7201,9 +7213,9 @@ input, select, textarea {
   border-top: none;
 }
 .stock-up-intro {
-  font-family: 'Rubik', 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Barlow', 'Lora', serif;
   font-size: 12.5px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   line-height: 1.5;
   margin: 8px 0 12px;
 }
@@ -7234,13 +7246,13 @@ input, select, textarea {
   color: #2E7D32;
 }
 .stock-up-tier-size {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .stock-up-tier-off {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 12px;
   font-weight: 600;
   color: #C8102E;
@@ -7283,13 +7295,13 @@ input, select, textarea {
   border: 1px solid #D8CFB8;
   border-radius: 6px;
   padding: 8px 14px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 13px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   text-align: center;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
-.bb-incentive strong { color: #2C2C2C; font-weight: 800; }
+.bb-incentive strong { color: #3B2A1A; font-weight: 800; }
 @media (min-width: 760px) {
   .bb-incentive {
     left: 50%;
@@ -7310,7 +7322,7 @@ input, select, textarea {
   flex-wrap: wrap;
 }
 .cart-box-lbs {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 12px;
   font-weight: 700;
   color: #2E7D32;
@@ -7325,17 +7337,17 @@ input, select, textarea {
 }
 .cart-line-info { min-width: 0; display: flex; flex-direction: column; }
 .cart-line-name {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
   font-weight: 600;
-  color: #2C2C2C;
+  color: #3B2A1A;
 }
 .cart-line-sub { font-size: 12px; color: #8A7156; }
 .cart-line-right { display: flex; align-items: center; gap: 10px; }
 .cart-line-price {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 14px;
-  color: #2C2C2C;
+  color: #3B2A1A;
   min-width: 56px;
   text-align: right;
 }
@@ -7360,7 +7372,7 @@ input, select, textarea {
 .cart-qty-mini button {
   background: none;
   border: none;
-  color: #2C2C2C;
+  color: #3B2A1A;
   cursor: pointer;
   font-size: 16px;
   font-weight: 700;
@@ -7369,10 +7381,10 @@ input, select, textarea {
   height: 22px;
 }
 .cart-qty-mini span {
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 12px;
   font-weight: 700;
-  color: #2C2C2C;
+  color: #3B2A1A;
   min-width: 34px;
   text-align: center;
 }
@@ -7398,7 +7410,7 @@ input, select, textarea {
 .feeding-calc .form-group select {
   border: 1px solid #D8CFB8 !important;
   background: #fff !important;
-  color: #2C2C2C;
+  color: #3B2A1A;
   border-radius: 8px;
 }
 .calc-pet-card input:focus,
@@ -7406,7 +7418,7 @@ input, select, textarea {
 .feeding-calc .form-group input:focus,
 .feeding-calc .form-group select:focus {
   outline: none;
-  border-color: #2C2C2C !important;
+  border-color: #3B2A1A !important;
   box-shadow: 0 0 0 2px rgba(59, 42, 26, 0.08);
 }
 
@@ -7427,8 +7439,8 @@ input, select, textarea {
   margin-left: 10px;
   padding: 3px 8px;
   background: #C9A84C;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  color: #3B2A1A;
+  font-family: 'Lora', serif;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -7449,10 +7461,10 @@ input, select, textarea {
 }
 
 /* ===== Cart drawer — brown theme overrides ===== */
-.cart-drawer-header h3 { color: #2C2C2C !important; }
+.cart-drawer-header h3 { color: #3B2A1A !important; }
 .cart-box-info { border-bottom-color: #C8B89C !important; }
 .cart-total {
-  color: #2C2C2C !important;
+  color: #3B2A1A !important;
   border-top: 2px solid #3B2A1A !important;
 }
 /* Brown dividers around totals / promo / instructions sections */
@@ -7461,5 +7473,5 @@ input, select, textarea {
 
 /* Cart line: bold product names, semi-bold prices */
 .cart-line-name { font-weight: 700 !important; }
-.cart-line-price { font-weight: 600 !important; color: #2C2C2C !important; }
+.cart-line-price { font-weight: 600 !important; color: #3B2A1A !important; }
 
