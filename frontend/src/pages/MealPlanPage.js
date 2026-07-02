@@ -969,7 +969,10 @@ export const MealPlanPage = () => {
       <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '60px 20px 40px', position: 'relative' }}>
         {/* Top-right X close — matches the X used on Calculator + Product modals */}
         <button
-          onClick={() => navigate('/menu')}
+          onClick={() => {
+            sessionStorage.removeItem('foeguard_selection');
+            navigate('/menu');
+          }}
           data-testid="meal-plan-close-btn"
           aria-label="Close"
           className="page-close-x"

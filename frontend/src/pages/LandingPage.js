@@ -27,9 +27,9 @@ const liftedButtonStyle = {
   background: COLORS.red,
   color: COLORS.white,
   border: 'none',
-  padding: '14px 32px',
+  padding: '12px 28px',
   borderRadius: '8px',
-  fontSize: '16px',
+  fontSize: '14px',
   fontWeight: '600',
   letterSpacing: '0.04em',
   textTransform: 'uppercase',
@@ -592,6 +592,16 @@ export const LandingPage = () => {
   const navigate = useNavigate();
   const [activeFaq, setActiveFaq] = useState(null);
 
+  // Routes "Shop Now" to whichever choice the user last picked in the funnel.
+  // - selection = 'meal-plan' → /meal-plan
+  // - selection = 'shop-raw'  → /menu (raw food menu)
+  // - no selection            → /menu (which will open the funnel on landing)
+  const goShopNow = () => {
+    const sel = sessionStorage.getItem('foeguard_selection');
+    if (sel === 'meal-plan') navigate('/meal-plan');
+    else navigate('/menu');
+  };
+
   const faqs = [
     {
       q: "How much raw should I feed?",
@@ -698,15 +708,15 @@ export const LandingPage = () => {
           }}>
             <div className="hero-text" style={{ maxWidth: '620px' }}>
               <h1 style={{
-                fontSize: 'clamp(34px, 6.4vw, 56px)',
+                fontSize: 'clamp(28px, 4.5vw, 44px)',
                 fontWeight: 600,
                 color: COLORS.cream,
-                lineHeight: '1.1',
+                lineHeight: '1.15',
                 marginBottom: '14px',
                 fontFamily: "'Lora', serif",
-                letterSpacing: '-0.5px',
+                letterSpacing: '-0.3px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
-                maxWidth: '620px'
+                maxWidth: '580px'
               }}>
                 The freshest meal your dog has ever eaten &mdash; made just for them.
               </h1>
@@ -726,11 +736,11 @@ export const LandingPage = () => {
               </p>
 
               <button
-                onClick={() => navigate('/menu')}
+                onClick={goShopNow}
                 data-testid="hero-shop-now"
                 style={{
                   ...liftedButtonStyle,
-                  background: COLORS.red,
+                  background: COLORS.forestGreen,
                   color: COLORS.cream
                 }}
                 onMouseEnter={(e) => liftedButtonHover(e, true)}
@@ -803,19 +813,24 @@ export const LandingPage = () => {
                   desc: 'Take our simple quiz to receive your customized raw feeding plan in seconds.',
                   image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=300&fit=crop',
                   path: '/meal-plan',
+                  selection: 'meal-plan',
                   cta: 'Get Started'
                 },
                 {
-                  title: 'Raw Dog Food Menu',
+                  title: 'Raw Dog Food menu',
                   desc: 'Fresh food that is easy to portion and serve, ensuring balanced, nutritious meals every day.',
                   image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
                   path: '/menu',
+                  selection: 'shop-raw',
                   cta: 'Order Now'
                 }
               ].map((card, i) => (
                 <button
                   key={i}
-                  onClick={() => navigate(card.path)}
+                  onClick={() => {
+                    if (card.selection) sessionStorage.setItem('foeguard_selection', card.selection);
+                    navigate(card.path);
+                  }}
                   style={{
                     background: '#DDD8D2',
                     border: `1px solid ${COLORS.khaki}`,
@@ -1477,10 +1492,10 @@ export const LandingPage = () => {
             </p>
             <button
               data-testid="final-cta-shop-now"
-              onClick={() => navigate('/menu')}
+              onClick={goShopNow}
               style={{
                 ...liftedButtonStyle,
-                background: COLORS.red,
+                background: COLORS.forestGreen,
                 color: COLORS.cream
               }}
               onMouseEnter={(e) => liftedButtonHover(e, true)}

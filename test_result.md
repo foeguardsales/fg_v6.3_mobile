@@ -2097,3 +2097,193 @@ agent_communication:
             The fix has been successfully implemented and verified. The TrustMarquee 
             background color is now brown #3B2A1A, matching the hero's bottom-fade 
             color exactly. No issues found.
+
+
+  - agent: "testing"
+    message: |
+      ✅ FOUR BUG FIX VERIFICATION COMPLETED - ALL PASSED (100% SUCCESS)
+      
+      Verified four specific bug fixes on the FoeGuard site at mobile viewport (390 x 820).
+      
+      **BUG 1 — Shop Now Routing Based on Selection: ✅ PASS**
+      - Hero Shop Now button routes correctly:
+        • No selection → /menu ✓
+        • selection='meal-plan' → /meal-plan ✓
+        • selection='shop-raw' → /menu ✓
+      - Final CTA Shop Now button routes correctly:
+        • selection='meal-plan' → /meal-plan ✓
+      - All routing logic working perfectly
+      
+      **BUG 2 — MealPlanPage X Close Button Opens Funnel: ✅ PASS**
+      - X button (data-testid="meal-plan-close-btn") navigates to /menu ✓
+      - Funnel overlay (data-testid="menu-funnel-overlay") is visible ✓
+      - sessionStorage.foeguard_selection cleared correctly ✓
+      - Minor observation: Product cards visible in DOM but covered by funnel (expected behavior)
+      
+      **BUG 3 — No Background Flash Glitch: ✅ PASS**
+      - X close button transition: No flash detected ✓
+      - Edit button transition: No flash detected ✓
+      - Funnel overlay background: rgb(245, 243, 239) - solid opaque ✓
+      - No funnelFadeIn animation present ✓
+      - CSS animation property: 'none' ✓
+      
+      **BUG 4 — Visual Copy + Design Changes (6 sub-tests): ✅ PASS**
+      (a) Card titles: "Build your meal plan" + "Raw Dog Food menu" (lowercase 'm') ✓
+      (b) Card backgrounds: rgb(221, 216, 210) = #DDD8D2 (cool grey) ✓
+      (c) Marquee: Contains "FAMILY-RUN" (NOT "Family Owned") ✓
+      (d) Hero Shop Now: Forest Green rgb(47, 69, 56), 12px 28px padding, 14px font ✓
+      (e) Final CTA Shop Now: Forest Green rgb(47, 69, 56) ✓
+      (f) Hero H1 font size: 28px (within 26-32px range) ✓
+      
+      **OVERALL RESULT:**
+      All four bug fixes verified and working correctly. No critical issues found.
+
+frontend:
+  - task: "BUG 1 — Shop Now routing based on sessionStorage.foeguard_selection"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js (goShopNow function)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - All Shop Now routing tests PASSED
+            
+            **Test Scope:**
+            Verified that Shop Now buttons on landing page route based on sessionStorage.foeguard_selection value.
+            
+            **Test Results:**
+            1. Hero Shop Now (data-testid="hero-shop-now"):
+               - No selection set → routes to /menu ✓
+               - selection='meal-plan' → routes to /meal-plan ✓
+               - selection='shop-raw' → routes to /menu ✓
+            
+            2. Final CTA Shop Now (data-testid="final-cta-shop-now"):
+               - selection='meal-plan' → routes to /meal-plan ✓
+            
+            **Test Flow:**
+            - Cleared sessionStorage and verified /menu navigation
+            - Set selection via funnel interaction (clicked "Build a Meal Plan")
+            - Verified routing persists across page navigation
+            - Tested both hero and final CTA buttons
+            
+            **Conclusion:**
+            Bug fix is working perfectly. Shop Now buttons correctly route based on user's funnel selection.
+
+  - task: "BUG 2 — MealPlanPage X close button opens funnel on /menu"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/MealPlanPage.js (X close button)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - MealPlanPage X close button PASSED
+            
+            **Test Scope:**
+            Verified that clicking X close button on /meal-plan navigates to /menu with funnel overlay visible.
+            
+            **Test Results:**
+            1. Navigation: ✓ PASS
+               - Clicked X button (data-testid="meal-plan-close-btn")
+               - Successfully navigated to /menu
+            
+            2. Funnel Overlay: ✓ PASS
+               - Funnel overlay (data-testid="menu-funnel-overlay") is visible
+               - Overlay appears on top of menu content
+            
+            3. SessionStorage: ✓ PASS
+               - sessionStorage.foeguard_selection correctly cleared (null)
+            
+            4. Menu Content: ⚠ Minor observation
+               - Product cards are technically visible in DOM (but covered by funnel overlay)
+               - This is expected behavior as funnel is a z-index overlay, not a blocker
+            
+            **Conclusion:**
+            Bug fix is working correctly. X button clears selection and shows funnel on /menu.
+
+  - task: "BUG 3 — No background flash glitch on close/edit"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css (.menu-funnel-overlay)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - No background flash glitch PASSED
+            
+            **Test Scope:**
+            Verified that there's no flash of menu content before funnel overlay appears during transitions.
+            
+            **Test Results:**
+            1. X Close Button Transition: ✓ PASS
+               - No funnelFadeIn animation detected
+               - Funnel background is solid opaque: rgb(245, 243, 239)
+               - CSS animation property: 'none'
+               - No visible flash during transition
+            
+            2. Edit Button Transition: ✓ PASS
+               - Edit button in selection breadcrumb works correctly
+               - Funnel opens immediately without flash
+            
+            **Technical Verification:**
+            - Funnel overlay background: rgb(245, 243, 239) (solid, not rgba)
+            - No fade-in animation applied
+            - CSS transition: 'all' (but no animation keyframes)
+            
+            **Conclusion:**
+            Bug fix is working perfectly. Funnel overlay is fully opaque with no animation, preventing any background flash.
+
+  - task: "BUG 4 — Visual copy + design changes on landing page"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js, /app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - All visual changes PASSED (6/6 sub-tests)
+            
+            **Test Viewport:** 390 x 820 (mobile)
+            
+            **Test Results:**
+            
+            (a) Shop Farm Fresh Card Titles: ✓ PASS
+                - First card: "Build your meal plan" (sentence case) ✓
+                - Second card: "Raw Dog Food menu" (lowercase 'm') ✓
+            
+            (b) Card Background Colors: ✓ PASS
+                - Both cards: rgb(221, 216, 210) = #DDD8D2 (cool grey) ✓
+                - NOT cream color ✓
+            
+            (c) Marquee Content: ✓ PASS
+                - Contains "FAMILY-RUN" ✓
+                - "Family Owned" NOT present ✓
+            
+            (d) Hero Shop Now Button: ✓ PASS
+                - Background: rgb(47, 69, 56) = Forest Green #2F4538 ✓
+                - Padding: 12px 28px ✓
+                - Font size: 14px ✓
+                - Border radius: 8px ✓
+            
+            (e) Final CTA Shop Now Button: ✓ PASS
+                - Background: rgb(47, 69, 56) = Forest Green #2F4538 ✓
+            
+            (f) Hero H1 Font Size: ✓ PASS
+                - Computed font size: 28px ✓
+                - Within expected range: 26-32px ✓
+            
+            **Conclusion:**
+            All visual changes verified and working correctly on mobile viewport.
