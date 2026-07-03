@@ -4420,11 +4420,18 @@ h2, h3, h4 {
 }
 
 .about-mission h2 {
-  font-family: var(--font-body) !important;
+  font-family: var(--font-heading) !important;
   font-size: clamp(30px, 3.6vw, 40px) !important;
   font-weight: 700 !important;
   color: var(--text-inverse);
   margin-bottom: 16px;
+}
+
+.about-mission p {
+  font-size: 17px !important;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 14px;
 }
 
 /* "Our Ingredients" heading — Barlow 700 bold (override global h1-h6 rule) */
@@ -4461,13 +4468,14 @@ h2, h3, h4 {
 }
 
 .signup-form input {
-  padding: 16px 20px;
+  padding: 12px 16px;
   border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 100px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.1);
   font-family: var(--font-body);
   font-size: 16px;
   color: var(--text-inverse);
+  min-height: 44px;
   transition: all 0.2s ease;
 }
 

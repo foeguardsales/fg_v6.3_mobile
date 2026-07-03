@@ -133,10 +133,11 @@ const ModernNavbar = () => {
       items: [
         { label: 'FAQ', path: '/faq' },
         { label: 'Delivery Information', path: '/delivery' },
-        { label: 'Blog', path: '/blog' },
+        { label: 'Raw Feeding Guide', path: '/raw-feeding-guide' },
         { label: 'Dog Food Calculator', path: '/calculator' }
       ]
     },
+    { label: 'Blog', path: '/blog' },
     { label: 'Contact Us', path: '/contact' }
   ];
 
