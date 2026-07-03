@@ -5,11 +5,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap');
 
 
-/* Global uniform section spacing — 48px top and bottom on every section site-wide.
+/* Global uniform section spacing — 24px top + 24px bottom so the total gap
+   between any two adjacent sections equals 48px (matching design spec).
    Hero is excluded (self-bleeds under fixed navbar). Full-bleed sections opt out via .section-fullbleed. */
 section:not(.hero-section):not(.hero-section--foeguard):not(.section-fullbleed) {
-  padding-top: 48px !important;
-  padding-bottom: 48px !important;
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
 }
 
 /* Protein circle grid: 4 cols on desktop, 2 cols on mobile */

@@ -2477,13 +2477,51 @@ agent_communication:
 
 
 frontend:
+  - task: "Section spacing bug-fix (24px + 24px = 48px gap between sections)"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/App.css (line 855: .benefits-grid margin-bottom)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: |
+            ❌ FAILED - Spacing bug-fix is NOT complete
+            
+            **Issue:** Gap between sections is 96px instead of 48px on /new-to-raw page.
+            
+            **Root Cause:** The `.benefits-grid` element has `margin: 0 auto 48px` (line 855 in App.css),
+            which adds an extra 48px margin-bottom. Combined with section padding (24px + 24px), the
+            total gap is 96px instead of the desired 48px.
+            
+            **Test Results:**
+            - Mobile (393×852): Gap = 96px ❌ (expected ~48px)
+            - Desktop (1440×900): Gap = 96px ❌ (expected ~48px)
+            - Section padding: 24px top + 24px bottom ✅ (correct)
+            - Landing page: 0px gap ✅ (sections adjacent, correct)
+            
+            **Required Fix:**
+            Change line 855 in /app/frontend/src/App.css from:
+            ```css
+            margin: 0 auto 48px;
+            ```
+            To:
+            ```css
+            margin: 0 auto;
+            ```
+            
+            This will remove the extra 48px margin-bottom and achieve the desired 48px gap
+            (24px section padding-bottom + 24px section padding-top = 48px total).
+
   - task: "BUG 1 — Scroll position preserved when returning to /menu"
     implemented: true
     working: false
     file: "/app/frontend/src/pages/BoxBuilder.js (lines 120-162), /app/frontend/src/pages/ProductDetail.js (lines 750-754)"
     stuck_count: 2
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: false
           agent: "testing"
@@ -2698,17 +2736,110 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 9
+  test_sequence: 10
   run_ui: true
 
 test_plan:
   current_focus:
-    - "BUG 1 — Scroll position preserved when returning to /menu"
+    - "Section spacing bug-fix verification (24px + 24px = 48px gap)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+  - agent: "testing"
+    message: |
+      ❌ SECTION SPACING BUG-FIX VERIFICATION FAILED - ROOT CAUSE IDENTIFIED
+      
+      **Test Scope:** Verify spacing bug-fix on /new-to-raw and landing page (/)
+      - Mobile viewport: iPhone 16 (393×852)
+      - Desktop viewport: 1440×900
+      
+      **Expected Behavior:**
+      - Section padding: 24px top + 24px bottom
+      - Total gap between adjacent sections: 48px (24 + 24)
+      - Previously: 48px top + 48px bottom = 96px gap (BUG)
+      
+      **Test Results:**
+      
+      ❌ CRITICAL FAILURE: Gap is still 96px (not fixed)
+      
+      **TEST 1 — Gap between Benefits grid and "How FoeGuard Raw compares" heading:**
+      - Mobile: 96px gap ❌ (expected ~48px)
+      - Desktop: 96px gap ❌ (expected ~48px)
+      
+      **TEST 2 — Section padding verification:**
+      - Mobile: All sections have 24px top + 24px bottom ✅ PASS
+      - Desktop: All sections have 24px top + 24px bottom ✅ PASS
+      
+      **TEST 3 — Adjacent section gaps:**
+      - All section-to-section gaps are 0px ✅ (sections are adjacent)
+      
+      **TEST 4 — Landing page spot check:**
+      - Gap between "Shop Farm Fresh" and "From our Acton farm..." sections: 0px ✅ PASS
+      
+      **ROOT CAUSE IDENTIFIED:**
+      
+      The global CSS rule in App.css (lines 11-14) is working correctly:
+      ```css
+      section:not(.hero-section):not(.hero-section--foeguard):not(.section-fullbleed) {
+        padding-top: 24px !important;
+        padding-bottom: 24px !important;
+      }
+      ```
+      
+      However, the `.benefits-grid` element has an extra margin-bottom that's causing the issue:
+      
+      **File:** /app/frontend/src/App.css
+      **Line:** 855
+      ```css
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        max-width: 1000px;
+        margin: 0 auto 48px;  /* ← PROBLEM: 48px bottom margin */
+      }
+      ```
+      
+      **The Math:**
+      - Benefits grid margin-bottom: 48px
+      - Benefits section padding-bottom: 24px
+      - Compare section padding-top: 24px
+      - **Total gap: 48 + 24 + 24 = 96px** ❌
+      
+      **Required Fix:**
+      
+      Change line 855 in /app/frontend/src/App.css from:
+      ```css
+      margin: 0 auto 48px;
+      ```
+      
+      To:
+      ```css
+      margin: 0 auto 0;
+      ```
+      
+      Or simply:
+      ```css
+      margin: 0 auto;
+      ```
+      
+      This will remove the extra 48px margin-bottom, resulting in:
+      - Benefits section padding-bottom: 24px
+      - Compare section padding-top: 24px
+      - **Total gap: 24 + 24 = 48px** ✅
+      
+      **Additional Investigation:**
+      
+      The sections on /new-to-raw have inline styles `padding: 60px 20px`, but the global CSS rule with `!important` correctly overrides them to 24px. The inline styles are not the issue.
+      
+      **Screenshots:**
+      - spacing_fix_mobile_benefits_to_compare.png (shows current 96px gap on mobile)
+      
+      **Conclusion:**
+      The spacing bug-fix is NOT complete. The `.benefits-grid` margin-bottom needs to be removed to achieve the desired 48px gap between sections.
+  
   - agent: "testing"
     message: |
       ❌ BUG 1 FINAL RE-TEST FAILED - ROOT CAUSE IDENTIFIED
