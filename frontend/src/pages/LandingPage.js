@@ -1381,11 +1381,15 @@ export const LandingPage = () => {
         </section>
 
         {/* ABOUT US / OUR STORY */}
-        <section style={{
-          background: COLORS.khaki,
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
+        <section
+          className="section-fullbleed"
+          style={{
+            background: COLORS.khaki,
+            position: 'relative',
+            overflow: 'hidden',
+            padding: 0
+          }}
+        >
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
