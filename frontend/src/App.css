@@ -377,25 +377,18 @@ h2, h3, h4 {
 }
 
 /* ========== BUTTONS — compact site-wide standard ========== */
-/* Shop Farm Fresh — mobile: horizontal scroll snap; desktop: 3-col grid */
+/* Shop Farm Fresh — mobile: 1-per-row stacked; desktop: 3-col grid */
 .shop-farm-fresh-grid {
-  display: flex !important;
-  gap: 12px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding: 4px 20px 8px;
-  margin: 0 -20px;
+  display: grid !important;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 0;
+  margin: 0;
 }
-.shop-farm-fresh-grid::-webkit-scrollbar { display: none; }
 .shop-farm-fresh-card {
-  flex: 0 0 68%;
-  max-width: 260px;
-  scroll-snap-align: center;
   display: flex !important;
   flex-direction: column !important;
-  min-height: 300px;
+  width: 100%;
 }
 .shop-farm-fresh-img {
   background-position: center !important;
@@ -410,16 +403,10 @@ h2, h3, h4 {
 }
 @media (min-width: 760px) {
   .shop-farm-fresh-grid {
-    display: grid !important;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    overflow: visible;
-    margin: 0;
-    padding: 0;
   }
   .shop-farm-fresh-card {
-    flex: 1 1 auto;
-    max-width: none;
     min-height: 380px;
   }
   .shop-farm-fresh-img {
@@ -428,26 +415,19 @@ h2, h3, h4 {
 }
 @media (max-width: 600px) {
   .shop-farm-fresh-img {
-    height: 150px !important;
+    height: 160px !important;
   }
   .shop-farm-fresh-body {
-    padding: 14px !important;
+    padding: 16px !important;
   }
   .shop-farm-fresh-body h3 {
-    font-size: 16px !important;
+    font-size: 18px !important;
     margin-bottom: 6px !important;
   }
   .shop-farm-fresh-body p {
-    font-size: 12.5px !important;
-    line-height: 1.4 !important;
-    margin-bottom: 10px !important;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .shop-farm-fresh-body span {
-    font-size: 12px !important;
+    font-size: 13.5px !important;
+    line-height: 1.45 !important;
+    margin-bottom: 12px !important;
   }
 }
 
@@ -6676,6 +6656,12 @@ h2, h3, h4 {
 .trust-marquee-track,
 [style*="marquee"] {
   animation-duration: 12s !important;
+}
+@media (max-width: 600px) {
+  .trust-marquee-track,
+  [style*="marquee"] {
+    animation-duration: 9s !important;
+  }
 }
 
 /* Hero — centered vertically, larger H1 sizing for mobile */

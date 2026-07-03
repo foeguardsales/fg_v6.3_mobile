@@ -70,8 +70,8 @@ const outlineButtonStyle = {
 // FoeGuard Logo Component — round red badge (no ring)
 const FoeGuardLogo = ({ size = 'default' }) => {
   const sizes = {
-    small: 56,
-    default: 72,
+    small: 44,
+    default: 52,
     large: 100
   };
   const dim = sizes[size];
@@ -155,7 +155,7 @@ const ModernNavbar = () => {
           background: COLORS.khaki,
           color: COLORS.charcoal,
           textAlign: 'center',
-          padding: '8px 16px',
+          padding: '5px 16px',
           fontSize: '13px',
           fontFamily: "'Barlow', sans-serif",
           fontWeight: '500',
@@ -170,7 +170,7 @@ const ModernNavbar = () => {
           display: 'grid',
           gridTemplateColumns: '1fr auto 1fr',
           alignItems: 'center',
-          padding: '8px 20px',
+          padding: '2px 20px',
           maxWidth: '1400px',
           margin: '0 auto',
           gap: '12px'
@@ -670,10 +670,10 @@ export const LandingPage = () => {
             position: 'relative',
             overflow: 'hidden',
             background: `#3B2A1A url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
-            minHeight: 'clamp(540px, 140vw, 640px)',
+            minHeight: 'clamp(440px, 112vw, 520px)',
             display: 'flex',
-            alignItems: 'center',
-            marginTop: '-120px'
+            alignItems: 'flex-end',
+            marginTop: '-96px'
           }}
         >
           {/* Left fade overlay — makes text readable on the image (warm brown tones) */}
@@ -706,12 +706,16 @@ export const LandingPage = () => {
             zIndex: 1,
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: 'clamp(140px, 16vw, 180px) 24px clamp(24px, 3vw, 44px)',
-            width: '100%'
+            padding: 'clamp(120px, 14vw, 150px) 24px clamp(32px, 4vw, 48px)',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            minHeight: '100%'
           }}>
             <div className="hero-text" style={{ maxWidth: '620px' }}>
               <h1 style={{
-                fontSize: 'clamp(32px, 5vw, 48px)',
+                fontSize: 'clamp(30px, 4.6vw, 46px)',
                 fontWeight: 600,
                 color: COLORS.cream,
                 lineHeight: '1.15',
@@ -721,7 +725,7 @@ export const LandingPage = () => {
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
                 maxWidth: '580px'
               }}>
-                The freshest meal your dog has ever eaten &mdash; made just for them.
+                The freshest meal your dog has ever eaten.
               </h1>
 
               <p style={{
@@ -735,7 +739,7 @@ export const LandingPage = () => {
                 fontFamily: "'Barlow', sans-serif",
                 textShadow: '0 1px 6px rgba(0,0,0,0.45)'
               }}>
-                We grow it, make it fresh to your order and deliver it ourselves &mdash; 100% organic, human grade ingredients from our Ontario farm to your dog&apos;s bowl.
+                100% organic, human-grade raw meals, grown on our Ontario farm and prepared fresh to order.
               </p>
 
               <button
@@ -791,7 +795,7 @@ export const LandingPage = () => {
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
           background: COLORS.cream,
-          padding: '18px 20px 36px'
+          padding: '44px 20px 40px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <h2 style={{
@@ -802,7 +806,7 @@ export const LandingPage = () => {
               color: COLORS.charcoal,
               fontFamily: "'Lora', serif"
             }}>
-              Shop farm fresh
+              Shop Farm Fresh
             </h2>
 
             <div className="shop-farm-fresh-grid">
@@ -816,7 +820,7 @@ export const LandingPage = () => {
                   cta: 'Get Started'
                 },
                 {
-                  title: 'Raw Dog Food menu',
+                  title: 'Raw Dog Food Menu',
                   desc: 'Fresh food that is easy to portion and serve, ensuring balanced, nutritious meals every day.',
                   image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop&auto=format',
                   path: '/menu',
@@ -824,8 +828,8 @@ export const LandingPage = () => {
                   cta: 'Order Now'
                 },
                 {
-                  title: 'Raw Cat Food menu',
-                  desc: 'Complete raw meals crafted for cats &mdash; high-protein, taurine-rich and made fresh from our farm.',
+                  title: 'Raw Cat Food Menu',
+                  desc: 'Complete raw meals crafted for cats — high-protein, taurine-rich and made fresh.',
                   image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&h=400&fit=crop&auto=format',
                   path: '/menu',
                   selection: 'shop-raw',
@@ -833,21 +837,14 @@ export const LandingPage = () => {
                   cta: 'Order Now'
                 }
               ].map((card, i) => (
-                <button
+                <div
                   key={i}
-                  onClick={() => {
-                    if (card.selection) sessionStorage.setItem('foeguard_selection', card.selection);
-                    if (card.petType) sessionStorage.setItem('foeguard_pet_type', card.petType);
-                    else sessionStorage.removeItem('foeguard_pet_type');
-                    navigate(card.path);
-                  }}
                   className="shop-farm-fresh-card"
                   style={{
                     background: COLORS.cream,
                     border: `1px solid ${COLORS.khaki}`,
                     borderRadius: '8px',
                     overflow: 'hidden',
-                    cursor: 'pointer',
                     textAlign: 'left',
                     boxShadow: 'none'
                   }}
@@ -873,18 +870,37 @@ export const LandingPage = () => {
                     }}>
                       {card.desc}
                     </p>
-                    <span style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      color: COLORS.red,
-                      fontWeight: '600',
-                      fontSize: '14px'
-                    }}>
-                      {card.cta} <ChevronRight size={18} />
-                    </span>
+                    <button
+                      onClick={() => {
+                        if (card.selection) sessionStorage.setItem('foeguard_selection', card.selection);
+                        if (card.petType) sessionStorage.setItem('foeguard_pet_type', card.petType);
+                        else sessionStorage.removeItem('foeguard_pet_type');
+                        navigate(card.path);
+                      }}
+                      data-testid={`sff-cta-${i}`}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        alignSelf: 'flex-start',
+                        background: COLORS.red,
+                        color: COLORS.cream,
+                        border: 'none',
+                        borderRadius: '8px',
+                        padding: '12px 24px',
+                        minHeight: '44px',
+                        fontFamily: "'Barlow', sans-serif",
+                        fontWeight: 600,
+                        fontSize: '15px',
+                        cursor: 'pointer',
+                        lineHeight: 1,
+                        letterSpacing: '0.01em'
+                      }}
+                    >
+                      {card.cta}
+                    </button>
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           </div>
@@ -916,7 +932,7 @@ export const LandingPage = () => {
                 margin: 0,
                 fontFamily: "'Barlow', sans-serif"
               }}>
-                We raise and grow almost all of our ingredients. Every meal is made fresh weekly in our human-grade kitchen. No retail markups, no vague labels, no low-quality meat. Just real, complete meals you and your dog can both feel good about.
+                Every ingredient is raised or grown by us, made fresh daily and delivered straight to your door &mdash; no middlemen, no markups, no mystery.
               </p>
             </div>
 
@@ -947,9 +963,9 @@ export const LandingPage = () => {
               {/* 4 Benefits — clean rows, hairline dividers, no pill background */}
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {[
-                  { Icon: Sprout, title: 'Farm Fresh', desc: 'Locally sourced and hand-crafted in small batches every week.' },
-                  { Icon: Leaf, title: '100% Organic', desc: 'Raised on open pastures, clean feed and without hormones, fillers or additives.' },
-                  { Icon: ChefHat, title: 'Human Grade', desc: 'Real food meals prepared in our Ontario regulated human food kitchen.' },
+                  { Icon: Sprout, title: 'Farm Fresh', desc: 'Grown on our Ontario farm and prepared fresh in small batches.' },
+                  { Icon: Leaf, title: '100% Organic Ingredients', desc: 'Raised on open pastures, clean feed and without hormones, fillers or additives.' },
+                  { Icon: ChefHat, title: 'Human-Grade Kitchen', desc: 'Whole food meals prepared in our Ontario regulated human food kitchen.' },
                   { Icon: Award, title: 'Complete Nutrition', desc: 'Biologically appropriate (BARF) and made to AAFCO standards. No balancing or supplements needed.' }
                 ].map((item, i, arr) => {
                   const Icon = item.Icon;
