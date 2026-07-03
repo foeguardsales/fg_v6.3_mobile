@@ -668,12 +668,12 @@ export const LandingPage = () => {
       <main>
         {/* HERO SECTION — full-bleed background image with left text overlay + bottom fade to dark */}
         <section
-          className="hero-section"
+          className="hero-section hero-section--foeguard"
           style={{
             position: 'relative',
             overflow: 'hidden',
             background: `#3B2A1A url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
-            minHeight: 'clamp(440px, 112vw, 520px)',
+            minHeight: 'clamp(600px, 135vw, 620px)',
             display: 'block',
             marginTop: '-84px'
           }}

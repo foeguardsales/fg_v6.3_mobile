@@ -2455,7 +2455,7 @@ agent_communication:
       - Clean transition from funnel → meal plan page ✓
       
       Navigation:
-      - Final URL: https://pull-site-up.preview.emergentagent.com/meal-plan ✓
+      - Final URL: https://foeguard-site-edits.preview.emergentagent.com/meal-plan ✓
       - Successfully navigated to /meal-plan ✓
       
       **Conclusion:**
