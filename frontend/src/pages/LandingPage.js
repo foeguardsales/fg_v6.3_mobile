@@ -758,7 +758,7 @@ export const LandingPage = () => {
                 style={{
                   ...liftedButtonStyle,
                   background: '#2F4538',
-                  color: COLORS.almond,
+                  color: COLORS.white,
                   marginTop: '0',
                   marginBottom: '12px'
                 }}
@@ -1056,7 +1056,7 @@ export const LandingPage = () => {
                 marginBottom: '12px',
                 fontFamily: "'Lora', serif",
                 lineHeight: 1.2,
-                color: COLORS.almond
+                color: COLORS.khaki
               }}>
                 Start to See Benefits in Just 2 Weeks
               </h2>
