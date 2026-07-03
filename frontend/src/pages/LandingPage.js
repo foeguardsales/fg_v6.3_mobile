@@ -25,30 +25,29 @@ const COLORS = {
 // Unified across the site — all CTAs use this exact format (Shop Now, Learn More, More About Us, etc.)
 const liftedButtonStyle = {
   background: COLORS.red,
-  color: COLORS.white,
+  color: COLORS.cream,
   border: 'none',
-  padding: '12px 28px',
+  padding: '12px 24px',
   borderRadius: '8px',
-  fontSize: '14px',
+  fontSize: '15px',
   fontWeight: '600',
   letterSpacing: '0.04em',
-  textTransform: 'uppercase',
   fontFamily: "'Barlow', sans-serif",
   cursor: 'pointer',
-  boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
   transition: 'all 0.2s ease',
   position: 'relative',
   lineHeight: 1.15,
-  display: 'inline-block'
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 };
 
 const liftedButtonHover = (e, isHover) => {
   if (isHover) {
-    e.currentTarget.style.transform = 'translate(-2px, -2px)';
-    e.currentTarget.style.boxShadow = '5px 5px 0px rgba(0,0,0,0.22)';
+    e.currentTarget.style.filter = 'brightness(0.94)';
   } else {
-    e.currentTarget.style.transform = 'translate(0, 0)';
-    e.currentTarget.style.boxShadow = '3px 3px 0px rgba(0,0,0,0.18)';
+    e.currentTarget.style.filter = 'none';
   }
 };
 
@@ -71,7 +70,7 @@ const outlineButtonStyle = {
 const FoeGuardLogo = ({ size = 'default' }) => {
   const sizes = {
     small: 44,
-    default: 52,
+    default: 56,
     large: 100
   };
   const dim = sizes[size];
@@ -155,12 +154,13 @@ const ModernNavbar = () => {
           background: COLORS.khaki,
           color: COLORS.charcoal,
           textAlign: 'center',
-          padding: '5px 16px',
+          padding: '9px 16px',
           fontSize: '13px',
           fontFamily: "'Barlow', sans-serif",
-          fontWeight: '500',
+          fontWeight: 400,
           letterSpacing: '0.02em',
-          textTransform: 'none'
+          textTransform: 'none',
+          minHeight: '34px'
         }}>
           Free delivery in the GTA over $100
         </div>
@@ -170,10 +170,11 @@ const ModernNavbar = () => {
           display: 'grid',
           gridTemplateColumns: '1fr auto 1fr',
           alignItems: 'center',
-          padding: '2px 20px',
+          padding: '8px 20px',
           maxWidth: '1400px',
           margin: '0 auto',
-          gap: '12px'
+          gap: '12px',
+          minHeight: '68px'
         }}>
           {/* Left - Menu button */}
           <div style={{ justifySelf: 'start' }}>
@@ -673,7 +674,7 @@ export const LandingPage = () => {
             minHeight: 'clamp(440px, 112vw, 520px)',
             display: 'flex',
             alignItems: 'flex-end',
-            marginTop: '-96px'
+            marginTop: '-102px'
           }}
         >
           {/* Left fade overlay — makes text readable on the image (warm brown tones) */}
@@ -706,16 +707,16 @@ export const LandingPage = () => {
             zIndex: 1,
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: 'clamp(120px, 14vw, 150px) 24px clamp(32px, 4vw, 48px)',
+            padding: '120px 22px 44px',
             width: '100%',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-end',
             minHeight: '100%'
           }}>
-            <div className="hero-text" style={{ maxWidth: '620px' }}>
+            <div className="hero-text" style={{ maxWidth: '620px', textAlign: 'left' }}>
               <h1 style={{
-                fontSize: 'clamp(30px, 4.6vw, 46px)',
+                fontSize: 'clamp(36px, 5vw, 48px)',
                 fontWeight: 600,
                 color: COLORS.cream,
                 lineHeight: '1.15',
@@ -723,21 +724,23 @@ export const LandingPage = () => {
                 fontFamily: "'Lora', serif",
                 letterSpacing: '-0.3px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
-                maxWidth: '580px'
+                maxWidth: '75%',
+                textAlign: 'left'
               }}>
                 The freshest meal your dog has ever eaten.
               </h1>
 
               <p style={{
-                fontSize: 'clamp(15px, 1.7vw, 17px)',
+                fontSize: 'clamp(17px, 1.8vw, 18px)',
                 color: COLORS.cream,
-                opacity: 0.94,
-                maxWidth: '520px',
-                margin: '0 0 20px',
+                opacity: 0.96,
+                maxWidth: '80%',
+                margin: '0 0 16px',
                 lineHeight: '1.55',
-                fontWeight: 400,
+                fontWeight: 500,
                 fontFamily: "'Barlow', sans-serif",
-                textShadow: '0 1px 6px rgba(0,0,0,0.45)'
+                textShadow: '0 1px 6px rgba(0,0,0,0.45)',
+                textAlign: 'left'
               }}>
                 100% organic, human-grade raw meals, grown on our Ontario farm and prepared fresh to order.
               </p>
@@ -747,8 +750,10 @@ export const LandingPage = () => {
                 data-testid="hero-shop-now"
                 style={{
                   ...liftedButtonStyle,
-                  background: COLORS.forestGreen,
-                  color: COLORS.cream
+                  background: COLORS.cream,
+                  color: COLORS.red,
+                  marginTop: '0',
+                  marginBottom: '12px'
                 }}
                 onMouseEnter={(e) => liftedButtonHover(e, true)}
                 onMouseLeave={(e) => liftedButtonHover(e, false)}
@@ -761,11 +766,13 @@ export const LandingPage = () => {
                   fontSize: '13px',
                   color: COLORS.cream,
                   opacity: 0.92,
-                  margin: '12px 0 0',
+                  margin: '0',
                   lineHeight: 1.5,
+                  fontWeight: 400,
                   fontFamily: "'Barlow', sans-serif",
                   textShadow: '0 1px 6px rgba(0,0,0,0.45)',
-                  maxWidth: '460px'
+                  maxWidth: '460px',
+                  textAlign: 'left'
                 }}
               >
                 A happy dog or your money back &mdash; guaranteed.{' '}
@@ -795,7 +802,7 @@ export const LandingPage = () => {
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
           background: COLORS.cream,
-          padding: '44px 20px 40px'
+          padding: '44px 24px 40px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <h2 style={{
@@ -856,17 +863,20 @@ export const LandingPage = () => {
                   <div className="shop-farm-fresh-body" style={{ padding: '24px' }}>
                     <h3 style={{
                       fontSize: '20px',
-                      fontWeight: '700',
+                      fontWeight: 600,
                       color: COLORS.charcoal,
-                      marginBottom: '8px'
+                      marginBottom: '8px',
+                      fontFamily: "'Lora', serif"
                     }}>
                       {card.title}
                     </h3>
                     <p style={{
-                      fontSize: '14px',
+                      fontSize: '17px',
+                      fontWeight: 400,
                       color: COLORS.charcoal,
                       lineHeight: '1.5',
-                      marginBottom: '16px'
+                      marginBottom: '16px',
+                      fontFamily: "'Barlow', sans-serif"
                     }}>
                       {card.desc}
                     </p>
@@ -925,7 +935,7 @@ export const LandingPage = () => {
                 From our Acton farm to your dog&apos;s bowl.
               </h2>
               <p style={{
-                fontSize: 'clamp(15px, 1.7vw, 17px)',
+                fontSize: 'clamp(17px, 1.8vw, 18px)',
                 fontWeight: 400,
                 color: COLORS.charcoal,
                 lineHeight: 1.6,
@@ -990,8 +1000,8 @@ export const LandingPage = () => {
                       </div>
                       <div>
                         <h4 style={{
-                          fontSize: '17px',
-                          fontWeight: 800,
+                          fontSize: '20px',
+                          fontWeight: 600,
                           color: COLORS.charcoal,
                           margin: '0 0 4px',
                           fontFamily: "'Lora', serif"
@@ -999,10 +1009,12 @@ export const LandingPage = () => {
                           {item.title}
                         </h4>
                         <p style={{
-                          fontSize: '14px',
+                          fontSize: '17px',
+                          fontWeight: 400,
                           color: COLORS.charcoal,
                           margin: 0,
-                          lineHeight: 1.55
+                          lineHeight: 1.55,
+                          fontFamily: "'Barlow', sans-serif"
                         }}>
                           {item.desc}
                         </p>
@@ -1034,12 +1046,13 @@ export const LandingPage = () => {
                 Customers Start to See Benefits in Just 2 Weeks
               </h2>
               <p style={{
-                fontSize: 'clamp(15px, 1.8vw, 17px)',
+                fontSize: 'clamp(17px, 1.8vw, 18px)',
                 opacity: 1,
                 margin: 0,
                 fontWeight: 400,
                 lineHeight: 1.6,
-                color: COLORS.softBg
+                color: COLORS.softBg,
+                fontFamily: "'Barlow', sans-serif"
               }}>
                 Here&apos;s what you can expect from real food nutrition:
               </p>
@@ -1084,7 +1097,7 @@ export const LandingPage = () => {
                   }}>✓</div>
                   <div>
                     <div style={{
-                      fontSize: '15px',
+                      fontSize: '17px',
                       fontWeight: '700',
                       marginBottom: '4px',
                       fontFamily: "'Barlow', sans-serif",
@@ -1093,10 +1106,11 @@ export const LandingPage = () => {
                       letterSpacing: '0.02em'
                     }}>{benefit.title}</div>
                     <div style={{
-                      fontSize: '13px',
+                      fontSize: '15px',
                       opacity: 0.9,
                       lineHeight: 1.5,
-                      color: COLORS.softBg
+                      color: COLORS.softBg,
+                      fontFamily: "'Barlow', sans-serif"
                     }}>{benefit.desc}</div>
                   </div>
                 </div>
@@ -1347,7 +1361,7 @@ export const LandingPage = () => {
 
         {/* ABOUT US / OUR STORY */}
         <section style={{
-          background: COLORS.softBg,
+          background: COLORS.khaki,
           position: 'relative',
           overflow: 'hidden'
         }}>
@@ -1380,7 +1394,7 @@ export const LandingPage = () => {
                 Where real food became a family tradition
               </h2>
               <p style={{
-                fontSize: '16px',
+                fontSize: '17px',
                 color: COLORS.charcoal,
                 lineHeight: '1.65',
                 marginBottom: '14px',
@@ -1389,7 +1403,7 @@ export const LandingPage = () => {
                 FoeGuard started because of one dog. When we couldn&apos;t find raw food made to our standards as third-generation farmers, we made it ourselves. Before long our neighbours were asking for meals &mdash; then their friends were too.
               </p>
               <p style={{
-                fontSize: '16px',
+                fontSize: '17px',
                 color: COLORS.charcoal,
                 lineHeight: '1.65',
                 marginBottom: '20px',
@@ -1401,8 +1415,7 @@ export const LandingPage = () => {
                 onClick={() => navigate('/about')}
                 style={{
                   ...liftedButtonStyle,
-                  alignSelf: 'flex-start',
-                  background: COLORS.charcoal
+                  alignSelf: 'flex-start'
                 }}
                 onMouseEnter={(e) => liftedButtonHover(e, true)}
                 onMouseLeave={(e) => liftedButtonHover(e, false)}
@@ -1420,14 +1433,14 @@ export const LandingPage = () => {
         }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 style={{
-              fontSize: 'clamp(30px, 3.6vw, 40px)',
-              fontWeight: '700',
+              fontSize: 'clamp(26px, 3.4vw, 40px)',
+              fontWeight: 600,
               textAlign: 'center',
               marginBottom: '20px',
               color: COLORS.charcoal,
               fontFamily: "'Lora', serif"
             }}>
-              Frequently Asked Questions
+              Questions you may have?
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -1452,7 +1465,7 @@ export const LandingPage = () => {
                       textAlign: 'left'
                     }}
                   >
-                    <span style={{ fontSize: '16px', fontWeight: '600', color: COLORS.charcoal }}>
+                    <span style={{ fontSize: '18px', fontWeight: '600', color: COLORS.charcoal, fontFamily: "'Barlow', sans-serif" }}>
                       {faq.q}
                     </span>
                     <ChevronDown
@@ -1467,15 +1480,28 @@ export const LandingPage = () => {
                   {activeFaq === i && (
                     <div style={{
                       padding: '0 24px 20px',
-                      fontSize: '15px',
+                      fontSize: '17px',
                       color: COLORS.charcoal,
-                      lineHeight: '1.6'
+                      lineHeight: '1.6',
+                      fontFamily: "'Barlow', sans-serif"
                     }}>
                       {faq.a}
                     </div>
                   )}
                 </div>
               ))}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+              <button
+                data-testid="faq-see-more"
+                onClick={() => navigate('/faq')}
+                style={liftedButtonStyle}
+                onMouseEnter={(e) => liftedButtonHover(e, true)}
+                onMouseLeave={(e) => liftedButtonHover(e, false)}
+              >
+                See More
+              </button>
             </div>
           </div>
         </section>
@@ -1511,11 +1537,7 @@ export const LandingPage = () => {
             <button
               data-testid="final-cta-shop-now"
               onClick={goShopNow}
-              style={{
-                ...liftedButtonStyle,
-                background: COLORS.forestGreen,
-                color: COLORS.cream
-              }}
+              style={liftedButtonStyle}
               onMouseEnter={(e) => liftedButtonHover(e, true)}
               onMouseLeave={(e) => liftedButtonHover(e, false)}
             >

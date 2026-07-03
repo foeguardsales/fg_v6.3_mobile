@@ -415,19 +415,10 @@ h2, h3, h4 {
 }
 @media (max-width: 600px) {
   .shop-farm-fresh-img {
-    height: 160px !important;
+    height: 180px !important;
   }
   .shop-farm-fresh-body {
-    padding: 16px !important;
-  }
-  .shop-farm-fresh-body h3 {
-    font-size: 18px !important;
-    margin-bottom: 6px !important;
-  }
-  .shop-farm-fresh-body p {
-    font-size: 13.5px !important;
-    line-height: 1.45 !important;
-    margin-bottom: 12px !important;
+    padding: 20px !important;
   }
 }
 
@@ -435,20 +426,20 @@ h2, h3, h4 {
   background: var(--barn-red);
   color: var(--text-inverse);
   border: none;
-  padding: 10px 22px;
+  padding: 12px 24px;
   border-radius: 8px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 2px 8px rgba(164, 30, 52, 0.18);
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  letter-spacing: 0.01em;
-  line-height: 1.2;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
 }
 
 .btn-primary:hover {
@@ -472,14 +463,16 @@ h2, h3, h4 {
   background: transparent;
   color: var(--barn-red);
   border: 1.5px solid var(--barn-red);
-  padding: 9px 20px;
+  padding: 12px 24px;
   border-radius: 8px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  line-height: 1.2;
+  line-height: 1.15;
+  min-height: 44px;
+  letter-spacing: 0.04em;
 }
 
 .btn-secondary:hover {
@@ -491,14 +484,16 @@ h2, h3, h4 {
   background: transparent;
   color: var(--barn-red);
   border: 1.5px solid var(--barn-red);
-  padding: 10px 24px;
+  padding: 12px 24px;
   border-radius: 8px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  line-height: 1.2;
+  line-height: 1.15;
+  min-height: 44px;
+  letter-spacing: 0.04em;
 }
 
 .btn-secondary-large:hover {
