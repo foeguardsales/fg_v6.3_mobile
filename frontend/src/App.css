@@ -4,6 +4,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap');
 
+
+/* Global uniform section spacing — 48px top and bottom on every landing section.
+   Hero is excluded (it self-bleeds under the fixed navbar).
+   Horizontal padding preserved from each section's own inline style. */
+main > section:not(.hero-section):not(.hero-section--foeguard) {
+  padding-top: 48px !important;
+  padding-bottom: 48px !important;
+}
+
 /* Protein circle grid: 4 cols on desktop, 2 cols on mobile */
 @media (min-width: 768px) {
   .protein-grid {

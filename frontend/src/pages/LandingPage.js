@@ -1058,7 +1058,7 @@ export const LandingPage = () => {
                 lineHeight: 1.2,
                 color: COLORS.khaki
               }}>
-                Start to See Benefits in Just 2 Weeks
+                Start to see benefits in just 2 weeks
               </h2>
               <p style={{
                 fontSize: 'clamp(17px, 1.8vw, 18px)',
@@ -1138,7 +1138,7 @@ export const LandingPage = () => {
                 onClick={() => navigate('/new-to-raw')}
                 style={{
                   ...liftedButtonStyle,
-                  background: COLORS.lightGreen,
+                  background: COLORS.red,
                   color: COLORS.white
                 }}
                 onMouseEnter={(e) => liftedButtonHover(e, true)}
