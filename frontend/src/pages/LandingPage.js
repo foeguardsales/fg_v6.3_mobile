@@ -149,21 +149,29 @@ const ModernNavbar = () => {
         zIndex: 1000,
         background: COLORS.red
       }}>
-        {/* Top announcement bar — Khaki */}
-        <div style={{
-          background: COLORS.khaki,
-          color: COLORS.charcoal,
-          textAlign: 'center',
-          padding: '6px 16px',
-          fontSize: '13px',
-          fontFamily: "'Barlow', sans-serif",
-          fontWeight: 400,
-          letterSpacing: '0.02em',
-          textTransform: 'none',
-          minHeight: '28px',
-          lineHeight: 1.2
-        }}>
-          Free delivery in the GTA over $100
+        {/* Top announcement bar — Khaki (clickable → /delivery) */}
+        <div
+          onClick={() => navigate('/delivery')}
+          role="link"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/delivery'); }}
+          data-testid="promo-bar"
+          style={{
+            background: COLORS.khaki,
+            color: COLORS.charcoal,
+            textAlign: 'center',
+            padding: '6px 16px',
+            fontSize: '13px',
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 400,
+            letterSpacing: '0.02em',
+            textTransform: 'none',
+            minHeight: '28px',
+            lineHeight: 1.2,
+            cursor: 'pointer'
+          }}
+        >
+          Free Delivery in the Halton Region
         </div>
         
         {/* Main navbar — 3-col grid so center logo stays centered on every viewport */}
@@ -175,8 +183,8 @@ const ModernNavbar = () => {
           maxWidth: '1400px',
           margin: '0 auto',
           gap: '12px',
-          minHeight: '56px',
-          height: '56px'
+          minHeight: '62px',
+          height: '62px'
         }}>
           {/* Left - Menu button */}
           <div style={{ justifySelf: 'start' }}>
@@ -938,7 +946,7 @@ export const LandingPage = () => {
                 margin: 0,
                 fontFamily: "'Barlow', sans-serif"
               }}>
-                Every ingredient is raised or grown by us, made fresh daily and delivered straight to your door &mdash; no middlemen, no markups, no mystery.
+                Every ingredient is raised or grown by us, made fresh daily and delivered straight to your door in just 3-5 business days &mdash; no middlemen, no markups, no mystery.
               </p>
             </div>
 
@@ -1366,11 +1374,44 @@ export const LandingPage = () => {
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             minHeight: '420px'
           }}>
-            {/* Image side with overlay */}
+            {/* Video side — placeholder (replace src with Shopify-hosted video later) */}
             <div style={{
-              background: `linear-gradient(135deg, ${COLORS.redOverlay}dd 0%, ${COLORS.red}cc 100%), url(https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&h=600&fit=crop) center/cover`,
-              minHeight: '320px'
-            }} />
+              position: 'relative',
+              minHeight: '320px',
+              background: `linear-gradient(135deg, ${COLORS.redOverlay}dd 0%, ${COLORS.red}cc 100%)`,
+              overflow: 'hidden'
+            }}>
+              <video
+                data-testid="family-tradition-video"
+                data-video-source="shopify-placeholder"
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&h=600&fit=crop"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block'
+                }}
+              >
+                {/* TODO: swap this src for the Shopify-hosted family tradition video */}
+                <source src="" type="video/mp4" />
+              </video>
+              {/* Overlay tint on top of the video/poster to keep the warm brand look */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: `linear-gradient(135deg, ${COLORS.redOverlay}80 0%, ${COLORS.red}66 100%)`,
+                  pointerEvents: 'none'
+                }}
+              />
+            </div>
 
             {/* Content side */}
             <div style={{
@@ -1488,7 +1529,7 @@ export const LandingPage = () => {
               ))}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '20px' }}>
               <button
                 data-testid="faq-see-more"
                 onClick={() => navigate('/faq')}
