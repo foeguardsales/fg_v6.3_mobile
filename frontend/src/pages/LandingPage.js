@@ -69,8 +69,8 @@ const outlineButtonStyle = {
 // FoeGuard Logo Component — round red badge (no ring)
 const FoeGuardLogo = ({ size = 'default' }) => {
   const sizes = {
-    small: 44,
-    default: 56,
+    small: 40,
+    default: 44,
     large: 100
   };
   const dim = sizes[size];
@@ -154,13 +154,14 @@ const ModernNavbar = () => {
           background: COLORS.khaki,
           color: COLORS.charcoal,
           textAlign: 'center',
-          padding: '9px 16px',
+          padding: '6px 16px',
           fontSize: '13px',
           fontFamily: "'Barlow', sans-serif",
           fontWeight: 400,
           letterSpacing: '0.02em',
           textTransform: 'none',
-          minHeight: '34px'
+          minHeight: '28px',
+          lineHeight: 1.2
         }}>
           Free delivery in the GTA over $100
         </div>
@@ -170,11 +171,12 @@ const ModernNavbar = () => {
           display: 'grid',
           gridTemplateColumns: '1fr auto 1fr',
           alignItems: 'center',
-          padding: '8px 20px',
+          padding: '4px 20px',
           maxWidth: '1400px',
           margin: '0 auto',
           gap: '12px',
-          minHeight: '68px'
+          minHeight: '56px',
+          height: '56px'
         }}>
           {/* Left - Menu button */}
           <div style={{ justifySelf: 'start' }}>
@@ -672,9 +674,8 @@ export const LandingPage = () => {
             overflow: 'hidden',
             background: `#3B2A1A url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
             minHeight: 'clamp(440px, 112vw, 520px)',
-            display: 'flex',
-            alignItems: 'flex-end',
-            marginTop: '-102px'
+            display: 'block',
+            marginTop: '-84px'
           }}
         >
           {/* Left fade overlay — makes text readable on the image (warm brown tones) */}
@@ -702,19 +703,17 @@ export const LandingPage = () => {
           />
 
           {/* Content */}
-          <div style={{
-            position: 'relative',
-            zIndex: 1,
-            maxWidth: '1200px',
-            margin: '0 auto',
-            padding: '120px 22px 44px',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            minHeight: '100%'
-          }}>
-            <div className="hero-text" style={{ maxWidth: '620px', textAlign: 'left' }}>
+          <div
+            className="hero-text"
+            style={{
+              position: 'absolute',
+              bottom: '40px',
+              left: '24px',
+              width: '75%',
+              textAlign: 'left',
+              zIndex: 1
+            }}
+          >
               <h1 style={{
                 fontSize: 'clamp(36px, 5vw, 48px)',
                 fontWeight: 600,
@@ -724,8 +723,8 @@ export const LandingPage = () => {
                 fontFamily: "'Lora', serif",
                 letterSpacing: '-0.3px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
-                maxWidth: '75%',
-                textAlign: 'left'
+                textAlign: 'left',
+                margin: '0 0 14px 0'
               }}>
                 The freshest meal your dog has ever eaten.
               </h1>
@@ -734,7 +733,6 @@ export const LandingPage = () => {
                 fontSize: 'clamp(17px, 1.8vw, 18px)',
                 color: COLORS.cream,
                 opacity: 0.96,
-                maxWidth: '80%',
                 margin: '0 0 16px',
                 lineHeight: '1.55',
                 fontWeight: 500,
@@ -750,8 +748,8 @@ export const LandingPage = () => {
                 data-testid="hero-shop-now"
                 style={{
                   ...liftedButtonStyle,
-                  background: COLORS.cream,
-                  color: COLORS.red,
+                  background: '#2F4538',
+                  color: '#D8CFB8',
                   marginTop: '0',
                   marginBottom: '12px'
                 }}
@@ -771,7 +769,6 @@ export const LandingPage = () => {
                   fontWeight: 400,
                   fontFamily: "'Barlow', sans-serif",
                   textShadow: '0 1px 6px rgba(0,0,0,0.45)',
-                  maxWidth: '460px',
                   textAlign: 'left'
                 }}
               >
@@ -792,7 +789,6 @@ export const LandingPage = () => {
                   See terms.
                 </a>
               </p>
-            </div>
           </div>
         </section>
 
@@ -828,7 +824,7 @@ export const LandingPage = () => {
                 },
                 {
                   title: 'Raw Dog Food Menu',
-                  desc: 'Fresh food that is easy to portion and serve, ensuring balanced, nutritious meals every day.',
+                  desc: 'Fresh, easy to portion and serve. Real food your dog will love.',
                   image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop&auto=format',
                   path: '/menu',
                   selection: 'shop-raw',
@@ -1440,7 +1436,7 @@ export const LandingPage = () => {
               color: COLORS.charcoal,
               fontFamily: "'Lora', serif"
             }}>
-              Questions you may have?
+              Questions you may have
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
