@@ -833,7 +833,7 @@ export const LandingPage = () => {
                 },
                 {
                   title: 'Raw Dog Food Menu',
-                  desc: 'Fresh, easy to portion and serve. Real food your dog will love.',
+                  desc: 'Fresh meals that are easy to portion and serve. Real food your dog will love.',
                   image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop&auto=format',
                   path: '/menu',
                   selection: 'shop-raw',
@@ -841,7 +841,7 @@ export const LandingPage = () => {
                 },
                 {
                   title: 'Raw Cat Food Menu',
-                  desc: 'Complete raw meals crafted for cats — high-protein, taurine-rich and made fresh.',
+                  desc: 'Raw meals crafted for cats that are high in protein, taurine-rich and made fresh.',
                   image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&h=400&fit=crop&auto=format',
                   path: '/menu',
                   selection: 'shop-raw',
