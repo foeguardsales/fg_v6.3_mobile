@@ -82,7 +82,9 @@ export const NewToRawPage = () => {
               data-testid="ntr-intro-image-placeholder"
               style={{
                 width: '100%',
-                aspectRatio: '4 / 5',
+                maxWidth: '320px',
+                aspectRatio: '1 / 1',
+                margin: '0 auto',
                 borderRadius: '18px',
                 background: `repeating-linear-gradient(45deg, ${COLORS.softBg} 0 14px, ${COLORS.cream} 14px 28px)`,
                 border: `2px dashed ${COLORS.khakiDark || '#a89a83'}`,
@@ -292,7 +294,9 @@ export const NewToRawPage = () => {
               data-testid="ntr-works-image-placeholder"
               style={{
                 width: '100%',
-                aspectRatio: '4 / 5',
+                maxWidth: '320px',
+                aspectRatio: '1 / 1',
+                margin: '0 auto',
                 borderRadius: '18px',
                 background: `repeating-linear-gradient(45deg, ${COLORS.softBg} 0 14px, ${COLORS.cream} 14px 28px)`,
                 border: `2px dashed ${COLORS.khakiDark || '#a89a83'}`,
