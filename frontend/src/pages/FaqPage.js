@@ -328,8 +328,7 @@ export const FaqPage = () => {
               marginBottom: '0',
               fontFamily: "'Lora', serif"
             }}>
-              Everything you need to know,<br />
-              <span style={{ color: COLORS.red }}>before you switch to FoeGuard Raw.</span>
+              Everything you need to know, before you switch to FoeGuard Raw.
             </h1>
           </div>
         </section>
