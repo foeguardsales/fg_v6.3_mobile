@@ -164,7 +164,7 @@ const ModernNavbar = () => {
             padding: '0 16px',
             fontSize: '13px',
             fontFamily: "'Barlow', sans-serif",
-            fontWeight: 400,
+            fontWeight: 700,
             letterSpacing: '0.02em',
             textTransform: 'none',
             minHeight: '36px',
@@ -173,10 +173,12 @@ const ModernNavbar = () => {
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            gap: '6px'
           }}
         >
-          Free Delivery in the Halton Region
+          <span>Free Delivery in the Halton Region</span>
+          <ChevronRight size={14} strokeWidth={2.5} color={COLORS.charcoal} />
         </div>
         
         {/* Main navbar — 3-col grid so center logo stays centered on every viewport */}
