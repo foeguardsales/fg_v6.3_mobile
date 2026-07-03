@@ -1066,7 +1066,7 @@ export const LandingPage = () => {
                 margin: 0,
                 fontWeight: 400,
                 lineHeight: 1.6,
-                color: COLORS.softBg,
+                color: COLORS.white,
                 fontFamily: "'Barlow', sans-serif"
               }}>
                 Here&apos;s what you can expect from real food nutrition:
