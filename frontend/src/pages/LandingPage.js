@@ -70,9 +70,9 @@ const outlineButtonStyle = {
 // FoeGuard Logo Component — round red badge (no ring)
 const FoeGuardLogo = ({ size = 'default' }) => {
   const sizes = {
-    small: 40,
-    default: 44,
-    large: 100
+    small: 56,
+    default: 60,
+    large: 120
   };
   const dim = sizes[size];
 
@@ -161,15 +161,19 @@ const ModernNavbar = () => {
             background: COLORS.khaki,
             color: COLORS.charcoal,
             textAlign: 'center',
-            padding: '6px 16px',
+            padding: '0 16px',
             fontSize: '13px',
             fontFamily: "'Barlow', sans-serif",
             fontWeight: 400,
             letterSpacing: '0.02em',
             textTransform: 'none',
             minHeight: '36px',
+            height: '36px',
             lineHeight: 1.2,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
           Free Delivery in the Halton Region
