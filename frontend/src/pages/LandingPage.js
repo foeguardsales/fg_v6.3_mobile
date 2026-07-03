@@ -722,7 +722,7 @@ export const LandingPage = () => {
             className="hero-text"
             style={{
               position: 'absolute',
-              bottom: '40px',
+              bottom: '16px',
               left: '24px',
               width: '75%',
               textAlign: 'left',
