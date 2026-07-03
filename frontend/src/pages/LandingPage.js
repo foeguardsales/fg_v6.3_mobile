@@ -857,14 +857,23 @@ export const LandingPage = () => {
                     borderRadius: '8px',
                     overflow: 'hidden',
                     textAlign: 'left',
-                    boxShadow: 'none'
+                    boxShadow: 'none',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%'
                   }}
                 >
                   <div className="shop-farm-fresh-img" style={{
                     height: '200px',
-                    background: `url(${card.image}) center top / cover no-repeat`
+                    background: `url(${card.image}) center top / cover no-repeat`,
+                    flexShrink: 0
                   }} />
-                  <div className="shop-farm-fresh-body" style={{ padding: '24px' }}>
+                  <div className="shop-farm-fresh-body" style={{
+                    padding: '24px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flex: '1 1 auto'
+                  }}>
                     <h3 style={{
                       fontSize: '20px',
                       fontWeight: 600,
@@ -897,6 +906,7 @@ export const LandingPage = () => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         alignSelf: 'flex-start',
+                        marginTop: 'auto',
                         background: COLORS.red,
                         color: COLORS.cream,
                         border: 'none',
