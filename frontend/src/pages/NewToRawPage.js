@@ -197,22 +197,21 @@ export const NewToRawPage = () => {
               background: COLORS.cream,
               border: `1px solid ${COLORS.khaki}`,
               borderRadius: '16px',
-              padding: '24px',
+              padding: '16px',
               boxShadow: '4px 4px 0px rgba(0,0,0,0.06)',
-              marginBottom: '48px',
-              overflowX: 'auto'
+              marginBottom: '48px'
             }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '480px' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                 <thead style={{ background: COLORS.softBg }}>
                   <tr>
-                    <th style={{ padding: '14px', textAlign: 'left' }}></th>
-                    <th style={{ padding: '14px', color: COLORS.red, fontFamily: "'Lora', serif", fontSize: '16px' }}>
+                    <th style={{ padding: '10px 8px', textAlign: 'left', width: '40%' }}></th>
+                    <th style={{ padding: '10px 4px', color: COLORS.red, fontFamily: "'Lora', serif", fontSize: '14px' }}>
                       FoeGuard
                     </th>
-                    <th style={{ padding: '14px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '16px' }}>
+                    <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '14px' }}>
                       Retail Raw
                     </th>
-                    <th style={{ padding: '14px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '16px' }}>
+                    <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '14px' }}>
                       Kibble
                     </th>
                   </tr>
@@ -226,10 +225,10 @@ export const NewToRawPage = () => {
                     ['Ethically Raised in Small Batches', true, false, false]
                   ].map(([feature, fg, retail, kibble]) => (
                     <tr key={feature} style={{ borderTop: `1px solid ${COLORS.khaki}` }}>
-                      <td style={{ padding: '14px', fontWeight: 500 }}>{feature}</td>
-                      <td style={{ padding: '14px', textAlign: 'center', color: COLORS.red, fontSize: '20px', fontWeight: 700 }}>{fg ? '✓' : '✗'}</td>
-                      <td style={{ padding: '14px', textAlign: 'center', color: retail ? COLORS.red : '#bbb', fontSize: '20px', fontWeight: 700 }}>{retail ? '✓' : '✗'}</td>
-                      <td style={{ padding: '14px', textAlign: 'center', color: kibble ? COLORS.red : '#bbb', fontSize: '20px', fontWeight: 700 }}>{kibble ? '✓' : '✗'}</td>
+                      <td style={{ padding: '12px 8px', fontWeight: 500, fontSize: '14px', lineHeight: 1.3 }}>{feature}</td>
+                      <td style={{ padding: '12px 4px', textAlign: 'center', color: COLORS.red, fontSize: '18px', fontWeight: 700 }}>{fg ? '✓' : '?'}</td>
+                      <td style={{ padding: '12px 4px', textAlign: 'center', color: retail ? COLORS.red : COLORS.charcoal, fontSize: '18px', fontWeight: 700 }}>{retail ? '✓' : '?'}</td>
+                      <td style={{ padding: '12px 4px', textAlign: 'center', color: kibble ? COLORS.red : COLORS.charcoal, fontSize: '18px', fontWeight: 700 }}>{kibble ? '✓' : '?'}</td>
                     </tr>
                   ))}
                 </tbody>
