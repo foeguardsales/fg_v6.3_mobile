@@ -125,7 +125,7 @@ export const NewToRawPage = () => {
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 marginBottom: '14px'
               }}>
-                Benefits You Can See <span style={{ color: COLORS.red }}>and They Can Feel</span>
+                Benefits you can see and they can feel
               </h2>
               <p style={{ fontSize: '17px', color: COLORS.charcoal, opacity: 0.8, lineHeight: 1.6, margin: 0 }}>
                 A complete, farm-fresh diet can provide life-changing health benefits.
@@ -185,55 +185,50 @@ export const NewToRawPage = () => {
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 marginBottom: '14px'
               }}>
-                How FoeGuard Raw <span style={{ color: COLORS.red }}>Compares</span>
+                How FoeGuard Raw compares
               </h2>
               <p style={{ fontSize: '17px', color: COLORS.charcoal, opacity: 0.85, lineHeight: 1.6, margin: 0 }}>
                 By sourcing from local farms and delivering directly from our kitchen, we can invest in better ingredients and environmental care — quality you won&apos;t find in store.
               </p>
             </div>
 
-            {/* Comparison Chart — original 3 columns */}
-            <div style={{
-              background: COLORS.cream,
-              border: `1px solid ${COLORS.khaki}`,
-              borderRadius: '16px',
-              padding: '16px',
-              boxShadow: '4px 4px 0px rgba(0,0,0,0.06)',
-              marginBottom: '48px'
-            }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
-                <thead style={{ background: COLORS.softBg }}>
-                  <tr>
-                    <th style={{ padding: '10px 8px', textAlign: 'left', width: '40%' }}></th>
-                    <th style={{ padding: '10px 4px', color: COLORS.red, fontFamily: "'Lora', serif", fontSize: '14px' }}>
-                      FoeGuard
-                    </th>
-                    <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '14px' }}>
-                      Retail Raw
-                    </th>
-                    <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '14px' }}>
-                      Kibble
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    ['Human-Grade Ingredients',           true, false, false],
-                    ['Organic & Non-GMO',                 true, false, false],
-                    ['Farm Fresh',                        true, false, false],
-                    ['Transparent Sourcing',              true, false, false],
-                    ['Ethically Raised in Small Batches', true, false, false]
-                  ].map(([feature, fg, retail, kibble]) => (
+            {/* Comparison Chart — bare table, no card wrapper */}
+            <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed', marginBottom: '48px' }}>
+              <thead style={{ background: COLORS.softBg }}>
+                <tr>
+                  <th style={{ padding: '10px 8px', textAlign: 'left', width: '40%' }}></th>
+                  <th style={{ padding: '10px 4px', color: COLORS.red, fontFamily: "'Lora', serif", fontSize: '14px' }}>
+                    FoeGuard
+                  </th>
+                  <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '14px' }}>
+                    Retail Raw
+                  </th>
+                  <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '14px' }}>
+                    Kibble
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Human-Grade Ingredients',           true, '?',   '?'],
+                  ['Organic & Non-GMO',                 true, false, false],
+                  ['Farm Fresh',                        true, false, false],
+                  ['Transparent Sourcing',              true, false, false],
+                  ['Ethically Raised in Small Batches', true, false, false]
+                ].map(([feature, fg, retail, kibble]) => {
+                  const cellMark = (v) => v === true ? '✓' : v === false ? '✗' : v;
+                  const cellColor = (v) => v === true ? COLORS.red : COLORS.charcoal;
+                  return (
                     <tr key={feature} style={{ borderTop: `1px solid ${COLORS.khaki}` }}>
                       <td style={{ padding: '12px 8px', fontWeight: 500, fontSize: '14px', lineHeight: 1.3 }}>{feature}</td>
-                      <td style={{ padding: '12px 4px', textAlign: 'center', color: COLORS.red, fontSize: '18px', fontWeight: 700 }}>{fg ? '✓' : '?'}</td>
-                      <td style={{ padding: '12px 4px', textAlign: 'center', color: retail ? COLORS.red : COLORS.charcoal, fontSize: '18px', fontWeight: 700 }}>{retail ? '✓' : '?'}</td>
-                      <td style={{ padding: '12px 4px', textAlign: 'center', color: kibble ? COLORS.red : COLORS.charcoal, fontSize: '18px', fontWeight: 700 }}>{kibble ? '✓' : '?'}</td>
+                      <td style={{ padding: '12px 4px', textAlign: 'center', color: COLORS.red, fontSize: '18px', fontWeight: 700 }}>{cellMark(fg)}</td>
+                      <td style={{ padding: '12px 4px', textAlign: 'center', color: cellColor(retail), fontSize: '18px', fontWeight: 700 }}>{cellMark(retail)}</td>
+                      <td style={{ padding: '12px 4px', textAlign: 'center', color: cellColor(kibble), fontSize: '18px', fontWeight: 700 }}>{cellMark(kibble)}</td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  );
+                })}
+              </tbody>
+            </table>
 
             {/* Descriptions of the three (after chart) */}
             <div style={{ display: 'grid', gap: '24px' }}>
@@ -323,7 +318,7 @@ export const NewToRawPage = () => {
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 marginBottom: '20px'
               }}>
-                Find What Really Works for Your Dog, <span style={{ color: COLORS.red }}>Not Against Them</span>
+                Find what really works for your dog, not against them
               </h2>
               <p style={{ fontSize: '17px', lineHeight: 1.75, color: COLORS.charcoal, marginBottom: '16px' }}>
                 From constant itching to problems with digestion, it&apos;s hard to tell what&apos;s causing your dog discomfort. Could it be their food, the environment, or something at home?
