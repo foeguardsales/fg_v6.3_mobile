@@ -12,6 +12,7 @@ const COLORS = {
   softBg: '#E8DFC8',       // Straw
   khaki: '#D8CFB8',
   khakiDark: '#A89B7C',
+  almond: '#EEE4CE',       // Lighter almond — CTA text + soft headings on dark backgrounds
   charcoal: '#3B2A1A',     // Unified charcoal text colour site-wide (replaces brown brown)
   forestGreen: '#2F4538',
   lightGreen: '#7A9A7A',   // Sage / Light green for Comfort
@@ -757,7 +758,7 @@ export const LandingPage = () => {
                 style={{
                   ...liftedButtonStyle,
                   background: '#2F4538',
-                  color: '#D8CFB8',
+                  color: COLORS.almond,
                   marginTop: '0',
                   marginBottom: '12px'
                 }}
@@ -1055,9 +1056,9 @@ export const LandingPage = () => {
                 marginBottom: '12px',
                 fontFamily: "'Lora', serif",
                 lineHeight: 1.2,
-                color: COLORS.white
+                color: COLORS.almond
               }}>
-                Customers Start to See Benefits in Just 2 Weeks
+                Start to See Benefits in Just 2 Weeks
               </h2>
               <p style={{
                 fontSize: 'clamp(17px, 1.8vw, 18px)',
