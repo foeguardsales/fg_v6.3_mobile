@@ -167,7 +167,7 @@ const ModernNavbar = () => {
             fontWeight: 400,
             letterSpacing: '0.02em',
             textTransform: 'none',
-            minHeight: '28px',
+            minHeight: '36px',
             lineHeight: 1.2,
             cursor: 'pointer'
           }}
@@ -184,8 +184,8 @@ const ModernNavbar = () => {
           maxWidth: '1400px',
           margin: '0 auto',
           gap: '12px',
-          minHeight: '62px',
-          height: '62px'
+          minHeight: '72px',
+          height: '72px'
         }}>
           {/* Left - Menu button */}
           <div style={{ justifySelf: 'start' }}>
