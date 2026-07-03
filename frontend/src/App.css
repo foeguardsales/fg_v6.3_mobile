@@ -4410,6 +4410,13 @@ h2, h3, h4 {
 
 .about-mission {
   background: var(--burgundy-deep);
+  margin-top: 48px !important;
+}
+
+/* Any final CTA section site-wide (colored bg above footer) gets a 48px page-bg gap
+   between it and the previous section so the transition doesn't feel jammed. */
+.section-cta-final {
+  margin-top: 48px !important;
 }
 
 .about-mission h2 {
