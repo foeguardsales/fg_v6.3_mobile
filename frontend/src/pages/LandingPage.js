@@ -1540,7 +1540,7 @@ export const LandingPage = () => {
               ))}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '20px', paddingLeft: '24px' }}>
               <button
                 data-testid="faq-see-more"
                 onClick={() => navigate('/faq')}
