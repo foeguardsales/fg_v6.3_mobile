@@ -2925,19 +2925,103 @@ agent_communication:
 
 
 user_problem_statement: |
-  Verify two spacing bug-fixes on the FoeGuard app:
+  Verify four related fixes on the FoeGuard site:
   
-  Fix 1: `.benefits-grid` had a legacy `margin: 0 auto 48px` (extra 48px bottom margin) which 
-  caused the gap between the "Benefits you can see..." icons grid and the "How FoeGuard Raw 
-  compares" H2 heading to be 96px instead of the desired 48px. This has been changed to 
-  `margin: 0 auto`.
+  Fix 1: Footer marginTop was removed (was 48px). Footer stays green (#2F4538) and now has NO 
+  margin-top. The 48px gap ABOVE the final CTA section (via .about-mission / .section-cta-final 
+  margin-top: 48px) is preserved — that already provides visual separation.
   
-  Fix 2: The fixed navbar height is 108px (36 promo bar + 72 main nav) but the in-flow "spacer" 
-  div under the navbar was 120px, creating a 12px white sliver between the bottom of the fixed 
-  navbar and the top of the About Us hero red banner. The spacer has been changed to 108px so 
-  it matches the nav height exactly.
+  Fix 2: `.about-mission` background changed from a very dark burgundy (#7a0a1a) to brand 
+  darker-red `#9D0D23`.
+  
+  Fix 3: `.section-cta-final` on /new-to-raw ("Ready to make the switch?") background changed 
+  from a red gradient to solid brand darker-red `#9D0D23` — same color as About mission section.
+  
+  Fix 4: On /about "Our Ingredients" section: H2 heading changed to Barlow 700 (bold sans-serif), 
+  H2 and its description paragraph are now LEFT aligned (were centered).
 
 frontend:
+  - task: "Fix 1: Footer marginTop removed (was 48px, now 0px)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css (footer styles)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - Footer marginTop removed successfully on all pages (mobile 393×852):
+            - Landing Page (/): marginTop=0px, backgroundColor=rgb(47, 69, 56) ✓
+            - New To Raw Page (/new-to-raw): marginTop=0px, backgroundColor=rgb(47, 69, 56) ✓
+            - About Page (/about): marginTop=0px, backgroundColor=rgb(47, 69, 56) ✓
+            - Footer stays green (#2F4538) with NO margin-top on all pages
+            - The 48px gap above final CTA sections is preserved via section margin-top
+
+  - task: "Fix 2: .about-mission background changed to brand darker-red (#9D0D23)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css (.about-mission)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - .about-mission background color changed successfully (mobile 393×852):
+            - .about-mission backgroundColor: rgb(157, 13, 35) ✓ (correct #9D0D23)
+            - .about-mission marginTop: 48px ✓ (preserved spacing)
+            - Background changed from dark burgundy (#7a0a1a) to brand darker-red successfully
+
+  - task: "Fix 3: .section-cta-final background changed to solid brand darker-red (#9D0D23)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css (.section-cta-final)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - .section-cta-final background changed successfully (mobile 393×852):
+            - .section-cta-final backgroundColor: rgb(157, 13, 35) ✓ (correct #9D0D23)
+            - .section-cta-final backgroundImage: none ✓ (no gradient)
+            - .section-cta-final marginTop: 48px ✓ (preserved spacing)
+            - Background changed from red gradient to solid brand darker-red successfully
+            - Screenshot: test_c_new_to_raw_final_cta.png
+
+  - task: "Fix 4: 'Our Ingredients' H2 changed to Barlow 700 + left-aligned"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/pages/AboutPage.js or App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: |
+            ❌ FAILED - "Our Ingredients" H2 styling NOT fully implemented (mobile 393×852):
+            - H2 textAlign: left ✓ (correct)
+            - Description textAlign: left ✓ (correct)
+            - H2 fontFamily: Lora, Georgia, "Times New Roman", serif ✗ (expected Barlow)
+            - H2 fontWeight: 600 ✗ (expected 700)
+            
+            **Root Cause:**
+            The "Our Ingredients" H2 heading on /about is still using Lora font with weight 600 
+            instead of Barlow font with weight 700. The alignment is correct (left-aligned), but 
+            the font family and weight were not changed.
+            
+            **Required Fix:**
+            Change the H2 "Our Ingredients" to use:
+            - fontFamily: "Barlow" (or "Barlow Semi Condensed")
+            - fontWeight: 700 (bold)
+            
+            Screenshot: test_d_about_our_ingredients.png
+
   - task: "Fix 1: Benefits grid bottom margin removed (48px → 0px)"
     implemented: true
     working: true
@@ -2995,11 +3079,12 @@ frontend:
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 9
+  test_sequence: 10
   run_ui: true
 
 test_plan:
-  current_focus: []
+  current_focus: 
+    - "Fix 4: 'Our Ingredients' H2 changed to Barlow 700 + left-aligned"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -3041,3 +3126,47 @@ agent_communication:
         **Overall Verdict:**
         Both spacing bug-fixes are production-ready. All three tests passed with exact 
         measurements matching expected values. No issues found.
+    
+    - agent: "testing"
+      message: |
+        ⚠️ 4 FIXES VERIFICATION COMPLETED - 3/4 PASSED, 1 FAILED
+        
+        **Test Environment:**
+        - Mobile viewport: iPhone 16 (393×852)
+        - URL: https://dfd8b14c-8405-4fec-a5e6-58352dabb889.preview.emergentagent.com
+        
+        **TEST A — Footer marginTop removed (0px on all pages): ✅ PASS (3/3)**
+        - Landing Page (/): marginTop=0px, backgroundColor=rgb(47, 69, 56) ✓
+        - New To Raw Page (/new-to-raw): marginTop=0px, backgroundColor=rgb(47, 69, 56) ✓
+        - About Page (/about): marginTop=0px, backgroundColor=rgb(47, 69, 56) ✓
+        - Footer stays green (#2F4538) with NO margin-top on all pages
+        
+        **TEST B — About mission background (#9D0D23): ✅ PASS**
+        - .about-mission backgroundColor: rgb(157, 13, 35) ✓ (correct #9D0D23)
+        - .about-mission marginTop: 48px ✓ (preserved spacing)
+        - Background changed from dark burgundy to brand darker-red successfully
+        
+        **TEST C — New To Raw final CTA background (#9D0D23, no gradient): ✅ PASS**
+        - .section-cta-final backgroundColor: rgb(157, 13, 35) ✓ (correct #9D0D23)
+        - .section-cta-final backgroundImage: none ✓ (no gradient)
+        - .section-cta-final marginTop: 48px ✓ (preserved spacing)
+        - Background changed from red gradient to solid brand darker-red successfully
+        
+        **TEST D — "Our Ingredients" left-aligned + Barlow 700: ❌ FAIL**
+        - H2 textAlign: left ✓ (correct)
+        - Description textAlign: left ✓ (correct)
+        - H2 fontFamily: Lora, Georgia, "Times New Roman", serif ✗ (expected Barlow)
+        - H2 fontWeight: 600 ✗ (expected 700)
+        
+        **Root Cause for TEST D Failure:**
+        The "Our Ingredients" H2 heading on /about is still using Lora font with weight 600 
+        instead of Barlow font with weight 700. The alignment is correct (left-aligned), but 
+        the font family and weight were not changed.
+        
+        **Screenshots Captured:**
+        - test_c_new_to_raw_final_cta.png (shows /new-to-raw final CTA section)
+        - test_d_about_our_ingredients.png (shows /about Our Ingredients section)
+        
+        **Overall Verdict:**
+        3 out of 4 fixes are production-ready and working correctly. TEST D requires fixing 
+        the H2 font to Barlow 700 (bold sans-serif).

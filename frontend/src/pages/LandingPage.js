@@ -504,7 +504,7 @@ const ModernFooter = () => {
   };
 
   return (
-    <footer style={{ background: COLORS.redDark, color: COLORS.cream, marginTop: '48px' }}>
+    <footer style={{ background: COLORS.redDark, color: COLORS.cream }}>
       {/* Main footer content */}
       <div style={{
         display: 'grid',

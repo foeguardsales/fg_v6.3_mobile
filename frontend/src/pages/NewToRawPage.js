@@ -339,7 +339,7 @@ export const NewToRawPage = () => {
 
         {/* FINAL CTA — single Shop Now button */}
         <section className="section-cta-final" style={{
-          background: `linear-gradient(135deg, ${COLORS.red} 0%, ${COLORS.redOverlay} 100%)`,
+          background: '#9D0D23',
           color: COLORS.white,
           padding: '70px 24px',
           textAlign: 'center'

@@ -149,8 +149,8 @@ export const AboutPage = () => {
         {/* OUR 8 PROTEINS */}
         <section className="about-section about-proteins" data-testid="about-proteins">
           <div className="about-container">
-            <h2 style={{ ...titleStyle, textAlign: 'center', marginBottom: '12px' }}>Our Ingredients</h2>
-            <p style={{ fontSize: '17px', textAlign: 'center', marginBottom: '40px', lineHeight: '1.7', opacity: 0.85 }}>
+            <h2 style={{ ...titleStyle, fontFamily: "'Barlow', sans-serif", fontWeight: 700, textAlign: 'left', marginBottom: '12px' }}>Our Ingredients</h2>
+            <p style={{ fontSize: '17px', textAlign: 'left', marginBottom: '40px', lineHeight: '1.7', opacity: 0.85 }}>
               Eight farm-fresh proteins, each with its own flavour and nutritional benefits — so you can pick the perfect match for your dog.
             </p>
 
