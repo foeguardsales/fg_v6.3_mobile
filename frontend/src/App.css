@@ -24,7 +24,6 @@ section:not(.hero-section):not(.hero-section--foeguard):not(.section-fullbleed) 
 .review-feed::-webkit-scrollbar { display: none; }
 .review-feed { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* New-to-Raw benefits grid: 2 columns on mobile, 3 on tablet, 4 on desktop */
 .benefits-grid {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
@@ -852,7 +851,7 @@ h2, h3, h4 {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   max-width: 1000px;
-  margin: 0 auto 48px;
+  margin: 0 auto;
 }
 
 .benefit-card {

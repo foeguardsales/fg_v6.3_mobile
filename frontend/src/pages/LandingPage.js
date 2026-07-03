@@ -278,7 +278,7 @@ const ModernNavbar = () => {
       </nav>
 
       {/* Spacer to clear the fixed navbar — keeps all pages content below the bar */}
-      <div aria-hidden="true" style={{ height: '120px', flexShrink: 0 }} />
+      <div aria-hidden="true" style={{ height: '108px', flexShrink: 0 }} />
 
       {/* Mobile Menu Overlay */}
       {menuOpen && (
