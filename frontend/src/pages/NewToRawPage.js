@@ -42,7 +42,7 @@ export const NewToRawPage = () => {
         {/* HERO — Why Raw? */}
         <section style={{
           background: COLORS.cream,
-          padding: '60px 20px 50px',
+          padding: '60px 24px 50px',
           textAlign: 'center'
         }}>
           <div style={{ maxWidth: '880px', margin: '0 auto' }}>
@@ -68,7 +68,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* INTRO PARAGRAPH SECTION */}
-        <section style={{ background: COLORS.white, padding: '60px 20px' }}>
+        <section style={{ background: COLORS.white, padding: '60px 24px' }}>
           <div style={{
             maxWidth: '1100px',
             margin: '0 auto',
@@ -119,7 +119,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* BENEFITS GRID — 12 icons (4 per row on desktop) */}
-        <section style={{ background: COLORS.cream, padding: '60px 20px' }}>
+        <section style={{ background: COLORS.cream, padding: '60px 24px' }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 44px' }}>
               <h2 style={{
@@ -179,8 +179,8 @@ export const NewToRawPage = () => {
         </section>
 
         {/* HOW FOEGUARD COMPARES — chart FIRST, then descriptions */}
-        <section style={{ background: COLORS.white, padding: '60px 20px' }}>
-          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        <section style={{ background: COLORS.white, padding: '60px 24px' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', maxWidth: '760px', margin: '0 auto 36px' }}>
               <h2 style={{
                 ...headingStyle,
@@ -280,7 +280,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* FIND WHAT REALLY WORKS — moved to end (above CTA) */}
-        <section style={{ background: COLORS.cream, padding: '60px 20px' }}>
+        <section style={{ background: COLORS.cream, padding: '60px 24px' }}>
           <div style={{
             maxWidth: '1100px',
             margin: '0 auto',
@@ -341,7 +341,7 @@ export const NewToRawPage = () => {
         <section style={{
           background: `linear-gradient(135deg, ${COLORS.red} 0%, ${COLORS.redOverlay} 100%)`,
           color: COLORS.white,
-          padding: '70px 20px',
+          padding: '70px 24px',
           textAlign: 'center'
         }}>
           <div style={{ maxWidth: '820px', margin: '0 auto' }}>

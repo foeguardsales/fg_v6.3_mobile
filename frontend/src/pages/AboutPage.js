@@ -82,6 +82,12 @@ export const AboutPage = () => {
         {/* OUR STORY */}
         <section className="about-section about-story" data-testid="about-our-story">
           <div className="about-container">
+            <div className="about-story-hero-image" data-testid="about-story-hero-image">
+              <img
+                src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/kalssi9a_farm_image1.jpg"
+                alt="FoeGuard family farm"
+              />
+            </div>
             <h2 style={titleStyle}>Our Story</h2>
             <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
               It started on our small farm in Acton, ON — and honestly, it started because of one dog.
