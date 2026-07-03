@@ -5016,6 +5016,10 @@ h2, h3, h4 {
     min-height: 320px !important;
   }
   
+  .hero-section--foeguard {
+    min-height: 85vh !important;
+  }
+  
   .hero-content {
     padding: 40px 24px !important;
   }
