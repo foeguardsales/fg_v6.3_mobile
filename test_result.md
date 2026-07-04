@@ -103,27 +103,71 @@
 #====================================================================================================
 
 user_problem_statement: |
-  Round 2 frontend edits for FoeGuard menu/meal-plan/header polish.
-  
-  Latest user clarification (Round 2 - item 2):
-  "For the menu prepage, the funnel cards should be containers the SAME SIZE AND DESIGN as the
-  product containers in the menu — thinner rectangles in vertical format, 1 per row, same as the
-  menu looks on MOBILE." (i.e. mobile product-card-row treatment at every viewport.)
-  
-  Edits in this batch:
-  1. Our Ingredients (About page) — 2-col grid at all viewports (already in place; verified).
-  2. /menu funnel — restyle funnel cards to match mobile product-card-row (112×112 image RIGHT,
-     content LEFT, hairline khaki bottom divider, 1-per-row at every viewport). Softened funnel
-     title chip → plain heading.
-  3. Feeding calculator + Meal-plan steps — strip dark borders + outer white containers; hairline
-     1px khaki (#D8CFB8) on inputs only.
-  4. Meal-plan step 1 — moved progress bar from top → bottom (other steps keep it at top).
-  5. Page headers — removed slightly-cream gradient overlay band on NewToRawPage, FaqPage,
-     DeliveryPage hero sections (plain cream now).
-  6. Section spacing — normalized About + New To Raw vertical padding to landing-page rhythm
-     (60px desktop / 48px mobile).
+  Session (Jul 2025): Restored site (recreated missing .env files) then two hero-section fixes:
+  1. Desktop hero padding — text was flush left; add more left padding on desktop only
+     (mobile/tablet unchanged). Done via App.css @media (min-width:1024px/1600px) overriding the
+     inline left:24px on .hero-section--foeguard .hero-text with !important.
+  2. "Shop Now" (home hero) → opens the "How would you like to order?" funnel. Clicking the X on
+     that funnel currently drops the user onto the menu page. FIX: if the user arrived via the
+     home page Shop Now button, the X should return them to the HOME page ('/'). Implemented by
+     passing navigate('/menu', { state:{ from:'home' } }) from LandingPage.goShopNow and checking
+     location.state?.from === 'home' in the BoxBuilder MenuFunnel onClose handler.
 
 frontend:
+  - task: "Home 'Shop Now' funnel X close returns to home page when arriving from home"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js + /app/frontend/src/pages/BoxBuilder.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            LandingPage goShopNow now passes { state: { from: 'home' } } when navigating to /menu
+            (and /meal-plan). BoxBuilder MenuFunnel onClose: if location.state?.from === 'home',
+            navigate('/') instead of just closing to the menu. onShopRaw clears the from-home state
+            (replace) so re-opening funnel via Edit and closing keeps user on menu.
+            TEST FLOW: fresh session → home → click hero "Shop Now" (data-testid=hero-shop-now) →
+            funnel "How would you like to order?" appears → click X (data-testid=menu-funnel-close)
+            → should land back on HOME page (hero visible), NOT the menu. Also verify: opening
+            /menu directly (not from home) then closing the funnel still lands on the menu.
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - Both navigation flows working correctly:
+            TEST 1 (Bug Fix): Fresh session → home → click hero "Shop Now" → funnel appears → 
+            click X close → CORRECTLY navigates back to HOME page (URL: /, hero visible).
+            TEST 2 (Regression): Fresh session → direct /menu → funnel appears → click X close → 
+            CORRECTLY stays on MENU page (URL: /menu, category tabs visible).
+            The fix successfully resolves the reported bug while maintaining expected behavior 
+            for direct menu access.
+
+  - task: "Desktop hero text has more left padding (mobile/tablet unchanged)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Added @media (min-width:1024px){ .hero-section--foeguard .hero-text{ left:72px!important;
+            width:60%!important } } and @media (min-width:1600px){ left:120px!important; width:55% }.
+            Overrides the inline left:24px used for mobile/tablet. Verify hero text is more inset from
+            the left edge on desktop (>=1024px) and unchanged on mobile (<=768px).
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - Desktop hero padding working perfectly:
+            Desktop (1920px): Hero text left offset = 120px (matches @media min-width:1600px rule).
+            Mobile (390px): Hero text left offset = 24px (unchanged, as expected).
+            The CSS media queries are correctly applying increased left padding on desktop 
+            viewports while preserving the original 24px padding on mobile.
+
   - task: "Funnel overlay must be FULLY OPAQUE (no see-through menu background)"
     implemented: true
     working: "NA"
@@ -1042,7 +1086,7 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 8
+  test_sequence: 9
   run_ui: false
 
 test_plan:
@@ -1050,6 +1094,45 @@ test_plan:
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+
+
+  - agent: "testing"
+    message: |
+      ✅ HERO SECTION FIXES VERIFICATION COMPLETED - ALL TESTS PASSED (3/3)
+      
+      **Test Scope:**
+      Verified two frontend fixes on the FoeGuard site as requested:
+      1. Home "Shop Now" funnel X-close returns to HOME (bug fix)
+      2. Direct /menu funnel X-close stays on MENU (regression check)
+      3. Desktop hero left padding (visual verification)
+      
+      **TEST 1 — Home "Shop Now" funnel X-close returns to HOME: ✅ PASS**
+      - Fresh session → home page → hero visible
+      - Clicked hero "Shop Now" button (data-testid="hero-shop-now")
+      - Funnel overlay "How would you like to order?" appeared
+      - Clicked X close button (data-testid="menu-funnel-close")
+      - ✅ CORRECTLY navigated back to HOME page (URL: /, hero visible)
+      - Bug fix working as expected
+      
+      **TEST 2 — Direct /menu funnel X-close stays on MENU: ✅ PASS**
+      - Fresh session → navigated directly to /menu
+      - Funnel overlay appeared
+      - Clicked X close button
+      - ✅ CORRECTLY stayed on MENU page (URL: /menu, category tabs visible)
+      - No regression, expected behavior maintained
+      
+      **TEST 3 — Desktop hero left padding: ✅ PASS**
+      - Desktop (1920px): Hero text left offset = 120px (matches @media min-width:1600px rule)
+      - Mobile (390px): Hero text left offset = 24px (unchanged, as expected)
+      - ✅ CSS media queries correctly applying increased padding on desktop
+      - ✅ Mobile padding unchanged at 24px
+      
+      **Console Errors:**
+      - No console errors detected
+      
+      **Conclusion:**
+      All three fixes are working correctly and production-ready. The navigation bug is resolved,
+      no regressions introduced, and desktop hero padding is properly implemented.
 
 agent_communication:
   - agent: "testing"

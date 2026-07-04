@@ -617,8 +617,8 @@ export const LandingPage = () => {
   // - no selection            → /menu (which will open the funnel on landing)
   const goShopNow = () => {
     const sel = sessionStorage.getItem('foeguard_selection');
-    if (sel === 'meal-plan') navigate('/meal-plan');
-    else navigate('/menu');
+    if (sel === 'meal-plan') navigate('/meal-plan', { state: { from: 'home' } });
+    else navigate('/menu', { state: { from: 'home' } });
   };
 
   const faqs = [

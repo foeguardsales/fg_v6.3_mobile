@@ -494,6 +494,12 @@ export const BoxBuilder = () => {
           dismissable={true}
           selectedId={selectionId}
           onClose={() => {
+            // If the user reached the funnel by clicking "Shop Now" on the home page,
+            // closing (X) should return them to where they started — the home page.
+            if (location.state?.from === 'home') {
+              navigate('/');
+              return;
+            }
             if (!sessionStorage.getItem('foeguard_selection')) {
               sessionStorage.setItem('foeguard_selection', 'shop-raw');
               setSelectionId('shop-raw');
@@ -503,6 +509,11 @@ export const BoxBuilder = () => {
           onShopRaw={() => {
             sessionStorage.setItem('foeguard_selection', 'shop-raw');
             setSelectionId('shop-raw');
+            // Clear the "from home" origin so re-opening the funnel later (via Edit)
+            // and closing it keeps the user on the menu rather than bouncing home.
+            if (location.state?.from === 'home') {
+              navigate(location.pathname, { replace: true, state: {} });
+            }
             setFunnelOpen(false);
           }}
           onMealPlan={() => {
