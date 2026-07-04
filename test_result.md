@@ -2455,7 +2455,7 @@ agent_communication:
       - Clean transition from funnel → meal plan page ✓
       
       Navigation:
-      - Final URL: https://foeguard-site-edits.preview.emergentagent.com/meal-plan ✓
+      - Final URL: https://headless-integration-1.preview.emergentagent.com/meal-plan ✓
       - Successfully navigated to /meal-plan ✓
       
       **Conclusion:**
@@ -3096,7 +3096,7 @@ agent_communication:
         
         **Test Environment:**
         - Mobile viewport: iPhone 16 (393×852)
-        - URL: https://dfd8b14c-8405-4fec-a5e6-58352dabb889.preview.emergentagent.com
+        - URL: https://headless-integration-1.preview.emergentagent.com
         
         **TEST A — Benefits grid → "How FoeGuard Raw compares" gap (/new-to-raw): ✅ PASS**
         - Measured gap: 48px (exactly as expected, within 48px ±6px tolerance)
@@ -3133,7 +3133,7 @@ agent_communication:
         
         **Test Environment:**
         - Mobile viewport: iPhone 16 (393×852)
-        - URL: https://dfd8b14c-8405-4fec-a5e6-58352dabb889.preview.emergentagent.com
+        - URL: https://headless-integration-1.preview.emergentagent.com
         
         **TEST A — Footer marginTop removed (0px on all pages): ✅ PASS (3/3)**
         - Landing Page (/): marginTop=0px, backgroundColor=rgb(47, 69, 56) ✓
