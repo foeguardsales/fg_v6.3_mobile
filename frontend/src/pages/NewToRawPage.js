@@ -338,7 +338,7 @@ export const NewToRawPage = () => {
         </section>
 
         {/* FINAL CTA — single Shop Now button */}
-        <section className="section-cta-final" style={{
+        <section className="section-cta-final cta-final-48" style={{
           background: '#9D0D23',
           color: COLORS.white,
           padding: '70px 24px',

@@ -13,6 +13,13 @@ section:not(.hero-section):not(.hero-section--foeguard):not(.section-fullbleed) 
   padding-bottom: 24px !important;
 }
 
+/* Final CTA / closing sections need more breathing room than the global 24px.
+   High specificity (element + class + 3 :not) so it wins over the global rule above. */
+section.cta-final-48:not(.hero-section):not(.hero-section--foeguard):not(.section-fullbleed) {
+  padding-top: 48px !important;
+  padding-bottom: 48px !important;
+}
+
 /* Protein circle grid: 4 cols on desktop, 2 cols on mobile */
 @media (min-width: 768px) {
   .protein-grid {

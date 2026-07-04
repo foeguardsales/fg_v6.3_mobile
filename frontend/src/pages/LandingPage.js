@@ -165,7 +165,7 @@ const ModernNavbar = () => {
             padding: '0 16px',
             fontSize: '13px',
             fontFamily: "'Barlow', sans-serif",
-            fontWeight: 700,
+            fontWeight: 600,
             letterSpacing: '0.02em',
             textTransform: 'none',
             minHeight: '36px',
@@ -179,7 +179,7 @@ const ModernNavbar = () => {
           }}
         >
           <span>Free Delivery in the Halton Region</span>
-          <ChevronRight size={14} strokeWidth={2.5} color={COLORS.charcoal} />
+          <ChevronRight size={14} strokeWidth={2} color={COLORS.charcoal} />
         </div>
         
         {/* Main navbar — 3-col grid so center logo stays centered on every viewport */}
@@ -740,6 +740,8 @@ export const LandingPage = () => {
                 letterSpacing: '-0.3px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
                 textAlign: 'left',
+                textWrap: 'balance',
+                maxWidth: '18ch',
                 margin: '0 0 14px 0'
               }}>
                 The freshest meal your dog has ever eaten.
@@ -1566,7 +1568,7 @@ export const LandingPage = () => {
         </section>
 
         {/* SECTION 9 — READY TO MAKE THE SWITCH? (final CTA) */}
-        <section style={{
+        <section className="cta-final-48" style={{
           background: COLORS.redOverlay,
           padding: '32px 20px 36px',
           textAlign: 'center',

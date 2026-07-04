@@ -173,15 +173,15 @@ export const AboutPage = () => {
         </section>
 
         {/* More than just healthy food plans */}
-        <section className="about-section about-mission">
+        <section className="about-section about-mission cta-final-48">
           <div className="about-container">
             <h2 style={{ ...titleStyle, textAlign: 'center', fontSize: 'clamp(30px, 3.6vw, 40px)' }}>
               More Than Just Healthy Food Plans
             </h2>
-            <p style={{ fontSize: '15px', marginBottom: '14px', textAlign: 'center', lineHeight: '1.65' }}>
+            <p style={{ fontSize: 'clamp(18px, 2vw, 21px)', marginBottom: '16px', textAlign: 'center', lineHeight: '1.6' }}>
               We want to raise the standard of what pet food should be by giving pet parents a trusted source for information, collaboration, and farm-fresh pet food.
             </p>
-            <p className="mission-callout" style={{ fontSize: '15px', fontWeight: '600', marginBottom: '32px', textAlign: 'center' }}>
+            <p className="mission-callout" style={{ fontSize: 'clamp(19px, 2.2vw, 23px)', fontWeight: '600', marginBottom: '32px', textAlign: 'center', lineHeight: '1.5' }}>
               If you believe pets deserve real food, you are already part of the mission!
             </p>
 

@@ -296,7 +296,7 @@ export const DeliveryPage = () => {
         </section>
 
         {/* CTA */}
-        <section style={{ padding: '60px 20px', textAlign: 'center' }}>
+        <section className="cta-final-48" style={{ padding: '60px 20px', textAlign: 'center' }}>
           <h3 style={{
             fontSize: '26px',
             fontWeight: 800,
