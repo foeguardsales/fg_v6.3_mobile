@@ -69,6 +69,31 @@ const COLLECTION_IMAGES = {
   royal_paws: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/u0taocl0_6.png'
 };
 
+// Immersive category hero — shown below the category tabs, above Stock Up & Save.
+// PLACEHOLDER images + copy for now; these will be pulled from the Shopify Storefront API (collection image + description).
+const CATEGORY_HERO = {
+  'dog-food': {
+    title: 'Raw Dog Food',
+    desc: 'Complete, farm-fresh raw nutrition for dogs of all life stages — human-grade meat, organs and bone, portioned and ready to serve.',
+    image: COLLECTION_IMAGES.dog
+  },
+  'dog-treats': {
+    title: 'Raw Dog Treats',
+    desc: 'Natural, single-ingredient treats that support dental health, enrichment and training — a wholesome reward your dog will love.',
+    image: COLLECTION_IMAGES.dog
+  },
+  'cat-food': {
+    title: 'Raw Cat Food',
+    desc: 'Species-appropriate raw meals crafted for obligate carnivores — high-protein, moisture-rich nutrition for cats of all life stages.',
+    image: COLLECTION_IMAGES.cat
+  },
+  'cat-treats': {
+    title: 'Raw Cat Treats',
+    desc: 'Simple, natural treats cats crave — pure protein rewards for enrichment, bonding and everyday spoiling.',
+    image: COLLECTION_IMAGES.cat
+  }
+};
+
 export const BoxBuilder = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -545,6 +570,26 @@ export const BoxBuilder = () => {
             Feeding calculator
           </button>
         </div>
+
+        {/* Immersive category hero — placeholder image + copy (Shopify collection data soon) */}
+        {(() => {
+          const hero = CATEGORY_HERO[`${petType}-${viewMode}`];
+          if (!hero) return null;
+          return (
+            <div className="menu-collection-hero" data-testid="menu-collection-hero">
+              <div
+                className="menu-collection-hero-img"
+                style={{ backgroundImage: `url(${hero.image})` }}
+              >
+                <div className="menu-collection-hero-overlay" aria-hidden="true" />
+                <div className="menu-collection-hero-text">
+                  <h2 className="menu-collection-hero-title">{hero.title}</h2>
+                  <p className="menu-collection-hero-desc">{hero.desc}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Main Content - Dog or Cat */}
         <>

@@ -5686,6 +5686,89 @@ h2, h3, h4 {
 /* Tighter spacing for mobile category tabs */
 .menu-category-text-btn { margin-right: 8px; padding: 2px 2px 5px; }
 
+/* ===== Immersive category hero (below tabs, above Stock Up & Save) ===== */
+.menu-collection-hero {
+  margin: 8px 0 20px;
+}
+.menu-collection-hero-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;            /* mobile: portrait 4:5 like the reference */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+/* Home-page style gradient — transparent up top, darker toward the bottom for legible text */
+.menu-collection-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(59, 42, 26, 0) 0%,
+    rgba(59, 42, 26, 0.12) 38%,
+    rgba(59, 42, 26, 0.58) 72%,
+    rgba(59, 42, 26, 0.90) 100%
+  );
+  pointer-events: none;
+}
+.menu-collection-hero-text {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 24px 22px;
+}
+.menu-collection-hero-title {
+  font-family: var(--font-heading) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  color: #F5F3EF !important;
+  font-size: clamp(30px, 8vw, 44px);
+  line-height: 1.03;
+  letter-spacing: 0.5px;
+  margin: 0 0 10px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.38);
+}
+.menu-collection-hero-desc {
+  font-family: var(--font-body) !important;
+  color: #F5F3EF !important;
+  font-size: clamp(14px, 3.4vw, 16px);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 620px;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+
+/* Desktop: capped-height wide banner, title LEFT + description RIGHT, both bottom-aligned */
+@media (min-width: 760px) {
+  .menu-collection-hero-img {
+    aspect-ratio: auto;
+    height: 440px;
+    max-height: 48vh;
+  }
+  .menu-collection-hero-text {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 36px 44px;
+  }
+  .menu-collection-hero-title {
+    margin: 0;
+    flex: 0 0 auto;
+    max-width: 48%;
+  }
+  .menu-collection-hero-desc {
+    flex: 1 1 auto;
+    max-width: 46%;
+    align-self: flex-end;
+  }
+}
+
+
 /* Swipable badges on product detail (mobile) */
 .pd-uber-badges {
   flex-wrap: nowrap;
