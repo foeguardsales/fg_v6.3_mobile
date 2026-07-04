@@ -162,14 +162,14 @@ const ModernNavbar = () => {
             background: COLORS.khaki,
             color: COLORS.charcoal,
             textAlign: 'center',
-            padding: '0 16px',
-            fontSize: '13px',
+            padding: '0 8px',
+            fontSize: '12px',
             fontFamily: "'Barlow', sans-serif",
             fontWeight: 600,
             letterSpacing: '0.02em',
             textTransform: 'none',
-            minHeight: '36px',
-            height: '36px',
+            minHeight: '28px',
+            height: '28px',
             lineHeight: 1.2,
             cursor: 'pointer',
             display: 'flex',
@@ -736,7 +736,7 @@ export const LandingPage = () => {
                 color: COLORS.cream,
                 lineHeight: '1.15',
                 marginBottom: '14px',
-                fontFamily: "'Lora', serif",
+                fontFamily: "'Barlow Semi Condensed', serif",
                 letterSpacing: '-0.3px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
                 textAlign: 'left',
@@ -825,7 +825,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '20px',
               color: COLORS.charcoal,
-              fontFamily: "'Lora', serif"
+              fontFamily: "'Barlow Semi Condensed', serif"
             }}>
               Shop Farm Fresh
             </h2>
@@ -889,7 +889,7 @@ export const LandingPage = () => {
                       fontWeight: 600,
                       color: COLORS.charcoal,
                       marginBottom: '8px',
-                      fontFamily: "'Lora', serif"
+                      fontFamily: "'Barlow Semi Condensed', serif"
                     }}>
                       {card.title}
                     </h3>
@@ -954,7 +954,7 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 lineHeight: 1.2,
                 marginBottom: '14px',
-                fontFamily: "'Lora', serif"
+                fontFamily: "'Barlow Semi Condensed', serif"
               }}>
                 From our Acton farm to your dog&apos;s bowl.
               </h2>
@@ -1028,7 +1028,7 @@ export const LandingPage = () => {
                           fontWeight: 600,
                           color: COLORS.charcoal,
                           margin: '0 0 4px',
-                          fontFamily: "'Lora', serif"
+                          fontFamily: "'Barlow Semi Condensed', serif"
                         }}>
                           {item.title}
                         </h4>
@@ -1063,7 +1063,7 @@ export const LandingPage = () => {
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: 600,
                 marginBottom: '12px',
-                fontFamily: "'Lora', serif",
+                fontFamily: "'Barlow Semi Condensed', serif",
                 lineHeight: 1.2,
                 color: COLORS.khaki
               }}>
@@ -1173,7 +1173,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '8px',
               color: COLORS.charcoal,
-              fontFamily: "'Lora', serif"
+              fontFamily: "'Barlow Semi Condensed', serif"
             }}>
               Hear from Happy FoeGuardians
             </h2>
@@ -1252,7 +1252,7 @@ export const LandingPage = () => {
                         fontWeight: '700',
                         color: COLORS.red,
                         margin: 0,
-                        fontFamily: "'Lora', serif"
+                        fontFamily: "'Barlow Semi Condensed', serif"
                       }}>
                         — {r.name}
                       </p>
@@ -1301,7 +1301,7 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 lineHeight: 1.2,
                 marginBottom: '12px',
-                fontFamily: "'Lora', serif"
+                fontFamily: "'Barlow Semi Condensed', serif"
               }}>
                 Pick your dog&apos;s favourites from 8 proteins
               </h2>
@@ -1449,7 +1449,7 @@ export const LandingPage = () => {
                 fontWeight: 600,
                 color: COLORS.charcoal,
                 marginBottom: '14px',
-                fontFamily: "'Lora', serif",
+                fontFamily: "'Barlow Semi Condensed', serif",
                 lineHeight: 1.2
               }}>
                 Where real food became a family tradition
@@ -1499,7 +1499,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '20px',
               color: COLORS.charcoal,
-              fontFamily: "'Lora', serif"
+              fontFamily: "'Barlow Semi Condensed', serif"
             }}>
               Questions you may have
             </h2>
@@ -1580,7 +1580,7 @@ export const LandingPage = () => {
               fontWeight: 600,
               marginBottom: '12px',
               color: COLORS.cream,
-              fontFamily: "'Lora', serif",
+              fontFamily: "'Barlow Semi Condensed', serif",
               lineHeight: 1.2
             }}>
               Your dog&apos;s healthiest days start now.

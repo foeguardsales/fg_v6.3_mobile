@@ -45,14 +45,14 @@ export const BlogListPage = () => {
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
             <h1 style={{ 
               fontSize: '48px', 
-              fontFamily: "'Lora', serif",
+              fontFamily: "'Barlow Semi Condensed', serif",
               color: '#2B2B2B',
               marginBottom: '16px',
               textTransform: 'none'
             }}>
               FoeGuard Blog
             </h1>
-            <p style={{ fontSize: '18px', color: '#666', maxWidth: '600px', margin: '0 auto', fontFamily: "'Lora', serif" }}>
+            <p style={{ fontSize: '18px', color: '#666', maxWidth: '600px', margin: '0 auto', fontFamily: "'Barlow Semi Condensed', serif" }}>
               Expert tips, nutrition guides, and stories about raw pet food
             </p>
           </div>
@@ -121,7 +121,7 @@ export const BlogListPage = () => {
                   <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <h2 style={{
                       fontSize: '24px',
-                      fontFamily: "'Lora', serif",
+                      fontFamily: "'Barlow Semi Condensed', serif",
                       fontWeight: '600',
                       color: '#2B2B2B',
                       marginBottom: '12px',
@@ -132,7 +132,7 @@ export const BlogListPage = () => {
 
                     <p style={{
                       fontSize: '15px',
-                      fontFamily: "'Lora', serif",
+                      fontFamily: "'Barlow Semi Condensed', serif",
                       color: '#666',
                       lineHeight: '1.6',
                       marginBottom: '16px',
@@ -146,7 +146,7 @@ export const BlogListPage = () => {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       fontSize: '13px',
-                      fontFamily: "'Lora', serif",
+                      fontFamily: "'Barlow Semi Condensed', serif",
                       color: '#999',
                       paddingTop: '16px',
                       borderTop: '1px solid #E8DDD0'
@@ -295,7 +295,7 @@ export const BlogDetailPage = () => {
           {/* Title & Meta */}
           <h1 style={{
             fontSize: '48px',
-            fontFamily: "'Lora', serif",
+            fontFamily: "'Barlow Semi Condensed', serif",
             color: '#2B2B2B',
             marginBottom: '16px',
             lineHeight: '1.2',
@@ -308,7 +308,7 @@ export const BlogDetailPage = () => {
             display: 'flex',
             gap: '20px',
             fontSize: '14px',
-            fontFamily: "'Lora', serif",
+            fontFamily: "'Barlow Semi Condensed', serif",
             color: '#999',
             paddingBottom: '24px',
             marginBottom: '32px',
@@ -327,7 +327,7 @@ export const BlogDetailPage = () => {
           <div
             style={{
               fontSize: '17px',
-              fontFamily: "'Lora', serif",
+              fontFamily: "'Barlow Semi Condensed', serif",
               lineHeight: '1.8',
               color: '#3B2A1A',
               background: 'white',

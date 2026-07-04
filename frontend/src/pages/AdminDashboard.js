@@ -87,7 +87,7 @@ export const AdminDashboard = () => {
         <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '40px 20px' }}>
           {/* Header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-            <h1 style={{ fontSize: '36px', fontFamily: "'Lora', serif", color: '#2B2B2B' }}>
+            <h1 style={{ fontSize: '36px', fontFamily: "'Barlow Semi Condensed', serif", color: '#2B2B2B' }}>
               Admin Dashboard
             </h1>
             <button

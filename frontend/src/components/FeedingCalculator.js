@@ -153,10 +153,10 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
         </button>
       )}
 
-      <h2 style={{ fontSize: '32px', textAlign: 'center', marginBottom: '12px', fontFamily: "'Lora', serif", fontWeight: 700 }}>
+      <h2 style={{ fontSize: '32px', textAlign: 'center', marginBottom: '12px', fontFamily: "'Barlow Semi Condensed', serif", fontWeight: 700 }}>
         Feeding Calculator
       </h2>
-      <p style={{ textAlign: 'center', color: '#666', marginBottom: '28px', fontFamily: "'Lora', serif" }}>
+      <p style={{ textAlign: 'center', color: '#666', marginBottom: '28px', fontFamily: "'Barlow Semi Condensed', serif" }}>
         Tell us about your pet(s) to get personalized feeding recommendations.
         {isAuthenticated
           ? ' Saved to your account.'
@@ -180,7 +180,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
         >
           {pets.length > 1 && (
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ fontSize: '18px', color: '#c8102e', margin: 0, fontFamily: "'Lora', serif" }}>
+              <h3 style={{ fontSize: '18px', color: '#c8102e', margin: 0, fontFamily: "'Barlow Semi Condensed', serif" }}>
                 {`Pet ${index + 1}`}
               </h3>
               <button

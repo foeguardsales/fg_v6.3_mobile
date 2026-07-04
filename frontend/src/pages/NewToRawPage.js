@@ -23,7 +23,7 @@ const BENEFITS = [
 ];
 
 const headingStyle = {
-  fontFamily: "'Lora', serif",
+  fontFamily: "'Barlow Semi Condensed', serif",
   fontWeight: 700,
   color: COLORS.charcoal,
   letterSpacing: '-0.4px',
@@ -168,7 +168,7 @@ export const NewToRawPage = () => {
                     fontWeight: 700,
                     color: COLORS.charcoal,
                     lineHeight: 1.3,
-                    fontFamily: "'Lora', serif"
+                    fontFamily: "'Barlow Semi Condensed', serif"
                   }}>
                     {label}
                   </div>
@@ -199,13 +199,13 @@ export const NewToRawPage = () => {
               <thead style={{ background: COLORS.softBg }}>
                 <tr>
                   <th style={{ padding: '10px 8px', textAlign: 'left', width: '40%' }}></th>
-                  <th style={{ padding: '10px 4px', color: COLORS.red, fontFamily: "'Lora', serif", fontSize: '14px' }}>
+                  <th style={{ padding: '10px 4px', color: COLORS.red, fontFamily: "'Barlow Semi Condensed', serif", fontSize: '14px' }}>
                     FoeGuard
                   </th>
-                  <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '14px' }}>
+                  <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Barlow Semi Condensed', serif", fontSize: '14px' }}>
                     Retail Raw
                   </th>
-                  <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Lora', serif", fontSize: '14px' }}>
+                  <th style={{ padding: '10px 4px', color: COLORS.charcoal, fontFamily: "'Barlow Semi Condensed', serif", fontSize: '14px' }}>
                     Kibble
                   </th>
                 </tr>
@@ -346,7 +346,7 @@ export const NewToRawPage = () => {
         }}>
           <div style={{ maxWidth: '820px', margin: '0 auto' }}>
             <h2 style={{
-              fontFamily: "'Lora', serif",
+              fontFamily: "'Barlow Semi Condensed', serif",
               fontSize: 'clamp(30px, 3.6vw, 40px)',
               fontWeight: 700,
               color: COLORS.white,

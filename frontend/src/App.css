@@ -169,14 +169,14 @@ body {
   font-style: normal;
 }
 
-/* Heritage typography: Barlow Semi Condensed (SemiBold) for headings/accents, Lucida Grande for paragraphs */
+/* Heritage typography: Barlow Semi Condensed Bold for headings/accents, Barlow for paragraphs */
 :root {
   --font-body: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-heading: 'Lora', Georgia, 'Times New Roman', serif;
-  --font-accent: 'Lora', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-accent: 'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* Default body — Barlow 400 site-wide; headings switch to Lora via the rules below */
+/* Default body — Barlow 400 site-wide; headings switch to Barlow Semi Condensed Bold via the rules below */
 body {
   font-family: var(--font-body);
   font-weight: 400;
@@ -184,10 +184,10 @@ body {
   background: #F5F3EF;
   color: #3B2A1A;
 }
-/* Headings = Lora 600, min 22px */
+/* Headings = Barlow Semi Condensed Bold (700), min 22px */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading) !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   color: #3B2A1A;
 }
 h1 { font-size: max(28px, 1em); }
@@ -560,7 +560,7 @@ h2, h3, h4 {
 }
 
 .hero-title {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: clamp(38px, 5vw, 52px);
   font-weight: normal;
   color: var(--text-inverse);
@@ -1531,7 +1531,7 @@ h2, h3, h4 {
   border: none;
   padding: 8px 14px;
   border-radius: 999px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -1712,7 +1712,7 @@ h2, h3, h4 {
   margin: 0;
 }
 .bb-subscribe-label {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 15px;
   font-weight: 700;
   color: #3B2A1A;
@@ -1761,7 +1761,7 @@ h2, h3, h4 {
   border-radius: 8px;
   border: 1.5px solid #D8CFB8;
   background: #FFFFFF;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 500;
   color: #2B2B2B;
@@ -1779,7 +1779,7 @@ h2, h3, h4 {
   gap: 10px;
   font-size: 13px;
   color: #2B2B2B;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
 }
 .bb-subscribe-tick {
   color: var(--barn-red);
@@ -1938,7 +1938,7 @@ h2, h3, h4 {
   text-transform: none !important;
 }
 .menu-collection-desc {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   color: #3B2A1A;
   margin: 0;
@@ -1987,7 +1987,7 @@ h2, h3, h4 {
   .product-card-title { font-size: 17px !important; }
 }
 .product-card-desc {
-  font-family: 'Barlow', 'Lora', serif !important;
+  font-family: 'Barlow', 'Barlow Semi Condensed', serif !important;
   font-size: 12.5px !important;
   color: #3B2A1A;
   line-height: 1.35;
@@ -2012,7 +2012,7 @@ h2, h3, h4 {
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   flex-wrap: wrap;
   margin: 2px 0;
 }
@@ -2050,7 +2050,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   padding: 0;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 600;
   color: #3B2A1A;
@@ -2153,7 +2153,7 @@ h2, h3, h4 {
   cursor: not-allowed;
 }
 .product-card-qty-pill .qty-display-mini {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   font-weight: 700;
   color: #F5F3EF;
@@ -2234,7 +2234,7 @@ h2, h3, h4 {
 }
 .product-card-qty .qty-btn-mini:disabled { opacity: 0.35; cursor: not-allowed; }
 .product-card-qty .qty-display-mini {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
   color: #3B2A1A;
@@ -2425,7 +2425,7 @@ h2, h3, h4 {
 }
 
 .treat-info h4 {
-  font-family: 'Lora', serif !important;
+  font-family: 'Barlow Semi Condensed', serif !important;
   font-size: 17px !important;
   font-weight: 700;
   color: #2B2B2B;
@@ -4064,7 +4064,7 @@ h2, h3, h4 {
   display: block;
 }
 .about-protein-label {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-weight: 700;
   font-size: 18px;
   color: var(--charcoal, #3B2A1A);
@@ -5145,7 +5145,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 999px;
   padding: 14px 26px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
@@ -5193,7 +5193,7 @@ h2, h3, h4 {
 
 /* Menu pill buttons — aged wood bg / khaki text */
 .menu-pill {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
   color: #D8CFB8;
@@ -5233,7 +5233,7 @@ h2, h3, h4 {
   color: #3B2A1A;
   border: none;
   border-radius: 999px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -5333,7 +5333,7 @@ h2, h3, h4 {
   background-repeat: no-repeat;
   border: 1px solid #3B2A1A;
   padding: 22px 16px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 700;
   color: #F5F3EF;
@@ -5403,7 +5403,7 @@ h2, h3, h4 {
   border: 1.5px solid #D8CFB8;
   background: #F5F3EF;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -5446,7 +5446,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   padding: 10px 14px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
   color: #3B2A1A;
@@ -5513,7 +5513,7 @@ h2, h3, h4 {
   background: #FFFFFF;
   border: 1px solid #D8CFB8;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -5564,7 +5564,7 @@ h2, h3, h4 {
   gap: 6px;
   background: #E8DFC8;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 700;
   padding: 6px 12px;
@@ -5577,7 +5577,7 @@ h2, h3, h4 {
   border: 1px solid #D8CFB8;
   border-radius: 10px;
   padding: 12px 14px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   color: #3B2A1A;
   resize: vertical;
@@ -5599,7 +5599,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 6px;
   padding: 16px 24px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -5656,7 +5656,7 @@ h2, h3, h4 {
 .menu-category-text-btn {
   background: transparent;
   border: none;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 500;
   color: #3B2A1A;
@@ -5734,7 +5734,7 @@ h2, h3, h4 {
   max-width: 100%;
 }
 .bb-box-size-label {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
   color: #3B2A1A;
@@ -5757,7 +5757,7 @@ h2, h3, h4 {
   border: 1px solid transparent;
   border-radius: 6px;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -5793,7 +5793,7 @@ h2, h3, h4 {
   border-radius: 3px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
 }
 .box-size-slider--mustard .box-size-chip.is-active .box-size-chip-discount-inline {
   background: #C9A84C;
@@ -5816,7 +5816,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 6px;
   padding: 16px 24px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -5867,19 +5867,19 @@ h2, h3, h4 {
   }
 }
 
-/* MOBILE: horizontal row inside the white menu block — no per-row container */
+/* MOBILE: horizontal row inside the white menu block — image edge-to-edge on the RIGHT */
 .product-card-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 96px;
-  gap: 12px;
-  padding: 12px 16px;
+  grid-template-columns: minmax(0, 1fr) 128px;
+  gap: 0;
+  padding: 0;
   border-bottom: 1px solid #EDEAE7;
   background: #FFFFFF;
   border-radius: 0;
-  overflow: visible;
+  overflow: hidden;
   cursor: pointer;
   position: relative;
-  align-items: start;
+  align-items: stretch;
 }
 .product-card-row:last-child { border-bottom: none; }
 .product-card-row.is-selected,
@@ -5892,12 +5892,14 @@ h2, h3, h4 {
 
 .product-card-media {
   position: relative;
-  width: 96px;
-  height: 96px;
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: 100%;
+  min-height: 128px;
+  aspect-ratio: auto;
+  align-self: stretch;
   flex-shrink: 0;
   background: #FFFFFF;
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
 }
 .product-card-media img {
@@ -5906,16 +5908,19 @@ h2, h3, h4 {
   object-fit: cover;
   display: block;
 }
+/* Content: title at top, description a touch lower, price pinned to the bottom
+   with the same padding from the bottom as the title has from the top (balanced). */
 .product-card-content {
   min-width: 0;
-  padding: 0;
+  padding: 14px 14px 14px 16px;
   position: relative;
-  min-height: 96px;
+  min-height: 128px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding-bottom: 0;
+  gap: 0;
 }
+.product-card-content .product-card-desc { margin-top: 7px; }
+.product-card-content .product-card-price { margin-top: auto; padding-top: 8px; }
 
 /* Mobile: "See more" sits at the bottom of the content column, not inline */
 .product-card-meta {
@@ -5925,7 +5930,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 600;
   text-decoration: underline;
@@ -5949,14 +5954,14 @@ h2, h3, h4 {
   z-index: 4;
 }
 
-/* DESKTOP: tight rows in white block — image RIGHT, content LEFT */
+/* DESKTOP: tight rows in white block — image edge-to-edge RIGHT, content LEFT */
 @media (min-width: 760px) {
   .product-card-row {
     display: grid;
-    grid-template-columns: 1fr 110px;
-    gap: 14px;
-    padding: 14px 16px;
-    align-items: start;
+    grid-template-columns: 1fr 160px;
+    gap: 0;
+    padding: 0;
+    align-items: stretch;
     border-bottom: 1px solid #EDEAE7;
     background: #FFFFFF;
   }
@@ -5967,17 +5972,18 @@ h2, h3, h4 {
   .product-card-row > .product-card-content { order: 0; }
   .product-card-row > .product-card-media { order: 1; }
   .product-card-media {
-    width: 110px;
-    height: 110px;
-    aspect-ratio: 1 / 1;
+    width: 100%;
+    height: 100%;
+    min-height: 150px;
+    aspect-ratio: auto;
+    border-radius: 0;
   }
   .product-card-content {
-    min-height: 110px;
-    padding-bottom: 0;
-    padding-top: 0;
+    min-height: 150px;
+    padding: 16px 16px 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 0;
   }
   .product-card-meta {
     margin-top: auto;
@@ -6041,7 +6047,7 @@ h2, h3, h4 {
   min-width: 0;
 }
 .pd-shopify-collection {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 600;
   color: #3B2A1A;
@@ -6068,25 +6074,25 @@ h2, h3, h4 {
   flex-wrap: wrap;
 }
 .pd-shopify-price {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 26px;
   font-weight: 700;
   color: #3B2A1A;
 }
 .pd-shopify-price-unit {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   color: #3B2A1A;
   font-weight: 500;
 }
 .pd-shopify-price-original {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 15px;
   color: #8A7156;
   text-decoration: line-through;
 }
 .pd-shopify-desc {
-  font-family: 'Barlow', 'Lora', serif;
+  font-family: 'Barlow', 'Barlow Semi Condensed', serif;
   font-size: 15px;
   line-height: 1.65;
   color: #3B2A1A;
@@ -6104,7 +6110,7 @@ h2, h3, h4 {
   background: #C9A84C;
   color: #3B2A1A;
   border: none;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 700;
   padding: 4px 9px;
@@ -6130,21 +6136,21 @@ h2, h3, h4 {
   border: none;
 }
 .pd-shopify-boxsize-label {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   color: #3B2A1A;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
 .pd-shopify-boxsize-value {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 15px;
   color: #3B2A1A;
   font-weight: 800;
 }
 .pd-shopify-boxsize-discount {
   display: inline-flex;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 10px;
   color: #3B2A1A;
   font-weight: 800;
@@ -6158,7 +6164,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -6178,7 +6184,7 @@ h2, h3, h4 {
   margin: 0 0 12px;
 }
 .pd-shopify-mini-label {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   color: #3B2A1A;
   text-transform: uppercase;
@@ -6214,7 +6220,7 @@ h2, h3, h4 {
 .pd-shopify-qty-display {
   min-width: 54px;
   text-align: center;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 16px;
   font-weight: 800;
   color: #3B2A1A;
@@ -6224,7 +6230,7 @@ h2, h3, h4 {
   text-align: left;
 }
 .pd-shopify-adds-total {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 16px;
   font-weight: 600;
   color: #3B2A1A;
@@ -6239,7 +6245,7 @@ h2, h3, h4 {
   margin-left: 8px;
   background: #C9A84C;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -6248,7 +6254,7 @@ h2, h3, h4 {
   border-radius: 3px;
 }
 .pd-shopify-adds-perlb {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 500;
   color: #3B2A1A;
@@ -6258,7 +6264,7 @@ h2, h3, h4 {
   height: 36px;
 }
 .pd-shopify-adds-original {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   color: #8A7156;
   text-decoration: line-through;
@@ -6291,7 +6297,7 @@ h2, h3, h4 {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-family: 'Barlow', 'Lora', serif;
+  font-family: 'Barlow', 'Barlow Semi Condensed', serif;
   font-size: 14px;
   color: #3B2A1A;
   line-height: 1.5;
@@ -6321,7 +6327,7 @@ h2, h3, h4 {
   align-items: center;
   text-align: center;
   gap: 8px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   font-weight: 700;
   color: #3B2A1A;
@@ -6471,7 +6477,7 @@ h2, h3, h4 {
   color: #3B2A1A;
 }
 .box-size-chip-size {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 16px;
   font-weight: 800;
   color: #3B2A1A;
@@ -6482,7 +6488,7 @@ h2, h3, h4 {
   .box-size-chip-size { font-size: 18px; }
 }
 .box-size-chip-from {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 10px;
   font-weight: 600;
   color: #3B2A1A;
@@ -6561,7 +6567,7 @@ h2, h3, h4 {
   color: #C8102E;
 }
 .menu-topsheet-sub {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   color: #3B2A1A;
   text-align: center;
@@ -6581,7 +6587,7 @@ h2, h3, h4 {
   background: white;
   border: 1px solid #D8CFB8;
   border-radius: 8px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
 }
 .menu-topsheet-card-name {
   font-weight: 600;
@@ -6602,7 +6608,7 @@ h2, h3, h4 {
 .menu-topsheet-btn {
   padding: 12px 14px;
   border-radius: 10px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
@@ -6626,7 +6632,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   font-weight: 600;
   text-decoration: underline;
@@ -6952,7 +6958,7 @@ h2, h3, h4 {
   line-height: 1.15;
 }
 .menu-funnel-card-sub {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   margin: 0;
   color: #F5F3EF;
@@ -6988,19 +6994,20 @@ h2, h3, h4 {
 }
 .menu-funnel-card-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 96px;
-  gap: 14px;
-  padding: 14px 0;
+  grid-template-columns: minmax(0, 1fr) 128px;
+  gap: 0;
+  padding: 0;
   border: none;
   border-bottom: 1px solid #EDEAE7;
   background: transparent;
   border-radius: 0;
   cursor: pointer;
   text-align: left;
-  align-items: center;
+  align-items: stretch;
   transition: opacity 0.18s ease;
   margin: 0;
   width: 100%;
+  overflow: hidden;
 }
 .menu-funnel-card-row:first-of-type { border-top: 1px solid #EDEAE7; }
 .menu-funnel-card-row:hover { opacity: 0.92; }
@@ -7008,11 +7015,13 @@ h2, h3, h4 {
 
 .menu-funnel-card-row-media {
   position: relative;
-  width: 96px;
-  height: 96px;
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: 100%;
+  min-height: 116px;
+  aspect-ratio: auto;
+  align-self: stretch;
   background: #FFFFFF;
-  border-radius: 10px;
+  border-radius: 0;
   overflow: hidden;
   order: 1;
   flex-shrink: 0;
@@ -7026,7 +7035,7 @@ h2, h3, h4 {
 
 .menu-funnel-card-row-content {
   min-width: 0;
-  padding: 0;
+  padding: 16px 12px 16px 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -7047,7 +7056,7 @@ h2, h3, h4 {
   .menu-funnel-card-row-title { font-size: 22px; }
 }
 .menu-funnel-card-row-sub {
-  font-family: 'Barlow', 'Lora', serif;
+  font-family: 'Barlow', 'Barlow Semi Condensed', serif;
   font-size: 13px;
   color: #3B2A1A;
   margin: 0;
@@ -7060,7 +7069,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 600;
   padding: 4px 6px;
@@ -7309,13 +7318,13 @@ input, select, textarea {
 }
 .stock-up-toggle-left svg { color: #C8102E; flex-shrink: 0; }
 .stock-up-toggle-title {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 .stock-up-toggle-meta {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -7330,7 +7339,7 @@ input, select, textarea {
   border-top: none;
 }
 .stock-up-intro {
-  font-family: 'Barlow', 'Lora', serif;
+  font-family: 'Barlow', 'Barlow Semi Condensed', serif;
   font-size: 12.5px;
   color: #3B2A1A;
   line-height: 1.5;
@@ -7363,13 +7372,13 @@ input, select, textarea {
   color: #2E7D32;
 }
 .stock-up-tier-size {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
   color: #3B2A1A;
 }
 .stock-up-tier-off {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   font-weight: 600;
   color: #C8102E;
@@ -7412,7 +7421,7 @@ input, select, textarea {
   border: 1px solid #D8CFB8;
   border-radius: 6px;
   padding: 8px 14px;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   color: #3B2A1A;
   text-align: center;
@@ -7439,7 +7448,7 @@ input, select, textarea {
   flex-wrap: wrap;
 }
 .cart-box-lbs {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   font-weight: 700;
   color: #2E7D32;
@@ -7454,7 +7463,7 @@ input, select, textarea {
 }
 .cart-line-info { min-width: 0; display: flex; flex-direction: column; }
 .cart-line-name {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
   color: #3B2A1A;
@@ -7462,7 +7471,7 @@ input, select, textarea {
 .cart-line-sub { font-size: 12px; color: #8A7156; }
 .cart-line-right { display: flex; align-items: center; gap: 10px; }
 .cart-line-price {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   color: #3B2A1A;
   min-width: 56px;
@@ -7498,7 +7507,7 @@ input, select, textarea {
   height: 22px;
 }
 .cart-qty-mini span {
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   font-weight: 700;
   color: #3B2A1A;
@@ -7557,7 +7566,7 @@ input, select, textarea {
   padding: 3px 8px;
   background: #C9A84C;
   color: #3B2A1A;
-  font-family: 'Lora', serif;
+  font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.02em;
