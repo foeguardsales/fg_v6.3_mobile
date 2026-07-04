@@ -9,6 +9,12 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 
 ## What's Implemented (Feb 2026)
 
+### 2025-07 — Site restored + hero fixes (Shopify Headless pending)
+- **Env restore** — Recreated missing `/app/backend/.env` (MONGO_URL, DB_NAME=test_database, JWT, + placeholder Stripe/Brevo/Cloudflare keys) and `/app/frontend/.env` (REACT_APP_BACKEND_URL → current preview endpoint). Backend now boots, reseeds 24 products / 17 treats. Stripe left inert (migrating to Shopify Headless).
+- **Hero desktop padding** — `App.css` `@media (min-width:1024px){ .hero-section--foeguard .hero-text{ left:72px!important; width:60% } }` + `min-width:1600px → left:120px; width:55%`. Overrides inline `left:24px` used on mobile/tablet (those unchanged). VERIFIED by testing agent (desktop 120px, mobile 24px).
+- **"Shop Now" funnel X-close** — LandingPage `goShopNow` passes `navigate('/menu',{state:{from:'home'}})`; BoxBuilder `MenuFunnel onClose` returns to `/` when `location.state?.from==='home'` (else stays on menu). `onShopRaw` clears the from-home state so re-opening funnel via Edit + close keeps user on menu. VERIFIED by testing agent (both flows pass, no regressions).
+- **PENDING / next up** — Shopify Headless (Storefront API) integration: awaiting user's store domain + Storefront API access token + chosen scope (keep custom UI + Shopify checkout recommended).
+
 ### 2026-02-23 — Menu mobile redesign + cart copy refresh
 - **Mobile menu**: switched to 1-product-per-row vertical grid (app-style list); content (Title → Price → Description → See More) on the left, image on the right
 - **Product cards**: '+' add button now CENTERED over the image's white background; qty pill also centered when item is selected
