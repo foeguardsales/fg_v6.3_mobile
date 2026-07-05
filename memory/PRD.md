@@ -9,7 +9,19 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 
 ## What's Implemented (Feb 2026)
 
-### 2025-07 — Site restored + hero fixes (Shopify Headless pending)
+### 2025-07 — Menu-page fixes batch (verified by testing agent, 6/6 PASS)
+- **SelectionBreadcrumb** padding reduced (10px 20px → 5px 16px); `.box-builder` mobile top padding 10px→2px (tighter gap to category tabs).
+- **Mobile menu**: `.product-grid` row-gap 0 (continuous list, "part of the page"); immersive category hero full-bleed on mobile (`border-radius:0`), rounded (14px) + capped 440px banner on desktop.
+- **CRITICAL — product bottom-sheet (ProductDetail + TreatDetail modals)**:
+  - Closing a sheet now returns user to their PREVIOUS menu scroll position — fixed by guarding `root.scrollTop=0` with `if(!embedded)` (was resetting the menu behind the modal to top).
+  - Drag-to-dismiss now bound ONLY to the top grab bar (`data-testid=sheet-drag-handle`, full-width so grabbing the tab or anywhere along the top works); content scrolls freely (removed the scrollTop-gated whole-panel drag).
+  - Add-to-cart pinned reliably: `.bb-floating-checkout--inline` sticky bottom:8px + `translateZ(0)`; `.bb-floating-checkout` (fixed) got `translateZ(0)/will-change` to fix iOS momentum-scroll "stuck" repaint.
+- **Collapsible tab titles** → Title Case (removed `textTransform:uppercase` in CollapsibleSection, both files).
+- **Order Notes** → static/always-open block (removed collapse toggle), same design/placement.
+- **FAQ spacing** reduced (ProductFaqSection marginTop 28→8, marginBottom 8→0; product-page FAQ wrapper padding trimmed).
+- NOTE (needs user confirm): mobile "menu options overlaying the image" was implemented as the full-bleed hero image with the collection TITLE/DESCRIPTION overlay + gradient (matching the reference screenshot) — the category TABS were NOT moved on top of the image.
+
+
 - **Env restore** — Recreated missing `/app/backend/.env` (MONGO_URL, DB_NAME=test_database, JWT, + placeholder Stripe/Brevo/Cloudflare keys) and `/app/frontend/.env` (REACT_APP_BACKEND_URL → current preview endpoint). Backend now boots, reseeds 24 products / 17 treats. Stripe left inert (migrating to Shopify Headless).
 - **Hero desktop padding** — `App.css` `@media (min-width:1024px){ .hero-section--foeguard .hero-text{ left:72px!important; width:60% } }` + `min-width:1600px → left:120px; width:55%`. Overrides inline `left:24px` used on mobile/tablet (those unchanged). VERIFIED by testing agent (desktop 120px, mobile 24px).
 - **"Shop Now" funnel X-close** — LandingPage `goShopNow` passes `navigate('/menu',{state:{from:'home'}})`; BoxBuilder `MenuFunnel onClose` returns to `/` when `location.state?.from==='home'` (else stays on menu). `onShopRaw` clears the from-home state so re-opening funnel via Edit + close keeps user on menu. VERIFIED by testing agent (both flows pass, no regressions).
