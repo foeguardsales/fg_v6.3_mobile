@@ -29,14 +29,14 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '18px 0',
+          padding: '9px 0',
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
           fontFamily: "'Barlow Semi Condensed', serif",
           fontSize: '15px',
           fontWeight: '700',
-          color: '#2B2B2B',
+          color: '#2C2C2C',
           letterSpacing: '0.02em',
           textTransform: 'none'
         }}
@@ -45,7 +45,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
         {isOpen ? <ChevronUp size={18} color="#c8102e" /> : <ChevronDown size={18} color="#c8102e" />}
       </button>
       {isOpen && (
-        <div style={{ padding: '0 0 22px' }}>
+        <div style={{ padding: '0 0 14px', color: '#2C2C2C' }}>
           {children}
         </div>
       )}
@@ -300,7 +300,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
             {currentImage ? (
               <img src={currentImage} alt={treat.name} />
             ) : (
-              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#3B2A1A', fontSize: '13px' }}>
+              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#2C2C2C', fontSize: '13px' }}>
                 Image coming soon
               </div>
             )}
@@ -394,27 +394,27 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
           <div className="pd-shopify-collapsibles" data-testid="treat-collapsibles">
             {treat.ingredients && (
               <CollapsibleSection title="Ingredients" defaultOpen>
-                <p style={{ fontSize: '14px', color: '#3B2A1A', lineHeight: '1.7', margin: 0 }}>
+                <p style={{ fontSize: '14px', color: '#2C2C2C', lineHeight: '1.7', margin: 0 }}>
                   {typeof treat.ingredients === 'string' ? treat.ingredients : (treat.ingredients || []).join(', ')}
                 </p>
               </CollapsibleSection>
             )}
             <CollapsibleSection title="Product Information">
-              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: 0, whiteSpace: 'pre-line' }}>
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: 0, whiteSpace: 'pre-line' }}>
                 {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
               </p>
             </CollapsibleSection>
             <CollapsibleSection title="Feeding Guide">
-              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: '0 0 10px' }}>
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: '0 0 10px' }}>
                 {treat.feeding_guide?.feeding || 'Feed as a treat or meal topper. Always supervise your pet.'}
               </p>
-              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: 0 }}>
+              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: 0 }}>
                 {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
               </p>
             </CollapsibleSection>
             <div className="pd-notes-static" style={{ borderBottom: '1px solid #E8DDD0', padding: '18px 0 22px' }}>
-              <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, color: '#2B2B2B', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
-              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', color: '#3B2A1A', marginBottom: '6px' }}>
+              <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, color: '#2C2C2C', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
+              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', color: '#2C2C2C', marginBottom: '6px' }}>
                 Add any special notes for your order.
               </label>
               <textarea

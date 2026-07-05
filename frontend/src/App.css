@@ -5701,7 +5701,7 @@ h2, h3, h4 {
   }
   .menu-collection-hero { margin: 0 0 6px; }
   .menu-collection-hero-img { border-radius: 0; }
-  .selection-breadcrumb { padding: 3px 12px !important; }
+  .selection-breadcrumb { padding: 2px 12px !important; }
 }
 .menu-collection-hero-img {
   position: relative;
@@ -6221,7 +6221,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.72;
@@ -6231,7 +6231,7 @@ h2, h3, h4 {
 .pd-shopify-title {
   font-family: var(--font-heading);
   font-size: clamp(26px, 3.4vw, 36px);
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 6px;
   font-weight: 600;
   line-height: 1.15;
@@ -6248,12 +6248,12 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 26px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .pd-shopify-price-unit {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-weight: 500;
 }
 .pd-shopify-price-original {
@@ -6266,7 +6266,7 @@ h2, h3, h4 {
   font-family: 'Barlow', 'Barlow Semi Condensed', serif;
   font-size: 15px;
   line-height: 1.6;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 14px;
 }
 /* ===== Shopify variant placeholders — pills + Uber-style radios (visual, ready to bind) ===== */
@@ -6281,7 +6281,7 @@ h2, h3, h4 {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 8px;
 }
 .pd-pill-row {
@@ -6351,13 +6351,13 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 15px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .pd-shopify-price-from {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
-  color: #8A7156;
+  color: #2C2C2C;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   align-self: center;
@@ -6397,7 +6397,7 @@ h2, h3, h4 {
   font-family: var(--font-heading) !important;
   font-size: 15px !important;
   line-height: 1.3 !important;
-  color: #3B2A1A !important;
+  color: #2C2C2C !important;
 }
 @media (min-width: 760px) {
   .product-card-title,
@@ -6509,7 +6509,7 @@ h2, h3, h4 {
 .pd-shopify-mini-label {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 700;
@@ -6524,9 +6524,9 @@ h2, h3, h4 {
   width: 36px;
   height: 36px;
   border-radius: 6px;
-  border: 1.5px solid #3B2A1A;
+  border: 1.5px solid #2C2C2C;
   background: #F5F3EF;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
@@ -6546,7 +6546,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 16px;
   font-weight: 800;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 /* Adds — same line as Add to box, slimmer, left-aligned */
 .pd-shopify-adds {
@@ -6622,7 +6622,7 @@ h2, h3, h4 {
   gap: 10px;
   font-family: 'Barlow', 'Barlow Semi Condensed', serif;
   font-size: 14px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   line-height: 1.5;
 }
 .pd-shopify-checks li svg {
@@ -6631,7 +6631,7 @@ h2, h3, h4 {
   margin-top: 1px;
 }
 .pd-shopify-collapsibles {
-  margin: 0 0 24px;
+  margin: 0 0 12px;
   border-top: none;
 }
 
@@ -6653,7 +6653,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   letter-spacing: 0.02em;
 }
 .pd-shopify-trust-item svg {
@@ -7185,7 +7185,7 @@ h2, h3, h4 {
   z-index: 90;
   background: #F5F3EF;
   border-bottom: 1px solid #EDEAE7;
-  padding: 4px 12px;
+  padding: 3px 12px;
 }
 .selection-breadcrumb-inner {
   max-width: 1100px;
@@ -7201,10 +7201,10 @@ h2, h3, h4 {
   gap: 6px;
   font-family: var(--font-body);
   font-size: 12px;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .selection-breadcrumb-prefix {
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -7213,16 +7213,16 @@ h2, h3, h4 {
 .selection-breadcrumb-title {
   font-weight: 700;
   font-size: 18px !important;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: var(--font-heading);
   letter-spacing: -0.1px;
 }
 .selection-breadcrumb-edit {
   background: transparent;
-  border: 1px solid #3B2A1A;
-  color: #3B2A1A;
-  padding: 4px 10px;
-  border-radius: 999px;
+  border: 1px solid #2C2C2C;
+  color: #2C2C2C;
+  padding: 1px 8px;
+  border-radius: 4px;
   font-family: var(--font-body);
   font-size: 11px;
   font-weight: 700;
@@ -7230,9 +7230,11 @@ h2, h3, h4 {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   transition: background 0.15s, color 0.15s;
+  line-height: 1.4;
+  align-self: center;
 }
 .selection-breadcrumb-edit:hover {
-  background: #3B2A1A;
+  background: #2C2C2C;
   color: #F5F3EF;
 }
 

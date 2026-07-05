@@ -3637,10 +3637,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Mobile: SelectionBreadcrumb padding 3px (specificity fix — !important)"
-    - "Menu interaction rule — products with variants show ONLY '+' on menu, opens Product Page"
-    - "Menu interaction rule — products without variants keep the inline +/qty stepper"
-    - "Product Page preloads existing basket variant + quantity"
+    - "Selection breadcrumb — thinner section + squarer Edit button + charcoal text"
+    - "Uniform charcoal (#2C2C2C) text across product and menu cards"
+    - "FAQ questions un-bolded (font-weight 500) and text 15px (thin container preserved)"
+    - "Collapsible sections restored to 15px text (thin container preserved), charcoal"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -3648,7 +3648,53 @@ test_plan:
 agent_communication:
     - agent: "main"
       message: |
-        Two changes to verify.
+        Style polish batch — verify at mobile 390×844 (and desktop 1440×900 where noted).
+
+        A) SELECTION BREADCRUMB (bottom of navbar, on /menu):
+           - `.selection-breadcrumb` mobile computed padding-top === "2px" AND
+             padding-bottom === "2px" (was 3px).
+           - `.selection-breadcrumb-edit` (data-testid="selection-breadcrumb-edit"):
+             * border-radius === "4px" (was 999px pill)
+             * padding-top === "1px" AND padding-bottom === "1px" (thinner)
+             * font-size === "11px" and matches the height of the "Raw Food Menu"
+               title beside it (line-height 1.4, inline with text)
+           - `.selection-breadcrumb-title` color === "rgb(44, 44, 44)" (was brown).
+
+        B) COLLAPSIBLE SECTIONS (Ingredients / Nutritional Analysis / Product Info /
+           Feeding Guide on the Product Page detail modal or /product/:id):
+           - Title font-size === "15px" (RESTORED from the smaller 13px)
+           - Title padding-top === "9px", padding-bottom === "9px" (thin container
+             preserved).
+           - Title color === "rgb(44, 44, 44)".
+           - Body text (Ingredients paragraph) color === "rgb(44, 44, 44)".
+
+        C) FAQ SECTION (Frequently Asked at bottom of Product Page):
+           - `[data-testid^="product-faq-"] button` font-weight === "500"
+             (NOT 700). Text is 15px, color rgb(44, 44, 44).
+           - `[data-testid="product-faq-section"]` marginTop === "0px" (space above
+             the "Frequently Asked" heading was reduced from 8px → 0px).
+
+        D) PRODUCT PAGE UNIFORM COLOUR (test on /product/cd-chicken or via clicking
+           "+" from menu):
+           - `.pd-shopify-collection` (COMFORT DINNER label) computed color === "rgb(44, 44, 44)"
+           - `.pd-shopify-title` color === "rgb(44, 44, 44)"
+           - `.pd-shopify-price` color === "rgb(44, 44, 44)"
+           - `.pd-shopify-price-from` (FROM prefix) color === "rgb(44, 44, 44)"
+           - `.pd-shopify-price-unit` (/lb) color === "rgb(44, 44, 44)"
+           - `.pd-shopify-desc` color === "rgb(44, 44, 44)"
+
+        E) MENU CARDS UNIFORM COLOUR:
+           - `.product-card-title`, `.product-card-desc`, `.product-card-price` and
+             all inner `.price-*` spans computed color === "rgb(44, 44, 44)".
+
+        F) TREAT PAGE COLLAPSIBLES parity — on /treat/<any> or via clicking "+" on
+           a treat card:
+           - CollapsibleSection title padding-top / padding-bottom === "9px"
+           - Title font-size === "15px"; title color rgb(44, 44, 44).
+
+        G) NO console errors.
+
+        Do NOT retest funnel/hero/tabs — already verified.
 
         A) MOBILE — fix breadcrumb padding cascade:
         - Added !important on the mobile-only rule so `.selection-breadcrumb`
