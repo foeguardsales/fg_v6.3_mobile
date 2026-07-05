@@ -1031,9 +1031,13 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         )}
       </div>
 
-      {/* Stacked content: Title → Price (tap card to open detail) */}
+      {/* Stacked content: Title → Description → Price (tap card to open detail) */}
       <div className="product-card-content">
         <h4 className="product-card-title">{product.name}</h4>
+
+        <p className="product-card-desc">
+          {product.mini_description || product.description.split('.')[0]}
+        </p>
 
         <div className="product-card-price">
           {selectedQty > 0 ? (

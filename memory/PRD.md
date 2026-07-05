@@ -9,15 +9,18 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 
 ## What's Implemented (Feb 2026)
 
-### Jun 2026 — Iteration 19: Shopify Headless UI prep (Menu / Product / Treat / Cart redesign) — tested 12/12 PASS
-- **Menu cards** (`BoxBuilder.js` ProductCard): descriptions removed; show only Title + price. Price shows **"From $X.XX/lb"** = lowest possible per-lb (base÷6 × 0.85, i.e. max 15% off) when qty 0; total + (per-lb) when qty>0. `+` button when not in cart / `[− qty +]` pill when in cart (unchanged).
-- **Menu floating button** → **"View Cart • $XX.XX"** (running subtotal), opens the cart drawer. (Removed the old "Add Xlb to Cart · Save X%".)
-- **Category tab bar** (`.menu-category-text--on-hero`): brown shade `rgba(59,42,26,0.86)` + light text; selected tab = **bold + underline, NOT larger**; reduced padding.
-- **Product Page** (`ProductDetail.js`): strict order — Image → Collection+Title → Price ("From $X/lb") → Short description → Feature section (✓ checks + trust icons) → **Personalizations** (Uber-style radio group, placeholder) → **Variant pills** (`1 lb` / `1.5 lb`, placeholder) → Quantity → **Button "Add to Basket" / "Update Basket"** (inline in content column). ALL golden badges + feature bullets DELETED. Bottom floating button removed.
-- **Treat Page** (`TreatDetail.js`): same restructure; variant pills = `1 pack` / `3 pack` / `5 pack`; gold pills removed; inline Add/Update Basket button.
-- **Variant pills + personalization radios are VISUAL-ONLY** (verified they do NOT change price/qty) — ready to bind to Shopify Storefront API later.
-- **Cart discount messaging** (`CartAndCheckout.js` CartDrawer): no progress bars. Shows `N lb of meals`, `✓ X% Bulk Discount Applied` (when active), and `N lb until Y%` next-tier nudge. Pricing/discount engine untouched.
-- New CSS: `.pd-variant-group/.pd-pill/.pd-radio-*`, `.pd-basket-btn`, `.price-from`, `.pd-shopify-price-from`, `.cart-discount-*`.
+### Jun 2026 — Iteration 19: Shopify Headless UI prep (Menu / Product / Treat / Cart redesign)
+
+**Iteration 19b — user corrections (applied):**
+- **Menu cards**: product **descriptions RESTORED** (were wrongly removed). Title, description and price now render in the SAME font (Barlow Semi Condensed) at the SAME size (15px mobile / 16px desktop) so they look equal; "From" label now brown `#3B2A1A` (was khaki).
+- **Category strip** (`.menu-category-text--on-hero`): thinner padding (`2px 12px 3px`, esp. top), lighter overlay `rgba(59,42,26,0.5)`; hero margin-bottom reduced to 6px so menu sits tight under it.
+- **Personalize section REMOVED** from product + treat pages (was not requested).
+- **Packaging (meals) / Pack Size (treats)** kept, now rendered as **dot-style radios** (`pd-radio-row`), not oval pills.
+- **Trust badges** (100% Recyclable / Humanely Raised / Made in Canada) moved to **below the Quantity stepper**.
+- **CTA button**: wording unified to **"Add to Cart" / "Update Cart"** and reverted to the **stationary bottom-anchored floating bar** (same format as menu, `bb-floating-checkout` / `--inline` in modal) showing `• $Total`.
+
+**Iteration 19a (initial):** menu "From $X/lb" pricing (base÷6×0.85), View Cart floating button, cart discount messaging (no progress bars), variant/personalization placeholders — pricing/discount engine untouched.
+
 
 
 ### 2025-07 — Menu/product batch #2 (verified by testing agent, 5/5 PASS)

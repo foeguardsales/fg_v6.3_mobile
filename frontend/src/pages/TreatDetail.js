@@ -10,7 +10,6 @@ const API = `${BACKEND_URL}/api`;
 
 // Shopify variant placeholders (visual only — wired to the Storefront API later)
 const VARIANT_OPTIONS_TREAT = ['1 pack', '3 pack', '5 pack'];
-const PERSONALIZATION_OPTIONS = ['Standard', 'Custom (add a note below)'];
 
 // Shared collapsible — identical design to the meal product detail
 const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
@@ -65,7 +64,6 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
   const [cartOpen, setCartOpen] = useState(false);
   const [orderNotes, setOrderNotes] = useState('');
   const [selectedVariant, setSelectedVariant] = useState(0);
-  const [selectedPersonalization, setSelectedPersonalization] = useState(0);
 
   // Initialize from sessionStorage immediately
   const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
@@ -314,7 +312,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
               {descParagraph || treat.quantity_description}
             </p>
 
-            {/* Feature section — bullet features as checks + trust icons */}
+            {/* Feature section — bullet features as checks */}
             {featureList && featureList.length > 0 && (
               <ul className="pd-shopify-checks" data-testid="treat-checks">
                 {featureList.map((b, i) => (
@@ -322,53 +320,21 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
                 ))}
               </ul>
             )}
-            <div className="pd-shopify-trust" data-testid="treat-trust-row">
-              <div className="pd-shopify-trust-item">
-                <Recycle size={26} strokeWidth={1.8} />
-                <span>100% Recyclable</span>
-              </div>
-              <div className="pd-shopify-trust-item">
-                <Heart size={26} strokeWidth={1.8} />
-                <span>Humanely Raised</span>
-              </div>
-              <div className="pd-shopify-trust-item">
-                <MapPin size={26} strokeWidth={1.8} />
-                <span>Made in Canada</span>
-              </div>
-            </div>
 
-            {/* Personalizations — Uber-style radios (placeholder, will bind to Shopify) */}
-            <div className="pd-variant-group" data-testid="treat-personalizations">
-              <div className="pd-variant-label">Personalize</div>
-              <div className="pd-radio-list">
-                {PERSONALIZATION_OPTIONS.map((opt, i) => (
-                  <button
-                    type="button"
-                    key={opt}
-                    className={`pd-radio-row ${selectedPersonalization === i ? 'is-selected' : ''}`}
-                    onClick={() => setSelectedPersonalization(i)}
-                    data-testid={`treat-personalization-${i}`}
-                  >
-                    <span className="pd-radio-circle" aria-hidden="true" />
-                    <span className="pd-radio-text">{opt}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Variant selection — pack size pills (placeholder, will bind to Shopify) */}
+            {/* Variant selection — dot-style radios (placeholder, will bind to Shopify) */}
             <div className="pd-variant-group" data-testid="treat-variants">
               <div className="pd-variant-label">Pack Size</div>
-              <div className="pd-pill-row">
+              <div className="pd-radio-list">
                 {VARIANT_OPTIONS_TREAT.map((opt, i) => (
                   <button
                     type="button"
                     key={opt}
-                    className={`pd-pill ${selectedVariant === i ? 'is-selected' : ''}`}
+                    className={`pd-radio-row ${selectedVariant === i ? 'is-selected' : ''}`}
                     onClick={() => setSelectedVariant(i)}
                     data-testid={`treat-variant-${i}`}
                   >
-                    {opt}
+                    <span className="pd-radio-circle" aria-hidden="true" />
+                    <span className="pd-radio-text">{opt}</span>
                   </button>
                 ))}
               </div>
@@ -397,14 +363,21 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
               </div>
             </div>
 
-            {/* Add / Update Basket */}
-            <button
-              onClick={handleAddToCart}
-              className="pd-basket-btn"
-              data-testid="treat-add-to-box"
-            >
-              {selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'Update Basket' : 'Add to Basket'}
-            </button>
+            {/* Trust badges — below quantity */}
+            <div className="pd-shopify-trust" data-testid="treat-trust-row">
+              <div className="pd-shopify-trust-item">
+                <Recycle size={26} strokeWidth={1.8} />
+                <span>100% Recyclable</span>
+              </div>
+              <div className="pd-shopify-trust-item">
+                <Heart size={26} strokeWidth={1.8} />
+                <span>Humanely Raised</span>
+              </div>
+              <div className="pd-shopify-trust-item">
+                <MapPin size={26} strokeWidth={1.8} />
+                <span>Made in Canada</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -449,7 +422,16 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
         </div>
       </div>
 
-      {/* Basket CTA now lives inside the content column (Add / Update Basket) */}
+      {/* Floating Add/Update Cart — stationary bottom bar (same format as menu) */}
+      <button
+        onClick={handleAddToCart}
+        className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
+        data-testid="treat-add-to-box"
+      >
+        <span className="bb-floating-action">{selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'Update Cart' : 'Add to Cart'}</span>
+        <span className="bb-floating-sep">•</span>
+        <span className="bb-floating-total">${(treat.price * quantity).toFixed(2)}</span>
+      </button>
 
       {!embedded && <Footer />}
     </>
