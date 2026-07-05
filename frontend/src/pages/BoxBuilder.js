@@ -529,6 +529,12 @@ export const BoxBuilder = () => {
           open={funnelOpen}
           dismissable={true}
           selectedId={selectionId}
+          onCalculator={() => {
+            sessionStorage.setItem('foeguard_selection', 'shop-raw');
+            setSelectionId('shop-raw');
+            setFunnelOpen(false);
+            setCalcOpen(true);
+          }}
           onClose={() => {
             // If the user reached the funnel by clicking "Shop Now" on the home page,
             // closing (X) should return them to where they started — the home page.
@@ -560,32 +566,36 @@ export const BoxBuilder = () => {
         />
 
         {/* Category Tabs: Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats + Feeding Calculator link on the right */}
-        <div className="menu-category-text" data-testid="menu-category-tabs">
-          {bannerCards.map((card) => (
-            <button
-              key={card.id}
-              onClick={() => handleCategoryClick(card)}
-              data-testid={`category-${card.id}`}
-              className={`menu-category-text-btn ${card.active ? 'is-active' : ''}`}
-            >
-              {card.title}
-            </button>
-          ))}
-          <button
-            data-testid="category-calculator-link"
-            onClick={() => setCalcOpen(true)}
-            className="menu-category-calc-link"
-            aria-label="Open feeding calculator"
-            type="button"
-          >
-            Feeding calculator
-          </button>
-        </div>
-
-        {/* Immersive category hero — placeholder image + copy (Shopify collection data soon) */}
+        {/* Immersive category hero with the menu-selection tabs OVERLAID on the image
+            (cinematic — image sits under the selection, less wasted vertical space on mobile) */}
         {(() => {
           const hero = CATEGORY_HERO[`${petType}-${viewMode}`];
-          if (!hero) return null;
+          const tabs = (
+            <div className="menu-category-text menu-category-text--on-hero" data-testid="menu-category-tabs">
+              {bannerCards.map((card) => (
+                <button
+                  key={card.id}
+                  onClick={() => handleCategoryClick(card)}
+                  data-testid={`category-${card.id}`}
+                  className={`menu-category-text-btn ${card.active ? 'is-active' : ''}`}
+                >
+                  {card.title}
+                </button>
+              ))}
+              <button
+                data-testid="category-calculator-link"
+                onClick={() => setCalcOpen(true)}
+                className="menu-category-calc-link"
+                aria-label="Open feeding calculator"
+                type="button"
+              >
+                Feeding Calculator
+              </button>
+            </div>
+          );
+          if (!hero) {
+            return <div className="menu-category-text" data-testid="menu-category-tabs">{tabs.props.children}</div>;
+          }
           return (
             <div className="menu-collection-hero" data-testid="menu-collection-hero">
               <div
@@ -593,6 +603,7 @@ export const BoxBuilder = () => {
                 style={{ backgroundImage: `url(${hero.image})` }}
               >
                 <div className="menu-collection-hero-overlay" aria-hidden="true" />
+                {tabs}
                 <div className="menu-collection-hero-text">
                   <h2 className="menu-collection-hero-title">{hero.title}</h2>
                   <p className="menu-collection-hero-desc">{hero.desc}</p>
@@ -1056,7 +1067,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
 
 // ===== Menu Funnel Overlay — hovers above /menu on first landing =====
-const MenuFunnel = ({ open, onShopRaw, onMealPlan, onClose, dismissable = true, selectedId = null }) => {
+const MenuFunnel = ({ open, onShopRaw, onMealPlan, onClose, onCalculator, dismissable = true, selectedId = null }) => {
   const options = [
     {
       id: 'shop-raw',
@@ -1109,6 +1120,16 @@ const MenuFunnel = ({ open, onShopRaw, onMealPlan, onClose, dismissable = true, 
             </button>
           ))}
         </div>
+        {onCalculator && (
+          <button
+            type="button"
+            className="menu-funnel-calc-link"
+            onClick={onCalculator}
+            data-testid="funnel-calculator-link"
+          >
+            Feeding Calculator
+          </button>
+        )}
       </div>
     </div>
   );

@@ -623,12 +623,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               {product.description}
             </p>
 
-            {/* Feature pills — smaller harvest gold (Uber-Eats style) */}
-            <div className="pd-shopify-features pd-shopify-features--mini" data-testid="product-badges">
-              <span className="pd-shopify-feature">Dogs of all-life stages</span>
-              <span className="pd-shopify-feature">Fresh-to-order</span>
-              <span className="pd-shopify-feature">Human grade</span>
-            </div>
+            {/* Features list — restructured from the old badges into plain bullets */}
+            <ul className="pd-shopify-featbullets" data-testid="product-features">
+              <li>Dogs of all life stages</li>
+              <li>Fresh to order</li>
+              <li>Human grade</li>
+            </ul>
 
             {/* Checks list (highlights as ✓) */}
             {product.highlights && product.highlights.length > 0 && (
@@ -714,6 +714,32 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 16px 4px' }}>
           <ProductFaqSection />
         </div>
+
+        {/* Cart button — EXISTING design/function, now anchored at the bottom of the product page */}
+        {(() => {
+          const ctaQty = quantity > 0 ? quantity : 6;
+          const totalPrice = getDiscountedPrice(product) * (ctaQty / 6);
+          const basePriceLb = product.pricing?.find(p => p.size_lb === 6)?.price || 0;
+          const discountedLb = getDiscountedPrice(product);
+          const savePct = basePriceLb > 0 ? Math.round((1 - discountedLb / basePriceLb) * 100) : 0;
+          return (
+            <button
+              onClick={() => {
+                if (quantity <= 0) { setBoxQty(6); }
+                if (embedded && onClose) onClose(); else navigate('/menu');
+              }}
+              className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
+              data-testid="product-add-to-box"
+            >
+              <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
+              <span className="bb-floating-sep">·</span>
+              <span className="bb-floating-action">Add {ctaQty}lb to Cart</span>
+              {savePct > 0 && (
+                <span className="bb-floating-save" data-testid="floating-save-badge">Save {savePct}%</span>
+              )}
+            </button>
+          );
+        })()}
       </div>
 
       {!embedded && <Footer />}
