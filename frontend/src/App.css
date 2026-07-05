@@ -5701,7 +5701,7 @@ h2, h3, h4 {
   }
   .menu-collection-hero { margin: 0 0 6px; }
   .menu-collection-hero-img { border-radius: 0; }
-  .selection-breadcrumb { padding: 2px 12px !important; margin-top: -6px; }
+  .selection-breadcrumb { padding: 1px 12px !important; margin-top: -12px; }
 }
 .menu-collection-hero-img {
   position: relative;
@@ -7193,35 +7193,39 @@ h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 8px;
 }
 .selection-breadcrumb-label {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 6px;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 11px;
   color: #2C2C2C;
+  line-height: 1.4;
 }
 .selection-breadcrumb-prefix {
   color: #2C2C2C;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 10px;
+  font-size: 11px;
+  line-height: 1.4;
 }
 .selection-breadcrumb-title {
   font-weight: 700;
-  font-size: 18px !important;
+  font-size: 11px !important;
   color: #2C2C2C;
-  font-family: var(--font-heading);
-  letter-spacing: -0.1px;
+  font-family: var(--font-body);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.4;
 }
 .selection-breadcrumb-edit {
   background: transparent;
   border: 1px solid #2C2C2C;
   color: #2C2C2C;
-  padding: 1px 8px;
+  padding: 0px 6px;
   border-radius: 4px;
   font-family: var(--font-body);
   font-size: 11px;
@@ -7232,6 +7236,8 @@ h2, h3, h4 {
   transition: background 0.15s, color 0.15s;
   line-height: 1.4;
   align-self: center;
+  display: inline-flex;
+  align-items: center;
 }
 .selection-breadcrumb-edit:hover {
   background: #2C2C2C;
