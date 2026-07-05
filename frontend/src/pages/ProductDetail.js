@@ -45,8 +45,8 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           fontSize: '15px',
           fontWeight: '700',
           color: '#2B2B2B',
-          letterSpacing: '0.04em',
-          textTransform: 'uppercase'
+          letterSpacing: '0.02em',
+          textTransform: 'none'
         }}
       >
         <span>{title}</span>
@@ -253,7 +253,7 @@ const ProductFaqSection = () => {
   ];
   const [openIdx, setOpenIdx] = useState(0);
   return (
-    <section data-testid="product-faq-section" style={{ marginTop: '28px', marginBottom: '8px' }}>
+    <section data-testid="product-faq-section" style={{ marginTop: '8px', marginBottom: '0' }}>
       <h2 style={{
         fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
@@ -340,8 +340,13 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const [activeTab, setActiveTab] = useState('description');
 
   useEffect(() => {
-    const root = document.getElementById('root');
-    if (root) root.scrollTop = 0;
+    // Only reset scroll on the standalone product page. When embedded as a bottom-sheet
+    // the menu behind must keep its scroll position so closing returns the user to where
+    // they were (previous product placement).
+    if (!embedded) {
+      const root = document.getElementById('root');
+      if (root) root.scrollTop = 0;
+    }
     
     // Sync with sessionStorage whenever the page becomes visible
     const syncFromStorage = () => {
@@ -686,7 +691,9 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 </>
               )}
             </CollapsibleSection>
-            <CollapsibleSection title="Notes">
+            {/* Notes — always open, stationary (no collapse toggle), same design/placement */}
+            <div className="pd-notes-static" style={{ borderBottom: '1px solid #E8DDD0', padding: '18px 0 22px' }}>
+              <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, color: '#2B2B2B', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
               <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', color: '#3B2A1A', marginBottom: '6px' }}>
                 Add any special notes for your order (e.g. remove an ingredient, preference).
               </label>
@@ -698,12 +705,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 placeholder="e.g. No bone, extra liver, cut into small pieces…"
                 data-testid="product-notes-input"
               />
-            </CollapsibleSection>
+            </div>
           </div>
         </div>
 
-        {/* FAQ section — bottom of product page, one large container (historical) */}
-        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '8px 16px 8px' }}>
+        {/* FAQ section — bottom of product page */}
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 16px 4px' }}>
           <ProductFaqSection />
         </div>
       </div>
@@ -744,7 +751,6 @@ export const ProductDetailModal = ({ productId, onClose }) => {
   const [dragY, setDragY] = useState(0);
   const [dragging, setDragging] = useState(false);
   const startY = useRef(null);
-  const startedAtTop = useRef(false);
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -754,27 +760,23 @@ export const ProductDetailModal = ({ productId, onClose }) => {
   }, []);
 
   const onTouchStart = (e) => {
-    // Allow swipe-to-dismiss only when the inner scroller is at the top;
-    // otherwise let the user scroll content normally.
-    const scrollEl = scrollRef.current;
-    startedAtTop.current = !scrollEl || scrollEl.scrollTop <= 0;
+    // Drag-to-dismiss is initiated ONLY from the top grab bar (this handler is bound to it),
+    // so content inside the sheet scrolls normally and never hijacks the swipe.
     startY.current = e.touches[0].clientY;
     setDragging(true);
   };
   const onTouchMove = (e) => {
-    if (startY.current == null || !startedAtTop.current) return;
+    if (startY.current == null) return;
     const dy = e.touches[0].clientY - startY.current;
     if (dy > 0) setDragY(dy);
   };
   const onTouchEnd = () => {
     setDragging(false);
-    // Threshold: 30% of viewport height OR 200px (whichever is smaller)
     const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
-    const threshold = Math.min(vh * 0.3, 200);
-    if (startedAtTop.current && dragY > threshold) { onClose(); return; }
+    const threshold = Math.min(vh * 0.22, 150);
+    if (dragY > threshold) { onClose(); return; }
     setDragY(0);
     startY.current = null;
-    startedAtTop.current = false;
   };
 
   return (
@@ -787,12 +789,16 @@ export const ProductDetailModal = ({ productId, onClose }) => {
         className="bb-overlay-panel bb-overlay-panel--product"
         role="dialog"
         aria-modal="true"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
         style={{ transform: dragY ? `translateY(${dragY}px)` : undefined, transition: dragging ? 'none' : 'transform 0.2s ease' }}
       >
-        <div className="bb-sheet-grab" aria-hidden="true">
+        {/* Full-width drag bar — grab the tab OR anywhere left/right of it to pull the sheet down */}
+        <div
+          className="bb-sheet-grab"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          data-testid="sheet-drag-handle"
+        >
           <span />
         </div>
         <button

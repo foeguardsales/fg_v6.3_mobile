@@ -34,8 +34,8 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           fontSize: '15px',
           fontWeight: '700',
           color: '#2B2B2B',
-          letterSpacing: '0.04em',
-          textTransform: 'uppercase'
+          letterSpacing: '0.02em',
+          textTransform: 'none'
         }}
       >
         <span>{title}</span>
@@ -72,8 +72,10 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const root = document.getElementById('root');
-    if (root) root.scrollTop = 0;
+    if (!embedded) {
+      const root = document.getElementById('root');
+      if (root) root.scrollTop = 0;
+    }
 
     const syncFromStorage = () => {
       const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
@@ -385,7 +387,8 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
                 {treat.feeding_guide?.handling || 'Keep frozen until ready. Thaw in fridge. Use within 3 days of thawing.'}
               </p>
             </CollapsibleSection>
-            <CollapsibleSection title="Notes">
+            <div className="pd-notes-static" style={{ borderBottom: '1px solid #E8DDD0', padding: '18px 0 22px' }}>
+              <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, color: '#2B2B2B', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
               <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', color: '#3B2A1A', marginBottom: '6px' }}>
                 Add any special notes for your order.
               </label>
@@ -397,7 +400,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
                 placeholder="e.g. cut into smaller pieces, no additives…"
                 data-testid="treat-notes-input"
               />
-            </CollapsibleSection>
+            </div>
           </div>
         </div>
       </div>

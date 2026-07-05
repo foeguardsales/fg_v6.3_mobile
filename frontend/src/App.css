@@ -1486,7 +1486,7 @@ h2, h3, h4 {
 .box-builder {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 10px 0 100px;
+  padding: 2px 0 100px;
   background: #F5F3EF;
 }
 @media (min-width: 760px) {
@@ -1896,12 +1896,12 @@ h2, h3, h4 {
   margin: 0;
 }
 
-/* Product Grid — Uber Eats style: 1-col mobile, 3-col desktop */
+/* Product Grid — Uber Eats style: 1-col mobile (continuous list, no gaps = "part of the page"), multi-col desktop */
 .product-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
-  row-gap: 22px;
+  gap: 0;
+  row-gap: 0;
   border-top: none;
 }
 @media (min-width: 760px) {
@@ -5697,7 +5697,7 @@ h2, h3, h4 {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 14px;
+  border-radius: 0;               /* mobile: full-bleed, no curved container */
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -5748,6 +5748,7 @@ h2, h3, h4 {
     aspect-ratio: auto;
     height: 440px;
     max-height: 48vh;
+    border-radius: 14px;
   }
   .menu-collection-hero-text {
     display: flex;
@@ -5906,6 +5907,9 @@ h2, h3, h4 {
   cursor: pointer;
   z-index: 998;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5921,7 +5925,7 @@ h2, h3, h4 {
   .bb-floating-checkout {
     left: 50%;
     right: auto;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateZ(0);
     bottom: 16px;
     width: 100%;
     max-width: 1100px;
@@ -6792,13 +6796,15 @@ h2, h3, h4 {
 /* Floating cart button on the product detail page (both full page + inline modal) — inherits bb-floating-checkout styling */
 .bb-floating-checkout--inline {
   position: sticky !important;
-  bottom: 12px;
+  bottom: 8px;
   left: auto !important;
   right: auto !important;
-  transform: none !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+  will-change: transform;
   width: calc(100% - 24px) !important;
   max-width: none !important;
-  margin: 18px 12px 12px !important;
+  margin: 18px 12px 8px !important;
   z-index: 6;
 }
 @media (min-width: 760px) {
@@ -6908,7 +6914,7 @@ h2, h3, h4 {
   z-index: 90;
   background: #F5F3EF;
   border-bottom: 1px solid #EDEAE7;
-  padding: 10px 20px;
+  padding: 5px 16px;
 }
 .selection-breadcrumb-inner {
   max-width: 1100px;
