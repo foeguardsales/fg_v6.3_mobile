@@ -5707,6 +5707,7 @@ h2, h3, h4 {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;   /* hero image stays put as content scrolls */
   border-radius: 0;               /* mobile: full-bleed, no curved container */
   overflow: hidden;
   display: flex;
@@ -5728,21 +5729,21 @@ h2, h3, h4 {
 /* Brown-shaded tab bar → light text; selected = bold + underline (NOT larger) */
 .menu-category-text--on-hero .menu-category-text-btn {
   color: #EDE6DA;
-  font-size: 24px;
-  padding: 2px 2px 6px;
+  font-size: 15px;
+  padding: 2px 2px 5px;
 }
 .menu-category-text--on-hero .menu-category-text-btn:hover { color: #FFFFFF; }
 .menu-category-text--on-hero .menu-category-text-btn.is-active {
   color: #FFFFFF;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 16px;
   border-bottom-color: #FFFFFF;
 }
 .menu-category-text--on-hero .menu-category-calc-link { color: #EDE6DA; }
 .menu-category-text--on-hero .menu-category-calc-link:hover { color: #FFFFFF; }
 @media (min-width: 760px) {
-  .menu-category-text--on-hero .menu-category-text-btn,
-  .menu-category-text--on-hero .menu-category-text-btn.is-active { font-size: 24px; }
+  .menu-category-text--on-hero .menu-category-text-btn { font-size: 16px; }
+  .menu-category-text--on-hero .menu-category-text-btn.is-active { font-size: 17px; }
 }
 /* Home-page style gradient — transparent up top, darker toward the bottom for legible text */
 .menu-collection-hero-overlay {
@@ -7180,9 +7181,9 @@ h2, h3, h4 {
 .selection-breadcrumb-label {
   display: inline-flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 6px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 12px;
   color: #3B2A1A;
 }
 .selection-breadcrumb-prefix {
@@ -7190,21 +7191,21 @@ h2, h3, h4 {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 11px;
+  font-size: 10px;
 }
 .selection-breadcrumb-title {
   font-weight: 700;
-  font-size: 18px;
+  font-size: 14px;
   color: #3B2A1A;
 }
 .selection-breadcrumb-edit {
   background: transparent;
   border: 1px solid #3B2A1A;
   color: #3B2A1A;
-  padding: 6px 14px;
+  padding: 4px 10px;
   border-radius: 999px;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   cursor: pointer;
   text-transform: uppercase;

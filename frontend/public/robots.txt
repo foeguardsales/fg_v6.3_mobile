@@ -1,0 +1,14 @@
+# FoeGuard robots.txt (headless storefront)
+#
+# The dynamic Shopify-driven robots.txt lives at /api/robots.txt; this
+# static file mirrors it so crawlers hitting the root also succeed.
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /account/
+Disallow: /checkout
+Disallow: /api/
+
+Sitemap: /api/sitemap.xml

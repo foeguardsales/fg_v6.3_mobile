@@ -5,6 +5,7 @@ import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { CartDrawer } from '../components/CartAndCheckout';
 import { catalog as shopifyCatalog } from '../services/shopify';
+import { SeoHead } from '../components/SeoHead';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -519,6 +520,9 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
 
   return (
     <>
+      {!embedded && productId && (
+        <SeoHead endpoint={`/api/seo/product/${encodeURIComponent(productId)}`} />
+      )}
       {!embedded && (
         <>
           <Navbar />

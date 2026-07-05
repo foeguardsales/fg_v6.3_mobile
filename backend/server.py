@@ -982,6 +982,13 @@ async def delete_promo(code: str, admin: dict = Depends(get_admin_user)):
 from shopify_service import shopify_router  # noqa: E402
 api_router.include_router(shopify_router)
 
+# ---- SEO router -----------------------------------------------------------
+# Server-generated, Shopify-sourced SEO output (JSON payloads for the
+# frontend Helmet layer + true text/xml responses for /sitemap.xml and
+# /robots.txt).
+from seo_service import seo_router  # noqa: E402
+api_router.include_router(seo_router)
+
 app.include_router(api_router)
 
 app.add_middleware(

@@ -333,47 +333,6 @@ export const AccountPage = () => {
           {/* Saved Addresses Section (Shopify customer) */}
           <AddressesSection customer={user?.shopify} />
 
-          {/* Quick Actions */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '16px',
-            marginBottom: '32px'
-          }}>
-            <a
-              href="/build-box"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '20px',
-                background: '#c8102e',
-                color: 'white',
-                borderRadius: '12px',
-                textDecoration: 'none',
-                fontWeight: '600'
-              }}
-            >
-              Build a Box <ChevronRight size={20} />
-            </a>
-            <a
-              href="/calculator"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '20px',
-                background: '#2F4538',
-                color: 'white',
-                borderRadius: '12px',
-                textDecoration: 'none',
-                fontWeight: '600'
-              }}
-            >
-              Feeding Calculator <ChevronRight size={20} />
-            </a>
-          </div>
-          
           <Suspense fallback={<div>Loading orders...</div>}>
             <OrdersList orders={orders} onManage={(order) => setSelectedOrder(order)} />
           </Suspense>

@@ -8,6 +8,7 @@ import { ProductDetailModal } from './ProductDetail';
 import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
 import { catalog as shopifyCatalog } from '../services/shopify';
+import { SeoHead } from '../components/SeoHead';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -511,6 +512,15 @@ export const BoxBuilder = () => {
 
   return (
     <>
+      {/* Server-generated SEO from Shopify (uses `meaty-bone-treats` when the
+          user is on the treats tab, otherwise the site-wide menu SEO). */}
+      <SeoHead
+        endpoint={
+          location.pathname.startsWith('/menu/treats')
+            ? '/api/seo/collection/meaty-bone-treats'
+            : '/api/seo/site/home'
+        }
+      />
       <Navbar />
 
       {/* Selection breadcrumb — visible after funnel is dismissed */}
@@ -974,7 +984,16 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   };
   const stopAndAdd = (e) => {
     e.stopPropagation();
-    if (canAdd) onUpdate(product.product_id, product.name, 6);
+    if (!canAdd) return;
+    // If the product has selectable variants (size, packaging, etc.) open the
+    // product page so the shopper can pick before adding to the box. Only
+    // products flagged `no_variants: true` (simple treats, single-variant
+    // items) get the inline quick-add.
+    if (product && product.no_variants === false) {
+      goToProduct();
+      return;
+    }
+    onUpdate(product.product_id, product.name, 6);
   };
 
   // Display the price for the currently selected qty (default 6lb pack when none selected).

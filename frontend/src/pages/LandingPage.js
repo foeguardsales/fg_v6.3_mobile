@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus, Sprout, Leaf, ChefHat, Award } from 'lucide-react';
 import { useCart, SlideCart } from '../contexts/CartContext';
+import { SeoHead } from '../components/SeoHead';
 
 // FoeGuard Brand Colors — Farm Palette
 const COLORS = {
@@ -678,6 +679,7 @@ export const LandingPage = () => {
 
   return (
     <>
+      <SeoHead endpoint="/api/seo/site/home" />
       <ModernNavbar />
       <SlideCart />
       

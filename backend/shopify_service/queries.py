@@ -39,6 +39,10 @@ fragment ProductFields on Product {
   vendor
   tags
   availableForSale
+  onlineStoreUrl
+  updatedAt
+  publishedAt
+  seo { title description }
   # totalInventory  # requires unauthenticated_read_product_inventory scope
   priceRange {
     minVariantPrice { ...MoneyFields }
@@ -257,8 +261,10 @@ query Collections($first: Int = 20, $after: String) {
       handle
       title
       description
-      image { ...ImageFields }
+      onlineStoreUrl
       updatedAt
+      seo { title description }
+      image { ...ImageFields }
     }
   }
 }
@@ -273,7 +279,11 @@ query CollectionByHandle($handle: String!, $first: Int = 24, $after: String) {
     id
     handle
     title
+    description
     descriptionHtml
+    onlineStoreUrl
+    updatedAt
+    seo { title description }
     image { url altText width height }
     products(first: $first, after: $after) {
       pageInfo { hasNextPage endCursor }
@@ -449,6 +459,25 @@ query Shop {
     primaryDomain { host url }
     plan { displayName partnerDevelopment shopifyPlus }
     currencyCode
+  }
+}
+"""
+
+# ---------- Storefront Shop (for SEO / organization schema) ---------------
+
+STOREFRONT_SHOP_QUERY = """
+query StorefrontShop {
+  shop {
+    name
+    description
+    primaryDomain { host url }
+    brand {
+      slogan
+      shortDescription
+      logo { image { url altText width height } }
+      squareLogo { image { url altText width height } }
+      colors { primary { background foreground } secondary { background foreground } }
+    }
   }
 }
 """

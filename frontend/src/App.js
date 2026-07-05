@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -77,8 +78,9 @@ function App() {
 
   return (
     <Elements stripe={stripePromise}>
-      <ShopifyAuthProvider>
-        <CartProvider>
+      <HelmetProvider>
+        <ShopifyAuthProvider>
+          <CartProvider>
         <BrowserRouter>
           <ScrollToTop />
           <Routes>
@@ -108,8 +110,9 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </BrowserRouter>
-      </CartProvider>
+        </CartProvider>
       </ShopifyAuthProvider>
+      </HelmetProvider>
     </Elements>
   );
 }
