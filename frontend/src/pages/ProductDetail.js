@@ -40,7 +40,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '18px 0',
+          padding: '12px 0',
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
@@ -57,7 +57,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
       </button>
       {isOpen && (
         <div style={{
-          padding: '0 0 22px'
+          padding: '0 0 16px'
         }}>
           {children}
         </div>
@@ -254,7 +254,7 @@ const ProductFaqSection = () => {
       a: "All of our meats are sourced directly from our own farm in Acton, ON and a small group of hand-picked Ontario partners we know personally. Every recipe is prepared in our government-regulated, human-grade kitchen — high quality, consistent and fully traceable."
     }
   ];
-  const [openIdx, setOpenIdx] = useState(0);
+  const [openIdx, setOpenIdx] = useState(-1);
   return (
     <section data-testid="product-faq-section" style={{ marginTop: '8px', marginBottom: '0' }}>
       <h2 style={{
@@ -288,7 +288,7 @@ const ProductFaqSection = () => {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '18px 0',
+                  padding: '12px 0',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
@@ -304,7 +304,7 @@ const ProductFaqSection = () => {
                 {isOpen ? <ChevronUp size={18} color="#c8102e" /> : <ChevronDown size={18} color="#c8102e" />}
               </button>
               {isOpen && (
-                <div style={{ padding: '0 0 22px', fontSize: '14px', color: '#3B2A1A', lineHeight: 1.7 }}>
+                <div style={{ padding: '0 0 16px', fontSize: '14px', color: '#3B2A1A', lineHeight: 1.7 }}>
                   {f.a}
                 </div>
               )}
