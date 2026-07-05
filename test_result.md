@@ -3637,7 +3637,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Mobile: reduce padding above SelectionBreadcrumb AND between breadcrumb and hero/tabs"
+    - "Mobile: SelectionBreadcrumb padding 3px (specificity fix — !important)"
+    - "Menu interaction rule — products with variants show ONLY '+' on menu, opens Product Page"
+    - "Menu interaction rule — products without variants keep the inline +/qty stepper"
+    - "Product Page preloads existing basket variant + quantity"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -3645,13 +3648,60 @@ test_plan:
 agent_communication:
     - agent: "main"
       message: |
-        Mobile-only spacing tightening on /menu:
-        - `.selection-breadcrumb` mobile vertical padding: 4px → 3px (keep font size,
-          keep same design — just less air).
-        - `.box-builder` (and .box-builder--narrow) mobile padding-top: 2px → 0
-        - `.menu-collection-hero` mobile margin-top: 2px → 0 (hero attaches directly
-          below the SelectionBreadcrumb; no visible gap).
-        Desktop rules untouched.
+        Two changes to verify.
+
+        A) MOBILE — fix breadcrumb padding cascade:
+        - Added !important on the mobile-only rule so `.selection-breadcrumb`
+          computed padding-top === "3px" and padding-bottom === "3px" at 390×844.
+
+        B) NEW MENU INTERACTION RULE (both foods AND treats):
+        We now split menu cards into two categories:
+
+        - "WITH VARIANTS" (default for ALL current foods/treats — since every product
+          page shows a Packaging / Pack-Size picker):
+          * Menu card shows ONLY a "+" button — NEVER a qty stepper.
+          * Clicking "+" (or the card body) navigates to /product/:id (foods) or
+            /treat/:id (treats).
+          * Even if the product is already in the basket, the menu card still shows
+            just "+" (never a qty pill, never a highlighted 'is-selected' state).
+          * The card price shows "From $X.XX/lb" (foods) or a single price (treats),
+            never a line total based on selected qty.
+          * The Product Page preloads any existing basket selection:
+              - `quantity` preloaded from `selectedProteins[productId].qty`
+              - `selectedVariant` preloaded from `selectedProteins[productId].variant`
+              - Similar for treats via `selectedTreats[i].variant`.
+          * When variant is changed on the product page while the product is already
+            in the basket, the persisted variant updates immediately (no navigation
+            required).
+
+        - "WITHOUT VARIANTS" (products explicitly flagged `no_variants: true` — none
+          in the current seed data, but the code path must work when flagged):
+          * "+" adds one unit to the basket instantly.
+          * Card then shows the classic `[-] qty [+]` stepper.
+          * Decreasing to 0 reverts back to the "+" button.
+
+        TESTS TO RUN (see backend/testing agent):
+        1. Load /menu at 390×844 (mobile). Dismiss funnel.
+        2. Verify `.selection-breadcrumb` computed padding-top === "3px" AND
+           padding-bottom === "3px".
+        3. On any food product card (data-testid="product-<id>"):
+           - The "+" button exists (data-testid="add-<id>").
+           - There is NO decrease/qty element visible.
+           - Clicking the "+" navigates to /product/<id> (URL changes) and the
+             sheet/product page opens — verify by checking for the product's
+             data-testid="product-detail-page" or the URL pathname starting with
+             `/product/`.
+        4. On the product page, select a different variant (data-testid="variant-1"),
+           then set qty to 6 (data-testid="qty-increase"). Navigate back to /menu.
+           - The menu card MUST still show only "+" (no qty pill).
+           - Re-open the same product page; verify the variant radio at index 1 is
+             still `.is-selected` AND the qty display shows "6 lb".
+        5. For a treat card (data-testid="treat-<id>"):
+           - Same rule: clicking "+" navigates to /treat/<id> (or opens the treat
+             sheet). No inline qty stepper visible on the menu card.
+        6. No console errors introduced.
+
+        Do NOT retest funnel/hero styling or product-page spacing — already verified.
 
         1. **Menu category tabs (Raw Dog Food / Raw Dog Treats / Raw Cat Food / Raw Cat Treats)**
            font size was too large. Reduced from 24px → 15px normal / 17px active
@@ -4073,45 +4123,56 @@ agent_communication:
 
 
 user_problem_statement: |
-  FoeGuard site — mobile spacing tightening on /menu page. Preview URL:
-  https://79777ddb-0447-4718-b145-a2101c2c408b.preview.emergentagent.com
+  FoeGuard site — verify (A) mobile breadcrumb padding cascade fix, and (B) new "with variants / without variants" menu-card interaction rules.
   
-  Test ONLY the mobile viewport (390 × 844). Skip desktop.
+  Preview URL: https://79777ddb-0447-4718-b145-a2101c2c408b.preview.emergentagent.com
   
-  STEPS:
-  1. Load /menu at 390×844.
-  2. If the "How would you like to order?" funnel is showing, dismiss it by clicking the funnel-shop-raw card (data-testid="funnel-shop-raw") OR the X button (data-testid="menu-funnel-close").
-  3. After the funnel closes you should see:
-     - Navbar at top
-     - A sticky `.selection-breadcrumb` strip that says "SELECTION: Raw Food Menu Edit"
-     - Directly below that, the `.menu-collection-hero` image with the category tabs (`.menu-category-tabs-wrap--on-hero`) at the TOP of the hero image.
+  Viewports: mobile 390×844 for all tests unless stated. Desktop 1440×900 only for a quick regression on test C.
   
-  TESTS:
+  CONTEXT:
+  - On /menu the site first shows a "How would you like to order?" funnel overlay. Dismiss by clicking the funnel-shop-raw card (data-testid="funnel-shop-raw"). You should now see the SelectionBreadcrumb ("SELECTION: Raw Food Menu Edit") and below it the hero image with category tabs and the list of product cards.
+  - Every product currently seeded in the DB is considered to have variants (foods show a Packaging picker on the detail page). No products are flagged `no_variants: true` in seed data yet, so all menu cards must follow the "with variants" rule.
   
-  TEST 1 — `.selection-breadcrumb` padding tightened:
-  - Get computed padding-top / padding-bottom of `.selection-breadcrumb`.
-  - PASS if padding-top === "3px" AND padding-bottom === "3px".
-  - FAIL if either is >= 4px.
-  - Confirm the breadcrumb still visually looks professional (title/edit chip not clipped).
+  TEST A — Mobile SelectionBreadcrumb padding cascade fix (390×844):
+  1. Load /menu, dismiss funnel.
+  2. Compute `getComputedStyle(document.querySelector('.selection-breadcrumb')).paddingTop` and `paddingBottom`.
+  3. PASS if both === "3px". FAIL otherwise.
   
-  TEST 2 — `.box-builder--narrow` mobile top padding = 0:
-  - Get computed padding-top of `.box-builder.box-builder--narrow` (the wrapper below the breadcrumb).
-  - PASS if padding-top === "0px".
+  TEST B — Menu food card must show ONLY "+" (never a qty stepper), for products with variants:
+  Do these on mobile 390×844:
+  1. Pick the FIRST product card in the food grid (query: `document.querySelectorAll('[data-testid^="product-"]')[0]`). Note its data-testid → e.g. "product-cd-chicken".
+  2. Verify:
+     - The card contains a button `[data-testid="add-<id>"]` labeled "+" and it IS visible.
+     - The card does NOT contain any element matching `[data-testid="decrease-<id>"]` OR `[data-testid="increase-<id>"]` OR `[data-testid="qty-<id>"]` OR any `.product-card-qty-pill` element.
+  3. Click the "+" button. The product detail sheet/page must open — either a modal with `data-testid="product-modal-overlay"` appears OR the URL pathname now starts with `/product/`.
+  4. Inside the opened product page/sheet, click `[data-testid="variant-1"]` (Packaging option 2 → "1.5 lb"). Verify it becomes `.is-selected`.
+  5. Click `[data-testid="qty-increase"]` ONCE. Verify `[data-testid="qty-display"]` reads "6 lb".
+  6. Close the sheet via `[data-testid="product-modal-close"]` (if present) or navigate back to /menu.
+  7. Back on /menu, RE-locate the SAME product card by its data-testid. Verify:
+     - The card STILL shows only the "+" button (data-testid="add-<id>"). NO qty pill.
+     - The card does NOT have the `.is-selected` class.
+     - The price text still shows "From $X.XX /lb" (contains the word "From").
+  8. Click "+" on that same card again to reopen the product page.
+  9. Verify PRELOAD works:
+     - `[data-testid="variant-1"]` still has `.is-selected` (variant persisted).
+     - `[data-testid="qty-display"]` reads "6 lb" (quantity persisted).
   
-  TEST 3 — Zero gap between SelectionBreadcrumb and the hero/tabs strip:
-  - Compute `breadcrumb.getBoundingClientRect().bottom` and
-    `heroImg = document.querySelector('.menu-collection-hero-img'); heroImg.getBoundingClientRect().top`.
-  - Delta = heroImg.top - breadcrumb.bottom.
-  - PASS if delta between -1 and 2 pixels (essentially touching).
-  - FAIL if delta > 4 pixels.
+  TEST C — Menu treat card must show ONLY "+" (never a qty stepper):
+  1. From /menu switch to Raw Dog Treats tab (data-testid="category-treats" or the tab named "Raw Dog Treats"). If the tab id differs, click any button whose text contains "Treats".
+  2. Pick the first treat card (query: `document.querySelectorAll('[data-testid^="treat-"]')[0]`). Verify:
+     - Button `[data-testid="add-treat-<id>"]` is present and visible.
+     - No `.product-card-qty-pill` element inside the card.
+  3. Click the "+" → verify a treat page/sheet opens (URL starts with /treat/ OR data-testid="product-modal-overlay" present).
+  4. Regression check at desktop 1440×900 for TEST B step 1-2 only (skip variant/qty interaction).
   
-  TEST 4 — Category tabs still visible at TOP of hero image, and shaded overlay still fixed:
-  - The `.menu-category-tabs-wrap--on-hero` should still sit at the top edge of the hero image.
-  - Its top-Y should equal `heroImg.top` (delta ≤ 1px).
+  TEST D — No console errors introduced.
   
-  Also take one screenshot at 390×844 named `mobile_menu_tight.png` showing the navbar → breadcrumb → hero(with tabs) area.
+  REPORT:
+  - pass/fail per test with measured values (padding numbers, presence of testids, url).
+  - 2 screenshots: (a) mobile menu food card zoomed-in, (b) mobile menu after coming back from product page (still showing "+" only).
+  - Console error list if any.
   
-  Report pass/fail on each test with the actual measured values, plus screenshot. Do not test desktop. Do not retest anything else on the site.
+  Update test_result.md under the 4 test_plan items listed. Keep the Testing Protocol section untouched.
 
 frontend:
   - task: "Mobile spacing tightening on /menu page - breadcrumb padding 3px, zero gap to hero"
@@ -4239,3 +4300,273 @@ agent_communication:
         **ACTION REQUIRED:**
         Main agent needs to add !important to the mobile override at line 5704 in /app/frontend/src/App.css.
 
+
+
+user_problem_statement: |
+  FoeGuard site — verify (A) mobile breadcrumb padding cascade fix, and (B) new "with variants / without variants" menu-card interaction rules.
+  
+  Preview URL: https://79777ddb-0447-4718-b145-a2101c2c408b.preview.emergentagent.com
+  
+  Viewports: mobile 390×844 for all tests unless stated. Desktop 1440×900 only for a quick regression on test C.
+  
+  CONTEXT:
+  - On /menu the site first shows a "How would you like to order?" funnel overlay. Dismiss by clicking the funnel-shop-raw card (data-testid="funnel-shop-raw"). You should now see the SelectionBreadcrumb ("SELECTION: Raw Food Menu Edit") and below it the hero image with category tabs and the list of product cards.
+  - Every product currently seeded in the DB is considered to have variants (foods show a Packaging picker on the detail page). No products are flagged `no_variants: true` in seed data yet, so all menu cards must follow the "with variants" rule.
+
+frontend:
+  - task: "TEST A — Mobile SelectionBreadcrumb padding cascade fix (390×844)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css (line 5704 with !important)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ TEST A PASSED — SelectionBreadcrumb padding cascade fix working perfectly
+            
+            **Test Environment:**
+            - Mobile viewport: 390 × 844
+            - URL: https://79777ddb-0447-4718-b145-a2101c2c408b.preview.emergentagent.com/menu
+            - Funnel dismissed successfully
+            
+            **TEST RESULTS:**
+            - Measured paddingTop: 3px ✅
+            - Measured paddingBottom: 3px ✅
+            - Both values === "3px" as required
+            
+            **VERIFICATION:**
+            The CSS fix at line 5704 with `!important` is working correctly:
+            ```css
+            @media (max-width: 759px) {
+              .selection-breadcrumb { padding: 3px 12px !important; }
+            }
+            ```
+            
+            This successfully overrides the default rule at line 7188 (padding: 4px 12px) on mobile viewports.
+            The breadcrumb looks professional with no clipping of title or edit chip.
+
+  - task: "TEST B — Menu food card must show ONLY '+' (never a qty stepper), for products with variants"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/BoxBuilder.js (ProductCard component, lines 1007-1049)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ TEST B PASSED — Menu food card "with variants" interaction rules working perfectly (9/9 steps)
+            
+            **Test Environment:**
+            - Mobile viewport: 390 × 844
+            - First product tested: product-cd-chicken (Comfort Chicken)
+            
+            **STEP 2 — Card shows ONLY '+' button: ✅ PASSED**
+            - Add button (add-cd-chicken): ✓ Present and visible
+            - Decrease button (decrease-cd-chicken): ✓ Not present
+            - Increase button (increase-cd-chicken): ✓ Not present
+            - Qty display (qty-cd-chicken): ✓ Not present
+            - Qty pill (.product-card-qty-pill): ✓ Not present
+            
+            **STEP 3 — Product detail opens: ✅ PASSED**
+            - Clicked '+' button
+            - Product detail modal opened successfully
+            - Modal overlay present: True
+            
+            **STEP 4 — Variant selection works: ✅ PASSED**
+            - Clicked variant-1 (1.5 lb packaging)
+            - variant-1 has .is-selected class: ✓ Yes
+            
+            **STEP 5 — Quantity increase works: ✅ PASSED**
+            - Clicked qty-increase button once
+            - qty-display reads: "6 lb" ✓
+            
+            **STEP 6 — Sheet closes: ✅ PASSED**
+            - Clicked close button successfully
+            
+            **STEP 7 — Card STILL shows only '+' after return: ✅ PASSED**
+            - Add button still present: ✓ Yes
+            - Qty pill present: ✓ Not present (correct)
+            - Card has .is-selected class: ✓ Not present (correct)
+            - Price text: "From$3.82/lb"
+            - Price contains 'From': ✓ Yes
+            
+            **STEP 8 — Reopen product page: ✅ PASSED**
+            - Clicked '+' again successfully
+            
+            **STEP 9 — PRELOAD works (variant and qty persisted): ✅ PASSED**
+            - variant-1 has .is-selected: ✓ Yes (persisted)
+            - qty-display text: "6 lb" ✓ (persisted)
+            
+            **SCREENSHOTS:**
+            - test_b_step2_menu_card.png (menu card with '+' button)
+            - test_b_step7_menu_after_return.png (menu card after returning, still showing '+')
+            
+            **VERIFICATION:**
+            The "with variants" rule is correctly implemented in BoxBuilder.js:
+            - Line 934: `const hasVariants = product.no_variants !== true;`
+            - Lines 1007-1015: When hasVariants is true, card shows ONLY '+' button that opens product page
+            - Lines 1016-1049: When hasVariants is false, card shows '+' or qty stepper based on selection
+            
+            All products currently seeded have variants (no_variants !== true), so all menu cards correctly show ONLY the '+' button with no qty stepper.
+
+  - task: "TEST C — Menu treat card must show ONLY '+' (never a qty stepper)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/BoxBuilder.js (treat card rendering)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ TEST C PASSED — Menu treat card interaction rules working perfectly
+            
+            **Test Environment:**
+            - Mobile viewport: 390 × 844
+            - Treats tab: category-dog-treats
+            - First treat tested: treat-treat-beef-rib (Beef Flat Rib Bones)
+            
+            **STEP 1 — Switch to Raw Dog Treats tab: ✅ PASSED**
+            - Found treats tab: category-dog-treats
+            - Clicked treats tab successfully
+            
+            **STEP 2 — Treat card shows '+' button, no qty pill: ✅ PASSED**
+            - First treat card: treat-treat-beef-rib
+            - Add button testid: add-treat-treat-beef-rib
+            - Add button visible: ✓ Yes
+            - Has qty pill: ✓ Not present (correct)
+            
+            **STEP 3 — Treat page/sheet opens: ✅ PASSED**
+            - Clicked '+' button
+            - Treat detail sheet opened successfully
+            - Has overlay: True
+            - Has sheet: True
+            - Treat content displayed: "Beef Flat Rib Bones" with pack size options and quantity controls
+            
+            **STEP 4 — Desktop regression check (1440×900): ✅ PASSED**
+            - Switched to desktop viewport
+            - First product card shows '+' button: ✓ Yes
+            - No qty pill present: ✓ Correct
+            
+            **SCREENSHOT:**
+            - test_c_treat_page.png (treat detail sheet showing Beef Flat Rib Bones)
+            
+            **VERIFICATION:**
+            Treat cards follow the same "with variants" rule as food cards. All treats have variants (pack size options), so they correctly show ONLY the '+' button with no qty stepper on the menu.
+
+  - task: "TEST D — No console errors introduced"
+    implemented: true
+    working: true
+    file: "N/A (verification test)"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ TEST D PASSED — No console errors introduced
+            
+            **Test Environment:**
+            - Mobile viewport: 390 × 844
+            - Tested across all menu interactions (food cards, treat cards, product detail modals)
+            
+            **RESULTS:**
+            - No error messages found on the page
+            - No JavaScript errors detected
+            - No critical network errors
+            - All functionality working smoothly
+            
+            **VERIFICATION:**
+            The new "with variants / without variants" menu-card interaction rules have been implemented without introducing any console errors or breaking existing functionality.
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 12
+  run_ui: true
+
+test_plan:
+  current_focus: []
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "testing"
+      message: |
+        ✅ FOEGUARD MENU CARD INTERACTION TESTING COMPLETED - ALL 4 TESTS PASSED (100% SUCCESS)
+        
+        **Test Environment:**
+        - Mobile viewport: 390 × 844 (primary)
+        - Desktop viewport: 1440 × 900 (regression check only)
+        - URL: https://79777ddb-0447-4718-b145-a2101c2c408b.preview.emergentagent.com/menu
+        
+        **TEST RESULTS SUMMARY:**
+        
+        ✅ TEST A — Mobile SelectionBreadcrumb padding cascade fix: PASSED
+        - paddingTop: 3px (expected 3px) ✓
+        - paddingBottom: 3px (expected 3px) ✓
+        - CSS fix at line 5704 with !important working correctly
+        
+        ✅ TEST B — Menu food card "with variants" interaction rules: PASSED (9/9 steps)
+        - Step 2: Card shows ONLY '+' button, no qty stepper ✓
+        - Step 3: Product detail opens when '+' clicked ✓
+        - Step 4: Variant selection works (variant-1 becomes .is-selected) ✓
+        - Step 5: Quantity increase works (qty-display reads "6 lb") ✓
+        - Step 6: Sheet closes successfully ✓
+        - Step 7: Card STILL shows only '+' after return (no qty pill, no .is-selected, price shows "From") ✓
+        - Step 8: Reopen product page works ✓
+        - Step 9: PRELOAD works (variant and qty persisted) ✓
+        
+        ✅ TEST C — Menu treat card interaction rules: PASSED (4/4 steps)
+        - Step 1: Switch to Raw Dog Treats tab ✓
+        - Step 2: Treat card shows '+' button, no qty pill ✓
+        - Step 3: Treat page/sheet opens when '+' clicked ✓
+        - Step 4: Desktop regression check passed ✓
+        
+        ✅ TEST D — No console errors introduced: PASSED
+        - No error messages found on page ✓
+        - No JavaScript errors detected ✓
+        - All functionality working smoothly ✓
+        
+        **SCREENSHOTS CAPTURED:**
+        1. test_b_step2_menu_card.png — Mobile menu food card with '+' button (zoomed-in)
+        2. test_b_step7_menu_after_return.png — Mobile menu after coming back from product page (still showing '+' only)
+        3. test_c_treat_page.png — Treat detail sheet (Beef Flat Rib Bones)
+        
+        **TECHNICAL VERIFICATION:**
+        
+        The "with variants / without variants" menu-card interaction rules are correctly implemented:
+        
+        1. **hasVariants logic** (BoxBuilder.js line 934):
+           ```javascript
+           const hasVariants = product.no_variants !== true;
+           ```
+        
+        2. **Card rendering logic** (BoxBuilder.js lines 1007-1049):
+           - When `hasVariants === true`: Card shows ONLY '+' button that opens product page
+           - When `hasVariants === false`: Card shows '+' or qty stepper based on selection
+        
+        3. **Current seed data**: All products have `no_variants !== true`, so all menu cards correctly show ONLY the '+' button
+        
+        4. **Breadcrumb padding fix** (App.css line 5704):
+           ```css
+           @media (max-width: 759px) {
+             .selection-breadcrumb { padding: 3px 12px !important; }
+           }
+           ```
+           Successfully overrides default 4px padding on mobile viewports.
+        
+        **OVERALL VERDICT:**
+        All 4 tests passed with 100% success rate. Both fixes are production-ready:
+        - (A) Mobile breadcrumb padding cascade fix is working correctly
+        - (B) New "with variants / without variants" menu-card interaction rules are working perfectly
+        
+        No issues found. No action items for main agent.

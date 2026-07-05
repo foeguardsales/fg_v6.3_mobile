@@ -342,7 +342,11 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const [products, setProducts] = useState([]);
   const [orderNotes, setOrderNotes] = useState('');
   const [activeTab, setActiveTab] = useState('description');
-  const [selectedVariant, setSelectedVariant] = useState(0);
+  // Preload the previously-chosen variant for this product from the cart snapshot.
+  const [selectedVariant, setSelectedVariant] = useState(() => {
+    const v = initialProteins[productId]?.variant;
+    return typeof v === 'number' ? v : 0;
+  });
 
   useEffect(() => {
     // Only reset scroll on the standalone product page. When embedded as a bottom-sheet
@@ -396,6 +400,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     const saved = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
     const existing = saved[productId]?.qty;
     setQuantity(existing && existing > 0 ? existing : 0);
+    const v = saved[productId]?.variant;
+    if (typeof v === 'number') setSelectedVariant(v);
   }, [productId, product]);
 
   const handleBackToMenu = () => {
@@ -451,7 +457,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     setQuantity(q);
     const updated = { ...JSON.parse(sessionStorage.getItem('selectedProteins') || '{}') };
     if (q > 0) {
-      updated[productId] = { qty: q, name: product.name, petType: (updated[productId] && updated[productId].petType) || productPet };
+      updated[productId] = {
+        qty: q,
+        name: product.name,
+        petType: (updated[productId] && updated[productId].petType) || productPet,
+        variant: selectedVariant,
+      };
     } else {
       delete updated[productId];
     }
@@ -460,6 +471,19 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     // Notify the menu (rendered behind the sheet) so both stay in unison live.
     window.dispatchEvent(new Event('foeguard:box-updated'));
   };
+
+  // Keep the persisted variant in sync when the user changes it (only if the product
+  // is already in the basket — no side effect for browsing).
+  useEffect(() => {
+    if (!product || quantity <= 0) return;
+    const updated = { ...JSON.parse(sessionStorage.getItem('selectedProteins') || '{}') };
+    if (updated[productId]) {
+      updated[productId] = { ...updated[productId], variant: selectedVariant };
+      sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+      setSelectedProteins(updated);
+      window.dispatchEvent(new Event('foeguard:box-updated'));
+    }
+  }, [selectedVariant, productId, product, quantity]);
 
   if (loading) {
     if (embedded) {

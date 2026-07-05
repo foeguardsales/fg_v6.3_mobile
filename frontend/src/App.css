@@ -5701,7 +5701,7 @@ h2, h3, h4 {
   }
   .menu-collection-hero { margin: 0 0 6px; }
   .menu-collection-hero-img { border-radius: 0; }
-  .selection-breadcrumb { padding: 3px 12px; }
+  .selection-breadcrumb { padding: 3px 12px !important; }
 }
 .menu-collection-hero-img {
   position: relative;

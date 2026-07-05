@@ -514,6 +514,9 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
   const renderTreatCard = (treat) => {
     const selectedTreat = selectedTreats.find(t => t.treat_id === treat.treat_id);
     const quantity = selectedTreat ? selectedTreat.quantity : 0;
+    // Treats with variants (pack size / weight options) are configured on the Treat Page.
+    // Only treats explicitly flagged `no_variants: true` get the inline +/qty stepper.
+    const hasVariants = treat.no_variants !== true;
     const goToTreat = () => {
       if (onOpenTreat) { onOpenTreat(treat.treat_id); return; }
       if (!navigate) return;
@@ -526,7 +529,7 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
     return (
       <div
         key={treat.treat_id}
-        className={`product-card-row ${quantity > 0 ? 'is-selected' : ''}`}
+        className={`product-card-row ${(!hasVariants && quantity > 0) ? 'is-selected' : ''}`}
         data-testid={`treat-${treat.treat_id}`}
         onClick={clickable ? goToTreat : undefined}
         role={clickable ? 'button' : undefined}
@@ -553,8 +556,17 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
             <div style={{ width: '100%', height: '100%', background: '#E8DFC8' }} />
           )}
 
-          {/* + / qty pill — bottom right of image */}
-          {quantity === 0 ? (
+          {/* + button (variants) OR + / qty stepper (no variants) */}
+          {hasVariants ? (
+            <button
+              className="product-card-plus"
+              onClick={(e) => { e.stopPropagation(); goToTreat(); }}
+              data-testid={`add-treat-${treat.treat_id}`}
+              aria-label="Configure and add to box"
+            >
+              +
+            </button>
+          ) : quantity === 0 ? (
             <button
               className="product-card-plus"
               onClick={(e) => { e.stopPropagation(); onToggleTreat(treat, 1); }}

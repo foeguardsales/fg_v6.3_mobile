@@ -60,10 +60,16 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
   const [treat, setTreat] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImageIndex] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  // Preload quantity + variant from the cart snapshot so the customer can edit
+  // their previous selection when they re-open the treat page.
+  const initialTreatsPreload = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+  const existingTreat = initialTreatsPreload.find(t => t.treat_id === treatId);
+  const [quantity, setQuantity] = useState(existingTreat && existingTreat.quantity > 0 ? existingTreat.quantity : 1);
   const [cartOpen, setCartOpen] = useState(false);
   const [orderNotes, setOrderNotes] = useState('');
-  const [selectedVariant, setSelectedVariant] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState(
+    existingTreat && typeof existingTreat.variant === 'number' ? existingTreat.variant : 0
+  );
 
   // Initialize from sessionStorage immediately
   const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
@@ -152,12 +158,14 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
 
     if (existingIndex >= 0) {
       updatedTreats[existingIndex].quantity = quantity;
+      updatedTreats[existingIndex].variant = selectedVariant;
     } else {
       updatedTreats.push({
         treat_id: treat.treat_id,
         name: treat.name,
         price: treat.price,
-        quantity: quantity
+        quantity: quantity,
+        variant: selectedVariant,
       });
     }
 

@@ -927,6 +927,11 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const displayQty = selectedQty > 0 ? selectedQty : 1;
   const showPrice = discountedPerLb * displayQty;
   const showOriginal = basePerLb * displayQty;
+
+  // Products with variants (packaging/size options) are configured on the Product Page,
+  // not on the menu. Menu just shows a "+" that opens the detail view. Products flagged
+  // `no_variants: true` fall back to the classic inline +/qty stepper.
+  const hasVariants = product.no_variants !== true;
   
   // Product image URL - use the uploaded comfort dinner image for all products
   const productImage = 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';
@@ -986,7 +991,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
   return (
     <div 
-      className={`product-card-row ${isSelected ? 'is-selected' : ''}`}
+      className={`product-card-row ${(!hasVariants && isSelected) ? 'is-selected' : ''}`}
       data-testid={`product-${product.product_id}`}
       onClick={goToProduct}
       role="button"
@@ -996,8 +1001,19 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       {/* Image — on RIGHT side (desktop), on TOP (mobile via CSS order) */}
       <div className="product-card-media">
         <img src={productImage} alt={product.name} />
-        {/* + or qty pill — bottom-right of image */}
-        {selectedQty === 0 ? (
+        {/* + button (variants) OR + / qty stepper (no variants). Variant products
+            never show a stepper on the menu — clicking "+" opens the product page
+            where packaging + quantity are chosen. */}
+        {hasVariants ? (
+          <button
+            className="product-card-plus"
+            onClick={(e) => { e.stopPropagation(); goToProduct(); }}
+            data-testid={`add-${product.product_id}`}
+            aria-label="Configure and add to cart"
+          >
+            +
+          </button>
+        ) : selectedQty === 0 ? (
           <button
             className="product-card-plus"
             onClick={stopAndAdd}
@@ -1042,7 +1058,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         </p>
 
         <div className="product-card-price">
-          {selectedQty > 0 ? (
+          {(!hasVariants && selectedQty > 0) ? (
             <>
               <span className="price-regular">${lineTotal.toFixed(2)}</span>
               <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
