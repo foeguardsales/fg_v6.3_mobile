@@ -9,7 +9,23 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 
 ## What's Implemented (Feb 2026)
 
-### 2025-07 — Menu-page fixes batch (verified by testing agent, 6/6 PASS)
+### 2025-07 — Menu/product batch #2 (verified by testing agent, 5/5 PASS)
+- **CRITICAL sheet-anchor fixed**: mobile product sheet no longer flies off-screen. Locked `#root`
+  (real scroller) overflow while modal open + `overscroll-behavior:contain` + `.bb-overlay--sheet`
+  `overflow:hidden`. Panel stays at 44px top before/after scrolling. (meal + treat sheets)
+- **Removed Add-to-Cart button from product sheets**; the +/- ("Add") now live-syncs the box to the
+  shared menu selection (sessionStorage + `foeguard:box-updated` event → BoxBuilder re-reads). Menu
+  and product page are now in UNISON both directions. Menu floating Add-to-Cart is the only commit.
+- **Product card price**: `$X.XX/lb` when qty 0; total + `($X.XX/lb)` once qty>=6.
+- **Sheet**: qty starts at 0 (unison); per-lb when 0; "Size" label → "Add".
+- **Spacing**: trust-icons mb 24→10; notes→FAQ + end gaps reduced; category tabs padding/margin
+  reduced; mobile menu edge-to-edge (box-builder 0 side padding, hero full-bleed radius 0) —
+  measured 0px/390px full-bleed on 390 viewport.
+- **DEFERRED to Shopify**: "Add to Cart → cart badge top-left + stay on page + reset menu"
+  (committed-cart behavior). Recommended to build with Shopify Cart API (source of truth) to avoid
+  throwaway local-cart work.
+
+
 - **SelectionBreadcrumb** padding reduced (10px 20px → 5px 16px); `.box-builder` mobile top padding 10px→2px (tighter gap to category tabs).
 - **Mobile menu**: `.product-grid` row-gap 0 (continuous list, "part of the page"); immersive category hero full-bleed on mobile (`border-radius:0`), rounded (14px) + capped 440px banner on desktop.
 - **CRITICAL — product bottom-sheet (ProductDetail + TreatDetail modals)**:
