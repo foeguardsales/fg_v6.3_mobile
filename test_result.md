@@ -3637,8 +3637,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Menu category tabs — reduced font + fixed (non-scrolling) shaded overlay"
-    - "Menu collection hero title — reduced font size"
+    - "Mobile: reduce padding above SelectionBreadcrumb AND between breadcrumb and hero/tabs"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -3646,7 +3645,13 @@ test_plan:
 agent_communication:
     - agent: "main"
       message: |
-        Two menu-page fixes to verify (mobile-first, then desktop):
+        Mobile-only spacing tightening on /menu:
+        - `.selection-breadcrumb` mobile vertical padding: 4px → 3px (keep font size,
+          keep same design — just less air).
+        - `.box-builder` (and .box-builder--narrow) mobile padding-top: 2px → 0
+        - `.menu-collection-hero` mobile margin-top: 2px → 0 (hero attaches directly
+          below the SelectionBreadcrumb; no visible gap).
+        Desktop rules untouched.
 
         1. **Menu category tabs (Raw Dog Food / Raw Dog Treats / Raw Cat Food / Raw Cat Treats)**
            font size was too large. Reduced from 24px → 15px normal / 17px active
@@ -4065,4 +4070,172 @@ agent_communication:
         **ACTION ITEMS FOR MAIN AGENT:**
         - ✅ All tests passed - no fixes needed
         - Ready to summarize and finish the task
+
+
+user_problem_statement: |
+  FoeGuard site — mobile spacing tightening on /menu page. Preview URL:
+  https://79777ddb-0447-4718-b145-a2101c2c408b.preview.emergentagent.com
+  
+  Test ONLY the mobile viewport (390 × 844). Skip desktop.
+  
+  STEPS:
+  1. Load /menu at 390×844.
+  2. If the "How would you like to order?" funnel is showing, dismiss it by clicking the funnel-shop-raw card (data-testid="funnel-shop-raw") OR the X button (data-testid="menu-funnel-close").
+  3. After the funnel closes you should see:
+     - Navbar at top
+     - A sticky `.selection-breadcrumb` strip that says "SELECTION: Raw Food Menu Edit"
+     - Directly below that, the `.menu-collection-hero` image with the category tabs (`.menu-category-tabs-wrap--on-hero`) at the TOP of the hero image.
+  
+  TESTS:
+  
+  TEST 1 — `.selection-breadcrumb` padding tightened:
+  - Get computed padding-top / padding-bottom of `.selection-breadcrumb`.
+  - PASS if padding-top === "3px" AND padding-bottom === "3px".
+  - FAIL if either is >= 4px.
+  - Confirm the breadcrumb still visually looks professional (title/edit chip not clipped).
+  
+  TEST 2 — `.box-builder--narrow` mobile top padding = 0:
+  - Get computed padding-top of `.box-builder.box-builder--narrow` (the wrapper below the breadcrumb).
+  - PASS if padding-top === "0px".
+  
+  TEST 3 — Zero gap between SelectionBreadcrumb and the hero/tabs strip:
+  - Compute `breadcrumb.getBoundingClientRect().bottom` and
+    `heroImg = document.querySelector('.menu-collection-hero-img'); heroImg.getBoundingClientRect().top`.
+  - Delta = heroImg.top - breadcrumb.bottom.
+  - PASS if delta between -1 and 2 pixels (essentially touching).
+  - FAIL if delta > 4 pixels.
+  
+  TEST 4 — Category tabs still visible at TOP of hero image, and shaded overlay still fixed:
+  - The `.menu-category-tabs-wrap--on-hero` should still sit at the top edge of the hero image.
+  - Its top-Y should equal `heroImg.top` (delta ≤ 1px).
+  
+  Also take one screenshot at 390×844 named `mobile_menu_tight.png` showing the navbar → breadcrumb → hero(with tabs) area.
+  
+  Report pass/fail on each test with the actual measured values, plus screenshot. Do not test desktop. Do not retest anything else on the site.
+
+frontend:
+  - task: "Mobile spacing tightening on /menu page - breadcrumb padding 3px, zero gap to hero"
+    implemented: false
+    working: false
+    file: "/app/frontend/src/App.css (lines 5704, 7188)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: |
+            ❌ MOBILE SPACING TESTS COMPLETED - 1 CRITICAL FAILURE, 3 PASSED
+            
+            **Test Environment:**
+            - Mobile viewport: 390 × 844
+            - URL: https://79777ddb-0447-4718-b145-a2101c2c408b.preview.emergentagent.com/menu
+            - Funnel dismissed successfully via X button
+            
+            **TEST RESULTS SUMMARY:**
+            
+            ❌ TEST 1 — .selection-breadcrumb padding tightened: FAILED
+            - Measured padding-top: 4px (expected 3px) ❌
+            - Measured padding-bottom: 4px (expected 3px) ❌
+            - CRITICAL: Padding is >= 4px (explicit fail condition)
+            - Breadcrumb total height: 38.6875px
+            - Visual check: Breadcrumb looks professional (no clipping)
+            
+            ✅ TEST 2 — .box-builder--narrow padding-top = 0: PASSED
+            - Measured padding-top: 0px ✓
+            
+            ✅ TEST 3 — Zero gap between breadcrumb and hero: PASSED
+            - Breadcrumb bottom Y: 146.6875px
+            - Hero image top Y: 146.6875px
+            - Delta (gap): 0px ✓ (within -1 to 2 pixels range)
+            
+            ✅ TEST 4 — Category tabs at TOP of hero: PASSED
+            - Hero image top Y: 146.6875px
+            - Category tabs top Y: 146.6875px
+            - Delta: 0px ✓ (≤ 1px requirement met)
+            - Tabs positioned within hero image bounds ✓
+            
+            **ROOT CAUSE ANALYSIS (TEST 1 FAILURE):**
+            
+            The mobile override at line 5704 is NOT being applied due to CSS cascade order:
+            
+            File: /app/frontend/src/App.css
+            
+            Line 5704 (inside @media max-width: 759px):
+            ```css
+            .selection-breadcrumb { padding: 3px 12px; }
+            ```
+            
+            Line 7188 (default rule, comes LATER in file):
+            ```css
+            .selection-breadcrumb {
+              position: sticky;
+              top: 0;
+              z-index: 90;
+              background: #F5F3EF;
+              border-bottom: 1px solid #EDEAE7;
+              padding: 4px 12px;  /* ← This overrides the media query */
+            }
+            ```
+            
+            Because the default rule at line 7188 comes AFTER the media query rule at line 5704 in the CSS file, and both have the same specificity (.selection-breadcrumb), the later rule wins due to CSS cascade order.
+            
+            **REQUIRED FIX:**
+            
+            Add !important to the mobile override at line 5704:
+            
+            ```css
+            @media (max-width: 759px) {
+              .box-builder,
+              .box-builder.box-builder--narrow {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                padding-top: 0 !important;
+              }
+              .menu-collection-hero { margin: 0 0 6px; }
+              .menu-collection-hero-img { border-radius: 0; }
+              .selection-breadcrumb { padding: 3px 12px !important; }  /* ← Add !important */
+            }
+            ```
+            
+            **SCREENSHOT:**
+            - mobile_menu_tight.png captured showing navbar → breadcrumb → hero with tabs
+            
+            **OVERALL VERDICT:**
+            3 out of 4 tests passed. The spacing is working correctly except for the breadcrumb padding. The fix is simple and low-risk (add !important to existing mobile override).
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 11
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "Mobile spacing tightening on /menu page - breadcrumb padding 3px, zero gap to hero"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "testing"
+      message: |
+        ❌ MOBILE SPACING TESTS COMPLETED - 1 CRITICAL FAILURE, 3 PASSED
+        
+        **Test Scope:**
+        Mobile viewport (390 × 844) testing on /menu page for spacing tightening.
+        
+        **FAILED TEST:**
+        ❌ TEST 1 — .selection-breadcrumb padding is 4px instead of 3px
+        - Root cause: CSS cascade order issue
+        - Line 7188 (padding: 4px 12px) overrides line 5704 (padding: 3px 12px)
+        - Fix: Add !important to line 5704: `.selection-breadcrumb { padding: 3px 12px !important; }`
+        
+        **PASSED TESTS:**
+        ✅ TEST 2 — .box-builder--narrow padding-top = 0px
+        ✅ TEST 3 — Gap between breadcrumb and hero = 0px (within -1 to 2px range)
+        ✅ TEST 4 — Category tabs at TOP of hero (delta = 0px ≤ 1px)
+        
+        **ACTION REQUIRED:**
+        Main agent needs to add !important to the mobile override at line 5704 in /app/frontend/src/App.css.
 

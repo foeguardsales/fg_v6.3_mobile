@@ -5690,15 +5690,18 @@ h2, h3, h4 {
 .menu-collection-hero {
   margin: 2px 0 6px;
 }
-/* Mobile: menu content is truly edge-to-edge (no side gutter) */
+/* Mobile: menu content is truly edge-to-edge (no side gutter) and the hero
+   attaches directly under the SelectionBreadcrumb (zero padding above tabs). */
 @media (max-width: 759px) {
   .box-builder,
   .box-builder.box-builder--narrow {
     padding-left: 0 !important;
     padding-right: 0 !important;
+    padding-top: 0 !important;
   }
-  .menu-collection-hero { margin-left: 0; margin-right: 0; }
+  .menu-collection-hero { margin: 0 0 6px; }
   .menu-collection-hero-img { border-radius: 0; }
+  .selection-breadcrumb { padding: 3px 12px; }
 }
 .menu-collection-hero-img {
   position: relative;
