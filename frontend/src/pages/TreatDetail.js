@@ -426,9 +426,15 @@ export const TreatDetailModal = ({ treatId, onClose }) => {
   const startY = useRef(null);
 
   useEffect(() => {
-    const prev = document.body.style.overflow;
+    const prevBody = document.body.style.overflow;
+    const root = document.getElementById('root');
+    const prevRoot = root ? root.style.overflow : '';
     document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
+    if (root) root.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevBody;
+      if (root) root.style.overflow = prevRoot;
+    };
   }, []);
 
   const onTouchStart = (e) => { startY.current = e.touches[0].clientY; setDragging(true); };

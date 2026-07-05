@@ -103,16 +103,20 @@
 #====================================================================================================
 
 user_problem_statement: |
-  Session (Jul 2025) — Menu-page fixes batch (see tasks below). Earlier this session: restored
-  site (recreated missing .env) + hero/font/promo edits.
-  This batch: (1) reduce SelectionBreadcrumb padding + gap to category tabs; (2) mobile product
-  grid continuous (no gaps) + immersive hero full-bleed (radius 0) on mobile; (3) CRITICAL product
-  bottom-sheet fixes — drag-to-dismiss ONLY from the top grab bar (grab tab or anywhere along the
-  top bar), content scrolls freely; add-to-cart button reliably pinned/clickable; (4) closing a
-  product sheet returns the user to their previous menu scroll position (was jumping to top);
-  (5) collapsible tab titles Title Case (not ALL CAPS); (6) Order Notes now static/open (no
-  collapse toggle); (7) reduced FAQ spacing (notes→FAQ gap + end-of-page). Applied to BOTH meal
-  (ProductDetail) and treat (TreatDetail) sheets for one global format.
+  Session (Jul 2025) — Menu/product batch #2 (see tasks below).
+  1. CRITICAL sheet-anchor: on mobile, scrolling the product sheet dragged the whole sheet off-screen.
+     Fixed by locking #root (real scroller) overflow while modal open + overscroll-behavior:contain +
+     .bb-overlay--sheet overflow:hidden. (Applied to meal + treat sheets.)
+  2. Removed the "Add to Cart" button from product pages entirely. The +/- ("Add") now live-syncs the
+     box to the shared menu selection (sessionStorage + 'foeguard:box-updated' event → BoxBuilder
+     re-reads) so menu and product page are in UNISON. Menu's floating Add-to-Cart is the only commit.
+  3. Product card price: shows "$X.XX/lb" when qty 0, switches to total + per-lb once selected (>=6lb).
+  4. Product sheet: qty starts at 0 (unison); price shows per-lb when 0; "Size" label renamed to "Add".
+  5. Spacing: reduced trust-icons bottom margin (24→10), notes→FAQ + end-of-page gaps; category tabs
+     padding/margin reduced; mobile menu edge-to-edge safeguards (box-builder 0 side padding, hero
+     full-bleed radius 0).
+  DEFERRED to Shopify integration: "Add to Cart → cart badge top-left + stay on page + reset menu"
+  (committed-cart behavior; Shopify Cart API will own this).
 
 frontend:
   - task: "Home 'Shop Now' funnel X close returns to home page when arriving from home"
@@ -3367,7 +3371,7 @@ frontend:
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 9
+  test_sequence: 10
   run_ui: true
 
 test_plan:
@@ -3377,6 +3381,113 @@ test_plan:
   test_priority: "high_first"
 
 agent_communication:
+    - agent: "testing"
+      message: |
+        ✅ FOEGUARD MENU & PRODUCT BOTTOM-SHEET TESTING - ALL 5 TESTS PASSED (100% SUCCESS)
+        
+        **Test Environment:**
+        - Mobile viewport: 390×844
+        - Desktop viewport: 1440×900 (bonus check)
+        - URL: https://headless-integration-1.preview.emergentagent.com/menu
+        
+        **TEST 1 — MOBILE EDGE-TO-EDGE MEASUREMENT: ✅ PASS**
+        Measured getBoundingClientRect on 390px mobile viewport:
+        
+        (a) Hero Image (.menu-collection-hero-img):
+            - Left: 0.00px, Right: 390.00px, Width: 390.00px
+            - ✅ FULL-BLEED: Spans full screen width (edge to edge)
+        
+        (b) Product Card Row (.product-card-row):
+            - Left: 0.00px, Right: 390.00px, Width: 390.00px
+            - ✅ FULL-BLEED: Spans full screen width (edge to edge)
+        
+        (c) Collection Header (.menu-collection-header):
+            - Left: 0.00px, Right: 390.00px, Width: 390.00px
+            - ✅ FULL-BLEED: Spans full screen width (edge to edge)
+        
+        **Desktop Comparison (1440×900):**
+        - Hero Image: Left: 202.00px, Right: 1238.00px, Width: 1036.00px
+        - Desktop correctly shows inset layout (not full-bleed)
+        
+        **TEST 2 — PRODUCT CARD PER-LB PRICING: ✅ PASS**
+        - Product tested: Comfort Chicken (product-cd-chicken)
+        - Initial price (qty=0): "$4.50 /lb" ✅ Shows per-lb only
+        - After adding 6lb: "$26.99 ($4.50/lb)" ✅ Shows total + per-lb in parentheses
+        - Pricing format switches correctly based on quantity
+        
+        **TEST 3 — PRODUCT SHEET (NO ADD-TO-CART + ADD CONTROL + LIVE UNISON): ✅ PASS (7/7 sub-tests)**
+        
+        3.1: NO "Add to Cart" button ✅
+            - data-testid="product-add-to-box" does NOT exist
+        
+        3.2: Size control label reads "Add" ✅
+            - Label text: "ADD" (not "Size")
+        
+        3.3: Qty display starts at "0 lb" ✅
+            - Initial qty display: "0 lb"
+        
+        3.4: Price shows per-lb when qty=0 ✅
+            - Initial price: "$6.66 /lb"
+        
+        3.5: Click + once → qty becomes "6 lb" and price becomes total ✅
+            - Updated qty: "6 lb"
+            - Updated price: "$37.97 ($6.33/lb)"
+        
+        3.6: Close sheet → menu reflects change (UNISON) ✅
+            - Menu card qty pill: "6lb"
+            - Product sheet change reflected on menu
+        
+        3.7: Reverse check - menu change reflected in sheet ✅
+            - Added 6lb via menu card
+            - Opened sheet → qty display shows "6 lb"
+            - Menu change reflected in product sheet
+        
+        **TEST 4 — SHEET ANCHORING ON MOBILE (CRITICAL): ✅ PASS**
+        - Overlay position: fixed ✅
+        - Panel top offset BEFORE scrolling: 44.00px
+        - Panel top offset AFTER scrolling content: 44.00px
+        - Panel top difference: 0.00px ✅ (stays anchored)
+        - Drag handle visible at y=44.00px ✅
+        - #root overflow while modal open: hidden ✅ (background locked)
+        - Sheet does NOT fly off screen when scrolling content inside
+        
+        **TEST 5 — PRODUCT PAGE SPACING SANITY: ✅ PASS**
+        
+        5.1: Tab section headers are Title Case ✅
+            - Found: ['Ingredients', 'Nutritional Analysis', 'Product Information', 'Feeding Guide']
+            - All headers correctly formatted
+        
+        5.2: Notes is static textarea ✅
+            - Element: TEXTAREA (data-testid="product-notes-input")
+            - Always visible: True
+            - No collapse button: True
+        
+        5.3: Trust icons spacing reasonable ✅
+            - Trust icons margin-bottom: 10px (not huge)
+            - No excessive gaps
+        
+        5.4: FAQ spacing reasonable ✅
+            - FAQ margin-top: 8px (not huge)
+            - No excessive gaps
+        
+        5.5: No console errors ✅
+            - No error messages found on page
+        
+        **OVERALL VERDICT:**
+        All 5 tests passed with 100% success rate. The FoeGuard menu page and product bottom-sheet implementation is working perfectly:
+        - Mobile layout is truly edge-to-edge (0px inset on all measured elements)
+        - Product card pricing switches correctly between per-lb and total formats
+        - Product sheet has no "Add to Cart" button, uses "Add" label, and maintains live unison with menu
+        - Sheet anchoring is rock-solid on mobile (panel stays at 44px top offset)
+        - Product page spacing is clean with no excessive gaps
+        
+        **Screenshots:**
+        - Captured final state showing menu with products and floating cart button
+        
+        **Action Items for Main Agent:**
+        - ✅ All tests passed - no fixes needed
+        - Ready to summarize and finish the task
+    
     - agent: "testing"
       message: |
         ✅ ABOUT PAGE TYPOGRAPHY FIXES - ALL TESTS PASSED (3/3)

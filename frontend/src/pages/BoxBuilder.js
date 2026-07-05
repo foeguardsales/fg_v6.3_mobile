@@ -218,6 +218,17 @@ export const BoxBuilder = () => {
     return () => window.removeEventListener('foeguard:open-cart', open);
   }, []);
 
+  // Live unison: when the product sheet edits the box, re-read it so the menu stays in sync.
+  useEffect(() => {
+    const sync = () => {
+      setSelectedProteins(JSON.parse(sessionStorage.getItem('selectedProteins') || '{}'));
+      setSelectedTreats(JSON.parse(sessionStorage.getItem('selectedTreats') || '[]'));
+    };
+    window.addEventListener('foeguard:box-updated', sync);
+    return () => window.removeEventListener('foeguard:box-updated', sync);
+  }, []);
+
+
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -1026,8 +1037,17 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         </p>
 
         <div className="product-card-price">
-          <span className="price-regular">${lineTotal.toFixed(2)}</span>
-          <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
+          {selectedQty > 0 ? (
+            <>
+              <span className="price-regular">${lineTotal.toFixed(2)}</span>
+              <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
+            </>
+          ) : (
+            <>
+              <span className="price-regular">${perLbDisplay.toFixed(2)}</span>
+              <span className="price-unit">/lb</span>
+            </>
+          )}
         </div>
       </div>
     </div>

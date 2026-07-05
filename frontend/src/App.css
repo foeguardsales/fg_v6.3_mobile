@@ -5637,8 +5637,8 @@ h2, h3, h4 {
 .menu-category-text {
   display: flex;
   gap: 8px;
-  padding: 0 16px 4px;
-  margin: 0 0 8px;
+  padding: 0 16px 2px;
+  margin: 0 0 4px;
   overflow-x: auto;
   scrollbar-width: none;
   flex-wrap: nowrap;
@@ -5688,7 +5688,17 @@ h2, h3, h4 {
 
 /* ===== Immersive category hero (below tabs, above Stock Up & Save) ===== */
 .menu-collection-hero {
-  margin: 8px 0 20px;
+  margin: 4px 0 14px;
+}
+/* Mobile: menu content is truly edge-to-edge (no side gutter) */
+@media (max-width: 759px) {
+  .box-builder,
+  .box-builder.box-builder--narrow {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .menu-collection-hero { margin-left: 0; margin-right: 0; }
+  .menu-collection-hero-img { border-radius: 0; }
 }
 .menu-collection-hero-img {
   position: relative;
@@ -6403,7 +6413,7 @@ h2, h3, h4 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-  margin: 0 0 24px;
+  margin: 0 0 10px;
   padding: 8px 0;
   border-top: none;
   border-bottom: none;
@@ -6737,6 +6747,7 @@ h2, h3, h4 {
   align-items: flex-start;
   justify-content: center;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 24px 0;
 }
 .bb-overlay-panel {
@@ -7187,6 +7198,8 @@ h2, h3, h4 {
   flex: 1 1 auto;
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 36px 20px 0;
 }
 @media (min-width: 760px) {
@@ -7217,6 +7230,8 @@ h2, h3, h4 {
 .bb-overlay--sheet {
   padding: 0;
   align-items: stretch;
+  overflow: hidden;
+  overscroll-behavior: contain;
 }
 .bb-overlay--sheet .bb-overlay-panel--product {
   margin: 44px 0 0;

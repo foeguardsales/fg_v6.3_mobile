@@ -329,7 +329,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   // Slider starts at whatever is already in the box for this product (connected to the menu)
   const [quantity, setQuantity] = useState(() => {
     const existing = initialProteins[productId]?.qty;
-    return existing && existing > 0 ? existing : 6;
+    return existing && existing > 0 ? existing : 0;
   });
   const [cartOpen, setCartOpen] = useState(false);
   const [boxSize, setBoxSize] = useState(initialBoxSize);
@@ -390,7 +390,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   useEffect(() => {
     const saved = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
     const existing = saved[productId]?.qty;
-    if (existing && existing > 0) setQuantity(existing);
+    setQuantity(existing && existing > 0 ? existing : 0);
   }, [productId, product]);
 
   const handleBackToMenu = () => {
@@ -437,33 +437,23 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
 
   const getDiscountedPrice = (prod) => getBasePrice(prod) * (1 - bulkRate);
   
-  const handleAddToCart = () => {
-    // Connected to the menu — SET this product's box quantity to the slider value
-    // (the slider already reflects what's in the box, so we don't stack on top).
-    const updatedProteins = { ...selectedProteins };
-
-    updatedProteins[product.product_id] = {
-      qty: quantity,
-      name: product.name,
-      petType: productPet
-    };
-    
-    sessionStorage.setItem('selectedProteins', JSON.stringify(updatedProteins));
-    sessionStorage.setItem('boxSize', boxSize.toString());
-
-    // Persist order notes
-    if (orderNotes) {
-      const existing = JSON.parse(sessionStorage.getItem('productNotes') || '{}');
-      existing[product.product_id] = orderNotes;
-      sessionStorage.setItem('productNotes', JSON.stringify(existing));
-    }
-
-    // Navigate back to the menu (per spec)
-    if (embedded && onClose) {
-      onClose();
+  // Live-sync the product's box quantity to the shared menu selection (no separate
+  // "Add to Cart" button on the product page — the +/- IS the size/add control, and the
+  // menu page's primary Add-to-Cart button remains the only commit).
+  const setBoxQty = (newQty) => {
+    if (!product) return;
+    const q = Math.max(0, newQty);
+    setQuantity(q);
+    const updated = { ...JSON.parse(sessionStorage.getItem('selectedProteins') || '{}') };
+    if (q > 0) {
+      updated[productId] = { qty: q, name: product.name, petType: (updated[productId] && updated[productId].petType) || productPet };
     } else {
-      navigate('/menu');
+      delete updated[productId];
     }
+    sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+    setSelectedProteins(updated);
+    // Notify the menu (rendered behind the sheet) so both stay in unison live.
+    window.dispatchEvent(new Event('foeguard:box-updated'));
   };
 
   if (loading) {
@@ -587,20 +577,20 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             {/* Title */}
             <h1 className="pd-shopify-title">{product.name}</h1>
 
-            {/* Size + Price (replaces the old top per-lb price; follows the menu qty) */}
+            {/* Add (size) + Price — the +/- adds to the box live; no separate cart button here */}
             <div className="pd-shopify-qty-row" data-testid="product-price">
               <div>
-                <div className="pd-shopify-mini-label">Size</div>
+                <div className="pd-shopify-mini-label">Add</div>
                 <div className="pd-shopify-qty-controls">
                   <button
-                    onClick={() => quantity > 6 && setQuantity(quantity - 6)}
-                    disabled={quantity <= 6}
+                    onClick={() => setBoxQty(quantity - 6)}
+                    disabled={quantity <= 0}
                     className="pd-shopify-qty-btn"
                     data-testid="qty-decrease"
                   >−</button>
                   <span data-testid="qty-display" className="pd-shopify-qty-display">{quantity} lb</span>
                   <button
-                    onClick={() => setQuantity(quantity + 6)}
+                    onClick={() => setBoxQty(quantity + 6)}
                     className="pd-shopify-qty-btn"
                     data-testid="qty-increase"
                   >+</button>
@@ -608,12 +598,23 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               </div>
               <div className="pd-shopify-adds">
                 <div className="pd-shopify-mini-label">Price</div>
-                <span data-testid="qty-price-total" className="pd-shopify-adds-total">
-                  ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
-                </span>
-                <span className="pd-shopify-adds-perlb" data-testid="qty-price-perlb">
-                  (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
-                </span>
+                {quantity > 0 ? (
+                  <>
+                    <span data-testid="qty-price-total" className="pd-shopify-adds-total">
+                      ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
+                    </span>
+                    <span className="pd-shopify-adds-perlb" data-testid="qty-price-perlb">
+                      (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span data-testid="qty-price-total" className="pd-shopify-adds-total">
+                      ${(getDiscountedPrice(product) / 6).toFixed(2)}
+                    </span>
+                    <span className="pd-shopify-adds-perlb" data-testid="qty-price-perlb">/lb</span>
+                  </>
+                )}
               </div>
             </div>
 
@@ -715,30 +716,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
         </div>
       </div>
 
-      {/* Floating cart bar — matches the menu page's cart button (bb-floating-checkout) */}
-      {(() => {
-        const totalPrice = getDiscountedPrice(product) * (quantity / 6);
-        const basePriceLb = product.pricing?.find(p => p.size_lb === 6)?.price || 0;
-        const discountedLb = getDiscountedPrice(product);
-        const savePct = basePriceLb > 0 ? Math.round((1 - discountedLb / basePriceLb) * 100) : 0;
-        return (
-          <button
-            onClick={handleAddToCart}
-            className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
-            data-testid="product-add-to-box"
-          >
-            <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
-            <span className="bb-floating-sep">·</span>
-            <span className="bb-floating-action">Add {quantity}lb to Cart</span>
-            {savePct > 0 && (
-              <span className="bb-floating-save" data-testid="floating-save-badge">
-                Save {savePct}%
-              </span>
-            )}
-          </button>
-        );
-      })()}
-
       {!embedded && <Footer />}
     </>
   );
@@ -754,9 +731,18 @@ export const ProductDetailModal = ({ productId, onClose }) => {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    const prev = document.body.style.overflow;
+    // Lock BOTH body and #root (the real scroll container) so the background can't
+    // momentum-scroll and drag the fixed sheet up off-screen on mobile. scrollTop is
+    // preserved so closing returns the user to their previous menu position.
+    const prevBody = document.body.style.overflow;
+    const root = document.getElementById('root');
+    const prevRoot = root ? root.style.overflow : '';
     document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = prev; };
+    if (root) root.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevBody;
+      if (root) root.style.overflow = prevRoot;
+    };
   }, []);
 
   const onTouchStart = (e) => {
