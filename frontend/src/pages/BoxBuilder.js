@@ -7,6 +7,7 @@ import { Calculator, Wheat, PawPrint, X, ChevronDown, ChevronUp, Tag } from 'luc
 import { ProductDetailModal } from './ProductDetail';
 import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
+import { catalog as shopifyCatalog } from '../services/shopify';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -233,16 +234,17 @@ export const BoxBuilder = () => {
     const loadData = async () => {
       setLoading(true);
       try {
-        // Fetch ALL products (both pet types) so the cart can look up cross-pet items.
-        // Display filtering by product_line happens client-side below.
-        const [productsRes, treatsRes] = await Promise.all([
-          axios.get(`${API}/products`),
-          axios.get(`${API}/treats`)
+        // Products & treats come from Shopify via the FastAPI proxy.
+        // Only Active / published products are returned by the Storefront API;
+        // Draft and Archived products are automatically excluded.
+        const [productsData, treatsData] = await Promise.all([
+          shopifyCatalog.getAllProducts(),
+          shopifyCatalog.getAllTreats(),
         ]);
-        setProducts(productsRes.data);
-        setTreats(treatsRes.data);
+        setProducts(productsData);
+        setTreats(treatsData);
       } catch (error) {
-        console.error('Failed to load data:', error);
+        console.error('Failed to load Shopify catalog:', error);
       } finally {
         setLoading(false);
       }

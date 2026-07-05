@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { CartDrawer } from '../components/CartAndCheckout';
+import { catalog as shopifyCatalog } from '../services/shopify';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
@@ -96,8 +97,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
 
     const fetchTreat = async () => {
       try {
-        const response = await axios.get(`${API}/treats`);
-        const foundTreat = response.data.find(t => t.treat_id === treatId);
+        const foundTreat = await shopifyCatalog.getTreatByHandle(treatId);
         setTreat(foundTreat);
       } catch (error) {
         console.error('Error fetching treat:', error);
@@ -106,8 +106,8 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
       }
     };
 
-    axios.get(`${API}/products`)
-      .then(res => setProducts(res.data))
+    shopifyCatalog.getAllProducts()
+      .then(all => setProducts(all))
       .catch(err => console.error('Error loading products:', err));
 
     fetchTreat();

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { CartDrawer } from '../components/CartAndCheckout';
+import { catalog as shopifyCatalog } from '../services/shopify';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -368,12 +369,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     window.addEventListener('focus', syncFromStorage);
     
     // Load all products for pricing
-    axios.get(`${API}/products`)
-      .then(res => setProducts(res.data))
+    shopifyCatalog.getAllProducts()
+      .then(all => setProducts(all))
       .catch(err => console.error('Error loading products:', err));
-    
-    axios.get(`${API}/products/${productId}`)
-      .then(res => setProduct(res.data))
+
+    shopifyCatalog.getProductByHandle(productId)
+      .then(p => setProduct(p))
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
     
@@ -512,7 +513,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const collectionInfo = getCollectionInfo();
   const lineName = collectionInfo.name;
   const lineColor = collectionInfo.color;
-  const productImage = proteinImages[product.protein_type] || proteinImages.chicken;
+  const productImage = product.image || proteinImages[product.protein_type] || proteinImages.chicken;
   const basePerLb = getBasePrice(product) / 6;
   const lowestPerLb = basePerLb * 0.85; // lowest /lb — max 15% bulk discount
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Edit2 } from 'lucide-react';
+import { catalog as shopifyCatalog } from '../services/shopify';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -473,8 +474,8 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
   useEffect(() => {
     const loadTreats = async () => {
       try {
-        const { data } = await axios.get(`${API}/treats`);
-        const filteredTreats = data.filter(t => t.pet_type === petType);
+        const allTreats = await shopifyCatalog.getAllTreats();
+        const filteredTreats = allTreats.filter(t => (t.pet_type || 'dog') === petType);
         setTreats(filteredTreats);
       } catch (error) {
         console.error('Failed to load treats:', error);

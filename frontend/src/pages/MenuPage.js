@@ -4,6 +4,7 @@ import { Navbar, Footer } from '../components/Layout';
 import { ChevronRight, ChevronLeft, ChevronDown, Plus, Minus, X, Check, ShoppingBag } from 'lucide-react';
 import axios from 'axios';
 import { useCart, SlideCart } from '../contexts/CartContext';
+import { catalog as shopifyCatalog } from '../services/shopify';
 
 export { useCart, SlideCart };
 
@@ -66,12 +67,12 @@ export const MenuPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productsRes, treatsRes] = await Promise.all([
-          axios.get(`${API}/products`),
-          axios.get(`${API}/treats`)
+        const [productsData, treatsData] = await Promise.all([
+          shopifyCatalog.getAllProducts(),
+          shopifyCatalog.getAllTreats(),
         ]);
-        setProducts(productsRes.data);
-        setTreats(treatsRes.data);
+        setProducts(productsData);
+        setTreats(treatsData);
       } catch (error) {
         console.error('Error:', error);
       } finally {
@@ -227,8 +228,8 @@ export const ProductLinePage = ({ productLine }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${API}/products`);
-        const lineProducts = response.data.filter(p => p.product_line === lineId);
+        const allProducts = await shopifyCatalog.getAllProducts();
+        const lineProducts = allProducts.filter(p => p.product_line === lineId);
         setProducts(lineProducts);
         if (lineProducts.length > 0) setSelectedProduct(lineProducts[0]);
       } catch (error) {
@@ -435,8 +436,8 @@ export const TreatsPage = () => {
   useEffect(() => {
     const fetchTreats = async () => {
       try {
-        const response = await axios.get(`${API}/treats`);
-        setTreats(response.data);
+        const treatsData = await shopifyCatalog.getAllTreats();
+        setTreats(treatsData);
       } catch (error) {
         console.error('Error:', error);
       } finally {
