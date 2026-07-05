@@ -571,30 +571,32 @@ export const BoxBuilder = () => {
         {(() => {
           const hero = CATEGORY_HERO[`${petType}-${viewMode}`];
           const tabs = (
-            <div className="menu-category-text menu-category-text--on-hero" data-testid="menu-category-tabs">
-              {bannerCards.map((card) => (
+            <div className="menu-category-tabs-wrap menu-category-tabs-wrap--on-hero">
+              <div className="menu-category-text menu-category-text--on-hero" data-testid="menu-category-tabs">
+                {bannerCards.map((card) => (
+                  <button
+                    key={card.id}
+                    onClick={() => handleCategoryClick(card)}
+                    data-testid={`category-${card.id}`}
+                    className={`menu-category-text-btn ${card.active ? 'is-active' : ''}`}
+                  >
+                    {card.title}
+                  </button>
+                ))}
                 <button
-                  key={card.id}
-                  onClick={() => handleCategoryClick(card)}
-                  data-testid={`category-${card.id}`}
-                  className={`menu-category-text-btn ${card.active ? 'is-active' : ''}`}
+                  data-testid="category-calculator-link"
+                  onClick={() => setCalcOpen(true)}
+                  className="menu-category-calc-link"
+                  aria-label="Open feeding calculator"
+                  type="button"
                 >
-                  {card.title}
+                  Feeding Calculator
                 </button>
-              ))}
-              <button
-                data-testid="category-calculator-link"
-                onClick={() => setCalcOpen(true)}
-                className="menu-category-calc-link"
-                aria-label="Open feeding calculator"
-                type="button"
-              >
-                Feeding Calculator
-              </button>
+              </div>
             </div>
           );
           if (!hero) {
-            return <div className="menu-category-text" data-testid="menu-category-tabs">{tabs.props.children}</div>;
+            return <div className="menu-category-text" data-testid="menu-category-tabs">{tabs.props.children.props.children}</div>;
           }
           return (
             <div className="menu-collection-hero" data-testid="menu-collection-hero">
