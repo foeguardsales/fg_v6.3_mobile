@@ -9,6 +9,17 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 
 ## What's Implemented (Feb 2026)
 
+### Jun 2026 — Iteration 19: Shopify Headless UI prep (Menu / Product / Treat / Cart redesign) — tested 12/12 PASS
+- **Menu cards** (`BoxBuilder.js` ProductCard): descriptions removed; show only Title + price. Price shows **"From $X.XX/lb"** = lowest possible per-lb (base÷6 × 0.85, i.e. max 15% off) when qty 0; total + (per-lb) when qty>0. `+` button when not in cart / `[− qty +]` pill when in cart (unchanged).
+- **Menu floating button** → **"View Cart • $XX.XX"** (running subtotal), opens the cart drawer. (Removed the old "Add Xlb to Cart · Save X%".)
+- **Category tab bar** (`.menu-category-text--on-hero`): brown shade `rgba(59,42,26,0.86)` + light text; selected tab = **bold + underline, NOT larger**; reduced padding.
+- **Product Page** (`ProductDetail.js`): strict order — Image → Collection+Title → Price ("From $X/lb") → Short description → Feature section (✓ checks + trust icons) → **Personalizations** (Uber-style radio group, placeholder) → **Variant pills** (`1 lb` / `1.5 lb`, placeholder) → Quantity → **Button "Add to Basket" / "Update Basket"** (inline in content column). ALL golden badges + feature bullets DELETED. Bottom floating button removed.
+- **Treat Page** (`TreatDetail.js`): same restructure; variant pills = `1 pack` / `3 pack` / `5 pack`; gold pills removed; inline Add/Update Basket button.
+- **Variant pills + personalization radios are VISUAL-ONLY** (verified they do NOT change price/qty) — ready to bind to Shopify Storefront API later.
+- **Cart discount messaging** (`CartAndCheckout.js` CartDrawer): no progress bars. Shows `N lb of meals`, `✓ X% Bulk Discount Applied` (when active), and `N lb until Y%` next-tier nudge. Pricing/discount engine untouched.
+- New CSS: `.pd-variant-group/.pd-pill/.pd-radio-*`, `.pd-basket-btn`, `.price-from`, `.pd-shopify-price-from`, `.cart-discount-*`.
+
+
 ### 2025-07 — Menu/product batch #2 (verified by testing agent, 5/5 PASS)
 - **CRITICAL sheet-anchor fixed**: mobile product sheet no longer flies off-screen. Locked `#root`
   (real scroller) overflow while modal open + `overscroll-behavior:contain` + `.bb-overlay--sheet`
