@@ -108,6 +108,14 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
   const totalLbs = proteinEntriesAll.reduce((s, [, d]) => s + (d.qty || 0), 0);
   const bulkRate = getTierFromLbs(totalLbs, RATES).rate;
 
+  // Next discount tier + lbs remaining (drives the "N lb until X%" nudge — no progress bars)
+  const nextTier = (() => {
+    const sizes = Object.keys(RATES).map(Number).sort((a, b) => a - b);
+    for (const s of sizes) { if (totalLbs < s && RATES[s] > 0) return { size: s, rate: RATES[s] }; }
+    return null;
+  })();
+  const lbsUntilNext = nextTier ? nextTier.size - totalLbs : 0;
+
   // Meals (full + discounted) and treats (never discounted by the bulk tier)
   const proteinFull = proteinEntriesAll.reduce((s, [pid, d]) => s + productPerLb(pid) * d.qty, 0);
   const proteinDiscounted = proteinFull * (1 - bulkRate);
@@ -193,11 +201,19 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
             </div>
           )}
 
-          <div className="cart-box-info">
+          <div className="cart-box-info cart-discount-info" data-testid="cart-discount-info">
             <span className="cart-box-size">{itemCount} {itemCount === 1 ? 'item' : 'items'}</span>
             {totalLbs > 0 && (
-              <span className="cart-box-lbs" data-testid="cart-meal-lbs">
-                {totalLbs} lb of meals{bulkRate > 0 ? ` · ${Math.round(bulkRate * 100)}% off` : ''}
+              <span className="cart-meal-lbs" data-testid="cart-meal-lbs">{totalLbs} lb of meals</span>
+            )}
+            {bulkRate > 0 && (
+              <span className="cart-discount-applied" data-testid="cart-discount-applied">
+                ✓ {Math.round(bulkRate * 100)}% Bulk Discount Applied
+              </span>
+            )}
+            {nextTier && (
+              <span className="cart-discount-next" data-testid="cart-discount-next">
+                {lbsUntilNext} lb until {Math.round(nextTier.rate * 100)}%
               </span>
             )}
           </div>

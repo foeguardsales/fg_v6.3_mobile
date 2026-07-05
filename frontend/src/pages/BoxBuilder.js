@@ -857,18 +857,9 @@ export const BoxBuilder = () => {
             data-testid="cart-button"
             className="bb-floating-checkout"
           >
-            {hasItems ? (
-              <>
-                <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
-                <span className="bb-floating-sep">·</span>
-                <span className="bb-floating-action">Add {lbs > 0 ? `${lbs}lb ` : ''}to Cart</span>
-                {rate > 0 && (
-                  <span className="bb-floating-save" data-testid="floating-save-badge">
-                    Save {Math.round(rate * 100)}%
-                  </span>
-                )}
-              </>
-            ) : 'Add to Cart'}
+            <span className="bb-floating-action">View Cart</span>
+            <span className="bb-floating-sep">•</span>
+            <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
           </button>
         );
       })()}
@@ -929,6 +920,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   // Pricing is stored as the 6lb base price. Show /1lb by default; once a quantity
   // is selected, show the full price for that amount.
   const basePerLb = basePrice / 6;
+  const lowestPerLb = basePerLb * 0.85; // lowest possible /lb — max 15% bulk discount
   const discountedPerLb = discountedPrice / 6;
   const displayQty = selectedQty > 0 ? selectedQty : 1;
   const showPrice = discountedPerLb * displayQty;
@@ -1039,13 +1031,9 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         )}
       </div>
 
-      {/* Stacked content: Title → Description → Price (tap card to open detail) */}
+      {/* Stacked content: Title → Price (tap card to open detail) */}
       <div className="product-card-content">
         <h4 className="product-card-title">{product.name}</h4>
-
-        <p className="product-card-desc">
-          {product.mini_description || product.description.split('.')[0]}
-        </p>
 
         <div className="product-card-price">
           {selectedQty > 0 ? (
@@ -1055,7 +1043,8 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
             </>
           ) : (
             <>
-              <span className="price-regular">${perLbDisplay.toFixed(2)}</span>
+              <span className="price-from">From</span>
+              <span className="price-regular">${lowestPerLb.toFixed(2)}</span>
               <span className="price-unit">/lb</span>
             </>
           )}

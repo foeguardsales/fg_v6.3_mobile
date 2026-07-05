@@ -20,6 +20,10 @@ const proteinImages = {
   bison: 'https://images.unsplash.com/photo-1551028150-64b9f398f678?w=600&h=400&fit=crop'
 };
 
+// Shopify variant placeholders (visual only — wired to the Storefront API later)
+const VARIANT_OPTIONS = ['1 lb', '1.5 lb'];
+const PERSONALIZATION_OPTIONS = ['Standard recipe', 'Custom (add a note below)'];
+
 const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   
@@ -338,6 +342,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const [products, setProducts] = useState([]);
   const [orderNotes, setOrderNotes] = useState('');
   const [activeTab, setActiveTab] = useState('description');
+  const [selectedVariant, setSelectedVariant] = useState(0);
+  const [selectedPersonalization, setSelectedPersonalization] = useState(0);
 
   useEffect(() => {
     // Only reset scroll on the standalone product page. When embedded as a bottom-sheet
@@ -509,6 +515,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const lineName = collectionInfo.name;
   const lineColor = collectionInfo.color;
   const productImage = proteinImages[product.protein_type] || proteinImages.chicken;
+  const basePerLb = getBasePrice(product) / 6;
+  const lowestPerLb = basePerLb * 0.85; // lowest /lb — max 15% bulk discount
 
   return (
     <>
@@ -577,10 +585,95 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             {/* Title */}
             <h1 className="pd-shopify-title">{product.name}</h1>
 
-            {/* Add (size) + Price — the +/- adds to the box live; no separate cart button here */}
-            <div className="pd-shopify-qty-row" data-testid="product-price">
+            {/* Price — "From $X/lb" (lowest, max 15% off) until a quantity is chosen */}
+            <div className="pd-shopify-price-row" data-testid="product-price">
+              {quantity > 0 ? (
+                <>
+                  <span className="pd-shopify-price" data-testid="qty-price-total">
+                    ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
+                  </span>
+                  <span className="pd-shopify-price-unit" data-testid="qty-price-perlb">
+                    (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="pd-shopify-price-from">From</span>
+                  <span className="pd-shopify-price" data-testid="qty-price-total">${lowestPerLb.toFixed(2)}</span>
+                  <span className="pd-shopify-price-unit" data-testid="qty-price-perlb">/lb</span>
+                </>
+              )}
+            </div>
+
+            {/* Short description */}
+            <p className="pd-shopify-desc">
+              {product.description}
+            </p>
+
+            {/* Feature section — highlights as ✓ + trust icons */}
+            {product.highlights && product.highlights.length > 0 && (
+              <ul className="pd-shopify-checks" data-testid="product-features">
+                {product.highlights.map((h, i) => (
+                  <li key={i}><Check size={16} strokeWidth={2.5} /> <span>{h}</span></li>
+                ))}
+              </ul>
+            )}
+            <div className="pd-shopify-trust" data-testid="product-trust-row">
+              <div className="pd-shopify-trust-item">
+                <Recycle size={26} strokeWidth={1.8} />
+                <span>100% Recyclable</span>
+              </div>
+              <div className="pd-shopify-trust-item">
+                <Heart size={26} strokeWidth={1.8} />
+                <span>Humanely Raised</span>
+              </div>
+              <div className="pd-shopify-trust-item">
+                <MapPin size={26} strokeWidth={1.8} />
+                <span>Made in Canada</span>
+              </div>
+            </div>
+
+            {/* Personalizations — Uber-style radios (placeholder, will bind to Shopify) */}
+            <div className="pd-variant-group" data-testid="product-personalizations">
+              <div className="pd-variant-label">Personalize</div>
+              <div className="pd-radio-list">
+                {PERSONALIZATION_OPTIONS.map((opt, i) => (
+                  <button
+                    type="button"
+                    key={opt}
+                    className={`pd-radio-row ${selectedPersonalization === i ? 'is-selected' : ''}`}
+                    onClick={() => setSelectedPersonalization(i)}
+                    data-testid={`personalization-${i}`}
+                  >
+                    <span className="pd-radio-circle" aria-hidden="true" />
+                    <span className="pd-radio-text">{opt}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Variant selection — packaging pills (placeholder, will bind to Shopify) */}
+            <div className="pd-variant-group" data-testid="product-variants">
+              <div className="pd-variant-label">Packaging</div>
+              <div className="pd-pill-row">
+                {VARIANT_OPTIONS.map((opt, i) => (
+                  <button
+                    type="button"
+                    key={opt}
+                    className={`pd-pill ${selectedVariant === i ? 'is-selected' : ''}`}
+                    onClick={() => setSelectedVariant(i)}
+                    data-testid={`variant-${i}`}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quantity */}
+            <div className="pd-shopify-qty-row">
               <div>
-                <div className="pd-shopify-mini-label">Add</div>
+                <div className="pd-shopify-mini-label">Quantity</div>
                 <div className="pd-shopify-qty-controls">
                   <button
                     onClick={() => setBoxQty(quantity - 6)}
@@ -596,64 +689,19 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                   >+</button>
                 </div>
               </div>
-              <div className="pd-shopify-adds">
-                <div className="pd-shopify-mini-label">Price</div>
-                {quantity > 0 ? (
-                  <>
-                    <span data-testid="qty-price-total" className="pd-shopify-adds-total">
-                      ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
-                    </span>
-                    <span className="pd-shopify-adds-perlb" data-testid="qty-price-perlb">
-                      (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <span data-testid="qty-price-total" className="pd-shopify-adds-total">
-                      ${(getDiscountedPrice(product) / 6).toFixed(2)}
-                    </span>
-                    <span className="pd-shopify-adds-perlb" data-testid="qty-price-perlb">/lb</span>
-                  </>
-                )}
-              </div>
             </div>
 
-            {/* Description */}
-            <p className="pd-shopify-desc">
-              {product.description}
-            </p>
-
-            {/* Features list — restructured from the old badges into plain bullets */}
-            <ul className="pd-shopify-featbullets" data-testid="product-features">
-              <li>Dogs of all life stages</li>
-              <li>Fresh to order</li>
-              <li>Human grade</li>
-            </ul>
-
-            {/* Checks list (highlights as ✓) */}
-            {product.highlights && product.highlights.length > 0 && (
-              <ul className="pd-shopify-checks" data-testid="product-checks">
-                {product.highlights.map((h, i) => (
-                  <li key={i}><Check size={16} strokeWidth={2.5} /> <span>{h}</span></li>
-                ))}
-              </ul>
-            )}
-
-            {/* 3 horizontal icons row */}
-            <div className="pd-shopify-trust" data-testid="product-trust-row">
-              <div className="pd-shopify-trust-item">
-                <Recycle size={26} strokeWidth={1.8} />
-                <span>100% Recyclable</span>
-              </div>
-              <div className="pd-shopify-trust-item">
-                <Heart size={26} strokeWidth={1.8} />
-                <span>Humanely Raised</span>
-              </div>
-              <div className="pd-shopify-trust-item">
-                <MapPin size={26} strokeWidth={1.8} />
-                <span>Made in Canada</span>
-              </div>
-            </div>
+            {/* Add / Update Basket */}
+            <button
+              className="pd-basket-btn"
+              data-testid="product-add-to-box"
+              onClick={() => {
+                if (quantity <= 0) { setBoxQty(6); }
+                if (embedded && onClose) onClose(); else navigate('/menu');
+              }}
+            >
+              {quantity > 0 ? 'Update Basket' : 'Add to Basket'}
+            </button>
           </div>
         </div>
 
@@ -715,31 +763,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
           <ProductFaqSection />
         </div>
 
-        {/* Cart button — EXISTING design/function, now anchored at the bottom of the product page */}
-        {(() => {
-          const ctaQty = quantity > 0 ? quantity : 6;
-          const totalPrice = getDiscountedPrice(product) * (ctaQty / 6);
-          const basePriceLb = product.pricing?.find(p => p.size_lb === 6)?.price || 0;
-          const discountedLb = getDiscountedPrice(product);
-          const savePct = basePriceLb > 0 ? Math.round((1 - discountedLb / basePriceLb) * 100) : 0;
-          return (
-            <button
-              onClick={() => {
-                if (quantity <= 0) { setBoxQty(6); }
-                if (embedded && onClose) onClose(); else navigate('/menu');
-              }}
-              className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
-              data-testid="product-add-to-box"
-            >
-              <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
-              <span className="bb-floating-sep">·</span>
-              <span className="bb-floating-action">Add {ctaQty}lb to Cart</span>
-              {savePct > 0 && (
-                <span className="bb-floating-save" data-testid="floating-save-badge">Save {savePct}%</span>
-              )}
-            </button>
-          );
-        })()}
+        {/* Basket CTA now lives inside the content column (Add / Update Basket) */}
       </div>
 
       {!embedded && <Footer />}
