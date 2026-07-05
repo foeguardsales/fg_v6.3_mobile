@@ -5729,6 +5729,7 @@ h2, h3, h4 {
 .menu-category-text--on-hero .menu-category-text-btn {
   color: #EDE6DA;
   font-size: 24px;
+  font-weight: 600;
   padding: 2px 2px 6px;
 }
 .menu-category-text--on-hero .menu-category-text-btn:hover { color: #FFFFFF; }
@@ -6209,7 +6210,7 @@ h2, h3, h4 {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.72;
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   line-height: 1.2;
 }
 .pd-shopify-title {
@@ -6225,7 +6226,7 @@ h2, h3, h4 {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  margin: 0 0 18px;
+  margin: 0 0 12px;
   flex-wrap: wrap;
 }
 .pd-shopify-price {
@@ -6249,24 +6250,24 @@ h2, h3, h4 {
 .pd-shopify-desc {
   font-family: 'Barlow', 'Barlow Semi Condensed', serif;
   font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.6;
   color: #3B2A1A;
-  margin: 0 0 20px;
+  margin: 0 0 14px;
 }
 /* ===== Shopify variant placeholders — pills + Uber-style radios (visual, ready to bind) ===== */
 .pd-variant-group {
-  margin: 0 0 20px;
+  margin: 0 0 18px;
   padding: 0;
   border-top: none;
 }
 .pd-variant-label {
   font-family: 'Barlow Semi Condensed', serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #3B2A1A;
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 .pd-pill-row {
   display: flex;
@@ -6294,8 +6295,9 @@ h2, h3, h4 {
 .pd-radio-list {
   display: flex;
   flex-direction: column;
-  border: 1px solid #E8DDD0;
-  border-radius: 10px;
+  border: none;
+  border-top: 1px solid #E8DDD0;
+  border-radius: 0;
   overflow: hidden;
 }
 .pd-radio-row {
@@ -6304,14 +6306,14 @@ h2, h3, h4 {
   gap: 12px;
   width: 100%;
   text-align: left;
-  background: #FFFFFF;
+  background: transparent;
   border: none;
   border-bottom: 1px solid #E8DDD0;
-  padding: 14px 16px;
+  padding: 12px 4px;
   cursor: pointer;
   transition: background 0.15s ease;
 }
-.pd-radio-row:last-child { border-bottom: none; }
+.pd-radio-row:last-child { border-bottom: 1px solid #E8DDD0; }
 .pd-radio-row:hover { background: #FAF8F4; }
 .pd-radio-circle {
   width: 20px;
@@ -6593,11 +6595,11 @@ h2, h3, h4 {
 /* === Product Detail extras: checks list, collapsibles wrapper, trust icons === */
 .pd-shopify-checks {
   list-style: none;
-  margin: 0 0 22px;
+  margin: 0 0 14px;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 .pd-shopify-checks li {
   display: flex;
@@ -6615,15 +6617,15 @@ h2, h3, h4 {
 }
 .pd-shopify-collapsibles {
   margin: 0 0 24px;
-  border-top: 1px solid #EDEAE7;
+  border-top: none;
 }
 
 .pd-shopify-trust {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-  margin: 0 0 10px;
-  padding: 8px 0;
+  margin: 0 0 8px;
+  padding: 20px 0 8px;
   border-top: none;
   border-bottom: none;
 }
@@ -6654,7 +6656,7 @@ h2, h3, h4 {
 }
 
 /* Tighter qty-row spacing */
-.pd-shopify-qty-row { margin: 0 0 20px; }
+.pd-shopify-qty-row { margin: 0 0 4px; }
 
 
 
@@ -7096,45 +7098,46 @@ h2, h3, h4 {
   align-items: flex-start;
   justify-content: center;
   overflow-y: auto;
-  padding: 56px 0 40px;
+  padding: 24px 0 40px;
 }
 @media (min-width: 760px) {
-  .menu-funnel-overlay { padding: 72px 20px 48px; }
+  .menu-funnel-overlay { padding: 32px 20px 48px; }
 }
 .menu-funnel-overlay-inner {
   width: 100%;
-  max-width: 1080px;
+  max-width: 1100px;
   margin: 0 auto;
   position: relative;
 }
 .menu-funnel-overlay-close {
   position: fixed;
-  top: 16px;
-  left: 16px;
+  top: 14px;
+  left: 14px;
   right: auto;
   background: white;
   border: 1px solid #D8CFB8;
   cursor: pointer;
   color: #3B2A1A;
-  padding: 8px;
+  padding: 6px;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: background 0.15s;
+  z-index: 50;
 }
 .menu-funnel-overlay-close:hover { background: #EFE6CC; }
 
 /* Title in overlay — plain, integrated with menu (no chip background) */
 .menu-funnel-overlay .menu-funnel-title {
   font-family: var(--font-heading);
-  font-size: clamp(26px, 3.6vw, 36px);
+  font-size: clamp(24px, 3.4vw, 34px);
   font-weight: 700;
   color: #3B2A1A;
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   text-align: center;
   letter-spacing: -0.4px;
   line-height: 1.15;
@@ -7145,12 +7148,12 @@ h2, h3, h4 {
 }
 .menu-funnel-overlay .menu-funnel-sub {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 14px;
   color: #3B2A1A;
-  margin: 0 auto 28px;
+  margin: 0 auto 20px;
   text-align: center;
   max-width: 640px;
-  line-height: 1.55;
+  line-height: 1.5;
   padding: 0 20px;
 }
 
@@ -7167,7 +7170,7 @@ h2, h3, h4 {
   z-index: 90;
   background: #F5F3EF;
   border-bottom: 1px solid #EDEAE7;
-  padding: 5px 16px;
+  padding: 4px 12px;
 }
 .selection-breadcrumb-inner {
   max-width: 1100px;
@@ -7175,14 +7178,14 @@ h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px;
+  gap: 10px;
 }
 .selection-breadcrumb-label {
   display: inline-flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 6px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 12px;
   color: #3B2A1A;
 }
 .selection-breadcrumb-prefix {
@@ -7190,21 +7193,23 @@ h2, h3, h4 {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 11px;
+  font-size: 10px;
 }
 .selection-breadcrumb-title {
   font-weight: 700;
-  font-size: 18px;
+  font-size: 18px !important;
   color: #3B2A1A;
+  font-family: var(--font-heading);
+  letter-spacing: -0.1px;
 }
 .selection-breadcrumb-edit {
   background: transparent;
   border: 1px solid #3B2A1A;
   color: #3B2A1A;
-  padding: 6px 14px;
+  padding: 4px 10px;
   border-radius: 999px;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
   text-transform: uppercase;
@@ -7331,7 +7336,7 @@ h2, h3, h4 {
   flex-direction: column !important;
   gap: 0 !important;
   grid-template-columns: none !important;
-  max-width: 720px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 /* Centered small text hyperlink under the funnel cards (Feeding Calculator) */
@@ -7351,7 +7356,7 @@ h2, h3, h4 {
 }
 .menu-funnel-calc-link:hover { color: #7a0a1b; }
 @media (max-width: 759px) {
-  .menu-funnel-calc-link { margin-top: 30px; }
+  .menu-funnel-calc-link { margin-top: 48px; }
 }
 
 .menu-funnel-card-row {
@@ -7371,15 +7376,21 @@ h2, h3, h4 {
   width: 100%;
   overflow: hidden;
 }
-.menu-funnel-card-row:first-of-type { border-top: 1px solid #EDEAE7; }
+.menu-funnel-card-row:last-of-type { border-bottom: 1px solid #EDEAE7; }
 .menu-funnel-card-row:hover { opacity: 0.92; }
 .menu-funnel-card-row.is-selected { background: #FFFFFF; }
+
+@media (min-width: 760px) {
+  .menu-funnel-card-row {
+    grid-template-columns: 1fr 160px;
+  }
+}
 
 .menu-funnel-card-row-media {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 116px;
+  min-height: 128px;
   aspect-ratio: auto;
   align-self: stretch;
   background: #FFFFFF;
@@ -7387,6 +7398,9 @@ h2, h3, h4 {
   overflow: hidden;
   order: 1;
   flex-shrink: 0;
+}
+@media (min-width: 760px) {
+  .menu-funnel-card-row-media { min-height: 150px; }
 }
 .menu-funnel-card-row-media img {
   width: 100%;
@@ -7397,25 +7411,28 @@ h2, h3, h4 {
 
 .menu-funnel-card-row-content {
   min-width: 0;
-  padding: 16px 12px 16px 16px;
+  padding: 14px 14px 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   order: 0;
   justify-content: center;
 }
+@media (min-width: 760px) {
+  .menu-funnel-card-row-content { padding: 16px 16px 16px 18px; }
+}
 .menu-funnel-card-row-title {
   font-family: var(--font-heading);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #3B2A1A;
   margin: 0 0 2px;
-  line-height: 1.15;
+  line-height: 1.2;
   letter-spacing: -0.2px;
   text-transform: none;
 }
 @media (min-width: 760px) {
-  .menu-funnel-card-row-title { font-size: 22px; }
+  .menu-funnel-card-row-title { font-size: 20px; }
 }
 .menu-funnel-card-row-sub {
   font-family: 'Barlow', 'Barlow Semi Condensed', serif;

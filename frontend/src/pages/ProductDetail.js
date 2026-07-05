@@ -40,12 +40,12 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '12px 0',
+          padding: '9px 0',
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
           fontFamily: "'Barlow Semi Condensed', serif",
-          fontSize: '15px',
+          fontSize: '13px',
           fontWeight: '700',
           color: '#2B2B2B',
           letterSpacing: '0.02em',
@@ -53,11 +53,11 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
         }}
       >
         <span>{title}</span>
-        {isOpen ? <ChevronUp size={18} color="#c8102e" /> : <ChevronDown size={18} color="#c8102e" />}
+        {isOpen ? <ChevronUp size={16} color="#c8102e" /> : <ChevronDown size={16} color="#c8102e" />}
       </button>
       {isOpen && (
         <div style={{
-          padding: '0 0 16px'
+          padding: '0 0 14px'
         }}>
           {children}
         </div>
@@ -259,19 +259,20 @@ const ProductFaqSection = () => {
     <section data-testid="product-faq-section" style={{ marginTop: '8px', marginBottom: '0' }}>
       <h2 style={{
         fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-        fontSize: 'clamp(26px, 3.2vw, 36px)',
+        fontSize: 'clamp(22px, 2.8vw, 30px)',
         fontWeight: 600,
         color: '#3B2A1A',
-        margin: '0 0 16px',
+        margin: '0 0 10px',
         textTransform: 'uppercase',
         letterSpacing: '0.04em'
       }}>Frequently Asked</h2>
       <div style={{
-        background: '#F5F3EF',
-        border: '1px solid #D8CFB8',
-        borderRadius: '8px',
-        padding: '8px 24px',
-        boxShadow: 'none'
+        background: 'transparent',
+        border: 'none',
+        borderRadius: 0,
+        padding: '0',
+        boxShadow: 'none',
+        borderTop: '1px solid #E8DDD0'
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         {faqs.map((f, i) => {
@@ -288,12 +289,12 @@ const ProductFaqSection = () => {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '12px 0',
+                  padding: '9px 0',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
                   fontFamily: "'Barlow Semi Condensed', serif",
-                  fontSize: '15px',
+                  fontSize: '13px',
                   fontWeight: 700,
                   color: '#2B2B2B',
                   textAlign: 'left',
@@ -301,10 +302,10 @@ const ProductFaqSection = () => {
                 }}
               >
                 <span>{f.q}</span>
-                {isOpen ? <ChevronUp size={18} color="#c8102e" /> : <ChevronDown size={18} color="#c8102e" />}
+                {isOpen ? <ChevronUp size={16} color="#c8102e" /> : <ChevronDown size={16} color="#c8102e" />}
               </button>
               {isOpen && (
-                <div style={{ padding: '0 0 16px', fontSize: '14px', color: '#3B2A1A', lineHeight: 1.7 }}>
+                <div style={{ padding: '0 0 14px', fontSize: '13.5px', color: '#3B2A1A', lineHeight: 1.65 }}>
                   {f.a}
                 </div>
               )}
