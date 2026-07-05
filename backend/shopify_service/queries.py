@@ -180,6 +180,38 @@ fragment CustomerFields on Customer {
       phone
     }
   }
+  orders(first: 50, sortKey: PROCESSED_AT, reverse: true) {
+    nodes {
+      id
+      orderNumber
+      name
+      processedAt
+      financialStatus
+      fulfillmentStatus
+      statusUrl
+      currentTotalPrice { amount currencyCode }
+      totalPrice { amount currencyCode }
+      subtotalPrice { amount currencyCode }
+      totalShippingPrice { amount currencyCode }
+      totalTax { amount currencyCode }
+      shippingAddress {
+        firstName lastName address1 address2 city province zip country phone
+      }
+      lineItems(first: 50) {
+        nodes {
+          title
+          quantity
+          variant {
+            id
+            title
+            price { amount currencyCode }
+            image { url altText }
+            product { id handle title }
+          }
+        }
+      }
+    }
+  }
 }
 """
 

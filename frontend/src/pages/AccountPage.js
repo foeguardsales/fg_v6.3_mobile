@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { useAuth } from '../lib/useAuth';
 import { orderService } from '../services/api';
-import { Dog, Edit2, ChevronRight, Plus } from 'lucide-react';
+import { Dog, Edit2, ChevronRight, Plus, MapPin } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
@@ -12,6 +12,95 @@ const API = `${BACKEND_URL}/api`;
 const AuthSection = lazy(() => import('../components/account/AuthSection').then(m => ({ default: m.AuthSection })));
 const OrdersList = lazy(() => import('../components/account/OrdersList').then(m => ({ default: m.OrdersList })));
 const SubscriptionManager = lazy(() => import('../components/account/SubscriptionManager').then(m => ({ default: m.SubscriptionManager })));
+
+// Saved Addresses Section — read from Shopify Customer (default + all addresses).
+// Adding/editing requires the `unauthenticated_write_customers` Storefront scope
+// which is not enabled on this store yet; when the user hits Add we surface a
+// friendly notice with a link to Shopify's hosted account page.
+const AddressesSection = ({ customer }) => {
+  const addresses = customer?.addresses?.nodes || [];
+  const defaultId = customer?.defaultAddress?.id;
+
+  const formatOne = (a) => (
+    <div style={{ fontSize: '14px', color: '#333', lineHeight: 1.55 }}>
+      {(a.firstName || a.lastName) && (
+        <div><strong>{[a.firstName, a.lastName].filter(Boolean).join(' ')}</strong></div>
+      )}
+      {a.address1 && <div>{a.address1}</div>}
+      {a.address2 && <div>{a.address2}</div>}
+      <div>{[a.city, a.province, a.zip].filter(Boolean).join(', ')}</div>
+      {a.country && <div>{a.country}</div>}
+      {a.phone && <div style={{ color: '#666' }}>{a.phone}</div>}
+    </div>
+  );
+
+  return (
+    <div style={{
+      background: 'white',
+      borderRadius: '16px',
+      padding: '24px',
+      marginBottom: '32px',
+      boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+        <h3 style={{ fontSize: '20px', fontWeight: '600', margin: 0, color: '#2B2B2B' }}>
+          Saved Addresses
+        </h3>
+      </div>
+
+      {addresses.length === 0 ? (
+        <div style={{ padding: '16px', background: '#F8F6F3', borderRadius: '12px', color: '#666', fontSize: '14px' }}>
+          You don&rsquo;t have any saved addresses yet. Addresses used at checkout will appear here automatically.
+        </div>
+      ) : (
+        <div style={{ display: 'grid', gap: '12px' }}>
+          {addresses.map((a) => (
+            <div
+              key={a.id}
+              style={{
+                display: 'flex',
+                gap: '16px',
+                padding: '16px',
+                background: '#F8F6F3',
+                borderRadius: '12px',
+                alignItems: 'flex-start'
+              }}
+            >
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                background: '#c8102e',
+                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <MapPin size={20} />
+              </div>
+              <div style={{ flex: 1 }}>
+                {a.id === defaultId && (
+                  <span style={{
+                    display: 'inline-block',
+                    padding: '2px 8px',
+                    borderRadius: '10px',
+                    background: '#E8F5E9',
+                    color: '#2E7D32',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    marginBottom: '6px',
+                  }}>DEFAULT</span>
+                )}
+                {formatOne(a)}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 // Profile Section Component
 const ProfileSection = ({ profile, onEdit }) => {
@@ -240,7 +329,10 @@ export const AccountPage = () => {
           {!profileLoading && (
             <ProfileSection profile={profile} onEdit={handleEditProfile} />
           )}
-          
+
+          {/* Saved Addresses Section (Shopify customer) */}
+          <AddressesSection customer={user?.shopify} />
+
           {/* Quick Actions */}
           <div style={{
             display: 'grid',

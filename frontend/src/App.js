@@ -11,6 +11,7 @@ import { OrderChoicePage } from './pages/OrderChoicePage';
 import { MealPlanPage } from './pages/MealPlanPage';
 import { MenuPage } from './pages/MenuPage';
 import { CartProvider, SlideCart } from './contexts/CartContext';
+import { ShopifyAuthProvider } from './contexts/ShopifyAuthContext';
 import { ProductDetailPage } from './pages/ProductDetail';
 import { TreatDetailPage } from './pages/TreatDetail';
 import { AboutPage } from './pages/AboutPage';
@@ -76,7 +77,8 @@ function App() {
 
   return (
     <Elements stripe={stripePromise}>
-      <CartProvider>
+      <ShopifyAuthProvider>
+        <CartProvider>
         <BrowserRouter>
           <ScrollToTop />
           <Routes>
@@ -107,6 +109,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </CartProvider>
+      </ShopifyAuthProvider>
     </Elements>
   );
 }

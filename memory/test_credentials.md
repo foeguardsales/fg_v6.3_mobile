@@ -1,8 +1,4 @@
-# Test Credentials
-
-No authenticated user accounts are required for the menu/product UI tests.
-The /menu, /product/:id, /treat/:id pages are public-facing.
-
-For admin testing (not part of current scope):
-- Admin login route: /admin/login
-- No seed admin credentials have been set in this session.
+# Shopify test customer (created for prompt 3 verification)
+Email: tester+1783282038@foeguard.dev
+Password: TestPass1234!
+Token: c8c9f18629101262051f2940c506a790
