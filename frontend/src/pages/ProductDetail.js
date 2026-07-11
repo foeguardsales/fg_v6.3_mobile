@@ -349,6 +349,15 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     return typeof v === 'number' ? v : 0;
   });
 
+  // Zero-quantity toast state — shown when the user taps "Add to Cart" with qty 0.
+  const [showZeroToast, setShowZeroToast] = useState(false);
+  const zeroToastTimerRef = useRef(null);
+  useEffect(() => {
+    return () => {
+      if (zeroToastTimerRef.current) clearTimeout(zeroToastTimerRef.current);
+    };
+  }, []);
+
   useEffect(() => {
     // Only reset scroll on the standalone product page. When embedded as a bottom-sheet
     // the menu behind must keep its scroll position so closing returns the user to where
@@ -764,18 +773,34 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
           const ctaQty = quantity > 0 ? quantity : 6;
           const totalPrice = getDiscountedPrice(product) * (ctaQty / 6);
           return (
-            <button
-              onClick={() => {
-                if (quantity <= 0) { setBoxQty(6); }
-                if (embedded && onClose) onClose(); else navigate('/menu');
-              }}
-              className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
-              data-testid="product-add-to-box"
-            >
-              <span className="bb-floating-action">{quantity > 0 ? 'Update Cart' : 'Add to Cart'}</span>
-              <span className="bb-floating-sep">•</span>
-              <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
-            </button>
+            <div className={`pd-cta-wrap ${embedded ? 'pd-cta-wrap--inline' : ''}`}>
+              {showZeroToast && (
+                <div
+                  className="pd-zero-toast"
+                  role="alert"
+                  data-testid="qty-zero-toast"
+                >
+                  Quantity is 0
+                </div>
+              )}
+              <button
+                onClick={() => {
+                  if (quantity <= 0) {
+                    setShowZeroToast(true);
+                    if (zeroToastTimerRef.current) clearTimeout(zeroToastTimerRef.current);
+                    zeroToastTimerRef.current = setTimeout(() => setShowZeroToast(false), 2200);
+                    return;
+                  }
+                  if (embedded && onClose) onClose(); else navigate('/menu');
+                }}
+                className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
+                data-testid="product-add-to-box"
+              >
+                <span className="bb-floating-action">{quantity > 0 ? 'Update Cart' : 'Add to Cart'}</span>
+                <span className="bb-floating-sep">•</span>
+                <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
+              </button>
+            </div>
           );
         })()}
       </div>

@@ -618,7 +618,14 @@ export const BoxBuilder = () => {
         {/* Main Content - Dog or Cat */}
         <>
             {showBoxSize && (
-              <StockUpSave guide={TIER_GUIDE} currentLbs={getTotalSelectedLbs()} />
+              <BoxSizePills
+                boxSize={boxSize}
+                rates={DISCOUNT_RATES}
+                onChange={(sz) => {
+                  setBoxSize(sz);
+                  sessionStorage.setItem('boxSize', sz.toString());
+                }}
+              />
             )}
 
             {loading ? (
@@ -854,15 +861,20 @@ export const BoxBuilder = () => {
         const runningTotal = proteinDiscounted + treatsTotal;
         const hasItems = lbs > 0 || (selectedTreats && selectedTreats.length > 0);
         return (
-          <button
-            onClick={openBasket}
-            data-testid="cart-button"
-            className="bb-floating-checkout"
-          >
-            <span className="bb-floating-action">View Cart</span>
-            <span className="bb-floating-sep">•</span>
-            <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
-          </button>
+          <>
+            {showBoxSize && (
+              <WeightProgressBar currentLbs={lbs} targetLbs={boxSize} />
+            )}
+            <button
+              onClick={openBasket}
+              data-testid="cart-button"
+              className="bb-floating-checkout"
+            >
+              <span className="bb-floating-action">View Cart</span>
+              <span className="bb-floating-sep">•</span>
+              <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
+            </button>
+          </>
         );
       })()}
 
@@ -1210,6 +1222,67 @@ const StockUpSave = ({ guide = [], currentLbs = 0 }) => {
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+
+// ===== Box-size pills — quick selector for pre-set box sizes (6 / 12 / 24 / 36+ lb) =====
+// Discount badges above each pill use the brand harvest-gold and reflect the real
+// bulk-discount tiers (DISCOUNT_RATES). The 6lb "starter" pill has no badge because
+// it carries no bulk discount.
+const BoxSizePills = ({ boxSize, onChange, rates = DOG_DISCOUNT_RATES }) => {
+  const options = [
+    { size: 6,  label: '6 lb'   },
+    { size: 12, label: '12 lb'  },
+    { size: 24, label: '24 lb'  },
+    { size: 36, label: '36 lb+' }
+  ];
+  return (
+    <div className="box-size-pills" data-testid="box-size-pills">
+      {options.map(opt => {
+        const rate = rates[opt.size] || 0;
+        const off  = Math.round(rate * 100);
+        const active = boxSize === opt.size;
+        return (
+          <button
+            key={opt.size}
+            type="button"
+            className={`box-size-pill ${active ? 'is-active' : ''}`}
+            onClick={() => onChange(opt.size)}
+            data-testid={`box-size-pill-${opt.size}`}
+            aria-pressed={active}
+          >
+            {off > 0 && (
+              <span className="box-size-pill-badge">{off}% OFF</span>
+            )}
+            <span className="box-size-pill-label">{opt.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+// ===== Weight progress strip — thin, fixed above the floating "View Cart" bar =====
+// Tracks the current lbs packed vs. the chosen target box size. Hidden when there
+// are no meals in the box (no visual noise on an empty menu).
+const WeightProgressBar = ({ currentLbs = 0, targetLbs = 6 }) => {
+  if (!currentLbs || currentLbs <= 0) return null;
+  const pct = Math.min(100, Math.round((currentLbs / Math.max(1, targetLbs)) * 100));
+  return (
+    <div className="weight-progress-bar" data-testid="weight-progress-bar" role="status" aria-live="polite">
+      <div className="weight-progress-track">
+        <div
+          className="weight-progress-fill"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <div className="weight-progress-label">
+        <span className="weight-progress-current">{currentLbs} lbs</span>
+        <span className="weight-progress-sep">/</span>
+        <span className="weight-progress-target">{targetLbs} lbs packed</span>
+      </div>
     </div>
   );
 };
