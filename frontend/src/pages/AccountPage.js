@@ -89,7 +89,11 @@ const SavedPlansSection = ({ profile, navigate }) => {
             <button
               key={dog.dog_id || `plan-${index}`}
               data-testid={`saved-plan-card-${index}`}
-              onClick={() => navigate(`/menu?plan=${index}`)}
+              onClick={() => {
+                // Skip the menu funnel — user arrived via a saved plan.
+                sessionStorage.setItem('foeguard_selection', 'shop-raw');
+                navigate(`/menu?plan=${index}`);
+              }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '10px',
                 padding: '14px 16px', background: '#F8F6F3',

@@ -324,6 +324,8 @@ export const MealPlanPage = () => {
         (d.health_issues || []).some(h => CONSULTATION_ISSUES.includes(h))
       );
       if (!consultation) {
+        // Skip the menu funnel — user is coming from a completed quiz.
+        sessionStorage.setItem('foeguard_selection', 'shop-raw');
         if (enrichedDogs.length === 1) {
           sessionStorage.setItem('foeguard_pet_profile', JSON.stringify(sessionSnapshot));
           navigate('/menu?plan=0');

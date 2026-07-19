@@ -229,14 +229,18 @@ export const BoxBuilder = () => {
   }, []);
 
   // Auto-skip the funnel if user previously made a selection (within session)
+  // OR if they arrived from a saved plan / multi-pet quiz result (?plan=|?multi=).
   useEffect(() => {
     const sel = sessionStorage.getItem('foeguard_selection');
-    if (sel) {
+    const cameFromPlan = searchParams.get('plan') !== null || searchParams.get('multi') !== null;
+    if (sel || cameFromPlan) {
+      if (!sel && cameFromPlan) sessionStorage.setItem('foeguard_selection', 'shop-raw');
       setFunnelOpen(false);
-      setSelectionId(sel);
+      setSelectionId(sel || 'shop-raw');
     } else {
       setFunnelOpen(true);
     }
+     
   }, []);
 
   // Listen for global "open cart" event (from header cart icon)
