@@ -1175,6 +1175,32 @@ agent_communication:
 
   - agent: "testing"
     message: |
+      ✅ PROMPT 1–3 BATCH + SITE-DOWN FIX — ALL 4 TESTS PASSED
+
+      TEST 1 (bug fix — "i cant see the site"): PASS
+      - Site loads at /, hero H1 renders, /api/products returns 24 products,
+        no fatal console errors.  Backend + frontend .env files restored,
+        MONGO_URL crash resolved.
+
+      TEST 2 (Prompt 1 — global charcoal + mobile typography): PASS
+      - Body text = rgb(44, 44, 44) on /, /new-to-raw, /about.
+      - Mobile H1 24px, H2 19.5px, P 13px.
+      - .about-hero top-padding 24px (no giant band above H1).
+
+      TEST 3 (Prompt 2 — Shop Farm Fresh cards mobile): PASS
+      - Mobile card height 240px (was ~355px), image 110px, body padding 12px.
+      - Second card top edge visible without further scroll.
+      - Desktop regression 1440×900: image 200px, padding 24px (unchanged).
+
+      TEST 4 (Prompt 3 — MealPlan recommendation algorithm): PASS
+      - Completed 8-step form with Buddy profile (Adult, Fit, Active, Itchy
+        Skin + Dry Coat).
+      - data-testid="meal-plan-recommendations" renders exactly 3 items.
+      - #1 Wild-Caught Fish (100% match), #2 Goat (92%), #3 Rabbit (92%).
+      - Algorithm working end-to-end.
+
+  - agent: "testing"
+    message: |
       ✅ MOBILE BREADCRUMB MEASUREMENTS COMPLETED - ALL TESTS PASSED (3/3)
       
       **Test Scope:**
