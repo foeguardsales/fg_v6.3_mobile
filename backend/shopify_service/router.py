@@ -14,6 +14,13 @@ from typing import Optional, List
 from fastapi import APIRouter, HTTPException, Query, Path, Header
 
 from . import queries as Q
+from .cache import (
+    get_cache,
+    make_key,
+    BUCKET_PRODUCTS,
+    BUCKET_COLLECTIONS,
+    BUCKET_PAGES,
+)
 from .client import (
     ShopifyError,
     get_storefront,
@@ -109,28 +116,40 @@ async def list_products(
     after: Optional[str] = Query(None),
     query: Optional[str] = Query(None, description="Shopify product search query"),
 ):
-    try:
-        data = await get_storefront().execute(
-            Q.PRODUCTS_LIST_QUERY,
-            {"first": first, "after": after, "query": query},
-        )
-        return data.get("products", {"nodes": [], "pageInfo": {}})
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+    cache = get_cache()
+    key = make_key("products.list", first=first, after=after, query=query)
+
+    async def loader():
+        try:
+            data = await get_storefront().execute(
+                Q.PRODUCTS_LIST_QUERY,
+                {"first": first, "after": after, "query": query},
+            )
+            return data.get("products", {"nodes": [], "pageInfo": {}})
+        except ShopifyError as e:
+            raise _handle_shopify_error(e) from e
+
+    return await cache.get_or_set(key, loader, bucket=BUCKET_PRODUCTS)
 
 
 @shopify_router.get("/products/{handle}")
 async def get_product(handle: str = Path(..., min_length=1)):
-    try:
-        data = await get_storefront().execute(
-            Q.PRODUCT_BY_HANDLE_QUERY, {"handle": handle}
-        )
-        product = data.get("product")
-        if not product:
-            raise HTTPException(status_code=404, detail="Product not found")
-        return product
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+    cache = get_cache()
+    key = make_key("products.byHandle", handle=handle)
+
+    async def loader():
+        try:
+            data = await get_storefront().execute(
+                Q.PRODUCT_BY_HANDLE_QUERY, {"handle": handle}
+            )
+            product = data.get("product")
+            if not product:
+                raise HTTPException(status_code=404, detail="Product not found")
+            return product
+        except ShopifyError as e:
+            raise _handle_shopify_error(e) from e
+
+    return await cache.get_or_set(key, loader, bucket=BUCKET_PRODUCTS)
 
 
 # ---------- collections ---------------------------------------------------
@@ -140,13 +159,19 @@ async def list_collections(
     first: int = Query(20, ge=1, le=100),
     after: Optional[str] = Query(None),
 ):
-    try:
-        data = await get_storefront().execute(
-            Q.COLLECTIONS_LIST_QUERY, {"first": first, "after": after}
-        )
-        return data.get("collections", {"nodes": [], "pageInfo": {}})
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+    cache = get_cache()
+    key = make_key("collections.list", first=first, after=after)
+
+    async def loader():
+        try:
+            data = await get_storefront().execute(
+                Q.COLLECTIONS_LIST_QUERY, {"first": first, "after": after}
+            )
+            return data.get("collections", {"nodes": [], "pageInfo": {}})
+        except ShopifyError as e:
+            raise _handle_shopify_error(e) from e
+
+    return await cache.get_or_set(key, loader, bucket=BUCKET_COLLECTIONS)
 
 
 @shopify_router.get("/collections/{handle}")
@@ -155,17 +180,23 @@ async def get_collection(
     first: int = Query(24, ge=1, le=100),
     after: Optional[str] = Query(None),
 ):
-    try:
-        data = await get_storefront().execute(
-            Q.COLLECTION_BY_HANDLE_QUERY,
-            {"handle": handle, "first": first, "after": after},
-        )
-        col = data.get("collection")
-        if not col:
-            raise HTTPException(status_code=404, detail="Collection not found")
-        return col
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+    cache = get_cache()
+    key = make_key("collections.byHandle", handle=handle, first=first, after=after)
+
+    async def loader():
+        try:
+            data = await get_storefront().execute(
+                Q.COLLECTION_BY_HANDLE_QUERY,
+                {"handle": handle, "first": first, "after": after},
+            )
+            col = data.get("collection")
+            if not col:
+                raise HTTPException(status_code=404, detail="Collection not found")
+            return col
+        except ShopifyError as e:
+            raise _handle_shopify_error(e) from e
+
+    return await cache.get_or_set(key, loader, bucket=BUCKET_COLLECTIONS)
 
 
 # ---------- cart ----------------------------------------------------------
@@ -401,24 +432,36 @@ async def list_pages(
     first: int = Query(50, ge=1, le=100),
     after: Optional[str] = Query(None),
 ):
-    try:
-        data = await get_storefront().execute(
-            Q.PAGES_LIST_QUERY, {"first": first, "after": after}
-        )
-        return data.get("pages", {"nodes": [], "pageInfo": {}})
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+    cache = get_cache()
+    key = make_key("pages.list", first=first, after=after)
+
+    async def loader():
+        try:
+            data = await get_storefront().execute(
+                Q.PAGES_LIST_QUERY, {"first": first, "after": after}
+            )
+            return data.get("pages", {"nodes": [], "pageInfo": {}})
+        except ShopifyError as e:
+            raise _handle_shopify_error(e) from e
+
+    return await cache.get_or_set(key, loader, bucket=BUCKET_PAGES)
 
 
 @shopify_router.get("/page/{handle}")
 async def get_page(handle: str = Path(..., min_length=1)):
-    try:
-        data = await get_storefront().execute(
-            Q.PAGE_BY_HANDLE_QUERY, {"handle": handle}
-        )
-        page = data.get("page")
-        if not page:
-            raise HTTPException(status_code=404, detail="Page not found")
-        return page
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+    cache = get_cache()
+    key = make_key("pages.byHandle", handle=handle)
+
+    async def loader():
+        try:
+            data = await get_storefront().execute(
+                Q.PAGE_BY_HANDLE_QUERY, {"handle": handle}
+            )
+            page = data.get("page")
+            if not page:
+                raise HTTPException(status_code=404, detail="Page not found")
+            return page
+        except ShopifyError as e:
+            raise _handle_shopify_error(e) from e
+
+    return await cache.get_or_set(key, loader, bucket=BUCKET_PAGES)

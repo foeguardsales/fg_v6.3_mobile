@@ -6,6 +6,14 @@ import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, Ch
 import { CartDrawer } from '../components/CartAndCheckout';
 import { catalog as shopifyCatalog } from '../services/shopify';
 import { SeoHead } from '../components/SeoHead';
+import {
+  IngredientsSection,
+  NutritionSection,
+  FeedingGuide,
+  ProductInfo,
+  ComparisonTable,
+  BenefitIcons,
+} from '../components/ProductMetafields';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -616,14 +624,18 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               {product.description}
             </p>
 
-            {/* Feature section — highlights as ✓ */}
-            {product.highlights && product.highlights.length > 0 && (
+            {/* Feature section — benefit_icons from Shopify metafield, falls back to legacy highlights */}
+            {product.benefit_icons ? (
+              <div data-testid="product-features">
+                <BenefitIcons value={product.benefit_icons} />
+              </div>
+            ) : (product.highlights && product.highlights.length > 0 && (
               <ul className="pd-shopify-checks" data-testid="product-features">
                 {product.highlights.map((h, i) => (
                   <li key={i}><Check size={16} strokeWidth={2.5} /> <span>{h}</span></li>
                 ))}
               </ul>
-            )}
+            ))}
 
             {/* Variant selection — dot-style radios (placeholder, will bind to Shopify) */}
             <div className="pd-variant-group" data-testid="product-variants">
@@ -687,37 +699,28 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
         <div className="pd-shopify-full">
           <div className="pd-shopify-collapsibles" data-testid="product-collapsibles">
             <CollapsibleSection title="Ingredients" defaultOpen>
-              <p style={{ fontSize: '14px', color: '#3B2A1A', lineHeight: '1.7', margin: 0 }}>
-                {typeof product.ingredients === 'string' ? product.ingredients : (product.ingredients || []).join(', ')}
-              </p>
+              <IngredientsSection value={product.ingredients} />
             </CollapsibleSection>
             <CollapsibleSection title="Nutritional Analysis">
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                {product.nutrition_facts && Object.entries(product.nutrition_facts).map(([key, value]) => (
-                  <div key={key} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #E8DDD0' }}>
-                    <span style={{ color: '#5A5A5A', fontSize: '13px', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
-                    <span style={{ fontWeight: '600', color: '#2B2B2B', fontSize: '13px' }}>{value}</span>
-                  </div>
-                ))}
-              </div>
+              <NutritionSection value={product.nutritional_analysis || product.nutrition_facts} />
             </CollapsibleSection>
             <CollapsibleSection title="Product Information">
-              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: 0, whiteSpace: 'pre-line' }}>
-                {product.product_information}
-              </p>
+              <ProductInfo value={product.product_information} />
             </CollapsibleSection>
             <CollapsibleSection title="Feeding Guide">
+              <FeedingGuide value={product.feeding_guide} />
               {product.feeding_guide && (
-                <>
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: '0 0 10px' }}>{product.feeding_guide.feeding}</p>
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: '0 0 12px' }}>{product.feeding_guide.handling}</p>
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: 0 }}>
-                    For how much to feed, visit our{' '}
-                    <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
-                  </p>
-                </>
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: '12px 0 0' }}>
+                  For how much to feed, visit our{' '}
+                  <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
+                </p>
               )}
             </CollapsibleSection>
+            {product.comparison_table && (
+              <CollapsibleSection title="How We Compare">
+                <ComparisonTable value={product.comparison_table} />
+              </CollapsibleSection>
+            )}
             {/* Notes — always open, stationary (no collapse toggle), same design/placement */}
             <div className="pd-notes-static" style={{ borderBottom: '1px solid #E8DDD0', padding: '18px 0 22px' }}>
               <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, color: '#2B2B2B', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
