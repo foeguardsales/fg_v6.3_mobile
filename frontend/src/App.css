@@ -7663,6 +7663,175 @@ input, select, textarea {
   background: transparent;
   overflow: hidden;
 }
+
+/* =============================================================
+   Box-size pills grid  (6 lb / 12 lb / 24 lb / 36 lb+)
+   Uses the same charcoal + gold palette as the discount tiers.
+   ============================================================= */
+.box-pills-wrap {
+  margin: 8px 16px 20px;
+}
+@media (min-width: 760px) {
+  .box-pills-wrap { margin: 8px 0 24px; }
+}
+.box-pills-heading {
+  font-family: 'Barlow Semi Condensed', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3B2A1A;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 12px;
+  text-align: center;
+}
+.box-pills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+@media (max-width: 480px) {
+  .box-pills-grid { gap: 8px; }
+}
+.box-pill {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 6px 14px;
+  min-height: 68px;
+  background: #FFFFFF;
+  border: 1.5px solid #EDEAE7;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.05s ease;
+  font-family: 'Barlow Semi Condensed', serif;
+  color: #3B2A1A;
+}
+.box-pill:hover { border-color: #D5C089; }
+.box-pill.is-selected {
+  border-color: #C9A84C;
+  background: #FFFBEE;
+}
+.box-pill:active { transform: scale(0.98); }
+.box-pill-label {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+@media (max-width: 480px) {
+  .box-pill-label { font-size: 14px; }
+  .box-pill { padding: 20px 4px 12px; min-height: 62px; }
+}
+.box-pill-badge {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Barlow Semi Condensed', serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #3B2A1A;
+  background: #C9A84C;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+@media (max-width: 380px) {
+  .box-pill-badge { font-size: 9px; padding: 2px 6px; top: -8px; }
+}
+
+/* =============================================================
+   Mobile-friendly progress bar (fixed above stationary cart btn)
+   ============================================================= */
+.bb-progress-strip {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 56px;             /* sits directly on top of the floating cart button */
+  z-index: 90;
+  background: #FFFFFF;
+  border-top: 1px solid #EDEAE7;
+  padding: 6px 16px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Barlow Semi Condensed', serif;
+}
+@media (min-width: 760px) {
+  .bb-progress-strip {
+    /* On desktop the floating cart button width narrows and lives bottom-right;
+       we anchor the strip to the same visual width so it stays paired with it. */
+    max-width: 720px;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+    border-radius: 6px 6px 0 0;
+    border-left: 1px solid #EDEAE7;
+    border-right: 1px solid #EDEAE7;
+  }
+}
+.bb-progress-track {
+  position: relative;
+  flex: 1;
+  height: 6px;
+  background: #EDEAE7;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bb-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, #C9A84C 0%, #C8102E 100%);
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+.bb-progress-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #3B2A1A;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.bb-progress-label b { color: #C8102E; }
+
+/* =============================================================
+   "Quantity is 0" tooltip above the PDP add-to-cart button
+   ============================================================= */
+.pd-zero-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #3B2A1A;
+  color: #FFFFFF;
+  font-family: 'Barlow Semi Condensed', serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+  z-index: 100;
+  pointer-events: none;
+  animation: pd-zero-fade 0.2s ease;
+}
+.pd-zero-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #3B2A1A;
+}
+@keyframes pd-zero-fade {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
 @media (min-width: 760px) {
   .stock-up { margin: 2px 0 16px; }
 }

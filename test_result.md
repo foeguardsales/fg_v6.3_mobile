@@ -3684,3 +3684,50 @@ agent_communication:
         - Ready to summarize and finish the task
         - The previous scroll position bug (BUG 1, stuck_count: 2) is now resolved
 
+
+
+## agent_communication (2026-07-05, Prompt 4.5 follow-up bug fixes):
+  - agent: "main"
+    message: |
+      Two UX fixes applied on top of the Shopify-connected storefront. Please verify in the browser (no backend changes were made — no backend retest required):
+
+      **BUG 1 — Product page: quantity=0 add-to-cart silently defaulted to 6 lb.**
+        - File: /app/frontend/src/pages/ProductDetail.js
+        - Fix: when the user clicks the stationary "Add to Cart" button with `quantity <= 0`, we now show a small tooltip above the button that reads "Quantity is 0" (auto-dismisses after 2.5 s) and DO NOT auto-set the box quantity or navigate.
+        - New state: `showZeroWarning` (boolean).
+        - Element: `<div className="pd-zero-tooltip" data-testid="pdp-zero-quantity-warning">Quantity is 0</div>` positioned just above the CTA. The CTA still has `data-testid="product-add-to-box"`.
+        - Verification steps:
+          1. Open `/product/comfort-beef-raw-dog-food`.
+          2. Ensure quantity display reads "0 lb" (initial state on a fresh visit; if it already shows a value, use the "-" button until "0 lb").
+          3. Click the "Add to Cart" stationary bottom bar button.
+          4. Confirm: the tooltip element `[data-testid="pdp-zero-quantity-warning"]` becomes visible above the button, text = "Quantity is 0".
+          5. Confirm: the page URL DID NOT change (no navigation to /menu).
+          6. Confirm: the quantity display did NOT jump to 6 lb.
+          7. Wait ~3 seconds — the tooltip should auto-dismiss.
+          8. Now click the "+" button to raise quantity to 6 lb, then click "Add to Cart" again. Expected: normal add-to-cart behavior (navigates to /menu on a dedicated page, or closes the modal on the embedded PDP).
+
+      **BUG 2 — Menu page: reverted the tiered-discount banner to a fixed box-size pills grid + fixed-bottom progress bar.**
+        - File: /app/frontend/src/pages/BoxBuilder.js
+        - CSS: /app/frontend/src/App.css (new classes: `.box-pills-wrap`, `.box-pills-grid`, `.box-pill`, `.box-pill-badge`, `.bb-progress-strip`, `.bb-progress-track`, `.bb-progress-fill`, `.bb-progress-label`, plus `.pd-zero-tooltip` for Bug 1).
+        - What was added on `/menu`:
+          * A 4-pill selection grid above the product collections, testid `box-size-pills`. Each pill has a small gold "OFF" badge above it:
+            - `[data-testid="box-pill-6"]`  → label "6 lb",   badge "5% OFF"
+            - `[data-testid="box-pill-12"]` → label "12 lb",  badge "10% OFF"
+            - `[data-testid="box-pill-24"]` → label "24 lb",  badge "15% OFF"
+            - `[data-testid="box-pill-36"]` → label "36 lb+", badge "15% OFF"
+          * Default selected pill is 12 lb (persisted via `sessionStorage.targetBoxSize`). Selected pill has class `is-selected` (gold border + cream background) and `data-selected="true"`.
+          * A thin, fixed-to-viewport-bottom progress strip `[data-testid="box-progress-strip"]` sits directly ON TOP of the existing "View Cart" stationary button. It contains:
+            - a track with a red→gold gradient fill scaled to `(currentLbs / targetLbs) * 100 %`,
+            - a label `[data-testid="box-progress-label"]` reading `<b>N</b> lbs / T lbs packed`.
+          * The pre-existing `stock-up-save` discount tiers collapsible is UNCHANGED and still renders below the pills.
+        - Verification steps:
+          1. Navigate to `/menu`. If a modal funnel appears, click the "Raw Food Menu" tile to dismiss.
+          2. Confirm the pills grid renders with the correct labels and OFF% badges (6 lb / 5% OFF, 12 lb / 10% OFF, 24 lb / 15% OFF, 36 lb+ / 15% OFF).
+          3. Confirm the 12 lb pill is initially selected (data-selected="true"). Click 24 lb → it becomes selected and 12 lb no longer selected.
+          4. Confirm `[data-testid="box-progress-strip"]` is visible at the bottom of the viewport, positioned directly above the "View Cart" `[data-testid="cart-button"]` button. Progress label text starts as "0 lbs / 24 lbs packed" (after selecting 24 lb).
+          5. Add a product to the box (e.g. click `[data-testid="add-comfort-beef-raw-dog-food"]` → if it opens a product page/modal, use the "+ 6 lb" or similar to add 6 lb, then close). Return to `/menu`.
+          6. Confirm progress label updates (e.g. "6 lbs / 24 lbs packed") and the gradient fill visibly extends.
+          7. Confirm the design is preserved: pills are clean cards with borders, badges are the same colour palette as existing `.stock-up-toggle-meta` gold pill (#C9A84C).
+          8. Test mobile viewport (width 375). The 4 pills should still fit on a single row (grid), and the progress strip should stretch full-width across the bottom, still above the cart button.
+
+      Please run browser automation to verify both fixes and report back with pass/fail for each. No backend testing is required (no backend code was modified).

@@ -132,6 +132,17 @@ export const BoxBuilder = () => {
   const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
   
   const [boxSize, setBoxSize] = useState(initialBoxSize);
+  // targetBoxSize drives the pills grid + the bottom progress bar. It's a
+  // visual target only \u2014 the cart itself is unlimited; discount tiers apply
+  // automatically based on ACTUAL total lbs selected.
+  const [targetBoxSize, setTargetBoxSize] = useState(() => {
+    const stored = parseInt(sessionStorage.getItem('targetBoxSize'), 10);
+    return Number.isFinite(stored) && stored > 0 ? stored : 12;
+  });
+  useEffect(() => {
+    try { sessionStorage.setItem('targetBoxSize', String(targetBoxSize)); }
+    catch (_) { /* ignore */ }
+  }, [targetBoxSize]);
   const [products, setProducts] = useState([]);
   const [treats, setTreats] = useState([]);
   const [selectedProteins, setSelectedProteins] = useState(initialProteins);
@@ -628,6 +639,9 @@ export const BoxBuilder = () => {
         {/* Main Content - Dog or Cat */}
         <>
             {showBoxSize && (
+              <BoxSizePills selected={targetBoxSize} onSelect={setTargetBoxSize} />
+            )}
+            {showBoxSize && (
               <StockUpSave guide={TIER_GUIDE} currentLbs={getTotalSelectedLbs()} />
             )}
 
@@ -864,15 +878,20 @@ export const BoxBuilder = () => {
         const runningTotal = proteinDiscounted + treatsTotal;
         const hasItems = lbs > 0 || (selectedTreats && selectedTreats.length > 0);
         return (
-          <button
-            onClick={openBasket}
-            data-testid="cart-button"
-            className="bb-floating-checkout"
-          >
-            <span className="bb-floating-action">View Cart</span>
-            <span className="bb-floating-sep">•</span>
-            <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
-          </button>
+          <>
+            {showBoxSize && (
+              <BoxProgressBar currentLbs={lbs} targetLbs={targetBoxSize} />
+            )}
+            <button
+              onClick={openBasket}
+              data-testid="cart-button"
+              className="bb-floating-checkout"
+            >
+              <span className="bb-floating-action">View Cart</span>
+              <span className="bb-floating-sep">•</span>
+              <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
+            </button>
+          </>
         );
       })()}
 
@@ -1170,6 +1189,55 @@ export const SelectionBreadcrumb = ({ label, onEdit }) => {
   );
 };
 
+
+// ===== Box-size pills grid (6 / 12 / 24 / 36 lb+) with OFF% badges above =====
+// Purely a visual target selector \u2014 the cart is unlimited. Discount tiers are
+// applied automatically based on the ACTUAL total lbs selected (see
+// `getTierFromLbs`).
+const BOX_PILL_OPTIONS = [
+  { size: 6,  label: '6 lb',   off: '5% OFF'  },
+  { size: 12, label: '12 lb',  off: '10% OFF' },
+  { size: 24, label: '24 lb',  off: '15% OFF' },
+  { size: 36, label: '36 lb+', off: '15% OFF' },
+];
+const BoxSizePills = ({ selected = 12, onSelect }) => (
+  <div className="box-pills-wrap" data-testid="box-size-pills">
+    <h3 className="box-pills-heading">Choose your box size</h3>
+    <div className="box-pills-grid">
+      {BOX_PILL_OPTIONS.map((opt) => {
+        const isSelected = selected === opt.size;
+        return (
+          <button
+            key={opt.size}
+            type="button"
+            data-testid={`box-pill-${opt.size}`}
+            data-selected={isSelected ? 'true' : 'false'}
+            className={`box-pill ${isSelected ? 'is-selected' : ''}`}
+            onClick={() => onSelect && onSelect(opt.size)}
+          >
+            <span className="box-pill-badge">{opt.off}</span>
+            <span className="box-pill-label">{opt.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+);
+
+// ===== Fixed progress bar above the "View Cart" button =====
+const BoxProgressBar = ({ currentLbs = 0, targetLbs = 12 }) => {
+  const pct = Math.max(0, Math.min(100, targetLbs > 0 ? (currentLbs / targetLbs) * 100 : 0));
+  return (
+    <div className="bb-progress-strip" data-testid="box-progress-strip" role="progressbar" aria-valuenow={currentLbs} aria-valuemax={targetLbs}>
+      <div className="bb-progress-track">
+        <div className="bb-progress-fill" style={{ width: `${pct}%` }} />
+      </div>
+      <span className="bb-progress-label" data-testid="box-progress-label">
+        <b>{currentLbs}</b> lbs / {targetLbs} lbs packed
+      </span>
+    </div>
+  );
+};
 
 // ===== Stock Up & Save — compact collapsible discount guide (replaces box selector) =====
 const StockUpSave = ({ guide = [], currentLbs = 0 }) => {

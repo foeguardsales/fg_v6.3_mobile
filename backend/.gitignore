@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Environment files (never commit — use .env.example as template)
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Credential blobs
+*token.json*
+*credentials.json*
+*.pem
+*.key
+
+# Logs / dumps
+*.log
+dump.rdb
+
+.DS_Store

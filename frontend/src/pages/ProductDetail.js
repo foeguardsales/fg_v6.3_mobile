@@ -344,6 +344,9 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const [orderNotes, setOrderNotes] = useState('');
   const [activeTab, setActiveTab] = useState('description');
   const [selectedVariant, setSelectedVariant] = useState(0);
+  // Zero-quantity warning tooltip \u2014 shown when the user clicks Add to Cart
+  // without picking a size (quantity is 0). Auto-dismisses after 2.5s.
+  const [showZeroWarning, setShowZeroWarning] = useState(false);
 
   useEffect(() => {
     // Only reset scroll on the standalone product page. When embedded as a bottom-sheet
@@ -743,18 +746,30 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
           const ctaQty = quantity > 0 ? quantity : 6;
           const totalPrice = getDiscountedPrice(product) * (ctaQty / 6);
           return (
-            <button
-              onClick={() => {
-                if (quantity <= 0) { setBoxQty(6); }
-                if (embedded && onClose) onClose(); else navigate('/menu');
-              }}
-              className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
-              data-testid="product-add-to-box"
-            >
-              <span className="bb-floating-action">{quantity > 0 ? 'Update Cart' : 'Add to Cart'}</span>
-              <span className="bb-floating-sep">•</span>
-              <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
-            </button>
+            <div className={`bb-floating-checkout-wrap ${embedded ? 'bb-floating-checkout-wrap--inline' : ''}`} style={{ position: 'relative' }}>
+              {showZeroWarning && (
+                <div className="pd-zero-tooltip" role="alert" data-testid="pdp-zero-quantity-warning">
+                  Quantity is 0
+                </div>
+              )}
+              <button
+                onClick={() => {
+                  if (quantity <= 0) {
+                    // Show a warning instead of silently defaulting to 6 lb.
+                    setShowZeroWarning(true);
+                    setTimeout(() => setShowZeroWarning(false), 2500);
+                    return;
+                  }
+                  if (embedded && onClose) onClose(); else navigate('/menu');
+                }}
+                className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
+                data-testid="product-add-to-box"
+              >
+                <span className="bb-floating-action">{quantity > 0 ? 'Update Cart' : 'Add to Cart'}</span>
+                <span className="bb-floating-sep">•</span>
+                <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
+              </button>
+            </div>
           );
         })()}
       </div>

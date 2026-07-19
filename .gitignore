@@ -1,10 +1,44 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# IDE and editors
+# =========================================================================
+# ENVIRONMENT FILES  --  NEVER commit real secrets. .env.example is fine.
+# =========================================================================
+# Root, /backend, and /frontend .env variants are all excluded here so the
+# Shopify tokens (SHOPIFY_ADMIN_TOKEN, SHOPIFY_STOREFRONT_TOKEN, etc.),
+# Stripe / Brevo / R2 / Cloudflare / JWT secrets, and any *.env.production
+# overrides never leak into git history \u2014 no matter which subdirectory they
+# live in.
+
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+*.env
+*.env.*
+!*.env.example
+!.env.example
+
+# Any other credential blobs
+*token.json*
+*credentials.json*
+credentials.json
+.credentials
+*.pem
+*.key
+
+# =========================================================================
+# IDE / editors
+# =========================================================================
 .idea/
 .vscode/
 
-# Dependencies
+# =========================================================================
+# Node / JS dependencies + build output
+# =========================================================================
 node_modules/
 /node_modules
 /.pnp
@@ -30,29 +64,30 @@ next-env.d.ts
 dist/
 dist
 
-# Environment files (comprehensive coverage)
-
-*token.json*
-*credentials.json*
-
-# Logs and debug files
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 dump.rdb
 
+# =========================================================================
 # System files
+# =========================================================================
 .DS_Store
-*.pem
 
+# =========================================================================
 # Python
+# =========================================================================
 __pycache__/
 *pyc*
 venv/
 .venv/
+.ruff_cache/
 
-# Development tools
+# =========================================================================
+# Development tools / mixed
+# =========================================================================
 chainlit.md
 .chainlit
 .ipynb_checkpoints/
@@ -77,56 +112,4 @@ agenthub/agents/youtube/db
 .cache/
 
 # Mobile development
-android-sdk/ -e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment files
-*.env
-*.env.*
--e 
-# Environment and credential files
-.env
-.env.*
-*.env
-credentials.json
-*.pem
-*.key
-.credentials
+android-sdk/
