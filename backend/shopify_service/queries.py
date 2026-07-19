@@ -67,11 +67,16 @@ fragment ProductFields on Product {
   metafields(identifiers: [
     {namespace: "foeguard", key: "product_line"},
     {namespace: "foeguard", key: "protein_type"},
+    {namespace: "foeguard", key: "pet_type"},
+    {namespace: "foeguard", key: "feature_list"},
     {namespace: "foeguard", key: "highlights"},
     {namespace: "foeguard", key: "ingredients"},
+    {namespace: "foeguard", key: "nutritional_analysis"},
     {namespace: "foeguard", key: "nutrition_facts"},
     {namespace: "foeguard", key: "feeding_guide"},
     {namespace: "foeguard", key: "product_information"},
+    {namespace: "foeguard", key: "comparison_table"},
+    {namespace: "foeguard", key: "benefit_icons"},
     {namespace: "foeguard", key: "mini_description"},
     {namespace: "foeguard", key: "benefits"},
     {namespace: "foeguard", key: "quantity_description"},
@@ -81,6 +86,18 @@ fragment ProductFields on Product {
     key
     type
     value
+    reference {
+      __typename
+      ... on MediaImage { image { url altText width height } }
+      ... on Metaobject { id handle type fields { key value type } }
+    }
+    references(first: 30) {
+      nodes {
+        __typename
+        ... on MediaImage { image { url altText width height } }
+        ... on Metaobject { id handle type fields { key value type } }
+      }
+    }
   }
 }
 """

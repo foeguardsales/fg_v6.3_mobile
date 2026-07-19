@@ -36,6 +36,34 @@ function indexMetafields(mfList) {
   return out;
 }
 
+/**
+ * Log a warning when a metafield we expect the merchant to set on this
+ * product is missing. Never throws \u2014 the UI degrades gracefully.
+ *
+ * `expected` is the canonical list from Prompt 2:
+ *   ingredients, nutritional_analysis, feeding_guide, product_information,
+ *   comparison_table, benefit_icons.
+ */
+const EXPECTED_PRODUCT_METAFIELDS = [
+  'ingredients',
+  'nutritional_analysis',
+  'feeding_guide',
+  'product_information',
+  'comparison_table',
+  'benefit_icons',
+];
+
+function logMissingMetafields(handle, mfIndex) {
+  if (typeof console === 'undefined' || !console.warn) return;
+  const missing = EXPECTED_PRODUCT_METAFIELDS.filter((k) => !mfIndex[k] || mfIndex[k].value === null);
+  if (missing.length > 0) {
+    console.warn(
+      `[shopify] product "${handle}" is missing metafields:`,
+      missing.map((k) => `foeguard.${k}`).join(', ')
+    );
+  }
+}
+
 function mfString(mf, key, fallback = null) {
   const m = mf[key];
   if (!m || m.value === null || m.value === undefined) return fallback;
@@ -189,6 +217,7 @@ export function stripHtml(html) {
 export function normalizeShopifyProduct(sp) {
   if (!sp) return null;
   const mf = indexMetafields(sp.metafields);
+  logMissingMetafields(sp.handle, mf);
 
   const product_line = mfString(mf, 'product_line') || inferProductLine(sp);
   const protein_type = mfString(mf, 'protein_type') || inferProteinType(sp);
@@ -259,10 +288,18 @@ export function normalizeShopifyProduct(sp) {
 
     // rich content (from metafields; may be null / empty)
     highlights: mfList(mf, 'highlights', []),
+    // benefit_icons — list of { icon, label } pairs for the checkmark bullets
+    benefit_icons: mfJson(mf, 'benefit_icons', null) || mfList(mf, 'benefit_icons', null),
     ingredients: mfString(mf, 'ingredients') || mfList(mf, 'ingredients', []),
-    nutrition_facts: mfJson(mf, 'nutrition_facts', {}),
+    // nutritional_analysis is the new canonical key; nutrition_facts is the legacy fallback.
+    nutritional_analysis: mfJson(mf, 'nutritional_analysis', null) || mfJson(mf, 'nutrition_facts', {}),
+    // Alias kept for older UI components that still reference nutrition_facts
+    nutrition_facts: mfJson(mf, 'nutritional_analysis', null) || mfJson(mf, 'nutrition_facts', {}),
     feeding_guide: mfJson(mf, 'feeding_guide', null),
     product_information: mfString(mf, 'product_information') || plainDescription,
+    // comparison_table — JSON: { headers: [...], rows: [ [attr, us, kibble, ...], ... ] }
+    // or {"rows": [{"attribute":"...","foeguard":"...","kibble":"..."}]}
+    comparison_table: mfJson(mf, 'comparison_table', null),
 
     // menu behavior
     no_variants,
