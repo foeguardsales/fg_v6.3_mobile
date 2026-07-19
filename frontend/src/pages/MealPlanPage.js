@@ -4,6 +4,7 @@ import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronRight, Check, Plus, Trash2, X } from 'lucide-react';
 import axios from 'axios';
 import { SelectionBreadcrumb } from './BoxBuilder';
+import { getRecommendationsForDog } from '../services/mealPlanRecommendation';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
@@ -794,6 +795,66 @@ export const MealPlanPage = () => {
                 <p style={{ color: '#2C2C2C', lineHeight: '1.6' }}>
                   Based on the health conditions you've shared, one of our pet nutrition specialists will reach out to you within 24-48 hours to discuss {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s` : "your dogs'"} specific needs and create a customized meal plan.
                 </p>
+              </div>
+            )}
+
+            {/* Dynamic protein recommendations — computed from the answers via
+                mealPlanRecommendation.js. Skipped when a personal-consultation
+                message is already shown above. */}
+            {!showConsultationMessage && (
+              <div data-testid="meal-plan-recommendations" style={{ marginBottom: '24px' }}>
+                <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '6px', color: '#2C2C2C', fontFamily: "'Barlow Semi Condensed', serif" }}>
+                  {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s recommended proteins` : 'Recommended proteins'}
+                </h3>
+                <p style={{ fontSize: '14px', color: '#2C2C2C', marginBottom: '16px', opacity: 0.75 }}>
+                  Based on your answers, these proteins are the best match for {dogs.length === 1 ? capitalizeName(dogs[0].name) : 'each dog'}.
+                </p>
+
+                {dogs.map((dog) => {
+                  const rec = getRecommendationsForDog(dog, 3);
+                  return (
+                    <div key={dog.dog_id} data-testid={`recs-${dog.dog_id}`} style={{
+                      background: '#FDFBF7',
+                      border: '1px solid #E8E4DC',
+                      borderRadius: '12px',
+                      padding: '16px',
+                      marginBottom: '12px'
+                    }}>
+                      {dogs.length > 1 && (
+                        <div style={{ fontSize: '15px', fontWeight: 600, color: '#c8102e', marginBottom: '10px' }}>
+                          {capitalizeName(dog.name)}
+                        </div>
+                      )}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {rec.top.map((r, i) => (
+                          <div key={r.protein} data-testid={`rec-item-${i}`} style={{
+                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                            padding: '10px 12px',
+                            background: i === 0 ? '#F5F3EF' : 'transparent',
+                            border: i === 0 ? '1px solid #D8CFB8' : '1px solid transparent',
+                            borderRadius: '8px'
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                              <span style={{
+                                width: 22, height: 22, borderRadius: '50%',
+                                background: i === 0 ? '#c8102e' : '#D8CFB8',
+                                color: i === 0 ? 'white' : '#2C2C2C',
+                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                fontSize: 12, fontWeight: 700
+                              }}>{i + 1}</span>
+                              <span style={{ fontSize: '15px', fontWeight: 600, color: '#2C2C2C' }}>
+                                {r.protein}
+                              </span>
+                            </div>
+                            <span style={{ fontSize: '13px', color: '#2C2C2C', opacity: 0.7 }}>
+                              Match {Math.round((r.score / 5) * 100)}%
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
 
