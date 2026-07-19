@@ -2575,7 +2575,7 @@ agent_communication:
       - Clean transition from funnel → meal plan page ✓
       
       Navigation:
-      - Final URL: https://pullup-progress-4.preview.emergentagent.com/meal-plan ✓
+      - Final URL: https://shopify-stub-service.preview.emergentagent.com/meal-plan ✓
       - Successfully navigated to /meal-plan ✓
       
       **Conclusion:**
@@ -3216,7 +3216,7 @@ agent_communication:
         
         **Test Environment:**
         - Mobile viewport: iPhone 16 (393×852)
-        - URL: https://pullup-progress-4.preview.emergentagent.com
+        - URL: https://shopify-stub-service.preview.emergentagent.com
         
         **TEST A — Benefits grid → "How FoeGuard Raw compares" gap (/new-to-raw): ✅ PASS**
         - Measured gap: 48px (exactly as expected, within 48px ±6px tolerance)
@@ -3253,7 +3253,7 @@ agent_communication:
         
         **Test Environment:**
         - Mobile viewport: iPhone 16 (393×852)
-        - URL: https://pullup-progress-4.preview.emergentagent.com
+        - URL: https://shopify-stub-service.preview.emergentagent.com
         
         **TEST A — Footer marginTop removed (0px on all pages): ✅ PASS (3/3)**
         - Landing Page (/): marginTop=0px, backgroundColor=rgb(47, 69, 56) ✓
@@ -3420,7 +3420,7 @@ agent_communication:
         **Test Environment:**
         - Mobile viewport: 390×844
         - Desktop viewport: 1440×900 (bonus check)
-        - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+        - URL: https://shopify-stub-service.preview.emergentagent.com/menu
         
         **TEST 1 — MOBILE EDGE-TO-EDGE MEASUREMENT: ✅ PASS**
         Measured getBoundingClientRect on 390px mobile viewport:
@@ -3572,7 +3572,7 @@ agent_communication:
             **Test Environment:**
             - Mobile viewport: 390×844
             - Desktop viewport: 1440×900
-            - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+            - URL: https://shopify-stub-service.preview.emergentagent.com/menu
             
             **TEST 1 — SCROLL POSITION PRESERVATION (CRITICAL): ✅ PASS**
             - Scrolled menu to 700px
@@ -3855,7 +3855,7 @@ agent_communication:
 
 
 user_problem_statement: |
-  FoeGuard site — Menu page hero + tab bug verification. Preview URL: https://pullup-progress-4.preview.emergentagent.com
+  FoeGuard site — Menu page hero + tab bug verification. Preview URL: https://shopify-stub-service.preview.emergentagent.com
   
   Please test the following 3 items on /menu at BOTH mobile (390×844) and desktop (1440×900). Do NOT test anything else on the site.
   
@@ -3918,7 +3918,7 @@ frontend:
             **Test Environment:**
             - Mobile viewport: 390×844
             - Desktop viewport: 1440×900
-            - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+            - URL: https://shopify-stub-service.preview.emergentagent.com/menu
             
             **MOBILE (390×844) TEST RESULTS:**
             Found 4 category tab buttons:
@@ -3968,7 +3968,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+            - URL: https://shopify-stub-service.preview.emergentagent.com/menu
             
             **ELEMENTS FOUND:**
             ✓ Outer wrap (.menu-category-tabs-wrap--on-hero) - carries brown background
@@ -4032,7 +4032,7 @@ frontend:
             **Test Environment:**
             - Mobile viewport: 390×844
             - Desktop viewport: 1440×900
-            - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+            - URL: https://shopify-stub-service.preview.emergentagent.com/menu
             
             **CSS RULE:**
             .menu-collection-hero-title {
@@ -4085,7 +4085,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+            - URL: https://shopify-stub-service.preview.emergentagent.com/menu
             
             **REGRESSION CHECK 1 — Funnel X-close button:**
             ✓ Funnel overlay X-close button found (data-testid='menu-funnel-close')
@@ -4125,7 +4125,7 @@ agent_communication:
         **Test Environment:**
         - Mobile viewport: 390×844
         - Desktop viewport: 1440×900
-        - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+        - URL: https://shopify-stub-service.preview.emergentagent.com/menu
         
         **TEST RESULTS SUMMARY:**
         
@@ -4203,7 +4203,7 @@ agent_communication:
 user_problem_statement: |
   FoeGuard site — verify (A) mobile breadcrumb padding cascade fix, and (B) new "with variants / without variants" menu-card interaction rules.
   
-  Preview URL: https://pullup-progress-4.preview.emergentagent.com
+  Preview URL: https://shopify-stub-service.preview.emergentagent.com
   
   Viewports: mobile 390×844 for all tests unless stated. Desktop 1440×900 only for a quick regression on test C.
   
@@ -4268,7 +4268,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390 × 844
-            - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+            - URL: https://shopify-stub-service.preview.emergentagent.com/menu
             - Funnel dismissed successfully via X button
             
             **TEST RESULTS SUMMARY:**
@@ -4383,7 +4383,7 @@ agent_communication:
 user_problem_statement: |
   FoeGuard site — verify (A) mobile breadcrumb padding cascade fix, and (B) new "with variants / without variants" menu-card interaction rules.
   
-  Preview URL: https://pullup-progress-4.preview.emergentagent.com
+  Preview URL: https://shopify-stub-service.preview.emergentagent.com
   
   Viewports: mobile 390×844 for all tests unless stated. Desktop 1440×900 only for a quick regression on test C.
   
@@ -4407,7 +4407,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390 × 844
-            - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+            - URL: https://shopify-stub-service.preview.emergentagent.com/menu
             - Funnel dismissed successfully
             
             **TEST RESULTS:**
@@ -4584,7 +4584,7 @@ agent_communication:
         **Test Environment:**
         - Mobile viewport: 390 × 844 (primary)
         - Desktop viewport: 1440 × 900 (regression check only)
-        - URL: https://pullup-progress-4.preview.emergentagent.com/menu
+        - URL: https://shopify-stub-service.preview.emergentagent.com/menu
         
         **TEST RESULTS SUMMARY:**
         
