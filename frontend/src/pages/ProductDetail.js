@@ -89,14 +89,14 @@ const ProductBrandIcons = () => {
           <div style={{
             width: '44px',
             height: '44px',
-            border: '2px solid #3B2A1A',
+            border: '2px solid #2C2C2C',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             background: '#F5F3EF'
           }}>
-            <Icon size={22} color="#3B2A1A" strokeWidth={1.8} />
+            <Icon size={22} color="#2C2C2C" strokeWidth={1.8} />
           </div>
           <span style={{
             fontFamily: "'Barlow Semi Condensed', serif",

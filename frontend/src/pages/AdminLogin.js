@@ -75,7 +75,7 @@ export const AdminLogin = () => {
               display: 'block',
               marginBottom: '8px',
               fontWeight: '600',
-              color: '#3B2A1A'
+              color: '#2C2C2C'
             }}>
               Email
             </label>
@@ -101,7 +101,7 @@ export const AdminLogin = () => {
               display: 'block',
               marginBottom: '8px',
               fontWeight: '600',
-              color: '#3B2A1A'
+              color: '#2C2C2C'
             }}>
               Password
             </label>

@@ -182,13 +182,13 @@ body {
   font-weight: 400;
   font-size: 16px;
   background: #F5F3EF;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 /* Headings = Barlow Semi Condensed Bold (700), min 22px */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading) !important;
   font-weight: 700 !important;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 h1 { font-size: max(28px, 1em); }
 h2 { font-size: max(24px, 1em); }
@@ -196,7 +196,7 @@ h3, h4, h5, h6 { font-size: max(22px, 1em); }
 /* Paragraph text = Barlow 400, min 16px */
 p, li, blockquote, dd, dt, figcaption, .subtext {
   font-family: var(--font-body) !important;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-weight: 400;
 }
 /* Labels + disclaimers min 12px */
@@ -235,7 +235,7 @@ strong, b { font-weight: 600; }
   --straw: #E8DFC8;
   --soft-bg: #E8DFC8;
   --harvest-gold: #C9A84C;
-  --aged-wood: #3B2A1A;
+  --aged-wood: #2C2C2C;
   
   /* Background Colors */
   --offwhite: #F5F3EF;
@@ -243,9 +243,9 @@ strong, b { font-weight: 600; }
   --pure-white: #FFFFFF;       /* Use only when truly needed */
   
   /* Text Colors — Aged Wood replaces charcoal */
-  --charcoal: #3B2A1A;
-  --charcoal-light: #3B2A1A;
-  --text-secondary: #3B2A1A;
+  --charcoal: #2C2C2C;
+  --charcoal-light: #2C2C2C;
+  --text-secondary: #2C2C2C;
   --text-muted: #8A7156;
   --text-inverse: #F5F3EF;
   
@@ -1526,7 +1526,7 @@ h2, h3, h4 {
 
 /* Floating Cart Button — clean, sharp (fix blurry) */
 .btn-cart-floating {
-  background: #3B2A1A;
+  background: #2C2C2C;
   color: #F5F3EF;
   border: none;
   padding: 8px 14px;
@@ -1715,7 +1715,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 15px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -1932,7 +1932,7 @@ h2, h3, h4 {
   font-family: var(--font-heading) !important;
   font-size: clamp(20px, 2.4vw, 26px) !important;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 4px;
   letter-spacing: 0;
   text-transform: none !important;
@@ -1940,7 +1940,7 @@ h2, h3, h4 {
 .menu-collection-desc {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0;
   line-height: 1.5;
   max-width: 720px;
@@ -1977,7 +1977,7 @@ h2, h3, h4 {
   font-family: var(--font-heading) !important;
   font-size: 15px !important;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 2px;
   letter-spacing: 0;
   text-transform: none;
@@ -1989,7 +1989,7 @@ h2, h3, h4 {
 .product-card-desc {
   font-family: 'Barlow', 'Barlow Semi Condensed', serif !important;
   font-size: 12.5px !important;
-  color: #3B2A1A;
+  color: #2C2C2C;
   line-height: 1.35;
   margin: 0 0 2px;
   display: -webkit-box;
@@ -2020,7 +2020,7 @@ h2, h3, h4 {
 .product-card-price .price-discounted {
   font-size: 13px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .product-card-price .price-original {
   font-size: 13px;
@@ -2031,12 +2031,12 @@ h2, h3, h4 {
 }
 .product-card-price .price-unit {
   font-size: 13px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-weight: 500;
 }
 .product-card-price .price-unit strong {
   font-weight: 500;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 @media (min-width: 760px) {
   .product-card-price .price-regular,
@@ -2053,7 +2053,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   cursor: pointer;
   letter-spacing: 0;
   text-transform: none;
@@ -2062,7 +2062,7 @@ h2, h3, h4 {
   margin-top: 2px;
   display: inline-block;
 }
-.product-card-more:hover { color: #3B2A1A; }
+.product-card-more:hover { color: #2C2C2C; }
 
 .product-card-media {
   position: relative;
@@ -2091,8 +2091,8 @@ h2, h3, h4 {
   height: 38px;
   border-radius: 999px;
   background: #FFFFFF;
-  border: 1px solid #3B2A1A;
-  color: #3B2A1A;
+  border: 1px solid #2C2C2C;
+  color: #2C2C2C;
   font-size: 22px;
   font-weight: 700;
   cursor: pointer;
@@ -2106,7 +2106,7 @@ h2, h3, h4 {
   transition: background 0.15s ease, color 0.15s ease;
 }
 .product-card-plus:hover {
-  background: #3B2A1A;
+  background: #2C2C2C;
   color: #F5F3EF;
 }
 .product-card-plus:disabled {
@@ -2119,7 +2119,7 @@ h2, h3, h4 {
   position: absolute;
   bottom: 8px;
   right: 8px;
-  background: #3B2A1A;
+  background: #2C2C2C;
   border: none;
   border-radius: 999px;
   padding: 3px 4px;
@@ -2171,10 +2171,10 @@ h2, h3, h4 {
   height: 36px;
   border-radius: 50%;
   background: #F5F3EF;
-  border: 1.5px solid #3B2A1A;
+  border: 1.5px solid #2C2C2C;
   font-size: 20px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -2220,7 +2220,7 @@ h2, h3, h4 {
   border-radius: 6px;
   border: none;
   background: transparent;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -2237,7 +2237,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   min-width: 32px;
   text-align: center;
 }
@@ -3107,7 +3107,7 @@ h2, h3, h4 {
 
 /* ========== CONTACT PAGE ========== */
 .contact-page {
-  padding: 120px 24px 100px;
+  padding: 32px 24px 80px;
   background: var(--offwhite);
   min-height: 100vh;
 }
@@ -3954,7 +3954,7 @@ h2, h3, h4 {
 
 .about-hero {
   background: var(--overlay-red);
-  padding: 100px 24px 80px;
+  padding: 28px 24px 48px;
   text-align: center;
 }
 
@@ -4067,7 +4067,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-weight: 700;
   font-size: 18px;
-  color: var(--charcoal, #3B2A1A);
+  color: var(--charcoal, #2C2C2C);
   margin: 0 0 6px;
   letter-spacing: -0.2px;
   text-transform: none;
@@ -4077,7 +4077,7 @@ h2, h3, h4 {
   font-family: 'Barlow', sans-serif !important;
   font-size: 14px;
   line-height: 1.55;
-  color: var(--charcoal, #3B2A1A);
+  color: var(--charcoal, #2C2C2C);
   margin: 0;
   text-align: left;
 }
@@ -5140,7 +5140,7 @@ h2, h3, h4 {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #3B2A1A;
+  background: #2C2C2C;
   color: #F5F3EF;
   border: none;
   border-radius: 999px;
@@ -5163,7 +5163,7 @@ h2, h3, h4 {
 }
 .basket-pill .basket-count {
   background: #C9A84C;
-  color: #3B2A1A;
+  color: #2C2C2C;
   border-radius: 999px;
   padding: 2px 10px;
   font-size: 13px;
@@ -5178,7 +5178,7 @@ h2, h3, h4 {
   top: 2px;
   right: 2px;
   background: #C9A84C;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-size: 10px;
   font-weight: 800;
   min-width: 18px;
@@ -5197,7 +5197,7 @@ h2, h3, h4 {
   font-size: 13px;
   font-weight: 700;
   color: #D8CFB8;
-  background: #3B2A1A;
+  background: #2C2C2C;
   border: none;
   padding: 8px 18px;
   border-radius: 999px;
@@ -5212,7 +5212,7 @@ h2, h3, h4 {
 }
 .menu-pill.is-active {
   background: #C9A84C;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 
 /* Khaki slider for box size on menu (legacy) */
@@ -5230,7 +5230,7 @@ h2, h3, h4 {
   flex: 0 0 auto;
   padding: 8px 16px;
   background: #D8CFB8;
-  color: #3B2A1A;
+  color: #2C2C2C;
   border: none;
   border-radius: 999px;
   font-family: 'Barlow Semi Condensed', serif;
@@ -5244,12 +5244,12 @@ h2, h3, h4 {
   gap: 6px;
 }
 .box-size-slider .box-size-chip.is-active {
-  background: #3B2A1A;
+  background: #2C2C2C;
   color: #D8CFB8;
 }
 .box-size-slider .box-size-chip-discount {
   background: #C9A84C;
-  color: #3B2A1A;
+  color: #2C2C2C;
   padding: 1px 6px;
   border-radius: 999px;
   font-size: 10px;
@@ -5267,15 +5267,15 @@ h2, h3, h4 {
 .box-size-slider--thin .box-size-chip {
   background: transparent;
   border: 1px solid #C9BFA6;
-  color: #3B2A1A;
+  color: #2C2C2C;
   padding: 5px 12px;
   font-size: 12px;
   font-weight: 700;
   line-height: 1.1;
 }
 .box-size-slider--thin .box-size-chip.is-active {
-  background: #3B2A1A;
-  border-color: #3B2A1A;
+  background: #2C2C2C;
+  border-color: #2C2C2C;
   color: #F5F3EF;
 }
 .box-size-slider--thin .box-size-chip-text { display: inline-flex; align-items: baseline; gap: 4px; }
@@ -5326,12 +5326,12 @@ h2, h3, h4 {
   width: 78%;
   max-width: 320px;
   scroll-snap-align: start;
-  background-color: #3B2A1A;
+  background-color: #2C2C2C;
   background-size: cover;
   background-position: center;
   background-blend-mode: multiply;
   background-repeat: no-repeat;
-  border: 1px solid #3B2A1A;
+  border: 1px solid #2C2C2C;
   padding: 22px 16px;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
@@ -5402,7 +5402,7 @@ h2, h3, h4 {
   border-radius: 50%;
   border: 1.5px solid #D8CFB8;
   background: #F5F3EF;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 700;
@@ -5417,12 +5417,12 @@ h2, h3, h4 {
   padding: 0;
 }
 .size-circle:hover {
-  border-color: #3B2A1A;
+  border-color: #2C2C2C;
 }
 .size-circle.is-active {
-  background: #3B2A1A;
+  background: #2C2C2C;
   color: #D8CFB8;
-  border-color: #3B2A1A;
+  border-color: #2C2C2C;
 }
 .size-circle-discount {
   font-size: 9px;
@@ -5449,15 +5449,15 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   cursor: pointer;
   position: relative;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
 }
 .detail-tab.is-active {
-  color: #3B2A1A;
-  border-bottom-color: #3B2A1A;
+  color: #2C2C2C;
+  border-bottom-color: #2C2C2C;
 }
 
 /* Product detail page — Uber Eats full-width */
@@ -5491,7 +5491,7 @@ h2, h3, h4 {
   border-radius: 999px;
   background: rgba(245,243,239,0.92);
   border: none;
-  color: #3B2A1A;
+  color: #2C2C2C;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -5512,7 +5512,7 @@ h2, h3, h4 {
   padding: 8px 14px 8px 10px;
   background: #FFFFFF;
   border: 1px solid #D8CFB8;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
@@ -5540,7 +5540,7 @@ h2, h3, h4 {
 .pd-uber-title {
   font-family: var(--font-heading);
   font-size: clamp(24px, 3.4vw, 32px);
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 10px;
   font-weight: 600;
   line-height: 1.15;
@@ -5549,7 +5549,7 @@ h2, h3, h4 {
 .pd-uber-desc {
   font-size: 15px;
   line-height: 1.6;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 14px;
 }
 .pd-uber-badges {
@@ -5563,7 +5563,7 @@ h2, h3, h4 {
   align-items: center;
   gap: 6px;
   background: #E8DFC8;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 700;
@@ -5579,13 +5579,13 @@ h2, h3, h4 {
   padding: 12px 14px;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   resize: vertical;
   background: #FFFFFF;
 }
 .pd-uber-notes:focus {
   outline: none;
-  border-color: #3B2A1A;
+  border-color: #2C2C2C;
 }
 .pd-uber-add {
   position: fixed;
@@ -5594,7 +5594,7 @@ h2, h3, h4 {
   right: 16px;
   width: auto;
   margin: 0;
-  background: #3B2A1A;
+  background: #2C2C2C;
   color: #F5F3EF;
   border: none;
   border-radius: 6px;
@@ -5659,7 +5659,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 500;
-  color: #3B2A1A;
+  color: #2C2C2C;
   padding: 2px 4px 5px;
   border-radius: 0;
   cursor: pointer;
@@ -5671,13 +5671,13 @@ h2, h3, h4 {
   margin-right: 14px;
   transition: color 0.15s ease;
 }
-.menu-category-text-btn:hover { color: #3B2A1A; }
+.menu-category-text-btn:hover { color: #2C2C2C; }
 .menu-category-text-btn.is-active {
   background: transparent;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-weight: 700;
   font-size: 16px;
-  border-bottom-color: #3B2A1A;
+  border-bottom-color: #2C2C2C;
 }
 @media (min-width: 760px) {
   .menu-category-text-btn { font-size: 15px; margin-right: 6px; padding: 2px 2px 6px; }
@@ -5880,7 +5880,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   letter-spacing: 0.01em;
   flex-shrink: 0;
 }
@@ -5899,7 +5899,7 @@ h2, h3, h4 {
   background: transparent;
   border: 1px solid transparent;
   border-radius: 6px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
@@ -5913,12 +5913,12 @@ h2, h3, h4 {
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 .box-size-slider--mustard .box-size-chip:hover {
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .box-size-slider--mustard .box-size-chip.is-active {
   background: #EFE6CC;
-  border-color: #3B2A1A;
-  color: #3B2A1A;
+  border-color: #2C2C2C;
+  color: #2C2C2C;
   font-weight: 700;
 }
 .box-size-slider--mustard .box-size-chip-text {
@@ -5954,7 +5954,7 @@ h2, h3, h4 {
   right: 16px;
   width: auto;
   margin: 0;
-  background: #3B2A1A;
+  background: #2C2C2C;
   color: #F5F3EF;
   border: none;
   border-radius: 6px;
@@ -6100,7 +6100,7 @@ h2, h3, h4 {
 .product-card-more {
   background: transparent;
   border: none;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 600;
@@ -6111,7 +6111,7 @@ h2, h3, h4 {
   white-space: nowrap;
   align-self: flex-start;
 }
-.product-card-more:hover { color: #3B2A1A; }
+.product-card-more:hover { color: #2C2C2C; }
 
 /* Mobile: + button and qty pill stay bottom-right of image (well-padded) */
 .product-card-media > .product-card-plus,
@@ -6293,7 +6293,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   background: #FFFFFF;
   border: 1.5px solid #D8CFB8;
   border-radius: 999px;
@@ -6301,10 +6301,10 @@ h2, h3, h4 {
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
-.pd-pill:hover { border-color: #3B2A1A; }
+.pd-pill:hover { border-color: #2C2C2C; }
 .pd-pill.is-selected {
-  background: #3B2A1A;
-  border-color: #3B2A1A;
+  background: #2C2C2C;
+  border-color: #2C2C2C;
   color: #F5F3EF;
 }
 .pd-radio-list {
@@ -6339,13 +6339,13 @@ h2, h3, h4 {
   position: relative;
   transition: border-color 0.15s ease;
 }
-.pd-radio-row.is-selected .pd-radio-circle { border-color: #3B2A1A; }
+.pd-radio-row.is-selected .pd-radio-circle { border-color: #2C2C2C; }
 .pd-radio-row.is-selected .pd-radio-circle::after {
   content: '';
   position: absolute;
   inset: 3px;
   border-radius: 50%;
-  background: #3B2A1A;
+  background: #2C2C2C;
 }
 .pd-radio-text {
   font-family: 'Barlow Semi Condensed', serif;
@@ -6367,7 +6367,7 @@ h2, h3, h4 {
   display: block;
   width: 100%;
   margin: 8px 0 4px;
-  background: #3B2A1A;
+  background: #2C2C2C;
   color: #F5F3EF;
   border: none;
   border-radius: 8px;
@@ -6417,7 +6417,7 @@ h2, h3, h4 {
   align-items: flex-start;
   gap: 4px;
 }
-.cart-meal-lbs { color: #3B2A1A; font-weight: 600; font-size: 14px; }
+.cart-meal-lbs { color: #2C2C2C; font-weight: 600; font-size: 14px; }
 .cart-discount-applied { color: #2E7D32; font-weight: 700; font-size: 14px; }
 .cart-discount-next { color: #8A6F4F; font-weight: 600; font-size: 13px; }
 
@@ -6431,7 +6431,7 @@ h2, h3, h4 {
   display: inline-flex;
   align-items: center;
   background: #C9A84C;
-  color: #3B2A1A;
+  color: #2C2C2C;
   border: none;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
@@ -6461,21 +6461,21 @@ h2, h3, h4 {
 .pd-shopify-boxsize-label {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
 .pd-shopify-boxsize-value {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 15px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-weight: 800;
 }
 .pd-shopify-boxsize-discount {
   display: inline-flex;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 10px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-weight: 800;
   background: #C9A84C;
   padding: 2px 7px;
@@ -6486,7 +6486,7 @@ h2, h3, h4 {
 .pd-shopify-change-link {
   background: transparent;
   border: none;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 600;
@@ -6497,7 +6497,7 @@ h2, h3, h4 {
   text-decoration: underline;
   margin-left: 6px;
 }
-.pd-shopify-change-link:hover { color: #3B2A1A; }
+.pd-shopify-change-link:hover { color: #2C2C2C; }
 .pd-shopify-qty-row {
   display: flex;
   align-items: flex-start;
@@ -6556,7 +6556,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 16px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   display: inline-flex;
   align-items: center;
   height: 36px;
@@ -6567,7 +6567,7 @@ h2, h3, h4 {
   height: 22px;
   margin-left: 8px;
   background: #C9A84C;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 800;
@@ -6580,7 +6580,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 500;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin-left: 6px;
   display: inline-flex;
   align-items: center;
@@ -6721,7 +6721,7 @@ h2, h3, h4 {
   height: auto;
 }
 .menu-collection-banner-text .menu-collection-title {
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 4px;
   font-family: var(--font-heading) !important;
   font-size: clamp(20px, 2.4vw, 26px) !important;
@@ -6730,7 +6730,7 @@ h2, h3, h4 {
   text-shadow: none;
 }
 .menu-collection-banner-text .menu-collection-desc {
-  color: #3B2A1A;
+  color: #2C2C2C;
   opacity: 1;
   margin: 0;
   font-size: 13px;
@@ -6777,7 +6777,7 @@ h2, h3, h4 {
   width: 100%;
   background: transparent;
   border: 1.5px solid #C9BFA6;
-  color: #3B2A1A;
+  color: #2C2C2C;
   padding: 12px 8px;
   border-radius: 10px;
   justify-content: center;
@@ -6796,14 +6796,14 @@ h2, h3, h4 {
 }
 .box-size-slider--clean.box-size-slider--mustard .box-size-chip.is-active {
   background: transparent;
-  border-color: #3B2A1A;
-  color: #3B2A1A;
+  border-color: #2C2C2C;
+  color: #2C2C2C;
 }
 .box-size-chip-size {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 16px;
   font-weight: 800;
-  color: #3B2A1A;
+  color: #2C2C2C;
   letter-spacing: 0.01em;
   line-height: 1.1;
 }
@@ -6814,7 +6814,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 10px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   opacity: 0.95;
   line-height: 1.1;
   letter-spacing: 0;
@@ -6825,7 +6825,7 @@ h2, h3, h4 {
   .box-size-chip-from { font-size: 12px; }
 }
 .box-size-slider--clean.box-size-slider--mustard .box-size-chip.is-active .box-size-chip-from {
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 
 /* ===== Mini Top-Sheet (Task 3) ===== */
@@ -6873,7 +6873,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #3B2A1A;
+  color: #2C2C2C;
   padding: 6px;
   border-radius: 50%;
 }
@@ -6882,7 +6882,7 @@ h2, h3, h4 {
   font-family: var(--font-heading);
   font-size: 22px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 4px;
   text-align: center;
 }
@@ -6892,7 +6892,7 @@ h2, h3, h4 {
 .menu-topsheet-sub {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   text-align: center;
   margin: 0 0 14px;
 }
@@ -6914,7 +6914,7 @@ h2, h3, h4 {
 }
 .menu-topsheet-card-name {
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-size: 14px;
 }
 .menu-topsheet-card-price {
@@ -6939,14 +6939,14 @@ h2, h3, h4 {
 }
 .menu-topsheet-btn--outline {
   background: transparent;
-  border: 1.5px solid #3B2A1A;
-  color: #3B2A1A;
+  border: 1.5px solid #2C2C2C;
+  color: #2C2C2C;
 }
 .menu-topsheet-btn--outline:hover { background: rgba(0,0,0,0.04); }
 .menu-topsheet-btn--solid {
   background: #D8CFB8;
   border: 1.5px solid #D8CFB8;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .menu-topsheet-btn--solid:hover { background: #CBC1A6; }
 .menu-topsheet-calc-link {
@@ -6954,7 +6954,7 @@ h2, h3, h4 {
   margin: 0 auto;
   background: transparent;
   border: none;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   font-weight: 600;
@@ -6997,7 +6997,7 @@ h2, h3, h4 {
   background: white;
   border: 1px solid #D8CFB8;
   cursor: pointer;
-  color: #3B2A1A;
+  color: #2C2C2C;
   padding: 6px;
   border-radius: 50%;
   width: 36px;
@@ -7024,7 +7024,7 @@ h2, h3, h4 {
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.4;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .pd-shopify-featbullets li::before {
   content: '';
@@ -7132,7 +7132,7 @@ h2, h3, h4 {
   background: white;
   border: 1px solid #D8CFB8;
   cursor: pointer;
-  color: #3B2A1A;
+  color: #2C2C2C;
   padding: 6px;
   border-radius: 50%;
   width: 36px;
@@ -7151,7 +7151,7 @@ h2, h3, h4 {
   font-family: var(--font-heading);
   font-size: clamp(24px, 3.4vw, 34px);
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 6px;
   text-align: center;
   letter-spacing: -0.4px;
@@ -7164,7 +7164,7 @@ h2, h3, h4 {
 .menu-funnel-overlay .menu-funnel-sub {
   font-family: var(--font-body);
   font-size: 14px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 auto 20px;
   text-align: center;
   max-width: 640px;
@@ -7254,7 +7254,7 @@ h2, h3, h4 {
   font-family: var(--font-heading);
   font-size: clamp(28px, 4vw, 40px);
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 10px;
   text-align: center;
   letter-spacing: -0.5px;
@@ -7263,7 +7263,7 @@ h2, h3, h4 {
 .menu-funnel-sub {
   font-family: var(--font-body);
   font-size: 15px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 auto 24px;
   text-align: center;
   max-width: 640px;
@@ -7448,7 +7448,7 @@ h2, h3, h4 {
   font-family: var(--font-heading);
   font-size: 18px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0 0 2px;
   line-height: 1.2;
   letter-spacing: -0.2px;
@@ -7460,7 +7460,7 @@ h2, h3, h4 {
 .menu-funnel-card-row-sub {
   font-family: 'Barlow', 'Barlow Semi Condensed', serif;
   font-size: 13px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0;
   line-height: 1.4;
 }
@@ -7470,7 +7470,7 @@ h2, h3, h4 {
   margin-left: auto;
   background: transparent;
   border: none;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 600;
@@ -7481,7 +7481,7 @@ h2, h3, h4 {
   white-space: nowrap;
   letter-spacing: 0;
 }
-.menu-category-calc-link:hover { color: #3B2A1A; }
+.menu-category-calc-link:hover { color: #2C2C2C; }
 @media (max-width: 600px) {
   .menu-category-calc-link { font-size: 12px; padding: 2px 4px; }
 }
@@ -7614,7 +7614,7 @@ input, select, textarea {
   background: white;
   border: 1px solid #D8CFB8;
   cursor: pointer;
-  color: #3B2A1A;
+  color: #2C2C2C;
   padding: 6px;
   border-radius: 50%;
   width: 36px;
@@ -7639,11 +7639,11 @@ input, select, textarea {
 .treats-subcat-title {
   font-size: clamp(18px, 2vw, 22px) !important;
   margin: 0 0 6px !important;
-  color: #3B2A1A !important;
+  color: #2C2C2C !important;
 }
 .treats-subcat-desc {
   font-size: 13px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   margin: 0;
 }
 
@@ -7715,7 +7715,7 @@ input, select, textarea {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .stock-up-toggle-left {
   display: inline-flex;
@@ -7735,7 +7735,7 @@ input, select, textarea {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #3B2A1A;
+  color: #2C2C2C;
   background: #C9A84C;
   padding: 2px 7px;
   border-radius: 3px;
@@ -7747,7 +7747,7 @@ input, select, textarea {
 .stock-up-intro {
   font-family: 'Barlow', 'Barlow Semi Condensed', serif;
   font-size: 12.5px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   line-height: 1.5;
   margin: 8px 0 12px;
 }
@@ -7781,7 +7781,7 @@ input, select, textarea {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .stock-up-tier-off {
   font-family: 'Barlow Semi Condensed', serif;
@@ -7829,11 +7829,11 @@ input, select, textarea {
   padding: 8px 14px;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   text-align: center;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
-.bb-incentive strong { color: #3B2A1A; font-weight: 800; }
+.bb-incentive strong { color: #2C2C2C; font-weight: 800; }
 @media (min-width: 760px) {
   .bb-incentive {
     left: 50%;
@@ -7872,14 +7872,14 @@ input, select, textarea {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
   font-weight: 600;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .cart-line-sub { font-size: 12px; color: #8A7156; }
 .cart-line-right { display: flex; align-items: center; gap: 10px; }
 .cart-line-price {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 14px;
-  color: #3B2A1A;
+  color: #2C2C2C;
   min-width: 56px;
   text-align: right;
 }
@@ -7904,7 +7904,7 @@ input, select, textarea {
 .cart-qty-mini button {
   background: none;
   border: none;
-  color: #3B2A1A;
+  color: #2C2C2C;
   cursor: pointer;
   font-size: 16px;
   font-weight: 700;
@@ -7916,7 +7916,7 @@ input, select, textarea {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 12px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   min-width: 34px;
   text-align: center;
 }
@@ -7942,7 +7942,7 @@ input, select, textarea {
 .feeding-calc .form-group select {
   border: 1px solid #D8CFB8 !important;
   background: #fff !important;
-  color: #3B2A1A;
+  color: #2C2C2C;
   border-radius: 8px;
 }
 .calc-pet-card input:focus,
@@ -7950,7 +7950,7 @@ input, select, textarea {
 .feeding-calc .form-group input:focus,
 .feeding-calc .form-group select:focus {
   outline: none;
-  border-color: #3B2A1A !important;
+  border-color: #2C2C2C !important;
   box-shadow: 0 0 0 2px rgba(59, 42, 26, 0.08);
 }
 
@@ -7971,7 +7971,7 @@ input, select, textarea {
   margin-left: 10px;
   padding: 3px 8px;
   background: #C9A84C;
-  color: #3B2A1A;
+  color: #2C2C2C;
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 11px;
   font-weight: 800;
@@ -7993,11 +7993,11 @@ input, select, textarea {
 }
 
 /* ===== Cart drawer — brown theme overrides ===== */
-.cart-drawer-header h3 { color: #3B2A1A !important; }
+.cart-drawer-header h3 { color: #2C2C2C !important; }
 .cart-box-info { border-bottom-color: #C8B89C !important; }
 .cart-total {
-  color: #3B2A1A !important;
-  border-top: 2px solid #3B2A1A !important;
+  color: #2C2C2C !important;
+  border-top: 2px solid #2C2C2C !important;
 }
 /* Brown dividers around totals / promo / instructions sections */
 .cart-drawer-content .cart-item { border-bottom: 1px solid #EDEAE7; }
@@ -8005,5 +8005,131 @@ input, select, textarea {
 
 /* Cart line: bold product names, semi-bold prices */
 .cart-line-name { font-weight: 700 !important; }
-.cart-line-price { font-weight: 600 !important; color: #3B2A1A !important; }
+.cart-line-price { font-weight: 600 !important; color: #2C2C2C !important; }
 
+
+
+/* =====================================================================
+   PROMPT 1 — GLOBAL DESIGN SYSTEM (Typography + Colour + Container)
+   Applies site-wide. Layouts unchanged; only typography, colour, and
+   page-container consistency.
+   ===================================================================== */
+
+/* --- Global charcoal text colour --- */
+:root {
+  --charcoal: #2C2C2C;
+  --charcoal-light: #2C2C2C;
+  --text-secondary: #2C2C2C;
+  --aged-wood: #2C2C2C;
+}
+
+body,
+p, li, blockquote, dd, dt, figcaption, .subtext,
+h1, h2, h3, h4, h5, h6 {
+  color: #2C2C2C;
+}
+
+/* --- Font stack confirmation (no font changes, only weight/family reinforcement) --- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  font-weight: 700 !important;
+}
+body, p, li, span, a, label, input, select, textarea, blockquote {
+  font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+button, strong, b, .btn-primary, .btn-secondary {
+  font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 600;
+}
+
+/* --- Mobile typography scale (<=768px) ---
+   H1: 24–26px / lh 1.2
+   H2: 18–20px / lh 1.25
+   Body: 14px / lh 1.4
+*/
+@media (max-width: 768px) {
+  h1,
+  .hero-h1,
+  .about-hero h1,
+  .contact-form-section h1 {
+    font-size: clamp(24px, 6vw, 26px) !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.2px;
+  }
+  h2 {
+    font-size: clamp(18px, 5vw, 20px) !important;
+    line-height: 1.25 !important;
+  }
+  h3, h4 {
+    font-size: 16px !important;
+    line-height: 1.3 !important;
+  }
+  body,
+  p, li, blockquote, .subtext, .contact-intro,
+  input, select, textarea, label,
+  span:not([class*="badge"]):not([class*="chip"]) {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  small, .small, .disclaimer, .label {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+}
+
+/* --- Global page container: identical horizontal margins + max width --- */
+.page-shell {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+@media (min-width: 900px) {
+  .page-shell { padding-left: 32px; padding-right: 32px; }
+}
+
+/* Unify existing per-page containers so all pages share the same shell */
+.about-container,
+.contact-container,
+.new-to-raw-container,
+.delivery-container,
+.faq-container,
+.landing-container,
+.menu-container,
+.product-container {
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  box-sizing: border-box;
+}
+@media (min-width: 900px) {
+  .about-container,
+  .contact-container,
+  .new-to-raw-container,
+  .delivery-container,
+  .faq-container,
+  .landing-container,
+  .menu-container,
+  .product-container {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+/* --- Header alignment: remove excess whitespace above page content ---
+   Content now sits directly beneath the sticky navbar. */
+.about-page > section:first-of-type,
+.contact-page,
+.faq-page main > section:first-of-type,
+.new-to-raw-page main > section:first-of-type,
+.delivery-page main > section:first-of-type {
+  padding-top: clamp(16px, 3vw, 28px) !important;
+}
+@media (max-width: 768px) {
+  .about-hero { padding-top: 20px !important; padding-bottom: 32px !important; }
+  .contact-page { padding-top: 20px !important; }
+}

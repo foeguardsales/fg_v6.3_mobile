@@ -791,7 +791,7 @@ export const MealPlanPage = () => {
                 <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#E65100' }}>
                   We'll Contact You Personally
                 </h3>
-                <p style={{ color: '#3B2A1A', lineHeight: '1.6' }}>
+                <p style={{ color: '#2C2C2C', lineHeight: '1.6' }}>
                   Based on the health conditions you've shared, one of our pet nutrition specialists will reach out to you within 24-48 hours to discuss {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s` : "your dogs'"} specific needs and create a customized meal plan.
                 </p>
               </div>
@@ -944,7 +944,7 @@ export const MealPlanPage = () => {
               marginTop: '24px',
               border: '2px solid #FFB74D'
             }}>
-              <p style={{ color: '#3B2A1A', fontSize: '14px', lineHeight: '1.5', margin: 0 }}>
+              <p style={{ color: '#2C2C2C', fontSize: '14px', lineHeight: '1.5', margin: 0 }}>
                 <strong>Note:</strong> Based on the health conditions selected, we'll contact you personally to discuss a customized meal plan.
               </p>
             </div>

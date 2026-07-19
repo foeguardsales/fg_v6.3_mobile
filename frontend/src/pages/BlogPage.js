@@ -285,7 +285,7 @@ export const BlogDetailPage = () => {
               cursor: 'pointer',
               fontSize: '14px',
               marginBottom: '32px',
-              color: '#3B2A1A',
+              color: '#2C2C2C',
               fontWeight: '500'
             }}
           >
@@ -329,7 +329,7 @@ export const BlogDetailPage = () => {
               fontSize: '17px',
               fontFamily: "'Barlow Semi Condensed', serif",
               lineHeight: '1.8',
-              color: '#3B2A1A',
+              color: '#2C2C2C',
               background: 'white',
               padding: '40px',
               borderRadius: '16px',

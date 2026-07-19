@@ -78,7 +78,7 @@ export const DeliveryPage = () => {
         {/* Hero */}
         <section style={{
           background: COLORS.cream,
-          padding: '60px 20px 40px',
+          padding: '20px 20px 32px',
           textAlign: 'center'
         }}>
           <div style={{ maxWidth: '780px', margin: '0 auto' }}>
