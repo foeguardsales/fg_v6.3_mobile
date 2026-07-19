@@ -429,11 +429,40 @@ h2, h3, h4 {
   }
 }
 @media (max-width: 600px) {
-  .shop-farm-fresh-img {
-    height: 180px !important;
+  .shop-farm-fresh-grid {
+    gap: 12px !important;
   }
+  .shop-farm-fresh-card {
+    min-height: 0 !important;
+    height: auto !important;
+    border-radius: 10px !important;
+  }
+  /* Landscape banner image (was 180px tall square-ish → ~110px short banner) */
+  .shop-farm-fresh-img {
+    height: 110px !important;
+    aspect-ratio: auto !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+  /* Tighter internal padding (was 20/24px → 12px top/bottom, 16px sides) */
   .shop-farm-fresh-body {
-    padding: 20px !important;
+    padding: 12px 16px !important;
+    gap: 0 !important;
+  }
+  .shop-farm-fresh-body h3 {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 4px !important;
+  }
+  .shop-farm-fresh-body p {
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 10px !important;
+  }
+  .shop-farm-fresh-body button {
+    padding: 8px 16px !important;
+    font-size: 12px !important;
+    min-height: 36px !important;
   }
 }
 
