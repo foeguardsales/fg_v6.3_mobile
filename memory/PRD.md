@@ -11,6 +11,15 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 
 ## What's Implemented (Feb 2026)
 
+### 2026-02 (b) — Auto-updating metafield pipeline + webhook self-register
+- **`useShopifyPage(handle)`** now paired with `services/shopify/pageMeta.js` helpers (`getMetafieldImage`, `getMetafieldImageList`, `getMetafieldMetaobjects`) so any React page can pull merchant-managed content in one line, keeping hardcoded fallbacks until the metafield is populated.
+- **`<ShopifyImage handle="..." metafieldKey="..." fallback="..." />`** drop-in component: swap any hardcoded `<img>` and it auto-pulls the correct MediaImage from Shopify once the merchant assigns it.
+- **AboutPage** now consumes `foeguard.hero` + `foeguard.team_images` from the Shopify `about-us` page. Zero visual regression today — farm photos serve as fallback.
+- **`POST /api/shopify/admin/register-webhooks`** — gated by `X-Foeguard-Admin-Key` header (see `.env`). Idempotently registers all 7 needed webhooks in the Shopify store via the Admin GraphQL API. Returns a clear `hint` when the Admin token lacks the required scopes.
+- **`GET  /api/shopify/admin/webhooks`** — read-only list of every subscription currently on the store.
+- **`POST /api/shopify/admin/deregister-webhooks`** — bulk delete (used when rotating URLs).
+- **Docs**: `/app/docs/METAFIELD_INTEGRATION.md` explains the one-line pattern for adding new metafield-driven content to any page.
+
 ### 2026-02 — Shopify Headless completion (Prompts 2 / 3 / 4 / 5)
 - **Prompt 2 (Metafields)** — Product page now consumes safe metafield renderers (`/app/frontend/src/components/ProductMetafields.js`) instead of inlined JSX. `IngredientsSection`, `NutritionSection`, `FeedingGuide`, `ProductInfo`, `ComparisonTable`, `BenefitIcons` never auto-render raw HTML; missing metafields are logged via `logMissingMetafields()` (per spec).
 - **Prompt 3 (Headless SEO)** — Server-generated JSON-LD (Product, Organization, Breadcrumb), OG + Twitter tags, canonical URLs, `/api/sitemap.xml` and `/api/robots.txt` all sourced from Shopify (no hardcoded SEO values).

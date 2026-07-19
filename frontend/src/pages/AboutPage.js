@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Footer } from '../components/Layout';
 import { useShopifyPage } from '../hooks/useShopifyPage';
+import { getMetafieldImage, getMetafieldImageList } from '../services/shopify/pageMeta';
 import { SeoHead } from '../components/SeoHead';
 
 const PROTEINS = [
@@ -55,6 +56,24 @@ export const AboutPage = () => {
   // override the hardcoded copy while preserving the surrounding design.
   const { page: shopifyPage } = useShopifyPage('about-us');
 
+  // Metafield-driven imagery. The moment the merchant assigns
+  // ``foeguard.hero`` (single MediaImage) or ``foeguard.team_images``
+  // (list.file_reference) to the `about-us` page in Shopify, these swap
+  // in automatically. Until then, the hardcoded farm photos below are used.
+  const FALLBACK_HERO = 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/kalssi9a_farm_image1.jpg';
+  const FALLBACK_TEAM = [
+    'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/kalssi9a_farm_image1.jpg',
+    'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/jbtl1zq1_farm_image2.png',
+    'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/rsur7vju_farm_image3.jpg',
+  ];
+  const heroImage = (shopifyPage && getMetafieldImage(shopifyPage, 'hero')) || FALLBACK_HERO;
+  const teamImagesFromShopify = shopifyPage ? getMetafieldImageList(shopifyPage, 'team_images') : [];
+  const teamImages = [
+    teamImagesFromShopify[0] || FALLBACK_TEAM[0],
+    teamImagesFromShopify[1] || FALLBACK_TEAM[1],
+    teamImagesFromShopify[2] || FALLBACK_TEAM[2],
+  ];
+
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email) return;
@@ -91,7 +110,7 @@ export const AboutPage = () => {
           <div className="about-container">
             <div className="about-story-hero-image" data-testid="about-story-hero-image">
               <img
-                src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/kalssi9a_farm_image1.jpg"
+                src={heroImage}
                 alt="FoeGuard family farm"
               />
             </div>
@@ -125,15 +144,15 @@ export const AboutPage = () => {
         {/* Team Images */}
         <section className="about-team-images-grid">
           <div className="team-grid">
-            <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/kalssi9a_farm_image1.jpg" alt="Goats grazing on pasture" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-            <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/jbtl1zq1_farm_image2.png" alt="FoeGuard produce storage facility" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-            <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/rsur7vju_farm_image3.jpg" alt="Free-range chickens on farm" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+            <div className="team-image-card" style={{ overflow: 'hidden' }}><img src={teamImages[0]} alt="Goats grazing on pasture" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+            <div className="team-image-card" style={{ overflow: 'hidden' }}><img src={teamImages[1]} alt="FoeGuard produce storage facility" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+            <div className="team-image-card" style={{ overflow: 'hidden' }}><img src={teamImages[2]} alt="Free-range chickens on farm" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
           </div>
           <div className="team-carousel">
             <div className="team-carousel-track">
-              <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/kalssi9a_farm_image1.jpg" alt="Goats grazing on pasture" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-              <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/jbtl1zq1_farm_image2.png" alt="FoeGuard produce storage facility" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-              <div className="team-image-card" style={{ overflow: 'hidden' }}><img src="https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/rsur7vju_farm_image3.jpg" alt="Free-range chickens on farm" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+              <div className="team-image-card" style={{ overflow: 'hidden' }}><img src={teamImages[0]} alt="Goats grazing on pasture" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+              <div className="team-image-card" style={{ overflow: 'hidden' }}><img src={teamImages[1]} alt="FoeGuard produce storage facility" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+              <div className="team-image-card" style={{ overflow: 'hidden' }}><img src={teamImages[2]} alt="Free-range chickens on farm" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
             </div>
           </div>
         </section>

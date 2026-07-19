@@ -979,8 +979,10 @@ async def delete_promo(code: str, admin: dict = Depends(get_admin_user)):
 # Shopify functionality (Storefront + Admin) is proxied through here so the
 # frontend never talks to Shopify directly and the Admin token stays server-
 # side.
-from shopify_service import shopify_router, webhooks_router  # noqa: E402
+from shopify_service import shopify_router, webhooks_router, shopify_admin_router  # noqa: E402
 api_router.include_router(shopify_router)
+# Admin-only tools (webhook registration) — gated by X-Foeguard-Admin-Key.
+api_router.include_router(shopify_admin_router)
 # Shopify webhooks POST straight to /api/webhooks/shopify/* (HMAC-verified).
 # These invalidate the response cache so the headless frontend always
 # reflects the merchant's latest data.
