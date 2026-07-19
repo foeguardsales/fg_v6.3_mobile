@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Footer } from '../components/Layout';
+import { useShopifyPage } from '../hooks/useShopifyPage';
+import { SeoHead } from '../components/SeoHead';
 
 const PROTEINS = [
   {
@@ -49,6 +51,10 @@ export const AboutPage = () => {
   const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Live Shopify Page (handle: `about-us`). When present, its title and body
+  // override the hardcoded copy while preserving the surrounding design.
+  const { page: shopifyPage } = useShopifyPage('about-us');
+
   const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email) return;
@@ -67,19 +73,20 @@ export const AboutPage = () => {
 
   return (
     <>
+      <SeoHead endpoint="/api/shopify/page/about-us" fallback={{ title: 'About Us | FoeGuard' }} />
       <Navbar />
       <div className="about-page">
         {/* Hero Section */}
         <section className="about-hero">
           <div className="about-hero-content">
-            <h1 style={titleStyle}>About Us</h1>
+            <h1 style={titleStyle}>{shopifyPage?.title || 'About Us'}</h1>
             <p style={{ fontSize: '18px', color: '#D8CFB8', marginTop: '20px' }}>
               From Our Family to Yours
             </p>
           </div>
         </section>
 
-        {/* OUR STORY */}
+        {/* OUR STORY \u2014 Shopify Page body if available, otherwise curated fallback */}
         <section className="about-section about-story" data-testid="about-our-story">
           <div className="about-container">
             <div className="about-story-hero-image" data-testid="about-story-hero-image">
@@ -89,18 +96,29 @@ export const AboutPage = () => {
               />
             </div>
             <h2 style={titleStyle}>Our Story</h2>
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
-              It started on our small farm in Acton, ON — and honestly, it started because of one dog.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
-              Negus, our breeding German Shepherd male, kept having health issues we couldn&apos;t get ahead of. When we went looking for raw food made with fresh, whole ingredients raised to our standards, we came up empty. So we made it ourselves. The difference was hard to ignore — we switched all of our dogs over, and before long neighbours were asking for meals. Then their friends did too.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
-              As third-generation farmers and award-winning German Shepherd breeders, we turned that passion into a profession — building recipes with other breeders, nutritionists, and pet parents who cared just as much as we did.
-            </p>
-            <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.75', fontWeight: 600 }}>
-              FoeGuard was created for the community, by the community.
-            </p>
+            {shopifyPage?.body ? (
+              <div
+                className="shopify-page-body"
+                data-testid="about-shopify-body"
+                style={{ fontSize: '17px', lineHeight: '1.75' }}
+                dangerouslySetInnerHTML={{ __html: shopifyPage.body }}
+              />
+            ) : (
+              <>
+                <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
+                  It started on our small farm in Acton, ON \u2014 and honestly, it started because of one dog.
+                </p>
+                <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
+                  Negus, our breeding German Shepherd male, kept having health issues we couldn&apos;t get ahead of. When we went looking for raw food made with fresh, whole ingredients raised to our standards, we came up empty. So we made it ourselves. The difference was hard to ignore \u2014 we switched all of our dogs over, and before long neighbours were asking for meals. Then their friends did too.
+                </p>
+                <p style={{ fontSize: '17px', marginBottom: '20px', lineHeight: '1.75' }}>
+                  As third-generation farmers and award-winning German Shepherd breeders, we turned that passion into a profession \u2014 building recipes with other breeders, nutritionists, and pet parents who cared just as much as we did.
+                </p>
+                <p style={{ fontSize: '17px', marginBottom: '0', lineHeight: '1.75', fontWeight: 600 }}>
+                  FoeGuard was created for the community, by the community.
+                </p>
+              </>
+            )}
           </div>
         </section>
 

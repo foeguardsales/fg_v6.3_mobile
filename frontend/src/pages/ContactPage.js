@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Footer } from '../components/Layout';
+import { ShopifyPageContent } from '../components/ShopifyPageContent';
+import { SeoHead } from '../components/SeoHead';
 
 export const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +26,9 @@ export const ContactPage = () => {
 
   return (
     <>
+      <SeoHead endpoint="/api/shopify/page/contact" fallback={{ title: "Contact | FoeGuard" }} />
       <Navbar />
+      <ShopifyPageContent handle="contact" testId="contact-shopify-body" />
       <div className="contact-page">
         <div className="contact-container">
           <div className="contact-form-section">

@@ -465,6 +465,83 @@ query Shop {
 
 # ---------- Storefront Shop (for SEO / organization schema) ---------------
 
+# ---------- Shopify Pages (About, FAQ, Delivery, etc.) --------------------
+
+# All `foeguard.*` page metafields declared in METAFIELDS.md are hydrated
+# so the marketing pages get their heroes / CTAs / groups in a single call.
+PAGE_METAFIELD_IDS = """
+    { namespace: "foeguard", key: "hero"          },
+    { namespace: "foeguard", key: "cta"           },
+    { namespace: "foeguard", key: "difference"    },
+    { namespace: "foeguard", key: "science"       },
+    { namespace: "foeguard", key: "team_images"   },
+    { namespace: "foeguard", key: "works_block"   },
+    { namespace: "foeguard", key: "how_it_ships"  },
+    { namespace: "foeguard", key: "facts"         },
+    { namespace: "foeguard", key: "zones"         },
+    { namespace: "foeguard", key: "storage_tips"  },
+    { namespace: "foeguard", key: "faq_groups"    }
+"""
+
+PAGE_BY_HANDLE_QUERY = (
+    """
+query PageByHandle($handle: String!) {
+  page(handle: $handle) {
+    id
+    handle
+    title
+    body
+    bodySummary
+    createdAt
+    updatedAt
+    onlineStoreUrl
+    seo { title description }
+    metafields(identifiers: [
+"""
+    + PAGE_METAFIELD_IDS
+    + """
+    ]) {
+      namespace
+      key
+      type
+      value
+      reference {
+        __typename
+        ... on MediaImage { image { url altText width height } }
+        ... on Metaobject { id handle type fields { key value type } }
+      }
+      references(first: 30) {
+        nodes {
+          __typename
+          ... on MediaImage { image { url altText width height } }
+          ... on Metaobject { id handle type fields { key value type } }
+        }
+      }
+    }
+  }
+}
+"""
+)
+
+PAGES_LIST_QUERY = """
+query PagesList($first: Int = 50, $after: String) {
+  pages(first: $first, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      handle
+      title
+      bodySummary
+      updatedAt
+      onlineStoreUrl
+      seo { title description }
+    }
+  }
+}
+"""
+
+# ---------- Storefront Shop (for SEO / organization schema) ---------------
+
 STOREFRONT_SHOP_QUERY = """
 query StorefrontShop {
   shop {

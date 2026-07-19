@@ -1,12 +1,18 @@
 import React from 'react';
 import { Navbar, Footer } from '../components/Layout';
+import { ShopifyPageContent } from '../components/ShopifyPageContent';
+import { SeoHead } from '../components/SeoHead';
 
 export const PoliciesPage = () => (
   <>
+    <SeoHead endpoint="/api/shopify/page/privacy-policy" fallback={{ title: 'Policies | FoeGuard' }} />
     <Navbar />
     <div className="content-page">
       <div className="content-container">
         <h1>Policies</h1>
+        {/* Live Shopify Pages \u2014 shipping, returns, privacy \u2014 render above the hardcoded fallback. */}
+        <ShopifyPageContent handle="privacy-policy" testId="policies-privacy" containerClassName="content-shopify-block" />
+        <ShopifyPageContent handle="returns-and-refunds-policy" testId="policies-returns" containerClassName="content-shopify-block" />
         
         <section>
           <h2>Shipping Policy</h2>

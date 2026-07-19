@@ -15,6 +15,7 @@ import { CartProvider, SlideCart } from './contexts/CartContext';
 import { ShopifyAuthProvider } from './contexts/ShopifyAuthContext';
 import { ProductDetailPage } from './pages/ProductDetail';
 import { TreatDetailPage } from './pages/TreatDetail';
+import { CollectionPage } from './pages/CollectionPage';
 import { AboutPage } from './pages/AboutPage';
 import { PoliciesPage } from './pages/PoliciesPage';
 import { TermsPage } from './pages/TermsPage';
@@ -95,6 +96,7 @@ function App() {
             <Route path="/build-box" element={<BoxBuilder />} />
             <Route path="/product/:productId" element={<ProductDetailPage />} />
             <Route path="/treat/:treatId" element={<TreatDetailPage />} />
+            <Route path="/collection/:handle" element={<CollectionPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/policies" element={<PoliciesPage />} />
             <Route path="/terms" element={<TermsPage />} />

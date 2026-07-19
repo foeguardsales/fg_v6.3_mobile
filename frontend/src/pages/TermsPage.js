@@ -1,8 +1,32 @@
 import React from 'react';
 import { Navbar, Footer } from '../components/Layout';
+import { ShopifyPageContent } from '../components/ShopifyPageContent';
+import { useShopifyPage } from '../hooks/useShopifyPage';
+import { SeoHead } from '../components/SeoHead';
 
-export const TermsPage = () => (
+export const TermsPage = () => {
+  const { page } = useShopifyPage('terms-of-service');
+  // If Shopify has the terms page, render ONLY the merchant-managed content
+  // so terms come from a single source of truth. Fall back to the hardcoded
+  // sections below when the page hasn't been created in Shopify yet.
+  if (page && page.body) {
+    return (
+      <>
+        <SeoHead endpoint="/api/shopify/page/terms-of-service" fallback={{ title: 'Terms of Use | FoeGuard' }} />
+        <Navbar />
+        <div className="content-page">
+          <div className="content-container">
+            <h1>{page.title || 'Terms of Use'}</h1>
+            <ShopifyPageContent handle="terms-of-service" testId="terms-body" />
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+  return (
   <>
+    <SeoHead endpoint="/api/shopify/page/terms-of-service" fallback={{ title: 'Terms of Use | FoeGuard' }} />
     <Navbar />
     <div className="content-page">
       <div className="content-container">
@@ -60,4 +84,5 @@ export const TermsPage = () => (
     </div>
     <Footer />
   </>
-);
+  );
+};

@@ -371,6 +371,8 @@ async def customer_update(body: CustomerUpdateBody):
 
 # ---------- checkout ------------------------------------------------------
 
+# ---------- checkout ------------------------------------------------------
+
 @shopify_router.post("/checkout/from-cart")
 async def checkout_from_cart(body: CheckoutFromCartBody):
     """Return the hosted Shopify checkout URL for a given cart.
@@ -388,5 +390,35 @@ async def checkout_from_cart(body: CheckoutFromCartBody):
         if not checkout_url:
             raise HTTPException(status_code=422, detail="Cart has no checkoutUrl (empty?)")
         return {"checkoutUrl": checkout_url, "cartId": cart.get("id")}
+    except ShopifyError as e:
+        raise _handle_shopify_error(e) from e
+
+
+# ---------- pages (About, FAQ, Delivery, and all static marketing) --------
+
+@shopify_router.get("/pages")
+async def list_pages(
+    first: int = Query(50, ge=1, le=100),
+    after: Optional[str] = Query(None),
+):
+    try:
+        data = await get_storefront().execute(
+            Q.PAGES_LIST_QUERY, {"first": first, "after": after}
+        )
+        return data.get("pages", {"nodes": [], "pageInfo": {}})
+    except ShopifyError as e:
+        raise _handle_shopify_error(e) from e
+
+
+@shopify_router.get("/page/{handle}")
+async def get_page(handle: str = Path(..., min_length=1)):
+    try:
+        data = await get_storefront().execute(
+            Q.PAGE_BY_HANDLE_QUERY, {"handle": handle}
+        )
+        page = data.get("page")
+        if not page:
+            raise HTTPException(status_code=404, detail="Page not found")
+        return page
     except ShopifyError as e:
         raise _handle_shopify_error(e) from e
