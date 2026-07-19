@@ -1,13 +1,28 @@
 # FoeGuard — PRD
 
 ## Original Problem Statement
-FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user iterates copy/layout/typography page-by-page. Shopify will eventually replace in-app checkout/Stripe (do NOT add Stripe).
+FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user iterates copy/layout/typography page-by-page. Shopify is now the source of truth for products, collections, pages, SEO, and customer authentication (Shopify Headless).
 
 ## Stack
 - Frontend: React (CRA) — Barlow Bold (headings) + **Rubik Regular** (body/subtext)
-- Backend: FastAPI + MongoDB (currently mocked .env values)
+- Backend: FastAPI → Shopify Storefront + Admin GraphQL (Admin token stays server-side)
+- Cache: FastAPI in-memory TTL cache (`shopify_service.cache`) with Shopify-webhook-driven invalidation
+- Legacy MongoDB still present but bypassed for catalog/customers
 
 ## What's Implemented (Feb 2026)
+
+### 2026-02 — Shopify Headless completion (Prompts 2 / 3 / 4 / 5)
+- **Prompt 2 (Metafields)** — Product page now consumes safe metafield renderers (`/app/frontend/src/components/ProductMetafields.js`) instead of inlined JSX. `IngredientsSection`, `NutritionSection`, `FeedingGuide`, `ProductInfo`, `ComparisonTable`, `BenefitIcons` never auto-render raw HTML; missing metafields are logged via `logMissingMetafields()` (per spec).
+- **Prompt 3 (Headless SEO)** — Server-generated JSON-LD (Product, Organization, Breadcrumb), OG + Twitter tags, canonical URLs, `/api/sitemap.xml` and `/api/robots.txt` all sourced from Shopify (no hardcoded SEO values).
+- **Prompt 4 (Caching + Webhooks)** —
+  - `/api/shopify/products`, `/products/{handle}`, `/collections`, `/collections/{handle}`, `/pages`, `/page/{handle}` are cached (5-min TTL, `SHOPIFY_CACHE_TTL` env override).
+  - Async-safe TTL cache with bucketed keys (products / collections / pages / metaobjects).
+  - New HMAC-verified webhook endpoints at `/api/webhooks/shopify/*`:
+    - `products-update`, `products-delete`, `collections-update`, `inventory-update`, `customers-update`, `customers-create`, `orders-create`, `pages-update`
+    - Diagnostics: `GET /_cache` (read-only snapshot), `POST /_cache/purge` (dev nuke)
+  - Signature: `X-Shopify-Hmac-Sha256`, verified via `hmac.compare_digest` against `SHOPIFY_WEBHOOK_SECRET`. Fail-closed if secret missing.
+  - Verified via testing agent: 23/23 backend tests pass, frontend product page renders without errors, cache hit reduces response 354ms → 94ms.
+- **Prompt 5 (Customer System)** — Shopify Customer Authentication (login / register / recover / update / me / logout) proxied via `/api/shopify/customers/*`. All customers created via the site appear directly in the Shopify admin.
 
 ### Jun 2026 — Iteration 19: Shopify Headless UI prep (Menu / Product / Treat / Cart redesign)
 
