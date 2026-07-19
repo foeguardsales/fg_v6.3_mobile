@@ -1615,10 +1615,13 @@ h2, h3, h4 {
   margin-bottom: 32px;
 }
 .box-size-selector-bare {
-  margin: 0 0 18px;
-  padding: 0;
+  margin: 20px 0 18px;
+  padding: 0 20px;
   background: transparent;
   border: none;
+}
+@media (min-width: 900px) {
+  .box-size-selector-bare { padding: 0 32px; }
 }
 
 .box-size-selector-inline h3 {
@@ -1643,7 +1646,8 @@ h2, h3, h4 {
   position: relative;
   width: 100%;
   min-width: 0;
-  padding: 18px 6px 14px;
+  min-height: 58px;
+  padding: 20px 6px 16px;
   border: 1.5px solid #E8DDD0;
   border-radius: 12px;
   background: #F5F3EF;
@@ -5730,7 +5734,7 @@ h2, h3, h4 {
   }
   .menu-collection-hero { margin: 0 0 6px; }
   .menu-collection-hero-img { border-radius: 0; }
-  .selection-breadcrumb { padding: 8px 12px !important; margin-top: 0 !important; }
+  .selection-breadcrumb { padding: 3px 12px !important; margin-top: 0 !important; }
 }
 .menu-collection-hero-img {
   position: relative;
@@ -8160,3 +8164,107 @@ button, strong, b, .btn-primary, .btn-secondary {
   .about-hero { padding-top: 20px !important; padding-bottom: 32px !important; }
   .contact-page { padding-top: 20px !important; }
 }
+
+/* =====================================================================
+   PROMPT 5 — Account tabs (horizontal, never wrap, mobile scroll + fade)
+   ===================================================================== */
+.account-tabs-wrap {
+  position: relative;
+  margin: 4px 0 20px;
+}
+.account-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  border-bottom: 1px solid #E8E4DC;
+  padding: 0 0 0 0;
+}
+.account-tabs::-webkit-scrollbar { display: none; }
+.account-tab {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  background: transparent;
+  border: none;
+  padding: 10px 14px 12px;
+  font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #2C2C2C;
+  opacity: 0.65;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+.account-tab:hover { opacity: 0.9; }
+.account-tab.is-active {
+  opacity: 1;
+  border-bottom-color: #c8102e;
+  color: #c8102e;
+}
+/* Right-edge fade on mobile only, indicating more content off-screen */
+@media (max-width: 768px) {
+  .account-tabs-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 1px;
+    width: 32px;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(245,243,239,0), rgba(245,243,239,0.95));
+  }
+  .account-tab { padding: 10px 12px 12px; font-size: 13px; }
+}
+
+/* =====================================================================
+   PROMPT 5 — Menu multi-pet plain banner (no tabs, no imagery)
+   ===================================================================== */
+.menu-multi-plan-banner {
+  padding: 14px 20px;
+  background: #FDFBF7;
+  border: 1px solid #E8E4DC;
+  border-radius: 10px;
+  color: #2C2C2C;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 12px 20px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.menu-multi-plan-banner a {
+  color: #c8102e;
+  font-weight: 700;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+/* Highlighted-protein indicator on product cards when arriving from a plan */
+.product-card.is-recommended {
+  outline: 2px solid #c8102e;
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+.product-card.is-recommended::before {
+  content: 'Recommended';
+  position: absolute;
+  top: -10px;
+  left: 8px;
+  background: #c8102e;
+  color: #fff;
+  font-family: 'Barlow', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  z-index: 5;
+  text-transform: uppercase;
+}
+

@@ -101,6 +101,34 @@ export const BoxBuilder = () => {
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
   const [viewMode, setViewMode] = useState('food'); // 'food' | 'treats'
 
+  // Prompt 5: highlight recommended proteins for a specific dog (from a
+  // saved plan) OR show the multi-pet banner.  Both come from URL query.
+  const planIndex = searchParams.get('plan');   // '0', '1', ...
+  const multiFlag = searchParams.get('multi');  // '1'
+  const [recommendedProteins, setRecommendedProteins] = useState(null); // Set of protein_type strings
+  useEffect(() => {
+    if (planIndex === null) { setRecommendedProteins(null); return; }
+    let snap = null;
+    try {
+      snap = JSON.parse(
+        localStorage.getItem('foeguard_pet_profile') ||
+        sessionStorage.getItem('foeguard_pet_profile') ||
+        'null'
+      );
+    } catch (_) { snap = null; }
+    const idx = parseInt(planIndex, 10) || 0;
+    const dog = snap?.dogs?.[idx];
+    const top = dog?.recommendations?.top_proteins || [];
+    // Map algorithm protein names → product protein_type keys used on the menu.
+    const proteinMap = {
+      'Beef': 'beef', 'Chicken': 'chicken', 'Duck': 'duck',
+      'Wild-Caught Fish': 'fish', 'Goat': 'goat', 'Lamb': 'lamb',
+      'Rabbit': 'rabbit', 'Turkey': 'turkey',
+    };
+    const set = new Set(top.map(t => proteinMap[t.protein]).filter(Boolean));
+    setRecommendedProteins(set.size ? set : null);
+  }, [planIndex]);
+
   // Mini top-sheet (legacy, no longer used)
   const [topSheetOpen, setTopSheetOpen] = useState(false);
   const [topSheetSeen, setTopSheetSeen] = useState(false);
@@ -524,6 +552,18 @@ export const BoxBuilder = () => {
       )}
 
       <div className="box-builder box-builder--narrow">
+        {/* Prompt 5 — multi-pet, blank menu + single message. */}
+        {multiFlag === '1' && (
+          <div className="menu-multi-plan-banner" data-testid="menu-multi-plan-banner">
+            <span>View your plans in your profile to load recommendations.</span>
+            <a
+              href="/account"
+              data-testid="menu-multi-plan-link"
+              onClick={(e) => { e.preventDefault(); navigate('/account'); }}
+            >Go to profile →</a>
+          </div>
+        )}
+
         {/* Funnel overlay: full-screen choice picker hovering above the menu */}
         <MenuFunnel
           open={funnelOpen}
@@ -670,6 +710,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
+                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
                       />
                     ))}
                   </div>
@@ -703,6 +744,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
+                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
                       />
                     ))}
                   </div>
@@ -748,6 +790,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
+                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
                       />
                     ))}
                   </div>
@@ -781,6 +824,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
+                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
                       />
                     ))}
                   </div>
@@ -927,7 +971,7 @@ export const BoxBuilder = () => {
 };
 
 // Product Card Component
-const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType, onOpenProduct }) => {
+const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType, onOpenProduct, isRecommended = false }) => {
   const basePrice = getBasePrice(product);
   const discountedPrice = getDiscountedPrice(basePrice);
   const hasDiscount = discountedPrice < basePrice - 0.001;
@@ -1003,8 +1047,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
   return (
     <div 
-      className={`product-card-row ${(!hasVariants && isSelected) ? 'is-selected' : ''}`}
+      className={`product-card product-card-row ${(!hasVariants && isSelected) ? 'is-selected' : ''} ${isRecommended ? 'is-recommended' : ''}`}
       data-testid={`product-${product.product_id}`}
+      data-recommended={isRecommended ? 'true' : 'false'}
+      style={isRecommended ? { position: 'relative' } : undefined}
       onClick={goToProduct}
       role="button"
       tabIndex={0}

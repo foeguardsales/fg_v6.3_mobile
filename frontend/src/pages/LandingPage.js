@@ -97,15 +97,18 @@ const ModernNavbar = () => {
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const { cartItems, setIsCartOpen } = useCart();
 
-  // Signed-in state — read from localStorage token.  Refreshes whenever the
-  // quiz-completion / login / logout flows dispatch the custom event.
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  // Signed-in state — read from localStorage token (matches existing
+  // authService).  Polls every 800ms + listens to storage/custom events so
+  // the quiz auto-registration flow reflects instantly without a reload.
+  const [isSignedIn, setIsSignedIn] = useState(!!localStorage.getItem('token'));
   useEffect(() => {
-    const refresh = () => setIsSignedIn(!!localStorage.getItem('foeguard_token'));
+    const refresh = () => setIsSignedIn(!!localStorage.getItem('token'));
     refresh();
+    const id = setInterval(refresh, 800);
     window.addEventListener('foeguard:auth-changed', refresh);
     window.addEventListener('storage', refresh);
     return () => {
+      clearInterval(id);
       window.removeEventListener('foeguard:auth-changed', refresh);
       window.removeEventListener('storage', refresh);
     };

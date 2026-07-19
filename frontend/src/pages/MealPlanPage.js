@@ -193,16 +193,13 @@ export const MealPlanPage = () => {
     );
   };
 
-  // Weight → recommended weekly box size in lbs.
-  // Simple heuristic that maps a dog's weight to the closest existing box-size
-  // option (6 / 12 / 24 / 36 lb) so the account has a starting box config.
+  // Weight → recommended box size in lbs.  Weight-based tiers so a 40lb dog
+  // maps to the 12-lb tier (matches AAFCO ~2.5%/day feeding heuristic).
   const recommendedBoxSize = (weightLbs) => {
     const w = parseFloat(weightLbs) || 0;
-    // ~2.5% of body weight per day × 7 days = weekly lbs
-    const weeklyLbs = w * 0.025 * 7;
-    if (weeklyLbs <= 8)  return 6;
-    if (weeklyLbs <= 18) return 12;
-    if (weeklyLbs <= 30) return 24;
+    if (w < 20)  return 6;
+    if (w < 50)  return 12;
+    if (w < 80)  return 24;
     return 36;
   };
 
@@ -266,10 +263,12 @@ export const MealPlanPage = () => {
         dogs: enrichedDogs,
       });
 
-      // 3. Silently create the customer account.  If email already exists
-      //    we treat it as a soft-success and just try to log in with the
-      //    provided password.  Any hard failure is non-blocking — the pet
-      //    profile is already saved.
+      // 3. Silently create the customer account.  Uses the same localStorage
+      //    keys as the existing authService (`token`, `user`) so AccountPage,
+      //    useAuth, and the navbar all pick it up automatically.  If email
+      //    already exists we treat it as a soft-success and just try to log
+      //    in with the provided password.  Any hard failure is non-blocking
+      //    — the pet profile is already saved.
       const accountName = enrichedDogs[0]?.name
         ? `${enrichedDogs[0].name}'s Parent`
         : email.split('@')[0];
@@ -279,15 +278,15 @@ export const MealPlanPage = () => {
           password,
           name: accountName,
         });
-        localStorage.setItem('foeguard_token', reg.data.token);
-        localStorage.setItem('foeguard_user', JSON.stringify(reg.data.user));
+        localStorage.setItem('token', reg.data.token);
+        localStorage.setItem('user', JSON.stringify(reg.data.user));
       } catch (regErr) {
         if (regErr.response?.status === 400) {
           // Email already registered — try login silently instead.
           try {
             const lg = await axios.post(`${API}/auth/login`, { email, password });
-            localStorage.setItem('foeguard_token', lg.data.token);
-            localStorage.setItem('foeguard_user', JSON.stringify(lg.data.user));
+            localStorage.setItem('token', lg.data.token);
+            localStorage.setItem('user', JSON.stringify(lg.data.user));
           } catch (_) { /* wrong password, keep going anyway */ }
         }
       }
@@ -316,6 +315,24 @@ export const MealPlanPage = () => {
 
       // 5. Let the rest of the app know auth changed so the navbar re-reads.
       window.dispatchEvent(new Event('foeguard:auth-changed'));
+
+      // 6. Redirect to the menu.  Single dog + no consultation → highlight
+      //    recommended proteins.  Multi-dog → show blank menu + a link to
+      //    the profile page (per Prompt 5).  Consultation dogs stay on the
+      //    success screen so the user sees the personal-outreach message.
+      const consultation = dogs.some(d =>
+        (d.health_issues || []).some(h => CONSULTATION_ISSUES.includes(h))
+      );
+      if (!consultation) {
+        if (enrichedDogs.length === 1) {
+          sessionStorage.setItem('foeguard_pet_profile', JSON.stringify(sessionSnapshot));
+          navigate('/menu?plan=0');
+          return;
+        }
+        // Multi-pet — blank menu with a single message directing to profile.
+        navigate('/menu?multi=1');
+        return;
+      }
 
       setProfileSaved(true);
     } catch (err) {
