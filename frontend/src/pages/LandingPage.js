@@ -97,6 +97,20 @@ const ModernNavbar = () => {
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const { cartItems, setIsCartOpen } = useCart();
 
+  // Signed-in state — read from localStorage token.  Refreshes whenever the
+  // quiz-completion / login / logout flows dispatch the custom event.
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  useEffect(() => {
+    const refresh = () => setIsSignedIn(!!localStorage.getItem('foeguard_token'));
+    refresh();
+    window.addEventListener('foeguard:auth-changed', refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      window.removeEventListener('foeguard:auth-changed', refresh);
+      window.removeEventListener('storage', refresh);
+    };
+  }, []);
+
   // Reflect FoeGuard menu cart counts (BoxBuilder uses sessionStorage)
   const [menuCount, setMenuCount] = useState(0);
   useEffect(() => {
@@ -236,16 +250,34 @@ const ModernNavbar = () => {
           <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <button
               onClick={() => navigate('/account')}
-              aria-label="Account"
+              aria-label={isSignedIn ? 'Account (signed in)' : 'Account'}
               data-testid="nav-account"
+              data-signed-in={isSignedIn ? 'true' : 'false'}
               style={{
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                padding: '8px'
+                padding: '8px',
+                position: 'relative'
               }}
             >
               <User size={22} color={COLORS.cream} />
+              {isSignedIn && (
+                <span
+                  data-testid="nav-account-signedin-dot"
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    top: '6px',
+                    right: '6px',
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: '#4ADE80',
+                    boxShadow: '0 0 0 2px ' + COLORS.red
+                  }}
+                />
+              )}
             </button>
             <button
               onClick={() => {

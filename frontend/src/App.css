@@ -5730,7 +5730,7 @@ h2, h3, h4 {
   }
   .menu-collection-hero { margin: 0 0 6px; }
   .menu-collection-hero-img { border-radius: 0; }
-  .selection-breadcrumb { padding: 1px 12px !important; margin-top: -12px; }
+  .selection-breadcrumb { padding: 8px 12px !important; margin-top: 0 !important; }
 }
 .menu-collection-hero-img {
   position: relative;

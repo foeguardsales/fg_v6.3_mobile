@@ -102,6 +102,7 @@ export const MealPlanPage = () => {
   const [postalCode, setPostalCode] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const [profileSaved, setProfileSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -192,28 +193,130 @@ export const MealPlanPage = () => {
     );
   };
 
-  // Save profile
+  // Weight → recommended weekly box size in lbs.
+  // Simple heuristic that maps a dog's weight to the closest existing box-size
+  // option (6 / 12 / 24 / 36 lb) so the account has a starting box config.
+  const recommendedBoxSize = (weightLbs) => {
+    const w = parseFloat(weightLbs) || 0;
+    // ~2.5% of body weight per day × 7 days = weekly lbs
+    const weeklyLbs = w * 0.025 * 7;
+    if (weeklyLbs <= 8)  return 6;
+    if (weeklyLbs <= 18) return 12;
+    if (weeklyLbs <= 30) return 24;
+    return 36;
+  };
+
+  // Save profile — silently registers an account + persists the pet profile
+  // with quiz results, recommended proteins, and box-size parameters.  No
+  // popup, no redirect; the existing success screen renders and the navbar
+  // reads the token to reflect signed-in state.
   const saveProfile = async () => {
     if (!email) {
       setError('Email is required');
       return;
     }
-    
+    if (!password || password.length < 6) {
+      setError('Please choose a password (min. 6 characters).');
+      return;
+    }
+
     setSaving(true);
     setError('');
-    
+
     try {
-      const response = await axios.post(`${API}/profiles`, {
+      // 1. Enrich each dog with recommendations + box-size params.
+      const { getRecommendationsForDog: getRec } = await import('../services/mealPlanRecommendation');
+      const enrichedDogs = dogs.map(dog => {
+        const cleaned = {
+          ...dog,
+          name: capitalizeName(dog.name),
+          weight_lbs: parseFloat(dog.weight_lbs) || 0,
+        };
+        let recommendations = null;
+        try {
+          const rec = getRec(cleaned, 3);
+          recommendations = {
+            profile: rec.profile,
+            top_proteins: rec.top.map(r => ({ protein: r.protein, score: r.score })),
+            all_proteins: rec.all.map(r => ({ protein: r.protein, score: r.score })),
+          };
+        } catch (e) { /* keep null on failure — non-blocking */ }
+
+        const boxParams = {
+          weekly_lbs_estimate: Math.round(cleaned.weight_lbs * 0.025 * 7 * 10) / 10,
+          recommended_box_size: recommendedBoxSize(cleaned.weight_lbs),
+          discount_tier: recommendedBoxSize(cleaned.weight_lbs) >= 36 ? 15
+                       : recommendedBoxSize(cleaned.weight_lbs) >= 24 ? 10
+                       : recommendedBoxSize(cleaned.weight_lbs) >= 12 ? 5 : 0,
+        };
+
+        return {
+          ...cleaned,
+          pet_profile_name: `${cleaned.name} Meal Plan Recommendations`,
+          recommendations,
+          box_parameters: boxParams,
+        };
+      });
+
+      // 2. Persist the pet profile (existing endpoint accepts arbitrary dog fields).
+      await axios.post(`${API}/profiles`, {
         email,
         phone,
         postal_code: postalCode,
-        dogs: dogs.map(dog => ({
-          ...dog,
-          name: capitalizeName(dog.name),
-          weight_lbs: parseFloat(dog.weight_lbs) || 0
-        }))
+        dogs: enrichedDogs,
       });
-      
+
+      // 3. Silently create the customer account.  If email already exists
+      //    we treat it as a soft-success and just try to log in with the
+      //    provided password.  Any hard failure is non-blocking — the pet
+      //    profile is already saved.
+      const accountName = enrichedDogs[0]?.name
+        ? `${enrichedDogs[0].name}'s Parent`
+        : email.split('@')[0];
+      try {
+        const reg = await axios.post(`${API}/auth/register`, {
+          email,
+          password,
+          name: accountName,
+        });
+        localStorage.setItem('foeguard_token', reg.data.token);
+        localStorage.setItem('foeguard_user', JSON.stringify(reg.data.user));
+      } catch (regErr) {
+        if (regErr.response?.status === 400) {
+          // Email already registered — try login silently instead.
+          try {
+            const lg = await axios.post(`${API}/auth/login`, { email, password });
+            localStorage.setItem('foeguard_token', lg.data.token);
+            localStorage.setItem('foeguard_user', JSON.stringify(lg.data.user));
+          } catch (_) { /* wrong password, keep going anyway */ }
+        }
+      }
+
+      // 4. Save the persistent pet profile snapshot to the browser session so
+      //    downstream pages (BoxBuilder, account page) can pre-fill without a
+      //    round-trip.  Keyed by dog for multi-dog households.
+      const sessionSnapshot = {
+        email,
+        saved_at: new Date().toISOString(),
+        dogs: enrichedDogs.map(d => ({
+          name: d.name,
+          pet_profile_name: d.pet_profile_name,
+          quiz_results: {
+            gender: d.gender, is_neutered: d.is_neutered, breed: d.breed,
+            birthday: d.birthday, body_condition: d.body_condition,
+            weight_lbs: d.weight_lbs, lifestyle: d.lifestyle,
+            health_issues: d.health_issues,
+          },
+          recommendations: d.recommendations,
+          box_parameters: d.box_parameters,
+        })),
+      };
+      localStorage.setItem('foeguard_pet_profile', JSON.stringify(sessionSnapshot));
+      sessionStorage.setItem('foeguard_pet_profile', JSON.stringify(sessionSnapshot));
+
+      // 5. Let the rest of the app know auth changed so the navbar re-reads.
+      window.dispatchEvent(new Event('foeguard:auth-changed'));
+
       setProfileSaved(true);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to save profile. Please try again.');
@@ -946,6 +1049,32 @@ export const MealPlanPage = () => {
 
             <div style={{ marginBottom: '24px' }}>
               <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
+                Password *
+              </label>
+              <input
+                type="password"
+                data-testid="meal-plan-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="At least 6 characters"
+                autoComplete="new-password"
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  borderRadius: '8px',
+                  border: '1px solid #D8CFB8',
+                  fontSize: '16px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+              />
+              <p style={{ fontSize: '12px', color: '#2C2C2C', opacity: 0.65, marginTop: '6px' }}>
+                We&apos;ll create your account automatically so you can revisit your meal plan anytime.
+              </p>
+            </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
                 Phone Number (Optional)
               </label>
               <input
@@ -980,17 +1109,18 @@ export const MealPlanPage = () => {
 
             <button
               onClick={saveProfile}
-              disabled={saving || !email}
+              disabled={saving || !email || !password}
+              data-testid="meal-plan-save"
               style={{
                 width: '100%',
                 padding: '16px 24px',
-                background: email ? '#c8102e' : '#CCC',
+                background: (email && password) ? '#c8102e' : '#CCC',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',
                 fontSize: '16px',
                 fontWeight: '600',
-                cursor: email ? 'pointer' : 'not-allowed'
+                cursor: (email && password) ? 'pointer' : 'not-allowed'
               }}
             >
               {saving ? 'Saving...' : 'Save Profile'}

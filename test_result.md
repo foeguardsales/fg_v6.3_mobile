@@ -4578,17 +4578,315 @@ agent_communication:
 
 
 user_problem_statement: |
-  FoeGuard site — verify (A) mobile breadcrumb padding cascade fix, and (B) new "with variants / without variants" menu-card interaction rules.
-  
-  Preview URL: https://shopify-stub-service.preview.emergentagent.com
-  
-  Viewports: mobile 390×844 for all tests unless stated. Desktop 1440×900 only for a quick regression on test C.
-  
-  CONTEXT:
-  - On /menu the site first shows a "How would you like to order?" funnel overlay. Dismiss by clicking the funnel-shop-raw card (data-testid="funnel-shop-raw"). You should now see the SelectionBreadcrumb ("SELECTION: Raw Food Menu Edit") and below it the hero image with category tabs and the list of product cards.
-  - Every product currently seeded in the DB is considered to have variants (foods show a Packaging picker on the detail page). No products are flagged `no_variants: true` in seed data yet, so all menu cards must follow the "with variants" rule.
+  Verify TWO bug fixes + one new feature on the FoeGuard site. Base URL is REACT_APP_BACKEND_URL from /app/frontend/.env.
+
+  =====================================================================
+  BUG FIX A — Box-size buttons on /menu must be the LARGE original design
+  =====================================================================
+  Steps:
+  1. Navigate to /menu. If a menu-funnel overlay appears, dismiss it by
+     clicking "Build a Meal Plan" or the X.
+  2. Make sure the "Raw Dog Food" tab is active in the category tabs.
+  3. Find the box-size selector `[data-testid="box-size-pills"]`. It renders
+     4 buttons with data-testids box-size-pill-6/12/24/36.
+  4. Each button MUST use the ORIGINAL large tab design, i.e.:
+     - Button has class name containing "box-size-tab".
+     - Button computed height >= 55px on mobile (was ~30px before this fix).
+     - Button padding-top >= 16px.
+     - Contains `.box-size-label` span with big text (>=17px font-size).
+     - 12/24/36 lb buttons contain `.box-discount-badge` span with texts
+       "5% OFF", "10% OFF", "15% OFF" respectively; the 6 lb button MUST NOT
+       contain any `.box-discount-badge`.
+  5. Click box-size-pill-24 → it should get the class "active" (className
+     includes "active"), background should turn red-ish (barn-red /
+     #c8102e). Then click box-size-pill-12 → 12 becomes active, 24 becomes
+     inactive.
+  6. Test at BOTH viewport sizes: 390×844 (mobile) AND 1440×900 (desktop).
+     Report measured button heights + label font sizes at each viewport.
+  7. Screenshot the row on both viewports.
+
+  =====================================================================
+  BUG FIX B — Selection breadcrumb is fully visible on ALL mobile viewports
+  =====================================================================
+  Test on THREE mobile viewports: 320×568, 375×667, 390×844.
+  For EACH viewport:
+  1. Navigate to /menu. Dismiss the funnel overlay if it appears.
+  2. Locate `.selection-breadcrumb` and its inner spans.
+  3. Assertions:
+     - The breadcrumb container's `getBoundingClientRect().top` MUST be >=
+       the navbar's `getBoundingClientRect().bottom` MINUS 1px (allow 1px
+       for anti-alias). i.e. the breadcrumb sits BELOW the navbar bottom
+       edge — no overlap.
+     - `.selection-breadcrumb-prefix` computed font-size === 11px.
+     - `.selection-breadcrumb-title` computed font-size === 11px.
+     - `.selection-breadcrumb-edit` computed font-size === 11px.
+     - The prefix span's top MUST be >= breadcrumb top (text not clipped).
+  4. Screenshot the top ~200px of the page for each viewport.
+
+  If any breadcrumb overlaps the navbar or clips at the top on any of the
+  three mobile widths, this is a FAIL. Report the exact overlap/clip amount.
+
+  =====================================================================
+  NEW FEATURE — Auto account creation during MealPlan quiz
+  =====================================================================
+  Cleanup first: In the browser, execute `localStorage.clear(); sessionStorage.clear();`
+  so we start signed-out.
+
+  Navigate to /meal-plan (viewport 390×844 is fine). Complete the 8-step
+  quiz with these values (use a UNIQUE email each test run):
+
+  STEP 1  — dog name "Zeus", Continue.
+  STEP 2  — postal code "M5A 1A1", Continue.
+  STEP 3  — Male + Neutered "Yes", Continue.
+  STEP 4  — breed "Labrador Retriever", birthday "2020-01-01", Continue.
+  STEP 5  — body condition "Fit", Continue.
+  STEP 6  — weight 40 lbs, lifestyle "Active", Continue.
+  STEP 7  — health issues: "Itchy Skin" and "Dry Coat" (both scored, no
+             consultation), Continue.
+  STEP 8  — email  = `zeus.<timestamp>@example.com` where <timestamp> is
+             `Date.now()` so it's unique;
+             password = "pass1234" (data-testid="meal-plan-password");
+             phone left empty;
+             click the "Save Profile" button (data-testid="meal-plan-save").
+
+  Wait up to 5s for the success screen (data-testid="meal-plan-recommendations"
+  appears when a non-consultation profile is saved).
+
+  VERIFY the following:
+  1. Success screen shows exactly the SAME UI as before — no new popup, no
+     confirmation modal, no redirect.  Recommendations block still renders
+     with 3 protein cards.
+  2. `localStorage.getItem('foeguard_token')` is a non-empty JWT string
+     (starts with "eyJ").
+  3. `localStorage.getItem('foeguard_user')` parses to an object with
+     `email` and `name` fields.  Name should equal "Zeus's Parent".
+  4. `localStorage.getItem('foeguard_pet_profile')` parses to an object
+     containing a `dogs` array of length 1 whose first dog has:
+       - name "Zeus"
+       - pet_profile_name "Zeus Meal Plan Recommendations"
+       - quiz_results object with body_condition "fit", lifestyle "active",
+         weight_lbs 40 and health_issues containing "itchy_skin" + "dry_coat"
+       - recommendations.top_proteins is an array of length 3 whose FIRST
+         entry has protein === "Wild-Caught Fish"
+       - box_parameters.recommended_box_size is 12 (weight 40 → ~7 lbs/week
+         falls in the 12-lb tier)
+       - box_parameters.discount_tier is 5
+  5. The navbar profile icon reflects signed-in state:
+       - `document.querySelector('[data-testid="nav-account"]')` has
+         attribute `data-signed-in="true"`.
+       - `document.querySelector('[data-testid="nav-account-signedin-dot"]')`
+         exists (green dot).
+  6. Verify persistence: navigate to `/` (home).  The green dot should
+     STILL be visible on the nav-account button (localStorage token
+     persists).
+
+  Regression check: reload /meal-plan.  You should still see step 1 (the
+  quiz form) — completing the quiz DOES NOT auto-navigate away, and the
+  signed-in state does not break the quiz page.
+
+  =====================================================================
+  REPORT FORMAT
+  =====================================================================
+  For each of BUG FIX A, BUG FIX B, and NEW FEATURE, report PASS/FAIL with
+  the specific measured values and screenshots. If BUG FIX A or B fail
+  that's the user-reported issue — screenshot and report immediately.
 
 frontend:
+  - task: "BUG FIX A — Box-size buttons on /menu must be LARGE original design"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/pages/BoxBuilder.js (BoxSizePills component), /app/frontend/src/App.css (.box-size-tab)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: |
+            ❌ CRITICAL FAILURE - Mobile button height is 52.69px (FAILS >= 55px requirement)
+            
+            **Test Environment:**
+            - Mobile viewport: 390×844
+            - Desktop viewport: 1440×900
+            - URL: https://shopify-stub-service.preview.emergentagent.com/menu
+            
+            **MOBILE (390×844) RESULTS:**
+            All 4 buttons (6/12/24/36 lb) have:
+            - ✓ Class contains "box-size-tab"
+            - ❌ Height: 52.69px (FAILS - expected >= 55px)
+            - ✓ Padding-top: 18px (PASSES - >= 16px)
+            - ✓ Label font-size: 17px (PASSES - >= 17px)
+            - ✓ Badge requirements: PASS
+              • 6 lb button: NO badge (correct)
+              • 12 lb button: "5% OFF" badge (correct)
+              • 24 lb button: "10% OFF" badge (correct)
+              • 36 lb button: "15% OFF" badge (correct)
+            - ✓ Click functionality: PASS
+              • Clicking 24 lb adds "active" class
+              • Background turns rgb(200, 16, 46) - correct red
+              • Clicking 12 lb makes 12 active, 24 inactive
+            
+            **DESKTOP (1440×900) RESULTS:**
+            All 4 buttons have:
+            - ✓ Height: 64.19px (PASSES - >= 55px)
+            - ✓ Padding-top: 22px (PASSES - >= 16px)
+            - ✓ Label font-size: 22px (PASSES - >= 17px)
+            
+            **ROOT CAUSE:**
+            The mobile button height is 2.31px SHORT of the 55px requirement. All other
+            requirements pass perfectly. This is likely a CSS issue where the mobile
+            button needs slightly more padding or min-height to reach 55px.
+            
+            **SCREENSHOTS:**
+            - bugfix_a_mobile_box_size_buttons.png
+            - bugfix_a_desktop_box_size_buttons.png
+            
+            **VERDICT:**
+            ❌ FAIL - Mobile button height requirement not met (52.69px < 55px)
+
+  - task: "BUG FIX B — Selection breadcrumb fully visible on ALL mobile viewports"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css (.selection-breadcrumb)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ VERIFIED - Selection breadcrumb is fully visible on ALL THREE mobile viewports
+            
+            **Test Environment:**
+            - Tested on THREE mobile viewports: 320×568, 375×667, 390×844
+            - URL: https://shopify-stub-service.preview.emergentagent.com/menu
+            
+            **320×568 RESULTS: ✅ PASS**
+            - Position check: ✓ (gap: 8px between navbar bottom and breadcrumb top)
+            - Font sizes: ✓ (prefix: 11px, title: 11px, edit: 11px)
+            - Clipping check: ✓ (prefix text NOT clipped)
+            
+            **375×667 RESULTS: ✅ PASS**
+            - Position check: ✓ (gap: 8px between navbar bottom and breadcrumb top)
+            - Font sizes: ✓ (prefix: 11px, title: 11px, edit: 11px)
+            - Clipping check: ✓ (prefix text NOT clipped)
+            
+            **390×844 RESULTS: ✅ PASS**
+            - Position check: ✓ (gap: 8px between navbar bottom and breadcrumb top)
+            - Font sizes: ✓ (prefix: 11px, title: 11px, edit: 11px)
+            - Clipping check: ✓ (prefix text NOT clipped)
+            
+            **DETAILED MEASUREMENTS:**
+            All three viewports show consistent results:
+            - Navbar bottom: 100px
+            - Breadcrumb top: 108px
+            - Gap: 8px (well above the -1px minimum requirement)
+            - Prefix span top: 117px (9px below breadcrumb top - no clipping)
+            
+            **SCREENSHOTS:**
+            - bugfix_b_320x568_breadcrumb.png
+            - bugfix_b_375x667_breadcrumb.png
+            - bugfix_b_390x844_breadcrumb.png
+            
+            **VERDICT:**
+            ✅ PASS - All requirements met on all three mobile viewports
+
+  - task: "NEW FEATURE — Auto account creation during MealPlan quiz"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/pages/MealPlanPage.js (saveProfile function), /app/frontend/src/components/Layout.js (Navbar)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: |
+            ❌ PARTIAL FAILURE - Auto account creation works BUT navbar does NOT reflect signed-in state
+            
+            **Test Environment:**
+            - Mobile viewport: 390×844
+            - URL: https://shopify-stub-service.preview.emergentagent.com/meal-plan
+            - Test email: zeus.1784440031865@example.com
+            - Test password: pass1234
+            
+            **QUIZ COMPLETION: ✅ SUCCESS**
+            All 8 steps completed successfully:
+            - Step 1: Dog name "Zeus" ✓
+            - Step 2: Postal code "M5A 1A1" ✓
+            - Step 3: Male + Neutered Yes ✓
+            - Step 4: Breed "Labrador Retriever", Birthday "2020-01-01" ✓
+            - Step 5: Body condition "Fit" ✓
+            - Step 6: Weight 40 lbs, Lifestyle "Active" ✓
+            - Step 7: Health issues "Itchy Skin" + "Dry Coat" ✓
+            - Step 8: Email + Password entered, Save Profile clicked ✓
+            
+            **VERIFY 1 — Success screen UI: ✅ PASS**
+            - data-testid="meal-plan-recommendations" found ✓
+            - Exactly 3 protein cards rendered ✓
+            - No new popup, no confirmation modal, no redirect ✓
+            - Same UI as before ✓
+            
+            **VERIFY 2 — localStorage.foeguard_token: ✅ PASS**
+            - Token exists and is JWT (starts with "eyJ") ✓
+            - Token preview: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkI...
+            
+            **VERIFY 3 — localStorage.foeguard_user: ✅ PASS**
+            - User object found and parsed ✓
+            - Email: zeus.1784440031865@example.com ✓
+            - Name: "Zeus's Parent" ✓ (matches expected)
+            
+            **VERIFY 4 — localStorage.foeguard_pet_profile: ⚠ MOSTLY PASS**
+            - Dogs array length: 1 ✓
+            - Dog name: "Zeus" ✓
+            - pet_profile_name: "Zeus Meal Plan Recommendations" ✓
+            - quiz_results.body_condition: "fit" ✓
+            - quiz_results.lifestyle: "active" ✓
+            - quiz_results.weight_lbs: 40 ✓
+            - quiz_results.health_issues: ["itchy_skin", "dry_coat"] ✓
+            - recommendations.top_proteins length: 3 ✓
+            - recommendations.top_proteins[0].protein: "Wild-Caught Fish" ✓
+            - ❌ box_parameters.recommended_box_size: 6 (expected 12)
+            - ❌ box_parameters.discount_tier: 0 (expected 5)
+            
+            **VERIFY 5 — Navbar signed-in state: ❌ FAIL**
+            - nav-account data-signed-in attribute: "false" (expected "true") ❌
+            - Green dot (nav-account-signedin-dot): NOT FOUND ❌
+            
+            **VERIFY 6 — Persistence check: ❌ FAIL**
+            - Navigated to home page (/) ✓
+            - nav-account data-signed-in on home: "false" (expected "true") ❌
+            - Green dot NOT VISIBLE on home page ❌
+            
+            **REGRESSION CHECK — Quiz form still renders: ✅ PASS**
+            - Reloaded /meal-plan ✓
+            - Step 1 heading "How many dogs do you have?" found ✓
+            - Dog name input field visible ✓
+            - Quiz form still renders correctly ✓
+            
+            **ROOT CAUSES IDENTIFIED:**
+            
+            1. **Box size calculation issue (MINOR):**
+               - 40 lbs * 0.025 * 7 = 7 lbs/week should map to 12lb tier
+               - Currently mapping to 6lb tier (incorrect)
+               - This is a calculation bug in recommendedBoxSize() function
+            
+            2. **Navbar NOT reflecting signed-in state (CRITICAL):**
+               - localStorage has valid JWT token ✓
+               - localStorage has user object ✓
+               - BUT navbar data-signed-in="false" ❌
+               - Green dot NOT rendering ❌
+               - Likely issue: Navbar component not listening to 'foeguard:auth-changed' event
+                 OR not reading localStorage on mount
+            
+            **SCREENSHOTS:**
+            - new_feature_final_state.png (shows quiz form after reload)
+            
+            **VERDICT:**
+            ❌ PARTIAL FAILURE - Account creation works, localStorage populated correctly,
+            but navbar does NOT reflect signed-in state. This is a CRITICAL UX issue as
+            users won't know they're signed in.
+
   - task: "TEST A — Mobile SelectionBreadcrumb padding cascade fix (390×844)"
     implemented: true
     working: true
@@ -4764,11 +5062,13 @@ frontend:
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 12
+  test_sequence: 13
   run_ui: true
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "BUG FIX A — Box-size buttons on /menu must be LARGE original design"
+    - "NEW FEATURE — Auto account creation during MealPlan quiz"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -4776,72 +5076,122 @@ test_plan:
 agent_communication:
     - agent: "testing"
       message: |
-        ✅ FOEGUARD MENU CARD INTERACTION TESTING COMPLETED - ALL 4 TESTS PASSED (100% SUCCESS)
+        ❌ TWO BUG FIXES + ONE NEW FEATURE TESTING COMPLETED - 1 PASS, 2 FAILURES
         
         **Test Environment:**
-        - Mobile viewport: 390 × 844 (primary)
-        - Desktop viewport: 1440 × 900 (regression check only)
-        - URL: https://shopify-stub-service.preview.emergentagent.com/menu
+        - Base URL: https://shopify-stub-service.preview.emergentagent.com
+        - Viewports tested: 320×568, 375×667, 390×844 (mobile), 1440×900 (desktop)
         
-        **TEST RESULTS SUMMARY:**
+        ═══════════════════════════════════════════════════════════════════════════
+        SUMMARY
+        ═══════════════════════════════════════════════════════════════════════════
         
-        ✅ TEST A — Mobile SelectionBreadcrumb padding cascade fix: PASSED
-        - paddingTop: 3px (expected 3px) ✓
-        - paddingBottom: 3px (expected 3px) ✓
-        - CSS fix at line 5704 with !important working correctly
+        ❌ BUG FIX A — Box-size buttons: FAIL
+           Mobile button height is 52.69px (FAILS >= 55px requirement by 2.31px)
+           All other requirements PASS (class name, padding, font-size, badges, click functionality)
         
-        ✅ TEST B — Menu food card "with variants" interaction rules: PASSED (9/9 steps)
-        - Step 2: Card shows ONLY '+' button, no qty stepper ✓
-        - Step 3: Product detail opens when '+' clicked ✓
-        - Step 4: Variant selection works (variant-1 becomes .is-selected) ✓
-        - Step 5: Quantity increase works (qty-display reads "6 lb") ✓
-        - Step 6: Sheet closes successfully ✓
-        - Step 7: Card STILL shows only '+' after return (no qty pill, no .is-selected, price shows "From") ✓
-        - Step 8: Reopen product page works ✓
-        - Step 9: PRELOAD works (variant and qty persisted) ✓
+        ✅ BUG FIX B — Selection breadcrumb: PASS
+           Fully visible on ALL THREE mobile viewports (320×568, 375×667, 390×844)
+           All font sizes correct (11px), no overlap with navbar, no clipping
         
-        ✅ TEST C — Menu treat card interaction rules: PASSED (4/4 steps)
-        - Step 1: Switch to Raw Dog Treats tab ✓
-        - Step 2: Treat card shows '+' button, no qty pill ✓
-        - Step 3: Treat page/sheet opens when '+' clicked ✓
-        - Step 4: Desktop regression check passed ✓
+        ❌ NEW FEATURE — Auto account creation: PARTIAL FAILURE
+           ✅ Account creation works (JWT token, user object, pet profile saved)
+           ✅ Success screen renders correctly with 3 protein recommendations
+           ✅ Quiz form still renders after sign-in (regression check passes)
+           ❌ CRITICAL: Navbar does NOT reflect signed-in state (no green dot)
+           ⚠ MINOR: Box size calculation incorrect (6 instead of 12 for 40lb dog)
         
-        ✅ TEST D — No console errors introduced: PASSED
-        - No error messages found on page ✓
-        - No JavaScript errors detected ✓
-        - All functionality working smoothly ✓
+        ═══════════════════════════════════════════════════════════════════════════
+        DETAILED FAILURES
+        ═══════════════════════════════════════════════════════════════════════════
         
-        **SCREENSHOTS CAPTURED:**
-        1. test_b_step2_menu_card.png — Mobile menu food card with '+' button (zoomed-in)
-        2. test_b_step7_menu_after_return.png — Mobile menu after coming back from product page (still showing '+' only)
-        3. test_c_treat_page.png — Treat detail sheet (Beef Flat Rib Bones)
+        **BUG FIX A FAILURE:**
         
-        **TECHNICAL VERIFICATION:**
+        The box-size buttons are ALMOST correct but fail the mobile height requirement:
         
-        The "with variants / without variants" menu-card interaction rules are correctly implemented:
+        Mobile (390×844):
+        - Height: 52.69px ❌ (expected >= 55px, SHORT by 2.31px)
+        - Padding-top: 18px ✓
+        - Label font-size: 17px ✓
+        - Class contains "box-size-tab": ✓
+        - Badge requirements: ✓ (6lb has no badge, 12/24/36 have correct badges)
+        - Click functionality: ✓ (active class toggles, background turns red)
         
-        1. **hasVariants logic** (BoxBuilder.js line 934):
-           ```javascript
-           const hasVariants = product.no_variants !== true;
-           ```
+        Desktop (1440×900):
+        - Height: 64.19px ✓ (PASSES >= 55px)
+        - All other requirements: ✓
         
-        2. **Card rendering logic** (BoxBuilder.js lines 1007-1049):
-           - When `hasVariants === true`: Card shows ONLY '+' button that opens product page
-           - When `hasVariants === false`: Card shows '+' or qty stepper based on selection
+        **Fix needed:** Increase mobile button height by ~3px to meet 55px minimum.
+        Likely CSS adjustment needed in .box-size-tab mobile styles.
         
-        3. **Current seed data**: All products have `no_variants !== true`, so all menu cards correctly show ONLY the '+' button
+        ---
         
-        4. **Breadcrumb padding fix** (App.css line 5704):
-           ```css
-           @media (max-width: 759px) {
-             .selection-breadcrumb { padding: 3px 12px !important; }
-           }
-           ```
-           Successfully overrides default 4px padding on mobile viewports.
+        **NEW FEATURE CRITICAL FAILURE:**
         
-        **OVERALL VERDICT:**
-        All 4 tests passed with 100% success rate. Both fixes are production-ready:
-        - (A) Mobile breadcrumb padding cascade fix is working correctly
-        - (B) New "with variants / without variants" menu-card interaction rules are working perfectly
+        Auto account creation is working correctly (JWT token saved, user object created,
+        pet profile persisted), BUT the navbar does NOT reflect the signed-in state:
         
-        No issues found. No action items for main agent.
+        What's working:
+        - ✓ localStorage.foeguard_token exists and is valid JWT
+        - ✓ localStorage.foeguard_user has email and name ("Zeus's Parent")
+        - ✓ localStorage.foeguard_pet_profile has correct quiz data
+        - ✓ Success screen shows 3 protein recommendations
+        - ✓ Quiz form still renders after sign-in
+        
+        What's NOT working:
+        - ❌ nav-account data-signed-in="false" (should be "true")
+        - ❌ Green dot (nav-account-signedin-dot) NOT rendering
+        - ❌ Signed-in state NOT visible on home page either
+        
+        **Root cause:** The Navbar component is NOT reading localStorage on mount OR
+        not listening to the 'foeguard:auth-changed' event that MealPlanPage dispatches
+        after account creation (line 318 in MealPlanPage.js).
+        
+        **Fix needed:** Update Navbar component to:
+        1. Read localStorage.foeguard_token on mount
+        2. Listen to 'foeguard:auth-changed' event and update state
+        3. Set data-signed-in="true" and render green dot when token exists
+        
+        **Minor issue:** Box size calculation maps 40lb dog to 6lb tier instead of 12lb
+        tier. The calculation (40 * 0.025 * 7 = 7 lbs/week) should map to 12lb tier,
+        not 6lb. This is in the recommendedBoxSize() function in MealPlanPage.js.
+        
+        ═══════════════════════════════════════════════════════════════════════════
+        ACTION ITEMS FOR MAIN AGENT
+        ═══════════════════════════════════════════════════════════════════════════
+        
+        **HIGH PRIORITY:**
+        
+        1. Fix BUG A mobile button height:
+           - Increase .box-size-tab height on mobile to >= 55px
+           - Current: 52.69px, Need: >= 55px (add ~3px)
+        
+        2. Fix NEW FEATURE navbar signed-in state (CRITICAL):
+           - Update Navbar component to read localStorage.foeguard_token on mount
+           - Ensure Navbar listens to 'foeguard:auth-changed' event
+           - Set data-signed-in="true" when token exists
+           - Render green dot when signed in
+        
+        **LOW PRIORITY:**
+        
+        3. Fix box size calculation in MealPlanPage.js:
+           - recommendedBoxSize() function should map 7 lbs/week to 12lb tier
+           - Currently mapping to 6lb tier
+        
+        ═══════════════════════════════════════════════════════════════════════════
+        SCREENSHOTS CAPTURED
+        ═══════════════════════════════════════════════════════════════════════════
+        
+        - bugfix_a_mobile_box_size_buttons.png (mobile 390×844)
+        - bugfix_a_desktop_box_size_buttons.png (desktop 1440×900)
+        - bugfix_b_320x568_breadcrumb.png (mobile 320×568)
+        - bugfix_b_375x667_breadcrumb.png (mobile 375×667)
+        - bugfix_b_390x844_breadcrumb.png (mobile 390×844)
+        - new_feature_final_state.png (quiz form after reload)
+        
+        ═══════════════════════════════════════════════════════════════════════════
+        
+        **DO NOT FIX:** BUG FIX B is working perfectly - no action needed.
+        
+        **PRIORITY:** Fix BUG A height issue and NEW FEATURE navbar state FIRST before
+        considering the box size calculation fix.

@@ -1239,27 +1239,29 @@ const BoxSizePills = ({ boxSize, onChange, rates = DOG_DISCOUNT_RATES }) => {
     { size: 36, label: '36 lb+' }
   ];
   return (
-    <div className="box-size-pills" data-testid="box-size-pills">
-      {options.map(opt => {
-        const rate = rates[opt.size] || 0;
-        const off  = Math.round(rate * 100);
-        const active = boxSize === opt.size;
-        return (
-          <button
-            key={opt.size}
-            type="button"
-            className={`box-size-pill ${active ? 'is-active' : ''}`}
-            onClick={() => onChange(opt.size)}
-            data-testid={`box-size-pill-${opt.size}`}
-            aria-pressed={active}
-          >
-            {off > 0 && (
-              <span className="box-size-pill-badge">{off}% OFF</span>
-            )}
-            <span className="box-size-pill-label">{opt.label}</span>
-          </button>
-        );
-      })}
+    <div className="box-size-selector-bare" data-testid="box-size-pills">
+      <div className="box-size-tabs">
+        {options.map(opt => {
+          const rate = rates[opt.size] || 0;
+          const off  = Math.round(rate * 100);
+          const active = boxSize === opt.size;
+          return (
+            <button
+              key={opt.size}
+              type="button"
+              className={`box-size-tab ${active ? 'active' : ''}`}
+              onClick={() => onChange(opt.size)}
+              data-testid={`box-size-pill-${opt.size}`}
+              aria-pressed={active}
+            >
+              {off > 0 && (
+                <span className="box-discount-badge">{off}% OFF</span>
+              )}
+              <span className="box-size-label">{opt.label}</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 };
