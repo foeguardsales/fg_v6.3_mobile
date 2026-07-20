@@ -5956,8 +5956,8 @@ h2, h3, h4 {
   position: fixed;
   left: 16px;
   right: 16px;
-  /* button height ≈ 56px (padding 16px+16px + 16px line-height). Sit exactly on its top. */
-  bottom: calc(56px + 18px + env(safe-area-inset-bottom));
+  /* button height ≈ 59px on mobile — align progress bar bottom to button top exactly. */
+  bottom: calc(59px + 18px + env(safe-area-inset-bottom));
   z-index: 998;                                /* same layer as .bb-floating-checkout */
   pointer-events: none;                        /* purely informational */
   display: flex;
