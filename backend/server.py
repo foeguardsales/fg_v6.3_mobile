@@ -997,6 +997,10 @@ api_router.include_router(seo_router)
 
 app.include_router(api_router)
 
+# Shopify headless integration (router already carries its own /api/shopify prefix)
+from shopify_service.router import router as shopify_router  # noqa: E402
+app.include_router(shopify_router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,

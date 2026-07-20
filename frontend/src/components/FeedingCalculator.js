@@ -270,7 +270,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
               padding: '14px',
               background: 'transparent',
               borderRadius: '8px',
-              border: '1px solid #3B2A1A'
+              border: '1px solid #2C2C2C'
             }}>
               <strong style={{ color: '#c8102e' }}>{pet.name}&apos;s Recommendation:</strong>
               <p style={{ margin: '6px 0 0 0', color: '#555' }}>
@@ -359,7 +359,7 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
               gap: '8px',
               padding: '14px 22px',
               background: 'transparent',
-              border: '1.5px solid #3B2A1A',
+              border: '1.5px solid #2C2C2C',
               borderRadius: '10px',
               color: '#666',
               fontSize: '15px',

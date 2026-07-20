@@ -1,28 +1,18 @@
-# FoeGuard – Test credentials
+# Test Credentials
 
-## Shopify test customer (Prompt 3 / 5 – customer auth)
-- Email: `tester+1783282038@foeguard.dev`
-- Password: `TestPass1234!`
-- Storefront customerAccessToken (may be expired; re-issue via `POST /api/shopify/customers/login`): `c8c9f18629101262051f2940c506a790`
+The MealPlan quiz auto-creates a customer account on Save Profile using
+whatever email + password the tester enters at step 8.  For testing use
+a UNIQUE timestamp-suffixed email each run, e.g.:
 
-## Shopify webhook secret (Prompt 4)
-- Env var: `SHOPIFY_WEBHOOK_SECRET`
-- Dev value (in /app/backend/.env): `foeguard_dev_webhook_shared_secret_change_me`
-- Signing algorithm: HMAC-SHA256 over the raw request body, then base64-encode.
-- Header expected: `X-Shopify-Hmac-Sha256`
+- Email:    `zeus.<timestamp>@example.com`  (e.g. zeus.1721000000@example.com)
+- Password: `pass1234`
+- Name:     auto-derived on the server as "&lt;First dog name&gt;'s Parent"
 
-### Example test — cache purge via signed webhook
-```bash
-SECRET="foeguard_dev_webhook_shared_secret_change_me"
-BODY='{"id":123,"handle":"chicken-neck-pet-treat"}'
-SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$SECRET" -binary | base64)
-curl -X POST "$BACKEND/api/webhooks/shopify/products-update" \
-  -H "Content-Type: application/json" \
-  -H "X-Shopify-Hmac-Sha256: $SIG" \
-  -H "X-Shopify-Topic: products/update" \
-  -d "$BODY"
-```
+localStorage keys after successful quiz:
+- `token`                 — JWT (matches existing authService)
+- `user`                  — { email, name, role }
+- `foeguard_pet_profile`  — { email, saved_at, dogs: [...] }
 
-## Cache introspection (read-only)
-- `GET  /api/webhooks/shopify/_cache` — returns hits/misses/bucket sizes
-- `POST /api/webhooks/shopify/_cache/purge` — nukes everything (dev only)
+For admin testing (not part of current scope):
+- Admin login route: /admin/login
+- No seed admin credentials have been set in this session.

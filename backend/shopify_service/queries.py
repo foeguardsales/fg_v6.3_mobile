@@ -1,137 +1,95 @@
-"""Shopify GraphQL query & mutation strings.
+"""Shared GraphQL fragments / queries.
 
-Grouped by domain. Fields chosen to keep responses small; extend as the
-frontend needs more data. Some fields (e.g. ``totalInventory``,
-``quantityAvailable``) require extra Storefront scopes and are
-commented out until those scopes are granted.
+Centralised so every service uses the same shape → no duplicate response
+processing across pages, and future field additions happen in ONE place.
 """
 
-# ---------- Fragments -------------------------------------------------------
+# --- Fragments -------------------------------------------------------------
 
-MONEY_FRAGMENT = """
-fragment MoneyFields on MoneyV2 {
-  amount
-  currencyCode
-}
-"""
-
-IMAGE_FRAGMENT = """
-fragment ImageFields on Image {
-  id
-  url
-  altText
-  width
-  height
-}
-"""
-
-PRODUCT_FRAGMENT = (
-    MONEY_FRAGMENT
-    + IMAGE_FRAGMENT
-    + """
-fragment ProductFields on Product {
+PRODUCT_CARD_FRAGMENT = """
+fragment ProductCard on Product {
   id
   handle
   title
-  description
   descriptionHtml
   productType
   vendor
   tags
   availableForSale
-  onlineStoreUrl
-  updatedAt
-  publishedAt
-  seo { title description }
-  # totalInventory  # requires unauthenticated_read_product_inventory scope
+  featuredImage { url altText width height }
   priceRange {
-    minVariantPrice { ...MoneyFields }
-    maxVariantPrice { ...MoneyFields }
+    minVariantPrice { amount currencyCode }
+    maxVariantPrice { amount currencyCode }
   }
-  featuredImage { ...ImageFields }
-  images(first: 10) { nodes { ...ImageFields } }
+  compareAtPriceRange {
+    minVariantPrice { amount currencyCode }
+    maxVariantPrice { amount currencyCode }
+  }
   options { id name values }
+}
+"""
+
+PRODUCT_FULL_FRAGMENT = PRODUCT_CARD_FRAGMENT + """
+fragment ProductFull on Product {
+  ...ProductCard
+  images(first: 12) { nodes { url altText width height } }
   variants(first: 100) {
     nodes {
       id
       title
       sku
       availableForSale
-      # quantityAvailable  # requires unauthenticated_read_product_inventory scope
-      price { ...MoneyFields }
-      compareAtPrice { ...MoneyFields }
+      currentlyNotInStock
+      requiresShipping
       selectedOptions { name value }
-      image { ...ImageFields }
+      image { url altText width height }
+      price { amount currencyCode }
+      compareAtPrice { amount currencyCode }
     }
   }
-  metafields(identifiers: [
-    {namespace: "foeguard", key: "product_line"},
-    {namespace: "foeguard", key: "protein_type"},
-    {namespace: "foeguard", key: "pet_type"},
-    {namespace: "foeguard", key: "feature_list"},
-    {namespace: "foeguard", key: "highlights"},
-    {namespace: "foeguard", key: "ingredients"},
-    {namespace: "foeguard", key: "nutritional_analysis"},
-    {namespace: "foeguard", key: "nutrition_facts"},
-    {namespace: "foeguard", key: "feeding_guide"},
-    {namespace: "foeguard", key: "product_information"},
-    {namespace: "foeguard", key: "comparison_table"},
-    {namespace: "foeguard", key: "benefit_icons"},
-    {namespace: "foeguard", key: "mini_description"},
-    {namespace: "foeguard", key: "benefits"},
-    {namespace: "foeguard", key: "quantity_description"},
-    {namespace: "foeguard", key: "no_variants"}
-  ]) {
-    namespace
-    key
-    type
-    value
-    reference {
-      __typename
-      ... on MediaImage { image { url altText width height } }
-      ... on Metaobject { id handle type fields { key value type } }
-    }
-    references(first: 30) {
-      nodes {
-        __typename
-        ... on MediaImage { image { url altText width height } }
-        ... on Metaobject { id handle type fields { key value type } }
-      }
-    }
-  }
+  seo { title description }
 }
 """
-)
 
-CART_FRAGMENT = (
-    MONEY_FRAGMENT
-    + IMAGE_FRAGMENT
-    + """
-fragment CartFields on Cart {
+COLLECTION_CARD_FRAGMENT = """
+fragment CollectionCard on Collection {
+  id
+  handle
+  title
+  descriptionHtml
+  image { url altText width height }
+}
+"""
+
+CART_FRAGMENT = """
+fragment CartFull on Cart {
   id
   checkoutUrl
+  totalQuantity
   createdAt
   updatedAt
-  totalQuantity
-  cost {
-    subtotalAmount { ...MoneyFields }
-    totalAmount { ...MoneyFields }
-    totalTaxAmount { ...MoneyFields }
-    totalDutyAmount { ...MoneyFields }
-  }
   buyerIdentity {
     email
     phone
     countryCode
-    customer { id email }
+    customer { id email firstName lastName }
   }
+  cost {
+    subtotalAmount { amount currencyCode }
+    totalAmount { amount currencyCode }
+    totalTaxAmount { amount currencyCode }
+    totalDutyAmount { amount currencyCode }
+  }
+  discountCodes { code applicable }
+  attributes { key value }
   lines(first: 100) {
     nodes {
       id
       quantity
+      attributes { key value }
       cost {
-        subtotalAmount { ...MoneyFields }
-        totalAmount { ...MoneyFields }
+        totalAmount { amount currencyCode }
+        amountPerQuantity { amount currencyCode }
       }
       merchandise {
         ... on ProductVariant {
@@ -139,439 +97,64 @@ fragment CartFields on Cart {
           title
           sku
           availableForSale
-          price { ...MoneyFields }
-          image { ...ImageFields }
-          product {
-            id
-            handle
-            title
-            featuredImage { ...ImageFields }
-          }
           selectedOptions { name value }
+          image { url altText }
+          price { amount currencyCode }
+          product { id handle title featuredImage { url altText } vendor productType }
         }
       }
-      attributes { key value }
     }
   }
-  attributes { key value }
-  discountCodes { code applicable }
 }
 """
-)
 
 CUSTOMER_FRAGMENT = """
-fragment CustomerFields on Customer {
+fragment CustomerFull on Customer {
   id
   firstName
   lastName
-  displayName
   email
   phone
+  displayName
   acceptsMarketing
   createdAt
-  updatedAt
-  numberOfOrders
   defaultAddress {
     id
-    firstName
-    lastName
     address1
     address2
     city
-    province
     provinceCode
-    country
-    countryCodeV2
+    countryCode
     zip
     phone
   }
   addresses(first: 20) {
     nodes {
       id
-      firstName
-      lastName
       address1
       address2
       city
-      province
       provinceCode
-      country
-      countryCodeV2
+      countryCode
       zip
       phone
     }
   }
-  orders(first: 50, sortKey: PROCESSED_AT, reverse: true) {
+  orders(first: 20, sortKey: PROCESSED_AT, reverse: true) {
     nodes {
       id
       orderNumber
-      name
       processedAt
       financialStatus
       fulfillmentStatus
-      statusUrl
       currentTotalPrice { amount currencyCode }
-      totalPrice { amount currencyCode }
-      subtotalPrice { amount currencyCode }
-      totalShippingPrice { amount currencyCode }
-      totalTax { amount currencyCode }
-      shippingAddress {
-        firstName lastName address1 address2 city province zip country phone
-      }
-      lineItems(first: 50) {
-        nodes {
-          title
-          quantity
-          variant {
-            id
-            title
-            price { amount currencyCode }
-            image { url altText }
-            product { id handle title }
-          }
-        }
-      }
+      lineItems(first: 20) { nodes { title quantity } }
     }
   }
 }
 """
 
-USER_ERROR_FRAGMENT = """
-fragment UserErrorFields on CustomerUserError {
-  code
-  field
-  message
-}
-"""
-
-# ---------- Products & collections -----------------------------------------
-
-PRODUCTS_LIST_QUERY = (
-    PRODUCT_FRAGMENT
-    + """
-query Products($first: Int = 20, $after: String, $query: String) {
-  products(first: $first, after: $after, query: $query) {
-    pageInfo { hasNextPage endCursor }
-    nodes { ...ProductFields }
-  }
-}
-"""
-)
-
-PRODUCT_BY_HANDLE_QUERY = (
-    PRODUCT_FRAGMENT
-    + """
-query ProductByHandle($handle: String!) {
-  product(handle: $handle) { ...ProductFields }
-}
-"""
-)
-
-COLLECTIONS_LIST_QUERY = (
-    IMAGE_FRAGMENT
-    + """
-query Collections($first: Int = 20, $after: String) {
-  collections(first: $first, after: $after) {
-    pageInfo { hasNextPage endCursor }
-    nodes {
-      id
-      handle
-      title
-      description
-      onlineStoreUrl
-      updatedAt
-      seo { title description }
-      image { ...ImageFields }
-    }
-  }
-}
-"""
-)
-
-COLLECTION_BY_HANDLE_QUERY = (
-    PRODUCT_FRAGMENT
-    + """
-query CollectionByHandle($handle: String!, $first: Int = 24, $after: String) {
-  collection(handle: $handle) {
-    id
-    handle
-    title
-    description
-    descriptionHtml
-    onlineStoreUrl
-    updatedAt
-    seo { title description }
-    image { url altText width height }
-    products(first: $first, after: $after) {
-      pageInfo { hasNextPage endCursor }
-      nodes { ...ProductFields }
-    }
-  }
-}
-"""
-)
-
-# ---------- Cart -----------------------------------------------------------
-
-CART_CREATE_MUTATION = (
-    CART_FRAGMENT
-    + """
-mutation CartCreate($input: CartInput) {
-  cartCreate(input: $input) {
-    cart { ...CartFields }
-    userErrors { code field message }
-  }
-}
-"""
-)
-
-CART_QUERY = (
-    CART_FRAGMENT
-    + """
-query CartById($id: ID!) {
-  cart(id: $id) { ...CartFields }
-}
-"""
-)
-
-CART_LINES_ADD_MUTATION = (
-    CART_FRAGMENT
-    + """
-mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
-  cartLinesAdd(cartId: $cartId, lines: $lines) {
-    cart { ...CartFields }
-    userErrors { code field message }
-  }
-}
-"""
-)
-
-CART_LINES_UPDATE_MUTATION = (
-    CART_FRAGMENT
-    + """
-mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
-  cartLinesUpdate(cartId: $cartId, lines: $lines) {
-    cart { ...CartFields }
-    userErrors { code field message }
-  }
-}
-"""
-)
-
-CART_LINES_REMOVE_MUTATION = (
-    CART_FRAGMENT
-    + """
-mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
-  cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
-    cart { ...CartFields }
-    userErrors { code field message }
-  }
-}
-"""
-)
-
-CART_BUYER_IDENTITY_UPDATE_MUTATION = (
-    CART_FRAGMENT
-    + """
-mutation CartBuyerIdentityUpdate($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
-  cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
-    cart { ...CartFields }
-    userErrors { code field message }
-  }
-}
-"""
-)
-
-CART_DISCOUNT_CODES_UPDATE_MUTATION = (
-    CART_FRAGMENT
-    + """
-mutation CartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]) {
-  cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) {
-    cart { ...CartFields }
-    userErrors { code field message }
-  }
-}
-"""
-)
-
-# ---------- Customer auth (Shopify official Storefront flow) --------------
-
-CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION = (
-    USER_ERROR_FRAGMENT
-    + """
-mutation CustomerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
-  customerAccessTokenCreate(input: $input) {
-    customerAccessToken { accessToken expiresAt }
-    customerUserErrors { ...UserErrorFields }
-  }
-}
-"""
-)
-
-CUSTOMER_ACCESS_TOKEN_DELETE_MUTATION = """
-mutation CustomerAccessTokenDelete($customerAccessToken: String!) {
-  customerAccessTokenDelete(customerAccessToken: $customerAccessToken) {
-    deletedAccessToken
-    deletedCustomerAccessTokenId
-    userErrors { field message }
-  }
-}
-"""
-
-CUSTOMER_CREATE_MUTATION = (
-    USER_ERROR_FRAGMENT
-    + """
-mutation CustomerCreate($input: CustomerCreateInput!) {
-  customerCreate(input: $input) {
-    customer { id email firstName lastName }
-    customerUserErrors { ...UserErrorFields }
-  }
-}
-"""
-)
-
-CUSTOMER_QUERY = (
-    CUSTOMER_FRAGMENT
-    + """
-query CustomerByToken($customerAccessToken: String!) {
-  customer(customerAccessToken: $customerAccessToken) { ...CustomerFields }
-}
-"""
-)
-
-CUSTOMER_RECOVER_MUTATION = (
-    USER_ERROR_FRAGMENT
-    + """
-mutation CustomerRecover($email: String!) {
-  customerRecover(email: $email) {
-    customerUserErrors { ...UserErrorFields }
-  }
-}
-"""
-)
-
-CUSTOMER_UPDATE_MUTATION = (
-    USER_ERROR_FRAGMENT
-    + CUSTOMER_FRAGMENT
-    + """
-mutation CustomerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {
-  customerUpdate(customerAccessToken: $customerAccessToken, customer: $customer) {
-    customer { ...CustomerFields }
-    customerUserErrors { ...UserErrorFields }
-  }
-}
-"""
-)
-
-# ---------- Admin (server-only) -------------------------------------------
-
-# Used by /health to confirm the Admin token is valid & report the shop.
-ADMIN_SHOP_QUERY = """
-query Shop {
-  shop {
-    id
-    name
-    email
-    myshopifyDomain
-    primaryDomain { host url }
-    plan { displayName partnerDevelopment shopifyPlus }
-    currencyCode
-  }
-}
-"""
-
-# ---------- Storefront Shop (for SEO / organization schema) ---------------
-
-# ---------- Shopify Pages (About, FAQ, Delivery, etc.) --------------------
-
-# All `foeguard.*` page metafields declared in METAFIELDS.md are hydrated
-# so the marketing pages get their heroes / CTAs / groups in a single call.
-PAGE_METAFIELD_IDS = """
-    { namespace: "foeguard", key: "hero"          },
-    { namespace: "foeguard", key: "cta"           },
-    { namespace: "foeguard", key: "difference"    },
-    { namespace: "foeguard", key: "science"       },
-    { namespace: "foeguard", key: "team_images"   },
-    { namespace: "foeguard", key: "works_block"   },
-    { namespace: "foeguard", key: "how_it_ships"  },
-    { namespace: "foeguard", key: "facts"         },
-    { namespace: "foeguard", key: "zones"         },
-    { namespace: "foeguard", key: "storage_tips"  },
-    { namespace: "foeguard", key: "faq_groups"    }
-"""
-
-PAGE_BY_HANDLE_QUERY = (
-    """
-query PageByHandle($handle: String!) {
-  page(handle: $handle) {
-    id
-    handle
-    title
-    body
-    bodySummary
-    createdAt
-    updatedAt
-    onlineStoreUrl
-    seo { title description }
-    metafields(identifiers: [
-"""
-    + PAGE_METAFIELD_IDS
-    + """
-    ]) {
-      namespace
-      key
-      type
-      value
-      reference {
-        __typename
-        ... on MediaImage { image { url altText width height } }
-        ... on Metaobject { id handle type fields { key value type } }
-      }
-      references(first: 30) {
-        nodes {
-          __typename
-          ... on MediaImage { image { url altText width height } }
-          ... on Metaobject { id handle type fields { key value type } }
-        }
-      }
-    }
-  }
-}
-"""
-)
-
-PAGES_LIST_QUERY = """
-query PagesList($first: Int = 50, $after: String) {
-  pages(first: $first, after: $after) {
-    pageInfo { hasNextPage endCursor }
-    nodes {
-      id
-      handle
-      title
-      bodySummary
-      updatedAt
-      onlineStoreUrl
-      seo { title description }
-    }
-  }
-}
-"""
-
-# ---------- Storefront Shop (for SEO / organization schema) ---------------
-
-STOREFRONT_SHOP_QUERY = """
-query StorefrontShop {
-  shop {
-    name
-    description
-    primaryDomain { host url }
-    brand {
-      slogan
-      shortDescription
-      logo { image { url altText width height } }
-      squareLogo { image { url altText width height } }
-      colors { primary { background foreground } secondary { background foreground } }
-    }
-  }
-}
+USER_ERRORS_FRAGMENT = """
+fragment UserErr on CustomerUserError { code field message }
+fragment CartErr on CartUserError { code field message }
 """

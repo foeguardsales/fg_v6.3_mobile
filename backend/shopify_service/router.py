@@ -1,467 +1,311 @@
-"""FastAPI router that surfaces Shopify functionality at ``/api/shopify/*``.
+"""FastAPI router — the ONLY surface the React app sees.
 
-All routes here are the ONLY way the frontend touches Shopify. The
-Admin token is used server-side only (never returned to the browser).
-Customer auth uses Shopify's official Storefront ``customerAccessToken``
-flow; tokens are handed back to the frontend which stores them.
+Mounted at /api/shopify by server.py. Every endpoint returns clean JSON; the
+frontend never needs to know a GraphQL query exists.
 """
-
 from __future__ import annotations
 
-import logging
-from typing import Optional, List
+import os
+from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Query, Path, Header
+from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel, Field
 
-from . import queries as Q
-from .cache import (
-    get_cache,
-    make_key,
-    BUCKET_PRODUCTS,
-    BUCKET_COLLECTIONS,
-    BUCKET_PAGES,
-)
-from .client import (
-    ShopifyError,
-    get_storefront,
-    get_admin,
-)
-from .schemas import (
-    CartCreateBody,
-    CartLinesAddBody,
-    CartLinesUpdateBody,
-    CartLinesRemoveBody,
-    CartBuyerIdentityBody,
-    CartDiscountCodesBody,
-    CustomerRegisterBody,
-    CustomerLoginBody,
-    CustomerAccessTokenBody,
-    CustomerRecoverBody,
-    CustomerUpdateBody,
-    CheckoutFromCartBody,
-    HealthResponse,
-    HealthStatus,
-)
+from . import cart as cart_service
+from . import checkout as checkout_service
+from . import collections as collection_service
+from . import customers as customer_service
+from . import products as product_service
+from .client import ShopifyError, get_admin, get_storefront
 
-logger = logging.getLogger("shopify.router")
-
-shopify_router = APIRouter(prefix="/shopify", tags=["shopify"])
+router = APIRouter(prefix="/api/shopify", tags=["shopify"])
 
 
-# ---------- helpers --------------------------------------------------------
+# -------------------------- Helpers ---------------------------------------
 
-def _raise_user_errors(payload: dict, key: str) -> dict:
-    """Look at a mutation payload; raise 400 if it contains userErrors."""
-    node = payload.get(key) or {}
-    errs = node.get("userErrors") or node.get("customerUserErrors") or []
-    if errs:
-        raise HTTPException(status_code=400, detail={"userErrors": errs})
-    return node
-
-
-def _handle_shopify_error(exc: ShopifyError) -> HTTPException:
-    return HTTPException(
-        status_code=exc.status_code if 400 <= exc.status_code < 600 else 502,
-        detail={"message": str(exc), "shopify": exc.payload},
-    )
+def _handle(coro):
+    """Uniform try/except → HTTPException."""
+    async def runner():
+        try:
+            return await coro
+        except ShopifyError as e:
+            raise HTTPException(status_code=e.status or 502, detail={"message": str(e), "errors": e.errors})
+    return runner()
 
 
-# ---------- health --------------------------------------------------------
+# -------------------------- Health / debug --------------------------------
 
-@shopify_router.get("/health", response_model=HealthResponse)
-async def health():
-    """Verifies both Storefront + Admin tokens by making a tiny query with each."""
-    storefront_status = HealthStatus(ok=False)
-    admin_status = HealthStatus(ok=False)
-    domain: Optional[str] = None
-    api_version: Optional[str] = None
-
-    # Storefront check: fetch shop name via ``shop { name }``
+@router.get("/health")
+async def shopify_health():
+    """Ping both APIs — returns which tokens work. Handy while wiring env vars."""
+    storefront_ok = False
+    admin_ok = False
+    storefront_err: Optional[str] = None
+    admin_err: Optional[str] = None
     try:
-        sf = get_storefront()
-        domain = sf.domain
-        api_version = sf.version
-        data = await sf.execute("{ shop { name primaryDomain { host } } }")
-        storefront_status = HealthStatus(ok=True, shop=data.get("shop"))
-    except ShopifyError as e:
-        storefront_status = HealthStatus(ok=False, detail=str(e))
+        await get_storefront().query("{ shop { name primaryDomain { url } } }")
+        storefront_ok = True
     except Exception as e:  # noqa: BLE001
-        storefront_status = HealthStatus(ok=False, detail=f"config: {e}")
-
-    # Admin check
+        storefront_err = str(e)
     try:
-        adm = get_admin()
-        domain = domain or adm.domain
-        api_version = api_version or adm.version
-        data = await adm.execute(Q.ADMIN_SHOP_QUERY)
-        admin_status = HealthStatus(ok=True, shop=data.get("shop"))
-    except ShopifyError as e:
-        admin_status = HealthStatus(ok=False, detail=str(e))
+        await get_admin().query("{ shop { name myshopifyDomain } }")
+        admin_ok = True
     except Exception as e:  # noqa: BLE001
-        admin_status = HealthStatus(ok=False, detail=f"config: {e}")
+        admin_err = str(e)
+    return {
+        "store_domain": os.environ.get("SHOPIFY_STORE_DOMAIN"),
+        "api_version": os.environ.get("SHOPIFY_API_VERSION"),
+        "storefront": {"ok": storefront_ok, "error": storefront_err},
+        "admin": {"ok": admin_ok, "error": admin_err},
+    }
 
-    return HealthResponse(
-        storefront=storefront_status,
-        admin=admin_status,
-        domain=domain,
-        apiVersion=api_version,
-    )
 
+# -------------------------- Products --------------------------------------
 
-# ---------- products ------------------------------------------------------
-
-@shopify_router.get("/products")
+@router.get("/products")
 async def list_products(
-    first: int = Query(20, ge=1, le=100),
-    after: Optional[str] = Query(None),
-    query: Optional[str] = Query(None, description="Shopify product search query"),
+    first: int = Query(24, ge=1, le=250),
+    after: Optional[str] = None,
+    q: Optional[str] = None,
+    sort_key: str = Query("BEST_SELLING"),
+    reverse: bool = False,
 ):
-    cache = get_cache()
-    key = make_key("products.list", first=first, after=after, query=query)
-
-    async def loader():
-        try:
-            data = await get_storefront().execute(
-                Q.PRODUCTS_LIST_QUERY,
-                {"first": first, "after": after, "query": query},
-            )
-            return data.get("products", {"nodes": [], "pageInfo": {}})
-        except ShopifyError as e:
-            raise _handle_shopify_error(e) from e
-
-    return await cache.get_or_set(key, loader, bucket=BUCKET_PRODUCTS)
+    return await _handle(product_service.list_products(
+        first=first, after=after, query=q, sort_key=sort_key, reverse=reverse
+    ))
 
 
-@shopify_router.get("/products/{handle}")
-async def get_product(handle: str = Path(..., min_length=1)):
-    cache = get_cache()
-    key = make_key("products.byHandle", handle=handle)
-
-    async def loader():
-        try:
-            data = await get_storefront().execute(
-                Q.PRODUCT_BY_HANDLE_QUERY, {"handle": handle}
-            )
-            product = data.get("product")
-            if not product:
-                raise HTTPException(status_code=404, detail="Product not found")
-            return product
-        except ShopifyError as e:
-            raise _handle_shopify_error(e) from e
-
-    return await cache.get_or_set(key, loader, bucket=BUCKET_PRODUCTS)
+@router.get("/products/{handle}")
+async def get_product(handle: str):
+    p = await _handle(product_service.get_product_by_handle(handle))
+    if not p:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return p
 
 
-# ---------- collections ---------------------------------------------------
-
-@shopify_router.get("/collections")
-async def list_collections(
-    first: int = Query(20, ge=1, le=100),
-    after: Optional[str] = Query(None),
-):
-    cache = get_cache()
-    key = make_key("collections.list", first=first, after=after)
-
-    async def loader():
-        try:
-            data = await get_storefront().execute(
-                Q.COLLECTIONS_LIST_QUERY, {"first": first, "after": after}
-            )
-            return data.get("collections", {"nodes": [], "pageInfo": {}})
-        except ShopifyError as e:
-            raise _handle_shopify_error(e) from e
-
-    return await cache.get_or_set(key, loader, bucket=BUCKET_COLLECTIONS)
+@router.get("/variants/{variant_id:path}")
+async def get_variant(variant_id: str):
+    v = await _handle(product_service.get_variant_by_id(variant_id))
+    if not v:
+        raise HTTPException(status_code=404, detail="Variant not found")
+    return v
 
 
-@shopify_router.get("/collections/{handle}")
-async def get_collection(
-    handle: str = Path(..., min_length=1),
-    first: int = Query(24, ge=1, le=100),
-    after: Optional[str] = Query(None),
-):
-    cache = get_cache()
-    key = make_key("collections.byHandle", handle=handle, first=first, after=after)
+# -------------------------- Collections -----------------------------------
 
-    async def loader():
-        try:
-            data = await get_storefront().execute(
-                Q.COLLECTION_BY_HANDLE_QUERY,
-                {"handle": handle, "first": first, "after": after},
-            )
-            col = data.get("collection")
-            if not col:
-                raise HTTPException(status_code=404, detail="Collection not found")
-            return col
-        except ShopifyError as e:
-            raise _handle_shopify_error(e) from e
-
-    return await cache.get_or_set(key, loader, bucket=BUCKET_COLLECTIONS)
+@router.get("/collections")
+async def list_collections(first: int = Query(20, ge=1, le=250), after: Optional[str] = None):
+    return await _handle(collection_service.list_collections(first=first, after=after))
 
 
-# ---------- cart ----------------------------------------------------------
-
-@shopify_router.post("/cart")
-async def create_cart(body: Optional[CartCreateBody] = None):
-    try:
-        input_ = body.model_dump(exclude_none=True) if body else None
-        data = await get_storefront().execute(
-            Q.CART_CREATE_MUTATION, {"input": input_}
-        )
-        node = _raise_user_errors(data, "cartCreate")
-        return node.get("cart")
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+@router.get("/collections/{handle}")
+async def get_collection(handle: str, products_first: int = 50, products_after: Optional[str] = None):
+    c = await _handle(collection_service.get_collection_by_handle(
+        handle, products_first=products_first, products_after=products_after
+    ))
+    if not c:
+        raise HTTPException(status_code=404, detail="Collection not found")
+    return c
 
 
-@shopify_router.get("/cart/{cart_id:path}")
+# -------------------------- Cart ------------------------------------------
+
+class CartLineInput(BaseModel):
+    merchandiseId: str
+    quantity: int = Field(ge=1)
+    attributes: Optional[List[Dict[str, str]]] = None
+    sellingPlanId: Optional[str] = None
+
+
+class CartLineUpdateInput(BaseModel):
+    id: str
+    quantity: Optional[int] = Field(default=None, ge=0)
+    merchandiseId: Optional[str] = None
+    attributes: Optional[List[Dict[str, str]]] = None
+
+
+class CartCreateBody(BaseModel):
+    lines: Optional[List[CartLineInput]] = None
+    buyerIdentity: Optional[Dict[str, Any]] = None
+    attributes: Optional[List[Dict[str, str]]] = None
+    discountCodes: Optional[List[str]] = None
+
+
+@router.post("/cart")
+async def create_cart(body: CartCreateBody):
+    return await _handle(cart_service.cart_create(
+        lines=[line.dict(exclude_none=True) for line in body.lines] if body.lines else None,
+        buyer_identity=body.buyerIdentity,
+        attributes=body.attributes,
+        discount_codes=body.discountCodes,
+    ))
+
+
+@router.get("/cart/{cart_id:path}")
 async def get_cart(cart_id: str):
-    try:
-        data = await get_storefront().execute(Q.CART_QUERY, {"id": cart_id})
-        cart = data.get("cart")
-        if not cart:
-            raise HTTPException(status_code=404, detail="Cart not found")
-        return cart
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+    c = await _handle(cart_service.cart_get(cart_id))
+    if not c:
+        raise HTTPException(status_code=404, detail="Cart not found")
+    return c
 
 
-@shopify_router.post("/cart/{cart_id:path}/lines/add")
-async def cart_lines_add(cart_id: str, body: CartLinesAddBody):
-    try:
-        data = await get_storefront().execute(
-            Q.CART_LINES_ADD_MUTATION,
-            {"cartId": cart_id, "lines": [l.model_dump(exclude_none=True) for l in body.lines]},
-        )
-        node = _raise_user_errors(data, "cartLinesAdd")
-        return node.get("cart")
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+class CartLinesBody(BaseModel):
+    cartId: str
+    lines: List[CartLineInput]
 
 
-@shopify_router.post("/cart/{cart_id:path}/lines/update")
-async def cart_lines_update(cart_id: str, body: CartLinesUpdateBody):
-    try:
-        data = await get_storefront().execute(
-            Q.CART_LINES_UPDATE_MUTATION,
-            {"cartId": cart_id, "lines": [l.model_dump(exclude_none=True) for l in body.lines]},
-        )
-        node = _raise_user_errors(data, "cartLinesUpdate")
-        return node.get("cart")
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+@router.post("/cart/lines/add")
+async def add_cart_lines(body: CartLinesBody):
+    return await _handle(cart_service.cart_lines_add(body.cartId, [l.dict(exclude_none=True) for l in body.lines]))
 
 
-@shopify_router.post("/cart/{cart_id:path}/lines/remove")
-async def cart_lines_remove(cart_id: str, body: CartLinesRemoveBody):
-    try:
-        data = await get_storefront().execute(
-            Q.CART_LINES_REMOVE_MUTATION,
-            {"cartId": cart_id, "lineIds": body.lineIds},
-        )
-        node = _raise_user_errors(data, "cartLinesRemove")
-        return node.get("cart")
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+class CartLinesUpdateBody(BaseModel):
+    cartId: str
+    lines: List[CartLineUpdateInput]
 
 
-@shopify_router.post("/cart/{cart_id:path}/buyer-identity")
-async def cart_buyer_identity_update(cart_id: str, body: CartBuyerIdentityBody):
-    try:
-        data = await get_storefront().execute(
-            Q.CART_BUYER_IDENTITY_UPDATE_MUTATION,
-            {"cartId": cart_id, "buyerIdentity": body.buyerIdentity},
-        )
-        node = _raise_user_errors(data, "cartBuyerIdentityUpdate")
-        return node.get("cart")
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+@router.post("/cart/lines/update")
+async def update_cart_lines(body: CartLinesUpdateBody):
+    return await _handle(cart_service.cart_lines_update(body.cartId, [l.dict(exclude_none=True) for l in body.lines]))
 
 
-@shopify_router.post("/cart/{cart_id:path}/discount-codes")
-async def cart_discount_codes_update(cart_id: str, body: CartDiscountCodesBody):
-    try:
-        data = await get_storefront().execute(
-            Q.CART_DISCOUNT_CODES_UPDATE_MUTATION,
-            {"cartId": cart_id, "discountCodes": body.discountCodes},
-        )
-        node = _raise_user_errors(data, "cartDiscountCodesUpdate")
-        return node.get("cart")
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+class CartLinesRemoveBody(BaseModel):
+    cartId: str
+    lineIds: List[str]
 
 
-# ---------- customers -----------------------------------------------------
-
-@shopify_router.post("/customers/register")
-async def customer_register(body: CustomerRegisterBody):
-    try:
-        create_input = body.model_dump(exclude_none=True)
-        # Shopify's CustomerCreateInput does not accept `acceptsMarketing`
-        # at the top-level of registration in newer API versions; strip it
-        # defensively.
-        create_input.pop("acceptsMarketing", None)
-        data = await get_storefront().execute(
-            Q.CUSTOMER_CREATE_MUTATION, {"input": create_input}
-        )
-        node = _raise_user_errors(data, "customerCreate")
-        return node.get("customer")
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+@router.post("/cart/lines/remove")
+async def remove_cart_lines(body: CartLinesRemoveBody):
+    return await _handle(cart_service.cart_lines_remove(body.cartId, body.lineIds))
 
 
-@shopify_router.post("/customers/login")
+class CartBuyerBody(BaseModel):
+    cartId: str
+    buyerIdentity: Dict[str, Any]
+
+
+@router.post("/cart/buyer")
+async def update_cart_buyer(body: CartBuyerBody):
+    return await _handle(cart_service.cart_buyer_identity_update(body.cartId, body.buyerIdentity))
+
+
+class CartDiscountBody(BaseModel):
+    cartId: str
+    codes: List[str]
+
+
+@router.post("/cart/discount")
+async def update_cart_discount(body: CartDiscountBody):
+    return await _handle(cart_service.cart_discount_codes_update(body.cartId, body.codes))
+
+
+class CartAttrsBody(BaseModel):
+    cartId: str
+    attributes: List[Dict[str, str]]
+
+
+@router.post("/cart/attributes")
+async def update_cart_attributes(body: CartAttrsBody):
+    return await _handle(cart_service.cart_attributes_update(body.cartId, body.attributes))
+
+
+# -------------------------- Checkout --------------------------------------
+
+@router.get("/checkout/{cart_id:path}")
+async def get_checkout_url(cart_id: str):
+    url = await _handle(checkout_service.get_checkout_url(cart_id))
+    if not url:
+        raise HTTPException(status_code=404, detail="Cart or checkoutUrl not found")
+    return {"checkoutUrl": url}
+
+
+class CheckoutAssociateBody(BaseModel):
+    cartId: str
+    customerAccessToken: str
+
+
+@router.post("/checkout/associate")
+async def associate_checkout_customer(body: CheckoutAssociateBody):
+    return await _handle(checkout_service.associate_customer_with_cart(body.cartId, body.customerAccessToken))
+
+
+# -------------------------- Customers (Shopify Auth) ----------------------
+
+class CustomerCreateBody(BaseModel):
+    email: str
+    password: str
+    firstName: Optional[str] = None
+    lastName: Optional[str] = None
+    acceptsMarketing: bool = False
+
+
+@router.post("/customers/create")
+async def customer_create(body: CustomerCreateBody):
+    return await _handle(customer_service.customer_create(
+        email=body.email,
+        password=body.password,
+        first_name=body.firstName,
+        last_name=body.lastName,
+        accepts_marketing=body.acceptsMarketing,
+    ))
+
+
+class CustomerLoginBody(BaseModel):
+    email: str
+    password: str
+
+
+@router.post("/customers/login")
 async def customer_login(body: CustomerLoginBody):
-    try:
-        data = await get_storefront().execute(
-            Q.CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION,
-            {"input": {"email": body.email, "password": body.password}},
-        )
-        node = data.get("customerAccessTokenCreate") or {}
-        errs = node.get("customerUserErrors") or []
-        if errs or not node.get("customerAccessToken"):
-            raise HTTPException(
-                status_code=401,
-                detail={"userErrors": errs or [{"message": "Invalid credentials"}]},
-            )
-        return node["customerAccessToken"]
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+    return await _handle(customer_service.customer_access_token_create(body.email, body.password))
 
 
-@shopify_router.post("/customers/logout")
-async def customer_logout(body: CustomerAccessTokenBody):
-    try:
-        data = await get_storefront().execute(
-            Q.CUSTOMER_ACCESS_TOKEN_DELETE_MUTATION,
-            {"customerAccessToken": body.customerAccessToken},
-        )
-        node = data.get("customerAccessTokenDelete") or {}
-        errs = node.get("userErrors") or []
-        if errs:
-            raise HTTPException(status_code=400, detail={"userErrors": errs})
-        return {"deletedAccessToken": node.get("deletedAccessToken")}
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+class TokenBody(BaseModel):
+    accessToken: str
 
 
-@shopify_router.get("/customers/me")
-async def customer_me(
-    x_shopify_customer_token: Optional[str] = Header(None, alias="X-Shopify-Customer-Token"),
-    authorization: Optional[str] = Header(None),
-):
-    token = x_shopify_customer_token
-    if not token and authorization and authorization.lower().startswith("bearer "):
-        token = authorization.split(" ", 1)[1].strip()
-    if not token:
-        raise HTTPException(status_code=401, detail="Missing customer access token")
-    try:
-        data = await get_storefront().execute(
-            Q.CUSTOMER_QUERY, {"customerAccessToken": token}
-        )
-        cust = data.get("customer")
-        if not cust:
-            raise HTTPException(status_code=401, detail="Invalid or expired token")
-        return cust
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+@router.post("/customers/token/renew")
+async def customer_token_renew(body: TokenBody):
+    return await _handle(customer_service.customer_access_token_renew(body.accessToken))
 
 
-@shopify_router.post("/customers/recover")
-async def customer_recover(body: CustomerRecoverBody):
-    try:
-        data = await get_storefront().execute(
-            Q.CUSTOMER_RECOVER_MUTATION, {"email": body.email}
-        )
-        node = data.get("customerRecover") or {}
-        errs = node.get("customerUserErrors") or []
-        # Shopify intentionally returns success even for unknown emails to
-        # prevent enumeration; only bubble true validation errors.
-        if errs:
-            raise HTTPException(status_code=400, detail={"userErrors": errs})
-        return {"ok": True}
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
+@router.post("/customers/logout")
+async def customer_logout(body: TokenBody):
+    return await _handle(customer_service.customer_access_token_delete(body.accessToken))
 
 
-@shopify_router.post("/customers/update")
+class RecoverBody(BaseModel):
+    email: str
+
+
+@router.post("/customers/recover")
+async def customer_recover(body: RecoverBody):
+    return await _handle(customer_service.customer_recover(body.email))
+
+
+class ResetBody(BaseModel):
+    resetUrl: str
+    password: str
+
+
+@router.post("/customers/reset")
+async def customer_reset(body: ResetBody):
+    return await _handle(customer_service.customer_reset_by_url(body.resetUrl, body.password))
+
+
+@router.post("/customers/me")
+async def customer_me(body: TokenBody):
+    me = await _handle(customer_service.customer_get(body.accessToken))
+    if not me:
+        raise HTTPException(status_code=401, detail="Invalid or expired customer token")
+    return me
+
+
+class CustomerUpdateBody(BaseModel):
+    accessToken: str
+    patch: Dict[str, Any]
+
+
+@router.post("/customers/update")
 async def customer_update(body: CustomerUpdateBody):
-    try:
-        data = await get_storefront().execute(
-            Q.CUSTOMER_UPDATE_MUTATION,
-            {
-                "customerAccessToken": body.customerAccessToken,
-                "customer": body.customer,
-            },
-        )
-        node = _raise_user_errors(data, "customerUpdate")
-        return node.get("customer")
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
-
-
-# ---------- checkout ------------------------------------------------------
-
-# ---------- checkout ------------------------------------------------------
-
-@shopify_router.post("/checkout/from-cart")
-async def checkout_from_cart(body: CheckoutFromCartBody):
-    """Return the hosted Shopify checkout URL for a given cart.
-
-    In modern Shopify (Cart API), the ``checkoutUrl`` is a first-class
-    field on the cart. We simply fetch the cart and return it. The
-    frontend redirects the user to that URL.
-    """
-    try:
-        data = await get_storefront().execute(Q.CART_QUERY, {"id": body.cartId})
-        cart = data.get("cart")
-        if not cart:
-            raise HTTPException(status_code=404, detail="Cart not found")
-        checkout_url = cart.get("checkoutUrl")
-        if not checkout_url:
-            raise HTTPException(status_code=422, detail="Cart has no checkoutUrl (empty?)")
-        return {"checkoutUrl": checkout_url, "cartId": cart.get("id")}
-    except ShopifyError as e:
-        raise _handle_shopify_error(e) from e
-
-
-# ---------- pages (About, FAQ, Delivery, and all static marketing) --------
-
-@shopify_router.get("/pages")
-async def list_pages(
-    first: int = Query(50, ge=1, le=100),
-    after: Optional[str] = Query(None),
-):
-    cache = get_cache()
-    key = make_key("pages.list", first=first, after=after)
-
-    async def loader():
-        try:
-            data = await get_storefront().execute(
-                Q.PAGES_LIST_QUERY, {"first": first, "after": after}
-            )
-            return data.get("pages", {"nodes": [], "pageInfo": {}})
-        except ShopifyError as e:
-            raise _handle_shopify_error(e) from e
-
-    return await cache.get_or_set(key, loader, bucket=BUCKET_PAGES)
-
-
-@shopify_router.get("/page/{handle}")
-async def get_page(handle: str = Path(..., min_length=1)):
-    cache = get_cache()
-    key = make_key("pages.byHandle", handle=handle)
-
-    async def loader():
-        try:
-            data = await get_storefront().execute(
-                Q.PAGE_BY_HANDLE_QUERY, {"handle": handle}
-            )
-            page = data.get("page")
-            if not page:
-                raise HTTPException(status_code=404, detail="Page not found")
-            return page
-        except ShopifyError as e:
-            raise _handle_shopify_error(e) from e
-
-    return await cache.get_or_set(key, loader, bucket=BUCKET_PAGES)
+    return await _handle(customer_service.customer_update(body.accessToken, body.patch))

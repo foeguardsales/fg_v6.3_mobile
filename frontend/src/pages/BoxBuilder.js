@@ -7,8 +7,6 @@ import { Calculator, Wheat, PawPrint, X, ChevronDown, ChevronUp, Tag } from 'luc
 import { ProductDetailModal } from './ProductDetail';
 import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
-import { catalog as shopifyCatalog } from '../services/shopify';
-import { SeoHead } from '../components/SeoHead';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -103,6 +101,34 @@ export const BoxBuilder = () => {
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
   const [viewMode, setViewMode] = useState('food'); // 'food' | 'treats'
 
+  // Prompt 5: highlight recommended proteins for a specific dog (from a
+  // saved plan) OR show the multi-pet banner.  Both come from URL query.
+  const planIndex = searchParams.get('plan');   // '0', '1', ...
+  const multiFlag = searchParams.get('multi');  // '1'
+  const [recommendedProteins, setRecommendedProteins] = useState(null); // Set of protein_type strings
+  useEffect(() => {
+    if (planIndex === null) { setRecommendedProteins(null); return; }
+    let snap = null;
+    try {
+      snap = JSON.parse(
+        localStorage.getItem('foeguard_pet_profile') ||
+        sessionStorage.getItem('foeguard_pet_profile') ||
+        'null'
+      );
+    } catch (_) { snap = null; }
+    const idx = parseInt(planIndex, 10) || 0;
+    const dog = snap?.dogs?.[idx];
+    const top = dog?.recommendations?.top_proteins || [];
+    // Map algorithm protein names → product protein_type keys used on the menu.
+    const proteinMap = {
+      'Beef': 'beef', 'Chicken': 'chicken', 'Duck': 'duck',
+      'Wild-Caught Fish': 'fish', 'Goat': 'goat', 'Lamb': 'lamb',
+      'Rabbit': 'rabbit', 'Turkey': 'turkey',
+    };
+    const set = new Set(top.map(t => proteinMap[t.protein]).filter(Boolean));
+    setRecommendedProteins(set.size ? set : null);
+  }, [planIndex]);
+
   // Mini top-sheet (legacy, no longer used)
   const [topSheetOpen, setTopSheetOpen] = useState(false);
   const [topSheetSeen, setTopSheetSeen] = useState(false);
@@ -132,17 +158,6 @@ export const BoxBuilder = () => {
   const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
   
   const [boxSize, setBoxSize] = useState(initialBoxSize);
-  // targetBoxSize drives the pills grid + the bottom progress bar. It's a
-  // visual target only \u2014 the cart itself is unlimited; discount tiers apply
-  // automatically based on ACTUAL total lbs selected.
-  const [targetBoxSize, setTargetBoxSize] = useState(() => {
-    const stored = parseInt(sessionStorage.getItem('targetBoxSize'), 10);
-    return Number.isFinite(stored) && stored > 0 ? stored : 12;
-  });
-  useEffect(() => {
-    try { sessionStorage.setItem('targetBoxSize', String(targetBoxSize)); }
-    catch (_) { /* ignore */ }
-  }, [targetBoxSize]);
   const [products, setProducts] = useState([]);
   const [treats, setTreats] = useState([]);
   const [selectedProteins, setSelectedProteins] = useState(initialProteins);
@@ -214,14 +229,18 @@ export const BoxBuilder = () => {
   }, []);
 
   // Auto-skip the funnel if user previously made a selection (within session)
+  // OR if they arrived from a saved plan / multi-pet quiz result (?plan=|?multi=).
   useEffect(() => {
     const sel = sessionStorage.getItem('foeguard_selection');
-    if (sel) {
+    const cameFromPlan = searchParams.get('plan') !== null || searchParams.get('multi') !== null;
+    if (sel || cameFromPlan) {
+      if (!sel && cameFromPlan) sessionStorage.setItem('foeguard_selection', 'shop-raw');
       setFunnelOpen(false);
-      setSelectionId(sel);
+      setSelectionId(sel || 'shop-raw');
     } else {
       setFunnelOpen(true);
     }
+     
   }, []);
 
   // Listen for global "open cart" event (from header cart icon)
@@ -246,17 +265,16 @@ export const BoxBuilder = () => {
     const loadData = async () => {
       setLoading(true);
       try {
-        // Products & treats come from Shopify via the FastAPI proxy.
-        // Only Active / published products are returned by the Storefront API;
-        // Draft and Archived products are automatically excluded.
-        const [productsData, treatsData] = await Promise.all([
-          shopifyCatalog.getAllProducts(),
-          shopifyCatalog.getAllTreats(),
+        // Fetch ALL products (both pet types) so the cart can look up cross-pet items.
+        // Display filtering by product_line happens client-side below.
+        const [productsRes, treatsRes] = await Promise.all([
+          axios.get(`${API}/products`),
+          axios.get(`${API}/treats`)
         ]);
-        setProducts(productsData);
-        setTreats(treatsData);
+        setProducts(productsRes.data);
+        setTreats(treatsRes.data);
       } catch (error) {
-        console.error('Failed to load Shopify catalog:', error);
+        console.error('Failed to load data:', error);
       } finally {
         setLoading(false);
       }
@@ -523,15 +541,6 @@ export const BoxBuilder = () => {
 
   return (
     <>
-      {/* Server-generated SEO from Shopify (uses `meaty-bone-treats` when the
-          user is on the treats tab, otherwise the site-wide menu SEO). */}
-      <SeoHead
-        endpoint={
-          location.pathname.startsWith('/menu/treats')
-            ? '/api/seo/collection/meaty-bone-treats'
-            : '/api/seo/site/home'
-        }
-      />
       <Navbar />
 
       {/* Selection breadcrumb — visible after funnel is dismissed */}
@@ -547,6 +556,18 @@ export const BoxBuilder = () => {
       )}
 
       <div className="box-builder box-builder--narrow">
+        {/* Prompt 5 — multi-pet, blank menu + single message. */}
+        {multiFlag === '1' && (
+          <div className="menu-multi-plan-banner" data-testid="menu-multi-plan-banner">
+            <span>View your plans in your profile to load recommendations.</span>
+            <a
+              href="/account"
+              data-testid="menu-multi-plan-link"
+              onClick={(e) => { e.preventDefault(); navigate('/account'); }}
+            >Go to profile →</a>
+          </div>
+        )}
+
         {/* Funnel overlay: full-screen choice picker hovering above the menu */}
         <MenuFunnel
           open={funnelOpen}
@@ -594,30 +615,32 @@ export const BoxBuilder = () => {
         {(() => {
           const hero = CATEGORY_HERO[`${petType}-${viewMode}`];
           const tabs = (
-            <div className="menu-category-text menu-category-text--on-hero" data-testid="menu-category-tabs">
-              {bannerCards.map((card) => (
+            <div className="menu-category-tabs-wrap menu-category-tabs-wrap--on-hero">
+              <div className="menu-category-text menu-category-text--on-hero" data-testid="menu-category-tabs">
+                {bannerCards.map((card) => (
+                  <button
+                    key={card.id}
+                    onClick={() => handleCategoryClick(card)}
+                    data-testid={`category-${card.id}`}
+                    className={`menu-category-text-btn ${card.active ? 'is-active' : ''}`}
+                  >
+                    {card.title}
+                  </button>
+                ))}
                 <button
-                  key={card.id}
-                  onClick={() => handleCategoryClick(card)}
-                  data-testid={`category-${card.id}`}
-                  className={`menu-category-text-btn ${card.active ? 'is-active' : ''}`}
+                  data-testid="category-calculator-link"
+                  onClick={() => setCalcOpen(true)}
+                  className="menu-category-calc-link"
+                  aria-label="Open feeding calculator"
+                  type="button"
                 >
-                  {card.title}
+                  Feeding Calculator
                 </button>
-              ))}
-              <button
-                data-testid="category-calculator-link"
-                onClick={() => setCalcOpen(true)}
-                className="menu-category-calc-link"
-                aria-label="Open feeding calculator"
-                type="button"
-              >
-                Feeding Calculator
-              </button>
+              </div>
             </div>
           );
           if (!hero) {
-            return <div className="menu-category-text" data-testid="menu-category-tabs">{tabs.props.children}</div>;
+            return <div className="menu-category-text" data-testid="menu-category-tabs">{tabs.props.children.props.children}</div>;
           }
           return (
             <div className="menu-collection-hero" data-testid="menu-collection-hero">
@@ -639,10 +662,14 @@ export const BoxBuilder = () => {
         {/* Main Content - Dog or Cat */}
         <>
             {showBoxSize && (
-              <BoxSizePills selected={targetBoxSize} onSelect={setTargetBoxSize} />
-            )}
-            {showBoxSize && (
-              <StockUpSave guide={TIER_GUIDE} currentLbs={getTotalSelectedLbs()} />
+              <BoxSizePills
+                boxSize={boxSize}
+                rates={DISCOUNT_RATES}
+                onChange={(sz) => {
+                  setBoxSize(sz);
+                  sessionStorage.setItem('boxSize', sz.toString());
+                }}
+              />
             )}
 
             {loading ? (
@@ -687,6 +714,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
+                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
                       />
                     ))}
                   </div>
@@ -720,6 +748,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
+                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
                       />
                     ))}
                   </div>
@@ -765,6 +794,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
+                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
                       />
                     ))}
                   </div>
@@ -798,6 +828,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
+                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
                       />
                     ))}
                   </div>
@@ -880,7 +911,7 @@ export const BoxBuilder = () => {
         return (
           <>
             {showBoxSize && (
-              <BoxProgressBar currentLbs={lbs} targetLbs={targetBoxSize} />
+              <WeightProgressBar currentLbs={lbs} targetLbs={boxSize} />
             )}
             <button
               onClick={openBasket}
@@ -944,7 +975,7 @@ export const BoxBuilder = () => {
 };
 
 // Product Card Component
-const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType, onOpenProduct }) => {
+const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType, onOpenProduct, isRecommended = false }) => {
   const basePrice = getBasePrice(product);
   const discountedPrice = getDiscountedPrice(basePrice);
   const hasDiscount = discountedPrice < basePrice - 0.001;
@@ -956,6 +987,11 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const displayQty = selectedQty > 0 ? selectedQty : 1;
   const showPrice = discountedPerLb * displayQty;
   const showOriginal = basePerLb * displayQty;
+
+  // Products with variants (packaging/size options) are configured on the Product Page,
+  // not on the menu. Menu just shows a "+" that opens the detail view. Products flagged
+  // `no_variants: true` fall back to the classic inline +/qty stepper.
+  const hasVariants = product.no_variants !== true;
   
   // Product image URL - use the uploaded comfort dinner image for all products
   const productImage = 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';
@@ -1003,16 +1039,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   };
   const stopAndAdd = (e) => {
     e.stopPropagation();
-    if (!canAdd) return;
-    // If the product has selectable variants (size, packaging, etc.) open the
-    // product page so the shopper can pick before adding to the box. Only
-    // products flagged `no_variants: true` (simple treats, single-variant
-    // items) get the inline quick-add.
-    if (product && product.no_variants === false) {
-      goToProduct();
-      return;
-    }
-    onUpdate(product.product_id, product.name, 6);
+    if (canAdd) onUpdate(product.product_id, product.name, 6);
   };
 
   // Display the price for the currently selected qty (default 6lb pack when none selected).
@@ -1024,8 +1051,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
   return (
     <div 
-      className={`product-card-row ${isSelected ? 'is-selected' : ''}`}
+      className={`product-card product-card-row ${(!hasVariants && isSelected) ? 'is-selected' : ''} ${isRecommended ? 'is-recommended' : ''}`}
       data-testid={`product-${product.product_id}`}
+      data-recommended={isRecommended ? 'true' : 'false'}
+      style={isRecommended ? { position: 'relative' } : undefined}
       onClick={goToProduct}
       role="button"
       tabIndex={0}
@@ -1034,8 +1063,19 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       {/* Image — on RIGHT side (desktop), on TOP (mobile via CSS order) */}
       <div className="product-card-media">
         <img src={productImage} alt={product.name} />
-        {/* + or qty pill — bottom-right of image */}
-        {selectedQty === 0 ? (
+        {/* + button (variants) OR + / qty stepper (no variants). Variant products
+            never show a stepper on the menu — clicking "+" opens the product page
+            where packaging + quantity are chosen. */}
+        {hasVariants ? (
+          <button
+            className="product-card-plus"
+            onClick={(e) => { e.stopPropagation(); goToProduct(); }}
+            data-testid={`add-${product.product_id}`}
+            aria-label="Configure and add to cart"
+          >
+            +
+          </button>
+        ) : selectedQty === 0 ? (
           <button
             className="product-card-plus"
             onClick={stopAndAdd}
@@ -1080,7 +1120,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         </p>
 
         <div className="product-card-price">
-          {selectedQty > 0 ? (
+          {(!hasVariants && selectedQty > 0) ? (
             <>
               <span className="price-regular">${lineTotal.toFixed(2)}</span>
               <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
@@ -1190,55 +1230,6 @@ export const SelectionBreadcrumb = ({ label, onEdit }) => {
 };
 
 
-// ===== Box-size pills grid (6 / 12 / 24 / 36 lb+) with OFF% badges above =====
-// Purely a visual target selector \u2014 the cart is unlimited. Discount tiers are
-// applied automatically based on the ACTUAL total lbs selected (see
-// `getTierFromLbs`).
-const BOX_PILL_OPTIONS = [
-  { size: 6,  label: '6 lb',   off: '5% OFF'  },
-  { size: 12, label: '12 lb',  off: '10% OFF' },
-  { size: 24, label: '24 lb',  off: '15% OFF' },
-  { size: 36, label: '36 lb+', off: '15% OFF' },
-];
-const BoxSizePills = ({ selected = 12, onSelect }) => (
-  <div className="box-pills-wrap" data-testid="box-size-pills">
-    <h3 className="box-pills-heading">Choose your box size</h3>
-    <div className="box-pills-grid">
-      {BOX_PILL_OPTIONS.map((opt) => {
-        const isSelected = selected === opt.size;
-        return (
-          <button
-            key={opt.size}
-            type="button"
-            data-testid={`box-pill-${opt.size}`}
-            data-selected={isSelected ? 'true' : 'false'}
-            className={`box-pill ${isSelected ? 'is-selected' : ''}`}
-            onClick={() => onSelect && onSelect(opt.size)}
-          >
-            <span className="box-pill-badge">{opt.off}</span>
-            <span className="box-pill-label">{opt.label}</span>
-          </button>
-        );
-      })}
-    </div>
-  </div>
-);
-
-// ===== Fixed progress bar above the "View Cart" button =====
-const BoxProgressBar = ({ currentLbs = 0, targetLbs = 12 }) => {
-  const pct = Math.max(0, Math.min(100, targetLbs > 0 ? (currentLbs / targetLbs) * 100 : 0));
-  return (
-    <div className="bb-progress-strip" data-testid="box-progress-strip" role="progressbar" aria-valuenow={currentLbs} aria-valuemax={targetLbs}>
-      <div className="bb-progress-track">
-        <div className="bb-progress-fill" style={{ width: `${pct}%` }} />
-      </div>
-      <span className="bb-progress-label" data-testid="box-progress-label">
-        <b>{currentLbs}</b> lbs / {targetLbs} lbs packed
-      </span>
-    </div>
-  );
-};
-
 // ===== Stock Up & Save — compact collapsible discount guide (replaces box selector) =====
 const StockUpSave = ({ guide = [], currentLbs = 0 }) => {
   const [open, setOpen] = useState(false);
@@ -1281,6 +1272,69 @@ const StockUpSave = ({ guide = [], currentLbs = 0 }) => {
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+
+// ===== Box-size pills — quick selector for pre-set box sizes (6 / 12 / 24 / 36+ lb) =====
+// Discount badges above each pill use the brand harvest-gold and reflect the real
+// bulk-discount tiers (DISCOUNT_RATES). The 6lb "starter" pill has no badge because
+// it carries no bulk discount.
+const BoxSizePills = ({ boxSize, onChange, rates = DOG_DISCOUNT_RATES }) => {
+  const options = [
+    { size: 6,  label: '6 lb'   },
+    { size: 12, label: '12 lb'  },
+    { size: 24, label: '24 lb'  },
+    { size: 36, label: '36 lb+' }
+  ];
+  return (
+    <div className="box-size-selector-bare" data-testid="box-size-pills">
+      <div className="box-size-tabs">
+        {options.map(opt => {
+          const rate = rates[opt.size] || 0;
+          const off  = Math.round(rate * 100);
+          const active = boxSize === opt.size;
+          return (
+            <button
+              key={opt.size}
+              type="button"
+              className={`box-size-tab ${active ? 'active' : ''}`}
+              onClick={() => onChange(opt.size)}
+              data-testid={`box-size-pill-${opt.size}`}
+              aria-pressed={active}
+            >
+              {off > 0 && (
+                <span className="box-discount-badge">{off}% OFF</span>
+              )}
+              <span className="box-size-label">{opt.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ===== Weight progress strip — thin, fixed above the floating "View Cart" bar =====
+// Tracks the current lbs packed vs. the chosen target box size. Hidden when there
+// are no meals in the box (no visual noise on an empty menu).
+const WeightProgressBar = ({ currentLbs = 0, targetLbs = 6 }) => {
+  if (!currentLbs || currentLbs <= 0) return null;
+  const pct = Math.min(100, Math.round((currentLbs / Math.max(1, targetLbs)) * 100));
+  return (
+    <div className="weight-progress-bar" data-testid="weight-progress-bar" role="status" aria-live="polite">
+      <div className="weight-progress-track">
+        <div
+          className="weight-progress-fill"
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <div className="weight-progress-label">
+        <span className="weight-progress-current">{currentLbs} lbs</span>
+        <span className="weight-progress-sep">/</span>
+        <span className="weight-progress-target">{targetLbs} lbs packed</span>
+      </div>
     </div>
   );
 };

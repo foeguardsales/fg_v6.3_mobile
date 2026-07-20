@@ -14,11 +14,11 @@ const COLORS = {
   khaki: '#D8CFB8',
   khakiDark: '#A89B7C',
   almond: '#EEE4CE',       // Lighter almond — CTA text + soft headings on dark backgrounds
-  charcoal: '#3B2A1A',     // Unified charcoal text colour site-wide (replaces brown brown)
+  charcoal: '#2C2C2C',     // Unified charcoal text colour site-wide (replaces brown brown)
   forestGreen: '#2F4538',
   lightGreen: '#7A9A7A',   // Sage / Light green for Comfort
   harvestGold: '#C9A84C',  // Accent only — badges
-  agedWood: '#3B2A1A',
+  agedWood: '#2C2C2C',
   white: '#F5F3EF'         // No pure white surfaces
 };
 
@@ -97,6 +97,23 @@ const ModernNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const { cartItems, setIsCartOpen } = useCart();
+
+  // Signed-in state — read from localStorage token (matches existing
+  // authService).  Polls every 800ms + listens to storage/custom events so
+  // the quiz auto-registration flow reflects instantly without a reload.
+  const [isSignedIn, setIsSignedIn] = useState(!!localStorage.getItem('token'));
+  useEffect(() => {
+    const refresh = () => setIsSignedIn(!!localStorage.getItem('token'));
+    refresh();
+    const id = setInterval(refresh, 800);
+    window.addEventListener('foeguard:auth-changed', refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener('foeguard:auth-changed', refresh);
+      window.removeEventListener('storage', refresh);
+    };
+  }, []);
 
   // Reflect FoeGuard menu cart counts (BoxBuilder uses sessionStorage)
   const [menuCount, setMenuCount] = useState(0);
@@ -237,16 +254,34 @@ const ModernNavbar = () => {
           <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <button
               onClick={() => navigate('/account')}
-              aria-label="Account"
+              aria-label={isSignedIn ? 'Account (signed in)' : 'Account'}
               data-testid="nav-account"
+              data-signed-in={isSignedIn ? 'true' : 'false'}
               style={{
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                padding: '8px'
+                padding: '8px',
+                position: 'relative'
               }}
             >
               <User size={22} color={COLORS.cream} />
+              {isSignedIn && (
+                <span
+                  data-testid="nav-account-signedin-dot"
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    top: '6px',
+                    right: '6px',
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: '#4ADE80',
+                    boxShadow: '0 0 0 2px ' + COLORS.red
+                  }}
+                />
+              )}
             </button>
             <button
               onClick={() => {
@@ -440,7 +475,7 @@ const TrustMarquee = () => {
   
   return (
     <div style={{
-      background: '#3B2A1A',
+      background: '#2C2C2C',
       color: COLORS.cream,
       overflow: 'hidden',
       padding: '14px 0',
@@ -690,7 +725,7 @@ export const LandingPage = () => {
           style={{
             position: 'relative',
             overflow: 'hidden',
-            background: `#3B2A1A url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
+            background: `#2C2C2C url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
             minHeight: 'clamp(600px, 135vw, 620px)',
             display: 'block',
             marginTop: '-84px'
@@ -715,7 +750,7 @@ export const LandingPage = () => {
               right: 0,
               bottom: 0,
               height: '40%',
-              background: `linear-gradient(180deg, rgba(59,42,26,0) 0%, rgba(59,42,26,0.6) 60%, #3B2A1A 100%)`,
+              background: `linear-gradient(180deg, rgba(59,42,26,0) 0%, rgba(59,42,26,0.6) 60%, #2C2C2C 100%)`,
               pointerEvents: 'none'
             }}
           />

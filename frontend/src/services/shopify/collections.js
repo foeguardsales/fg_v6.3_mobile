@@ -1,18 +1,15 @@
-/** Collections service — read-only Storefront proxies. */
-import http from './client';
+import { shopifyClient } from './client';
 
-export async function list({ first = 20, after = null } = {}) {
-  const { data } = await http.get('/collections', { params: { first, after } });
-  return data; // { nodes, pageInfo }
+export function listCollections({ first = 20, after } = {}) {
+  const params = new URLSearchParams();
+  params.set('first', first);
+  if (after) params.set('after', after);
+  return shopifyClient.get(`/collections?${params.toString()}`);
 }
 
-export async function getByHandle(handle, { first = 24, after = null } = {}) {
-  if (!handle) throw new Error('handle required');
-  const { data } = await http.get(`/collections/${encodeURIComponent(handle)}`, {
-    params: { first, after },
-  });
-  return data;
+export function getCollection(handle, { productsFirst = 50, productsAfter } = {}) {
+  const params = new URLSearchParams();
+  params.set('products_first', productsFirst);
+  if (productsAfter) params.set('products_after', productsAfter);
+  return shopifyClient.get(`/collections/${encodeURIComponent(handle)}?${params.toString()}`);
 }
-
-const collections = { list, getByHandle };
-export default collections;

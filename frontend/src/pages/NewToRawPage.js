@@ -42,7 +42,7 @@ export const NewToRawPage = () => {
         {/* HERO — Why Raw? */}
         <section style={{
           background: COLORS.cream,
-          padding: '60px 24px 50px',
+          padding: '20px 24px 40px',
           textAlign: 'center'
         }}>
           <div style={{ maxWidth: '880px', margin: '0 auto' }}>

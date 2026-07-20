@@ -169,7 +169,7 @@ export const SEOManager = () => {
                   style={{
                     padding: '10px 12px',
                     background: selectedPage === page.name && pageType === 'static' ? '#c8102e' : 'white',
-                    color: selectedPage === page.name && pageType === 'static' ? 'white' : '#3B2A1A',
+                    color: selectedPage === page.name && pageType === 'static' ? 'white' : '#2C2C2C',
                     border: '2px solid ' + (selectedPage === page.name && pageType === 'static' ? '#c8102e' : '#E8DDD0'),
                     borderRadius: '8px',
                     cursor: 'pointer',

@@ -151,7 +151,7 @@ export const AdminDashboard = () => {
                       style={{ 
                         padding: '10px 20px', 
                         background: filter === f ? '#c8102e' : 'white', 
-                        color: filter === f ? 'white' : '#3B2A1A', 
+                        color: filter === f ? 'white' : '#2C2C2C', 
                         border: '2px solid #c8102e', 
                         borderRadius: '8px', 
                         cursor: 'pointer', 

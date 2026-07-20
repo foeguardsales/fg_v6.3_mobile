@@ -1,22 +1,9 @@
-/**
- * Shopify service layer — single entry point.
- *
- * Usage:
- *   import { products, collections, cart, customers, checkout } from 'services/shopify';
- *
- * All calls hit the FastAPI proxy at `${REACT_APP_BACKEND_URL}/api/shopify/*`;
- * the browser never sees the Shopify Admin token.
- */
-import products from './products';
-import collections from './collections';
-import cart from './cart';
-import customers from './customers';
-import checkout from './checkout';
-import pages from './pages';
-import catalog from './catalog';
-import http, { SHOPIFY_BASE, customerTokenStorage, cartIdStorage } from './client';
+// Single import surface for anything Shopify.
+// Usage:  import { products, cart, customers } from 'services/shopify';
 
-export { products, collections, cart, customers, checkout, pages, catalog };
-export { http, SHOPIFY_BASE, customerTokenStorage, cartIdStorage };
-
-export default { products, collections, cart, customers, checkout, pages, catalog };
+export * as products from './products';
+export * as collections from './collections';
+export * as cart from './cart';
+export * as customers from './customers';
+export * as checkout from './checkout';
+export { shopifyClient } from './client';

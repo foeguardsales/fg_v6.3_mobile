@@ -50,14 +50,14 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '12px 0',
+          padding: '9px 0',
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
           fontFamily: "'Barlow Semi Condensed', serif",
           fontSize: '15px',
           fontWeight: '700',
-          color: '#2B2B2B',
+          color: '#2C2C2C',
           letterSpacing: '0.02em',
           textTransform: 'none'
         }}
@@ -67,7 +67,8 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
       </button>
       {isOpen && (
         <div style={{
-          padding: '0 0 16px'
+          padding: '0 0 14px',
+          color: '#2C2C2C'
         }}>
           {children}
         </div>
@@ -98,20 +99,20 @@ const ProductBrandIcons = () => {
           <div style={{
             width: '44px',
             height: '44px',
-            border: '2px solid #3B2A1A',
+            border: '2px solid #2C2C2C',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             background: '#F5F3EF'
           }}>
-            <Icon size={22} color="#3B2A1A" strokeWidth={1.8} />
+            <Icon size={22} color="#2C2C2C" strokeWidth={1.8} />
           </div>
           <span style={{
             fontFamily: "'Barlow Semi Condensed', serif",
             fontSize: '12px',
             fontWeight: 600,
-            color: '#3B2A1A',
+            color: '#2C2C2C',
             lineHeight: 1.25,
             maxWidth: '110px'
           }}>{label}</span>
@@ -134,7 +135,7 @@ const FarmToBowlSection = () => {
         fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
-        color: '#3B2A1A',
+        color: '#2C2C2C',
         margin: '0 0 24px',
         textTransform: 'uppercase',
         letterSpacing: '0.04em'
@@ -156,7 +157,7 @@ const FarmToBowlSection = () => {
               margin: '0 0 12px',
               textTransform: 'none'
             }}>{c.title}</h3>
-            <p style={{ fontSize: '15px', color: '#3B2A1A', lineHeight: 1.65, margin: 0 }}>{c.body}</p>
+            <p style={{ fontSize: '15px', color: '#2C2C2C', lineHeight: 1.65, margin: 0 }}>{c.body}</p>
           </div>
         ))}
       </div>
@@ -187,7 +188,7 @@ const PersonalizeSection = ({ navigate }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: '#3B2A1A',
+        color: '#2C2C2C',
         fontFamily: "'Barlow Semi Condensed', serif",
         fontSize: '13px',
         textTransform: 'uppercase',
@@ -204,11 +205,11 @@ const PersonalizeSection = ({ navigate }) => {
           fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
           fontSize: 'clamp(26px, 3.2vw, 36px)',
           fontWeight: 600,
-          color: '#3B2A1A',
+          color: '#2C2C2C',
           margin: '0 0 16px',
           textTransform: 'none'
         }}>Personalize Your Recipe</h2>
-        <p style={{ fontSize: '16px', color: '#3B2A1A', lineHeight: 1.7, margin: '0 0 20px' }}>
+        <p style={{ fontSize: '16px', color: '#2C2C2C', lineHeight: 1.7, margin: '0 0 20px' }}>
           We craft every recipe by hand, so customization is easy — whether you&apos;re matching a favourite meal or building one from scratch. Perfect for picky eaters, sensitive stomachs, and food allergies.
         </p>
         <button
@@ -266,22 +267,23 @@ const ProductFaqSection = () => {
   ];
   const [openIdx, setOpenIdx] = useState(-1);
   return (
-    <section data-testid="product-faq-section" style={{ marginTop: '8px', marginBottom: '0' }}>
+    <section data-testid="product-faq-section" style={{ marginTop: '0', marginBottom: '0' }}>
       <h2 style={{
         fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-        fontSize: 'clamp(26px, 3.2vw, 36px)',
+        fontSize: 'clamp(22px, 2.8vw, 30px)',
         fontWeight: 600,
-        color: '#3B2A1A',
-        margin: '0 0 16px',
+        color: '#2C2C2C',
+        margin: '0 0 8px',
         textTransform: 'uppercase',
         letterSpacing: '0.04em'
       }}>Frequently Asked</h2>
       <div style={{
-        background: '#F5F3EF',
-        border: '1px solid #D8CFB8',
-        borderRadius: '8px',
-        padding: '8px 24px',
-        boxShadow: 'none'
+        background: 'transparent',
+        border: 'none',
+        borderRadius: 0,
+        padding: '0',
+        boxShadow: 'none',
+        borderTop: '1px solid #E8DDD0'
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         {faqs.map((f, i) => {
@@ -298,14 +300,14 @@ const ProductFaqSection = () => {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  padding: '12px 0',
+                  padding: '9px 0',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
                   fontFamily: "'Barlow Semi Condensed', serif",
                   fontSize: '15px',
-                  fontWeight: 700,
-                  color: '#2B2B2B',
+                  fontWeight: 500,
+                  color: '#2C2C2C',
                   textAlign: 'left',
                   letterSpacing: '0.02em'
                 }}
@@ -314,7 +316,7 @@ const ProductFaqSection = () => {
                 {isOpen ? <ChevronUp size={18} color="#c8102e" /> : <ChevronDown size={18} color="#c8102e" />}
               </button>
               {isOpen && (
-                <div style={{ padding: '0 0 16px', fontSize: '14px', color: '#3B2A1A', lineHeight: 1.7 }}>
+                <div style={{ padding: '0 0 14px', fontSize: '14px', color: '#2C2C2C', lineHeight: 1.7 }}>
                   {f.a}
                 </div>
               )}
@@ -351,10 +353,20 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const [products, setProducts] = useState([]);
   const [orderNotes, setOrderNotes] = useState('');
   const [activeTab, setActiveTab] = useState('description');
-  const [selectedVariant, setSelectedVariant] = useState(0);
-  // Zero-quantity warning tooltip \u2014 shown when the user clicks Add to Cart
-  // without picking a size (quantity is 0). Auto-dismisses after 2.5s.
-  const [showZeroWarning, setShowZeroWarning] = useState(false);
+  // Preload the previously-chosen variant for this product from the cart snapshot.
+  const [selectedVariant, setSelectedVariant] = useState(() => {
+    const v = initialProteins[productId]?.variant;
+    return typeof v === 'number' ? v : 0;
+  });
+
+  // Zero-quantity toast state — shown when the user taps "Add to Cart" with qty 0.
+  const [showZeroToast, setShowZeroToast] = useState(false);
+  const zeroToastTimerRef = useRef(null);
+  useEffect(() => {
+    return () => {
+      if (zeroToastTimerRef.current) clearTimeout(zeroToastTimerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     // Only reset scroll on the standalone product page. When embedded as a bottom-sheet
@@ -408,6 +420,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     const saved = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
     const existing = saved[productId]?.qty;
     setQuantity(existing && existing > 0 ? existing : 0);
+    const v = saved[productId]?.variant;
+    if (typeof v === 'number') setSelectedVariant(v);
   }, [productId, product]);
 
   const handleBackToMenu = () => {
@@ -463,7 +477,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     setQuantity(q);
     const updated = { ...JSON.parse(sessionStorage.getItem('selectedProteins') || '{}') };
     if (q > 0) {
-      updated[productId] = { qty: q, name: product.name, petType: (updated[productId] && updated[productId].petType) || productPet };
+      updated[productId] = {
+        qty: q,
+        name: product.name,
+        petType: (updated[productId] && updated[productId].petType) || productPet,
+        variant: selectedVariant,
+      };
     } else {
       delete updated[productId];
     }
@@ -472,6 +491,19 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     // Notify the menu (rendered behind the sheet) so both stay in unison live.
     window.dispatchEvent(new Event('foeguard:box-updated'));
   };
+
+  // Keep the persisted variant in sync when the user changes it (only if the product
+  // is already in the basket — no side effect for browsing).
+  useEffect(() => {
+    if (!product || quantity <= 0) return;
+    const updated = { ...JSON.parse(sessionStorage.getItem('selectedProteins') || '{}') };
+    if (updated[productId]) {
+      updated[productId] = { ...updated[productId], variant: selectedVariant };
+      sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+      setSelectedProteins(updated);
+      window.dispatchEvent(new Event('foeguard:box-updated'));
+    }
+  }, [selectedVariant, productId, product, quantity]);
 
   if (loading) {
     if (embedded) {
@@ -710,9 +742,9 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             <CollapsibleSection title="Feeding Guide">
               <FeedingGuide value={product.feeding_guide} />
               {product.feeding_guide && (
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#3B2A1A', margin: '12px 0 0' }}>
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: '12px 0 0' }}>
                   For how much to feed, visit our{' '}
-                  <a href="/calculator" style={{ color: '#3B2A1A', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
+                  <a href="/calculator" style={{ color: '#2C2C2C', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
                 </p>
               )}
             </CollapsibleSection>
@@ -723,8 +755,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             )}
             {/* Notes — always open, stationary (no collapse toggle), same design/placement */}
             <div className="pd-notes-static" style={{ borderBottom: '1px solid #E8DDD0', padding: '18px 0 22px' }}>
-              <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, color: '#2B2B2B', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
-              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', color: '#3B2A1A', marginBottom: '6px' }}>
+              <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, color: '#2C2C2C', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
+              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', color: '#2C2C2C', marginBottom: '6px' }}>
                 Add any special notes for your order (e.g. remove an ingredient, preference).
               </label>
               <textarea
@@ -749,18 +781,22 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
           const ctaQty = quantity > 0 ? quantity : 6;
           const totalPrice = getDiscountedPrice(product) * (ctaQty / 6);
           return (
-            <div className={`bb-floating-checkout-wrap ${embedded ? 'bb-floating-checkout-wrap--inline' : ''}`} style={{ position: 'relative' }}>
-              {showZeroWarning && (
-                <div className="pd-zero-tooltip" role="alert" data-testid="pdp-zero-quantity-warning">
+            <div className={`pd-cta-wrap ${embedded ? 'pd-cta-wrap--inline' : ''}`}>
+              {showZeroToast && (
+                <div
+                  className="pd-zero-toast"
+                  role="alert"
+                  data-testid="qty-zero-toast"
+                >
                   Quantity is 0
                 </div>
               )}
               <button
                 onClick={() => {
                   if (quantity <= 0) {
-                    // Show a warning instead of silently defaulting to 6 lb.
-                    setShowZeroWarning(true);
-                    setTimeout(() => setShowZeroWarning(false), 2500);
+                    setShowZeroToast(true);
+                    if (zeroToastTimerRef.current) clearTimeout(zeroToastTimerRef.current);
+                    zeroToastTimerRef.current = setTimeout(() => setShowZeroToast(false), 2200);
                     return;
                   }
                   if (embedded && onClose) onClose(); else navigate('/menu');

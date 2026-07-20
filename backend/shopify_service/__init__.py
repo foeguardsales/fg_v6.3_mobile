@@ -1,18 +1,16 @@
-"""Shopify integration layer.
+"""Shopify integration package.
 
-Exposes two FastAPI routers:
+All Shopify calls (Storefront + Admin) go through this package. The FastAPI
+router in `router.py` is the ONLY surface the React frontend can reach; the
+frontend never talks to Shopify directly. This keeps tokens on the server and
+gives us a single point for caching, logging, webhooks, SEO and AI features.
 
-* ``shopify_router`` -> ``/api/shopify/*`` (Storefront + Admin proxy)
-* ``webhooks_router`` -> ``/api/webhooks/shopify/*`` (signed webhooks)
-
-The frontend must only talk to ``shopify_router``. Shopify itself POSTs
-to ``webhooks_router`` (HMAC-verified) whenever data changes so the
-proxy cache can auto-invalidate.
+Public services:
+  - products      → shopify_service.products
+  - collections   → shopify_service.collections
+  - cart          → shopify_service.cart
+  - customers     → shopify_service.customers (Shopify Customer Auth)
+  - checkout      → shopify_service.checkout
 """
 
-from .router import shopify_router
-from .webhooks import webhooks_router
-from .admin_tools import admin_router as shopify_admin_router
-from .cache import get_cache
-
-__all__ = ["shopify_router", "webhooks_router", "shopify_admin_router", "get_cache"]
+from .client import StorefrontClient, AdminClient, get_storefront, get_admin  # noqa: F401
