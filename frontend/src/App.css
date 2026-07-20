@@ -1616,6 +1616,142 @@ h2, h3, h4 {
 }
 
 /* =============================================================
+   Plan Bar (Prompt 1) — slim single-line strip between category
+   tabs and the "Choose your box size" heading. Shows the current
+   pet (always a dropdown, even if only one plan is saved) and the
+   monthly feeding recommendation when the calculator has been run.
+   Mobile: 14px Barlow 400, single line, no wrap, dropdown tap ≥44px.
+   ============================================================= */
+.plan-bar {
+  margin: 12px 16px 8px;
+  padding: 0;
+}
+@media (min-width: 760px) {
+  .plan-bar { margin: 14px 0 10px; }
+}
+.plan-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid #E8E4DC;
+  background: #FFFFFF;
+  border-radius: 10px;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #2C2C2C;
+  line-height: 1.25;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+}
+.plan-bar-inner::-webkit-scrollbar { display: none; }
+.plan-bar-paw {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.plan-bar-picker {
+  position: relative;
+  flex-shrink: 0;
+}
+.plan-bar-picker-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 6px 10px 6px 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: #2C2C2C;
+  font-weight: 700;
+  border-radius: 8px;
+}
+.plan-bar-picker-btn:hover { background: #F8F6F3; }
+.plan-bar-caret {
+  font-size: 12px;
+  color: #C8102E;
+  margin-left: 2px;
+}
+.plan-bar-pet-name {
+  max-width: 40vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.plan-bar-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 200px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 6px 0;
+  margin: 0;
+  list-style: none;
+  background: #FFFFFF;
+  border: 1px solid #E8E4DC;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 40;
+}
+.plan-bar-menu li { list-style: none; }
+.plan-bar-menu-item {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: #2C2C2C;
+  font-weight: 500;
+}
+.plan-bar-menu-item:hover { background: #F8F6F3; }
+.plan-bar-menu-item.is-active {
+  background: #FFF1F1;
+  color: #C8102E;
+  font-weight: 700;
+}
+.plan-bar-menu-sep {
+  height: 1px;
+  margin: 4px 0;
+  background: #EDEAE7;
+}
+.plan-bar-menu-manage {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: #C8102E;
+  font-weight: 700;
+  font-size: 13px;
+}
+.plan-bar-menu-manage:hover { background: #FFF1F1; }
+.plan-bar-sep {
+  color: #A9A29B;
+  flex-shrink: 0;
+}
+.plan-bar-feeding {
+  color: #2C2C2C;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 480px) {
+  .plan-bar-feeding { font-size: 13px; }
+}
+
+/* =============================================================
    Box-size pills — quick selector for pre-set box sizes (6 / 12 / 24 / 36+ lb)
    Small heading + white pills with warm-gold selected state.
    The floating "% OFF" badge sits ABOVE each pill.

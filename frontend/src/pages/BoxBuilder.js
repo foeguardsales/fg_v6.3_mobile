@@ -102,12 +102,14 @@ export const BoxBuilder = () => {
   const [viewMode, setViewMode] = useState('food'); // 'food' | 'treats'
 
   // Prompt 5: highlight recommended proteins for a specific dog (from a
-  // saved plan) OR show the multi-pet banner.  Both come from URL query.
+  // Plan Bar state — reads all saved pet plans (dogs[]) from localStorage.
+  // - petSnap: full snapshot { dogs: [...] } or null
+  // - currentPetIdx: which dog is currently highlighted (URL ?plan=N)
+  // The plan bar renders only when petSnap.dogs has at least one entry.
   const planIndex = searchParams.get('plan');   // '0', '1', ...
-  const multiFlag = searchParams.get('multi');  // '1'
+  const [petSnap, setPetSnap] = useState(null);
   const [recommendedProteins, setRecommendedProteins] = useState(null); // Set of protein_type strings
   useEffect(() => {
-    if (planIndex === null) { setRecommendedProteins(null); return; }
     let snap = null;
     try {
       snap = JSON.parse(
@@ -116,6 +118,8 @@ export const BoxBuilder = () => {
         'null'
       );
     } catch (_) { snap = null; }
+    setPetSnap(snap && Array.isArray(snap.dogs) && snap.dogs.length ? snap : null);
+    if (planIndex === null) { setRecommendedProteins(null); return; }
     const idx = parseInt(planIndex, 10) || 0;
     const dog = snap?.dogs?.[idx];
     const top = dog?.recommendations?.top_proteins || [];
@@ -128,6 +132,13 @@ export const BoxBuilder = () => {
     const set = new Set(top.map(t => proteinMap[t.protein]).filter(Boolean));
     setRecommendedProteins(set.size ? set : null);
   }, [planIndex]);
+  // Current pet from dropdown (defaults to 0 if a snap exists but no ?plan param)
+  const currentPetIdx = (() => {
+    if (!petSnap) return null;
+    if (planIndex === null) return null; // menu default = blank, no bar unless plan explicitly loaded
+    const n = parseInt(planIndex, 10);
+    return Number.isFinite(n) && n >= 0 && n < petSnap.dogs.length ? n : 0;
+  })();
 
   // Mini top-sheet (legacy, no longer used)
   const [topSheetOpen, setTopSheetOpen] = useState(false);
@@ -556,18 +567,6 @@ export const BoxBuilder = () => {
       )}
 
       <div className="box-builder box-builder--narrow">
-        {/* Prompt 5 — multi-pet, blank menu + single message. */}
-        {multiFlag === '1' && (
-          <div className="menu-multi-plan-banner" data-testid="menu-multi-plan-banner">
-            <span>View your plans in your profile to load recommendations.</span>
-            <a
-              href="/account"
-              data-testid="menu-multi-plan-link"
-              onClick={(e) => { e.preventDefault(); navigate('/account'); }}
-            >Go to profile →</a>
-          </div>
-        )}
-
         {/* Funnel overlay: full-screen choice picker hovering above the menu */}
         <MenuFunnel
           open={funnelOpen}
@@ -609,7 +608,8 @@ export const BoxBuilder = () => {
           }}
         />
 
-        {/* Category Tabs: Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats + Feeding Calculator link on the right */}
+        {/* Category Tabs: Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats
+            (Feeding Calculator removed here — it is offered on the funnel/selector page instead) */}
         {/* Immersive category hero with the menu-selection tabs OVERLAID on the image
             (cinematic — image sits under the selection, less wasted vertical space on mobile) */}
         {(() => {
@@ -627,15 +627,6 @@ export const BoxBuilder = () => {
                     {card.title}
                   </button>
                 ))}
-                <button
-                  data-testid="category-calculator-link"
-                  onClick={() => setCalcOpen(true)}
-                  className="menu-category-calc-link"
-                  aria-label="Open feeding calculator"
-                  type="button"
-                >
-                  Feeding Calculator
-                </button>
               </div>
             </div>
           );
@@ -661,6 +652,21 @@ export const BoxBuilder = () => {
 
         {/* Main Content - Dog or Cat */}
         <>
+            {/* Prompt 1 — Plan Bar: single slim line with pet dropdown + optional feeding amount.
+                Sits between category tabs and CHOOSE YOUR BOX SIZE. Only renders when a
+                saved plan exists AND has been loaded (?plan=N in the URL). */}
+            <PlanBar
+              petSnap={petSnap}
+              currentPetIdx={currentPetIdx}
+              onSwitch={(idx) => {
+                // Instant switch — update URL param, planIndex effect re-runs, highlights refresh.
+                const next = new URLSearchParams(searchParams);
+                next.set('plan', String(idx));
+                setSearchParams(next, { replace: true });
+              }}
+              onManage={() => navigate('/account')}
+            />
+
             {showBoxSize && (
               <BoxSizePills
                 boxSize={boxSize}
@@ -1276,6 +1282,95 @@ const StockUpSave = ({ guide = [], currentLbs = 0 }) => {
   );
 };
 
+
+// ===== Plan Bar (Prompt 1) =====
+// Slim single-line strip that appears between the category tabs and the
+// "CHOOSE YOUR BOX SIZE" heading once the user has loaded a saved pet plan.
+//
+// Format: 🐾 [Pet Name ▾]  ·  Recommended feeding: X lb/month
+//
+// - Pet-name is ALWAYS a dropdown (even for a single pet — the menu opens
+//   with a "Manage plans" shortcut but no other pets to switch to).
+// - Feeding amount is hidden if the pet has no calculator/box-parameter data.
+// - Mobile: 14px Barlow 400, single line, no wrap; dropdown min tap 44px.
+const PlanBar = ({ petSnap, currentPetIdx, onSwitch, onManage }) => {
+  const [open, setOpen] = useState(false);
+  const wrapRef = React.useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDoc = (e) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    return () => document.removeEventListener('mousedown', onDoc);
+  }, [open]);
+
+  // Empty state → no bar. Default menu is clean-slate.
+  if (!petSnap || !Array.isArray(petSnap.dogs) || petSnap.dogs.length === 0) return null;
+  if (currentPetIdx === null || currentPetIdx === undefined) return null;
+  const dog = petSnap.dogs[currentPetIdx];
+  if (!dog) return null;
+
+  // Feeding-per-month is derived from the calculator's weekly estimate.
+  // If neither weekly_lbs_estimate nor box_parameters exist, hide the amount.
+  const weekly = dog?.box_parameters?.weekly_lbs_estimate;
+  const monthlyLbs = (typeof weekly === 'number' && weekly > 0)
+    ? Math.round(weekly * 4.33 * 10) / 10 : null;
+
+  return (
+    <div className="plan-bar" data-testid="plan-bar" ref={wrapRef}>
+      <div className="plan-bar-inner">
+        <span className="plan-bar-paw" aria-hidden="true">🐾</span>
+        <div className="plan-bar-picker">
+          <button
+            type="button"
+            className="plan-bar-picker-btn"
+            data-testid="plan-bar-picker"
+            aria-haspopup="listbox"
+            aria-expanded={open ? 'true' : 'false'}
+            onClick={() => setOpen(v => !v)}
+          >
+            <span className="plan-bar-pet-name">{dog.name}</span>
+            <span className="plan-bar-caret" aria-hidden="true">▾</span>
+          </button>
+          {open && (
+            <ul className="plan-bar-menu" role="listbox" data-testid="plan-bar-menu">
+              {petSnap.dogs.map((d, i) => (
+                <li key={d.dog_id || `pet-${i}`}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={i === currentPetIdx}
+                    data-testid={`plan-bar-option-${i}`}
+                    className={`plan-bar-menu-item ${i === currentPetIdx ? 'is-active' : ''}`}
+                    onClick={() => { setOpen(false); if (i !== currentPetIdx) onSwitch(i); }}
+                  >{d.name}</button>
+                </li>
+              ))}
+              <li className="plan-bar-menu-sep" aria-hidden="true" />
+              <li>
+                <button
+                  type="button"
+                  className="plan-bar-menu-manage"
+                  data-testid="plan-bar-manage"
+                  onClick={() => { setOpen(false); onManage && onManage(); }}
+                >Manage plans in profile →</button>
+              </li>
+            </ul>
+          )}
+        </div>
+        {monthlyLbs !== null && (
+          <>
+            <span className="plan-bar-sep" aria-hidden="true">·</span>
+            <span className="plan-bar-feeding" data-testid="plan-bar-feeding">
+              Recommended feeding: {monthlyLbs} lb/month
+            </span>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
 
 // ===== Box-size pills — quick selector for pre-set box sizes (6 / 12 / 24 / 36+ lb) =====
 // Small "Choose your box size" heading + white pills with warm-gold selected state.

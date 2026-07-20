@@ -316,23 +316,19 @@ export const MealPlanPage = () => {
       // 5. Let the rest of the app know auth changed so the navbar re-reads.
       window.dispatchEvent(new Event('foeguard:auth-changed'));
 
-      // 6. Redirect to the menu.  Single dog + no consultation → highlight
-      //    recommended proteins.  Multi-dog → show blank menu + a link to
-      //    the profile page (per Prompt 5).  Consultation dogs stay on the
-      //    success screen so the user sees the personal-outreach message.
+      // 6. Redirect to the menu.  Plan Bar (Prompt 1) is now the single UI for
+      //    switching between pets on the /menu page — so we always land on
+      //    plan=0 regardless of dog count. The user can switch pets from the
+      //    dropdown in the bar. Consultation dogs stay on the success screen
+      //    so the user sees the personal-outreach message.
       const consultation = dogs.some(d =>
         (d.health_issues || []).some(h => CONSULTATION_ISSUES.includes(h))
       );
       if (!consultation) {
         // Skip the menu funnel — user is coming from a completed quiz.
         sessionStorage.setItem('foeguard_selection', 'shop-raw');
-        if (enrichedDogs.length === 1) {
-          sessionStorage.setItem('foeguard_pet_profile', JSON.stringify(sessionSnapshot));
-          navigate('/menu?plan=0');
-          return;
-        }
-        // Multi-pet — blank menu with a single message directing to profile.
-        navigate('/menu?multi=1');
+        sessionStorage.setItem('foeguard_pet_profile', JSON.stringify(sessionSnapshot));
+        navigate('/menu?plan=0');
         return;
       }
 
