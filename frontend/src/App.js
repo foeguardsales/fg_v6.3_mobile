@@ -65,9 +65,12 @@ function App() {
       try {
         const { data } = await axios.get(`${API}/stripe-public-key`);
         stripePromise = loadStripe(data.publicKey);
-        setStripeReady(true);
       } catch (error) {
-        console.error('Failed to load Stripe:', error);
+        console.error('Failed to load Stripe (checkout will be unavailable, browsing still works):', error);
+        stripePromise = null;
+      } finally {
+        // Always unblock UI — Stripe is only needed at checkout, browsing must work without it.
+        setStripeReady(true);
       }
     };
     initStripe();

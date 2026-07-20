@@ -5692,20 +5692,120 @@ frontend:
             creating a new account without completing the quiz, which is beyond the scope
             of this verification batch.
 
+  - task: "PRIMARY FIX — App stuck on Loading screen (missing .env + Stripe finally block)"
+    implemented: true
+    working: true
+    file: "/app/frontend/.env, /app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            User reported "I can't see preview" - app was stuck on "Loading..." screen.
+            ROOT CAUSE: 
+            1. /app/frontend/.env was missing, so REACT_APP_BACKEND_URL was undefined
+            2. App.js Stripe init useEffect only called setStripeReady(true) on success,
+               so if Stripe API call failed, app would be stuck on Loading forever.
+            FIX APPLIED:
+            1. Created /app/frontend/.env with REACT_APP_BACKEND_URL=https://d261c4f2-12d7-4cbb-88da-af29faee55ae.preview.emergentagent.com
+            2. Modified App.js lines 64-77 to add finally block that calls setStripeReady(true)
+               regardless of Stripe API success/failure. This unblocks UI - Stripe is only
+               needed at checkout, browsing must work without it.
+            IMPORTANT CONTEXT: Backend is NOT running on this pod (no backend .env file).
+            All /api/* calls will return 502. This is EXPECTED and NOT a bug.
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PRIMARY FIX VERIFIED — App no longer stuck on Loading screen
+            
+            **Test Environment:**
+            - URL: https://d261c4f2-12d7-4cbb-88da-af29faee55ae.preview.emergentagent.com
+            - Desktop viewport: 1920×1080
+            
+            **TEST RESULTS:**
+            
+            ✅ PRIMARY FIX: Landing page renders (NOT stuck on "Loading..." screen)
+            ✅ Landing page elements render correctly:
+               - Hero section with hero image
+               - Hero headline: "The freshest meal your dog has ever eaten."
+               - Shop Now button (data-testid="hero-shop-now")
+               - Navbar
+               - "Shop Farm Fresh" section with 3 cards
+            
+            ✅ /menu page renders with Build-a-Box interface:
+               - Top nav tabs: "Raw Dog Food", "Raw Dog Treats", "Raw Cat Food", "Raw Cat Treats"
+               - Category banner with "RAW DOG FOOD" title
+               - "CHOOSE YOUR BOX SIZE" header
+               - Four pill-shaped buttons: 6 lb, 12 lb, 24 lb, 36 lb+
+               - Discount badges: 5% OFF (above 12 lb), 10% OFF (above 24 lb), 15% OFF (above 36 lb+)
+            
+            ✅ CSS regression check:
+               - Collection section headings "Comfort Dinner" and "Primal Feast" are left-aligned (text-align: start)
+               - No product cards appear (expected - backend 502)
+            
+            ✅ Other public pages render without crashing:
+               - /about (3488 chars content)
+               - /faq (1874 chars content)
+               - /delivery (2077 chars content)
+               - /policies (1360 chars content)
+               - /terms (1452 chars content)
+            
+            ✅ JavaScript console errors check:
+               - ALL errors are EXPECTED (502 API responses, Failed to load Stripe, Failed to load products/treats, net::ERR_ABORTED on cdn-cgi/rum)
+               - One minor React warning about empty src attribute (non-critical)
+               - NO critical JavaScript errors (TypeError, ReferenceError, etc.)
+            
+            ⚠ MINOR OBSERVATION: No box-size pill is selected by default (review_request mentioned 12 lb should be selected by default). However, this is a very minor UI state issue and does NOT affect the primary fix verification.
+            
+            **VERDICT:** PRIMARY FIX SUCCESSFUL. The app is no longer stuck on "Loading..." screen. All core UI elements render correctly. Backend 502 errors are expected and do not prevent frontend from functioning.
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 14
+  test_sequence: 15
   run_ui: true
 
 test_plan:
   current_focus:
-    - "BUG A — Box-size buttons taller + side padding (mobile + desktop)"
+    - "PRIMARY FIX — App stuck on Loading screen (missing .env + Stripe finally block)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+    - agent: "testing"
+      message: |
+        ✅ PRIMARY FIX VERIFICATION COMPLETED — APP NO LONGER STUCK ON LOADING SCREEN
+        
+        **Test Date:** 2026-07-20
+        **Test URL:** https://d261c4f2-12d7-4cbb-88da-af29faee55ae.preview.emergentagent.com
+        
+        **PRIMARY FIX VERIFIED:**
+        The app is no longer stuck on "Loading..." screen. Landing page renders correctly
+        with all UI elements (hero, navbar, Shop Now button, Shop Farm Fresh section).
+        
+        **WHAT WAS TESTED:**
+        1. ✅ Landing page renders (not stuck on Loading)
+        2. ✅ Landing page elements render correctly
+        3. ✅ /menu page shows Build-a-Box interface with box-size selector
+        4. ✅ CSS regression check (collection headings left-aligned)
+        5. ✅ Other public pages render without crashing
+        6. ✅ No critical JavaScript errors (only expected 502s, Stripe failures, CDN errors)
+        
+        **MINOR OBSERVATION:**
+        - No box-size pill is selected by default (review_request mentioned 12 lb should be
+          selected by default). This is a very minor UI state issue and does NOT affect the
+          primary fix verification.
+        
+        **IMPORTANT CONTEXT:**
+        - Backend is NOT running on this pod (no backend .env file)
+        - ALL /api/* calls return 502 - this is EXPECTED and NOT a bug
+        - Stripe/Cloudflare/CDN errors are EXPECTED and NOT bugs
+        
+        **VERDICT:** PRIMARY FIX SUCCESSFUL. Ready for user verification.
+    
     - agent: "testing"
       message: |
         ✅ FOCUSED RE-TEST COMPLETED — BOTH FIXES VERIFIED (100% SUCCESS)
