@@ -64,7 +64,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
   const [selectedImageIndex] = useState(0);
   // Preload quantity + variant from the cart snapshot so the customer can edit
   // their previous selection when they re-open the treat page.
-  const initialTreatsPreload = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+  const initialTreatsPreload = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
   const existingTreat = initialTreatsPreload.find(t => t.treat_id === treatId);
   const [quantity, setQuantity] = useState(existingTreat && existingTreat.quantity > 0 ? existingTreat.quantity : 1);
   const [cartOpen, setCartOpen] = useState(false);
@@ -75,8 +75,8 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
 
   // Initialize from sessionStorage immediately
   const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 18;
-  const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
-  const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+  const initialProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
+  const initialTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
 
   const [boxSize, setBoxSize] = useState(initialBoxSize);
   const [selectedProteins, setSelectedProteins] = useState(initialProteins);
@@ -91,8 +91,8 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
 
     const syncFromStorage = () => {
       const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
-      const savedProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
-      const savedTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+      const savedProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
+      const savedTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
 
       if (savedBoxSize && savedBoxSize !== boxSize) setBoxSize(savedBoxSize);
       setSelectedProteins(savedProteins);
@@ -170,7 +170,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
       });
     }
 
-    sessionStorage.setItem('selectedTreats', JSON.stringify(updatedTreats));
+    localStorage.setItem('selectedTreats', JSON.stringify(updatedTreats));
     sessionStorage.setItem('boxSize', boxSize.toString());
 
     if (orderNotes) {
@@ -264,7 +264,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
             onAdjustProtein={(productId, productName, newQty) => {
               setSelectedProteins(prev => {
                 const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
-                sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                localStorage.setItem('selectedProteins', JSON.stringify(updated));
                 return updated;
               });
             }}
@@ -272,14 +272,14 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
               setSelectedProteins(prev => {
                 const updated = { ...prev };
                 delete updated[productId];
-                sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                localStorage.setItem('selectedProteins', JSON.stringify(updated));
                 return updated;
               });
             }}
             onRemoveTreat={(tid) => {
               setSelectedTreats(prev => {
                 const updated = prev.filter(t => t.treat_id !== tid);
-                sessionStorage.setItem('selectedTreats', JSON.stringify(updated));
+                localStorage.setItem('selectedTreats', JSON.stringify(updated));
                 return updated;
               });
             }}

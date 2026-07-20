@@ -18,9 +18,30 @@ const getBulkDiscount = (totalLbs) => {
 const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop';
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  // Prompt 3 — CART PERSISTENCE: hydrate from localStorage on mount, then
+  // mirror every state change back to localStorage. Cart survives page reloads,
+  // route changes and tab close. Only cleared when the user manually removes items.
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const raw = localStorage.getItem('foeguard_cart_items');
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) { return []; }
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isSubscription, setIsSubscription] = useState(false);
+  const [isSubscription, setIsSubscription] = useState(() => {
+    try { return localStorage.getItem('foeguard_cart_subscription') === '1'; }
+    catch (_) { return false; }
+  });
+
+  React.useEffect(() => {
+    try { localStorage.setItem('foeguard_cart_items', JSON.stringify(cartItems)); }
+    catch (_) { /* quota / private mode */ }
+  }, [cartItems]);
+  React.useEffect(() => {
+    try { localStorage.setItem('foeguard_cart_subscription', isSubscription ? '1' : '0'); }
+    catch (_) { /* ignore */ }
+  }, [isSubscription]);
 
   const totalLbs = cartItems.reduce((sum, item) => sum + (item.lbs * item.quantity), 0);
   const bulkDiscount = getBulkDiscount(totalLbs);
@@ -102,7 +123,7 @@ export const SlideCart = () => {
 
         {lbsToNextTier > 0 && cartItems.length > 0 && (
           <div style={{ padding: '12px 20px', background: '#FFF8E1', fontSize: '14px', color: '#E65100' }}>
-            Add {lbsToNextTier} more lbs to save {nextTierDiscount}!
+            Add {lbsToNextTier} more lb to save {nextTierDiscount}!
           </div>
         )}
 
@@ -118,7 +139,7 @@ export const SlideCart = () => {
                 <img src={item.image || DEFAULT_IMAGE} alt="" style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover' }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: '600', fontSize: '15px' }}>{item.name}</div>
-                  <div style={{ fontSize: '13px', color: '#666' }}>{item.lbs} lbs</div>
+                  <div style={{ fontSize: '13px', color: '#666' }}>{item.lbs} lb</div>
                   <div style={{ fontWeight: '600', color: '#c8102e', marginTop: '4px' }}>${item.price.toFixed(2)}</div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -150,7 +171,7 @@ export const SlideCart = () => {
         {cartItems.length > 0 && (
           <div style={{ padding: '16px 20px', borderTop: '1px solid #eee' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '14px' }}>
-              <span>Subtotal ({totalLbs} lbs)</span>
+              <span>Subtotal ({totalLbs} lb)</span>
               <span>${subtotal.toFixed(2)}</span>
             </div>
             {totalDiscount > 0 && (

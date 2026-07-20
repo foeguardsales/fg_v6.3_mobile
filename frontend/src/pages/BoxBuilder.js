@@ -165,8 +165,8 @@ export const BoxBuilder = () => {
   
   // Load from sessionStorage on mount
   const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 6;
-  const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
-  const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+  const initialProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
+  const initialTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
   
   const [boxSize, setBoxSize] = useState(initialBoxSize);
   const [products, setProducts] = useState([]);
@@ -179,6 +179,20 @@ export const BoxBuilder = () => {
   const [loading, setLoading] = useState(true);
   const [subscriptionPlan, setSubscriptionPlan] = useState(null); // null or 'every_N_weeks'
   const [subOpen, setSubOpen] = useState(false); // collapsible toggle
+
+  // Prompt 2 — AUTO TIER SHIFT: whenever total lbs crosses a discount-tier
+  // boundary (6 / 12 / 24 / 36), snap boxSize to the correct tier so pricing
+  // + progress bar reflect real-time. Works both directions (scale up + down).
+  const currentTotalLbs = Object.values(selectedProteins || {}).reduce((s, d) => s + (Number(d?.qty) || 0), 0);
+  useEffect(() => {
+    if (currentTotalLbs <= 0) return;                    // don't shift on empty box
+    const correctTier =
+      currentTotalLbs > 24 ? 36 :
+      currentTotalLbs > 12 ? 24 :
+      currentTotalLbs > 6  ? 12 : 6;
+    if (correctTier !== boxSize) setBoxSize(correctTier);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTotalLbs]);
 
   // Restore menu scroll position on mount + save on scroll (both window + #root, since App may use either)
   useEffect(() => {
@@ -264,8 +278,8 @@ export const BoxBuilder = () => {
   // Live unison: when the product sheet edits the box, re-read it so the menu stays in sync.
   useEffect(() => {
     const sync = () => {
-      setSelectedProteins(JSON.parse(sessionStorage.getItem('selectedProteins') || '{}'));
-      setSelectedTreats(JSON.parse(sessionStorage.getItem('selectedTreats') || '[]'));
+      setSelectedProteins(JSON.parse(localStorage.getItem('selectedProteins') || '{}'));
+      setSelectedTreats(JSON.parse(localStorage.getItem('selectedTreats') || '[]'));
     };
     window.addEventListener('foeguard:box-updated', sync);
     return () => window.removeEventListener('foeguard:box-updated', sync);
@@ -315,8 +329,8 @@ export const BoxBuilder = () => {
       
       // Sync all cart state from sessionStorage when returning to menu
       const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
-      const savedProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
-      const savedTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+      const savedProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
+      const savedTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
       
       if (savedBoxSize && savedBoxSize !== boxSize) {
         setBoxSize(savedBoxSize);
@@ -461,7 +475,7 @@ export const BoxBuilder = () => {
         const pet = productPetBucket(fullProduct, existing.petType || petType);
         next[productId] = { qty: quantity, name: productName, petType: pet };
       }
-      sessionStorage.setItem('selectedProteins', JSON.stringify(next));
+      localStorage.setItem('selectedProteins', JSON.stringify(next));
       return next;
     });
   };
@@ -531,9 +545,9 @@ export const BoxBuilder = () => {
             onSuccess={() => {
               setOrderComplete(true);
               setSelectedProteins({});
-              sessionStorage.setItem('selectedProteins', JSON.stringify({}));
+              localStorage.setItem('selectedProteins', JSON.stringify({}));
               setSelectedTreats([]);
-              sessionStorage.setItem('selectedTreats', JSON.stringify([]));
+              localStorage.setItem('selectedTreats', JSON.stringify([]));
               setSearchParams({ step: 'success' });
             }}
           />
@@ -876,7 +890,7 @@ export const BoxBuilder = () => {
                     ...prev, 
                     [productId]: { qty: newQty, name: productName }
                   };
-                  sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                  localStorage.setItem('selectedProteins', JSON.stringify(updated));
                   return updated;
                 });
               }}
@@ -884,14 +898,14 @@ export const BoxBuilder = () => {
                 setSelectedProteins(prev => {
                   const updated = { ...prev };
                   delete updated[productId];
-                  sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                  localStorage.setItem('selectedProteins', JSON.stringify(updated));
                   return updated;
                 });
               }}
               onRemoveTreat={(treatId) => {
                 setSelectedTreats(prev => {
                   const updated = prev.filter(t => t.treat_id !== treatId);
-                  sessionStorage.setItem('selectedTreats', JSON.stringify(updated));
+                  localStorage.setItem('selectedTreats', JSON.stringify(updated));
                   return updated;
                 });
               }}
@@ -939,7 +953,7 @@ export const BoxBuilder = () => {
           onClose={() => {
             setActiveProductId(null);
             // Re-sync quantity changes made inside the modal back to the menu
-            setSelectedProteins(JSON.parse(sessionStorage.getItem('selectedProteins') || '{}'));
+            setSelectedProteins(JSON.parse(localStorage.getItem('selectedProteins') || '{}'));
           }}
         />
       )}
@@ -950,7 +964,7 @@ export const BoxBuilder = () => {
           treatId={activeTreatId}
           onClose={() => {
             setActiveTreatId(null);
-            setSelectedTreats(JSON.parse(sessionStorage.getItem('selectedTreats') || '[]'));
+            setSelectedTreats(JSON.parse(localStorage.getItem('selectedTreats') || '[]'));
           }}
         />
       )}
@@ -1410,24 +1424,23 @@ const BoxSizePills = ({ boxSize, onChange, rates = DOG_DISCOUNT_RATES }) => (
   </div>
 );
 
-// ===== Weight progress strip — thin, fixed above the floating "View Cart" bar =====
-// Tracks the current lbs packed vs. the chosen target box size. Hidden when there
-// are no meals in the box (no visual noise on an empty menu).
+// ===== Weight progress strip — thin fill bar flush against the top of the floating cart button =====
+// Uses .weight-progress-bar (CSS position: fixed; sits directly on top of .bb-floating-checkout).
+// - Track = thin #E8E4DC line, fill = solid #C8102E (Barn Red)
+// - Progress caps at 100% but visual continues to reflect over-target (past 36lb tier stays locked at 15%)
+// - Counter text sits ABOVE the bar as a single slim line (no box container) — mobile === desktop
 const WeightProgressBar = ({ currentLbs = 0, targetLbs = 6 }) => {
   if (!currentLbs || currentLbs <= 0) return null;
   const pct = Math.min(100, Math.round((currentLbs / Math.max(1, targetLbs)) * 100));
   return (
     <div className="weight-progress-bar" data-testid="weight-progress-bar" role="status" aria-live="polite">
-      <div className="weight-progress-track">
-        <div
-          className="weight-progress-fill"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
       <div className="weight-progress-label">
-        <span className="weight-progress-current">{currentLbs} lbs</span>
+        <span className="weight-progress-current">{currentLbs} lb</span>
         <span className="weight-progress-sep">/</span>
-        <span className="weight-progress-target">{targetLbs} lbs packed</span>
+        <span className="weight-progress-target">{targetLbs} lb</span>
+      </div>
+      <div className="weight-progress-track">
+        <div className="weight-progress-fill" style={{ width: `${pct}%` }} />
       </div>
     </div>
   );

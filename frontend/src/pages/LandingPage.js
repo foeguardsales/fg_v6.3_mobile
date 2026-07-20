@@ -120,8 +120,8 @@ const ModernNavbar = () => {
   useEffect(() => {
     const computeMenuCount = () => {
       try {
-        const proteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
-        const treats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+        const proteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
+        const treats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
         const proteinUnits = Object.values(proteins).filter(p => p && p.qty > 0).length;
         const treatUnits = (treats || []).reduce((s, t) => s + (t.quantity || 1), 0);
         setMenuCount(proteinUnits + treatUnits);

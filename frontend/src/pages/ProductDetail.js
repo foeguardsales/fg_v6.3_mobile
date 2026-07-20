@@ -338,8 +338,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   
   // Initialize from sessionStorage immediately
   const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 6;
-  const initialProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
-  const initialTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+  const initialProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
+  const initialTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
   
   // Slider starts at whatever is already in the box for this product (connected to the menu)
   const [quantity, setQuantity] = useState(() => {
@@ -380,8 +380,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     // Sync with sessionStorage whenever the page becomes visible
     const syncFromStorage = () => {
       const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
-      const savedProteins = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
-      const savedTreats = JSON.parse(sessionStorage.getItem('selectedTreats') || '[]');
+      const savedProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
+      const savedTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
       
       if (savedBoxSize && savedBoxSize !== boxSize) setBoxSize(savedBoxSize);
       setSelectedProteins(savedProteins);
@@ -417,7 +417,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   // Keep the size slider connected to the menu — once the product/id is known,
   // start it at whatever quantity is already in the in-progress box.
   useEffect(() => {
-    const saved = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+    const saved = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
     const existing = saved[productId]?.qty;
     setQuantity(existing && existing > 0 ? existing : 0);
     const v = saved[productId]?.variant;
@@ -426,10 +426,10 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
 
   const handleBackToMenu = () => {
     // Persist edits to a meal that's already in the basket when leaving (per spec).
-    const existing = JSON.parse(sessionStorage.getItem('selectedProteins') || '{}');
+    const existing = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
     if (existing[productId]?.qty > 0 && product) {
       existing[productId] = { qty: quantity, name: product.name, petType: existing[productId].petType || productPet };
-      sessionStorage.setItem('selectedProteins', JSON.stringify(existing));
+      localStorage.setItem('selectedProteins', JSON.stringify(existing));
     }
     if (embedded && onClose) {
       onClose();
@@ -475,7 +475,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     if (!product) return;
     const q = Math.max(0, newQty);
     setQuantity(q);
-    const updated = { ...JSON.parse(sessionStorage.getItem('selectedProteins') || '{}') };
+    const updated = { ...JSON.parse(localStorage.getItem('selectedProteins') || '{}') };
     if (q > 0) {
       updated[productId] = {
         qty: q,
@@ -486,7 +486,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     } else {
       delete updated[productId];
     }
-    sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+    localStorage.setItem('selectedProteins', JSON.stringify(updated));
     setSelectedProteins(updated);
     // Notify the menu (rendered behind the sheet) so both stay in unison live.
     window.dispatchEvent(new Event('foeguard:box-updated'));
@@ -496,10 +496,10 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   // is already in the basket — no side effect for browsing).
   useEffect(() => {
     if (!product || quantity <= 0) return;
-    const updated = { ...JSON.parse(sessionStorage.getItem('selectedProteins') || '{}') };
+    const updated = { ...JSON.parse(localStorage.getItem('selectedProteins') || '{}') };
     if (updated[productId]) {
       updated[productId] = { ...updated[productId], variant: selectedVariant };
-      sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+      localStorage.setItem('selectedProteins', JSON.stringify(updated));
       setSelectedProteins(updated);
       window.dispatchEvent(new Event('foeguard:box-updated'));
     }
@@ -582,7 +582,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             onAdjustProtein={(productId, productName, newQty) => {
               setSelectedProteins(prev => {
                 const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
-                sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                localStorage.setItem('selectedProteins', JSON.stringify(updated));
                 return updated;
               });
             }}
@@ -590,14 +590,14 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               setSelectedProteins(prev => {
                 const updated = { ...prev };
                 delete updated[productId];
-                sessionStorage.setItem('selectedProteins', JSON.stringify(updated));
+                localStorage.setItem('selectedProteins', JSON.stringify(updated));
                 return updated;
               });
             }}
             onRemoveTreat={(treatId) => {
               setSelectedTreats(prev => {
                 const updated = prev.filter(t => t.treat_id !== treatId);
-                sessionStorage.setItem('selectedTreats', JSON.stringify(updated));
+                localStorage.setItem('selectedTreats', JSON.stringify(updated));
                 return updated;
               });
             }}

@@ -5773,7 +5773,7 @@ h2, h3, h4 {
 .menu-collection-hero-img {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5;            /* mobile: portrait 4:5 like the reference */
+  aspect-ratio: 16 / 9;           /* mobile: cinematic 16:9 — user sees hero, box-size pills, and top of first product without scrolling */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -5944,6 +5944,66 @@ h2, h3, h4 {
   max-width: 100%;
 }
 /* .bb-box-size-label + .box-size-slider--mustard — REMOVED (unused, replaced by .box-pill) */
+
+/* ===== Weight progress bar — thin fill strip that sits FLUSH against the top edge
+   of the floating cart button. Bar and button read as ONE unified element:
+   [slim single-line counter]  ← plain text, no container, mobile === desktop
+   [━━━━━━━━━━━━━━━━━━━━━━━]  ← 4px track, #C8102E fill, zero gap to button
+   [       VIEW CART • $XX      ]
+   Width is matched to .bb-floating-checkout (same left/right insets).
+   ============================================================= */
+.weight-progress-bar {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  /* button height ≈ 56px (padding 16px+16px + 16px line-height). Sit exactly on its top. */
+  bottom: calc(56px + 18px + env(safe-area-inset-bottom));
+  z-index: 998;                                /* same layer as .bb-floating-checkout */
+  pointer-events: none;                        /* purely informational */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.weight-progress-label {
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2C2C2C;
+  line-height: 1.2;
+  padding: 0;
+  background: transparent;
+  border: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.weight-progress-sep { opacity: 0.5; }
+.weight-progress-track {
+  width: 100%;
+  height: 4px;
+  background: #E8E4DC;
+  overflow: hidden;
+  border-radius: 6px 6px 0 0;                  /* rounded top only — bottom is flush against the button */
+  margin: 0;
+}
+.weight-progress-fill {
+  height: 100%;
+  background: #C8102E;                         /* single solid Barn Red — no gradient */
+  transition: width 0.15s linear;
+}
+@media (min-width: 760px) {
+  .weight-progress-bar {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    /* Button on desktop uses width 100% max-width 1100px */
+    width: 100%;
+    max-width: 1100px;
+    /* Desktop button padding 18px/32px + font 17px → height ≈ 56px, bottom 16px */
+    bottom: calc(56px + 16px);
+  }
+}
 
 /* ===== Floating bottom checkout — rounded pill, qty-pill style ===== */
 .bb-floating-checkout {
@@ -6992,24 +7052,30 @@ h2, h3, h4 {
   }
 }
 
-/* Floating cart button on the product detail page (both full page + inline modal) — inherits bb-floating-checkout styling */
+/* Floating cart button on the product/treat detail page — matches the /menu behaviour:
+   position:fixed overlaying the viewport at the bottom, NEVER planted at the bottom of
+   page content. Same layout for standalone AND embedded (modal) product pages. */
 .bb-floating-checkout--inline {
-  position: sticky !important;
-  bottom: 8px;
-  left: auto !important;
-  right: auto !important;
+  position: fixed !important;
+  bottom: calc(18px + env(safe-area-inset-bottom)) !important;
+  left: 16px !important;
+  right: 16px !important;
   transform: translateZ(0) !important;
   -webkit-transform: translateZ(0) !important;
   will-change: transform;
-  width: calc(100% - 24px) !important;
+  width: auto !important;
   max-width: none !important;
-  margin: 18px 12px 8px !important;
-  z-index: 6;
+  margin: 0 !important;
+  z-index: 998;
 }
 @media (min-width: 760px) {
   .bb-floating-checkout--inline {
-    bottom: 14px;
-    margin: 18px 16px 14px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) translateZ(0) !important;
+    bottom: 16px !important;
+    width: 100% !important;
+    max-width: 1100px !important;
   }
 }
 
