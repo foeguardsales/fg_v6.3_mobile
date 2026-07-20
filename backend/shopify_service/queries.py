@@ -158,3 +158,59 @@ USER_ERRORS_FRAGMENT = """
 fragment UserErr on CustomerUserError { code field message }
 fragment CartErr on CartUserError { code field message }
 """
+
+# --- Full queries used by seo_service (kept here so all GraphQL lives together) --
+
+STOREFRONT_SHOP_QUERY = """
+query StorefrontShop {
+  shop {
+    name
+    description
+    primaryDomain { host url }
+    brand {
+      slogan
+      shortDescription
+      logo { image { url altText width height } }
+      squareLogo { image { url altText width height } }
+    }
+  }
+}
+"""
+
+PRODUCT_BY_HANDLE_QUERY = PRODUCT_FULL_FRAGMENT + """
+query ProductByHandle($handle: String!) {
+  product(handle: $handle) { ...ProductFull }
+}
+"""
+
+PRODUCTS_LIST_QUERY = PRODUCT_CARD_FRAGMENT + """
+query ProductsList($first: Int = 50, $after: String) {
+  products(first: $first, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes { ...ProductCard updatedAt }
+  }
+}
+"""
+
+COLLECTIONS_LIST_QUERY = COLLECTION_CARD_FRAGMENT + """
+query CollectionsList($first: Int = 50, $after: String) {
+  collections(first: $first, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes { ...CollectionCard updatedAt }
+  }
+}
+"""
+
+COLLECTION_BY_HANDLE_QUERY = COLLECTION_CARD_FRAGMENT + PRODUCT_CARD_FRAGMENT + """
+query CollectionByHandle($handle: String!, $first: Int = 24, $after: String) {
+  collection(handle: $handle) {
+    ...CollectionCard
+    updatedAt
+    seo { title description }
+    products(first: $first, after: $after) {
+      pageInfo { hasNextPage endCursor }
+      nodes { ...ProductCard updatedAt }
+    }
+  }
+}
+"""

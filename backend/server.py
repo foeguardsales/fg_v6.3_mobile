@@ -975,17 +975,19 @@ async def delete_promo(code: str, admin: dict = Depends(get_admin_user)):
 # ============================================================================
 
 # ---- Shopify integration router -------------------------------------------
-# Mounts under api_router so effective prefix is `/api/shopify/*`. All
-# Shopify functionality (Storefront + Admin) is proxied through here so the
-# frontend never talks to Shopify directly and the Admin token stays server-
-# side.
-from shopify_service import shopify_router, webhooks_router, shopify_admin_router  # noqa: E402
-api_router.include_router(shopify_router)
-# Admin-only tools (webhook registration) — gated by X-Foeguard-Admin-Key.
+# The Shopify router already carries its own `/api/shopify` prefix, so we
+# mount it directly on `app` (not on `api_router`). It surfaces
+# products / collections / cart / customers / checkout, all backed by the
+# Storefront + Admin GraphQL APIs (tokens stay server-side).
+from shopify_service.router import router as shopify_core_router  # noqa: E402
+app.include_router(shopify_core_router)
+
+# ---- Shopify webhooks + admin tooling ------------------------------------
+# Webhook receivers (HMAC-verified) at /api/webhooks/shopify/*, and admin-
+# gated helpers at /api/shopify/admin/* for programmatically registering
+# webhooks against the merchant's store.
+from shopify_service import webhooks_router, shopify_admin_router  # noqa: E402
 api_router.include_router(shopify_admin_router)
-# Shopify webhooks POST straight to /api/webhooks/shopify/* (HMAC-verified).
-# These invalidate the response cache so the headless frontend always
-# reflects the merchant's latest data.
 api_router.include_router(webhooks_router)
 
 # ---- SEO router -----------------------------------------------------------
@@ -996,10 +998,6 @@ from seo_service import seo_router  # noqa: E402
 api_router.include_router(seo_router)
 
 app.include_router(api_router)
-
-# Shopify headless integration (router already carries its own /api/shopify prefix)
-from shopify_service.router import router as shopify_router  # noqa: E402
-app.include_router(shopify_router)
 
 app.add_middleware(
     CORSMiddleware,

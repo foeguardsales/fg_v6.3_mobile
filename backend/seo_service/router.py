@@ -105,7 +105,7 @@ async def _cached(key: str, loader):
 
 async def _fetch_shop() -> Dict[str, Any]:
     async def loader():
-        data = await get_storefront().execute(Q.STOREFRONT_SHOP_QUERY)
+        data = await get_storefront().query(Q.STOREFRONT_SHOP_QUERY)
         return data.get("shop", {}) or {}
     return await _cached("shop", loader)
 
@@ -114,7 +114,7 @@ async def _fetch_product(handle: str) -> Optional[Dict[str, Any]]:
     key = f"product:{handle}"
 
     async def loader():
-        data = await get_storefront().execute(
+        data = await get_storefront().query(
             Q.PRODUCT_BY_HANDLE_QUERY, {"handle": handle}
         )
         return data.get("product")
@@ -125,7 +125,7 @@ async def _fetch_collection(handle: str) -> Optional[Dict[str, Any]]:
     key = f"collection:{handle}"
 
     async def loader():
-        data = await get_storefront().execute(
+        data = await get_storefront().query(
             Q.COLLECTION_BY_HANDLE_QUERY, {"handle": handle, "first": 4}
         )
         return data.get("collection")
@@ -137,7 +137,7 @@ async def _fetch_all_products() -> List[Dict[str, Any]]:
         out: List[Dict[str, Any]] = []
         after: Optional[str] = None
         for _ in range(20):  # hard cap so we can't runaway
-            data = await get_storefront().execute(
+            data = await get_storefront().query(
                 Q.PRODUCTS_LIST_QUERY, {"first": 100, "after": after, "query": None}
             )
             page = data.get("products", {})
@@ -154,7 +154,7 @@ async def _fetch_all_products() -> List[Dict[str, Any]]:
 
 async def _fetch_all_collections() -> List[Dict[str, Any]]:
     async def loader():
-        data = await get_storefront().execute(
+        data = await get_storefront().query(
             Q.COLLECTIONS_LIST_QUERY, {"first": 100, "after": None}
         )
         return (data.get("collections", {}) or {}).get("nodes", []) or []

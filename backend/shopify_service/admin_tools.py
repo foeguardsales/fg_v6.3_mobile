@@ -133,7 +133,7 @@ def _resolve_base_url(explicit: Optional[str]) -> str:
 
 async def _list_webhooks() -> list[dict]:
     try:
-        data = await get_admin().execute(_WEBHOOK_SUBSCRIPTIONS_QUERY)
+        data = await get_admin().query(_WEBHOOK_SUBSCRIPTIONS_QUERY)
     except ShopifyError as e:
         raise HTTPException(status_code=502, detail=str(e)) from e
     return (data.get("webhookSubscriptions") or {}).get("nodes", [])
@@ -182,7 +182,7 @@ async def register_webhooks(
             skipped.append({"topic": topic, "callbackUrl": callback})
             continue
         try:
-            data = await get_admin().execute(
+            data = await get_admin().query(
                 _WEBHOOK_CREATE_MUTATION,
                 {"topic": topic, "callbackUrl": callback},
             )
@@ -238,7 +238,7 @@ async def deregister_webhooks(
     errors = []
     for sub in existing:
         try:
-            data = await get_admin().execute(
+            data = await get_admin().query(
                 _WEBHOOK_DELETE_MUTATION, {"id": sub["id"]}
             )
         except ShopifyError as e:
