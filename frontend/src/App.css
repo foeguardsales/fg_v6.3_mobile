@@ -1630,7 +1630,7 @@ h2, h3, h4 {
   font-family: 'Barlow Semi Condensed', serif;
   font-size: 13px;
   font-weight: 700;
-  color: #3B2A1A;
+  color: #2C2C2C;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin: 0 0 12px;
@@ -1657,7 +1657,7 @@ h2, h3, h4 {
   border-radius: 10px;
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease, transform 0.05s ease;
-  color: #3B2A1A;
+  color: #2C2C2C;
 }
 .box-pill:hover { border-color: #D5C089; }
 .box-pill.is-selected {
@@ -1684,7 +1684,7 @@ h2, h3, h4 {
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #3B2A1A;
+  color: #2C2C2C;
   background: #EFE6CC;
   border: 1px solid #C9A84C;
   padding: 2px 7px;
