@@ -16,7 +16,8 @@
  * A tiny in-memory cache prevents duplicate network calls when several
  * pages mount at once.
  */
-import shopify from './index';
+import { listProducts, getProduct } from './products';
+import { listCollections as apiListCollections, getCollection } from './collections';
 import {
   normalizeShopifyProduct,
   normalizeShopifyTreat,
@@ -44,7 +45,7 @@ async function _fetchAllRaw() {
   // hard cap so we can't loop forever
   for (let i = 0; i < 20; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    const page = await shopify.products.list({ first: 100, after });
+    const page = await listProducts({ first: 100, after });
     (page.nodes || []).forEach((n) => all.push(n));
     const hasNext = page?.pageInfo?.hasNextPage;
     after = page?.pageInfo?.endCursor;
@@ -91,7 +92,7 @@ export async function getProductByHandle(handle) {
     return normalizeShopifyProduct(_cache.byHandle.get(handle));
   }
   try {
-    const raw = await shopify.products.getByHandle(handle);
+    const raw = await getProduct(handle);
     _cache.byHandle.set(handle, raw);
     return normalizeShopifyProduct(raw);
   } catch (err) {
@@ -106,7 +107,7 @@ export async function getTreatByHandle(handle) {
     return normalizeShopifyTreat(_cache.byHandle.get(handle));
   }
   try {
-    const raw = await shopify.products.getByHandle(handle);
+    const raw = await getProduct(handle);
     _cache.byHandle.set(handle, raw);
     return normalizeShopifyTreat(raw);
   } catch (err) {
@@ -117,7 +118,7 @@ export async function getTreatByHandle(handle) {
 
 export async function listCollections() {
   if (_cache.collections) return _cache.collections;
-  const page = await shopify.collections.list({ first: 100 });
+  const page = await apiListCollections({ first: 100 });
   _cache.collections = (page.nodes || []).map((c) => normalizeShopifyCollection({ ...c, products: { nodes: [] } }));
   return _cache.collections;
 }
@@ -126,7 +127,7 @@ export async function getCollectionByHandle(handle) {
   if (!handle) return null;
   if (_cache.collectionByHandle.has(handle)) return _cache.collectionByHandle.get(handle);
   try {
-    const raw = await shopify.collections.getByHandle(handle, { first: 100 });
+    const raw = await getCollection(handle, { productsFirst: 100 });
     const norm = normalizeShopifyCollection(raw);
     _cache.collectionByHandle.set(handle, norm);
     return norm;

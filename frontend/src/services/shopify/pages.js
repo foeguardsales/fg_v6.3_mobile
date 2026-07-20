@@ -1,16 +1,17 @@
 /** Shopify Pages service — About, FAQ, Delivery, all static content. */
-import http from './client';
+import { shopifyClient } from './client';
 
 export async function list({ first = 50, after = null } = {}) {
-  const { data } = await http.get('/pages', { params: { first, after } });
-  return data; // { nodes, pageInfo }
+  const qs = new URLSearchParams();
+  qs.set('first', first);
+  if (after) qs.set('after', after);
+  return shopifyClient.get(`/pages?${qs.toString()}`);
 }
 
 export async function getByHandle(handle) {
   if (!handle) return null;
   try {
-    const { data } = await http.get(`/page/${encodeURIComponent(handle)}`);
-    return data;
+    return await shopifyClient.get(`/page/${encodeURIComponent(handle)}`);
   } catch (err) {
     if (err?.status === 404) return null;
     throw err;

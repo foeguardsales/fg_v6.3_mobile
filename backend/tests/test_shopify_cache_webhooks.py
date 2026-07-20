@@ -16,7 +16,7 @@ import os
 import pytest
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://emergent-boot.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://merge-fix-shopify.preview.emergentagent.com").rstrip("/")
 # Fallback: read from frontend/.env if needed
 if "REACT_APP_BACKEND_URL" not in os.environ:
     try:
