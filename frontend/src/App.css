@@ -1614,114 +1614,91 @@ h2, h3, h4 {
   padding: 28px;
   margin-bottom: 32px;
 }
-.box-size-selector-bare {
-  margin: 20px 0 18px;
-  padding: 0 20px;
-  background: transparent;
-  border: none;
-}
-@media (min-width: 900px) {
-  .box-size-selector-bare { padding: 0 32px; }
-}
 
-.box-size-selector-inline h3 {
-  font-family: var(--font-body);
-  font-size: 20px;
-  color: var(--barn-red);
-  margin-bottom: 20px;
+/* =============================================================
+   Box-size pills — quick selector for pre-set box sizes (6 / 12 / 24 / 36+ lb)
+   Small heading + white pills with warm-gold selected state.
+   The floating "% OFF" badge sits ABOVE each pill.
+   ============================================================= */
+.box-pills-wrap {
+  margin: 20px 16px 20px;
 }
-
-.box-size-tabs {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+@media (min-width: 760px) {
+  .box-pills-wrap { margin: 20px 0 24px; }
 }
-@media (min-width: 600px) {
-  .box-size-tabs {
-    gap: 12px;
-  }
-}
-
-.box-size-tab {
-  position: relative;
-  width: 100%;
-  min-width: 0;
-  min-height: 58px;
-  padding: 20px 6px 16px;
-  border: 1.5px solid #E8DDD0;
-  border-radius: 12px;
-  background: #F5F3EF;
-  cursor: pointer;
-  transition: all 0.25s ease;
+.box-pills-heading {
+  font-family: 'Barlow Semi Condensed', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3B2A1A;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 12px;
   text-align: center;
+}
+.box-pills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+@media (max-width: 480px) {
+  .box-pills-grid { gap: 8px; }
+}
+.box-pill {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: visible;
-}
-@media (min-width: 600px) {
-  .box-size-tab {
-    padding: 22px 10px 16px;
-  }
-}
-
-.box-size-tab:hover {
-  border-color: var(--barn-red);
-  background: #F5F3EF;
-}
-
-.box-size-tab.active {
-  border-color: var(--barn-red);
-  background: var(--barn-red);
-}
-
-.box-size-tab.active .box-size-label {
-  color: var(--text-inverse);
-  font-weight: 800;
-}
-.box-size-tab.active .box-discount-badge {
+  padding: 22px 6px 14px;
+  min-height: 68px;
   background: #FFFFFF;
-  color: var(--barn-red);
-  border-color: #FFFFFF;
+  border: 1.5px solid #EDEAE7;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.05s ease;
+  color: #3B2A1A;
 }
-
-.box-size-label {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 17px;
-  font-weight: 500;
-  color: #2B2B2B;
-  margin: 0;
-  line-height: 1.1;
-  text-align: center;
+.box-pill:hover { border-color: #D5C089; }
+.box-pill.is-selected {
+  border-color: #C9A84C;
+  background: #FFFBEE;
 }
-@media (min-width: 600px) {
-  .box-size-label { font-size: 22px; }
+.box-pill:active { transform: scale(0.98); }
+.box-pill-label {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
-
-.box-discount-badge {
+@media (max-width: 480px) {
+  .box-pill-label { font-size: 14px; }
+  .box-pill { padding: 20px 4px 12px; min-height: 62px; }
+}
+.box-pill-badge {
   position: absolute;
-  top: -8px;
+  top: -9px;
   left: 50%;
   transform: translateX(-50%);
-  background: #FFFFFF;
-  color: var(--barn-red);
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-family: var(--font-body);
-  font-size: 9px;
+  font-family: 'Barlow Semi Condensed', serif;
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.04em;
-  border: 1px solid var(--barn-red);
+  text-transform: uppercase;
+  color: #3B2A1A;
+  background: #EFE6CC;
+  border: 1px solid #C9A84C;
+  padding: 2px 7px;
+  border-radius: 999px;
   white-space: nowrap;
   line-height: 1.2;
 }
-@media (min-width: 600px) {
-  .box-discount-badge { font-size: 10px; padding: 2px 8px; }
+.box-pill.is-selected .box-pill-badge {
+  background: #C9A84C;
+  color: #FFFFFF;
+  border-color: #C9A84C;
 }
-.box-size-tab.active .box-discount-badge {
-  border-color: #FFFFFF;
+@media (max-width: 380px) {
+  .box-pill-badge { font-size: 9px; padding: 2px 6px; top: -8px; }
 }
 
 /* Subscribe & Save — checkbox, clean line above, no container */
@@ -1986,6 +1963,7 @@ h2, h3, h4 {
   cursor: pointer;
   position: relative;
   transition: none;
+  text-align: left; /* Override .product-card legacy center-alignment so menu/build-a-box cards read left-aligned */
 }
 .product-card-row.is-selected,
 .product-card-row:hover,
@@ -3907,14 +3885,6 @@ h2, h3, h4 {
     margin-bottom: 40px;
   }
   
-  .box-size-tabs {
-    flex-direction: column;
-  }
-  
-  .box-size-tab {
-    min-width: auto;
-  }
-  
   .product-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
@@ -5248,79 +5218,7 @@ h2, h3, h4 {
   color: #2C2C2C;
 }
 
-/* Khaki slider for box size on menu (legacy) */
-.box-size-slider {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 4px 0 4px;
-  margin: 0 0 14px;
-  scrollbar-width: none;
-  position: relative;
-}
-.box-size-slider::-webkit-scrollbar { display: none; }
-.box-size-slider .box-size-chip {
-  flex: 0 0 auto;
-  padding: 8px 16px;
-  background: #D8CFB8;
-  color: #2C2C2C;
-  border: none;
-  border-radius: 999px;
-  font-family: 'Barlow Semi Condensed', serif;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.box-size-slider .box-size-chip.is-active {
-  background: #2C2C2C;
-  color: #D8CFB8;
-}
-.box-size-slider .box-size-chip-discount {
-  background: #C9A84C;
-  color: #2C2C2C;
-  padding: 1px 6px;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 800;
-}
-.box-size-slider .box-size-chip.is-active .box-size-chip-discount {
-  background: #F5F3EF;
-}
-
-/* Thin variant — page background + border; discount inline aligned with size */
-.box-size-slider--thin {
-  margin: 0 0 14px;
-  padding: 0;
-}
-.box-size-slider--thin .box-size-chip {
-  background: transparent;
-  border: 1px solid #C9BFA6;
-  color: #2C2C2C;
-  padding: 5px 12px;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.1;
-}
-.box-size-slider--thin .box-size-chip.is-active {
-  background: #2C2C2C;
-  border-color: #2C2C2C;
-  color: #F5F3EF;
-}
-.box-size-slider--thin .box-size-chip-text { display: inline-flex; align-items: baseline; gap: 4px; }
-.box-size-slider--thin .box-size-chip-discount-inline {
-  font-size: 11px;
-  font-weight: 700;
-  color: #C9A84C;
-  letter-spacing: 0;
-}
-.box-size-slider--thin .box-size-chip.is-active .box-size-chip-discount-inline {
-  color: #F0DE9B;
-}
+/* Khaki slider for box size on menu (legacy) — REMOVED, replaced by .box-pill */
 
 /* Top nav tabs (Menu | Meal Plan | Calculator) — tighter */
 .menu-top-nav-clean {
@@ -5909,75 +5807,7 @@ h2, h3, h4 {
   margin: 4px 0 16px;
   max-width: 100%;
 }
-.bb-box-size-label {
-  font-family: 'Barlow Semi Condensed', serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #2C2C2C;
-  letter-spacing: 0.01em;
-  flex-shrink: 0;
-}
-.box-size-slider--mustard {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin: 0;
-  padding: 0;
-  overflow: visible;
-}
-.box-size-slider--mustard .box-size-chip {
-  flex: 0 0 auto;
-  padding: 10px 14px;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  letter-spacing: 0.01em;
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-.box-size-slider--mustard .box-size-chip:hover {
-  color: #2C2C2C;
-}
-.box-size-slider--mustard .box-size-chip.is-active {
-  background: #EFE6CC;
-  border-color: #2C2C2C;
-  color: #2C2C2C;
-  font-weight: 700;
-}
-.box-size-slider--mustard .box-size-chip-text {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.box-size-slider--mustard .box-size-chip-discount-inline {
-  display: inline-flex;
-  font-size: 10px;
-  font-weight: 800;
-  color: #D8CFB8;
-  background: #C9A84C;
-  padding: 2px 6px;
-  border-radius: 3px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-family: 'Barlow Semi Condensed', serif;
-}
-.box-size-slider--mustard .box-size-chip.is-active .box-size-chip-discount-inline {
-  background: #C9A84C;
-  color: #D8CFB8;
-}
-@media (min-width: 760px) {
-  .box-size-slider--mustard .box-size-chip { font-size: 15px; padding: 12px 18px; }
-}
+/* .bb-box-size-label + .box-size-slider--mustard — REMOVED (unused, replaced by .box-pill) */
 
 /* ===== Floating bottom checkout — rounded pill, qty-pill style ===== */
 .bb-floating-checkout {
@@ -6794,72 +6624,7 @@ h2, h3, h4 {
   gap: 10px;
   width: 100%;
 }
-.box-size-slider--clean {
-  display: grid !important;
-  grid-template-columns: 0.7fr 1fr 1fr 1fr;
-  gap: 8px;
-  width: 100%;
-}
-@media (min-width: 640px) {
-  .box-size-slider--clean {
-    grid-template-columns: 0.7fr 1fr 1fr 1fr;
-    gap: 12px;
-  }
-}
-.box-size-slider--clean.box-size-slider--mustard .box-size-chip {
-  width: 100%;
-  background: transparent;
-  border: 1.5px solid #C9BFA6;
-  color: #2C2C2C;
-  padding: 12px 8px;
-  border-radius: 10px;
-  justify-content: center;
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  text-align: center;
-  min-height: 64px;
-}
-@media (min-width: 640px) {
-  .box-size-slider--clean.box-size-slider--mustard .box-size-chip {
-    padding: 14px 10px;
-    min-height: 76px;
-  }
-}
-.box-size-slider--clean.box-size-slider--mustard .box-size-chip.is-active {
-  background: transparent;
-  border-color: #2C2C2C;
-  color: #2C2C2C;
-}
-.box-size-chip-size {
-  font-family: 'Barlow Semi Condensed', serif;
-  font-size: 16px;
-  font-weight: 800;
-  color: #2C2C2C;
-  letter-spacing: 0.01em;
-  line-height: 1.1;
-}
-@media (min-width: 640px) {
-  .box-size-chip-size { font-size: 18px; }
-}
-.box-size-chip-from {
-  font-family: 'Barlow Semi Condensed', serif;
-  font-size: 10px;
-  font-weight: 600;
-  color: #2C2C2C;
-  opacity: 0.95;
-  line-height: 1.1;
-  letter-spacing: 0;
-  white-space: nowrap;
-  margin-top: 6px;
-}
-@media (min-width: 640px) {
-  .box-size-chip-from { font-size: 12px; }
-}
-.box-size-slider--clean.box-size-slider--mustard .box-size-chip.is-active .box-size-chip-from {
-  color: #2C2C2C;
-}
+/* .box-size-slider--clean + .box-size-chip-size + .box-size-chip-from — REMOVED (unused, replaced by .box-pill) */
 
 /* ===== Mini Top-Sheet (Task 3) ===== */
 .menu-topsheet-backdrop {
@@ -7620,8 +7385,8 @@ h2, h3, h4 {
 .menu-funnel-card-title,
 .pd-shopify-title,
 .product-card-title,
-.box-size-chip-size,
-.bb-box-size-label,
+.box-pill-label,
+.box-pills-heading,
 button.btn-primary,
 button.btn-secondary {
   font-family: var(--font-heading) !important;
@@ -7633,7 +7398,7 @@ button.btn-secondary {
 .product-card-desc,
 .product-card-meta,
 .product-card-price,
-.box-size-chip-from,
+.box-pill-badge,
 input, select, textarea {
   font-family: var(--font-body) !important;
 }

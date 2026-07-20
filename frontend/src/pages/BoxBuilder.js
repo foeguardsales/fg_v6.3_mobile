@@ -1278,43 +1278,42 @@ const StockUpSave = ({ guide = [], currentLbs = 0 }) => {
 
 
 // ===== Box-size pills — quick selector for pre-set box sizes (6 / 12 / 24 / 36+ lb) =====
-// Discount badges above each pill use the brand harvest-gold and reflect the real
-// bulk-discount tiers (DISCOUNT_RATES). The 6lb "starter" pill has no badge because
-// it carries no bulk discount.
-const BoxSizePills = ({ boxSize, onChange, rates = DOG_DISCOUNT_RATES }) => {
-  const options = [
-    { size: 6,  label: '6 lb'   },
-    { size: 12, label: '12 lb'  },
-    { size: 24, label: '24 lb'  },
-    { size: 36, label: '36 lb+' }
-  ];
-  return (
-    <div className="box-size-selector-bare" data-testid="box-size-pills">
-      <div className="box-size-tabs">
-        {options.map(opt => {
-          const rate = rates[opt.size] || 0;
-          const off  = Math.round(rate * 100);
-          const active = boxSize === opt.size;
-          return (
-            <button
-              key={opt.size}
-              type="button"
-              className={`box-size-tab ${active ? 'active' : ''}`}
-              onClick={() => onChange(opt.size)}
-              data-testid={`box-size-pill-${opt.size}`}
-              aria-pressed={active}
-            >
-              {off > 0 && (
-                <span className="box-discount-badge">{off}% OFF</span>
-              )}
-              <span className="box-size-label">{opt.label}</span>
-            </button>
-          );
-        })}
-      </div>
+// Small "Choose your box size" heading + white pills with warm-gold selected state.
+// The 6lb tier still shows its % OFF badge above; discount rates come from DISCOUNT_RATES.
+const BOX_PILL_OPTIONS = [
+  { size: 6,  label: '6 lb'   },
+  { size: 12, label: '12 lb'  },
+  { size: 24, label: '24 lb'  },
+  { size: 36, label: '36 lb+' },
+];
+const BoxSizePills = ({ boxSize, onChange, rates = DOG_DISCOUNT_RATES }) => (
+  <div className="box-pills-wrap" data-testid="box-size-pills">
+    <h3 className="box-pills-heading">Choose your box size</h3>
+    <div className="box-pills-grid">
+      {BOX_PILL_OPTIONS.map((opt) => {
+        const rate = rates[opt.size] || 0;
+        const off = Math.round(rate * 100);
+        const isSelected = boxSize === opt.size;
+        return (
+          <button
+            key={opt.size}
+            type="button"
+            data-testid={`box-pill-${opt.size}`}
+            data-selected={isSelected ? 'true' : 'false'}
+            className={`box-pill ${isSelected ? 'is-selected' : ''}`}
+            onClick={() => onChange && onChange(opt.size)}
+            aria-pressed={isSelected}
+          >
+            {off > 0 && (
+              <span className="box-pill-badge">{off}% OFF</span>
+            )}
+            <span className="box-pill-label">{opt.label}</span>
+          </button>
+        );
+      })}
     </div>
-  );
-};
+  </div>
+);
 
 // ===== Weight progress strip — thin, fixed above the floating "View Cart" bar =====
 // Tracks the current lbs packed vs. the chosen target box size. Hidden when there
