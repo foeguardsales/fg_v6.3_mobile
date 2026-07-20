@@ -314,8 +314,8 @@ const ModernNavbar = () => {
         </div>
       </nav>
 
-      {/* Spacer to clear the fixed navbar — keeps all pages content below the bar */}
-      <div aria-hidden="true" style={{ height: '108px', flexShrink: 0 }} />
+      {/* Spacer to clear the fixed navbar — matches nav height exactly (28px promo bar + 72px main = 100px). Do not add extra pixels; that produces a visible white bar between the header and the next section. */}
+      <div aria-hidden="true" style={{ height: '100px', flexShrink: 0 }} />
 
       {/* Mobile Menu Overlay */}
       {menuOpen && (
