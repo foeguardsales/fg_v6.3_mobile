@@ -18,8 +18,8 @@ import catalog from './catalog';
 import { shopifyClient, http, SHOPIFY_BASE, customerTokenStorage, cartIdStorage } from './client';
 
 export {
-  products, collections, cart, customers, checkout, pages, catalog,
+  products, collections, cart, checkout, pages, catalog,
   shopifyClient, http, SHOPIFY_BASE, customerTokenStorage, cartIdStorage,
 };
 
-export default { products, collections, cart, customers, checkout, pages, catalog };
+export default { products, collections, cart, checkout, pages, catalog };
