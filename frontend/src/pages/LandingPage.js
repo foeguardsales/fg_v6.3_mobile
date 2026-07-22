@@ -126,6 +126,8 @@ const ModernNavbar = () => {
       label: 'Learn More',
       isDropdown: true,
       items: [
+        { label: 'Build Your Meal Plan', path: '/meal-plan' },
+        { label: 'Raw Dog Food Calculator', path: '/calculator' },
         { label: 'FAQ', path: '/faq' },
         { label: 'Delivery Information', path: '/delivery' },
         { label: 'Raw Feeding Guide', path: '/raw-feeding-guide' }

@@ -16,6 +16,13 @@ from . import checkout as checkout_service
 from . import collections as collection_service
 from . import customers as customer_service
 from . import products as product_service
+from .cache import (
+    get_cache,
+    make_key,
+    BUCKET_PRODUCTS,
+    BUCKET_COLLECTIONS,
+    BUCKET_PAGES,
+)
 from .client import ShopifyError, get_admin, get_storefront
 
 router = APIRouter(prefix="/api/shopify", tags=["shopify"])
@@ -70,14 +77,26 @@ async def list_products(
     sort_key: str = Query("BEST_SELLING"),
     reverse: bool = False,
 ):
-    return await _handle(product_service.list_products(
-        first=first, after=after, query=q, sort_key=sort_key, reverse=reverse
-    ))
+    cache = get_cache()
+    key = make_key("products.list", first=first, after=after, q=q, sort_key=sort_key, reverse=reverse)
+    return await cache.get_or_set(
+        key,
+        lambda: _handle(product_service.list_products(
+            first=first, after=after, query=q, sort_key=sort_key, reverse=reverse
+        )),
+        bucket=BUCKET_PRODUCTS,
+    )
 
 
 @router.get("/products/{handle}")
 async def get_product(handle: str):
-    p = await _handle(product_service.get_product_by_handle(handle))
+    cache = get_cache()
+    key = make_key("products.handle", handle=handle)
+    p = await cache.get_or_set(
+        key,
+        lambda: _handle(product_service.get_product_by_handle(handle)),
+        bucket=BUCKET_PRODUCTS,
+    )
     if not p:
         raise HTTPException(status_code=404, detail="Product not found")
     return p
@@ -95,17 +114,82 @@ async def get_variant(variant_id: str):
 
 @router.get("/collections")
 async def list_collections(first: int = Query(20, ge=1, le=250), after: Optional[str] = None):
-    return await _handle(collection_service.list_collections(first=first, after=after))
+    cache = get_cache()
+    key = make_key("collections.list", first=first, after=after)
+    return await cache.get_or_set(
+        key,
+        lambda: _handle(collection_service.list_collections(first=first, after=after)),
+        bucket=BUCKET_COLLECTIONS,
+    )
 
 
 @router.get("/collections/{handle}")
 async def get_collection(handle: str, products_first: int = 50, products_after: Optional[str] = None):
-    c = await _handle(collection_service.get_collection_by_handle(
-        handle, products_first=products_first, products_after=products_after
-    ))
+    cache = get_cache()
+    key = make_key("collections.handle", handle=handle, products_first=products_first, products_after=products_after)
+    c = await cache.get_or_set(
+        key,
+        lambda: _handle(collection_service.get_collection_by_handle(
+            handle, products_first=products_first, products_after=products_after
+        )),
+        bucket=BUCKET_COLLECTIONS,
+    )
     if not c:
         raise HTTPException(status_code=404, detail="Collection not found")
     return c
+
+
+# -------------------------- Pages (Shopify content) -----------------------
+
+_PAGES_QUERY = """
+query Pages($first: Int!, $after: String) {
+  pages(first: $first, after: $after) {
+    nodes { id title handle bodySummary body }
+    pageInfo { hasNextPage endCursor }
+  }
+}
+"""
+
+_PAGE_QUERY = """
+query Page($handle: String!) {
+  page(handle: $handle) { id title handle body }
+}
+"""
+
+
+async def _fetch_pages(first: int, after: Optional[str]):
+    data = await get_storefront().query(_PAGES_QUERY, {"first": first, "after": after})
+    return (data or {}).get("pages", {"nodes": [], "pageInfo": {}})
+
+
+async def _fetch_page(handle: str):
+    data = await get_storefront().query(_PAGE_QUERY, {"handle": handle})
+    return (data or {}).get("page")
+
+
+@router.get("/pages")
+async def list_pages(first: int = Query(50, ge=1, le=250), after: Optional[str] = None):
+    cache = get_cache()
+    key = make_key("pages.list", first=first, after=after)
+    return await cache.get_or_set(
+        key,
+        lambda: _handle(_fetch_pages(first, after)),
+        bucket=BUCKET_PAGES,
+    )
+
+
+@router.get("/page/{handle}")
+async def get_page(handle: str):
+    cache = get_cache()
+    key = make_key("pages.handle", handle=handle)
+    p = await cache.get_or_set(
+        key,
+        lambda: _handle(_fetch_page(handle)),
+        bucket=BUCKET_PAGES,
+    )
+    if not p:
+        raise HTTPException(status_code=404, detail="Page not found")
+    return p
 
 
 # -------------------------- Cart ------------------------------------------

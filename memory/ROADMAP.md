@@ -22,24 +22,14 @@ Env placeholders (frontend/.env, all blank = OFF): REACT_APP_GA4_MEASUREMENT_ID,
 Wired events: page_view (route change), add_to_cart (ProductDetail + TreatDetail), begin_checkout/InitiateCheckout (UniversalCart), purchase (OrderSuccess). Shopify-Email named events via trackShopifyEmailEvent -> /api/events/track: account_created (RegisterForm + MealPlan saveProfile), quiz_completed + account_created (MealPlanPage), meal_plan_landing (MealPlanPage mount), order_placed (OrderSuccess). abandoned_cart = Shopify native.
 Sitemap already exists at /api/sitemap.xml (seo_service). GSC verify via meta tag when env set. User submits sitemap in GSC manually.
 
-## PROMPT 3 — Shopify Headless (DESIGN-SAFE, additive/modular)
-- Shopify = data source for products, collections, pages ONLY.
-- PRESERVE EVERYTHING (meal plan steps/pages, delivery steps, contact, calculator, icons, badges, AI design). Only swap TEXT where a matching Shopify metaobject/page exists; else leave untouched.
-- Products: replace data only (title/price/images/variants/inventory/description). No layout change.
-- Collections: title/image/description from Shopify. No redesign.
-- Pages: text from Shopify Pages API only where matching page exists.
-- Metaobjects: ingredients/feeding guide/nutrition text only; keep design/icons/layout.
-- Additive modular service files alongside existing code. Codebase functional before+after. Env placeholders.
+## PROMPT 3 — Shopify Headless ✅ DONE (design-safe fallback added)
+App was ALREADY Shopify-wired (services/shopify/* + backend shopify_service/*; ProductDetail/TreatDetail/CollectionPage/MenuPage use catalog; normalizer maps foeguard.* metafields = metaobjects for ingredients/nutrition/feeding). Added DESIGN-SAFE local fallback in services/shopify/catalog.js (additive only): Shopify when configured, else local /api/products & /api/treats (identical shape) so site is fully functional before+after Shopify keys. Collections -> [] / null gracefully. Verified: /product/cd-chicken loads via fallback, full add-to-cart flow works.
 
-## PROMPT 4 — Menu "Learn More" additions
-Under "Learn More" nav dropdown add links to EXISTING pages:
-- Build Your Meal Plan (/meal-plan)
-- Raw Dog Food Calculator (/calculator)
-(Currently Learn More has: FAQ /faq, Delivery Information /delivery, Raw Feeding Guide /raw-feeding-guide)
+## PROMPT 4 — Learn More menu ✅ DONE
+Added to Learn More dropdown (LandingPage.js menuItems): 'Build Your Meal Plan' -> /meal-plan, 'Raw Dog Food Calculator' -> /calculator (both existing pages).
 
-## PROMPT 5 — Raw Starter Bundle Landing Page (STANDALONE, not in site/menu)
-Separate page (own route, not linked in nav) for ads/social CTAs. Mockup wired for easy Shopify API addition later.
-Sections in order: header, subheader, cta, product image, list container ("Raw Starter Bundle includes:"), cta button, how-it-works (3 images w/ text), benefits section, faq section, cta, reviews, final cta.
+## PROMPT 5 — Raw Starter Bundle landing ✅ DONE
+New standalone page frontend/src/pages/RawStarterBundlePage.js, route /raw-starter-bundle (NOT in nav). On-brand. Sections: hero(header+subheader+cta), product image + "Raw Starter Bundle includes:" list + cta, how-it-works (3 img+text), benefits, faq, cta band, reviews, final cta. Checkout wired to shopifyCart.cartCreate via BUNDLE.shopifyVariantId placeholder (mockup-safe when empty).
 
 ## PROMPT 6 — Production Readiness (no UI/design change)
 - Remove duplicate Shopify API calls; reusable/modular services.

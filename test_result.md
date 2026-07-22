@@ -103,20 +103,99 @@
 #====================================================================================================
 
 user_problem_statement: |
-  Session (Jul 2025) — Menu/product batch #2 (see tasks below).
-  1. CRITICAL sheet-anchor: on mobile, scrolling the product sheet dragged the whole sheet off-screen.
-     Fixed by locking #root (real scroller) overflow while modal open + overscroll-behavior:contain +
-     .bb-overlay--sheet overflow:hidden. (Applied to meal + treat sheets.)
-  2. Removed the "Add to Cart" button from product pages entirely. The +/- ("Add") now live-syncs the
-     box to the shared menu selection (sessionStorage + 'foeguard:box-updated' event → BoxBuilder
-     re-reads) so menu and product page are in UNISON. Menu's floating Add-to-Cart is the only commit.
-  3. Product card price: shows "$X.XX/lb" when qty 0, switches to total + per-lb once selected (>=6lb).
-  4. Product sheet: qty starts at 0 (unison); price shows per-lb when 0; "Size" label renamed to "Add".
-  5. Spacing: reduced trust-icons bottom margin (24→10), notes→FAQ + end-of-page gaps; category tabs
-     padding/margin reduced; mobile menu edge-to-edge safeguards (box-builder 0 side padding, hero
-     full-bleed radius 0).
-  DEFERRED to Shopify integration: "Add to Cart → cart badge top-left + stay on page + reset menu"
-  (committed-cart behavior; Shopify Cart API will own this).
+  Session (Jul 2025) — Multi-prompt update (cart refactor + analytics + Shopify headless hardening).
+  Backend changes to validate this run:
+  1. NEW events endpoint POST /api/events/track (events_service) — accepts {event, properties, email},
+     logs it, returns {status:'ok', event, routed_to_shopify_email:false when Shopify unconfigured}.
+  2. Shopify proxy caching NOW ACTIVE (shopify_service/router.py) via get_or_set on GET /api/shopify/products,
+     /products/{handle}, /collections, /collections/{handle}, and NEW /pages, /page/{handle}. With Shopify
+     unconfigured (placeholder tokens) these must fail GRACEFULLY with HTTP 502 (not crash) so the React
+     frontend falls back to local /api/products & /api/treats.
+  3. models.py: added optional shopify_variant_id to Product & Treat (nullable, must not break existing
+     /api/products, /api/treats, /api/products/{id}).
+  Existing local catalog endpoints (/api/products, /api/treats, auth, profiles) must remain fully working.
+
+backend:
+  - task: "Events tracking endpoint POST /api/events/track"
+    implemented: true
+    working: true
+    file: "/app/backend/events_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "New modular Shopify-Email event sink. POST {event, properties, email} -> logs + returns {status:ok, event, routed_to_shopify_email}. Test with events like account_created, quiz_completed. Should return 200 with status ok."
+        - working: true
+          agent: "testing"
+          comment: "✅ PASS (3/3 tests) - Events endpoint working perfectly. POST quiz_completed with email returns 200 {status:ok, event:quiz_completed, routed_to_shopify_email:false}. POST account_created returns 200 {status:ok}. Missing 'event' field correctly returns 422 validation error. All requirements met."
+
+  - task: "Shopify proxy caching active + graceful 502 when unconfigured"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Wrapped GET /api/shopify/products, /products/{handle}, /collections, /collections/{handle} and added /pages, /page/{handle} with in-memory bucketed cache (get_or_set). Shopify tokens are placeholders in this env, so these MUST return HTTP 502 gracefully (ShopifyError->HTTPException) without crashing the server. Verify server stays up and /api/ still returns 200 after hitting them."
+        - working: true
+          agent: "testing"
+          comment: "✅ PASS (6/6 tests) - Shopify proxy caching working correctly with graceful failure. All 5 Shopify endpoints (/api/shopify/products, /products/some-handle, /collections, /pages, /page/about) return HTTP 502 gracefully as expected (Shopify unconfigured). Critical test: GET /api/ still returns 200 {message:FoeGuard API} after hitting all Shopify endpoints - backend remains healthy, cache wrapper did not crash the server."
+
+  - task: "shopify_variant_id added to Product/Treat models (no regression)"
+    implemented: true
+    working: true
+    file: "/app/backend/models.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Added optional shopify_variant_id (default None) to Product & Treat. Verify /api/products (list), /api/products/cd-chicken (single), and /api/treats still return 200 with valid data and the new field present as null."
+        - working: true
+          agent: "testing"
+          comment: "✅ PASS (3/3 tests) - shopify_variant_id field successfully added to models with no regression. GET /api/products returns 24 products, all include shopify_variant_id:null. GET /api/products/cd-chicken returns 200 with shopify_variant_id:null. GET /api/treats returns 17 treats, all include shopify_variant_id:null. Minor fix applied: Added shopify_variant_id field to seed_data.py (41 entries: 24 products + 17 treats) and reseeded database."
+
+  - task: "Core local catalog + auth regression check"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Regression: confirm /api/ (root), /api/products, /api/treats, /api/stripe-public-key still work, and auth register/login still function (used by cart + meal plan). No changes to these but they must remain green."
+        - working: true
+          agent: "testing"
+          comment: "✅ PASS (4/4 tests) - Core regression check passed. GET /api/ returns 200 {message:FoeGuard API}. GET /api/stripe-public-key returns 200 with publicKey field. Auth register with unique email returns 200 with token. Auth login with same credentials returns 200 with token. All core functionality remains intact."
+
+metadata_current_session:
+  test_sequence: 1
+  run_ui: false
+
+test_plan_current_session:
+  current_focus:
+    - "Events tracking endpoint POST /api/events/track"
+    - "Shopify proxy caching active + graceful 502 when unconfigured"
+    - "shopify_variant_id added to Product/Treat models (no regression)"
+    - "Core local catalog + auth regression check"
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication_current_session:
+    - agent: "main"
+      message: "Please test ONLY the backend tasks listed under this session's `backend:` block. Key point: Shopify is intentionally UNCONFIGURED (placeholder tokens), so /api/shopify/* endpoints SHOULD return 502 gracefully — that is a PASS, not a failure. The important checks are: (1) POST /api/events/track returns 200 {status:ok}; (2) hitting the cached shopify endpoints does NOT crash the backend (server still 200 on /api/); (3) local /api/products, /api/products/cd-chicken, /api/treats still return 200 with data and include shopify_variant_id (null). Do NOT test frontend."
+    - agent: "testing"
+      message: "✅ ALL BACKEND TESTS PASSED (16/16) - Current session testing complete. All 4 tasks verified working: (1) Events endpoint POST /api/events/track returns correct responses with validation; (2) Shopify proxy caching fails gracefully with 502, backend stays healthy; (3) shopify_variant_id field present in all products/treats (null values); (4) Core regression passed (root, stripe key, auth register/login). Minor fix applied: Added shopify_variant_id to seed_data.py and reseeded database. No critical issues found. Ready for main agent to summarize and finish."
+
+
 
 frontend:
   - task: "Home 'Shop Now' funnel X close returns to home page when arriving from home"

@@ -59,7 +59,8 @@ COMFORT_DINNER_PRODUCTS = [
             {"size_lb": 18, "price": 73.17, "price_per_lb": 4.07, "savings_percent": 5},
             {"size_lb": 24, "price": 97.20, "price_per_lb": 4.05, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "cd-beef",
@@ -80,7 +81,8 @@ COMFORT_DINNER_PRODUCTS = [
             {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
             {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "cd-duck",
@@ -101,7 +103,8 @@ COMFORT_DINNER_PRODUCTS = [
             {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
             {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "cd-turkey",
@@ -122,7 +125,8 @@ COMFORT_DINNER_PRODUCTS = [
             {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
             {"size_lb": 24, "price": 143.86, "price_per_lb": 5.99, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "cd-fish",
@@ -143,7 +147,8 @@ COMFORT_DINNER_PRODUCTS = [
             {"size_lb": 18, "price": 128.27, "price_per_lb": 7.13, "savings_percent": 5},
             {"size_lb": 24, "price": 161.46, "price_per_lb": 6.73, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "cd-goat",
@@ -164,7 +169,8 @@ COMFORT_DINNER_PRODUCTS = [
             {"size_lb": 18, "price": 170.89, "price_per_lb": 9.49, "savings_percent": 5},
             {"size_lb": 24, "price": 215.78, "price_per_lb": 8.99, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "cd-lamb",
@@ -185,7 +191,8 @@ COMFORT_DINNER_PRODUCTS = [
             {"size_lb": 18, "price": 170.89, "price_per_lb": 9.49, "savings_percent": 5},
             {"size_lb": 24, "price": 215.78, "price_per_lb": 8.99, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "cd-rabbit",
@@ -206,7 +213,8 @@ COMFORT_DINNER_PRODUCTS = [
             {"size_lb": 18, "price": 246.04, "price_per_lb": 13.67, "savings_percent": 5},
             {"size_lb": 24, "price": 310.27, "price_per_lb": 12.93, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     }
 ]
 
@@ -231,7 +239,8 @@ PRIMAL_FEAST_PRODUCTS = [
             {"size_lb": 18, "price": 73.17, "price_per_lb": 4.07, "savings_percent": 5},
             {"size_lb": 24, "price": 97.20, "price_per_lb": 4.05, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "pf-beef",
@@ -252,7 +261,8 @@ PRIMAL_FEAST_PRODUCTS = [
             {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
             {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "pf-duck",
@@ -273,7 +283,8 @@ PRIMAL_FEAST_PRODUCTS = [
             {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
             {"size_lb": 24, "price": 143.88, "price_per_lb": 5.995, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "pf-turkey",
@@ -294,7 +305,8 @@ PRIMAL_FEAST_PRODUCTS = [
             {"size_lb": 18, "price": 113.91, "price_per_lb": 6.33, "savings_percent": 5},
             {"size_lb": 24, "price": 143.86, "price_per_lb": 5.99, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "pf-fish",
@@ -315,7 +327,8 @@ PRIMAL_FEAST_PRODUCTS = [
             {"size_lb": 18, "price": 128.27, "price_per_lb": 7.13, "savings_percent": 5},
             {"size_lb": 24, "price": 161.46, "price_per_lb": 6.73, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "pf-goat",
@@ -336,7 +349,8 @@ PRIMAL_FEAST_PRODUCTS = [
             {"size_lb": 18, "price": 170.89, "price_per_lb": 9.49, "savings_percent": 5},
             {"size_lb": 24, "price": 215.78, "price_per_lb": 8.99, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "pf-lamb",
@@ -357,7 +371,8 @@ PRIMAL_FEAST_PRODUCTS = [
             {"size_lb": 18, "price": 170.89, "price_per_lb": 9.49, "savings_percent": 5},
             {"size_lb": 24, "price": 215.78, "price_per_lb": 8.99, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "pf-rabbit",
@@ -378,7 +393,8 @@ PRIMAL_FEAST_PRODUCTS = [
             {"size_lb": 18, "price": 246.04, "price_per_lb": 13.67, "savings_percent": 5},
             {"size_lb": 24, "price": 310.27, "price_per_lb": 12.93, "savings_percent": 10}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     }
 ]
 
@@ -402,7 +418,8 @@ ROYAL_PAWS_PRODUCTS = [
             {"size_lb": 6, "price": 26.99, "price_per_lb": 4.50, "savings_percent": 0},
             {"size_lb": 12, "price": 51.28, "price_per_lb": 4.27, "savings_percent": 5}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "rp-beef",
@@ -422,7 +439,8 @@ ROYAL_PAWS_PRODUCTS = [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
             {"size_lb": 12, "price": 75.94, "price_per_lb": 6.33, "savings_percent": 5}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "rp-duck",
@@ -442,7 +460,8 @@ ROYAL_PAWS_PRODUCTS = [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
             {"size_lb": 12, "price": 75.94, "price_per_lb": 6.33, "savings_percent": 5}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "rp-turkey",
@@ -462,7 +481,8 @@ ROYAL_PAWS_PRODUCTS = [
             {"size_lb": 6, "price": 39.97, "price_per_lb": 6.66, "savings_percent": 0},
             {"size_lb": 12, "price": 75.94, "price_per_lb": 6.33, "savings_percent": 5}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "rp-fish",
@@ -482,7 +502,8 @@ ROYAL_PAWS_PRODUCTS = [
             {"size_lb": 6, "price": 44.95, "price_per_lb": 7.49, "savings_percent": 0},
             {"size_lb": 12, "price": 85.41, "price_per_lb": 7.12, "savings_percent": 5}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "rp-goat",
@@ -502,7 +523,8 @@ ROYAL_PAWS_PRODUCTS = [
             {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
             {"size_lb": 12, "price": 113.89, "price_per_lb": 9.49, "savings_percent": 5}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "rp-lamb",
@@ -522,7 +544,8 @@ ROYAL_PAWS_PRODUCTS = [
             {"size_lb": 6, "price": 59.94, "price_per_lb": 9.99, "savings_percent": 0},
             {"size_lb": 12, "price": 113.89, "price_per_lb": 9.49, "savings_percent": 5}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     },
     {
         "product_id": "rp-rabbit",
@@ -542,7 +565,8 @@ ROYAL_PAWS_PRODUCTS = [
             {"size_lb": 6, "price": 86.28, "price_per_lb": 14.38, "savings_percent": 0},
             {"size_lb": 12, "price": 163.93, "price_per_lb": 13.66, "savings_percent": 5}
         ],
-        "inventory_status": "available"
+        "inventory_status": "available",
+        "shopify_variant_id": None,
     }
 ]
 
@@ -558,6 +582,7 @@ TREATS = [
         "ingredients": "100% turkey feet. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/b87cuxlx_turkey_feet.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j1thh9jz_turkey_feet_image_2.png"]
     },
     {
@@ -570,6 +595,7 @@ TREATS = [
         "ingredients": "100% duck heads. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/k29spzfm_whole_duck_head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/p30yi720_Whole_duck_heads_pack.png"]
     },
     {
@@ -582,6 +608,7 @@ TREATS = [
         "ingredients": "100% lamb head. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/pz4h3l5n_Whole_Lamb_Head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/pz4h3l5n_Whole_Lamb_Head.png"]
     },
     {
@@ -594,6 +621,7 @@ TREATS = [
         "ingredients": "100% lamb head. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/pz4h3l5n_Whole_Lamb_Head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/pz4h3l5n_Whole_Lamb_Head.png"]
     },
     {
@@ -606,6 +634,7 @@ TREATS = [
         "ingredients": "100% beef rib bones. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/8rjroort_beef_rib_bones.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/5x1gimfh_Beef_rib_bone_pack.png"]
     },
     {
@@ -618,6 +647,7 @@ TREATS = [
         "ingredients": "100% chicken carcass with organ meat. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/g30fkeau_chicken_carcass.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/g30fkeau_chicken_carcass.png"]
     },
     {
@@ -630,6 +660,7 @@ TREATS = [
         "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png"]
     },
     {
@@ -642,6 +673,7 @@ TREATS = [
         "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png"]
     },
     {
@@ -654,6 +686,7 @@ TREATS = [
         "ingredients": "100% duck feet. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9tv7a0mh_DuckFeet.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9tv7a0mh_DuckFeet.png"]
     },
     {
@@ -666,6 +699,7 @@ TREATS = [
         "ingredients": "100% beef neck bones. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9z16u3bs_beef_neck_bones.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9z16u3bs_beef_neck_bones.png"]
     },
     {
@@ -678,6 +712,7 @@ TREATS = [
         "ingredients": "100% chicken heads. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j9h9vmdh_chicken%20head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j9h9vmdh_chicken%20head.png"]
     },
     {
@@ -690,6 +725,7 @@ TREATS = [
         "ingredients": "100% beef marrow bones. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/qr11w1lx_beef_marrow_bone.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/xzj3om55_beef_marrow_image_2.png"]
     }
 ]
@@ -706,6 +742,7 @@ CAT_TREATS = [
         "ingredients": "100% chicken heads. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j9h9vmdh_chicken%20head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/j9h9vmdh_chicken%20head.png"]
     },
     {
@@ -718,6 +755,7 @@ CAT_TREATS = [
         "ingredients": "100% chicken necks. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/l5aevbnx_chicken_necks.png"]
     },
     {
@@ -730,6 +768,7 @@ CAT_TREATS = [
         "ingredients": "100% chicken feet. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/g30fkeau_chicken_carcass.png"]
     },
     {
@@ -742,6 +781,7 @@ CAT_TREATS = [
         "ingredients": "100% duck heads. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/k29spzfm_whole_duck_head.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/p30yi720_Whole_duck_heads_pack.png"]
     },
     {
@@ -754,6 +794,7 @@ CAT_TREATS = [
         "ingredients": "100% duck feet. No additives, preservatives, or artificial ingredients.",
         "feeding_guide": FEEDING_GUIDE,
         "product_information": PRODUCT_INFO,
+        "shopify_variant_id": None,
         "images": ["https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9tv7a0mh_DuckFeet.png", "https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/9tv7a0mh_DuckFeet.png"]
     }
 ]
