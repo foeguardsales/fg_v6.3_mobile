@@ -134,30 +134,12 @@ def send_order_confirmation(email: str, name: str, order_id: str, total: float):
 # Auth routes
 @api_router.post("/auth/register")
 async def register(data: dict):
-    email = data.get("email")
-    password = data.get("password")
-    name = data.get("name")
-    
-    if not email or not password or not name:
-        raise HTTPException(status_code=400, detail="Missing fields")
-    
-    existing = await db.users.find_one({"email": email})
-    if existing:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    user_doc = {
-        "user_id": str(uuid.uuid4()),
-        "email": email,
-        "password": hash_password(password),
-        "name": name,
-        "role": "customer",
-        "created_at": datetime.now(timezone.utc).isoformat()
-    }
-    
-    await db.users.insert_one(user_doc)
-    token = create_token(user_doc["user_id"], email, "customer")
-    
-    return {"token": token, "user": {"email": email, "name": name, "role": "customer"}}
+    # Customer sign-up has moved to Shopify's Customer Account API (OAuth/OIDC).
+    # This legacy Mongo registration endpoint is retired for customers.
+    raise HTTPException(
+        status_code=410,
+        detail="Customer sign-up is now handled by Shopify. Please sign in with Shopify.",
+    )
 
 @api_router.post("/auth/login")
 async def login(data: dict):
@@ -183,6 +165,7 @@ async def create_or_update_profile(data: dict):
     phone = data.get("phone")
     postal_code = data.get("postal_code")
     dogs = data.get("dogs", [])
+    shopify_customer_id = data.get("shopify_customer_id")
     
     if not email:
         raise HTTPException(status_code=400, detail="Email is required")
@@ -208,17 +191,18 @@ async def create_or_update_profile(data: dict):
     
     if existing:
         # Update existing profile
+        update_fields = {
+            "phone": phone,
+            "postal_code": postal_code,
+            "dogs": dogs,
+            "needs_consultation": needs_consultation,
+            "updated_at": now
+        }
+        if shopify_customer_id:
+            update_fields["shopify_customer_id"] = shopify_customer_id
         await db.profiles.update_one(
             {"email": email},
-            {
-                "$set": {
-                    "phone": phone,
-                    "postal_code": postal_code,
-                    "dogs": dogs,
-                    "needs_consultation": needs_consultation,
-                    "updated_at": now
-                }
-            }
+            {"$set": update_fields}
         )
         profile_id = existing.get("profile_id")
     else:
@@ -227,6 +211,7 @@ async def create_or_update_profile(data: dict):
         profile_doc = {
             "profile_id": profile_id,
             "email": email,
+            "shopify_customer_id": shopify_customer_id,
             "phone": phone,
             "postal_code": postal_code,
             "dogs": dogs,
@@ -999,6 +984,12 @@ api_router.include_router(seo_router)
 
 from events_service.router import router as events_router  # noqa: E402
 api_router.include_router(events_router)
+
+# ---- Customer authentication (Shopify Customer Account API — OAuth/OIDC) ---
+# Sole source of truth for CUSTOMER auth. Tokens live in a server-side session
+# (httpOnly cookie); no Mongo/JWT customer login. Admin auth stays on Mongo/JWT.
+from customer_auth_service import customer_auth_router  # noqa: E402
+api_router.include_router(customer_auth_router)
 
 app.include_router(api_router)
 

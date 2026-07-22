@@ -98,12 +98,12 @@ const ModernNavbar = () => {
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const { itemCount, setIsCartOpen } = useCart();
 
-  // Signed-in state — read from localStorage token (matches existing
-  // authService).  Polls every 800ms + listens to storage/custom events so
-  // the quiz auto-registration flow reflects instantly without a reload.
-  const [isSignedIn, setIsSignedIn] = useState(!!localStorage.getItem('token'));
+  // Signed-in state — reflects the Shopify Customer Account session flag set
+  // by ShopifyAuthContext.  Polls + listens to storage/custom events so the
+  // navbar updates instantly after login/logout without a manual reload.
+  const [isSignedIn, setIsSignedIn] = useState(!!localStorage.getItem('foeguard.signedIn'));
   useEffect(() => {
-    const refresh = () => setIsSignedIn(!!localStorage.getItem('token'));
+    const refresh = () => setIsSignedIn(!!localStorage.getItem('foeguard.signedIn'));
     refresh();
     const id = setInterval(refresh, 800);
     window.addEventListener('foeguard:auth-changed', refresh);

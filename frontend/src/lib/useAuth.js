@@ -1,35 +1,30 @@
 /**
- * useAuth() \u2014 legacy hook shape backed by Shopify Customer Auth.
+ * useAuth() — legacy hook shape backed by the Shopify Customer Account API.
  *
- * Kept intentionally minimal so all existing consumers (AccountPage,
- * SubscriptionManager, etc.) can call `.login(email, password)`,
- * `.register(name, email, password)`, `.logout()`, `.user`,
- * `.isAuthenticated` without any code changes.
- *
- * Internally this simply proxies to the ShopifyAuthContext, mapping the
- * Shopify customer object onto the legacy `{ id, email, name, role }`
- * shape via `shopifyCustomerToLegacyUser` in services/api.js.
+ * Keeps the same `{ user, isAuthenticated, loading, login, register, logout }`
+ * surface existing consumers expect. `login`/`register` now trigger a redirect
+ * to Shopify's hosted sign-in (OAuth/OIDC); there is no email/password path.
  */
 import { useMemo } from 'react';
 import { useShopifyAuth } from '../contexts/ShopifyAuthContext';
 
 function toLegacyUser(c) {
   if (!c) return null;
-  const fullName = [c.firstName, c.lastName].filter(Boolean).join(' ') || c.displayName || c.email;
+  const fullName = [c.firstName, c.lastName].filter(Boolean).join(' ') || c.name || c.email;
   return {
     id: c.id,
+    shopify_customer_id: c.shopify_customer_id || c.id,
     email: c.email,
     name: fullName,
     firstName: c.firstName,
     lastName: c.lastName,
-    phone: c.phone,
     role: 'customer',
     shopify: c,
   };
 }
 
 export const useAuth = () => {
-  const { customer, isAuthenticated, loading, login, register, logout, recover, refresh, updateCustomer } = useShopifyAuth();
+  const { customer, isAuthenticated, loading, login, register, logout, recover, refresh } = useShopifyAuth();
 
   const user = useMemo(() => toLegacyUser(customer), [customer]);
 
@@ -37,19 +32,11 @@ export const useAuth = () => {
     user,
     isAuthenticated,
     loading,
-    // legacy signatures preserved:
-    login: (email, password) => login(email, password),
-    register: (name, email, password) => {
-      const parts = (name || '').trim().split(/\s+/);
-      const firstName = parts.shift() || null;
-      const lastName = parts.length ? parts.join(' ') : null;
-      return register({ email, password, firstName, lastName });
-    },
+    login: () => login(),
+    register: () => register(),
     logout: () => logout(),
-    // new goodies (safe to ignore in old callers):
     recover,
     refresh,
-    updateCustomer,
   };
 };
 

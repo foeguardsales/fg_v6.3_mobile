@@ -103,7 +103,6 @@ export const MealPlanPage = () => {
   const [postalCode, setPostalCode] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
   const [profileSaved, setProfileSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -219,10 +218,6 @@ export const MealPlanPage = () => {
       setError('Email is required');
       return;
     }
-    if (!password || password.length < 6) {
-      setError('Please choose a password (min. 6 characters).');
-      return;
-    }
 
     setSaving(true);
     setError('');
@@ -271,36 +266,7 @@ export const MealPlanPage = () => {
       });
       trackShopifyEmailEvent('quiz_completed', { email, dogs: enrichedDogs.length });
 
-      // 3. Silently create the customer account.  Uses the same localStorage
-      //    keys as the existing authService (`token`, `user`) so AccountPage,
-      //    useAuth, and the navbar all pick it up automatically.  If email
-      //    already exists we treat it as a soft-success and just try to log
-      //    in with the provided password.  Any hard failure is non-blocking
-      //    — the pet profile is already saved.
-      const accountName = enrichedDogs[0]?.name
-        ? `${enrichedDogs[0].name}'s Parent`
-        : email.split('@')[0];
-      try {
-        const reg = await axios.post(`${API}/auth/register`, {
-          email,
-          password,
-          name: accountName,
-        });
-        localStorage.setItem('token', reg.data.token);
-        localStorage.setItem('user', JSON.stringify(reg.data.user));
-        trackShopifyEmailEvent('account_created', { email, source: 'meal_plan_quiz' });
-      } catch (regErr) {
-        if (regErr.response?.status === 400) {
-          // Email already registered — try login silently instead.
-          try {
-            const lg = await axios.post(`${API}/auth/login`, { email, password });
-            localStorage.setItem('token', lg.data.token);
-            localStorage.setItem('user', JSON.stringify(lg.data.user));
-          } catch (_) { /* wrong password, keep going anyway */ }
-        }
-      }
-
-      // 4. Save the persistent pet profile snapshot to the browser session so
+      // 3. Save the persistent pet profile snapshot to the browser session so
       //    downstream pages (BoxBuilder, account page) can pre-fill without a
       //    round-trip.  Keyed by dog for multi-dog households.
       const sessionSnapshot = {
@@ -1072,28 +1038,10 @@ export const MealPlanPage = () => {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', fontSize: '15px', fontWeight: '600', marginBottom: '8px', color: '#2B2B2B' }}>
-                Password *
-              </label>
-              <input
-                type="password"
-                data-testid="meal-plan-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="At least 6 characters"
-                autoComplete="new-password"
-                style={{
-                  width: '100%',
-                  padding: '14px 16px',
-                  borderRadius: '8px',
-                  border: '1px solid #D8CFB8',
-                  fontSize: '16px',
-                  outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
-              <p style={{ fontSize: '12px', color: '#2C2C2C', opacity: 0.65, marginTop: '6px' }}>
-                We&apos;ll create your account automatically so you can revisit your meal plan anytime.
+              <p style={{ fontSize: '13px', color: '#2C2C2C', opacity: 0.7, margin: 0, lineHeight: 1.5 }}>
+                We&apos;ll save your dogs&apos; plan to this email. To manage it anytime,
+                sign in with a secure Shopify account from the{' '}
+                <a href="/account" style={{ color: '#c8102e', fontWeight: 600 }}>My Account</a> page.
               </p>
             </div>
 
@@ -1133,18 +1081,18 @@ export const MealPlanPage = () => {
 
             <button
               onClick={saveProfile}
-              disabled={saving || !email || !password}
+              disabled={saving || !email}
               data-testid="meal-plan-save"
               style={{
                 width: '100%',
                 padding: '16px 24px',
-                background: (email && password) ? '#c8102e' : '#CCC',
+                background: email ? '#c8102e' : '#CCC',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',
                 fontSize: '16px',
                 fontWeight: '600',
-                cursor: (email && password) ? 'pointer' : 'not-allowed'
+                cursor: email ? 'pointer' : 'not-allowed'
               }}
             >
               {saving ? 'Saving...' : 'Save Profile'}
