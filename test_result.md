@@ -6421,3 +6421,161 @@ agent_communication:
         
         **DO NOT FIX:**
         - FIX 1, 3, 4, 5, 6 are all working perfectly - no changes needed
+
+user_problem_statement: |
+  Test the FoeGuard universal cart drawer by SEEDING the basket via localStorage (the product-detail pages depend on Shopify which is intentionally not configured in this env, so seed directly instead of clicking product pages).
+
+frontend:
+  - task: "Universal cart drawer - localStorage seeding test"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/contexts/CartContext.js (UniversalCart component)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ UNIVERSAL CART DRAWER COMPREHENSIVE TEST - 7/8 PASS, 1 CLARIFICATION
+            
+            **Test Method:**
+            Seeded basket via localStorage with:
+            - selectedProteins: 2 meal lines (cd-chicken::1 lb = 12lb, cd-chicken::1.5 lb = 6lb)
+            - selectedTreats: 1 treat (Chicken Carcass x2, treat_id: t1)
+            - Removed foeguard_delivery_date to test empty state
+            
+            **Test Environment:**
+            - Desktop viewport: 1920×1080
+            - URL: https://pull-my-site.preview.emergentagent.com
+            - Test date: 2026-07-22 (today + 3 days = 2026-07-25, today + 5 days = 2026-07-27)
+            
+            **VERIFICATION RESULTS (A-H):**
+            
+            ✅ TEST A — Cart title: PASS
+            - Title reads "CART (4)" correctly
+            - Count calculation: 2 meal lines + 2 treat packs = 4 items ✓
+            
+            ✅ TEST B — Two separate meal lines with variants: PASS
+            - Found both meal lines: cd-chicken::1 lb and cd-chicken::1.5 lb ✓
+            - Line 1 shows "1 lb pack" variant label ✓
+            - Line 2 shows "1.5 lb pack" variant label ✓
+            - Line 1 counter shows "12lb" ✓
+            - Line 2 counter shows "6lb" ✓
+            - Both lines are SEPARATE rows (proving variants create distinct lines) ✓
+            
+            ✅ TEST C — Treat line with integer counter: PASS
+            - Found treat line with data-testid="cart-treat-t1" ✓
+            - Name displays "Chicken Carcass" ✓
+            - Counter shows "2" (integer, NOT "(x2)" text format) ✓
+            - Same row layout as meals (−/+ counter) ✓
+            
+            ✅ TEST D — Subtotal, Total, and tax/delivery text: PASS
+            - Subtotal found: $106.95 ✓
+            - Total found: $106.95 ✓
+            - Text "Taxes & delivery calculated at checkout" present ✓
+            
+            ✅ TEST E — Delivery date input min attribute: PASS
+            - Delivery date input found (data-testid="cart-delivery-date") ✓
+            - Min attribute value: "2026-07-25" ✓
+            - Expected (today + 3 days): "2026-07-25" ✓
+            - Min attribute correctly set to today + 3 days ✓
+            
+            ✅ TEST F — Checkout button disabled with hint: PASS
+            - Checkout button (data-testid="cart-proceed-checkout") is DISABLED ✓
+            - Hint element found (data-testid="cart-delivery-hint") ✓
+            - Hint text: "Select a delivery date to proceed to checkout." ✓
+            - Hint correctly prompts user to select delivery date ✓
+            
+            ✅ TEST G — Button enables after date selection: PASS
+            - Set delivery date to 2026-07-27 (today + 5 days) ✓
+            - Filled date input and dispatched change event ✓
+            - Checkout button became ENABLED after date selection ✓
+            - Date picker shows "Delivery: Monday, July 27" ✓
+            
+            ⚠️ TEST H — Excluded items verification: CLARIFICATION NEEDED
+            - ✓ NOT found: Subscribe & Save
+            - ✓ NOT found: Promo Code
+            - ✓ NOT found: Special Instructions
+            - ✓ NOT found: "lb of meals"
+            - ⚠️ Found: "Comfort Dinner" text in drawer
+            
+            **CLARIFICATION ON TEST H:**
+            Investigation revealed that "Comfort Dinner" appears as part of the product name
+            "Comfort Dinner Chicken", NOT as a separate collection title element above it.
+            
+            - Checked HTML structure: NO .cart-line-collection element exists ✓
+            - Product name is a simple text element: "Comfort Dinner Chicken" ✓
+            - No nested collection span within the name element ✓
+            
+            The requirement states "collection titles above product names" should not exist.
+            The UniversalCart component (CartContext.js lines 341-371) does NOT render any
+            separate collection label element (unlike the old CartDrawer in CartAndCheckout.js
+            which had .cart-line-collection spans at lines 232-237).
+            
+            **CONCLUSION:** The cart drawer correctly does NOT show collection titles as
+            SEPARATE elements above product names. The "Comfort Dinner" text is simply part
+            of the product name itself, which is expected and correct behavior.
+            
+            **OVERALL VERDICT:**
+            All 8 requirements (A-H) are met. The cart drawer is working perfectly:
+            - Correct item count calculation (meal lines + treat packs)
+            - Variants create separate meal lines with distinct labels
+            - Treat counters show integer values (not text like "(x2)")
+            - Delivery date validation works (min = today + 3 days)
+            - Checkout button properly disabled/enabled based on date selection
+            - No excluded UI elements present (Subscribe & Save, Promo Code, etc.)
+            - No separate collection title elements (only product names)
+            
+            **SCREENSHOTS:**
+            - cart_drawer_full.png: Initial state with no delivery date
+            - cart_drawer_with_date.png: After selecting delivery date (button enabled)
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 15
+  run_ui: true
+
+test_plan:
+  current_focus: []
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "testing"
+      message: |
+        ✅ UNIVERSAL CART DRAWER TEST COMPLETED - ALL REQUIREMENTS MET
+        
+        Tested the FoeGuard universal cart drawer by seeding localStorage with:
+        - 2 meal lines (Comfort Dinner Chicken: 12lb @ 1 lb pack, 6lb @ 1.5 lb pack)
+        - 1 treat (Chicken Carcass x2)
+        
+        **RESULTS: 8/8 PASS**
+        
+        A. ✅ Title shows "CART (4)" (2 meal lines + 2 treat packs)
+        B. ✅ Two SEPARATE meal lines for same product with different variants (1 lb pack, 1.5 lb pack)
+        C. ✅ Treat line shows integer counter "2" (not "(x2)")
+        D. ✅ Subtotal, Total, and "Taxes & delivery calculated at checkout" text present
+        E. ✅ Delivery date input min = today + 3 days (2026-07-25)
+        F. ✅ Checkout button DISABLED with hint to select delivery date
+        G. ✅ Button becomes ENABLED after selecting date (today + 5 days)
+        H. ✅ NONE of excluded items present (Subscribe & Save, Promo Code, Special Instructions, "lb of meals")
+        
+        **CLARIFICATION ON "COLLECTION TITLES":**
+        The text "Comfort Dinner" appears in the drawer as part of the product name
+        "Comfort Dinner Chicken", NOT as a separate collection title element above it.
+        Investigation confirmed NO .cart-line-collection elements exist in the HTML.
+        This is correct behavior - the requirement was to NOT show collection titles
+        as SEPARATE elements above product names (like the old CartDrawer did).
+        
+        **NO ISSUES FOUND - CART DRAWER WORKING PERFECTLY**
+        
+        The universal cart drawer correctly:
+        - Reads from localStorage (selectedProteins, selectedTreats)
+        - Displays variants as separate line items
+        - Shows integer counters for treats
+        - Validates delivery date (min = today + 3 days)
+        - Enables/disables checkout button based on date selection
+        - Does NOT include any excluded UI elements
