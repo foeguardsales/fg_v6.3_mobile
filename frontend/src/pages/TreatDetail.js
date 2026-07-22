@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
-import { CartDrawer } from '../components/CartAndCheckout';
 import { catalog as shopifyCatalog } from '../services/shopify';
 import { SeoHead } from '../components/SeoHead';
 
@@ -67,7 +66,6 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
   const initialTreatsPreload = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
   const existingTreat = initialTreatsPreload.find(t => t.treat_id === treatId);
   const [quantity, setQuantity] = useState(existingTreat && existingTreat.quantity > 0 ? existingTreat.quantity : 1);
-  const [cartOpen, setCartOpen] = useState(false);
   const [orderNotes, setOrderNotes] = useState('');
   const [selectedVariant, setSelectedVariant] = useState(
     existingTreat && typeof existingTreat.variant === 'number' ? existingTreat.variant : 0
@@ -124,12 +122,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
     };
   }, [treatId]);
 
-  // Listen for global "open cart" event (header cart icon)
-  useEffect(() => {
-    const open = () => setCartOpen(true);
-    window.addEventListener('foeguard:open-cart', open);
-    return () => window.removeEventListener('foeguard:open-cart', open);
-  }, []);
+  // (Cart is now a single universal drawer opened via CartContext — no local listener.)
 
   const handleBackToMenu = () => {
     if (embedded && onClose) {
@@ -160,6 +153,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
     if (existingIndex >= 0) {
       updatedTreats[existingIndex].quantity = quantity;
       updatedTreats[existingIndex].variant = selectedVariant;
+      updatedTreats[existingIndex].variantLabel = VARIANT_OPTIONS_TREAT[selectedVariant];
     } else {
       updatedTreats.push({
         treat_id: treat.treat_id,
@@ -167,6 +161,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
         price: treat.price,
         quantity: quantity,
         variant: selectedVariant,
+        variantLabel: VARIANT_OPTIONS_TREAT[selectedVariant],
       });
     }
 
@@ -251,39 +246,6 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
       {!embedded && (
         <>
           <Navbar />
-          <CartDrawer
-            isOpen={cartOpen}
-            onClose={() => setCartOpen(false)}
-            boxSize={boxSize}
-            selectedProteins={selectedProteins}
-            selectedTreats={selectedTreats}
-            products={products}
-            onProceed={() => navigate('/menu')}
-            getDiscountedPrice={getDiscountedPrice}
-            getBasePrice={getBasePrice}
-            onAdjustProtein={(productId, productName, newQty) => {
-              setSelectedProteins(prev => {
-                const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
-                localStorage.setItem('selectedProteins', JSON.stringify(updated));
-                return updated;
-              });
-            }}
-            onRemoveProtein={(productId) => {
-              setSelectedProteins(prev => {
-                const updated = { ...prev };
-                delete updated[productId];
-                localStorage.setItem('selectedProteins', JSON.stringify(updated));
-                return updated;
-              });
-            }}
-            onRemoveTreat={(tid) => {
-              setSelectedTreats(prev => {
-                const updated = prev.filter(t => t.treat_id !== tid);
-                localStorage.setItem('selectedTreats', JSON.stringify(updated));
-                return updated;
-              });
-            }}
-          />
 
           {/* Back button — standard top-left position (dedicated page only) */}
           <button

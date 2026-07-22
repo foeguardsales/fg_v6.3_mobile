@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
-import { CartDrawer, TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
+import { TreatsSection, CheckoutForm, OrderSuccess, CatTreatsSection } from '../components/CartAndCheckout';
 import { Calculator, Wheat, PawPrint, X, ChevronDown, ChevronUp, Tag } from 'lucide-react';
 import { ProductDetailModal } from './ProductDetail';
 import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
+import { useCart } from '../contexts/CartContext';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -158,7 +159,9 @@ export const BoxBuilder = () => {
 
   // No more "boxes" — selectedProteins IS the running basket of meals and the
   // bulk discount is derived live from the total lbs of meals selected.
-  const openBasket = () => setCartOpen(true);
+  // Cart open state lives in the shared CartContext (single universal cart).
+  const { setIsCartOpen } = useCart();
+  const openBasket = () => setIsCartOpen(true);
 
   // Inline calculator modal state — replaces /calculator navigation
   const [calcOpen, setCalcOpen] = useState(false);
@@ -174,7 +177,6 @@ export const BoxBuilder = () => {
   const [selectedProteins, setSelectedProteins] = useState(initialProteins);
   const [selectedTreats, setSelectedTreats] = useState(initialTreats);
   const [orderComplete, setOrderComplete] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [loading, setLoading] = useState(true);
   const [subscriptionPlan, setSubscriptionPlan] = useState(null); // null or 'every_N_weeks'
@@ -266,13 +268,6 @@ export const BoxBuilder = () => {
       setFunnelOpen(true);
     }
      
-  }, []);
-
-  // Listen for global "open cart" event (from header cart icon)
-  useEffect(() => {
-    const open = () => setCartOpen(true);
-    window.addEventListener('foeguard:open-cart', open);
-    return () => window.removeEventListener('foeguard:open-cart', open);
   }, []);
 
   // Live unison: when the product sheet edits the box, re-read it so the menu stays in sync.
@@ -865,51 +860,6 @@ export const BoxBuilder = () => {
                 />
               </>
             )}
-
-            {/* Cart Drawer */}
-            <CartDrawer 
-              isOpen={cartOpen}
-              onClose={() => setCartOpen(false)}
-              boxSize={boxSize}
-              selectedProteins={selectedProteins}
-              selectedTreats={selectedTreats}
-              products={products}
-              petType={petType}
-              onProceed={() => { 
-                setCartOpen(false); 
-                setShowCheckout(true);
-                setSearchParams({ step: 'checkout' });
-              }}
-              getDiscountedPrice={getDiscountedPrice}
-              getBasePrice={getBasePrice}
-              subscriptionPlan={subscriptionPlan}
-              onSubscriptionChange={setSubscriptionPlan}
-              onAdjustProtein={(productId, productName, newQty) => {
-                setSelectedProteins(prev => {
-                  const updated = { 
-                    ...prev, 
-                    [productId]: { qty: newQty, name: productName }
-                  };
-                  localStorage.setItem('selectedProteins', JSON.stringify(updated));
-                  return updated;
-                });
-              }}
-              onRemoveProtein={(productId) => {
-                setSelectedProteins(prev => {
-                  const updated = { ...prev };
-                  delete updated[productId];
-                  localStorage.setItem('selectedProteins', JSON.stringify(updated));
-                  return updated;
-                });
-              }}
-              onRemoveTreat={(treatId) => {
-                setSelectedTreats(prev => {
-                  const updated = prev.filter(t => t.treat_id !== treatId);
-                  localStorage.setItem('selectedTreats', JSON.stringify(updated));
-                  return updated;
-                });
-              }}
-            />
         </>
       </div>
 
@@ -918,7 +868,8 @@ export const BoxBuilder = () => {
         const lbs = getTotalSelectedLbs();
         // Compute meal subtotal (with bulk discount) + treats subtotal — matches the cart math
         const proteinFull = Object.entries(selectedProteins || {}).reduce((s, [pid, d]) => {
-          const product = products.find(p => p.product_id === pid);
+          const bpid = (d && d.productId) || String(pid).split('::')[0];
+          const product = products.find(p => p.product_id === bpid);
           if (!product) return s;
           const base = getBasePrice ? getBasePrice(product) : (product.pricing.find(pp => pp.size_lb === 6)?.price || 0);
           return s + (base / 6) * (d.qty || 0);

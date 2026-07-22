@@ -11,7 +11,7 @@ import { BoxBuilder } from './pages/BoxBuilder';
 import { OrderChoicePage } from './pages/OrderChoicePage';
 import { MealPlanPage } from './pages/MealPlanPage';
 import { MenuPage } from './pages/MenuPage';
-import { CartProvider, SlideCart } from './contexts/CartContext';
+import { CartProvider, UniversalCart } from './contexts/CartContext';
 import { ShopifyAuthProvider } from './contexts/ShopifyAuthContext';
 import { ProductDetailPage } from './pages/ProductDetail';
 import { TreatDetailPage } from './pages/TreatDetail';
@@ -87,6 +87,7 @@ function App() {
           <CartProvider>
         <BrowserRouter>
           <ScrollToTop />
+          <UniversalCart />
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/order" element={<OrderChoicePage />} />

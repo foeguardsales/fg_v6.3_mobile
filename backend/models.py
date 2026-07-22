@@ -100,6 +100,7 @@ class Product(BaseModel):
     pricing: List[PricingTier]
     inventory_status: str = "available"
     image_url: Optional[str] = None
+    shopify_variant_id: Optional[str] = None  # Shopify Storefront variant GID (for headless checkout)
 
 class Treat(BaseModel):
     treat_id: str
@@ -110,6 +111,7 @@ class Treat(BaseModel):
     product_information: Optional[str] = None
     feeding_guide: Optional[Dict[str, str]] = None
     image_url: Optional[str] = None
+    shopify_variant_id: Optional[str] = None  # Shopify Storefront variant GID (for headless checkout)
     pet_type: Optional[str] = "dog"  # 'dog' or 'cat'
 
 class BoxItem(BaseModel):

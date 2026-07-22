@@ -96,7 +96,7 @@ const ModernNavbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
-  const { cartItems, setIsCartOpen } = useCart();
+  const { itemCount, setIsCartOpen } = useCart();
 
   // Signed-in state — read from localStorage token (matches existing
   // authService).  Polls every 800ms + listens to storage/custom events so
@@ -115,31 +115,8 @@ const ModernNavbar = () => {
     };
   }, []);
 
-  // Reflect FoeGuard menu cart counts (BoxBuilder uses sessionStorage)
-  const [menuCount, setMenuCount] = useState(0);
-  useEffect(() => {
-    const computeMenuCount = () => {
-      try {
-        const proteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
-        const treats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
-        const proteinUnits = Object.values(proteins).filter(p => p && p.qty > 0).length;
-        const treatUnits = (treats || []).reduce((s, t) => s + (t.quantity || 1), 0);
-        setMenuCount(proteinUnits + treatUnits);
-      } catch {
-        setMenuCount(0);
-      }
-    };
-    computeMenuCount();
-    const id = setInterval(computeMenuCount, 800);
-    window.addEventListener('focus', computeMenuCount);
-    window.addEventListener('storage', computeMenuCount);
-    return () => {
-      clearInterval(id);
-      window.removeEventListener('focus', computeMenuCount);
-      window.removeEventListener('storage', computeMenuCount);
-    };
-  }, []);
-  const totalCount = (cartItems?.length || 0) + menuCount;
+  // Reflect FoeGuard cart count from the shared cart context (single source of truth)
+  const totalCount = itemCount || 0;
 
   const menuItems = [
     { label: 'Shop Now', path: '/menu' },
@@ -283,15 +260,7 @@ const ModernNavbar = () => {
               )}
             </button>
             <button
-              onClick={() => {
-                // If on menu/product page, open cart drawer via custom event. Otherwise navigate to /menu.
-                const isMenu = window.location.pathname.startsWith('/menu') || window.location.pathname.startsWith('/build-box') || window.location.pathname.startsWith('/product/') || window.location.pathname.startsWith('/treat/');
-                if (isMenu) {
-                  window.dispatchEvent(new CustomEvent('foeguard:open-cart'));
-                } else {
-                  setIsCartOpen(true);
-                }
-              }}
+              onClick={() => setIsCartOpen(true)}
               aria-label="Open cart"
               data-testid="nav-cart"
               style={{

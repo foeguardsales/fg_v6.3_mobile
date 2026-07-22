@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
-import { CartDrawer } from '../components/CartAndCheckout';
 import { catalog as shopifyCatalog } from '../services/shopify';
 import { SeoHead } from '../components/SeoHead';
 import {
@@ -346,7 +345,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     const existing = initialProteins[productId]?.qty;
     return existing && existing > 0 ? existing : 0;
   });
-  const [cartOpen, setCartOpen] = useState(false);
   const [boxSize, setBoxSize] = useState(initialBoxSize);
   const [selectedProteins, setSelectedProteins] = useState(initialProteins);
   const [selectedTreats, setSelectedTreats] = useState(initialTreats);
@@ -407,28 +405,33 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     };
   }, [productId]);
 
-  // Listen for global "open cart" event (header cart icon)
-  useEffect(() => {
-    const open = () => setCartOpen(true);
-    window.addEventListener('foeguard:open-cart', open);
-    return () => window.removeEventListener('foeguard:open-cart', open);
-  }, []);
+  // Listen for global "open cart" event (header cart icon) — deprecated: the cart
+  // is now a single universal drawer opened via CartContext. Kept as a no-op guard.
 
-  // Keep the size slider connected to the menu — once the product/id is known,
-  // start it at whatever quantity is already in the in-progress box.
+  // Keep the size slider connected to the menu — once the product/id AND the
+  // chosen packaging variant are known, start it at whatever quantity is already
+  // in the basket for THAT variant (each variant is its own cart line — Prompt 1 #9).
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
-    const existing = saved[productId]?.qty;
+    const key = `${productId}::${VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]}`;
+    const existing = saved[key]?.qty;
     setQuantity(existing && existing > 0 ? existing : 0);
-    const v = saved[productId]?.variant;
-    if (typeof v === 'number') setSelectedVariant(v);
-  }, [productId, product]);
+  }, [productId, product, selectedVariant]);
 
   const handleBackToMenu = () => {
     // Persist edits to a meal that's already in the basket when leaving (per spec).
+    // Each packaging variant is its own cart line (composite key).
     const existing = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
-    if (existing[productId]?.qty > 0 && product) {
-      existing[productId] = { qty: quantity, name: product.name, petType: existing[productId].petType || productPet };
+    const key = `${productId}::${VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]}`;
+    if (existing[key]?.qty > 0 && product) {
+      existing[key] = {
+        qty: quantity,
+        name: product.name,
+        productId,
+        petType: existing[key].petType || productPet,
+        variant: selectedVariant,
+        variantLabel: VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0],
+      };
       localStorage.setItem('selectedProteins', JSON.stringify(existing));
     }
     if (embedded && onClose) {
@@ -475,16 +478,20 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     if (!product) return;
     const q = Math.max(0, newQty);
     setQuantity(q);
+    const variantLabel = VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0];
+    const key = `${productId}::${variantLabel}`;
     const updated = { ...JSON.parse(localStorage.getItem('selectedProteins') || '{}') };
     if (q > 0) {
-      updated[productId] = {
+      updated[key] = {
         qty: q,
         name: product.name,
-        petType: (updated[productId] && updated[productId].petType) || productPet,
+        productId,
+        petType: (updated[key] && updated[key].petType) || productPet,
         variant: selectedVariant,
+        variantLabel,
       };
     } else {
-      delete updated[productId];
+      delete updated[key];
     }
     localStorage.setItem('selectedProteins', JSON.stringify(updated));
     setSelectedProteins(updated);
@@ -492,18 +499,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     window.dispatchEvent(new Event('foeguard:box-updated'));
   };
 
-  // Keep the persisted variant in sync when the user changes it (only if the product
-  // is already in the basket — no side effect for browsing).
-  useEffect(() => {
-    if (!product || quantity <= 0) return;
-    const updated = { ...JSON.parse(localStorage.getItem('selectedProteins') || '{}') };
-    if (updated[productId]) {
-      updated[productId] = { ...updated[productId], variant: selectedVariant };
-      localStorage.setItem('selectedProteins', JSON.stringify(updated));
-      setSelectedProteins(updated);
-      window.dispatchEvent(new Event('foeguard:box-updated'));
-    }
-  }, [selectedVariant, productId, product, quantity]);
+  // (Variant changes now create/select a separate cart line via the composite key
+  // effect above — no in-place variant mutation needed.)
 
   if (loading) {
     if (embedded) {
@@ -569,39 +566,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
       {!embedded && (
         <>
           <Navbar />
-          <CartDrawer
-            isOpen={cartOpen}
-            onClose={() => setCartOpen(false)}
-            boxSize={boxSize}
-            selectedProteins={selectedProteins}
-            selectedTreats={selectedTreats}
-            products={products}
-            onProceed={() => navigate('/menu')}
-            getDiscountedPrice={getDiscountedPrice}
-            getBasePrice={getBasePrice}
-            onAdjustProtein={(productId, productName, newQty) => {
-              setSelectedProteins(prev => {
-                const updated = { ...prev, [productId]: { qty: newQty, name: productName } };
-                localStorage.setItem('selectedProteins', JSON.stringify(updated));
-                return updated;
-              });
-            }}
-            onRemoveProtein={(productId) => {
-              setSelectedProteins(prev => {
-                const updated = { ...prev };
-                delete updated[productId];
-                localStorage.setItem('selectedProteins', JSON.stringify(updated));
-                return updated;
-              });
-            }}
-            onRemoveTreat={(treatId) => {
-              setSelectedTreats(prev => {
-                const updated = prev.filter(t => t.treat_id !== treatId);
-                localStorage.setItem('selectedTreats', JSON.stringify(updated));
-                return updated;
-              });
-            }}
-          />
 
           {/* Back button — standard top-left position (only when on a dedicated page, not modal) */}
           <button
