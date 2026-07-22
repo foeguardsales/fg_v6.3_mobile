@@ -31,10 +31,11 @@ Added to Learn More dropdown (LandingPage.js menuItems): 'Build Your Meal Plan' 
 ## PROMPT 5 — Raw Starter Bundle landing ✅ DONE
 New standalone page frontend/src/pages/RawStarterBundlePage.js, route /raw-starter-bundle (NOT in nav). On-brand. Sections: hero(header+subheader+cta), product image + "Raw Starter Bundle includes:" list + cta, how-it-works (3 img+text), benefits, faq, cta band, reviews, final cta. Checkout wired to shopifyCart.cartCreate via BUNDLE.shopifyVariantId placeholder (mockup-safe when empty).
 
-## PROMPT 6 — Production Readiness (no UI/design change)
-- Remove duplicate Shopify API calls; reusable/modular services.
-- Env vars correct, never exposed to frontend; Admin API token NEVER in React. React = UI only, never hits Shopify directly.
-- Improve error handling/logging.
-- FastAPI caching active for products/collections/pages/metaobjects.
-- Auto-invalidate cache via Shopify webhooks: product update, inventory update, customer update, order create. Secure webhook endpoints.
-- Preserve UI exactly.
+## PROMPT 6 — Production Readiness ✅ DONE (backend verified 16/16)
+App was already production-grade for Shopify (proxy-only access, Admin token backend-only, HMAC webhooks). Gaps fixed:
+- Caching now ACTIVE (was defined but unused): wired get_or_set into shopify_service/router.py GET /products, /products/{handle}, /collections, /collections/{handle}; added NEW cached /pages + /page/{handle} (BUCKET_PAGES). Metaobjects ride with product metafields (BUCKET_PRODUCTS).
+- Webhooks already HMAC-secured + invalidate products/collections/inventory/orders/pages/customers.
+- Verified: NO Shopify tokens in frontend; React only hits /api/shopify/* proxy; Admin token server-only; env not exposed.
+- Graceful 502 when Shopify unconfigured -> frontend local fallback. Backend stays healthy.
+- seed_data.py updated (by testing agent) with shopify_variant_id:null on all products/treats.
+ALL 6 PROMPTS COMPLETE.
