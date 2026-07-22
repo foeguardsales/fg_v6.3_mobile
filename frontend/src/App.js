@@ -12,6 +12,7 @@ import { OrderChoicePage } from './pages/OrderChoicePage';
 import { MealPlanPage } from './pages/MealPlanPage';
 import { MenuPage } from './pages/MenuPage';
 import { CartProvider, UniversalCart } from './contexts/CartContext';
+import { Analytics } from './components/Analytics';
 import { ShopifyAuthProvider } from './contexts/ShopifyAuthContext';
 import { ProductDetailPage } from './pages/ProductDetail';
 import { TreatDetailPage } from './pages/TreatDetail';
@@ -87,6 +88,7 @@ function App() {
           <CartProvider>
         <BrowserRouter>
           <ScrollToTop />
+          <Analytics />
           <UniversalCart />
           <Routes>
             <Route path="/" element={<LandingPage />} />

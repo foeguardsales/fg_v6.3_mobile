@@ -37,6 +37,58 @@ const _cache = {
 
 const STALE_MS = 60 * 1000; // 60s
 
+/* -------------------------------------------------------------------------
+ * DESIGN-SAFE FALLBACK (Prompt 3)
+ * When the Shopify Storefront is not yet configured (or returns an error /
+ * empty set), transparently fall back to the local backend catalog which
+ * returns data in the SAME shape the pages already consume. This guarantees
+ * the site stays fully functional both BEFORE and AFTER Shopify is connected,
+ * and never alters any page design — it only swaps the data source.
+ * ----------------------------------------------------------------------- */
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const LOCAL_API = `${BACKEND_URL}/api`;
+
+// Once a Shopify call fails for a non-404 reason we assume it's unconfigured
+// for this session and skip straight to local data (keeps the UI snappy).
+let _shopifyDown = false;
+const _local = { meals: null, treats: null };
+
+function _noteShopifyFailure(where, err) {
+  if (err?.status === 404) return; // genuine not-found — not a config problem
+  if (!_shopifyDown) {
+    console.info(`[catalog] Shopify unavailable at ${where} — using local catalog fallback.`);
+  }
+  _shopifyDown = true;
+}
+
+async function _getLocalJSON(path) {
+  const res = await fetch(`${LOCAL_API}${path}`);
+  if (!res.ok) {
+    const e = new Error(`HTTP ${res.status}`);
+    e.status = res.status;
+    throw e;
+  }
+  return res.json();
+}
+
+async function _localMeals() {
+  if (_local.meals) return _local.meals;
+  try {
+    const data = await _getLocalJSON('/products');
+    _local.meals = Array.isArray(data) ? data : [];
+  } catch (_) { _local.meals = []; }
+  return _local.meals;
+}
+
+async function _localTreats() {
+  if (_local.treats) return _local.treats;
+  try {
+    const data = await _getLocalJSON('/treats');
+    _local.treats = Array.isArray(data) ? data : [];
+  } catch (_) { _local.treats = []; }
+  return _local.treats;
+}
+
 async function _fetchAllRaw() {
   // Paginate through Storefront products (Storefront only returns
   // active + published products; draft/archived never appear).
@@ -76,65 +128,98 @@ async function _ensureAllLoaded() {
 }
 
 export async function getAllProducts() {
-  await _ensureAllLoaded();
-  return _cache.allProducts;
+  if (!_shopifyDown) {
+    try {
+      await _ensureAllLoaded();
+      if (_cache.allProducts && _cache.allProducts.length) return _cache.allProducts;
+    } catch (err) { _noteShopifyFailure('getAllProducts', err); }
+  }
+  return _localMeals();
 }
 
 export async function getAllTreats() {
-  await _ensureAllLoaded();
-  return _cache.allTreats;
+  if (!_shopifyDown) {
+    try {
+      await _ensureAllLoaded();
+      if (_cache.allTreats && _cache.allTreats.length) return _cache.allTreats;
+    } catch (err) { _noteShopifyFailure('getAllTreats', err); }
+  }
+  return _localTreats();
 }
 
 export async function getProductByHandle(handle) {
   if (!handle) return null;
-  // Prefer cache from all-products preload (fresh, includes metafields)
-  if (_cache.byHandle.has(handle)) {
-    return normalizeShopifyProduct(_cache.byHandle.get(handle));
+  if (!_shopifyDown) {
+    // Prefer cache from all-products preload (fresh, includes metafields)
+    if (_cache.byHandle.has(handle)) {
+      return normalizeShopifyProduct(_cache.byHandle.get(handle));
+    }
+    try {
+      const raw = await getProduct(handle);
+      _cache.byHandle.set(handle, raw);
+      return normalizeShopifyProduct(raw);
+    } catch (err) {
+      if (err?.status === 404) return null;
+      _noteShopifyFailure('getProductByHandle', err);
+    }
   }
+  // Local fallback (same shape as normalized Shopify product).
   try {
-    const raw = await getProduct(handle);
-    _cache.byHandle.set(handle, raw);
-    return normalizeShopifyProduct(raw);
-  } catch (err) {
-    if (err?.status === 404) return null;
-    throw err;
+    return await _getLocalJSON(`/products/${handle}`);
+  } catch (_) {
+    const meals = await _localMeals();
+    return meals.find((m) => m.product_id === handle) || null;
   }
 }
 
 export async function getTreatByHandle(handle) {
   if (!handle) return null;
-  if (_cache.byHandle.has(handle)) {
-    return normalizeShopifyTreat(_cache.byHandle.get(handle));
+  if (!_shopifyDown) {
+    if (_cache.byHandle.has(handle)) {
+      return normalizeShopifyTreat(_cache.byHandle.get(handle));
+    }
+    try {
+      const raw = await getProduct(handle);
+      _cache.byHandle.set(handle, raw);
+      return normalizeShopifyTreat(raw);
+    } catch (err) {
+      if (err?.status === 404) return null;
+      _noteShopifyFailure('getTreatByHandle', err);
+    }
   }
-  try {
-    const raw = await getProduct(handle);
-    _cache.byHandle.set(handle, raw);
-    return normalizeShopifyTreat(raw);
-  } catch (err) {
-    if (err?.status === 404) return null;
-    throw err;
-  }
+  const treats = await _localTreats();
+  return treats.find((t) => t.treat_id === handle) || null;
 }
 
 export async function listCollections() {
   if (_cache.collections) return _cache.collections;
-  const page = await apiListCollections({ first: 100 });
-  _cache.collections = (page.nodes || []).map((c) => normalizeShopifyCollection({ ...c, products: { nodes: [] } }));
-  return _cache.collections;
+  if (!_shopifyDown) {
+    try {
+      const page = await apiListCollections({ first: 100 });
+      _cache.collections = (page.nodes || []).map((c) => normalizeShopifyCollection({ ...c, products: { nodes: [] } }));
+      return _cache.collections;
+    } catch (err) { _noteShopifyFailure('listCollections', err); }
+  }
+  // No local collections catalog — return empty so callers render gracefully.
+  return [];
 }
 
 export async function getCollectionByHandle(handle) {
   if (!handle) return null;
   if (_cache.collectionByHandle.has(handle)) return _cache.collectionByHandle.get(handle);
-  try {
-    const raw = await getCollection(handle, { productsFirst: 100 });
-    const norm = normalizeShopifyCollection(raw);
-    _cache.collectionByHandle.set(handle, norm);
-    return norm;
-  } catch (err) {
-    if (err?.status === 404) return null;
-    throw err;
+  if (!_shopifyDown) {
+    try {
+      const raw = await getCollection(handle, { productsFirst: 100 });
+      const norm = normalizeShopifyCollection(raw);
+      _cache.collectionByHandle.set(handle, norm);
+      return norm;
+    } catch (err) {
+      if (err?.status === 404) return null;
+      _noteShopifyFailure('getCollectionByHandle', err);
+    }
   }
+  // Design-safe: unknown collection when Shopify is unavailable -> null (page handles it).
+  return null;
 }
 
 // Utility for callers that need to force a refresh (admin, etc.)
@@ -145,6 +230,9 @@ export function invalidateCache() {
   _cache.collections = null;
   _cache.collectionByHandle.clear();
   _cache.fetchedAllAt = 0;
+  _local.meals = null;
+  _local.treats = null;
+  _shopifyDown = false;
 }
 
 const catalog = {

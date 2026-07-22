@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { catalog as shopifyCatalog } from '../services/shopify';
+import { trackAddToCart } from '../services/analytics';
 import { SeoHead } from '../components/SeoHead';
 import {
   IngredientsSection,
@@ -763,6 +764,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                     zeroToastTimerRef.current = setTimeout(() => setShowZeroToast(false), 2200);
                     return;
                   }
+                  trackAddToCart({ name: product?.name, value: Number(totalPrice.toFixed(2)), quantity: ctaQty, items: [{ item_id: productId, item_name: product?.name, quantity: ctaQty }] });
                   if (embedded && onClose) onClose(); else navigate('/menu');
                 }}
                 className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}

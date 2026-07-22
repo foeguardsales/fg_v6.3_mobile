@@ -5,7 +5,7 @@ Constraints (ALL prompts): GitHub-safe (additive where possible, no deleting exi
 
 NOTE: env (.env) files were wiped & recreated. Mongo empty (auto-seeds). Stripe/Brevo/Cloudflare/Shopify keys are PLACEHOLDERS (user will add real keys in their own account later).
 
-## PROMPT 1 — CART REFACTOR (IN PROGRESS)
+## PROMPT 1 — CART REFACTOR ✅ DONE (verified by UI testing agent, all 8 checks pass)
 - ONE universal cart everywhere (homepage/menu/product/treat/account/all). Shared navbar (ModernNavbar in LandingPage.js, re-exported as Navbar via components/Layout.js) opens it via useCart setIsCartOpen. Render <UniversalCart/> ONCE in App.js. Retire SlideCart (=()=>null).
 - Header "CART (n)" count inline. Remove: lb-of-meals, discount-applied, lb-until-next, Subscribe&Save, Promo, Special Instructions, Stock&Save banner, saved-pets box.
 - Title -> products directly. No collection label per line.
@@ -16,13 +16,11 @@ NOTE: env (.env) files were wiped & recreated. Mongo empty (auto-seeds). Stripe/
 - Data model kept: selectedProteins (obj) + selectedTreats (arr) in localStorage; context mirrors via poll + events (foeguard:box-updated / foeguard:cart-changed).
 - Added product/treat model field shopify_variant_id (nullable).
 
-## PROMPT 2 — Tracking & Analytics (modular, non-intrusive, env placeholders only)
-- Shopify Email (NOT Klaviyo): tag/route events: account_created, order_placed, quiz_completed, meal_plan_landing (SEPARATE from meal-plan-from-menu), abandoned_cart. Use headless custom event tagging if supported else native customer events.
-- GA4: page_view, add_to_cart, checkout initiated, order completed.
-- Meta Pixel: same ecommerce events as GA4.
-- Microsoft Clarity: global session recording/heatmaps.
-- Google Search Console: verify ownership + submit sitemap.xml.
-- All keys via env vars only.
+## PROMPT 2 — Tracking & Analytics ✅ DONE (env-gated, additive)
+Files: frontend/src/services/analytics/index.js, frontend/src/components/Analytics.js (mounted in App.js), backend/events_service/router.py (POST /api/events/track, included in server.py).
+Env placeholders (frontend/.env, all blank = OFF): REACT_APP_GA4_MEASUREMENT_ID, REACT_APP_META_PIXEL_ID, REACT_APP_CLARITY_PROJECT_ID, REACT_APP_GSC_VERIFICATION.
+Wired events: page_view (route change), add_to_cart (ProductDetail + TreatDetail), begin_checkout/InitiateCheckout (UniversalCart), purchase (OrderSuccess). Shopify-Email named events via trackShopifyEmailEvent -> /api/events/track: account_created (RegisterForm + MealPlan saveProfile), quiz_completed + account_created (MealPlanPage), meal_plan_landing (MealPlanPage mount), order_placed (OrderSuccess). abandoned_cart = Shopify native.
+Sitemap already exists at /api/sitemap.xml (seo_service). GSC verify via meta tag when env set. User submits sitemap in GSC manually.
 
 ## PROMPT 3 — Shopify Headless (DESIGN-SAFE, additive/modular)
 - Shopify = data source for products, collections, pages ONLY.

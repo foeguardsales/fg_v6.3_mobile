@@ -997,6 +997,9 @@ api_router.include_router(webhooks_router)
 from seo_service import seo_router  # noqa: E402
 api_router.include_router(seo_router)
 
+from events_service.router import router as events_router  # noqa: E402
+api_router.include_router(events_router)
+
 app.include_router(api_router)
 
 app.add_middleware(

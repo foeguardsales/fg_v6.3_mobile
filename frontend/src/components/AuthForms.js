@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { trackShopifyEmailEvent } from '../services/analytics';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -50,6 +51,7 @@ export const RegisterForm = ({ onSuccess }) => {
       const { data } = await axios.post(`${API}/auth/register`, { name, email, password });
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
+      trackShopifyEmailEvent('account_created', { email, source: 'register_form' });
       onSuccess();
     } catch (err) {
       setError(err.response?.data?.detail || 'Registration failed');

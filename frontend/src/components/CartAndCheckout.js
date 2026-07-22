@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Edit2 } from 'lucide-react';
+import { trackOrderCompleted, trackShopifyEmailEvent } from '../services/analytics';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -1430,6 +1431,12 @@ export const CheckoutForm = ({ boxSize, selectedProteins, selectedTreats, produc
 
 export const OrderSuccess = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    let order = {};
+    try { order = JSON.parse(sessionStorage.getItem('lastOrder') || '{}') || {}; } catch (_) { order = {}; }
+    trackOrderCompleted({ order_id: order.order_id, value: order.total || 0, items: order.items || [] });
+    trackShopifyEmailEvent('order_placed', { order_id: order.order_id, value: order.total || 0 });
+  }, []);
   return (
     <div className="order-success" data-testid="order-success">
       <div className="success-icon">✓</div>

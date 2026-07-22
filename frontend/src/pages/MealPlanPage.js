@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, Check, Plus, Trash2, X } from 'lucide-react'
 import axios from 'axios';
 import { SelectionBreadcrumb } from './BoxBuilder';
 import { getRecommendationsForDog } from '../services/mealPlanRecommendation';
+import { trackShopifyEmailEvent } from '../services/analytics';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
@@ -108,6 +109,12 @@ export const MealPlanPage = () => {
   const [error, setError] = useState('');
 
   const TOTAL_STEPS = 8;
+
+  // Meal Plan LANDING sales page view — a distinct event from a meal plan
+  // creation started via the direct menu funnel.
+  useEffect(() => {
+    trackShopifyEmailEvent('meal_plan_landing', { path: '/meal-plan' });
+  }, []);
 
   // Scroll to top when step changes
   useEffect(() => {
@@ -262,6 +269,7 @@ export const MealPlanPage = () => {
         postal_code: postalCode,
         dogs: enrichedDogs,
       });
+      trackShopifyEmailEvent('quiz_completed', { email, dogs: enrichedDogs.length });
 
       // 3. Silently create the customer account.  Uses the same localStorage
       //    keys as the existing authService (`token`, `user`) so AccountPage,
@@ -280,6 +288,7 @@ export const MealPlanPage = () => {
         });
         localStorage.setItem('token', reg.data.token);
         localStorage.setItem('user', JSON.stringify(reg.data.user));
+        trackShopifyEmailEvent('account_created', { email, source: 'meal_plan_quiz' });
       } catch (regErr) {
         if (regErr.response?.status === 400) {
           // Email already registered — try login silently instead.

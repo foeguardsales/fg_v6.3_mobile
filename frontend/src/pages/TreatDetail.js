@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { catalog as shopifyCatalog } from '../services/shopify';
+import { trackAddToCart } from '../services/analytics';
 import { SeoHead } from '../components/SeoHead';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
@@ -167,6 +168,8 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
 
     localStorage.setItem('selectedTreats', JSON.stringify(updatedTreats));
     sessionStorage.setItem('boxSize', boxSize.toString());
+    window.dispatchEvent(new Event('foeguard:box-updated'));
+    trackAddToCart({ name: treat.name, value: Number(((treat.price || 0) * quantity).toFixed(2)), quantity, items: [{ item_id: treat.treat_id, item_name: treat.name, quantity }] });
 
     if (orderNotes) {
       const existing = JSON.parse(sessionStorage.getItem('treatNotes') || '{}');

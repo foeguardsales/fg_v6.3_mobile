@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, createContext, useContext, use
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { cart as shopifyCart, checkout as shopifyCheckout } from '../services/shopify';
+import { trackCheckoutInitiated } from '../services/analytics';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -277,6 +278,7 @@ export const UniversalCart = () => {
     if (!deliveryDate) { setCheckoutErr('Please select a delivery date to continue.'); return; }
     setCheckoutErr('');
     setCheckingOut(true);
+    trackCheckoutInitiated({ value: Number(subtotal.toFixed(2)), num_items: itemCount });
     try {
       const lines = [];
       proteinEntries.forEach(([key, d]) => {
