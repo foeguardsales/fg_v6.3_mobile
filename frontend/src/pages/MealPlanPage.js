@@ -111,7 +111,7 @@ export const MealPlanPage = () => {
   const TOTAL_STEPS = 8;
 
   // Meal Plan LANDING sales page view — a distinct event from a meal plan
-  // creation started via the direct menu funnel.
+  // creation started via the direct menu funnel. Fire once on mount.
   useEffect(() => {
     trackShopifyEmailEvent('meal_plan_landing', { path: '/meal-plan' });
   }, []);

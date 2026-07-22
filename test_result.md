@@ -6620,87 +6620,113 @@ frontend:
             - Treat counters show integer values (not text format)
             - Navigation flows work correctly (product → /menu → cart)
 
+user_problem_statement: |
+  Regression check after a small code-quality refactor (React list keys changed to stable keys on the Raw Starter Bundle page, and a minor edit on the Meal Plan page). Verify these two pages still render and function correctly.
+
+frontend:
+  - task: "Raw Starter Bundle page regression check"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/RawStarterBundlePage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Code-quality refactor: React list keys changed to stable keys on the Raw Starter Bundle page. Need to verify page still renders and functions correctly."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS (12/12 tests) - Raw Starter Bundle page regression check complete. All functionality verified:
+            1. Page renders with data-testid="raw-starter-bundle-page" ✓
+            2. Hero section: headline, subheader, and primary CTA button (data-testid="hero-cta") ✓
+            3. "Raw Starter Bundle includes:" list (data-testid="bundle-includes") shows 5 bullet items ✓
+            4. "How it works" section shows 3 steps ✓
+            5. Benefits section present ✓
+            6. FAQ section present ✓
+            7. FAQ expand/collapse works correctly (clicked first FAQ, answer expanded) ✓
+            8. Reviews section has 3 review cards ✓
+            9. Final CTA button (data-testid="final-cta") present ✓
+            10. CTA click (data-testid="includes-cta") shows notice (data-testid="rsb-notice") about Shopify variant ✓
+            11. Page does NOT crash after CTA click ✓
+            12. No console errors detected ✓
+            
+            The React list keys refactor did NOT introduce any regressions. Page renders and functions perfectly.
+
+  - task: "Meal Plan page regression check"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/MealPlanPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Minor edit on the Meal Plan page. Need to verify page still renders and first step is interactive."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS (7/7 tests) - Meal Plan page regression check complete. All functionality verified:
+            1. Page renders successfully ✓
+            2. First step heading "How many dogs do you have?" appears ✓
+            3. Dog name input field present ✓
+            4. Can interact with form field (typed "Buddy" successfully) ✓
+            5. Continue button present and enabled after entering name ✓
+            6. "Add another dog" button present ✓
+            7. Progress indicator shows "Step 1 of 8" ✓
+            8. No console errors detected ✓
+            
+            The minor edit did NOT introduce any regressions. Page renders and first step is fully interactive.
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 16
+  test_sequence: 17
   run_ui: true
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Raw Starter Bundle page regression check"
+    - "Meal Plan page regression check"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
+    - agent: "main"
+      message: |
+        Regression check after code-quality refactor (React list keys changed to stable keys on Raw Starter Bundle page, minor edit on Meal Plan page). Please verify both pages still render and function correctly.
     - agent: "testing"
       message: |
-        ✅ REAL ADD-TO-CART USER FLOW TEST COMPLETED - ALL REQUIREMENTS MET (100% PASS)
+        ✅ REGRESSION CHECK COMPLETE - ALL TESTS PASSED (19/19)
         
-        Tested the complete add-to-cart user flow by navigating through actual product pages
-        and interacting with the UI (NOT seeding localStorage). Shopify is unconfigured, so
-        the app falls back to local catalog data successfully.
+        **RAW STARTER BUNDLE PAGE (/raw-starter-bundle): ✅ PASS (12/12)**
+        - Page renders with data-testid="raw-starter-bundle-page"
+        - Hero section: headline, subheader, primary CTA button
+        - "Raw Starter Bundle includes:" list shows 5 bullet items
+        - "How it works" section shows 3 steps
+        - Benefits section present
+        - FAQ section present and functional (expand/collapse works)
+        - Reviews section has 3 review cards
+        - Final CTA button present
+        - CTA click shows notice about Shopify variant (does NOT crash)
+        - No console errors
         
-        **TEST COVERAGE:**
+        **MEAL PLAN PAGE (/meal-plan): ✅ PASS (7/7)**
+        - Page renders successfully
+        - First step heading "How many dogs do you have?" appears
+        - Dog name input field present and functional
+        - Can type dog name ("Buddy" typed successfully)
+        - Continue button present and enabled after entering name
+        - "Add another dog" button present
+        - Progress indicator shows "Step 1 of 8"
+        - No console errors
         
-        1. ✅ Product page /product/cd-chicken loads with:
-           - Product name: "Free-Range Chicken"
-           - Packaging section: "1 lb" and "1.5 lb" options
-           - Quantity stepper (starts at 0 lb)
-           - Add to Cart button
+        **CONSOLE ERRORS: ✅ PASS**
+        - No console errors detected on either page
+        - No critical network errors detected
         
-        2. ✅ MEAL VARIANT A (1 lb):
-           - Selected "1 lb" packaging
-           - Increased quantity twice: 0 lb → 6 lb → 12 lb
-           - Clicked "Add to Cart"
-           - Navigated to /menu successfully
-        
-        3. ✅ MEAL VARIANT B (1.5 lb):
-           - Navigated back to /product/cd-chicken
-           - Selected "1.5 lb" packaging
-           - Increased quantity once: 0 lb → 6 lb
-           - Clicked "Add to Cart"
-           - Navigated to /menu successfully
-        
-        4. ✅ Cart verification:
-           - Closed menu funnel modal (was blocking cart icon)
-           - Opened cart via header cart icon
-           - Cart title: "CART (2)" (correct count)
-           - TWO separate meal lines displayed:
-             • Line 1: "Free-Range Chicken" - "1 lb pack" - 12lb - $53.98
-             • Line 2: "Free-Range Chicken" - "1.5 lb pack" - 6lb - $26.99
-           - Subtotal: $80.97, Total: $80.97
-           - "Taxes & delivery calculated at checkout" text present
-           - Delivery date input present
-           - Checkout button DISABLED with hint text
-        
-        5. ✅ Delivery date validation:
-           - Selected delivery date: 2026-07-27 (today + 5 days)
-           - Checkout button became ENABLED
-           - Delivery display: "Delivery: Monday, July 27"
-        
-        6. ✅ Treat flow /treat/treat-turkey-feet:
-           - Treat page loaded: "Turkey Feet"
-           - Pack size selector: "1 pack" selected
-           - Quantity increased: 1 → 2
-           - Clicked "Add to Cart"
-           - Navigated to /menu successfully
-        
-        7. ✅ Cart with treat:
-           - Cart title: "CART (4)" (2 meal lines + 2 treat packs)
-           - Treat line: "Turkey Feet" - "1 pack" - 2 (integer counter) - $21.98
-           - Treat has -/+ counter buttons (same layout as meals)
-        
-        **SCREENSHOTS:**
-        - cart_with_2_meals.png: Cart with 2 separate meal variants
-        - cart_with_meals_and_treat.png: Cart with meals + treat
-        
-        **NO CRITICAL ISSUES FOUND**
-        
-        The entire add-to-cart flow works perfectly:
-        - Product pages load correctly with local catalog data (Shopify fallback working)
-        - Variants create separate cart lines (composite keys working)
-        - Cart shows correct item counts (meal lines + treat packs)
-        - Delivery date validation works (min = today + 3 days)
-        - Treat counters show integer values (not text format)
-        - Navigation flows work correctly (product → /menu → cart)
+        **VERDICT:**
+        The code-quality refactor (React list keys changed to stable keys on Raw Starter Bundle page, minor edit on Meal Plan page) did NOT introduce any regressions. Both pages render and function correctly. All 19 tests passed successfully.

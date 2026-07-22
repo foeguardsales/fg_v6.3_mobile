@@ -191,8 +191,8 @@ export const RawStarterBundlePage = () => {
             </div>
             <p style={{ fontFamily: 'var(--font-heading)', fontSize: '18px', fontWeight: 700, margin: '0 0 14px' }}>Raw Starter Bundle includes:</p>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 30px' }} data-testid="bundle-includes">
-              {BUNDLE.includes.map((item, i) => (
-                <li key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '9px 0', fontSize: '16px', lineHeight: 1.5 }}>
+              {BUNDLE.includes.map((item) => (
+                <li key={item} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '9px 0', fontSize: '16px', lineHeight: 1.5 }}>
                   <span style={{ flexShrink: 0, width: '24px', height: '24px', borderRadius: '50%', background: C.sage, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginTop: '1px' }}>
                     <Check size={15} color={C.cream} />
                   </span>
@@ -211,8 +211,8 @@ export const RawStarterBundlePage = () => {
         <div style={maxW}>
           <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', textAlign: 'center', margin: '0 0 48px', fontWeight: 800 }}>How it works</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px' }} className="rsb-three-col">
-            {HOW_IT_WORKS.map((s, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
+            {HOW_IT_WORKS.map((s) => (
+              <div key={s.title} style={{ textAlign: 'center' }}>
                 <img src={s.img} alt={s.title} style={{ width: '100%', height: '220px', objectFit: 'cover', borderRadius: '14px', marginBottom: '20px', boxShadow: '0 10px 26px rgba(0,0,0,0.1)' }} />
                 <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '21px', margin: '0 0 10px', fontWeight: 700 }}>{s.title}</h3>
                 <p style={{ color: '#5a5a5a', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>{s.text}</p>
@@ -228,10 +228,10 @@ export const RawStarterBundlePage = () => {
           <div>
             <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', margin: '0 0 28px', fontWeight: 800 }}>Why dogs (and their humans) love it</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '26px' }} className="rsb-two-col">
-              {BENEFITS.map((b, i) => {
+              {BENEFITS.map((b) => {
                 const Icon = b.icon;
                 return (
-                  <div key={i}>
+                  <div key={b.title}>
                     <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: C.straw, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '14px' }}>
                       <Icon size={24} color={C.red} />
                     </div>
@@ -251,7 +251,7 @@ export const RawStarterBundlePage = () => {
         <div style={{ maxWidth: '760px', margin: '0 auto', padding: '0 24px' }}>
           <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', textAlign: 'center', margin: '0 0 40px', fontWeight: 800 }}>Questions, answered</h2>
           <div>
-            {FAQS.map((f, i) => <FaqItem key={i} q={f.q} a={f.a} />)}
+            {FAQS.map((f) => <FaqItem key={f.q} q={f.q} a={f.a} />)}
           </div>
         </div>
       </section>
@@ -269,8 +269,8 @@ export const RawStarterBundlePage = () => {
       <section style={{ ...maxW, padding: '80px 24px' }}>
         <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', textAlign: 'center', margin: '0 0 48px', fontWeight: 800 }}>What pet parents are saying</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '28px' }} className="rsb-three-col">
-          {REVIEWS.map((r, i) => (
-            <div key={i} style={{ background: '#fff', borderRadius: '14px', padding: '28px', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
+          {REVIEWS.map((r) => (
+            <div key={r.name} style={{ background: '#fff', borderRadius: '14px', padding: '28px', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
               <div style={{ display: 'flex', gap: '3px', marginBottom: '14px' }}>
                 {[0, 1, 2, 3, 4].map((s) => <Star key={s} size={18} fill={C.gold} color={C.gold} />)}
               </div>

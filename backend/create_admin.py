@@ -12,8 +12,11 @@ async def create_admin():
     client = AsyncIOMotorClient(os.environ.get("MONGO_URL", "mongodb://localhost:27017"))
     db = client[os.environ.get("DB_NAME", "test_database")]
     
-    admin_email = "Sales@foeguard.com"
-    admin_password = "AAZA534BCD1!"
+    admin_email = os.environ.get("ADMIN_EMAIL", "")
+    admin_password = os.environ.get("ADMIN_PASSWORD", "")
+    if not admin_email or not admin_password:
+        print("ADMIN_EMAIL and ADMIN_PASSWORD must be set in the environment (.env). Aborting.")
+        return
     
     # Check if admin already exists
     existing = await db.users.find_one({"email": admin_email})

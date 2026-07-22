@@ -27,10 +27,10 @@ if "REACT_APP_BACKEND_URL" not in os.environ:
     except Exception:
         pass
 
-SECRET = "foeguard_dev_webhook_shared_secret_change_me"
+SECRET = os.environ.get("SHOPIFY_WEBHOOK_SECRET", "test_webhook_secret")
 
-TEST_EMAIL = "tester+1783282038@foeguard.dev"
-TEST_PASSWORD = "TestPass1234!"
+TEST_EMAIL = os.environ.get("TEST_EMAIL", "tester+1783282038@foeguard.dev")
+TEST_PASSWORD = os.environ.get("TEST_PASSWORD", "TestPass1234!")
 
 
 def _sign(body: bytes) -> str:
