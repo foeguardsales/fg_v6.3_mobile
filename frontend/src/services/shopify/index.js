@@ -11,7 +11,6 @@
 import * as products from './products';
 import * as collections from './collections';
 import * as cart from './cart';
-import customers from './customers';
 import * as checkout from './checkout';
 import pages from './pages';
 import catalog from './catalog';
