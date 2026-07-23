@@ -661,21 +661,6 @@ export const BoxBuilder = () => {
 
         {/* Main Content - Dog or Cat */}
         <>
-            {/* Prompt 1 — Plan Bar: single slim line with pet dropdown + optional feeding amount.
-                Sits between category tabs and CHOOSE YOUR BOX SIZE. Only renders when a
-                saved plan exists AND has been loaded (?plan=N in the URL). */}
-            <PlanBar
-              petSnap={petSnap}
-              currentPetIdx={currentPetIdx}
-              onSwitch={(idx) => {
-                // Instant switch — update URL param, planIndex effect re-runs, highlights refresh.
-                const next = new URLSearchParams(searchParams);
-                next.set('plan', String(idx));
-                setSearchParams(next, { replace: true });
-              }}
-              onManage={() => navigate('/account')}
-            />
-
             {showBoxSize && (
               <BoxSizePills
                 boxSize={boxSize}
@@ -729,7 +714,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
-                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
+                        isRecommended={false}
                       />
                     ))}
                   </div>
@@ -763,7 +748,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
-                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
+                        isRecommended={false}
                       />
                     ))}
                   </div>
@@ -809,7 +794,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
-                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
+                        isRecommended={false}
                       />
                     ))}
                   </div>
@@ -843,7 +828,7 @@ export const BoxBuilder = () => {
                         navigate={navigate}
                         petType={petType}
                         onOpenProduct={(pid) => setActiveProductId(pid)}
-                        isRecommended={!!recommendedProteins && recommendedProteins.has((product.protein_type || "").toLowerCase())}
+                        isRecommended={false}
                       />
                     ))}
                   </div>

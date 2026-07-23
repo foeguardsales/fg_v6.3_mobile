@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronRight, Check, Plus, Trash2, X } from 'lucide-react';
 import axios from 'axios';
 import { SelectionBreadcrumb } from './BoxBuilder';
 import { getRecommendationsForDog } from '../services/mealPlanRecommendation';
 import { trackShopifyEmailEvent } from '../services/analytics';
+import { useCart } from '../contexts/CartContext';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
@@ -87,6 +88,8 @@ const formatDogNames = (dogs) => {
 
 export const MealPlanPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const source = searchParams.get('source') === 'starter-pack' ? 'starter-pack' : 'regular';
   const topRef = useRef(null);
   
   // 8 Steps Total:
@@ -291,22 +294,9 @@ export const MealPlanPage = () => {
       // 5. Let the rest of the app know auth changed so the navbar re-reads.
       window.dispatchEvent(new Event('foeguard:auth-changed'));
 
-      // 6. Redirect to the menu.  Plan Bar (Prompt 1) is now the single UI for
-      //    switching between pets on the /menu page — so we always land on
-      //    plan=0 regardless of dog count. The user can switch pets from the
-      //    dropdown in the bar. Consultation dogs stay on the success screen
-      //    so the user sees the personal-outreach message.
-      const consultation = dogs.some(d =>
-        (d.health_issues || []).some(h => CONSULTATION_ISSUES.includes(h))
-      );
-      if (!consultation) {
-        // Skip the menu funnel — user is coming from a completed quiz.
-        sessionStorage.setItem('foeguard_selection', 'shop-raw');
-        sessionStorage.setItem('foeguard_pet_profile', JSON.stringify(sessionSnapshot));
-        navigate('/menu?plan=0');
-        return;
-      }
-
+      // 6. Show the source-aware outcome screen (Recommended Box or Starter Pack)
+      //    in-page instead of redirecting to the menu. Build-a-Box is no longer
+      //    part of the Meal Plan outcome flow.
       setProfileSaved(true);
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to save profile. Please try again.');
@@ -849,161 +839,7 @@ export const MealPlanPage = () => {
     // Step 8: Save Profile
     if (step === 8) {
       if (profileSaved) {
-        const showConsultationMessage = needsConsultation();
-        
-        return (
-          <div>
-            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-              <div style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: '50%',
-                background: '#E8F5E9',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 24px'
-              }}>
-                <Check size={40} color="#2E7D32" />
-              </div>
-              <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
-                Profile Saved!
-              </h1>
-              <p style={{ color: '#666', fontSize: '16px' }}>
-                Your profile has been saved successfully.
-              </p>
-            </div>
-
-            {showConsultationMessage && (
-              <div style={{
-                background: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)',
-                borderRadius: '16px',
-                padding: '24px',
-                marginBottom: '24px',
-                border: '2px solid #FFB74D'
-              }}>
-                <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#E65100' }}>
-                  We'll Contact You Personally
-                </h3>
-                <p style={{ color: '#2C2C2C', lineHeight: '1.6' }}>
-                  Based on the health conditions you've shared, one of our pet nutrition specialists will reach out to you within 24-48 hours to discuss {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s` : "your dogs'"} specific needs and create a customized meal plan.
-                </p>
-              </div>
-            )}
-
-            {/* Dynamic protein recommendations — computed from the answers via
-                mealPlanRecommendation.js. Skipped when a personal-consultation
-                message is already shown above. */}
-            {!showConsultationMessage && (
-              <div data-testid="meal-plan-recommendations" style={{ marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '6px', color: '#2C2C2C', fontFamily: "'Barlow Semi Condensed', serif" }}>
-                  {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s recommended proteins` : 'Recommended proteins'}
-                </h3>
-                <p style={{ fontSize: '14px', color: '#2C2C2C', marginBottom: '16px', opacity: 0.75 }}>
-                  Based on your answers, these proteins are the best match for {dogs.length === 1 ? capitalizeName(dogs[0].name) : 'each dog'}.
-                </p>
-
-                {dogs.map((dog) => {
-                  const rec = getRecommendationsForDog(dog, 3);
-                  return (
-                    <div key={dog.dog_id} data-testid={`recs-${dog.dog_id}`} style={{
-                      background: '#FDFBF7',
-                      border: '1px solid #E8E4DC',
-                      borderRadius: '12px',
-                      padding: '16px',
-                      marginBottom: '12px'
-                    }}>
-                      {dogs.length > 1 && (
-                        <div style={{ fontSize: '15px', fontWeight: 600, color: '#c8102e', marginBottom: '10px' }}>
-                          {capitalizeName(dog.name)}
-                        </div>
-                      )}
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        {rec.top.map((r, i) => (
-                          <div key={r.protein} data-testid={`rec-item-${i}`} style={{
-                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            padding: '10px 12px',
-                            background: i === 0 ? '#F5F3EF' : 'transparent',
-                            border: i === 0 ? '1px solid #D8CFB8' : '1px solid transparent',
-                            borderRadius: '8px'
-                          }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                              <span style={{
-                                width: 22, height: 22, borderRadius: '50%',
-                                background: i === 0 ? '#c8102e' : '#D8CFB8',
-                                color: i === 0 ? 'white' : '#2C2C2C',
-                                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                fontSize: 12, fontWeight: 700
-                              }}>{i + 1}</span>
-                              <span style={{ fontSize: '15px', fontWeight: 600, color: '#2C2C2C' }}>
-                                {r.protein}
-                              </span>
-                            </div>
-                            <span style={{ fontSize: '13px', color: '#2C2C2C', opacity: 0.7 }}>
-                              Match {Math.round((r.score / 5) * 100)}%
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            <div style={{ background: 'transparent', borderRadius: '0', padding: '0', boxShadow: 'none' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '20px' }}>Your Dogs</h3>
-              {dogs.map((dog, index) => (
-                <div key={dog.dog_id} style={{
-                  padding: '16px',
-                  background: 'transparent',
-                  borderRadius: '12px',
-                  marginBottom: index < dogs.length - 1 ? '12px' : '0'
-                }}>
-                  <div style={{ fontWeight: '600', fontSize: '16px', marginBottom: '8px' }}>{capitalizeName(dog.name)}</div>
-                  <div style={{ fontSize: '14px', color: '#666' }}>
-                    {dog.breed} • {dog.weight_lbs} lbs • {dog.lifestyle?.replace('_', ' ')}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ display: 'flex', gap: '16px', marginTop: '32px' }}>
-              <button
-                onClick={() => navigate('/build-box')}
-                style={{
-                  flex: 1,
-                  padding: '16px 24px',
-                  background: '#c8102e',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer'
-                }}
-              >
-                Build Your Box
-              </button>
-              <button
-                onClick={() => navigate('/account')}
-                style={{
-                  flex: 1,
-                  padding: '16px 24px',
-                  background: 'white',
-                  color: '#c8102e',
-                  border: '1.5px solid #c8102e',
-                  borderRadius: '8px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer'
-                }}
-              >
-                Go to My Account
-              </button>
-            </div>
-          </div>
-        );
+        return <OutcomePane dogs={dogs} source={source} navigate={navigate} needsConsultation={needsConsultation()} />;
       }
 
       return (
@@ -1233,5 +1069,277 @@ export const MealPlanPage = () => {
       </div>
       <Footer />
     </>
+  );
+};
+
+// =====================================================================
+// OutcomePane — source-aware final screen shown after profile is saved.
+// - source === 'starter-pack'  → "Your Recommended Starter Pack" (fixed 12lb, 3x 4lb)
+// - source === 'regular'       → "Your Recommended Box" (algorithm box size + 2wk/1mo)
+// Reuses `.product-card-row` styling (same card design as menu + treats).
+// Adding to cart writes to localStorage 'selectedProteins' (same key the rest of
+// the site + Universal Cart already read) and opens the shared cart drawer.
+// No redirect to Build-a-Box, no Shopify call here — checkout happens from cart.
+// =====================================================================
+
+// Algorithm-name → product `protein_type` key (lowercase).
+const PROTEIN_KEY = {
+  'Beef': 'beef', 'Chicken': 'chicken', 'Duck': 'duck',
+  'Wild-Caught Fish': 'fish', 'Goat': 'goat', 'Lamb': 'lamb',
+  'Rabbit': 'rabbit', 'Turkey': 'turkey',
+};
+
+// Weight → recommended box size (same tiers as MealPlanPage.recommendedBoxSize).
+const recommendedBoxSizeFor = (weightLbs) => {
+  const w = parseFloat(weightLbs) || 0;
+  if (w < 20) return 6;
+  if (w < 50) return 12;
+  if (w < 80) return 24;
+  return 36;
+};
+
+// Snap to nearest 6lb increment (defensive — algorithm already returns 6/12/24/36).
+const snapToSix = (n) => Math.max(6, Math.round(n / 6) * 6);
+
+// Get first-collection product for a given protein key (safe fallback).
+const productForProtein = (products, proteinKey) => {
+  if (!proteinKey) return null;
+  return products.find(p => p.product_id === `cd-${proteinKey}`) ||
+         products.find(p => (p.protein_type || '').toLowerCase() === proteinKey) ||
+         null;
+};
+
+// Per-lb price at 6lb tier (same rule the Universal Cart uses).
+const perLbPriceOf = (product) => {
+  if (!product || !Array.isArray(product.pricing)) return 0;
+  const six = product.pricing.find(x => x.size_lb === 6) || product.pricing[0];
+  return six ? (six.price_per_lb || (six.price / 6) || 0) : 0;
+};
+
+const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
+  const { setIsCartOpen } = useCart();
+  const [products, setProducts] = useState([]);
+  const [duration, setDuration] = useState('2w'); // '2w' | '1m'
+  const primaryDog = dogs[0] || {};
+  const dogLabel = capitalizeName(primaryDog.name || 'your dog');
+
+  // Recommendation: get up to 8 ranked proteins for dropdown options.
+  const rec = React.useMemo(() => {
+    try { return getRecommendationsForDog(primaryDog, 8); }
+    catch (_) { return { top: [], all: [] }; }
+  }, [primaryDog]);
+
+  // Available protein keys (algorithm order → product key).
+  const availableKeys = rec.all
+    .map(r => PROTEIN_KEY[r.protein])
+    .filter(Boolean);
+
+  // Default: top 3 recommended proteins.
+  const defaultKeys = rec.top
+    .slice(0, 3)
+    .map(r => PROTEIN_KEY[r.protein])
+    .filter(Boolean);
+
+  // Pad to 3 with any remaining available proteins (safety for narrow rec lists).
+  while (defaultKeys.length < 3 && availableKeys.length > defaultKeys.length) {
+    const next = availableKeys.find(k => !defaultKeys.includes(k));
+    if (!next) break;
+    defaultKeys.push(next);
+  }
+
+  const [selectedKeys, setSelectedKeys] = useState(defaultKeys);
+
+  // Load products once for pricing + card display.
+  useEffect(() => {
+    let cancelled = false;
+    axios.get(`${API}/products`)
+      .then(res => { if (!cancelled) setProducts(Array.isArray(res.data) ? res.data : []); })
+      .catch(() => { /* graceful */ });
+    return () => { cancelled = true; };
+  }, []);
+
+  // --- Box math ---
+  const isStarter = source === 'starter-pack';
+  const baseBox = isStarter ? 12 : snapToSix(recommendedBoxSizeFor(primaryDog.weight_lbs));
+  const durMult = isStarter ? 1 : (duration === '1m' ? 2 : 1);
+  const boxLbs = baseBox * durMult;
+  // 3 meals, evenly split (integer lbs — largest gets leftover).
+  const numMeals = 3;
+  const perMeal = Math.floor(boxLbs / numMeals);
+  const remainder = boxLbs - perMeal * numMeals;
+  const mealLbs = Array.from({ length: numMeals }, (_, i) => perMeal + (i === 0 ? remainder : 0));
+
+  // Consultation flow keeps the original notice — no purchase UI.
+  if (needsConsultation) {
+    return (
+      <div>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: '#E8F5E9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+            <Check size={40} color="#2E7D32" />
+          </div>
+          <h1 style={{ fontSize: '32px', fontWeight: 600, marginBottom: '12px', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>Profile Saved!</h1>
+        </div>
+        <div style={{ background: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)', borderRadius: '16px', padding: '24px', marginBottom: '24px', border: '2px solid #FFB74D' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '12px', color: '#E65100' }}>We'll Contact You Personally</h3>
+          <p style={{ color: '#2C2C2C', lineHeight: 1.6, margin: 0 }}>
+            Based on the health conditions you've shared, one of our pet nutrition specialists will reach out to you within 24-48 hours to discuss {dogs.length === 1 ? `${dogLabel}'s` : "your dogs'"} specific needs and create a customized meal plan.
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
+          <button onClick={() => navigate('/account')} data-testid="outcome-account-btn" style={{ flex: 1, padding: '16px 24px', background: '#c8102e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 600, cursor: 'pointer' }}>
+            Go to My Account
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const handleAddToCart = () => {
+    const next = {};
+    selectedKeys.forEach((key, i) => {
+      const p = productForProtein(products, key);
+      if (!p) return;
+      const qty = mealLbs[i] || 0;
+      if (qty <= 0) return;
+      next[p.product_id] = { productId: p.product_id, name: p.name, qty };
+    });
+    if (Object.keys(next).length === 0) return; // catalog still loading — no-op
+    try {
+      localStorage.setItem('selectedProteins', JSON.stringify(next));
+      window.dispatchEvent(new Event('foeguard:box-updated'));
+      window.dispatchEvent(new Event('foeguard:cart-changed'));
+    } catch (_) { /* ignore */ }
+    setIsCartOpen(true);
+  };
+
+  const totalPrice = selectedKeys.reduce((sum, key, i) => {
+    const p = productForProtein(products, key);
+    return sum + perLbPriceOf(p) * (mealLbs[i] || 0);
+  }, 0);
+
+  // Options for a slot's dropdown: any available protein NOT selected in another slot.
+  const optionsForSlot = (slotIdx) => {
+    const chosenElsewhere = new Set(selectedKeys.filter((_, i) => i !== slotIdx));
+    const options = availableKeys.filter(k => !chosenElsewhere.has(k));
+    // Ensure the slot's current value is present even if it slipped out of availableKeys.
+    if (selectedKeys[slotIdx] && !options.includes(selectedKeys[slotIdx])) {
+      options.unshift(selectedKeys[slotIdx]);
+    }
+    return options;
+  };
+
+  const changeSlot = (slotIdx, newKey) => {
+    const next = [...selectedKeys];
+    next[slotIdx] = newKey;
+    setSelectedKeys(next);
+  };
+
+  const title = isStarter ? 'Your Recommended Starter Pack' : 'Your Recommended Box';
+  const ctaLabel = isStarter ? 'Add Starter Pack to Cart' : 'Add Recommended Box to Cart';
+
+  return (
+    <div data-testid="meal-plan-outcome" data-source={source}>
+      <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+        <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: '#E8F5E9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+          <Check size={40} color="#2E7D32" />
+        </div>
+        <h1 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+          {title}
+        </h1>
+        <p style={{ color: '#666', fontSize: '15px', margin: 0 }}>
+          {isStarter
+            ? `A 12 lb starter pack curated for ${dogLabel}, split evenly across ${dogLabel}'s top 3 protein matches.`
+            : `Built for ${dogLabel} from your quiz answers.`}
+        </p>
+      </div>
+
+      {/* Summary card: box size + (regular only) duration selector + total price */}
+      <div style={{ background: '#FDFBF7', border: '1px solid #E8E4DC', borderRadius: '12px', padding: '18px 20px', marginBottom: '22px' }} data-testid="outcome-summary">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '18px', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: '13px', color: '#666', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Box Size</div>
+            <div style={{ fontSize: '22px', fontWeight: 700, color: '#2C2C2C', fontFamily: "'Barlow Semi Condensed', serif" }}>{boxLbs} lb</div>
+          </div>
+          {!isStarter && (
+            <div>
+              <div style={{ fontSize: '13px', color: '#666', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Duration</div>
+              <select
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                data-testid="outcome-duration"
+                style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #D8CFB8', fontSize: '15px', background: 'white', fontFamily: "'Barlow Semi Condensed', serif", cursor: 'pointer' }}
+              >
+                <option value="2w">2 Weeks</option>
+                <option value="1m">1 Month</option>
+              </select>
+            </div>
+          )}
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '13px', color: '#666', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Plan Price</div>
+            <div style={{ fontSize: '24px', fontWeight: 700, color: '#c8102e', fontFamily: "'Barlow Semi Condensed', serif" }} data-testid="outcome-total">
+              ${totalPrice.toFixed(2)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 12px', color: '#2C2C2C', fontFamily: "'Barlow Semi Condensed', serif" }}>
+        Recommended Meals
+      </h3>
+
+      {/* Reuse the .product-card-row layout so styling matches the menu exactly. */}
+      <div className="product-grid" style={{ background: 'white', borderRadius: '12px', overflow: 'hidden', border: '1px solid #EDEAE7', marginBottom: '24px' }}>
+        {selectedKeys.map((key, i) => {
+          const product = productForProtein(products, key);
+          const qty = mealLbs[i] || 0;
+          const lineTotal = perLbPriceOf(product) * qty;
+          const opts = optionsForSlot(i);
+          return (
+            <div key={i} className="product-card-row" data-testid={`outcome-meal-${i}`}>
+              <div className="product-card-content">
+                <h4 className="product-card-title">{product?.name || 'Loading…'}</h4>
+                <select
+                  value={key}
+                  onChange={(e) => changeSlot(i, e.target.value)}
+                  data-testid={`outcome-protein-${i}`}
+                  style={{ marginTop: '8px', padding: '8px 12px', borderRadius: '6px', border: '1px solid #D8CFB8', fontSize: '14px', background: 'white', fontFamily: "'Barlow Semi Condensed', serif", cursor: 'pointer', maxWidth: '260px' }}
+                >
+                  {opts.map(k => {
+                    const p = productForProtein(products, k);
+                    return <option key={k} value={k}>{p?.name || k}</option>;
+                  })}
+                </select>
+                <div className="product-card-price" style={{ marginTop: 'auto', paddingTop: '10px' }}>
+                  <span className="price-regular">{qty} lb</span>
+                  <span className="price-unit">·</span>
+                  <span className="price-regular">${lineTotal.toFixed(2)}</span>
+                </div>
+              </div>
+              <div className="product-card-media">
+                {product?.image_url && <img src={product.image_url} alt={product.name} />}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <button
+        onClick={handleAddToCart}
+        data-testid="outcome-add-to-cart"
+        style={{ width: '100%', padding: '16px 24px', background: '#c8102e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 700, cursor: 'pointer', fontFamily: "'Barlow Semi Condensed', serif", letterSpacing: '0.02em' }}
+      >
+        {ctaLabel}
+      </button>
+
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '18px' }}>
+        <button
+          onClick={() => navigate('/account')}
+          data-testid="outcome-account-link"
+          style={{ background: 'transparent', border: 'none', color: '#666', fontSize: '14px', textDecoration: 'underline', cursor: 'pointer' }}
+        >
+          View saved plans in My Account
+        </button>
+      </div>
+    </div>
   );
 };

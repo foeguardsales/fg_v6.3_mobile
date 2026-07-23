@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Check, Star, ChevronDown, Truck, Snowflake, Heart } from 'lucide-react';
-import { cart as shopifyCart } from '../services/shopify';
 
 /* -------------------------------------------------------------------------
  * STANDALONE Raw Starter Bundle landing page (Prompt 5).
@@ -112,6 +112,7 @@ const CtaButton = ({ children, testid, variant = 'primary', onClick, busy }) => 
 );
 
 export const RawStarterBundlePage = () => {
+  const navigate = useNavigate();
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -119,27 +120,14 @@ export const RawStarterBundlePage = () => {
     document.title = 'Raw Starter Bundle — FoeGuard';
   }, []);
 
-  const handleBuy = async () => {
+  // CTA — kick users into the SHARED meal-plan questionnaire; the ?source flag
+  // tells MealPlanPage to render the "Your Recommended Starter Pack" outcome
+  // (fixed 12lb, top 3 proteins, protein dropdowns only) instead of the
+  // regular "Your Recommended Box" outcome. Same funnel, different result page.
+  const handleBuy = () => {
     setNotice('');
-    // Mockup mode — no Shopify variant wired yet.
-    if (!BUNDLE.shopifyVariantId) {
-      setNotice('Checkout goes live the moment your Shopify Starter Bundle variant ID is added to BUNDLE.shopifyVariantId.');
-      return;
-    }
     setBusy(true);
-    try {
-      const res = await shopifyCart.cartCreate({
-        lines: [{ merchandiseId: BUNDLE.shopifyVariantId, quantity: 1 }],
-        attributes: [{ key: 'source', value: 'raw-starter-bundle-landing' }],
-      });
-      const url = res?.checkoutUrl || res?.cart?.checkoutUrl;
-      if (url) { window.location.href = url; return; }
-      setNotice('Unable to start checkout right now. Please try again.');
-    } catch (e) {
-      setNotice('Unable to start checkout right now. Please try again.');
-    } finally {
-      setBusy(false);
-    }
+    navigate('/meal-plan?source=starter-pack');
   };
 
   const price = (n) => `$${Number(n).toFixed(2)}`;

@@ -6730,3 +6730,178 @@ agent_communication:
         
         **VERDICT:**
         The code-quality refactor (React list keys changed to stable keys on Raw Starter Bundle page, minor edit on Meal Plan page) did NOT introduce any regressions. Both pages render and function correctly. All 19 tests passed successfully.
+
+#====================================================================================================
+# 2026-07-23 — Meal Plan Outcome Simplification
+#====================================================================================================
+
+user_problem_statement: |
+  Simplify the Meal Plan outcome flow. Do NOT rebuild the calculator, algorithm, profile saving,
+  Shopify integration, or cart logic — those stay untouched. Outcome-only changes:
+  1. Regular Meal Plan (/meal-plan): after saving profile, show "Your Recommended Box" — box size
+     from existing algorithm (snapped to 6/12/24/36 lb), Duration dropdown [2 Weeks / 1 Month], 
+     price auto-updates with duration. Under "Recommended Meals": reuse `.product-card-row` cards,
+     fixed quantities (no +/-), protein swappable via dropdown only. CTA "Add Recommended Box to
+     Cart" writes to localStorage `selectedProteins` + opens shared cart drawer (no Build-a-Box redirect).
+  2. Starter Pack landing (/raw-starter-bundle): CTAs now navigate to `/meal-plan?source=starter-pack`.
+     Same questionnaire. Outcome screen: "Your Recommended Starter Pack" — fixed 12 lb, top 3 
+     proteins × 4 lb, protein dropdowns only, no duration selector. CTA "Add Starter Pack to Cart".
+  3. Build-a-Box (/menu): Remove PlanBar (Saved Meal Plan tabs) — saved plans remain in /account only.
+     Remove `is-recommended` highlighting of ProductCards (isRecommended prop now hard-coded false).
+
+frontend:
+  - task: "Regular Meal Plan Outcome — Your Recommended Box"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/MealPlanPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            New OutcomePane component added at bottom of MealPlanPage.js. Renders when
+            profileSaved===true and !needsConsultation. Reads ?source=... URL param — anything
+            other than 'starter-pack' is 'regular'. Regular outcome shows: box size (snapped to
+            nearest 6lb multiple via recommendedBoxSizeFor), Duration dropdown (2 Weeks / 1 Month
+            — 1 Month doubles per-meal lbs), price auto-updates. 3 meal cards in .product-card-row
+            layout; each card has a protein dropdown (options = ranked proteins from
+            getRecommendationsForDog minus proteins picked in other slots). No +/- controls. CTA
+            'Add Recommended Box to Cart' writes to localStorage 'selectedProteins' with keys
+            = product_id and { productId, name, qty(lb) } — matches the schema Universal Cart
+            already reads. Also dispatches foeguard:box-updated + foeguard:cart-changed, then
+            calls setIsCartOpen(true). saveProfile() no longer navigates to /menu?plan=0; sets
+            profileSaved(true) so the outcome renders in-place.
+            
+            TEST FLOW:
+            1. GO /meal-plan (no query params) — default 'regular' source.
+            2. Fill quiz: name Rex, postal L6H 1A1, gender Male, neutered Yes, breed Labrador
+               Retriever, birthday 2022-05-01, body Fit, weight 55, lifestyle Normal, health None,
+               email test@x.com, click 'Save Profile'.
+            3. Verify outcome:
+               - [data-testid="meal-plan-outcome"] has data-source="regular"
+               - h1 says "Your Recommended Box"
+               - Box Size shows a lb figure (should be 12lb for 55lb Lab per algorithm; may double
+                 to 24lb on 1 Month)
+               - [data-testid="outcome-duration"] dropdown with values 2w/1m present
+               - [data-testid="outcome-total"] price > 0
+               - Exactly 3 rows [data-testid="outcome-meal-0..2"]
+               - Each row has a <select> [data-testid="outcome-protein-0..2"] with option list
+               - No +/- buttons anywhere in the outcome
+               - Change duration to 1 Month — total price should ~2× the 2 Weeks price
+               - Change a protein dropdown — line total updates
+            4. Click [data-testid="outcome-add-to-cart"] — Universal Cart drawer opens, contains
+               the 3 recommended meals with the fixed lb quantities. NO Build-a-Box redirect.
+
+  - task: "Starter Pack Meal Plan Outcome — Your Recommended Starter Pack"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/MealPlanPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Same OutcomePane. When URL has ?source=starter-pack: box is fixed 12lb (baseBox = 12),
+            no duration selector (isStarter suppresses it), 3 rows × 4lb each, title "Your
+            Recommended Starter Pack", CTA "Add Starter Pack to Cart".
+            
+            TEST FLOW:
+            1. GO /raw-starter-bundle. Click any CTA (hero-cta / includes-cta / band-cta /
+               final-cta) — should navigate to /meal-plan?source=starter-pack (URL preserves
+               ?source=starter-pack).
+            2. Run the exact same quiz as above.
+            3. Verify outcome:
+               - [data-testid="meal-plan-outcome"] has data-source="starter-pack"
+               - h1 says "Your Recommended Starter Pack"
+               - Box Size = 12 lb regardless of dog weight
+               - NO duration dropdown ([data-testid="outcome-duration"] not visible)
+               - 3 rows, each showing 4 lb qty
+               - Protein dropdowns work — line totals update
+            4. Click [data-testid="outcome-add-to-cart"] — CTA text should be "Add Starter Pack
+               to Cart". Cart drawer opens with 3 items × 4lb each.
+
+  - task: "Build-a-Box menu — PlanBar and isRecommended removed"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/BoxBuilder.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Removed the <PlanBar/> render (Saved Meal Plan selector between category tabs and
+            box-size row). PlanBar component definition + petSnap/recommendedProteins state
+            remain (dead code, kept to minimize diff / merge risk). All four ProductCard
+            instances now pass isRecommended={false} explicitly — no more highlighted borders
+            on menu products. Saved plans still accessible via /account (untouched).
+            
+            TEST FLOW:
+            1. GO /account, then trigger saving a meal plan (or run the quiz once) so a plan
+               exists in localStorage.
+            2. GO /menu?plan=0 — the PlanBar (pet dropdown, "Manage plans") MUST NOT appear.
+            3. GO /menu (no ?plan param) — verify NO product card has the highlighted border /
+               "recommended" ring; no .is-recommended class on any .product-card-row element.
+            4. Existing menu functionality still works: category tabs, box-size pills, add to
+               cart, cart drawer, etc.
+
+  - task: "Raw Starter Bundle CTAs route through /meal-plan questionnaire"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/RawStarterBundlePage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            handleBuy now calls navigate('/meal-plan?source=starter-pack') instead of the
+            previous shopifyCart.cartCreate placeholder. Removed unused `cart as shopifyCart`
+            import. Added useNavigate import. All 4 CTA buttons (hero-cta, includes-cta,
+            band-cta, final-cta) share this handler — all should route to the meal plan quiz
+            with the starter-pack source flag. Landing-page layout/design UNTOUCHED.
+            
+            TEST FLOW:
+            1. GO /raw-starter-bundle. Verify page renders (all sections present, data-testid
+               `raw-starter-bundle-page` visible).
+            2. Click [data-testid="hero-cta"] — URL becomes /meal-plan?source=starter-pack.
+               Repeat with includes-cta, band-cta, final-cta by returning to /raw-starter-bundle
+               each time.
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "Regular Meal Plan Outcome — Your Recommended Box"
+    - "Starter Pack Meal Plan Outcome — Your Recommended Starter Pack"
+    - "Raw Starter Bundle CTAs route through /meal-plan questionnaire"
+    - "Build-a-Box menu — PlanBar and isRecommended removed"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: |
+        Meal Plan outcome simplification complete. Please run the 4 test flows described above
+        in each task's status_history.comment. Do NOT retest existing calculator/quiz steps 1-8
+        beyond what's needed to reach the outcome — they were not modified. Focus on:
+        (a) The correct outcome variant renders based on ?source= URL param.
+        (b) Add-to-cart writes to localStorage and opens the cart drawer WITHOUT redirecting
+            to Build-a-Box or Shopify.
+        (c) The removed PlanBar + recommendation highlighting are gone from /menu.
+        (d) All 4 RawStarterBundlePage CTAs land on /meal-plan?source=starter-pack.
+        Test credentials for any Save-Profile step: use any email like `test@example.com`.
+        The postal code input placeholder is `E.G., M5V 1A1` — use `L6H 1A1` (Halton) for a
+        valid entry.
+
