@@ -22,10 +22,12 @@ const SubscriptionManager = lazy(() => import('../components/account/Subscriptio
 const SavedPlansSection = ({ profile, navigate }) => {
   const dogs = profile?.dogs || [];
 
-  // Feeding-guide entries live in localStorage (calculator writes there).
+  // Feeding-guide entries live in localStorage under 'foeguard_saved_pets'
+  // (written by FeedingCalculator.js when a logged-in user hits Save).
   let feedingGuides = [];
   try {
-    feedingGuides = JSON.parse(localStorage.getItem('foeguard_feeding_guides') || '[]');
+    feedingGuides = JSON.parse(localStorage.getItem('foeguard_saved_pets') || '[]');
+    if (!Array.isArray(feedingGuides)) feedingGuides = [];
   } catch (_) { feedingGuides = []; }
 
   const hasPlans = dogs.length > 0 || feedingGuides.length > 0;

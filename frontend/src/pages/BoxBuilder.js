@@ -934,7 +934,13 @@ export const BoxBuilder = () => {
 const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType, onOpenProduct, isRecommended = false }) => {
   const basePrice = getBasePrice(product);
   const discountedPrice = getDiscountedPrice(basePrice);
-  const hasDiscount = discountedPrice < basePrice - 0.001;
+  // Tier rate driven by the CURRENTLY-SELECTED box pill (6/12/24/36). This makes
+  // every un-selected card preview reflect the pill the shopper just tapped —
+  // 6lb → 0%, 12lb → 5%, 24lb → 10%, 36lb → 15% — even before they add anything.
+  const RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
+  const boxRate = RATES[boxSize] || 0;
+  const boxDiscountedPerLb = (basePrice / 6) * (1 - boxRate);
+  const hasDiscount = discountedPrice < basePrice - 0.001 || boxRate > 0;
   // Pricing is stored as the 6lb base price. Show /1lb by default; once a quantity
   // is selected, show the full price for that amount.
   const basePerLb = basePrice / 6;
@@ -1081,7 +1087,16 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
               <span className="price-regular">${lineTotal.toFixed(2)}</span>
               <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
             </>
+          ) : hasDiscount ? (
+            // A box tier IS active (user picked 12/24/36 or basket lbs hit a tier)
+            // — show the DYNAMIC per-lb price at that tier on every un-selected card.
+            <>
+              <span className="price-regular">${boxDiscountedPerLb.toFixed(2)}</span>
+              <span className="price-unit">/lb</span>
+            </>
           ) : (
+            // No tier active yet (default 6lb / empty basket) — aspirational preview
+            // of the maximum bulk discount so shoppers see the best possible price.
             <>
               <span className="price-from">From</span>
               <span className="price-regular">${lowestPerLb.toFixed(2)}</span>
