@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { catalog as shopifyCatalog } from '../services/shopify';
-import { trackAddToCart } from '../services/analytics';
+import { trackAddToCart, trackViewItem } from '../services/analytics';
 import { SeoHead } from '../components/SeoHead';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
@@ -122,6 +122,20 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
       window.removeEventListener('focus', syncFromStorage);
     };
   }, [treatId]);
+
+  // Fire GA4-compatible `view_item` into dataLayer once per treat load so GTM
+  // can route it to whichever analytics tag the merchant has configured.
+  useEffect(() => {
+    if (!treat) return;
+    trackViewItem({
+      item_id: treat.treat_id,
+      item_name: treat.name,
+      variant: treat.pack_size || treat.variant || null,
+      price: Number(treat.price) || 0,
+      quantity: 1,
+      currency: 'USD',
+    });
+  }, [treat]);
 
   // (Cart is now a single universal drawer opened via CartContext — no local listener.)
 

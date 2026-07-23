@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronDown, ChevronUp, ChevronRight, PawPrint, Sprout, ChefHat, X, Check, Recycle, MapPin, Heart } from 'lucide-react';
 import { catalog as shopifyCatalog } from '../services/shopify';
-import { trackAddToCart } from '../services/analytics';
+import { trackAddToCart, trackViewItem } from '../services/analytics';
 import { SeoHead } from '../components/SeoHead';
 import {
   IngredientsSection,
@@ -418,6 +418,26 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     const existing = saved[key]?.qty;
     setQuantity(existing && existing > 0 ? existing : 0);
   }, [productId, product, selectedVariant]);
+
+  // Fire GA4-compatible `view_item` into dataLayer once per (product, variant)
+  // so GTM can route it to whichever analytics tag the merchant has configured.
+  // Skipped until the product has loaded so we send real name/price.
+  useEffect(() => {
+    if (!product) return;
+    const variantLabel = VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0];
+    const basePricing = Array.isArray(product.pricing)
+      ? (product.pricing.find((p) => p.size_lb === 6) || product.pricing[0])
+      : null;
+    const unitPrice = basePricing?.price ?? product.price ?? 0;
+    trackViewItem({
+      item_id: productId,
+      item_name: product.name,
+      variant: variantLabel,
+      price: Number(unitPrice) || 0,
+      quantity: 1,
+      currency: 'USD',
+    });
+  }, [product, productId, selectedVariant]);
 
   const handleBackToMenu = () => {
     // Persist edits to a meal that's already in the basket when leaving (per spec).

@@ -57,6 +57,25 @@ export function trackPageView(path) {
 }
 
 /* ------------------------------ ecommerce -------------------------------- */
+export function trackViewItem({ item_id, item_name, variant, price = 0, quantity = 1, currency = 'USD' } = {}) {
+  push({
+    event: 'view_item',
+    ecommerce: {
+      currency,
+      value: Number(price) * Number(quantity || 1),
+      items: [
+        {
+          item_id,
+          item_name,
+          item_variant: variant,
+          price: Number(price) || 0,
+          quantity: Number(quantity) || 1,
+        },
+      ],
+    },
+  });
+}
+
 export function trackAddToCart({ name, value = 0, items = [], quantity = 1 } = {}) {
   push({
     event: 'add_to_cart',
