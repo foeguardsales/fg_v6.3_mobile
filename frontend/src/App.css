@@ -5743,12 +5743,10 @@ h2, h3, h4 {
   background: transparent;
   color: #2C2C2C;
   font-weight: 700;
-  font-size: 16px;
   border-bottom-color: #2C2C2C;
 }
 @media (min-width: 760px) {
   .menu-category-text-btn { font-size: 15px; margin-right: 6px; padding: 2px 2px 6px; }
-  .menu-category-text-btn.is-active { font-size: 17px; }
 }
 /* Tighter spacing for mobile category tabs */
 .menu-category-text-btn { margin-right: 8px; padding: 2px 2px 5px; }
@@ -5818,14 +5816,12 @@ h2, h3, h4 {
 .menu-category-text--on-hero .menu-category-text-btn.is-active {
   color: #FFFFFF;
   font-weight: 700;
-  font-size: 17px;
   border-bottom-color: #FFFFFF;
 }
 .menu-category-text--on-hero .menu-category-calc-link { color: #EDE6DA; }
 .menu-category-text--on-hero .menu-category-calc-link:hover { color: #FFFFFF; }
 @media (min-width: 760px) {
   .menu-category-text--on-hero .menu-category-text-btn { font-size: 15px; }
-  .menu-category-text--on-hero .menu-category-text-btn.is-active { font-size: 17px; }
 }
 /* Home-page style gradient — transparent up top, darker toward the bottom for legible text */
 .menu-collection-hero-overlay {
