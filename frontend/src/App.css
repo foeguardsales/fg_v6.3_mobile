@@ -8235,3 +8235,35 @@ button, strong, b, .btn-primary, .btn-secondary {
   text-transform: uppercase;
 }
 
+
+/* =====================================================================
+   CANONICAL MENU CARD RULES — DO NOT REMOVE
+   ---------------------------------------------------------------------
+   Meal + treat cards on /menu MUST always render as stationary
+   left-aligned rows (matching the treats-section reference design).
+   These rules override any legacy `.product-card` styles that leak in
+   via className stacking, so future product/treat additions inherit
+   the correct behavior automatically.
+   ===================================================================== */
+.product-card-row,
+.product-card-row * {
+  text-align: left !important;
+}
+.product-card-row {
+  transform: none !important;
+  box-shadow: none !important;
+  transition: background 0.15s ease !important;
+}
+.product-card-row:hover,
+.product-card-row:focus,
+.product-card-row:focus-visible,
+.product-card-row:active {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: #EDEAE7 !important;
+}
+/* Keep numeric qty pill's inner digit centered — it's a control, not text content */
+.product-card-row .qty-display-mini,
+.product-card-row .product-card-qty-pill {
+  text-align: center !important;
+}

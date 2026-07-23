@@ -1022,7 +1022,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
   return (
     <div 
-      className={`product-card product-card-row ${(!hasVariants && isSelected) ? 'is-selected' : ''} ${isRecommended ? 'is-recommended' : ''}`}
+      className={`product-card-row ${(!hasVariants && isSelected) ? 'is-selected' : ''} ${isRecommended ? 'is-recommended' : ''}`}
       data-testid={`product-${product.product_id}`}
       data-recommended={isRecommended ? 'true' : 'false'}
       style={isRecommended ? { position: 'relative' } : undefined}
