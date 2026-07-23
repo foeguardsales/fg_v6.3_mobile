@@ -16,11 +16,11 @@ NOTE: env (.env) files were wiped & recreated. Mongo empty (auto-seeds). Stripe/
 - Data model kept: selectedProteins (obj) + selectedTreats (arr) in localStorage; context mirrors via poll + events (foeguard:box-updated / foeguard:cart-changed).
 - Added product/treat model field shopify_variant_id (nullable).
 
-## PROMPT 2 — Tracking & Analytics ✅ DONE (env-gated, additive)
-Files: frontend/src/services/analytics/index.js, frontend/src/components/Analytics.js (mounted in App.js), backend/events_service/router.py (POST /api/events/track, included in server.py).
-Env placeholders (frontend/.env, all blank = OFF): REACT_APP_GA4_MEASUREMENT_ID, REACT_APP_META_PIXEL_ID, REACT_APP_CLARITY_PROJECT_ID, REACT_APP_GSC_VERIFICATION.
-Wired events: page_view (route change), add_to_cart (ProductDetail + TreatDetail), begin_checkout/InitiateCheckout (UniversalCart), purchase (OrderSuccess). Shopify-Email named events via trackShopifyEmailEvent -> /api/events/track: account_created (RegisterForm + MealPlan saveProfile), quiz_completed + account_created (MealPlanPage), meal_plan_landing (MealPlanPage mount), order_placed (OrderSuccess). abandoned_cart = Shopify native.
-Sitemap already exists at /api/sitemap.xml (seo_service). GSC verify via meta tag when env set. User submits sitemap in GSC manually.
+## PROMPT 2 — Tracking & Analytics ✅ DONE (Google Tag Manager)
+Files: `public/index.html` (GTM-NR3N5DHG container snippet + noscript iframe), `frontend/src/services/analytics/index.js` (thin dataLayer.push router), `frontend/src/components/Analytics.js` (mounted in App.js, fires `page_view` on every SPA route change), `backend/events_service/router.py` (POST /api/events/track).
+No env slots needed — GTM is the single source of truth for all pixels/tags (GA4, Meta Pixel, Clarity, etc.). All configuration happens in the GTM UI.
+Wired events (pushed to `window.dataLayer`): page_view (SPA route change, first-load skipped to avoid duplicate with GTM's own initial fire), add_to_cart (ProductDetail + TreatDetail), begin_checkout (UniversalCart), purchase (OrderSuccess). Shopify Email named events via trackShopifyEmailEvent → /api/events/track: account_created (RegisterForm + MealPlan saveProfile), quiz_completed + meal_plan_landing (MealPlanPage), order_placed (OrderSuccess). abandoned_cart = Shopify native.
+Sitemap: /api/sitemap.xml (seo_service). GSC verification: handled inside GTM (Google Tag → Verification variable) instead of a hardcoded meta tag.
 
 ## PROMPT 3 — Shopify Headless ✅ DONE (design-safe fallback added)
 App was ALREADY Shopify-wired (services/shopify/* + backend shopify_service/*; ProductDetail/TreatDetail/CollectionPage/MenuPage use catalog; normalizer maps foeguard.* metafields = metaobjects for ingredients/nutrition/feeding). Added DESIGN-SAFE local fallback in services/shopify/catalog.js (additive only): Shopify when configured, else local /api/products & /api/treats (identical shape) so site is fully functional before+after Shopify keys. Collections -> [] / null gracefully. Verified: /product/cd-chicken loads via fallback, full add-to-cart flow works.
