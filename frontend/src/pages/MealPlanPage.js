@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight, Check, Plus, Trash2, X } from 'lucide-react'
 import axios from 'axios';
 import { SelectionBreadcrumb } from './BoxBuilder';
 import { getRecommendationsForDog } from '../services/mealPlanRecommendation';
-import { trackShopifyEmailEvent } from '../services/analytics';
+import { trackShopifyEmailEvent, trackMealPlanCompleted } from '../services/analytics';
 import { useCart } from '../contexts/CartContext';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
@@ -298,6 +298,20 @@ export const MealPlanPage = () => {
       //    in-page instead of redirecting to the menu. Build-a-Box is no longer
       //    part of the Meal Plan outcome flow.
       setProfileSaved(true);
+
+      // 7. Fire the meal_plan_completed customer event → GTM dataLayer event AND
+      //    (when Shopify Admin is configured) applies the "meal_plan_completed"
+      //    tag to the customer via the Admin API. Non-blocking, safe if email is
+      //    missing. Not a duplicate of any standard ecommerce event.
+      try {
+        const primary = dogs[0] || {};
+        trackMealPlanCompleted({
+          email,
+          dog_name: primary.name || null,
+          dog_weight_lbs: parseFloat(primary.weight_lbs) || null,
+          source, // 'regular' | 'starter-pack'
+        });
+      } catch (_) { /* analytics never breaks the flow */ }
     } catch (err) {
       setError(err.response?.data?.detail || 'Failed to save profile. Please try again.');
     } finally {
@@ -1206,6 +1220,13 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
     if (Object.keys(next).length === 0) return; // catalog still loading — no-op
     try {
       localStorage.setItem('selectedProteins', JSON.stringify(next));
+      // Stamp the cart's originating source so OrderSuccess can fire the
+      // correct Shopify customer tag on order-complete:
+      //   'meal-plan' → meal_plan_customer tag + meal_plan_purchase event
+      //   'starter-pack' → starter_pack_customer tag + starter_pack_purchase event
+      // Any other cart-add path (menu +) leaves this flag absent → OrderSuccess
+      // falls through to the default build_a_box_purchase tag/event.
+      sessionStorage.setItem('foeguard_last_source', isStarter ? 'starter-pack' : 'meal-plan');
       window.dispatchEvent(new Event('foeguard:box-updated'));
       window.dispatchEvent(new Event('foeguard:cart-changed'));
     } catch (_) { /* ignore */ }

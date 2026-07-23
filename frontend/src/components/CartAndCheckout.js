@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Edit2 } from 'lucide-react';
-import { trackOrderCompleted, trackShopifyEmailEvent } from '../services/analytics';
+import { trackOrderCompleted, trackShopifyEmailEvent, trackMealPlanPurchase, trackStarterPackPurchase, trackBuildABoxPurchase } from '../services/analytics';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -1436,6 +1436,21 @@ export const OrderSuccess = () => {
     try { order = JSON.parse(sessionStorage.getItem('lastOrder') || '{}') || {}; } catch (_) { order = {}; }
     trackOrderCompleted({ order_id: order.order_id, value: order.total || 0, items: order.items || [] });
     trackShopifyEmailEvent('order_placed', { order_id: order.order_id, value: order.total || 0 });
+
+    // Customer-lifecycle tagging — reads the source flag set at cart-add time.
+    // Additive: does NOT replace or duplicate the standard purchase event above.
+    //   'meal-plan'    → meal_plan_customer tag + meal_plan_purchase event
+    //   'starter-pack' → starter_pack_customer tag + starter_pack_purchase event
+    //   default        → build_a_box_customer tag + build_a_box_purchase event
+    try {
+      const source = sessionStorage.getItem('foeguard_last_source') || 'build-a-box';
+      const email = order.email || order.customer_email || sessionStorage.getItem('foeguard_customer_email') || null;
+      const payload = { email, order_id: order.order_id, value: order.total || 0, items: order.items || [] };
+      if (source === 'meal-plan') trackMealPlanPurchase(payload);
+      else if (source === 'starter-pack') trackStarterPackPurchase(payload);
+      else trackBuildABoxPurchase(payload);
+      sessionStorage.removeItem('foeguard_last_source');
+    } catch (_) { /* analytics never breaks the order-success page */ }
   }, []);
   return (
     <div className="order-success" data-testid="order-success">

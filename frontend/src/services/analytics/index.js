@@ -117,3 +117,60 @@ export function trackShopifyEmailEvent(event, properties = {}) {
   } catch (_) { /* ignore */ }
   push({ event, ...properties });
 }
+
+/* --------------------- Customer lifecycle events + tags -------------------
+ * Four Shopify customer tags are applied via the backend `/events/track`:
+ *   meal_plan_completed  → after quiz finishes         (tag: meal_plan_completed)
+ *   meal_plan_purchase   → after purchase, source=mp   (tag: meal_plan_customer)
+ *   starter_pack_purchase→ after purchase, source=sp   (tag: starter_pack_customer)
+ *   build_a_box_purchase → after purchase, source=bab  (tag: build_a_box_customer)
+ *
+ * Each helper also pushes a matching dataLayer event so GTM can route to any
+ * enabled tag/pixel. These are ADDITIONAL events — they do NOT duplicate the
+ * standard ecommerce events (view_item, add_to_cart, begin_checkout, purchase),
+ * which continue to be pushed by trackAddToCart / trackCheckoutInitiated /
+ * trackOrderCompleted above.
+ *
+ * All helpers are safe when `email` is unknown (they still push the dataLayer
+ * event; the Shopify tag step becomes a no-op — see backend router).
+ * ------------------------------------------------------------------------ */
+
+// Internal — POST to backend event sink so the Admin API can apply the tag.
+function _postCustomerEvent(event, email, properties) {
+  try {
+    fetch(`${API}/events/track`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event, email, properties: properties || {} }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch (_) { /* ignore */ }
+}
+
+/** Fires when the shopper completes the Meal Plan questionnaire successfully. */
+export function trackMealPlanCompleted({ email, dog_name, dog_weight_lbs, source = 'regular' } = {}) {
+  const props = { dog_name, dog_weight_lbs, source };
+  _postCustomerEvent('meal_plan_completed', email, props);
+  push({ event: 'meal_plan_completed', ...props });
+}
+
+/** Fires on order-complete when the order came from the Meal Plan outcome flow. */
+export function trackMealPlanPurchase({ email, order_id, value = 0, items = [] } = {}) {
+  const props = { order_id, value, items };
+  _postCustomerEvent('meal_plan_purchase', email, props);
+  push({ event: 'meal_plan_purchase', ecommerce: { transaction_id: order_id, currency: 'USD', value, items } });
+}
+
+/** Fires on order-complete when the order came from the Starter Pack outcome flow. */
+export function trackStarterPackPurchase({ email, order_id, value = 0, items = [] } = {}) {
+  const props = { order_id, value, items };
+  _postCustomerEvent('starter_pack_purchase', email, props);
+  push({ event: 'starter_pack_purchase', ecommerce: { transaction_id: order_id, currency: 'USD', value, items } });
+}
+
+/** Fires on order-complete for a custom Build-a-Box (default / non-outcome) order. */
+export function trackBuildABoxPurchase({ email, order_id, value = 0, items = [] } = {}) {
+  const props = { order_id, value, items };
+  _postCustomerEvent('build_a_box_purchase', email, props);
+  push({ event: 'build_a_box_purchase', ecommerce: { transaction_id: order_id, currency: 'USD', value, items } });
+}
