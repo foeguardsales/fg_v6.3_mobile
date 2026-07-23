@@ -1,6 +1,6 @@
 # FoeGuard — Multi-Prompt Roadmap (do ONE prompt at a time)
 
-Preview: https://338a1880-4c48-4a88-b1cd-c47597f47b55.preview.emergentagent.com
+Preview: https://current-version.preview.emergentagent.com
 Constraints (ALL prompts): GitHub-safe (additive where possible, no deleting existing components/files for Shopify work, clean code, NO git ops by me — user uses "Save to Github"). Minimal credits. Do NOT change existing UI/design unless the prompt is explicitly about it. API keys via env placeholders only, never hardcode.
 
 NOTE: env (.env) files were wiped & recreated. Mongo empty (auto-seeds). Stripe/Brevo/Cloudflare/Shopify keys are PLACEHOLDERS (user will add real keys in their own account later).
