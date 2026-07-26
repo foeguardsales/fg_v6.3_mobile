@@ -998,7 +998,7 @@ export const LandingPage = () => {
                       <div style={{
                         position: 'relative',
                         width: '100%',
-                        maxWidth: '440px',
+                        maxWidth: '300px',
                         aspectRatio: '1 / 1',
                         margin: '0 auto',
                         borderRadius: '50%',
@@ -1047,7 +1047,6 @@ export const LandingPage = () => {
                                 justifyContent: 'center',
                                 boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
                               }}>
-                                <span style={{ fontSize: '20px', color: '#5F7C5A' }}>⟷</span>
                               </div>
                             </div>
                           }
