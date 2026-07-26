@@ -982,9 +982,10 @@ export const LandingPage = () => {
               gap: '40px',
               alignItems: 'center'
             }} className="why-fg-grid">
-              {/* Image side — before/after comparison slider (FoeGuard raw vs. 'other').
-                  NOTE: before/after image URLs are placeholders; they will later be fed from a
-                  Shopify metaobject via the headless API (comparisonImages.beforeImage/afterImage). */}
+              {/* Image side — CIRCULAR before/after comparison slider (FoeGuard raw vs. 'other').
+                  Sits directly on the section background (no card/box), softly shaded behind.
+                  Placeholder is ready for the round-bowl image — when Shopify is connected just point
+                  comparisonImages.beforeImage / .afterImage at the metaobject image URLs. */}
               <div style={{ width: '100%', margin: '0 auto' }}>
                 {(() => {
                   const comparisonImages = {
@@ -993,15 +994,17 @@ export const LandingPage = () => {
                   };
                   return (
                     <>
-                      {/* Image Comparison Slider */}
+                      {/* Image Comparison Slider — round, transparent background, soft drop shadow */}
                       <div style={{
                         position: 'relative',
                         width: '100%',
-                        maxWidth: '900px',
+                        maxWidth: '440px',
+                        aspectRatio: '1 / 1',
                         margin: '0 auto',
-                        borderRadius: '20px',
+                        borderRadius: '50%',
                         overflow: 'hidden',
-                        boxShadow: '0 8px 32px rgba(0,0,0,0.15)'
+                        background: 'transparent',
+                        boxShadow: '0 18px 40px rgba(0,0,0,0.16)'
                       }}>
                         <ReactCompareSlider
                           itemOne={
@@ -1019,7 +1022,7 @@ export const LandingPage = () => {
                             />
                           }
                           position={50}
-                          style={{ width: '100%', aspectRatio: '16/9' }}
+                          style={{ width: '100%', height: '100%', aspectRatio: '1 / 1' }}
                           handle={
                             <div style={{
                               width: '4px',
@@ -1152,6 +1155,25 @@ export const LandingPage = () => {
               }}>
                 Here&apos;s what you can expect from real food nutrition:
               </p>
+            </div>
+
+            {/* Landscape image placeholder — spans the full benefits-row width. Swap the src for
+                the Shopify metaobject image when the headless API is connected. */}
+            <div style={{
+              width: '100%',
+              maxWidth: '1100px',
+              margin: '0 auto 20px',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              aspectRatio: '3 / 1',
+              boxShadow: '0 12px 30px rgba(0,0,0,0.18)'
+            }}>
+              <img
+                src="https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=1400&q=80&fit=crop"
+                alt="Healthy happy dog"
+                data-testid="benefits-banner-image"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
             </div>
 
             <div className="benefits-2week-grid" style={{
