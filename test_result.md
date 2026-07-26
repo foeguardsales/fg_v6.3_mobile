@@ -350,6 +350,24 @@ agent_communication_current_session:
 
 
 frontend:
+  - task: "Home 'Acton farm to your bowl' — before/after image comparison slider (react-compare-slider)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js (+ react-compare-slider dependency)"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ ALL 6 PASSED. Replaced the static image (left of the 4 benefit rows) with a react-compare-slider:
+            both images load (unsplash raw food left / pexels kibble right), 4px white handle + 48px green-bordered
+            circular knob at 50% center, "← Drag to compare →" helper text below, dragging changes the reveal,
+            section headline + 4 benefits intact, mobile (390) shows slider full-width above benefits.
+            NOTE: before/after image URLs are placeholders — to be swapped for Shopify metaobject
+            (comparisonImages.beforeImage/afterImage) via headless API later.
+
   - task: "Menu: one treats section (no sub-collections), meal lbs on cart button (no counter bar), Add/Update Cart label"
     implemented: true
     working: true
