@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minus, Sprout, Leaf, ChefHat, Award } from 'lucide-react';
 import { useCart, SlideCart } from '../contexts/CartContext';
 import { SeoHead } from '../components/SeoHead';
+import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 // FoeGuard Brand Colors — Farm Palette
 const COLORS = {
@@ -981,21 +982,88 @@ export const LandingPage = () => {
               gap: '40px',
               alignItems: 'center'
             }} className="why-fg-grid">
-              {/* Image side — sized to roughly match benefit text block */}
-              <div style={{
-                position: 'relative',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                maxHeight: '360px',
-                maxWidth: '360px',
-                width: '100%',
-                margin: '0 auto'
-              }}>
-                <img
-                  src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=600&fit=crop"
-                  alt="Happy dog"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
+              {/* Image side — before/after comparison slider (FoeGuard raw vs. 'other').
+                  NOTE: before/after image URLs are placeholders; they will later be fed from a
+                  Shopify metaobject via the headless API (comparisonImages.beforeImage/afterImage). */}
+              <div style={{ width: '100%', margin: '0 auto' }}>
+                {(() => {
+                  const comparisonImages = {
+                    beforeImage: 'https://images.unsplash.com/photo-1745252798506-29500efc5b39?w=900&q=80&fit=crop', // LEFT = our raw food
+                    afterImage: 'https://images.pexels.com/photos/34952079/pexels-photo-34952079.jpeg?auto=compress&cs=tinysrgb&w=900' // RIGHT = 'other' kibble
+                  };
+                  return (
+                    <>
+                      {/* Image Comparison Slider */}
+                      <div style={{
+                        position: 'relative',
+                        width: '100%',
+                        maxWidth: '900px',
+                        margin: '0 auto',
+                        borderRadius: '20px',
+                        overflow: 'hidden',
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.15)'
+                      }}>
+                        <ReactCompareSlider
+                          itemOne={
+                            <ReactCompareSliderImage
+                              src={comparisonImages.beforeImage}
+                              alt="FoeGuard raw food"
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          }
+                          itemTwo={
+                            <ReactCompareSliderImage
+                              src={comparisonImages.afterImage}
+                              alt="Other food"
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          }
+                          position={50}
+                          style={{ width: '100%', aspectRatio: '16/9' }}
+                          handle={
+                            <div style={{
+                              width: '4px',
+                              height: '100%',
+                              background: 'white',
+                              boxShadow: '0 0 20px rgba(0,0,0,0.3)',
+                              cursor: 'ew-resize',
+                              position: 'relative'
+                            }}>
+                              <div style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: '48px',
+                                height: '48px',
+                                borderRadius: '50%',
+                                background: 'white',
+                                border: '3px solid #5F7C5A',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                              }}>
+                                <span style={{ fontSize: '20px', color: '#5F7C5A' }}>⟷</span>
+                              </div>
+                            </div>
+                          }
+                        />
+                      </div>
+
+                      {/* Drag instruction text */}
+                      <p style={{
+                        fontFamily: "'Barlow', sans-serif",
+                        fontSize: '14px',
+                        color: '#999',
+                        textAlign: 'center',
+                        marginTop: '16px'
+                      }}>
+                        ← Drag to compare →
+                      </p>
+                    </>
+                  );
+                })()}
               </div>
 
               {/* 4 Benefits — clean rows, hairline dividers, no pill background */}
