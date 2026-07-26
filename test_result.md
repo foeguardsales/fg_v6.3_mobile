@@ -430,7 +430,7 @@ agent_communication_current_session:
 
 
 frontend:
-  - task: "Home 'Acton farm to your bowl' — before/after image comparison slider (react-compare-slider)"
+  - task: "Home 'Acton farm to your bowl' — CIRCULAR before/after slider + landscape benefits banner"
     implemented: true
     working: true
     file: "/app/frontend/src/pages/LandingPage.js (+ react-compare-slider dependency)"
@@ -441,12 +441,15 @@ frontend:
         - working: true
           agent: "testing"
           comment: |
-            ✅ ALL 6 PASSED. Replaced the static image (left of the 4 benefit rows) with a react-compare-slider:
-            both images load (unsplash raw food left / pexels kibble right), 4px white handle + 48px green-bordered
-            circular knob at 50% center, "← Drag to compare →" helper text below, dragging changes the reveal,
-            section headline + 4 benefits intact, mobile (390) shows slider full-width above benefits.
-            NOTE: before/after image URLs are placeholders — to be swapped for Shopify metaobject
-            (comparisonImages.beforeImage/afterImage) via headless API later.
+            ✅ VERIFIED. (A) Comparison slider is now CIRCULAR (border-radius 50%, 1:1 371x371),
+            transparent background (no card/box), soft drop shadow (0 18px 40px rgba(0,0,0,0.16)),
+            both images load, 4px white handle + green knob centered, "← Drag to compare →" below,
+            dragging works. Placeholder URLs ready to swap for Shopify metaobject
+            (comparisonImages.beforeImage/afterImage). (B) NEW landscape banner
+            (data-testid benefits-banner-image) added in the forest-green section, directly below
+            "Here's what you can expect from real food nutrition:" and above the benefit cards —
+            full row width, 3:1 landscape, 16px radius + shadow; benefit cards + Learn More intact.
+
         - working: true
           agent: "testing"
           comment: |
