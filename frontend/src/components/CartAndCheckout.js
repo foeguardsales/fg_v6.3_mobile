@@ -488,30 +488,6 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
 
   const isDog = petType !== 'cat';
 
-  // Categorize each treat by name → "Heads and Feet" if name contains head/feet/foot, else "Meaty Treats"
-  const isHeadsAndFeet = (name) => /head|feet|foot/i.test(name);
-  const meatyTreats = treats.filter(t => !isHeadsAndFeet(t.name));
-  const headsAndFeet = treats.filter(t => isHeadsAndFeet(t.name));
-
-  const subCategories = [
-    {
-      key: 'meaty',
-      title: 'Meaty Treats',
-      desc: isDog
-        ? 'Slow-chew bones and chunks rich in marrow, cartilage and muscle — built to satisfy and support dental health.'
-        : 'Bite-sized whole-muscle treats designed for natural prey instinct and dental support.',
-      items: meatyTreats
-    },
-    {
-      key: 'heads',
-      title: 'Heads and Feet',
-      desc: isDog
-        ? 'Whole-prey heads and feet — rich in cartilage, glucosamine and natural enrichment for serious chewers.'
-        : 'Tiny heads and feet for natural chewing, cartilage and mental enrichment.',
-      items: headsAndFeet
-    }
-  ].filter(sc => sc.items.length > 0);
-
   const renderTreatCard = (treat) => {
     const selectedTreat = selectedTreats.find(t => t.treat_id === treat.treat_id);
     const quantity = selectedTreat ? selectedTreat.quantity : 0;
@@ -605,10 +581,6 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
     dog: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/1olxgtz6_3.png',
     cat: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/7fyd6l6l_4.png'
   };
-  const SUBCAT_BANNER = {
-    meaty: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/wtts10dz_4.png',
-    heads: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/u0taocl0_6.png'
-  };
 
   return (
     <div className="treats-section menu-collection">
@@ -631,26 +603,10 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
         </div>
       )}
 
-      {subCategories.map(sc => (
-        <div key={sc.key} className="treats-subcategory" style={{ marginTop: '12px' }}>
-          <div className="menu-collection-header menu-collection-header--banner treats-subcat-header" data-testid={`treats-subcat-${sc.key}`}>
-            <div
-              className="menu-collection-banner menu-collection-banner--overlay"
-              style={{ backgroundImage: `url(${SUBCAT_BANNER[sc.key]})` }}
-            >
-              <div className="menu-collection-banner-text">
-                <h4 className="menu-collection-title">{sc.title}</h4>
-                {showCategoryDescriptions && (
-                  <p className="menu-collection-desc">{sc.desc}</p>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="product-grid">
-            {sc.items.map(renderTreatCard)}
-          </div>
-        </div>
-      ))}
+      {/* All treats in ONE section — no Meaty/Heads sub-collections */}
+      <div className="product-grid" data-testid="treats-grid">
+        {treats.map(renderTreatCard)}
+      </div>
     </div>
   );
 };

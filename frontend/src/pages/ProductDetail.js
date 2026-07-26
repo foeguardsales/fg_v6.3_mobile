@@ -361,6 +361,10 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   // Zero-quantity toast state — shown when the user taps "Add to Cart" with qty 0.
   const [showZeroToast, setShowZeroToast] = useState(false);
   const zeroToastTimerRef = useRef(null);
+  // Snapshot of the product+variant lines ALREADY in the box when this product opened.
+  // Drives the CTA label: brand-new additions (any amount) read "Add to Cart"; only
+  // lines that already existed before editing read "Update Cart".
+  const initialCartKeysRef = useRef(new Set(Object.keys(initialProteins)));
   useEffect(() => {
     return () => {
       if (zeroToastTimerRef.current) clearTimeout(zeroToastTimerRef.current);
@@ -368,6 +372,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   }, []);
 
   useEffect(() => {
+    // Re-snapshot the "already in box" lines each time a new product opens.
+    initialCartKeysRef.current = new Set(Object.keys(JSON.parse(localStorage.getItem('selectedProteins') || '{}')));
     // Only reset scroll on the standalone product page. When embedded as a bottom-sheet
     // the menu behind must keep its scroll position so closing returns the user to where
     // they were (previous product placement).
@@ -764,6 +770,13 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
         {(() => {
           const ctaQty = quantity > 0 ? quantity : 6;
           const totalPrice = getDiscountedPrice(product) * (ctaQty / 6);
+          // "Update Cart" only when THIS product+variant was already in the box when the
+          // page opened; brand-new additions always read "Add to Cart" (any amount).
+          const variantLabel = VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0];
+          const currentKey = `${productId}::${variantLabel}`;
+          const alreadyAdded = initialCartKeysRef.current
+            ? (initialCartKeysRef.current.has(currentKey) || initialCartKeysRef.current.has(productId))
+            : false;
           return (
             <div className={`pd-cta-wrap ${embedded ? 'pd-cta-wrap--inline' : ''}`}>
               {showZeroToast && (
@@ -789,7 +802,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
                 data-testid="product-add-to-box"
               >
-                <span className="bb-floating-action">{quantity > 0 ? 'Update Cart' : 'Add to Cart'}</span>
+                <span className="bb-floating-action">{alreadyAdded ? 'Update Cart' : 'Add to Cart'}</span>
                 <span className="bb-floating-sep">•</span>
                 <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
               </button>

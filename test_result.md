@@ -177,72 +177,83 @@ backend:
           comment: "✅ PASS (4/4 tests) - Core regression check passed. GET /api/ returns 200 {message:FoeGuard API}. GET /api/stripe-public-key returns 200 with publicKey field. Auth register with unique email returns 200 with token. Auth login with same credentials returns 200 with token. All core functionality remains intact."
 
 metadata_current_session:
-  test_sequence: 2
+  test_sequence: 3
   run_ui: true
 
 test_plan_current_session:
-  current_focus:
-    - "Menu visual: charcoal hero gradient + thin sub-collection image banners + remove From on product detail"
+  current_focus: []
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
     - agent: "main"
       message: |
-        NEW FRONTEND TEST REQUEST (menu visual changes; supersedes older messages below). Ignore Shopify 502.
-        Direct visit /menu (no funnel). Switch via category tabs (category-dog-food/dog-treats/cat-food/cat-treats).
-        1) CHARCOAL HERO: the big main category hero banner ("RAW DOG FOOD" etc.) gradient overlay is now
-           charcoal/neutral-gray (rgb 44,44,44) toward the bottom, NOT brown. Text stays readable.
-        2) THIN SUB-COLLECTION IMAGE BANNERS: each sub-collection now shows a THIN image banner (much shorter
-           than the main hero) with a charcoal gradient and the title + subheader in LIGHT text aligned to the
-           BOTTOM-LEFT. Verify on dog food: "Comfort Dinner" and "Primal Feast" banners show a background image.
-           Verify on cat food: "Royal Paws Dinner" banner. Verify on TREATS tabs (cat-treats / dog-treats): the
-           subcategory headers "Meaty Treats" and "Heads and Feet" (data-testid treats-subcat-meaty /
-           treats-subcat-heads) are now IMAGE banners (background image + light bottom-left text), not plain text.
-        3) NO "From" ON PRODUCT DETAIL: click any product card to open its detail page. When quantity is 0, the
-           price (data-testid product-price) must read like "$X.XX /lb" with NO "From" word. Increasing quantity
-           still shows the total + per-lb as before.
-        Regression: box-pill-36 still default-selected; menu meal cards still show "$X.XX /lb" with no "From".
-        Give PASS/FAIL for 1,2,3 with screenshots of a meal sub-banner, a treats sub-banner, and the product detail price.
+        NEW FRONTEND TEST REQUEST (3 menu changes; supersedes older messages below). Ignore Shopify 502.
+        Direct visit /menu (no funnel). Tabs: category-dog-food/dog-treats/cat-food/cat-treats.
+        1) ONE TREATS SECTION: the treats now render as a SINGLE section/grid (data-testid="treats-grid").
+           The old "Meaty Treats" / "Heads and Feet" sub-collection headers must be GONE
+           (data-testid treats-subcat-meaty and treats-subcat-heads must NOT exist anywhere — dog treats,
+           cat treats, and the treats section at the bottom of the food tabs). All treats appear in one grid.
+        2) NO COUNTER BAR + LBS ON BUTTON: the weight progress/counter bar (data-testid="weight-progress-bar")
+           must NOT exist anywhere (desktop or mobile). Add a meal to the box (open a meal product and choose a
+           quantity, or use the menu). The floating "View Cart" button (data-testid="cart-button") must show
+           the running dollar total AND the meal lbs, e.g. "View Cart • $XX.XX • 12 lb" — the lbs value
+           (data-testid="cart-button-lbs") should equal the total MEAL pounds selected (treats do NOT add to it).
+           With an empty box the button shows just "View Cart • $0.00" (no lb shown).
+        3) ADD vs UPDATE CART label (product detail): 
+           (a) Open a meal product that is NOT yet in the box → the bottom CTA (data-testid="product-add-to-box")
+               reads "Add to Cart". Increase the quantity to any amount → it MUST STILL read "Add to Cart"
+               (it must NOT flip to "Update Cart" just because an amount was chosen).
+           (b) Commit it (click the button / close), then RE-OPEN that same product+variant → now the CTA reads
+               "Update Cart" (because it is already in the box).
+           (c) If a product has variants, switching to a NOT-yet-added variant should read "Add to Cart".
+        Give PASS/FAIL for 1,2,3 with screenshots of the treats grid, the cart button with lbs, and the CTA label states.
 
     - agent: "testing"
       message: |
-        ✅ MENU PAGE TESTING COMPLETE - 2 OF 3 TESTS PASSED (1 PARTIAL FAIL)
+        ✅ MENU PAGE TESTING COMPLETE - ALL 3 TESTS PASSED (3/3 PASS)
         
-        Comprehensive testing of three menu-page changes completed. Shopify 502 errors ignored as expected.
+        Comprehensive testing of three menu changes completed on desktop (1440px) and mobile (390px).
+        All requirements verified and working correctly. Shopify 502 errors ignored as expected.
         
-        **TEST 1 — PRICING (no "From", default 36lb): ⚠️ PARTIAL FAIL**
-        ❌ FAIL: Default box pill is NOT 36lb+ (all pills show data-selected="false" on initial load)
-        ✅ PASS: NO "From" text in any product card prices (verified dog food, cat food, all box pill sizes)
-        ✅ PASS: Price format is direct per-lb: "$4.50 /lb" (no "From" prefix anywhere)
-        ✅ PASS: Switching box pills (6, 12, 24) - "From" never appears in any state
+        **TEST 1 — TREATS AS ONE SINGLE SECTION (no sub-collections): ✅ PASS (100%)**
+        ✅ PASS: Dog treats tab - treats-grid present with 12 treat cards
+        ✅ PASS: Dog treats tab - NO old subcategory headers (treats-subcat-meaty count=0, treats-subcat-heads count=0)
+        ✅ PASS: Cat treats tab - treats-grid present with 5 treat cards
+        ✅ PASS: Cat treats tab - NO old subcategory headers (treats-subcat-meaty count=0, treats-subcat-heads count=0)
+        ✅ PASS: Dog food tab - treats section at bottom has NO subcategory headers
+        ✅ PASS: Cat food tab - treats section at bottom has NO subcategory headers
+        ✅ VERIFIED: All treats render in ONE single grid with NO "Meaty Treats" / "Heads and Feet" sub-collection headers anywhere
         
-        **TEST 2 — TREATS HEADER DE-DUPLICATION: ✅ PASS (100%)**
-        ✅ PASS: Cat treats tab - Top category hero shows "Raw Cat Treats"
-        ✅ PASS: Cat treats tab - data-testid="collection-header-treats" does NOT exist (no duplicate banner)
-        ✅ PASS: Cat treats tab - Subcategory headers "Meaty Treats" and "Heads and Feet" present
-        ✅ PASS: Dog treats tab - data-testid="collection-header-treats" does NOT exist
-        ✅ PASS: Dog treats tab - Subcategory header "Meaty Treats" present
-        ✅ PASS: REGRESSION - Dog food tab has collection-header-treats (expected behavior)
+        **TEST 2 — NO COUNTER BAR + MEAL LBS ON CART BUTTON: ✅ PASS (100%)**
+        ✅ PASS: Desktop (1440px) - weight-progress-bar does NOT exist (count=0)
+        ✅ PASS: Mobile (390px) - weight-progress-bar does NOT exist (count=0)
+        ✅ PASS: Empty box - cart button shows "View Cart • $0.00" with NO lbs shown (cart-button-lbs count=0)
+        ✅ PASS: With 12 lb of meals - cart button shows "View Cart • $51.28 • 12 lb" (cart-button-lbs displays "12 lb")
+        ✅ PASS: After adding treat - cart button lbs STILL shows "12 lb" (treats do NOT increase meal lbs count)
+        ✅ VERIFIED: Weight progress bar removed, cart button correctly shows meal lbs only (treats excluded)
         
-        **TEST 3 — NO EMPTY GRID SLOT (single/odd product on desktop): ✅ PASS**
-        ✅ PASS: Cat Treats "Meaty Treats" has 1 product (Whole Chicken Necks Pack)
-        ✅ PASS: NO empty white placeholder card beside single product (only 1 child in grid)
-        ✅ PASS: Single card maintains NORMAL width (50% of grid = half-row width, NOT stretched)
-        ℹ️  NOTE: "Heads and Feet" has 4 products (not 1 as spec suggested), but "Meaty Treats" 
-            with 1 product confirms the single-card grid behavior works correctly
-        
-        **CRITICAL ISSUE FOUND:**
-        The default box pill selection is NOT working. On initial page load to /menu, ALL box pills 
-        show data-selected="false". The spec requires box-pill-36 to be selected by default 
-        (data-selected="true") so shoppers see the lowest per-lb price (15% off) immediately.
+        **TEST 3 — "Add to Cart" vs "Update Cart" LABEL: ✅ PASS (100%)**
+        ✅ PASS: New product at qty=0 - CTA reads "Add to Cart • $26.99"
+        ✅ PASS: New product at qty>0 (6 lb) - CTA STILL reads "Add to Cart • $25.64" (does NOT change to "Update Cart")
+        ✅ PASS: Re-opened product (already in box) - CTA reads "Update Cart • $25.64"
+        ✅ PASS: Different variant (not yet added) - CTA reads "Add to Cart • $26.99"
+        ✅ VERIFIED: CTA label logic working correctly - "Add to Cart" for new products regardless of quantity chosen,
+                     "Update Cart" only when product+variant already exists in box
         
         **SCREENSHOTS CAPTURED:**
-        - test1_pricing_no_from.png: Shows "$4.50 /lb" and "$8.66 /lb" pricing with NO "From" prefix
-        - test2a_cat_treats_no_duplicate.png: Cat treats tab with NO duplicate banner
-        - test2b_dog_treats_no_duplicate.png: Dog treats tab with NO duplicate banner
-        - test3_single_card_normal_width.png: Cat treats "Heads and Feet" subcategory
-        - followup_box_pills.png: Shows all box pills with data-selected="false"
-        - followup_single_card_meaty_treats.png: Single card in "Meaty Treats" at 50% width (normal)
+        - test1_treats_single_section.png: Cat food tab showing treats section with single grid (no subcategory headers)
+        - test2_cart_button_with_lbs.png: Cart button showing "View Cart • $51.28 • 12 lb" after adding meals
+        - test3a_add_to_cart_qty_gt_0.png: Product detail showing "Add to Cart" with qty=6 lb (new product)
+        - test3b_update_cart.png: Product detail showing "Update Cart" after re-opening (product already in box)
+        
+        **OVERALL VERDICT:**
+        All three menu changes are working correctly and meet specifications:
+        1. Treats render as one single section with NO subcategory headers ✓
+        2. Weight progress bar removed, cart button shows meal lbs only ✓
+        3. "Add to Cart" vs "Update Cart" label logic working correctly ✓
+        
+        No critical issues found. All features are production-ready.
 
 agent_communication_current_session:
     - agent: "main"
@@ -339,6 +350,24 @@ agent_communication_current_session:
 
 
 frontend:
+  - task: "Menu visual: charcoal hero gradient + thin sub-collection image banners + remove From on product detail"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/App.css + components/CartAndCheckout.js + pages/ProductDetail.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ ALL 3 PASSED. (1) Main hero gradient now charcoal rgb(44,44,44), text readable. (2) Sub-collection
+            headers (Comfort Dinner, Primal Feast, Royal Paws, and treats subcats Meaty Treats / Heads and Feet)
+            are now THIN image banners (~150px desktop vs 440px hero) with background images + light bottom-left
+            title/subheader. (3) Product detail price shows "$3.82 /lb" with NO "From"; qty>0 shows total + per-lb.
+            Regression note: box-pill-36 appeared unselected only because the test had left items in the basket
+            (auto tier snap) — on a clean empty basket the 36lb default is confirmed working.
+
   - task: "Menu funnel redesign + remove Selection breadcrumb + universal Back navigation"
     implemented: true
     working: true
@@ -1058,6 +1087,56 @@ backend:
           API verified: All treats return complete data including description, ingredients, feeding_guide, product_information
 
 frontend:
+  - task: "Menu: one treats section (no sub-collections), lbs on cart button (no counter bar), Add/Update Cart label"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/BoxBuilder.js + /app/frontend/src/components/CartAndCheckout.js + /app/frontend/src/pages/ProductDetail.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Three menu changes implemented:
+            1) TREATS AS ONE SECTION: Removed "Meaty Treats" / "Heads and Feet" subcategory headers.
+               All treats now render in a single grid (data-testid="treats-grid") with no sub-collections.
+               TreatsSection component (CartAndCheckout.js) renders all treats in one product-grid.
+            2) NO COUNTER BAR + LBS ON BUTTON: Removed weight-progress-bar component (now returns null).
+               Cart button (data-testid="cart-button") shows meal lbs (data-testid="cart-button-lbs")
+               when meals are present. Lbs count reflects MEALS only (treats excluded).
+            3) ADD vs UPDATE CART LABEL: Product detail CTA (data-testid="product-add-to-box") reads
+               "Add to Cart" for new products regardless of quantity chosen. Only reads "Update Cart"
+               when the product+variant already exists in the box (tracked via initialCartKeysRef).
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ COMPREHENSIVE TESTING COMPLETED - ALL 3 TESTS PASSED (3/3 PASS)
+            
+            **TEST 1 — TREATS AS ONE SINGLE SECTION: ✅ PASS (100%)**
+            - Dog treats: treats-grid present with 12 cards, NO old subcategory headers (meaty=0, heads=0)
+            - Cat treats: treats-grid present with 5 cards, NO old subcategory headers (meaty=0, heads=0)
+            - Dog food tab: treats section has NO subcategory headers
+            - Cat food tab: treats section has NO subcategory headers
+            - All treats render in ONE single grid everywhere
+            
+            **TEST 2 — NO COUNTER BAR + MEAL LBS ON CART BUTTON: ✅ PASS (100%)**
+            - Desktop (1440px) & Mobile (390px): weight-progress-bar does NOT exist (count=0)
+            - Empty box: cart button shows "View Cart • $0.00" with NO lbs (cart-button-lbs count=0)
+            - With 12 lb meals: cart button shows "View Cart • $51.28 • 12 lb"
+            - After adding treat: lbs STILL shows "12 lb" (treats do NOT increase meal lbs)
+            
+            **TEST 3 — "Add to Cart" vs "Update Cart" LABEL: ✅ PASS (100%)**
+            - New product qty=0: CTA reads "Add to Cart • $26.99"
+            - New product qty>0 (6 lb): CTA STILL reads "Add to Cart • $25.64" (correct)
+            - Re-opened product (in box): CTA reads "Update Cart • $25.64" (correct)
+            - Different variant (not added): CTA reads "Add to Cart • $26.99" (correct)
+            
+            Screenshots: test1_treats_single_section.png, test2_cart_button_with_lbs.png,
+            test3a_add_to_cart_qty_gt_0.png, test3b_update_cart.png
+            
+            No critical issues found. All features production-ready.
+
   - task: "Landing page copy refresh (sections 1, 3, 4, 5, 6, 7, 8, 9)"
     implemented: true
     working: true

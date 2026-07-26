@@ -7989,6 +7989,7 @@ input, select, textarea {
 .bb-floating-total { font-weight: 700; }
 .bb-floating-sep { opacity: 0.6; padding: 0 2px; }
 .bb-floating-action { font-weight: 700; }
+.bb-floating-lbs { font-weight: 600; opacity: 0.92; }
 .bb-floating-save {
   display: inline-flex;
   align-items: center;

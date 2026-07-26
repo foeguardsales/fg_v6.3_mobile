@@ -846,22 +846,22 @@ export const BoxBuilder = () => {
         const proteinDiscounted = proteinFull * (1 - rate);
         const treatsTotal = (selectedTreats || []).reduce((s, t) => s + (t.price || 0) * (t.quantity || 1), 0);
         const runningTotal = proteinDiscounted + treatsTotal;
-        const hasItems = lbs > 0 || (selectedTreats && selectedTreats.length > 0);
         return (
-          <>
-            {showBoxSize && (
-              <WeightProgressBar currentLbs={lbs} targetLbs={boxSize} />
+          <button
+            onClick={openBasket}
+            data-testid="cart-button"
+            className="bb-floating-checkout"
+          >
+            <span className="bb-floating-action">View Cart</span>
+            <span className="bb-floating-sep">•</span>
+            <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
+            {lbs > 0 && (
+              <>
+                <span className="bb-floating-sep">•</span>
+                <span className="bb-floating-lbs" data-testid="cart-button-lbs">{lbs} lb</span>
+              </>
             )}
-            <button
-              onClick={openBasket}
-              data-testid="cart-button"
-              className="bb-floating-checkout"
-            >
-              <span className="bb-floating-action">View Cart</span>
-              <span className="bb-floating-sep">•</span>
-              <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
-            </button>
-          </>
+          </button>
         );
       })()}
 
@@ -1353,19 +1353,5 @@ const BoxSizePills = ({ boxSize, onChange, rates = DOG_DISCOUNT_RATES }) => (
 // - Track = thin #E8E4DC line, fill = solid #C8102E (Barn Red)
 // - Progress caps at 100% but visual continues to reflect over-target (past 36lb tier stays locked at 15%)
 // - Counter text sits ABOVE the bar as a single slim line (no box container) — mobile === desktop
-const WeightProgressBar = ({ currentLbs = 0, targetLbs = 6 }) => {
-  if (!currentLbs || currentLbs <= 0) return null;
-  const pct = Math.min(100, Math.round((currentLbs / Math.max(1, targetLbs)) * 100));
-  return (
-    <div className="weight-progress-bar" data-testid="weight-progress-bar" role="status" aria-live="polite">
-      <div className="weight-progress-label">
-        <span className="weight-progress-current">{currentLbs} lb</span>
-        <span className="weight-progress-sep">/</span>
-        <span className="weight-progress-target">{targetLbs} lb</span>
-      </div>
-      <div className="weight-progress-track">
-        <div className="weight-progress-fill" style={{ width: `${pct}%` }} />
-      </div>
-    </div>
-  );
-};
+const WeightProgressBar = () => null;
+
