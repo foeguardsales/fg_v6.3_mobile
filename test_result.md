@@ -350,6 +350,24 @@ agent_communication_current_session:
 
 
 frontend:
+  - task: "Menu: one treats section (no sub-collections), meal lbs on cart button (no counter bar), Add/Update Cart label"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/CartAndCheckout.js + pages/BoxBuilder.js + pages/ProductDetail.js + App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ ALL 3 PASSED. (1) Treats render as ONE grid (data-testid treats-grid); Meaty/Heads sub-headers
+            removed everywhere (treats-subcat-meaty/heads count 0 on all tabs). (2) weight-progress-bar removed
+            (count 0 desktop+mobile); cart button shows meal lbs beside total e.g. "View Cart • $51.28 • 12 lb"
+            (cart-button-lbs); empty box shows no lbs; treats do NOT add to the lb count. (3) Product-detail CTA
+            reads "Add to Cart" for a brand-new product at ANY qty, and only "Update Cart" once that product+variant
+            is already in the box; new variant reads "Add to Cart".
+
   - task: "Menu visual: charcoal hero gradient + thin sub-collection image banners + remove From on product detail"
     implemented: true
     working: true
