@@ -7233,3 +7233,171 @@ agent_communication:
         4. Consider adding better form field labels/placeholders for easier testing
         
         If main agent confirms these work manually, mark as working:true and finish the session.
+
+#====================================================================================================
+# 2026-07-26 — Delivery Scheduler Feature (Cart Drawer)
+#====================================================================================================
+
+user_problem_statement: |
+  Verify the "Delivery Scheduler" feature in the cart drawer of this FoeGuard e-commerce React app (raw pet food). This is the ONLY area to test — keep it quick and focused.
+
+  CONTEXT:
+  - The active cart is a slide-out drawer (UniversalCart in src/contexts/CartContext.js), opened by the header cart/bag icon.
+  - The cart button has data-testid="nav-cart" (present on the landing page "/").
+  - Shopify is INTENTIONALLY UNCONFIGURED in this environment (placeholder tokens), so the actual checkout/cartCreate call will fail with an HTTP 502 and show an error like "Unable to start checkout right now." That is EXPECTED and NOT a bug. Do not treat the 502 checkout failure as a test failure.
+
+  SETUP TO GET AN ITEM IN THE CART:
+  Before opening the cart, seed a product into localStorage then reload, e.g. run in the browser:
+    localStorage.setItem('selectedProteins', JSON.stringify({ 'cd-chicken': { productId: 'cd-chicken', name: 'Comfort Chicken Dinner', qty: 6 } }));
+  Then reload the page and click the element with data-testid="nav-cart" to open the cart drawer (data-testid="cart-drawer", it gets class "open").
+
+  WHAT TO VERIFY (pass/fail each):
+  1. The cart drawer opens and shows the seeded meal line item.
+  2. A delivery date input exists: data-testid="cart-delivery-date" (type=date). It is mandatory (min = today + 3 days).
+  3. BELOW the calendar there is a NEW optional single-line text input: data-testid="cart-delivery-notes", with a visible label reading "Delivery notes or drop-off instructions (Optional)". Confirm it renders directly below the date field.
+  4. Type text into the notes field (e.g. "Leave at side door, gate code #1234") and confirm the value is accepted/retained.
+  5. Persistence: after typing a delivery date and notes, close and reopen the cart (or reload the page) and confirm both values persist (they are saved to localStorage keys foeguard_delivery_date and foeguard_delivery_notes).
+  6. Checkout button behavior: data-testid="cart-proceed-checkout". It should be DISABLED until a delivery date is selected. After selecting a date it becomes enabled. Clicking it will attempt Shopify checkout which will fail gracefully with a 502 error message (EXPECTED — report this as expected behavior, not a failure).
+
+frontend:
+  - task: "Delivery Scheduler Feature in Cart Drawer"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/contexts/CartContext.js (UniversalCart component, DeliveryDatePicker component)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Delivery scheduler feature implemented in the cart drawer. The UniversalCart component (CartContext.js lines 266-497) includes:
+            1. DeliveryDatePicker component (lines 209-262) with delivery date input (type=date, min=today+3 days) and delivery notes input (type=text, optional, maxLength=250)
+            2. Both fields render in the cart drawer below the cart totals
+            3. Values are stored in localStorage (foeguard_delivery_date, foeguard_delivery_notes)
+            4. Checkout button is disabled when !canCheckout (line 299: canCheckout = hasItems && !!deliveryDate && !checkingOut)
+            5. Shopify checkout will fail with 502 error (expected behavior - Shopify is unconfigured)
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ DELIVERY SCHEDULER FEATURE - ALL 6 TESTS PASSED (100% PASS)
+            
+            **Test Environment:**
+            - Desktop viewport: 1920×1080
+            - Base URL: https://a40d10ef-f6d7-4683-aab8-0878cd61355b.preview.emergentagent.com
+            - Test date: 2026-07-26
+            
+            **TEST 1 — Cart drawer opens and shows seeded meal line item: ✅ PASS**
+            - Seeded product into localStorage: 'cd-chicken' (Comfort Chicken Dinner, 6 lb)
+            - Clicked cart icon (data-testid="nav-cart")
+            - Cart drawer opened successfully (data-testid="cart-drawer" with class "open")
+            - Seeded meal line item found: data-testid="cart-protein-cd-chicken"
+            - Meal line shows: "Comfort Chicken Dinner" with quantity controls (−/6lb/+) and price $26.99
+            
+            **TEST 2 — Delivery date input exists with correct attributes: ✅ PASS**
+            - Delivery date input found: data-testid="cart-delivery-date"
+            - Input type: "date" ✓
+            - Min date: "2026-07-29" (today + 3 days) ✓
+            - Expected min: "2026-07-29" ✓
+            - Input is visible and correctly configured
+            
+            **TEST 3 — Delivery notes input exists BELOW date field with correct label: ✅ PASS**
+            - Delivery notes input found: data-testid="cart-delivery-notes"
+            - Input type: "text" ✓
+            - Label text: "Delivery notes or drop-off instructions (Optional)" ✓
+            - Label correctly includes "(Optional)" ✓
+            - Position verification:
+              • Date input Y position: 508.9375
+              • Notes input Y position: 626.828125
+              • Notes input is positioned BELOW date input ✓
+            
+            **TEST 4 — Type text into notes field and verify value is accepted/retained: ✅ PASS**
+            - Typed test notes: "Leave at side door, gate code #1234"
+            - Input value after typing: "Leave at side door, gate code #1234" ✓
+            - Text was accepted and retained in the input field ✓
+            
+            **TEST 5 — Persistence: delivery date and notes persist after close/reopen: ✅ PASS**
+            - Filled delivery date: "2026-07-31" (today + 5 days)
+            - Notes before closing: "Leave at side door, gate code #1234"
+            - Closed cart drawer (clicked .cart-close-btn)
+            - Reopened cart drawer (clicked data-testid="nav-cart")
+            - Date after reopen: "2026-07-31" ✓
+            - Notes after reopen: "Leave at side door, gate code #1234" ✓
+            - localStorage verification:
+              • localStorage 'foeguard_delivery_date': "2026-07-31" ✓
+              • localStorage 'foeguard_delivery_notes': "Leave at side door, gate code #1234" ✓
+            - Both values persisted correctly ✓
+            
+            **TEST 6 — Checkout button behavior (disabled → enabled → 502 error): ✅ PASS**
+            - Cleared delivery date to test disabled state
+            - Checkout button (data-testid="cart-proceed-checkout") shows disabled styling (grayed out)
+            - Hint text displayed: "Select a delivery date to proceed to checkout." ✓
+            - Filled delivery date: "2026-07-31"
+            - Checkout button shows enabled styling (dark background) ✓
+            - Clicked checkout button
+            - Error message displayed: "Unable to start checkout right now. Please try again." ✓
+            - Checkout failed gracefully with expected 502 error (EXPECTED BEHAVIOR) ✓
+            
+            **SCREENSHOTS CAPTURED:**
+            - 01_landing_page.png: Landing page with cart icon showing "1" badge
+            - 02_cart_drawer_open.png: Cart drawer open with seeded meal line item
+            - 03_delivery_fields.png: Delivery date and notes fields visible
+            - 04_notes_filled.png: Notes field filled with test text
+            - 05_before_close.png: Cart with date and notes filled before closing
+            - 06_after_reopen.png: Cart reopened showing persisted values
+            - 07_checkout_disabled.png: Checkout button disabled (no date)
+            - 08_checkout_enabled.png: Checkout button enabled (with date)
+            - 09_checkout_error.png: Error message after clicking checkout
+            
+            **OVERALL VERDICT:**
+            All 6 requirements met. The Delivery Scheduler feature is working perfectly:
+            1. ✅ Cart drawer opens and shows seeded meal line item
+            2. ✅ Delivery date input exists with correct attributes (type=date, min=today+3 days)
+            3. ✅ Delivery notes input exists BELOW date field with correct label
+            4. ✅ Text typed into notes field is accepted and retained
+            5. ✅ Both delivery date and notes persist after close/reopen (localStorage)
+            6. ✅ Checkout button behavior correct (disabled → enabled → 502 error EXPECTED)
+            
+            **NO CRITICAL ISSUES FOUND**
+            
+            The Delivery Scheduler feature is production-ready. Shopify checkout failure with 502 error is EXPECTED behavior (Shopify is intentionally unconfigured in this environment).
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 18
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "Delivery Scheduler Feature in Cart Drawer"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: |
+        Please test the Delivery Scheduler feature in the cart drawer. This is a focused test on ONLY the delivery scheduler functionality. Verify all 6 requirements listed in the user_problem_statement. Shopify checkout will fail with 502 error - this is EXPECTED behavior (Shopify is unconfigured).
+    - agent: "testing"
+      message: |
+        ✅ DELIVERY SCHEDULER FEATURE TEST COMPLETE - ALL 6 TESTS PASSED (100% PASS)
+        
+        **SUMMARY:**
+        All 6 requirements verified and working correctly:
+        1. ✅ Cart drawer opens with seeded meal line item
+        2. ✅ Delivery date input (data-testid="cart-delivery-date", type=date, min=today+3 days)
+        3. ✅ Delivery notes input (data-testid="cart-delivery-notes", type=text, optional) renders BELOW date field with correct label
+        4. ✅ Text input accepted and retained in notes field
+        5. ✅ Both date and notes persist after close/reopen (localStorage: foeguard_delivery_date, foeguard_delivery_notes)
+        6. ✅ Checkout button behavior correct (disabled without date, enabled with date, 502 error EXPECTED)
+        
+        **NO CRITICAL ISSUES FOUND**
+        
+        The Delivery Scheduler feature is production-ready. Shopify 502 error is EXPECTED (Shopify unconfigured).
+        
+        **ACTION ITEMS FOR MAIN AGENT:**
+        - All tests passed successfully
+        - No fixes needed
+        - Feature is ready for production
+        - Please summarize and finish the session
