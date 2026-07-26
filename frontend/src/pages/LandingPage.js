@@ -147,37 +147,6 @@ const ModernNavbar = () => {
         zIndex: 1000,
         background: COLORS.red
       }}>
-        {/* Top announcement bar — Khaki (clickable → /delivery) */}
-        <div
-          onClick={() => navigate('/delivery')}
-          role="link"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/delivery'); }}
-          data-testid="promo-bar"
-          style={{
-            background: COLORS.khaki,
-            color: COLORS.charcoal,
-            textAlign: 'center',
-            padding: '0 8px',
-            fontSize: '12px',
-            fontFamily: "'Barlow', sans-serif",
-            fontWeight: 600,
-            letterSpacing: '0.02em',
-            textTransform: 'none',
-            minHeight: '28px',
-            height: '28px',
-            lineHeight: 1.2,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px'
-          }}
-        >
-          <span>Free Delivery in the Halton Region</span>
-          <ChevronRight size={14} strokeWidth={2} color={COLORS.charcoal} />
-        </div>
-        
         {/* Main navbar — 3-col grid so center logo stays centered on every viewport */}
         <div style={{
           display: 'grid',
@@ -281,6 +250,37 @@ const ModernNavbar = () => {
               )}
             </button>
           </div>
+        </div>
+
+        {/* Announcement bar — now BELOW the header (clickable → /delivery), warm gradient */}
+        <div
+          onClick={() => navigate('/delivery')}
+          role="link"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') navigate('/delivery'); }}
+          data-testid="promo-bar"
+          style={{
+            background: 'linear-gradient(90deg, #E8DDD0 0%, #D4C4B0 100%)',
+            color: COLORS.charcoal,
+            textAlign: 'center',
+            padding: '0 8px',
+            fontSize: '12px',
+            fontFamily: "'Barlow', sans-serif",
+            fontWeight: 600,
+            letterSpacing: '0.02em',
+            textTransform: 'none',
+            minHeight: '28px',
+            height: '28px',
+            lineHeight: 1.2,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px'
+          }}
+        >
+          <span>Free Delivery in the Halton Region</span>
+          <ChevronRight size={14} strokeWidth={2} color={COLORS.charcoal} />
         </div>
       </nav>
 
