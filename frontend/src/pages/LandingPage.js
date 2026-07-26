@@ -617,14 +617,11 @@ export const LandingPage = () => {
   const navigate = useNavigate();
   const [activeFaq, setActiveFaq] = useState(null);
 
-  // Routes "Shop Now" to whichever choice the user last picked in the funnel.
-  // - selection = 'meal-plan' → /meal-plan
-  // - selection = 'shop-raw'  → /menu (raw food menu)
-  // - no selection            → /menu (which will open the funnel on landing)
+  // "Shop Now" opens the pre-menu funnel ("How would you like to order?").
+  // Passing state.funnel=true makes the funnel a real history entry so the Back
+  // button returns here from the menu / meal-plan pages.
   const goShopNow = () => {
-    const sel = sessionStorage.getItem('foeguard_selection');
-    if (sel === 'meal-plan') navigate('/meal-plan', { state: { from: 'home' } });
-    else navigate('/menu', { state: { from: 'home' } });
+    navigate('/menu', { state: { funnel: true } });
   };
 
   const faqs = [

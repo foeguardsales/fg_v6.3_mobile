@@ -3,7 +3,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronRight, Check, Plus, Trash2, X } from 'lucide-react';
 import axios from 'axios';
-import { SelectionBreadcrumb } from './BoxBuilder';
 import { getRecommendationsForDog } from '../services/mealPlanRecommendation';
 import { trackShopifyEmailEvent, trackMealPlanCompleted } from '../services/analytics';
 import { useCart } from '../contexts/CartContext';
@@ -972,19 +971,12 @@ export const MealPlanPage = () => {
   return (
     <>
       <Navbar />
-      <SelectionBreadcrumb
-        label="Build a Meal Plan"
-        onEdit={() => {
-          sessionStorage.removeItem('foeguard_selection');
-          navigate('/menu');
-        }}
-      />
       <div ref={topRef} className="meal-plan-page" style={{ minHeight: '100vh', background: '#F5F3EF', padding: '60px 20px 40px', position: 'relative' }}>
-        {/* Top-right X close — matches the X used on Calculator + Product modals */}
+        {/* Top-right X close — Universal Back: return to the exact previous page */}
         <button
           onClick={() => {
-            sessionStorage.removeItem('foeguard_selection');
-            navigate('/menu');
+            if (window.history.length > 1) navigate(-1);
+            else { sessionStorage.removeItem('foeguard_selection'); navigate('/menu'); }
           }}
           data-testid="meal-plan-close-btn"
           aria-label="Close"

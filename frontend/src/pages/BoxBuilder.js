@@ -145,10 +145,12 @@ export const BoxBuilder = () => {
   const [topSheetOpen, setTopSheetOpen] = useState(false);
   const [topSheetSeen, setTopSheetSeen] = useState(false);
 
-  // Funnel overlay — full-screen choice picker shown on first menu landing
-  // Stays as a re-openable selector via Edit button after dismissal
+  // Funnel overlay — the pre-menu "How would you like to order?" page.
+  // Shown ONLY when a navigation explicitly requests it via location.state.funnel === true
+  // (e.g. the hero "Shop Now"). Every other /menu entry (browse CTAs, product back, etc.)
+  // lands on the menu content, and the browser Back button returns to the funnel entry.
   const initialSelection = sessionStorage.getItem('foeguard_selection') || null;
-  const [funnelOpen, setFunnelOpen] = useState(!initialSelection);
+  const [funnelOpen, setFunnelOpen] = useState(location.state?.funnel === true);
   const [selectionId, setSelectionId] = useState(initialSelection || 'shop-raw');
 
   // Inline product modal state — replaces /product/:id navigation
@@ -255,20 +257,16 @@ export const BoxBuilder = () => {
     }
   }, []);
 
-  // Auto-skip the funnel if user previously made a selection (within session)
-  // OR if they arrived from a saved plan / multi-pet quiz result (?plan=|?multi=).
+  // Sync funnel visibility from the current history entry so Back / Forward / swipe
+  // gestures return the user to exactly the page (funnel vs. menu content) they were on.
   useEffect(() => {
     const sel = sessionStorage.getItem('foeguard_selection');
     const cameFromPlan = searchParams.get('plan') !== null || searchParams.get('multi') !== null;
-    if (sel || cameFromPlan) {
-      if (!sel && cameFromPlan) sessionStorage.setItem('foeguard_selection', 'shop-raw');
-      setFunnelOpen(false);
-      setSelectionId(sel || 'shop-raw');
-    } else {
-      setFunnelOpen(true);
-    }
-     
-  }, []);
+    if (cameFromPlan && !sel) sessionStorage.setItem('foeguard_selection', 'shop-raw');
+    setFunnelOpen(location.state?.funnel === true);
+    const current = sessionStorage.getItem('foeguard_selection');
+    if (current) setSelectionId(current);
+  }, [location.key]);
 
   // Live unison: when the product sheet edits the box, re-read it so the menu stays in sync.
   useEffect(() => {
@@ -563,18 +561,6 @@ export const BoxBuilder = () => {
     <>
       <Navbar />
 
-      {/* Selection breadcrumb — visible after funnel is dismissed */}
-      {!funnelOpen && (
-        <SelectionBreadcrumb
-          label={
-            selectionId === 'meal-plan' ? 'Build a Meal Plan'
-            : selectionId === 'calculator' ? 'Feeding Calculator'
-            : 'Raw Food Menu'
-          }
-          onEdit={() => setFunnelOpen(true)}
-        />
-      )}
-
       <div className="box-builder box-builder--narrow">
         {/* Funnel overlay: full-screen choice picker hovering above the menu */}
         <MenuFunnel
@@ -588,27 +574,18 @@ export const BoxBuilder = () => {
             setCalcOpen(true);
           }}
           onClose={() => {
-            // If the user reached the funnel by clicking "Shop Now" on the home page,
-            // closing (X) should return them to where they started — the home page.
-            if (location.state?.from === 'home') {
-              navigate('/');
-              return;
-            }
-            if (!sessionStorage.getItem('foeguard_selection')) {
-              sessionStorage.setItem('foeguard_selection', 'shop-raw');
-              setSelectionId('shop-raw');
-            }
-            setFunnelOpen(false);
+            // Universal Back: return to the exact previous page the user came from
+            // (the funnel is closed by going back one history entry, not by hardcoding home).
+            if (window.history.length > 1) navigate(-1);
+            else navigate('/');
           }}
           onShopRaw={() => {
             sessionStorage.setItem('foeguard_selection', 'shop-raw');
             setSelectionId('shop-raw');
-            // Clear the "from home" origin so re-opening the funnel later (via Edit)
-            // and closing it keeps the user on the menu rather than bouncing home.
-            if (location.state?.from === 'home') {
-              navigate(location.pathname, { replace: true, state: {} });
-            }
             setFunnelOpen(false);
+            // Push a menu-content history entry so the browser Back button / swipe
+            // returns the user to the pre-menu funnel instead of leaving the menu.
+            navigate(location.pathname + location.search, { state: { funnel: false } });
           }}
           onMealPlan={() => {
             sessionStorage.setItem('foeguard_selection', 'meal-plan');

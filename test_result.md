@@ -177,27 +177,196 @@ backend:
           comment: "✅ PASS (4/4 tests) - Core regression check passed. GET /api/ returns 200 {message:FoeGuard API}. GET /api/stripe-public-key returns 200 with publicKey field. Auth register with unique email returns 200 with token. Auth login with same credentials returns 200 with token. All core functionality remains intact."
 
 metadata_current_session:
-  test_sequence: 1
-  run_ui: false
+  test_sequence: 2
+  run_ui: true
 
 test_plan_current_session:
-  current_focus:
-    - "Events tracking endpoint POST /api/events/track"
-    - "Shopify proxy caching active + graceful 502 when unconfigured"
-    - "shopify_variant_id added to Product/Treat models (no regression)"
-    - "Core local catalog + auth regression check"
+  current_focus: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication_current_session:
     - agent: "main"
-      message: "Please test ONLY the backend tasks listed under this session's `backend:` block. Key point: Shopify is intentionally UNCONFIGURED (placeholder tokens), so /api/shopify/* endpoints SHOULD return 502 gracefully — that is a PASS, not a failure. The important checks are: (1) POST /api/events/track returns 200 {status:ok}; (2) hitting the cached shopify endpoints does NOT crash the backend (server still 200 on /api/); (3) local /api/products, /api/products/cd-chicken, /api/treats still return 200 with data and include shopify_variant_id (null). Do NOT test frontend."
+      message: |
+        FRONTEND TEST REQUEST (navigation bug fix + funnel redesign). Focus task:
+        "Menu funnel redesign + remove Selection breadcrumb + universal Back navigation".
+        THE REPORTED BUG: Back button behaved inconsistently — meal-plan back went to the
+        pre-menu funnel, but 'build your box' back went to HOME. Fix makes Back ALWAYS return
+        to the exact previous page.
+        Verify these flows (fresh session each; Shopify unconfigured is fine, ignore any 502):
+        1. Home → hero 'Shop Now' → the pre-menu funnel 'How would you like to order?' appears →
+           click 'Raw Food Menu' → menu collections show → press browser BACK → MUST return to
+           the FUNNEL (pre-menu page), NOT the home page.
+        2. Home → 'Shop Now' → funnel → click 'Build a Meal Plan' → meal-plan page → click the X
+           close (meal-plan-close-btn) → MUST return to the FUNNEL (pre-menu page).
+        3. Confirm the 'Selection: ...' breadcrumb strip (data-testid selection-breadcrumb) is GONE
+           from both the menu page and the meal-plan page.
+        4. Regression: landing card 'Raw Dog Food Menu' CTA (sff-cta-1) → /menu should go STRAIGHT
+           to menu content (NO funnel).
+        5. Design check: funnel option cards are curved shadow cards (no red/any border), header is
+           lowered, Feeding Calculator link still present & works.
     - agent: "testing"
-      message: "✅ ALL BACKEND TESTS PASSED (16/16) - Current session testing complete. All 4 tasks verified working: (1) Events endpoint POST /api/events/track returns correct responses with validation; (2) Shopify proxy caching fails gracefully with 502, backend stays healthy; (3) shopify_variant_id field present in all products/treats (null values); (4) Core regression passed (root, stripe key, auth register/login). Minor fix applied: Added shopify_variant_id to seed_data.py and reseeded database. No critical issues found. Ready for main agent to summarize and finish."
+      message: |
+        ✅ TESTING COMPLETE - ALL 5 TEST CASES PASSED
+        
+        Comprehensive testing of the pre-menu funnel redesign, breadcrumb removal, and back button
+        navigation bug fix has been completed. All requirements verified and working correctly.
+        
+        **PASS/FAIL SUMMARY:**
+        ✅ TEST 1: Back button from menu returns to funnel (THE REPORTED BUG) - PASS
+        ✅ TEST 2: Meal plan close returns to funnel - PASS
+        ✅ TEST 3: Breadcrumb strip removed from menu and meal plan pages - PASS
+        ✅ TEST 4: Direct menu link skips funnel (regression check) - PASS
+        ✅ TEST 5: Funnel design + calculator link - PASS
+        
+        **KEY FINDINGS:**
+        - The reported back button bug is FIXED: pressing back from menu now correctly returns
+          to the funnel overlay, not the home page
+        - Breadcrumb strip (data-testid="selection-breadcrumb") successfully removed from both
+          menu and meal plan pages
+        - Direct menu links correctly skip the funnel and go straight to menu content
+        - Funnel design verified: fully opaque overlay, curved cards (12px radius), shadow present,
+          no borders, calculator link functional
+        - All navigation flows working correctly with proper history state management
+        
+        **TECHNICAL NOTE:**
+        The "Raw Food Menu" button data-testid is "funnel-shop-raw" (not "funnel-menu" as
+        mentioned in the original spec). This is working correctly.
+        
+        No critical issues found. Feature is production-ready.
 
 
 
 frontend:
+  - task: "Menu funnel redesign + remove Selection breadcrumb + universal Back navigation"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/BoxBuilder.js + MealPlanPage.js + LandingPage.js + App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            THREE related changes (please test all):
+            (A) DESIGN — pre-menu funnel ("How would you like to order?"): header lowered
+                (more top padding), the 2 option rows are now curved shadow-only CARD containers
+                (12px radius, NO borders, centered ~640px width, wider images), Feeding Calculator
+                link unchanged. Data-testids preserved: menu-funnel-overlay, menu-funnel-close,
+                funnel-menu, funnel-meal-plan, funnel-calculator-link.
+            (B) REMOVED the "Selection: ..." breadcrumb strip from BOTH the menu page (BoxBuilder)
+                and the Meal Plan page. (data-testid selection-breadcrumb should NO LONGER exist.)
+            (C) NAVIGATION FIX (the reported bug) — Back should ALWAYS return to the exact previous
+                page, never home/random:
+                  - Hero "Shop Now" (data-testid hero-shop-now) navigates to /menu with
+                    history state {funnel:true} → the pre-menu funnel opens.
+                  - Picking "Raw Food Menu" (funnel-menu) closes the funnel and PUSHES a
+                    menu-content history entry {funnel:false}. Pressing browser BACK now returns
+                    to the FUNNEL (pre-menu), NOT the home page. (Previously it went home — BUG.)
+                  - Picking "Build a Meal Plan" (funnel-meal-plan) → /meal-plan. The meal-plan
+                    X close (data-testid meal-plan-close-btn) now uses navigate(-1) → returns to
+                    the FUNNEL (pre-menu). 
+                  - Funnel X close (menu-funnel-close) uses navigate(-1) → returns to the page the
+                    user came from (home when arriving from the hero Shop Now).
+            TEST FLOWS (fresh session each):
+              1. Home → hero "Shop Now" → funnel appears → click "Raw Food Menu" → menu collections
+                 shown → click browser BACK → MUST land back on the FUNNEL (pre-menu), NOT home.
+              2. Home → "Shop Now" → funnel → click "Build a Meal Plan" → meal-plan page → click the
+                 X close → MUST land back on the FUNNEL (pre-menu).
+              3. Confirm NO "Selection:" breadcrumb strip appears on the menu page or meal-plan page.
+              4. Regression: a direct "Browse Menu" style link to /menu (e.g. footer/delivery page
+                 "Browse Menu", or the landing "Raw Dog Food Menu" card CTA sff-cta-1) should go
+                 straight to the menu content WITHOUT the funnel.
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ COMPREHENSIVE TESTING COMPLETED - ALL 5 TEST CASES PASSED (5/5 PASS)
+            
+            **TEST 1 — THE REPORTED BUG FIX (Back button navigation): ✅ PASS**
+            - Fresh session → home → clicked hero "Shop Now" (data-testid="hero-shop-now")
+            - Funnel overlay appeared correctly with "How would you like to order?" title
+            - Clicked "Raw Food Menu" option (data-testid="funnel-shop-raw")
+            - Menu content displayed with category tabs visible (URL: /menu)
+            - Pressed browser BACK button
+            - ✅ CRITICAL: Funnel overlay RE-APPEARED after pressing back
+            - ✅ BUG FIX VERIFIED: Back button correctly returns to funnel, NOT home page
+            - Screenshot evidence: test1_PASS_back_to_funnel.png
+            
+            **TEST 2 — Meal plan close returns to funnel: ✅ PASS**
+            - Fresh session → home → hero "Shop Now" → funnel appeared
+            - Clicked "Build a Meal Plan" (data-testid="funnel-meal-plan")
+            - Meal plan page loaded (URL: /meal-plan)
+            - Clicked X close button (data-testid="meal-plan-close-btn")
+            - ✅ Funnel overlay visible after closing meal plan
+            - ✅ Meal plan close correctly returns to funnel
+            - Screenshot: test2_mealplan_close_to_funnel.png
+            
+            **TEST 3 — Breadcrumb strip removed: ✅ PASS**
+            - Navigated to menu page via funnel
+            - ✅ data-testid="selection-breadcrumb" does NOT exist on menu page
+            - Navigated to meal plan page
+            - ✅ data-testid="selection-breadcrumb" does NOT exist on meal plan page
+            - ✅ Breadcrumb strip successfully removed from both pages
+            
+            **TEST 4 — Regression check (direct menu link skips funnel): ✅ PASS**
+            - Fresh session → home page
+            - Scrolled to "Shop Farm Fresh" section
+            - Clicked "Raw Dog Food Menu" card CTA (data-testid="sff-cta-1")
+            - Navigated to /menu with menu content visible
+            - ✅ Funnel overlay NOT visible (correctly skipped)
+            - ✅ Direct menu link goes straight to menu content as expected
+            - Screenshot: test4_direct_menu_no_funnel.png
+            
+            **TEST 5 — Funnel design + calculator link: ✅ PASS**
+            - Fresh session → hero "Shop Now" → funnel appeared
+            - ✅ Both funnel option cards visible:
+              • "Raw Food Menu" card (data-testid="funnel-shop-raw")
+              • "Build a Meal Plan" card (data-testid="funnel-meal-plan")
+            - ✅ "Feeding Calculator" link present and visible (data-testid="funnel-calculator-link")
+            - Clicked calculator link → calculator overlay opened successfully
+            - ✅ Design verification:
+              • Overlay background: rgb(245, 243, 239) - solid/opaque (opacity: 1)
+              • Card border-radius: 12px (curved corners) ✓
+              • Card box-shadow: present (subtle shadow) ✓
+              • Card border: 0px (no borders) ✓
+            - Screenshot: test5_funnel_design.png
+            
+            **TECHNICAL NOTES:**
+            - Correct data-testid for "Raw Food Menu" button is "funnel-shop-raw" (not "funnel-menu")
+            - All navigation flows working correctly with history state management
+            - Funnel overlay is fully opaque (no see-through background)
+            - Card design matches specifications: curved corners, shadow, no borders
+            
+            **OVERALL VERDICT:**
+            All 5 test cases passed successfully. The pre-menu funnel redesign, breadcrumb removal,
+            and back button navigation bug fix are all working correctly. No critical issues found.
+            Shopify 502 errors are expected (intentionally unconfigured) and were ignored as instructed.
+
+  - task: "Announcement banner moved below header + gradient color"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/LandingPage.js"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Banner 'Free Delivery in the Halton Region' moved below the red header; bg now linear-gradient #E8DDD0→#D4C4B0. Verified visually."
+
+  - task: "Delivery notes field in cart + Shopify attribute binding"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/contexts/CartContext.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "ALL 6 checks PASSED — notes field below calendar, input accepted, persistence, checkout enable/disable, graceful 502."
+
   - task: "Home 'Shop Now' funnel X close returns to home page when arriving from home"
     implemented: true
     working: true
