@@ -633,11 +633,18 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
 
       {subCategories.map(sc => (
         <div key={sc.key} className="treats-subcategory" style={{ marginTop: '12px' }}>
-          <div className="menu-collection-header treats-subcat-header" data-testid={`treats-subcat-${sc.key}`}>
-            <h4 className="menu-collection-title treats-subcat-title">{sc.title}</h4>
-            {showCategoryDescriptions && (
-              <p className="menu-collection-desc treats-subcat-desc">{sc.desc}</p>
-            )}
+          <div className="menu-collection-header menu-collection-header--banner treats-subcat-header" data-testid={`treats-subcat-${sc.key}`}>
+            <div
+              className="menu-collection-banner menu-collection-banner--overlay"
+              style={{ backgroundImage: `url(${SUBCAT_BANNER[sc.key]})` }}
+            >
+              <div className="menu-collection-banner-text">
+                <h4 className="menu-collection-title">{sc.title}</h4>
+                {showCategoryDescriptions && (
+                  <p className="menu-collection-desc">{sc.desc}</p>
+                )}
+              </div>
+            </div>
           </div>
           <div className="product-grid">
             {sc.items.map(renderTreatCard)}

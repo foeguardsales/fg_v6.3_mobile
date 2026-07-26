@@ -5789,7 +5789,7 @@ h2, h3, h4 {
   position: relative;
   z-index: 2;
   margin: 0;
-  background: rgba(59, 42, 26, 0.5);
+  background: rgba(44, 44, 44, 0.5);
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   overflow: hidden;
@@ -5823,17 +5823,17 @@ h2, h3, h4 {
 @media (min-width: 760px) {
   .menu-category-text--on-hero .menu-category-text-btn { font-size: 15px; }
 }
-/* Home-page style gradient — transparent up top, darker toward the bottom for legible text */
+/* Home-page style gradient — transparent up top, CHARCOAL toward the bottom for legible text */
 .menu-collection-hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(59, 42, 26, 0) 0%,
-    rgba(59, 42, 26, 0.10) 32%,
-    rgba(59, 42, 26, 0.45) 60%,
-    rgba(59, 42, 26, 0.78) 82%,
-    rgba(59, 42, 26, 0.94) 100%
+    rgba(44, 44, 44, 0) 0%,
+    rgba(44, 44, 44, 0.10) 32%,
+    rgba(44, 44, 44, 0.45) 60%,
+    rgba(44, 44, 44, 0.78) 82%,
+    rgba(44, 44, 44, 0.94) 100%
   );
   pointer-events: none;
 }
@@ -6744,60 +6744,82 @@ h2, h3, h4 {
 
 /* ===== Collection header — flattened to plain text on cream page background ===== */
 .menu-collection-header--banner {
-  padding: 4px 16px 10px;
-  margin-bottom: 0;
+  padding: 0;
+  margin: 10px 0 8px;
 }
 @media (min-width: 760px) {
-  .menu-collection-header--banner { padding: 4px 0 10px; }
+  .menu-collection-header--banner { padding: 0; margin: 18px 0 10px; }
 }
+/* ===== Sub-collection THIN image banners — same look as the main header hero
+   (charcoal gradient, title + subheader bottom-left) but much shorter, so the
+   menu reads like a restaurant menu with slim section headers. ===== */
 .menu-collection-banner {
-  width: 100%;
-  height: auto;
-  background: none !important;
-  background-image: none !important;
-  border-radius: 0;
-  margin-bottom: 0;
   position: relative;
-  overflow: visible;
+  width: 100%;
+  height: 104px;                 /* THIN — mobile */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0;              /* mobile: full-bleed like the main hero */
+  overflow: hidden;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 @media (min-width: 760px) {
-  .menu-collection-banner { height: auto; }
+  .menu-collection-banner { height: 150px; border-radius: 12px; }
 }
+/* Charcoal gradient overlay — transparent top → charcoal bottom (matches main header) */
 .menu-collection-banner--overlay::before {
-  content: none;
-  display: none;
+  content: '';
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(44, 44, 44, 0) 0%,
+    rgba(44, 44, 44, 0.15) 38%,
+    rgba(44, 44, 44, 0.62) 74%,
+    rgba(44, 44, 44, 0.93) 100%
+  );
+  z-index: 0;
+  pointer-events: none;
 }
 .menu-collection-banner-text {
   position: relative;
   z-index: 1;
-  padding: 0;
+  padding: 0 18px 12px;          /* bottom-left */
   max-width: 100%;
   display: block;
-  height: auto;
+  text-align: left;
 }
 .menu-collection-banner-text .menu-collection-title {
-  color: #2C2C2C;
-  margin: 0 0 4px;
+  color: #F5F3EF;
+  margin: 0 0 3px;
   font-family: var(--font-heading) !important;
-  font-size: clamp(20px, 2.4vw, 26px) !important;
+  text-transform: uppercase;
+  font-size: clamp(17px, 4.6vw, 24px) !important;
   font-weight: 700 !important;
-  letter-spacing: 0;
-  text-shadow: none;
+  letter-spacing: 0.4px;
+  line-height: 1.05;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.42);
 }
 .menu-collection-banner-text .menu-collection-desc {
-  color: #2C2C2C;
-  opacity: 1;
+  color: #F5F3EF;
+  opacity: 0.95;
   margin: 0;
-  font-size: 13px;
-  line-height: 1.5;
-  text-shadow: none;
+  font-size: 12px;
+  line-height: 1.4;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 @media (min-width: 760px) {
-  .menu-collection-banner-text .menu-collection-desc { font-size: 14px; }
+  .menu-collection-banner-text { padding: 0 24px 16px; }
+  .menu-collection-banner-text .menu-collection-desc { font-size: 13px; -webkit-line-clamp: 2; }
 }
 
 /* ===== Description clamp — strictly 2 lines (Task 2.5) ===== */
@@ -7632,11 +7654,11 @@ input, select, textarea {
 
 /* ===== Treat sub-category headers — plain text, no banner ===== */
 .treats-subcat-header {
-  padding: 14px 16px 14px;
+  padding: 0;
   margin-bottom: 0;
 }
 @media (min-width: 760px) {
-  .treats-subcat-header { padding: 14px 0; }
+  .treats-subcat-header { padding: 0; }
 }
 .treats-subcat-title {
   font-size: clamp(18px, 2vw, 22px) !important;

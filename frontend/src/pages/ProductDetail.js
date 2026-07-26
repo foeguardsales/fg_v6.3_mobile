@@ -616,7 +616,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             {/* Title */}
             <h1 className="pd-shopify-title">{product.name}</h1>
 
-            {/* Price — "From $X/lb" (lowest, max 15% off) until a quantity is chosen */}
+            {/* Price — direct "$X/lb" (at the lowest 36lb tier) until a quantity is chosen */}
             <div className="pd-shopify-price-row" data-testid="product-price">
               {quantity > 0 ? (
                 <>
@@ -629,7 +629,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 </>
               ) : (
                 <>
-                  <span className="pd-shopify-price-from">From</span>
                   <span className="pd-shopify-price" data-testid="qty-price-total">${lowestPerLb.toFixed(2)}</span>
                   <span className="pd-shopify-price-unit" data-testid="qty-price-perlb">/lb</span>
                 </>
