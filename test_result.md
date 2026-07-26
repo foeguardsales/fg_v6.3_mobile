@@ -291,6 +291,48 @@ agent_communication_current_session:
         mentioned in the original spec). This is working correctly.
         
         No critical issues found. Feature is production-ready.
+    - agent: "main"
+      message: |
+        RE-VERIFICATION REQUEST: User requested re-test of menu page default box size fix.
+        Test the following on /menu with empty basket (localStorage.clear(); sessionStorage.clear()):
+        1. DEFAULT BOX = 36 lb: box-pill-36 must have data-selected="true", others "false"
+        2. Same on Raw Cat Food tab
+        3. NO "From" in product card prices
+        4. Price reflects 36lb (15% off) tier by default
+        5. Regression: (a) no duplicate treats banner, (b) single product normal width
+    - agent: "testing"
+      message: |
+        ⚠️ RE-VERIFICATION FAILED - 3/6 TESTS PASSED (3 CRITICAL FAILURES REMAIN)
+        
+        User requested re-verification of the default box size fix. Testing completed with
+        fresh empty basket (localStorage and sessionStorage cleared before test).
+        
+        **CRITICAL FAILURES:**
+        ❌ TEST 1 & 2: Default box pill is NOT 36lb on both Dog Food and Cat Food tabs
+           - All 4 box pills show data-selected="false" (expected: 36="true", others="false")
+           - This is the SAME issue reported in previous test - NOT FIXED
+        
+        ❌ TEST 4: Initial price does NOT reflect 36lb (15% off) tier
+           - Initial price: $4.50/lb (base price, 0% discount)
+           - After clicking 36lb pill: $3.82/lb (15% off price)
+           - This proves boxSize is defaulting to 6 (base tier), not 36
+        
+        **PASSES:**
+        ✅ TEST 3: NO "From" in product card prices (Dog Food & Cat Food)
+        ✅ TEST 5a: NO duplicate treats banner on Cat/Dog Treats tabs
+        ✅ TEST 5b: Single product maintains normal half-row width (50%)
+        
+        **ROOT CAUSE:**
+        Code has `const initialBoxSize = 36;` and `useState(initialBoxSize)` but boxSize
+        is NOT 36 on initial render. The auto-tier shift effect (lines 191-199) may be
+        running despite the guard `if (currentTotalLbs <= 0) return;`. The auto-tier
+        logic defaults to 6 when currentTotalLbs <= 6, which may be overriding the
+        initial state of 36.
+        
+        **RECOMMENDATION:**
+        The fix attempted by main agent did NOT resolve the issue. The default box size
+        is still not working. Main agent needs to investigate why boxSize is not staying
+        at 36 on initial mount with empty basket.
 
 
 
@@ -405,7 +447,7 @@ frontend:
     implemented: true
     working: false
     file: "/app/frontend/src/pages/BoxBuilder.js + /app/frontend/src/components/CartAndCheckout.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -456,6 +498,73 @@ frontend:
             - test2b_dog_treats_no_duplicate.png: Dog treats with NO duplicate banner ✓
             - followup_box_pills.png: Shows all pills with data-selected="false" ✗
             - followup_single_card_meaty_treats.png: Single card at 50% width (normal) ✓
+        - working: false
+          agent: "testing"
+          comment: |
+            RE-VERIFICATION TESTING COMPLETED (User requested re-test of fix)
+            
+            **OVERALL RESULTS: 3/6 TESTS PASSED (3 CRITICAL FAILURES)**
+            
+            ❌ TEST 1 - DEFAULT BOX = 36 lb (Dog Food, empty basket): FAIL
+               - box-pill-36 data-selected="false" (expected "true")
+               - box-pill-6 data-selected="false" ✓
+               - box-pill-12 data-selected="false" ✓
+               - box-pill-24 data-selected="false" ✓
+            
+            ❌ TEST 2 - DEFAULT BOX = 36 lb (Cat Food, empty basket): FAIL
+               - box-pill-36 data-selected="false" (expected "true")
+               - All other pills correctly show "false"
+            
+            ✅ TEST 3 - NO "From" in product card prices: PASS
+               - Dog Food: No "From" found in any product card ✓
+               - Cat Food: No "From" found in any product card ✓
+               - Sample prices: "$4.50 /lb", "$6.66 /lb" (correct format)
+            
+            ❌ TEST 4 - Price reflects 36lb (15% off) tier by default: FAIL
+               - Initial price on page load: $4.50/lb (BASE price, 0% discount)
+               - Price after clicking 36lb pill: $3.82/lb (15% off price)
+               - ISSUE: Initial price does NOT match 36lb tier price
+               - This confirms boxSize is NOT defaulting to 36
+            
+            ✅ TEST 5a - NO duplicate treats banner: PASS
+               - Cat Treats: NO collection-header-treats element ✓
+               - Dog Treats: NO collection-header-treats element ✓
+               - Subcategory headers "Meaty Treats" and "Heads and Feet" present ✓
+            
+            ✅ TEST 5b - Single product normal half-row width (desktop 1440px): PASS
+               - Found grid with 1 product (Cat Treats "Meaty Treats") ✓
+               - NO empty placeholder beside single product ✓
+               - Card width: 518px (50.0% of grid width) ✓
+               - Single card maintains NORMAL half-row width (NOT stretched) ✓
+            
+            **ROOT CAUSE ANALYSIS:**
+            The code has `const initialBoxSize = 36;` and `useState(initialBoxSize)` (line 172, 176),
+            but the boxSize state is NOT being set to 36 on initial render with an empty basket.
+            
+            Evidence from pricing test:
+            - Initial load shows $4.50/lb (base price = 0% discount)
+            - Clicking 36lb pill shows $3.82/lb (15% off)
+            - This proves boxSize is defaulting to 6 (base tier), not 36
+            
+            Possible causes:
+            1. Auto-tier shift effect (lines 191-199) may be running despite guard condition
+            2. The guard `if (currentTotalLbs <= 0) return;` may not be preventing the effect
+            3. Something else is resetting boxSize before component renders
+            
+            The auto-tier logic defaults to 6 when currentTotalLbs <= 6:
+            ```
+            const correctTier =
+              currentTotalLbs > 24 ? 36 :
+              currentTotalLbs > 12 ? 24 :
+              currentTotalLbs > 6  ? 12 : 6;  // <-- defaults to 6
+            ```
+            
+            **SCREENSHOTS:**
+            - test_full_page.png: Initial menu load showing all pills unselected
+            - test5a_cat_treats.png: Cat treats with NO duplicate banner ✓
+            - test5a_dog_treats.png: Dog treats with NO duplicate banner ✓
+            - test5b_single_product.png: Single product at 50% width ✓
+            - FINAL_box_pills_state.png: Box pills showing all data-selected="false"
 
   - task: "Announcement banner moved below header + gradient color"
     implemented: true

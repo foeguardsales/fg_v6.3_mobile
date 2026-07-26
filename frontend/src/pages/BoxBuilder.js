@@ -169,7 +169,7 @@ export const BoxBuilder = () => {
   const [calcOpen, setCalcOpen] = useState(false);
   
   // Load from sessionStorage on mount
-  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 36;
+  const initialBoxSize = 36;
   const initialProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
   const initialTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
   
@@ -325,7 +325,9 @@ export const BoxBuilder = () => {
       const savedProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
       const savedTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
       
-      if (savedBoxSize && savedBoxSize !== boxSize) {
+      // Only restore a saved box size when the basket actually has meals — an empty
+      // menu must always start on the default 36 lb tier (lowest per-lb price shown first).
+      if (savedBoxSize && savedBoxSize !== boxSize && Object.keys(savedProteins).length > 0) {
         setBoxSize(savedBoxSize);
       }
       
