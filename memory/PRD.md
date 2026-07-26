@@ -11,6 +11,18 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 
 ## What's Implemented (Feb 2026)
 
+### 2025-07 — Delivery Scheduler → Shopify cart attributes
+- **Delivery Notes field (NEW)** — `contexts/CartContext.js` `DeliveryDatePicker` now renders a single-line
+  optional input **below the calendar**: "Delivery notes or drop-off instructions (Optional)"
+  (`data-testid=cart-delivery-notes`, max 250 chars). Persisted to `localStorage.foeguard_delivery_notes`.
+- **Headless binding** — On "Go to checkout" (`handleCheckout`), the cart is created with attributes
+  `[{key:'Delivery Date', value:YYYY-MM-DD}]` and, when notes are non-empty,
+  `{key:'Delivery Notes', value:<text>}`. These pass through Shopify `cartCreate` (backend
+  `POST /api/shopify/cart` → `cartAttributesUpdate`/CartInput.attributes) so both appear on the order
+  in the Shopify Admin fulfillment dashboard. User then routes to native `cart.checkoutUrl`.
+  NOTE: end-to-end attribute verification pending real Shopify creds (currently unconfigured → 502).
+
+
 ### 2026-02 (b) — Auto-updating metafield pipeline + webhook self-register
 - **`useShopifyPage(handle)`** now paired with `services/shopify/pageMeta.js` helpers (`getMetafieldImage`, `getMetafieldImageList`, `getMetafieldMetaobjects`) so any React page can pull merchant-managed content in one line, keeping hardcoded fallbacks until the metafield is populated.
 - **`<ShopifyImage handle="..." metafieldKey="..." fallback="..." />`** drop-in component: swap any hardcoded `<img>` and it auto-pulls the correct MediaImage from Shopify once the merchant assigns it.

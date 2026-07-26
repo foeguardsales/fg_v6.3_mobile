@@ -18,6 +18,7 @@ const MEAL_VARIANT_LABELS = ['1 lb', '1.5 lb'];
 const LS_PROTEINS = 'selectedProteins';
 const LS_TREATS = 'selectedTreats';
 const LS_DELIVERY = 'foeguard_delivery_date';
+const LS_DELIVERY_NOTES = 'foeguard_delivery_notes';
 
 const readProteins = () => {
   try { return JSON.parse(localStorage.getItem(LS_PROTEINS) || '{}') || {}; } catch (_) { return {}; }
@@ -44,6 +45,9 @@ export const CartProvider = ({ children }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [deliveryDate, setDeliveryDateState] = useState(() => {
     try { return localStorage.getItem(LS_DELIVERY) || ''; } catch (_) { return ''; }
+  });
+  const [deliveryNotes, setDeliveryNotesState] = useState(() => {
+    try { return localStorage.getItem(LS_DELIVERY_NOTES) || ''; } catch (_) { return ''; }
   });
 
   // Load the product catalog once (for cart-line pricing + shopify variant lookup).
@@ -95,6 +99,11 @@ export const CartProvider = ({ children }) => {
   const setDeliveryDate = useCallback((date) => {
     setDeliveryDateState(date);
     try { localStorage.setItem(LS_DELIVERY, date || ''); } catch (_) { /* ignore */ }
+  }, []);
+
+  const setDeliveryNotes = useCallback((notes) => {
+    setDeliveryNotesState(notes);
+    try { localStorage.setItem(LS_DELIVERY_NOTES, notes || ''); } catch (_) { /* ignore */ }
   }, []);
 
   // ----- Meal (protein) mutators — key can be plain productId OR composite -----
@@ -181,6 +190,7 @@ export const CartProvider = ({ children }) => {
     // new API
     proteins, treats, products, proteinEntries,
     deliveryDate, setDeliveryDate,
+    deliveryNotes, setDeliveryNotes,
     isCartOpen, setIsCartOpen,
     adjustProtein, removeProtein, setTreatQty, removeTreat, clearCart,
     itemCount, totalLbs, subtotal, perLbForProduct, baseProductId,
@@ -195,7 +205,8 @@ export const CartProvider = ({ children }) => {
 };
 
 // Delivery date: earliest = today + 3 days, no upper bound (unlimited future). Mandatory.
-const DeliveryDatePicker = ({ value, onChange }) => {
+// Delivery notes: optional free-text drop-off instructions shown below the calendar.
+const DeliveryDatePicker = ({ value, onChange, notes, onNotesChange }) => {
   const min = (() => {
     const d = new Date();
     d.setDate(d.getDate() + 3);
@@ -228,6 +239,24 @@ const DeliveryDatePicker = ({ value, onChange }) => {
           Earliest delivery is 3 days out (order prep time). Choose any date from there.
         </p>
       )}
+
+      {/* Optional delivery notes / drop-off instructions — sits directly below the calendar */}
+      <label
+        htmlFor="cart-delivery-notes"
+        style={{ display: 'block', fontSize: '14px', fontWeight: 600, margin: '16px 0 8px', color: '#2C2C2C' }}
+      >
+        Delivery notes or drop-off instructions <span style={{ color: '#8A7156', fontWeight: 400 }}>(Optional)</span>
+      </label>
+      <input
+        id="cart-delivery-notes"
+        type="text"
+        value={notes || ''}
+        maxLength={250}
+        onChange={(e) => onNotesChange(e.target.value)}
+        placeholder="e.g. Leave at side door, ring bell, gate code #1234"
+        data-testid="cart-delivery-notes"
+        style={{ width: '100%', padding: '10px 12px', border: '2px solid #D8CFB8', borderRadius: '8px', fontSize: '14px', fontFamily: 'inherit', boxSizing: 'border-box' }}
+      />
     </div>
   );
 };
@@ -239,6 +268,7 @@ export const UniversalCart = () => {
   const {
     proteinEntries, treats, products,
     deliveryDate, setDeliveryDate,
+    deliveryNotes, setDeliveryNotes,
     isCartOpen, setIsCartOpen,
     adjustProtein, removeProtein, setTreatQty, removeTreat,
     itemCount, subtotal, perLbForProduct, baseProductId, MEAL_VARIANT_LABELS: variantLabels,
@@ -298,8 +328,12 @@ export const UniversalCart = () => {
         }
       });
 
-      // Delivery date travels to Shopify as a cart attribute -> shows on the order.
+      // Delivery date + notes travel to Shopify as cart attributes -> show on the
+      // order in the Shopify Admin fulfillment dashboard so the team knows when/how to deliver.
       const attributes = [{ key: 'Delivery Date', value: deliveryDate }];
+      if (deliveryNotes && deliveryNotes.trim()) {
+        attributes.push({ key: 'Delivery Notes', value: deliveryNotes.trim() });
+      }
 
       const res = await shopifyCart.cartCreate({ lines, attributes });
       let url = res?.checkoutUrl || res?.cart?.checkoutUrl;
@@ -417,8 +451,13 @@ export const UniversalCart = () => {
                 Taxes &amp; delivery calculated at checkout.
               </p>
 
-              {/* Delivery date — below the total, mandatory */}
-              <DeliveryDatePicker value={deliveryDate} onChange={setDeliveryDate} />
+              {/* Delivery date + notes — below the total, date mandatory / notes optional */}
+              <DeliveryDatePicker
+                value={deliveryDate}
+                onChange={setDeliveryDate}
+                notes={deliveryNotes}
+                onNotesChange={setDeliveryNotes}
+              />
             </>
           )}
         </div>
