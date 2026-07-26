@@ -6055,7 +6055,7 @@ h2, h3, h4 {
   gap: 0;
   row-gap: 0;
   border-top: none;
-  background: #FFFFFF;
+  background: transparent;
   border-radius: 0;
   overflow: hidden;
 }

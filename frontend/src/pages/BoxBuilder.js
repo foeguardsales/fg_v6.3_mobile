@@ -169,7 +169,7 @@ export const BoxBuilder = () => {
   const [calcOpen, setCalcOpen] = useState(false);
   
   // Load from sessionStorage on mount
-  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 6;
+  const initialBoxSize = parseInt(sessionStorage.getItem('boxSize')) || 36;
   const initialProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
   const initialTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
   
@@ -388,8 +388,8 @@ export const BoxBuilder = () => {
     // Remember the current menu pet view so ProductDetail can attribute primal_feast properly
     sessionStorage.setItem('foeguard_menu_pet', newPetType);
     // Cart persists across pet types — discount tiers apply to combined meal lbs.
-    // Set default box size for new pet type
-    setBoxSize(newPetType === 'cat' ? 6 : 6);
+    // Default box size (36 lb — the lowest per-lb tier so shoppers see the best price first)
+    setBoxSize(36);
   };
 
   const bannerCards = [
@@ -657,7 +657,7 @@ export const BoxBuilder = () => {
                 onToggleTreat={handleToggleTreat}
                 petType={petType}
                 navigate={navigate}
-                hideHeader={false}
+                hideHeader={true}
                 showCategoryDescriptions={true}
                 onOpenTreat={(tid) => setActiveTreatId(tid)}
               />
@@ -917,11 +917,9 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
   const boxRate = RATES[boxSize] || 0;
   const boxDiscountedPerLb = (basePrice / 6) * (1 - boxRate);
-  const hasDiscount = discountedPrice < basePrice - 0.001 || boxRate > 0;
   // Pricing is stored as the 6lb base price. Show /1lb by default; once a quantity
   // is selected, show the full price for that amount.
   const basePerLb = basePrice / 6;
-  const lowestPerLb = basePerLb * 0.85; // lowest possible /lb — max 15% bulk discount
   const discountedPerLb = discountedPrice / 6;
   const displayQty = selectedQty > 0 ? selectedQty : 1;
   const showPrice = discountedPerLb * displayQty;
@@ -1064,19 +1062,11 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
               <span className="price-regular">${lineTotal.toFixed(2)}</span>
               <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
             </>
-          ) : hasDiscount ? (
-            // A box tier IS active (user picked 12/24/36 or basket lbs hit a tier)
-            // — show the DYNAMIC per-lb price at that tier on every un-selected card.
+          ) : (
+            // Direct per-lb price at the CURRENT box tier (defaults to 36lb = lowest price).
+            // No "From" label — shoppers see the actual price straight away.
             <>
               <span className="price-regular">${boxDiscountedPerLb.toFixed(2)}</span>
-              <span className="price-unit">/lb</span>
-            </>
-          ) : (
-            // No tier active yet (default 6lb / empty basket) — aspirational preview
-            // of the maximum bulk discount so shoppers see the best possible price.
-            <>
-              <span className="price-from">From</span>
-              <span className="price-regular">${lowestPerLb.toFixed(2)}</span>
               <span className="price-unit">/lb</span>
             </>
           )}

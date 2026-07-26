@@ -181,9 +181,66 @@ metadata_current_session:
   run_ui: true
 
 test_plan_current_session:
-  current_focus: []
+  current_focus:
+    - "Menu page: remove From pricing (default 36lb), treats header de-dup, no empty grid slot"
   test_all: false
   test_priority: "high_first"
+
+    - agent: "main"
+      message: |
+        NEW FRONTEND TEST REQUEST (menu-page changes; supersedes older messages below). Ignore Shopify 502.
+        Navigate to /menu directly (no funnel on direct visit); switch views via category tabs
+        (category-dog-food / category-dog-treats / category-cat-food / category-cat-treats).
+        1) PRICING: meal cards show direct per-lb like "$4.50 /lb" with NO "From" prefix anywhere. Default
+           box pill is "36 lb+" (box-pill-36 data-selected="true"); per-lb equals the 15%-off lowest tier.
+           Switching pills changes the number but "From" must never appear.
+        2) TREATS HEADER DE-DUP: on treats tabs (category-cat-treats / category-dog-treats) the top category
+           hero already shows "Raw Cat/Dog Treats"; there must be NO second identical banner below
+           (data-testid collection-header-treats must NOT exist on treats tab). Subcategory headers
+           "Meaty Treats"/"Heads and Feet" must still be present.
+        3) NO EMPTY GRID SLOT (desktop width >= 1000): Raw Cat Treats "Heads and Feet" has ONE product
+           (Chicken Necks). Verify NO white blank placeholder box beside it; the single card keeps its
+           NORMAL half-row card width (NOT stretched full width). Same for any collection ending on an odd count.
+        Give PASS/FAIL for 1,2,3 with screenshots.
+    - agent: "testing"
+      message: |
+        ✅ MENU PAGE TESTING COMPLETE - 2 OF 3 TESTS PASSED (1 PARTIAL FAIL)
+        
+        Comprehensive testing of three menu-page changes completed. Shopify 502 errors ignored as expected.
+        
+        **TEST 1 — PRICING (no "From", default 36lb): ⚠️ PARTIAL FAIL**
+        ❌ FAIL: Default box pill is NOT 36lb+ (all pills show data-selected="false" on initial load)
+        ✅ PASS: NO "From" text in any product card prices (verified dog food, cat food, all box pill sizes)
+        ✅ PASS: Price format is direct per-lb: "$4.50 /lb" (no "From" prefix anywhere)
+        ✅ PASS: Switching box pills (6, 12, 24) - "From" never appears in any state
+        
+        **TEST 2 — TREATS HEADER DE-DUPLICATION: ✅ PASS (100%)**
+        ✅ PASS: Cat treats tab - Top category hero shows "Raw Cat Treats"
+        ✅ PASS: Cat treats tab - data-testid="collection-header-treats" does NOT exist (no duplicate banner)
+        ✅ PASS: Cat treats tab - Subcategory headers "Meaty Treats" and "Heads and Feet" present
+        ✅ PASS: Dog treats tab - data-testid="collection-header-treats" does NOT exist
+        ✅ PASS: Dog treats tab - Subcategory header "Meaty Treats" present
+        ✅ PASS: REGRESSION - Dog food tab has collection-header-treats (expected behavior)
+        
+        **TEST 3 — NO EMPTY GRID SLOT (single/odd product on desktop): ✅ PASS**
+        ✅ PASS: Cat Treats "Meaty Treats" has 1 product (Whole Chicken Necks Pack)
+        ✅ PASS: NO empty white placeholder card beside single product (only 1 child in grid)
+        ✅ PASS: Single card maintains NORMAL width (50% of grid = half-row width, NOT stretched)
+        ℹ️  NOTE: "Heads and Feet" has 4 products (not 1 as spec suggested), but "Meaty Treats" 
+            with 1 product confirms the single-card grid behavior works correctly
+        
+        **CRITICAL ISSUE FOUND:**
+        The default box pill selection is NOT working. On initial page load to /menu, ALL box pills 
+        show data-selected="false". The spec requires box-pill-36 to be selected by default 
+        (data-selected="true") so shoppers see the lowest per-lb price (15% off) immediately.
+        
+        **SCREENSHOTS CAPTURED:**
+        - test1_pricing_no_from.png: Shows "$4.50 /lb" and "$8.66 /lb" pricing with NO "From" prefix
+        - test2a_cat_treats_no_duplicate.png: Cat treats tab with NO duplicate banner
+        - test2b_dog_treats_no_duplicate.png: Dog treats tab with NO duplicate banner
+        - test3_single_card_normal_width.png: Cat treats "Heads and Feet" subcategory
+        - followup_box_pills.png: Shows all box pills with data-selected="false"
+        - followup_single_card_meaty_treats.png: Single card in "Meaty Treats" at 50% width (normal)
 
 agent_communication_current_session:
     - agent: "main"
@@ -342,6 +399,63 @@ frontend:
             All 5 test cases passed successfully. The pre-menu funnel redesign, breadcrumb removal,
             and back button navigation bug fix are all working correctly. No critical issues found.
             Shopify 502 errors are expected (intentionally unconfigured) and were ignored as instructed.
+
+
+  - task: "Menu page: remove From pricing (default 36lb), treats header de-dup, no empty grid slot"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/pages/BoxBuilder.js + /app/frontend/src/components/CartAndCheckout.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Three menu-page changes tested:
+            1) PRICING: Removed "From" prefix from all meal card prices. Direct per-lb display like "$4.50 /lb".
+               Default box pill should be 36lb+ (data-selected="true") showing lowest 15%-off tier.
+            2) TREATS HEADER DE-DUP: On treats tabs (category-cat-treats / category-dog-treats), removed
+               duplicate "Raw Cat/Dog Treats" banner (data-testid="collection-header-treats" should NOT
+               exist on treats tabs). Subcategory headers "Meaty Treats" and "Heads and Feet" remain.
+            3) NO EMPTY GRID SLOT: Single-product subcategories (e.g., Cat Treats "Meaty Treats" with 1 item)
+               should show NO empty white placeholder beside the card. Single card keeps normal half-row width.
+        - working: false
+          agent: "testing"
+          comment: |
+            ⚠️ PARTIAL FAIL - 2 OF 3 TESTS PASSED (1 CRITICAL ISSUE)
+            
+            **TEST 1 — PRICING: ⚠️ PARTIAL FAIL**
+            ❌ CRITICAL: Default box pill NOT 36lb+ (all pills show data-selected="false" on page load)
+            ✅ PASS: NO "From" text in any product card prices (verified all tabs and box pill sizes)
+            ✅ PASS: Price format is direct per-lb: "$4.50 /lb", "$8.66 /lb" (no "From" prefix)
+            ✅ PASS: Switching box pills (6, 12, 24, 36) - "From" never appears
+            
+            **TEST 2 — TREATS HEADER DE-DUPLICATION: ✅ PASS (100%)**
+            ✅ PASS: Cat treats tab - Top hero shows "Raw Cat Treats"
+            ✅ PASS: Cat treats tab - NO duplicate banner (collection-header-treats does NOT exist)
+            ✅ PASS: Cat treats tab - Subcategory headers "Meaty Treats" and "Heads and Feet" present
+            ✅ PASS: Dog treats tab - NO duplicate banner (collection-header-treats does NOT exist)
+            ✅ PASS: Dog treats tab - Subcategory header "Meaty Treats" present
+            ✅ PASS: REGRESSION - Dog food tab HAS collection-header-treats (expected)
+            
+            **TEST 3 — NO EMPTY GRID SLOT: ✅ PASS**
+            ✅ PASS: Cat Treats "Meaty Treats" has 1 product (Whole Chicken Necks Pack)
+            ✅ PASS: NO empty white placeholder card (only 1 child in grid)
+            ✅ PASS: Single card maintains NORMAL width (50% of grid = half-row, NOT stretched)
+            
+            **CRITICAL ISSUE:**
+            The default box pill selection is NOT working. On initial /menu page load, ALL box pills
+            show data-selected="false". The spec requires box-pill-36 to be selected by default so
+            shoppers immediately see the lowest per-lb price (15% off tier). This is a UX issue -
+            customers should see the best price first, not the base price.
+            
+            **EVIDENCE:**
+            - test1_pricing_no_from.png: Shows "$4.50 /lb" and "$8.66 /lb" with NO "From" ✓
+            - test2a_cat_treats_no_duplicate.png: Cat treats with NO duplicate banner ✓
+            - test2b_dog_treats_no_duplicate.png: Dog treats with NO duplicate banner ✓
+            - followup_box_pills.png: Shows all pills with data-selected="false" ✗
+            - followup_single_card_meaty_treats.png: Single card at 50% width (normal) ✓
 
   - task: "Announcement banner moved below header + gradient color"
     implemented: true
