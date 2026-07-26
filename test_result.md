@@ -445,9 +445,9 @@ frontend:
 
   - task: "Menu page: remove From pricing (default 36lb), treats header de-dup, no empty grid slot"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/pages/BoxBuilder.js + /app/frontend/src/components/CartAndCheckout.js"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
@@ -565,6 +565,61 @@ frontend:
             - test5a_dog_treats.png: Dog treats with NO duplicate banner ✓
             - test5b_single_product.png: Single product at 50% width ✓
             - FINAL_box_pills_state.png: Box pills showing all data-selected="false"
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ FINAL RE-VERIFICATION COMPLETE - ALL 5 TESTS PASSED (5/5 PASS)
+            
+            User requested final re-verification of the default box-size fix. Testing completed with
+            fresh empty basket (localStorage and sessionStorage cleared before test).
+            
+            **TEST 1 - DEFAULT BOX PILL = 36 lb (Raw Dog Food, empty basket): ✅ PASS**
+            Box pill data-selected values:
+              • box-pill-6:  data-selected="false" ✓
+              • box-pill-12: data-selected="false" ✓
+              • box-pill-24: data-selected="false" ✓
+              • box-pill-36: data-selected="true" ✓
+            ✅ VERIFIED: box-pill-36 is selected by default, all others are not selected
+            
+            **TEST 2 - FIRST PRODUCT CARD PRICE = $3.82 /lb (15% off tier, NO 'From'): ✅ PASS**
+            First product card price: "$3.82/lb"
+            ✅ VERIFIED: Price is $3.82 /lb (15% off tier) with NO "From" text
+            
+            **TEST 3 - CAT FOOD TAB - DEFAULT BOX PILL = 36 lb (empty basket): ✅ PASS**
+            Box pill data-selected values on Cat Food tab:
+              • box-pill-6:  data-selected="false" ✓
+              • box-pill-12: data-selected="false" ✓
+              • box-pill-24: data-selected="false" ✓
+              • box-pill-36: data-selected="true" ✓
+            ✅ VERIFIED: box-pill-36 is selected by default on Cat Food tab
+            
+            **TEST 4a - TREATS TABS - NO DUPLICATE HEADER + SUBCATEGORY HEADERS: ✅ PASS**
+            Cat Treats tab:
+              • NO duplicate header (collection-header-treats does NOT exist) ✓
+              • Subcategory headers "Meaty Treats" and "Heads and Feet" present ✓
+            Dog Treats tab:
+              • NO duplicate header (collection-header-treats does NOT exist) ✓
+              • Subcategory headers "Meaty Treats" and "Heads and Feet" present ✓
+            ✅ VERIFIED: Both treats tabs have NO duplicate header and DO show subcategory headers
+            
+            **TEST 4b - DESKTOP 1440-WIDE - SINGLE PRODUCT NORMAL HALF-ROW WIDTH: ✅ PASS**
+            Cat Treats "Meaty Treats" section (1 product):
+              • Single product (Whole Chicken Necks Pack) maintains normal half-row width ✓
+              • NO empty white placeholder box beside single product ✓
+            ✅ VERIFIED: Single product keeps normal width with no empty grid slot
+            
+            **SCREENSHOTS CAPTURED:**
+            - test1_2_box_pills_and_price.png: Dog Food with 36lb pill selected + $3.82/lb price
+            - test3_cat_food_box_pills.png: Cat Food with 36lb pill selected
+            - test4a_cat_treats.png: Cat Treats with NO duplicate header + subcategory headers
+            - test4a_dog_treats.png: Dog Treats with NO duplicate header + subcategory headers
+            - test4b_single_product_width.png: Cat Treats single product at normal width
+            
+            **OVERALL VERDICT:**
+            All 5 requirements verified and passed. The default box-size fix is working correctly.
+            The menu page now defaults to 36lb box size with 15% off pricing on initial load with
+            empty basket, exactly as specified. Shopify 502 errors are expected (intentionally
+            unconfigured) and were ignored as instructed.
 
   - task: "Announcement banner moved below header + gradient color"
     implemented: true
@@ -7757,12 +7812,12 @@ frontend:
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 18
+  test_sequence: 19
   run_ui: true
 
 test_plan:
   current_focus:
-    - "Delivery Scheduler Feature in Cart Drawer"
+    - "Menu page: remove From pricing (default 36lb), treats header de-dup, no empty grid slot"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -7792,4 +7847,68 @@ agent_communication:
         - All tests passed successfully
         - No fixes needed
         - Feature is ready for production
+        - Please summarize and finish the session
+    - agent: "main"
+      message: |
+        FINAL RE-VERIFICATION REQUEST: User requested final re-test of menu page default box size fix.
+        Test the following on /menu with empty basket (localStorage.clear(); sessionStorage.clear()):
+        1. box-pill-36 has data-selected="true"; box-pill-6, box-pill-12, box-pill-24 all have data-selected="false" — on fresh empty-basket load, Raw Dog Food.
+        2. First product card price reads "$3.82 /lb" (the 15%-off lowest tier), i.e. NOT the base "$4.50 /lb". No "From" text anywhere in prices.
+        3. Click data-testid="category-cat-food": with empty basket, box-pill-36 is data-selected="true" by default there too.
+        4. Regression re-confirm (should still pass): (a) category-cat-treats and category-dog-treats have NO data-testid="collection-header-treats" but DO show subcategory headers ("Meaty Treats"/"Heads and Feet"); (b) on desktop 1440-wide, Raw Cat Treats single "Heads and Feet" product ("Chicken Necks") keeps normal half-row width with no empty white box beside it.
+    - agent: "testing"
+      message: |
+        ✅ FINAL RE-VERIFICATION COMPLETE - ALL 5 TESTS PASSED (5/5 PASS)
+        
+        **SUMMARY:**
+        ✅ TEST 1: box-pill-36 data-selected="true" on Dog Food (empty basket) - PASS
+        ✅ TEST 2: First product price $3.82 /lb (15% off, NO 'From') - PASS
+        ✅ TEST 3: box-pill-36 data-selected="true" on Cat Food (empty basket) - PASS
+        ✅ TEST 4a: Treats tabs - NO duplicate header + subcategory headers present - PASS
+        ✅ TEST 4b: Single product normal half-row width (desktop 1440) - PASS
+        
+        **DETAILED RESULTS:**
+        
+        **TEST 1 - Raw Dog Food default box pill (empty basket):**
+        - box-pill-6:  data-selected="false" ✓
+        - box-pill-12: data-selected="false" ✓
+        - box-pill-24: data-selected="false" ✓
+        - box-pill-36: data-selected="true" ✓
+        
+        **TEST 2 - First product card pricing:**
+        - First product price: "$3.82/lb" (15% off tier) ✓
+        - NO "From" text in price ✓
+        
+        **TEST 3 - Raw Cat Food default box pill (empty basket):**
+        - box-pill-6:  data-selected="false" ✓
+        - box-pill-12: data-selected="false" ✓
+        - box-pill-24: data-selected="false" ✓
+        - box-pill-36: data-selected="true" ✓
+        
+        **TEST 4a - Treats tabs regression:**
+        - Cat Treats: NO collection-header-treats element ✓
+        - Cat Treats: Subcategory headers "Meaty Treats" and "Heads and Feet" present ✓
+        - Dog Treats: NO collection-header-treats element ✓
+        - Dog Treats: Subcategory headers "Meaty Treats" and "Heads and Feet" present ✓
+        
+        **TEST 4b - Single product width (desktop 1440px):**
+        - Cat Treats "Meaty Treats" has 1 product (Whole Chicken Necks Pack) ✓
+        - Single product maintains normal half-row width (~50%) ✓
+        - NO empty white placeholder box beside single product ✓
+        
+        **SCREENSHOTS:**
+        - test1_2_box_pills_and_price.png: Dog Food with 36lb pill selected + $3.82/lb price
+        - test3_cat_food_box_pills.png: Cat Food with 36lb pill selected
+        - test4a_cat_treats.png: Cat Treats with NO duplicate header
+        - test4a_dog_treats.png: Dog Treats with NO duplicate header
+        - test4b_single_product_width.png: Single product at normal width
+        
+        **NO CRITICAL ISSUES FOUND**
+        
+        The default box-size fix is working correctly. All requirements verified and passed.
+        
+        **ACTION ITEMS FOR MAIN AGENT:**
+        - All tests passed successfully
+        - No fixes needed
+        - Feature is production-ready
         - Please summarize and finish the session

@@ -449,9 +449,13 @@ export const BoxBuilder = () => {
       .reduce((sum, data) => sum + (data.qty || 0), 0);
   };
 
-  // Auto-upgrade the displayed box size to the tier reached by the CURRENT view's lbs
+  // Auto-upgrade the displayed box size to the tier reached by the CURRENT view's lbs.
+  // On an EMPTY basket we leave boxSize at its 36 lb default so shoppers see the lowest
+  // per-lb price first (do NOT snap down to the 0/base tier).
   useEffect(() => {
-    const tier = getTierFromLbs(getTotalSelectedLbsForPet(petType), DISCOUNT_RATES);
+    const lbs = getTotalSelectedLbsForPet(petType);
+    if (lbs <= 0) return;
+    const tier = getTierFromLbs(lbs, DISCOUNT_RATES);
     if (tier.size !== boxSize) {
       setBoxSize(tier.size);
       sessionStorage.setItem('boxSize', tier.size.toString());
