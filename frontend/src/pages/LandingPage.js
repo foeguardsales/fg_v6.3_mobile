@@ -121,6 +121,7 @@ const ModernNavbar = () => {
 
   const menuItems = [
     { label: 'Shop Now', path: '/menu' },
+    { label: 'Monthly Bundles', path: '/collection/monthly-bundles-raw-dog-food' },
     { label: 'Why Raw', path: '/new-to-raw' },
     { label: 'About Us', path: '/about' },
     {
