@@ -22,6 +22,7 @@ from .cache import (
     BUCKET_PRODUCTS,
     BUCKET_COLLECTIONS,
     BUCKET_PAGES,
+    BUCKET_METAOBJECTS,
 )
 from .client import ShopifyError, get_admin, get_storefront
 
@@ -190,6 +191,128 @@ async def get_page(handle: str):
     if not p:
         raise HTTPException(status_code=404, detail="Page not found")
     return p
+
+
+# -------------------------- Metaobjects -----------------------------------
+# Storefront-only reads. Metaobject values often carry references to other
+# metaobjects / MediaImages / Products, so we recursively expand up to two
+# levels which is enough for our brand-badges → home_outline → sections
+# tree. Fields whose value looks like JSON are auto-parsed so the frontend
+# does not have to.
+
+METAOBJECT_BY_HANDLE_QUERY = """
+query MetaobjectByHandle($type: String!, $handle: String!) {
+  metaobject(handle: { type: $type, handle: $handle }) {
+    id
+    handle
+    type
+    fields {
+      key
+      value
+      type
+      reference {
+        __typename
+        ... on MediaImage { image { url altText width height } }
+        ... on Metaobject {
+          id handle type
+          fields { key value type }
+        }
+        ... on Product { id handle title }
+        ... on Collection { id handle title }
+        ... on Page { id handle title }
+      }
+      references(first: 30) {
+        nodes {
+          __typename
+          ... on MediaImage { image { url altText width height } }
+          ... on Metaobject {
+            id handle type
+            fields { key value type }
+          }
+          ... on Product { id handle title }
+          ... on Collection { id handle title }
+          ... on Page { id handle title }
+        }
+      }
+    }
+  }
+}
+"""
+
+METAOBJECTS_BY_TYPE_QUERY = """
+query MetaobjectsByType($type: String!, $first: Int = 50, $after: String) {
+  metaobjects(type: $type, first: $first, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      id
+      handle
+      type
+      fields {
+        key
+        value
+        type
+        reference {
+          __typename
+          ... on MediaImage { image { url altText width height } }
+          ... on Metaobject { id handle type fields { key value type } }
+          ... on Product { id handle title }
+          ... on Collection { id handle title }
+          ... on Page { id handle title }
+        }
+        references(first: 30) {
+          nodes {
+            __typename
+            ... on MediaImage { image { url altText width height } }
+            ... on Metaobject { id handle type fields { key value type } }
+            ... on Product { id handle title }
+            ... on Collection { id handle title }
+            ... on Page { id handle title }
+          }
+        }
+      }
+    }
+  }
+}
+"""
+
+
+@router.get("/metaobject/{type}/{handle}")
+async def get_metaobject(type: str, handle: str):
+    """Fetch a single metaobject entry (Storefront API, publishable)."""
+    cache = get_cache()
+    key = make_key("metaobjects.entry", type=type, handle=handle)
+
+    async def loader():
+        data = await get_storefront().query(
+            METAOBJECT_BY_HANDLE_QUERY,
+            {"type": type, "handle": handle},
+        )
+        return data.get("metaobject")
+
+    obj = await cache.get_or_set(key, loader, bucket=BUCKET_METAOBJECTS)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Metaobject not found")
+    return obj
+
+
+@router.get("/metaobjects/{type}")
+async def list_metaobjects(
+    type: str,
+    first: int = Query(50, ge=1, le=100),
+    after: Optional[str] = None,
+):
+    """List every published metaobject entry of a given type."""
+    cache = get_cache()
+    key = make_key("metaobjects.list", type=type, first=first, after=after)
+
+    async def loader():
+        data = await get_storefront().query(
+            METAOBJECTS_BY_TYPE_QUERY,
+            {"type": type, "first": first, "after": after},
+        )
+        return data.get("metaobjects", {"nodes": [], "pageInfo": {}})
+
+    return await cache.get_or_set(key, loader, bucket=BUCKET_METAOBJECTS)
 
 
 # -------------------------- Cart ------------------------------------------

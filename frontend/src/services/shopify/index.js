@@ -12,13 +12,14 @@ import * as products from './products';
 import * as collections from './collections';
 import * as cart from './cart';
 import * as checkout from './checkout';
+import * as metaobjects from './metaobjects';
 import pages from './pages';
 import catalog from './catalog';
 import { shopifyClient, http, SHOPIFY_BASE, customerTokenStorage, cartIdStorage } from './client';
 
 export {
-  products, collections, cart, checkout, pages, catalog,
+  products, collections, cart, checkout, pages, catalog, metaobjects,
   shopifyClient, http, SHOPIFY_BASE, customerTokenStorage, cartIdStorage,
 };
 
-export default { products, collections, cart, checkout, pages, catalog };
+export default { products, collections, cart, checkout, pages, catalog, metaobjects };

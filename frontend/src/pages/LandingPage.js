@@ -4,6 +4,7 @@ import { Menu, X, ShoppingBag, User, ChevronRight, ChevronDown, Star, Plus, Minu
 import { useCart, SlideCart } from '../contexts/CartContext';
 import { SeoHead } from '../components/SeoHead';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
+import { metaobjects } from '../services/shopify';
 
 // FoeGuard Brand Colors — Farm Palette
 const COLORS = {
@@ -121,7 +122,6 @@ const ModernNavbar = () => {
 
   const menuItems = [
     { label: 'Shop Now', path: '/menu' },
-    { label: 'Monthly Bundles', path: '/collection/monthly-bundles-raw-dog-food' },
     { label: 'Why Raw', path: '/new-to-raw' },
     { label: 'About Us', path: '/about' },
     {
@@ -441,10 +441,28 @@ const ModernNavbar = () => {
   );
 };
 
-// Trust Badge Marquee — uses the warm brown so the hero's bottom-fade merges seamlessly
+// Trust Badge Marquee — uses the warm brown so the hero's bottom-fade merges seamlessly.
+// When the Shopify metaobject `our_promise / home_brand_badges_1` is populated,
+// its `badge_title` (list.file_reference → MediaImage) is used to render the
+// icons. Otherwise falls back to the hardcoded text badges below.
 const TrustMarquee = () => {
-  const badges = ['Farm Fresh', '100% Canadian', 'Family-Run', 'Organic', 'Human Grade'];
-  
+  const [imgBadges, setImgBadges] = useState([]);
+  useEffect(() => {
+    let alive = true;
+    metaobjects.getMetaobject('our_promise', 'home_brand_badges_1')
+      .then((mo) => {
+        if (!alive || !mo) return;
+        const list = mo.fields?.badge_title || [];
+        const urls = (Array.isArray(list) ? list : [list])
+          .map((x) => x?.url || (typeof x === 'string' ? x : null))
+          .filter(Boolean);
+        if (urls.length) setImgBadges(urls);
+      });
+    return () => { alive = false; };
+  }, []);
+
+  const textBadges = ['Farm Fresh', '100% Canadian', 'Family-Run', 'Organic', 'Human Grade'];
+
   return (
     <div style={{
       background: '#2C2C2C',
@@ -458,21 +476,33 @@ const TrustMarquee = () => {
         animation: 'marquee 12s linear infinite',
         whiteSpace: 'nowrap'
       }}>
-        {[...badges, ...badges, ...badges, ...badges, ...badges, ...badges].map((badge, i) => (
-          <span key={i} style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '10px',
-            marginRight: '32px',
-            fontSize: '13px',
-            fontWeight: '600',
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em'
-          }}>
-            <span style={{ color: COLORS.white, opacity: 0.85 }}>✦</span>
-            {badge}
-          </span>
-        ))}
+        {imgBadges.length > 0 ? (
+          [...imgBadges, ...imgBadges, ...imgBadges, ...imgBadges, ...imgBadges, ...imgBadges].map((url, i) => (
+            <span key={i} style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              marginRight: '32px'
+            }}>
+              <img src={url} alt="" style={{ height: '26px', width: 'auto', display: 'block' }} />
+            </span>
+          ))
+        ) : (
+          [...textBadges, ...textBadges, ...textBadges, ...textBadges, ...textBadges, ...textBadges].map((badge, i) => (
+            <span key={i} style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginRight: '32px',
+              fontSize: '13px',
+              fontWeight: '600',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em'
+            }}>
+              <span style={{ color: COLORS.white, opacity: 0.85 }}>✦</span>
+              {badge}
+            </span>
+          ))
+        )}
       </div>
       <style>{`
         @keyframes marquee {
@@ -487,6 +517,27 @@ const TrustMarquee = () => {
 // Modern Footer
 const ModernFooter = () => {
   const navigate = useNavigate();
+
+  // Social media links are edited in Shopify (metaobject type = `social_media_links`).
+  // Falls back to a single "IG" placeholder if the merchant hasn't set any yet, so
+  // the footer never renders a broken empty column.
+  const [socials, setSocials] = useState([]);
+  useEffect(() => {
+    let alive = true;
+    metaobjects.listMetaobjects('social_media_links', { first: 20 }).then((list) => {
+      if (!alive) return;
+      const cleaned = (list || [])
+        .map((mo) => ({
+          url: mo.fields?.social_link || null,
+          title: mo.fields?.title || mo.handle || '',
+          // Derive a 1-letter avatar and platform hint from the title / handle
+          platform: (mo.fields?.title || mo.handle || '').replace(/[_\s-]+social[_\s-]*media[_\s-]*link/i, '').trim(),
+        }))
+        .filter((s) => s.url);
+      setSocials(cleaned);
+    });
+    return () => { alive = false; };
+  }, []);
 
   const footerLinkStyle = {
     display: 'block',
@@ -532,8 +583,11 @@ const ModernFooter = () => {
             FoeGuard Raw Pet Food &mdash; Feeding All Carnivores.
           </p>
           <div style={{ display: 'flex', gap: '10px' }}>
-            {['Instagram', 'Facebook'].map(social => (
-              <a key={social} href="#" style={{
+            {(socials.length > 0
+              ? socials.map((s) => ({ label: s.platform || 'Social', url: s.url, initial: (s.platform || 'S')[0].toUpperCase() }))
+              : [{ label: 'Instagram', url: '#', initial: 'I' }, { label: 'Facebook', url: '#', initial: 'F' }]
+            ).map((s) => (
+              <a key={s.label} href={s.url} target={s.url && s.url !== '#' ? '_blank' : undefined} rel="noreferrer" aria-label={s.label} style={{
                 width: '36px',
                 height: '36px',
                 borderRadius: '50%',
@@ -546,7 +600,7 @@ const ModernFooter = () => {
                 fontWeight: 700,
                 textDecoration: 'none'
               }}>
-                {social[0]}
+                {s.initial}
               </a>
             ))}
           </div>
