@@ -477,13 +477,13 @@ const TrustMarquee = () => {
         whiteSpace: 'nowrap'
       }}>
         {imgBadges.length > 0 ? (
-          [...imgBadges, ...imgBadges, ...imgBadges, ...imgBadges, ...imgBadges, ...imgBadges].map((url, i) => (
+          [...imgBadges, ...imgBadges, ...imgBadges, ...imgBadges].map((url, i) => (
             <span key={i} style={{
               display: 'inline-flex',
               alignItems: 'center',
-              marginRight: '32px'
+              marginRight: '64px'
             }}>
-              <img src={url} alt="" style={{ height: '26px', width: 'auto', display: 'block' }} />
+              <img src={url} alt="" style={{ height: '54px', width: 'auto', display: 'block' }} />
             </span>
           ))
         ) : (
@@ -519,20 +519,25 @@ const ModernFooter = () => {
   const navigate = useNavigate();
 
   // Social media links are edited in Shopify (metaobject type = `social_media_links`).
-  // Falls back to a single "IG" placeholder if the merchant hasn't set any yet, so
-  // the footer never renders a broken empty column.
+  // Each entry can expose an `icon` field (MediaImage) which we render as an <img>;
+  // otherwise we fall back to the platform's first letter. When no metaobjects have
+  // been created yet, a single "IG" placeholder shows so the footer never renders
+  // a broken empty column.
   const [socials, setSocials] = useState([]);
   useEffect(() => {
     let alive = true;
     metaobjects.listMetaobjects('social_media_links', { first: 20 }).then((list) => {
       if (!alive) return;
       const cleaned = (list || [])
-        .map((mo) => ({
-          url: mo.fields?.social_link || null,
-          title: mo.fields?.title || mo.handle || '',
-          // Derive a 1-letter avatar and platform hint from the title / handle
-          platform: (mo.fields?.title || mo.handle || '').replace(/[_\s-]+social[_\s-]*media[_\s-]*link/i, '').trim(),
-        }))
+        .map((mo) => {
+          // The merchant's field naming can vary — pick the first plausible URL / image field.
+          const url = mo.fields?.social_link || mo.fields?.url || mo.fields?.link || null;
+          const label = mo.fields?.title || mo.fields?.platform || mo.handle || '';
+          const iconField = mo.fields?.icon || mo.fields?.image || mo.fields?.logo || null;
+          const iconUrl = (iconField && iconField.url) || (typeof iconField === 'string' && iconField.startsWith('http') ? iconField : null);
+          const platform = label.replace(/[_\s-]+social[_\s-]*media[_\s-]*link/i, '').trim();
+          return { url, label, platform, iconUrl };
+        })
         .filter((s) => s.url);
       setSocials(cleaned);
     });
@@ -584,8 +589,8 @@ const ModernFooter = () => {
           </p>
           <div style={{ display: 'flex', gap: '10px' }}>
             {(socials.length > 0
-              ? socials.map((s) => ({ label: s.platform || 'Social', url: s.url, initial: (s.platform || 'S')[0].toUpperCase() }))
-              : [{ label: 'Instagram', url: '#', initial: 'I' }, { label: 'Facebook', url: '#', initial: 'F' }]
+              ? socials.map((s) => ({ label: s.platform || s.label || 'Social', url: s.url, initial: (s.platform || s.label || 'S')[0].toUpperCase(), iconUrl: s.iconUrl }))
+              : [{ label: 'Instagram', url: '#', initial: 'I', iconUrl: null }, { label: 'Facebook', url: '#', initial: 'F', iconUrl: null }]
             ).map((s) => (
               <a key={s.label} href={s.url} target={s.url && s.url !== '#' ? '_blank' : undefined} rel="noreferrer" aria-label={s.label} style={{
                 width: '36px',
@@ -598,9 +603,12 @@ const ModernFooter = () => {
                 color: COLORS.redDark,
                 fontSize: '12px',
                 fontWeight: 700,
-                textDecoration: 'none'
+                textDecoration: 'none',
+                overflow: 'hidden'
               }}>
-                {s.initial}
+                {s.iconUrl
+                  ? <img src={s.iconUrl} alt={s.label} style={{ width: '22px', height: '22px', objectFit: 'contain', display: 'block' }} />
+                  : s.initial}
               </a>
             ))}
           </div>

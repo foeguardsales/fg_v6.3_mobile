@@ -508,7 +508,6 @@ export const BoxBuilder = () => {
 
   const bannerCards = [
     { id: 'dog-food', title: 'Raw Dog Food', petType: 'dog', viewMode: 'food', active: petType === 'dog' && viewMode === 'food' },
-    { id: 'dog-bundles', title: 'Monthly Bundles', petType: 'dog', viewMode: 'bundles', active: petType === 'dog' && viewMode === 'bundles' },
     { id: 'dog-treats', title: 'Raw Dog Treats', petType: 'dog', viewMode: 'treats', active: petType === 'dog' && viewMode === 'treats' },
     { id: 'cat-food', title: 'Raw Cat Food', petType: 'cat', viewMode: 'food', active: petType === 'cat' && viewMode === 'food' },
     { id: 'cat-treats', title: 'Raw Cat Treats', petType: 'cat', viewMode: 'treats', active: petType === 'cat' && viewMode === 'treats' }
@@ -519,7 +518,6 @@ export const BoxBuilder = () => {
   // CATEGORY_HERO constants above.
   const BANNER_TO_COLLECTION = {
     'dog-food': 'raw-dog-food',
-    'dog-bundles': 'monthly-bundles-raw-dog-food',
     'dog-treats': 'raw-dog-treats',
     'cat-food': 'raw-cat-food',
     'cat-treats': 'raw-cat-treats',
@@ -792,45 +790,6 @@ export const BoxBuilder = () => {
 
             {loading ? (
               <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
-            ) : viewMode === 'bundles' ? (
-              /* Monthly Bundles — Shopify collection `monthly-bundles-raw-dog-food`.
-                 Uses the exact same product-collection + product-grid + ProductCard
-                 markup as Comfort Dinner / Primal Feast so styling stays 1:1. Bundles
-                 are flagged `has_variants: true` so the card only shows "+" which
-                 opens the product detail page (no per-lb stepper). */
-              <div className="product-collection menu-collection">
-                <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-bundles">
-                  <div
-                    className="menu-collection-banner menu-collection-banner--overlay"
-                    style={{ backgroundImage: `url(${shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.image_url || COLLECTION_IMAGES.dog})` }}
-                  >
-                    <div className="menu-collection-banner-text">
-                      <h3 className="menu-collection-title">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.title || 'Monthly Bundles'}</h3>
-                      <p className="menu-collection-desc">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.description || 'One box per month — every meal your dog needs, delivered.'}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="product-grid">
-                  {monthlyBundleProducts.length === 0 ? (
-                    <div style={{ padding: '40px', textAlign: 'center', color: '#5A5A5A' }}>Loading bundles…</div>
-                  ) : monthlyBundleProducts.map(product => (
-                    <ProductCard
-                      key={product.product_id}
-                      product={product}
-                      selectedQty={selectedProteins[product.product_id]?.qty || 0}
-                      onUpdate={handleUpdateProtein}
-                      canAdd={canAdd(product.product_id)}
-                      getDiscountedPrice={getDiscountedPrice}
-                      getBasePrice={getBasePrice}
-                      boxSize={boxSize}
-                      navigate={navigate}
-                      petType="dog"
-                      onOpenProduct={(pid) => setActiveProductId(pid)}
-                      isRecommended={false}
-                    />
-                  ))}
-                </div>
-              </div>
             ) : viewMode === 'treats' ? (
               <TreatsSection 
                 selectedTreats={selectedTreats}
@@ -910,6 +869,43 @@ export const BoxBuilder = () => {
                     ))}
                   </div>
                 </div>
+
+                {/* Monthly Bundles Collection - DOG (Shopify collection `monthly-bundles-raw-dog-food`).
+                    Sits above the Treats section within Raw Dog Food view. Uses the exact same
+                    menu-collection markup as Comfort Dinner / Primal Feast so styling is 1:1. */}
+                {monthlyBundleProducts.length > 0 && (
+                  <div className="product-collection menu-collection">
+                    <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-bundles">
+                      <div
+                        className="menu-collection-banner menu-collection-banner--overlay"
+                        style={{ backgroundImage: `url(${shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.image_url || COLLECTION_IMAGES.primal_feast})` }}
+                      >
+                        <div className="menu-collection-banner-text">
+                          <h3 className="menu-collection-title">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.title || 'Monthly Bundles'}</h3>
+                          <p className="menu-collection-desc">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.description || 'One box per month — every meal your dog needs, delivered.'}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="product-grid">
+                      {monthlyBundleProducts.map(product => (
+                        <ProductCard
+                          key={product.product_id}
+                          product={product}
+                          selectedQty={selectedProteins[product.product_id]?.qty || 0}
+                          onUpdate={handleUpdateProtein}
+                          canAdd={canAdd(product.product_id)}
+                          getDiscountedPrice={getDiscountedPrice}
+                          getBasePrice={getBasePrice}
+                          boxSize={boxSize}
+                          navigate={navigate}
+                          petType="dog"
+                          onOpenProduct={(pid) => setActiveProductId(pid)}
+                          isRecommended={false}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Treats Section - DOG */}
                 <TreatsSection 
@@ -1237,7 +1233,11 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
         </p>
 
         <div className="product-card-price">
-          {(!hasVariants && selectedQty > 0) ? (
+          {product.is_bundle ? (
+            // Monthly Bundles are flat-priced (not per-lb). Show Shopify's total price
+            // straight from the product; hide the /lb badge so the card is truthful.
+            <span className="price-regular" data-testid={`bundle-price-${product.product_id}`}>${(product.pricing?.[0]?.price || 0).toFixed(2)}</span>
+          ) : (!hasVariants && selectedQty > 0) ? (
             <>
               <span className="price-regular">${lineTotal.toFixed(2)}</span>
               <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>

@@ -1,0 +1,72 @@
+{
+  "summary": "Frontend-only regression test of the 7 focus items. 6/7 pass fully. 1 partial fail: /product/comfort-dinner-chicken (Shopify handle form) still shows 'Product not found' because Shopify API returns 404 for that handle AND the local Mongo /products/{handle} fallback also 404s (Mongo products only expose product_id like 'cd-chicken' and their handle field is null). The primary /product/cd-chicken (Mongo product_id) now works — that is the fix the user was asked to verify.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "GET /api/products/comfort-dinner-chicken", "issue": "Returns 404. Local Mongo product docs have handle=null; only product_id ('cd-chicken') is indexed. Fallback in catalog.js therefore doesn't help when user navigates using the Shopify storefront handle."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "PDP via Shopify handle", "issue": "/product/comfort-dinner-chicken shows 'Product not found'. Shopify Storefront returns 404 for that handle and Mongo fallback also 404s because product_id != handle for Comfort Dinner variants. /product/cd-chicken works.", "affected_selectors": ["text=Product not found"]}
+    ],
+    "design_issues": [
+      {"screen": "/menu (mobile 390px)", "issues": ["Category tab strip is horizontally scrollable. All 4 tab buttons have data-testid, offsetParent!==null and non-zero width (pass criteria), BUT the rightmost 'Raw Cat Treats' tab extends from left=331 to right=426 — 36px are off-screen on 390px viewport. Not hidden but user must scroll horizontally to see the last tab fully. Not blocking, but worth polishing."]}
+    ]
+  },
+  "test_results_detail": {
+    "mobile_menu_tabs_390px": {
+      "status": "PASS",
+      "tabs_found": ["Raw Dog Food (category-dog-food)", "Raw Dog Treats (category-dog-treats)", "Raw Cat Food (category-cat-food)", "Raw Cat Treats (category-cat-treats)"],
+      "monthly_bundles_top_level": false,
+      "all_visible_after_clicking_raw_dog_treats": true,
+      "note": "Rightmost tab right-edge=426 vs viewport=390 (scrollable strip)."
+    },
+    "desktop_menu_tabs_1440px": {"status": "PASS", "tabs": 4, "monthly_bundles_top_level": false},
+    "monthly_bundles_inline_section": {
+      "status": "PASS",
+      "count": 1,
+      "order": ["Comfort Dinner", "Primal Feast", "Monthly Bundles", "Raw Dog Treats"],
+      "location": "Inside Raw Dog Food view, after Primal Feast, before Raw Dog Treats section — matches spec."
+    },
+    "bundle_price_flat": {
+      "status": "PASS",
+      "prices": {"monthly-bundle-toy": "$35.80", "monthly-bundle-small": "$64.44", "monthly-bundle-medium": "$114.56", "monthly-bundle-large": "$150.36", "monthly-bundle-giant": "$214.80"},
+      "any_per_lb": false,
+      "any_shopify_text": false
+    },
+    "product_page_cd_chicken": {"status": "PASS", "renders_title": "Comfort Dinner Chicken", "price": "$3.82 /lb"},
+    "product_page_comfort_dinner_chicken": {"status": "FAIL", "shows": "Product not found", "backend_api_status": 404},
+    "brand_marquee_size": {
+      "status": "PASS",
+      "container": ".trust-marquee-track (bg rgb(44,44,44))",
+      "image_count": 20,
+      "computed_img_height": "54px"
+    },
+    "footer_social_icons": {
+      "status": "PASS",
+      "anchors": [
+        {"label": "Instagram Link", "href": "https://www.instagram.com/foeguard/", "has_img": false, "text": "I"},
+        {"label": "TikTok Link", "href": "https://www.tiktok.com/@foeguard", "has_img": false, "text": "T"}
+      ],
+      "note": "Real non-# URLs from Shopify metaobjects. No img rendered because metaobject entries don't currently expose an icon URL — first-letter fallback ('I','T') is used, matching spec."
+    }
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: Make /product/comfort-dinner-chicken (Shopify handle) resolve. Either (a) ensure Shopify Storefront returns the product (verify handle on shop side), or (b) extend backend /api/products/{handle} to also lookup by Mongo `handle` field / a slug map that includes 'comfort-dinner-chicken' → 'cd-chicken'. Currently catalog.js fallback only helps when handle == product_id.",
+    "Minor: On mobile /menu the rightmost 'Raw Cat Treats' tab overflows viewport by ~36px. Container is scrollable so tab is still reachable; consider reducing horizontal padding or gap so all 4 tabs fit in 390px."
+  ],
+  "critical_code_review_comments": [
+    "catalog.js Mongo fallback assumes handle == product_id. Real Shopify handles (e.g. 'comfort-dinner-chicken') will still 404 through both paths. A slug/handle→product_id map in Mongo would make this robust.",
+    "Non-blocking: LandingPage renders <img src=''> somewhere (console warns: 'An empty string was passed to the src attribute'). Should render null when URL missing."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (skipped per request)", "frontend": "86% (6/7 focus items fully pass, 1 partial)"},
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "All 4 mobile menu tabs have data-testid category-dog-food / category-dog-treats / category-cat-food / category-cat-treats. Bundle prices use [data-testid^='bundle-price-']. Monthly Bundles section title is .menu-collection-title with text 'Monthly Bundles' rendered between Primal Feast and Raw Dog Treats in the Raw Dog Food view. /product/cd-chicken now resolves via Mongo fallback; /product/comfort-dinner-chicken still 404s (see action item).",
+  "rca_of_the_issue": "PDP 404 on /product/comfort-dinner-chicken: catalog.js getProductByHandle first calls Shopify Storefront which returns 404 (handle not in Shopify catalog OR not published), then falls back to GET /api/products/comfort-dinner-chicken. Backend /api/products/{key} looks up by product_id in Mongo; Mongo products have product_id='cd-chicken' and handle=null, so lookup fails → 404 → UI shows 'Product not found'. Fix: either publish/rename Shopify handle, or extend backend product lookup to also match Mongo `handle` or a slug alias table."
+}

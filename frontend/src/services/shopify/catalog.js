@@ -159,16 +159,21 @@ export async function getProductByHandle(handle) {
       _cache.byHandle.set(handle, raw);
       return normalizeShopifyProduct(raw);
     } catch (err) {
-      if (err?.status === 404) return null;
-      _noteShopifyFailure('getProductByHandle', err);
+      // 404 = handle isn't a Shopify handle. Not a hard error — many product
+      // pages are linked using the legacy Mongo product_id (e.g. `cd-chicken`)
+      // and we need to fall through to the local catalog to render them.
+      if (err?.status !== 404) {
+        _noteShopifyFailure('getProductByHandle', err);
+      }
     }
   }
-  // Local fallback (same shape as normalized Shopify product).
+  // Local fallback (same shape as normalized Shopify product). Tries the
+  // Mongo /products/{id} endpoint first, then the preloaded all-products list.
   try {
     return await _getLocalJSON(`/products/${handle}`);
   } catch (_) {
     const meals = await _localMeals();
-    return meals.find((m) => m.product_id === handle) || null;
+    return meals.find((m) => m.product_id === handle || m.handle === handle) || null;
   }
 }
 
@@ -183,12 +188,15 @@ export async function getTreatByHandle(handle) {
       _cache.byHandle.set(handle, raw);
       return normalizeShopifyTreat(raw);
     } catch (err) {
-      if (err?.status === 404) return null;
-      _noteShopifyFailure('getTreatByHandle', err);
+      // 404 = handle isn't a Shopify treat handle. Fall through to Mongo so
+      // legacy `/treat/:treat_id` URLs still work.
+      if (err?.status !== 404) {
+        _noteShopifyFailure('getTreatByHandle', err);
+      }
     }
   }
   const treats = await _localTreats();
-  return treats.find((t) => t.treat_id === handle) || null;
+  return treats.find((t) => t.treat_id === handle || t.handle === handle) || null;
 }
 
 export async function listCollections() {
