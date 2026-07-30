@@ -8,6 +8,7 @@ import { ProductDetailModal } from './ProductDetail';
 import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
 import { useCart } from '../contexts/CartContext';
+import { metaobjects, collections as shopifyCollections } from '../services/shopify';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -300,6 +301,117 @@ export const BoxBuilder = () => {
     loadData();
   }, []); // load once — products/treats don't change with pet type anymore
 
+  // --------- Shopify-driven content (mini descriptions, collections, bundles) --
+  // Merchants edit these in Shopify admin; frontend re-fetches on mount and
+  // falls back to hardcoded copy when a metaobject/collection is missing.
+  const [menuDescMap, setMenuDescMap] = useState({});         // handle → { title, description }
+  const [shopifyCollectionsMap, setShopifyCollectionsMap] = useState({}); // handle → { title, description, image_url }
+  const [bundleProducts, setBundleProducts] = useState([]);   // normalised Shopify products for Monthly Bundles
+
+  useEffect(() => {
+    let alive = true;
+
+    // 1. Menu-page mini descriptions — one container metaobject referencing every product's mini description.
+    metaobjects.getMetaobject('page_menu_mini_descriptions', 'page-menu-mini-descriptions')
+      .then((mo) => {
+        if (!alive || !mo) return;
+        const list = mo.fields?.all_mini_menu_descriptions || [];
+        const map = {};
+        for (const entry of (Array.isArray(list) ? list : [list])) {
+          if (!entry || !entry.handle) continue;
+          map[entry.handle] = {
+            title: entry.fields?.product_title || null,
+            description: entry.fields?.product_description || null,
+          };
+        }
+        setMenuDescMap(map);
+      });
+
+    // 2. Category hero (image / title / description) sourced from Shopify collections.
+    const collectionHandles = [
+      'raw-dog-food', 'raw-dog-treats',
+      'raw-cat-food', 'raw-cat-treats',
+      'monthly-bundles-raw-dog-food',
+    ];
+    Promise.all(collectionHandles.map((h) =>
+      shopifyCollections.getCollection(h, { productsFirst: 30 }).catch(() => null)
+    )).then((results) => {
+      if (!alive) return;
+      const map = {};
+      const bundles = [];
+      results.forEach((c, i) => {
+        const handle = collectionHandles[i];
+        if (!c) return;
+        // Shopify Storefront `description` sometimes returns wrapped HTML fragments
+        // (`<p>...</p>`). Strip tags so the hero renders as plain text.
+        const rawDesc = c.description || c.descriptionHtml || '';
+        const cleanDesc = String(rawDesc).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+        map[handle] = {
+          title: c.title,
+          description: cleanDesc || null,
+          image_url: c.image?.url || null,
+        };
+        // Extract Monthly Bundle products and normalise to the shape ProductCardRow expects.
+        if (handle === 'monthly-bundles-raw-dog-food') {
+          const nodes = (c.products?.nodes) || [];
+          for (const p of nodes) {
+            const priceAmount = parseFloat(p.priceRange?.minVariantPrice?.amount || '0');
+            bundles.push({
+              product_id: p.handle,               // reuse handle as internal id
+              handle: p.handle,
+              product_line: 'monthly_bundle',     // marker used by discount code / cart if needed
+              protein_type: null,
+              name: p.title,
+              mini_description: null,             // filled in from menu_descriptions below
+              description: p.description || '',
+              highlights: [],
+              // Cards expect a pricing array [{size_lb, price}]. Monthly bundles are flat-price
+              // per-lb-equivalent — we synthesise a single entry so getBasePrice() finds one.
+              pricing: [{ size_lb: 6, price: priceAmount, base_price: priceAmount }],
+              inventory_status: 'in_stock',
+              image_url: p.featuredImage?.url || null,
+              shopify_variant_id: p.variants?.nodes?.[0]?.id || null,
+              // Bundles never expose a per-lb qty stepper on the menu grid — clicking
+              // "+" opens the product page so the shopper picks a size / configures it.
+              has_variants: true,
+              is_bundle: true,
+            });
+          }
+        }
+      });
+      setShopifyCollectionsMap(map);
+      setBundleProducts(bundles);
+    });
+
+    return () => { alive = false; };
+  }, []);
+
+  // Derive the Shopify metaobject handle for a Mongo product so we can pull
+  // its Shopify-managed title/description. Pattern:
+  //   product_line=comfort_dinner, protein_type=chicken → "comfort-dinner-chicken"
+  const deriveShopifyHandle = (p) => {
+    if (!p) return null;
+    if (p.handle) return p.handle;
+    const line = (p.product_line || '').replace(/_/g, '-');
+    const protein = (p.protein_type || '').replace(/_/g, '-');
+    if (!line) return null;
+    return protein ? `${line}-${protein}` : line;
+  };
+
+  // Return a product decorated with Shopify-managed name/description when available.
+  // Card rendering keeps its exact JSX + CSS; we just swap the two text fields.
+  const withMenuCopy = (p) => {
+    if (!p) return p;
+    const handle = deriveShopifyHandle(p);
+    const swap = handle && menuDescMap[handle];
+    if (!swap) return p;
+    return {
+      ...p,
+      name: swap.title || p.name,
+      mini_description: swap.description || p.mini_description,
+    };
+  };
+
   // Restore scroll position after loading completes
   useEffect(() => {
     if (!loading && products.length > 0) {
@@ -396,10 +508,22 @@ export const BoxBuilder = () => {
 
   const bannerCards = [
     { id: 'dog-food', title: 'Raw Dog Food', petType: 'dog', viewMode: 'food', active: petType === 'dog' && viewMode === 'food' },
+    { id: 'dog-bundles', title: 'Monthly Bundles', petType: 'dog', viewMode: 'bundles', active: petType === 'dog' && viewMode === 'bundles' },
     { id: 'dog-treats', title: 'Raw Dog Treats', petType: 'dog', viewMode: 'treats', active: petType === 'dog' && viewMode === 'treats' },
     { id: 'cat-food', title: 'Raw Cat Food', petType: 'cat', viewMode: 'food', active: petType === 'cat' && viewMode === 'food' },
     { id: 'cat-treats', title: 'Raw Cat Treats', petType: 'cat', viewMode: 'treats', active: petType === 'cat' && viewMode === 'treats' }
   ];
+
+  // Map each menu tab to the Shopify collection whose image / title / description
+  // should populate the hero card. Empty entries fall back to the local
+  // CATEGORY_HERO constants above.
+  const BANNER_TO_COLLECTION = {
+    'dog-food': 'raw-dog-food',
+    'dog-bundles': 'monthly-bundles-raw-dog-food',
+    'dog-treats': 'raw-dog-treats',
+    'cat-food': 'raw-cat-food',
+    'cat-treats': 'raw-cat-treats',
+  };
 
   const handleCategoryClick = (card) => {
     // Cart persists across pet types — no clearing on category switch
@@ -556,9 +680,10 @@ export const BoxBuilder = () => {
     );
   }
 
-  const comfortDinnerProducts = products.filter(p => p.product_line === 'comfort_dinner');
-  const primalFeastProducts = products.filter(p => p.product_line === 'primal_feast');
-  const royalPawsProducts = products.filter(p => p.product_line === 'royal_paws');
+  const comfortDinnerProducts = products.filter(p => p.product_line === 'comfort_dinner').map(withMenuCopy);
+  const primalFeastProducts = products.filter(p => p.product_line === 'primal_feast').map(withMenuCopy);
+  const royalPawsProducts = products.filter(p => p.product_line === 'royal_paws').map(withMenuCopy);
+  const monthlyBundleProducts = bundleProducts.map(withMenuCopy);
 
   // Box size — show only on food view
   const showBoxSize = viewMode === 'food';
@@ -600,12 +725,22 @@ export const BoxBuilder = () => {
           }}
         />
 
-        {/* Category Tabs: Raw Dog Food | Raw Dog Treats | Raw Cat Food | Raw Cat Treats
+        {/* Category Tabs: Raw Dog Food | Monthly Bundles | Raw Dog Treats | Raw Cat Food | Raw Cat Treats
             (Feeding Calculator removed here — it is offered on the funnel/selector page instead) */}
         {/* Immersive category hero with the menu-selection tabs OVERLAID on the image
             (cinematic — image sits under the selection, less wasted vertical space on mobile) */}
         {(() => {
-          const hero = CATEGORY_HERO[`${petType}-${viewMode}`];
+          // Prefer Shopify Collection metadata (title / description / image) so the
+          // merchant can edit the hero straight from Shopify admin. Falls back to
+          // the local CATEGORY_HERO constants for anything Shopify hasn't populated.
+          const activeCard = bannerCards.find((c) => c.active) || bannerCards[0];
+          const localHero = CATEGORY_HERO[`${petType}-${viewMode}`];
+          const shopifyHero = shopifyCollectionsMap[BANNER_TO_COLLECTION[activeCard.id]];
+          const hero = shopifyHero || localHero ? {
+            title: shopifyHero?.title || localHero?.title || activeCard.title,
+            desc: shopifyHero?.description || localHero?.desc || '',
+            image: shopifyHero?.image_url || localHero?.image || COLLECTION_IMAGES[petType],
+          } : null;
           const tabs = (
             <div className="menu-category-tabs-wrap menu-category-tabs-wrap--on-hero">
               <div className="menu-category-text menu-category-text--on-hero" data-testid="menu-category-tabs">
@@ -657,6 +792,45 @@ export const BoxBuilder = () => {
 
             {loading ? (
               <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
+            ) : viewMode === 'bundles' ? (
+              /* Monthly Bundles — Shopify collection `monthly-bundles-raw-dog-food`.
+                 Uses the exact same product-collection + product-grid + ProductCard
+                 markup as Comfort Dinner / Primal Feast so styling stays 1:1. Bundles
+                 are flagged `has_variants: true` so the card only shows "+" which
+                 opens the product detail page (no per-lb stepper). */
+              <div className="product-collection menu-collection">
+                <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-bundles">
+                  <div
+                    className="menu-collection-banner menu-collection-banner--overlay"
+                    style={{ backgroundImage: `url(${shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.image_url || COLLECTION_IMAGES.dog})` }}
+                  >
+                    <div className="menu-collection-banner-text">
+                      <h3 className="menu-collection-title">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.title || 'Monthly Bundles'}</h3>
+                      <p className="menu-collection-desc">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.description || 'One box per month — every meal your dog needs, delivered.'}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="product-grid">
+                  {monthlyBundleProducts.length === 0 ? (
+                    <div style={{ padding: '40px', textAlign: 'center', color: '#5A5A5A' }}>Loading bundles…</div>
+                  ) : monthlyBundleProducts.map(product => (
+                    <ProductCard
+                      key={product.product_id}
+                      product={product}
+                      selectedQty={selectedProteins[product.product_id]?.qty || 0}
+                      onUpdate={handleUpdateProtein}
+                      canAdd={canAdd(product.product_id)}
+                      getDiscountedPrice={getDiscountedPrice}
+                      getBasePrice={getBasePrice}
+                      boxSize={boxSize}
+                      navigate={navigate}
+                      petType="dog"
+                      onOpenProduct={(pid) => setActiveProductId(pid)}
+                      isRecommended={false}
+                    />
+                  ))}
+                </div>
+              </div>
             ) : viewMode === 'treats' ? (
               <TreatsSection 
                 selectedTreats={selectedTreats}
