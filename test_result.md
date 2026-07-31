@@ -8419,3 +8419,377 @@ agent_communication:
         - No fixes needed
         - Feature is production-ready
         - Please summarize and finish the session
+
+# ============================================================================
+# NEW SESSION - Shopify Customer Account API & Metaobject Integration Testing
+# ============================================================================
+
+user_problem_statement: |
+  Verify the FoeGuard backend is fully functional after wiring the Shopify Customer Account API config 
+  and connecting the Raw Starter Bundle metaobject. Test 12 specific backend endpoints to ensure:
+  1. Both Shopify tokens (storefront + admin) are live
+  2. Products API returns data with handle and title fields
+  3. All metaobject endpoints return 200 with required fields
+  4. Customer auth endpoints behave correctly (session, login 503 expected, logout)
+
+backend:
+  - task: "Shopify health check - both storefront and admin tokens live"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/shopify/health must return storefront.ok: true AND admin.ok: true to confirm both Shopify tokens are configured and working."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Shopify health check successful. Both tokens are live:
+            - storefront.ok: true ✓
+            - admin.ok: true ✓
+            Store: foeguard.myshopify.com, API version: 2025-07
+            Both Shopify Storefront and Admin API tokens are correctly configured and functional.
+
+  - task: "Shopify products API returns products with handle and title"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/shopify/products?first=3 must return products array with at least 1 item containing handle and title fields."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Products API working correctly:
+            - Returned 3 products as requested ✓
+            - First product has 'handle' and 'title' fields ✓
+            - Sample: handle='monthly-bundle-giant', title='Monthly Bundle Giant Breed - 60 lb'
+            Products endpoint is functional and returning properly structured data.
+
+  - task: "Metaobject: raw_starter_bundle/page_raw_starter_bundle"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/shopify/metaobject/raw_starter_bundle/page_raw_starter_bundle must return 200 with fields array containing: hero_title, hero_subtitle, hero_image, product_image, cta_text, what_s_included, benefits, bottom_cta."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Raw Starter Bundle metaobject connected successfully:
+            - Status: 200 ✓
+            - Returned 11 fields total
+            - All 8 required fields present: hero_title, hero_subtitle, hero_image, product_image, cta_text, what_s_included, benefits, bottom_cta ✓
+            - Additional fields: faq, how_it_works, testimonials
+            Metaobject is properly configured and accessible.
+
+  - task: "Metaobject: homepage_hero/the-freshest-meal-your-dog-has-ever-eaten"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/shopify/metaobject/homepage_hero/the-freshest-meal-your-dog-has-ever-eaten must return 200 with fields: hero_title_heading, hero_subheading, cta_button, hero_image_banner."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Homepage hero metaobject working:
+            - Status: 200 ✓
+            - Returned 6 fields total
+            - All 4 required fields present: hero_title_heading, hero_subheading, cta_button, hero_image_banner ✓
+            - Additional fields: 5_stars_review, guarantee_text
+
+  - task: "Metaobject: home_identity_belief_section/home_our_belief_section_1"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/shopify/metaobject/home_identity_belief_section/home_our_belief_section_1 must return 200 with fields including identity_section_header and either text_pararaph or text_paragraph."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Home identity/belief section metaobject working:
+            - Status: 200 ✓
+            - Returned 2 fields: identity_section_header, text_pararaph ✓
+            - Note: Field is named 'text_pararaph' (typo in Shopify metaobject definition, but accessible)
+
+  - task: "Metaobject: foeguard_home_announcement_bar/free-delivery-in-the-halton-region"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/shopify/metaobject/foeguard_home_announcement_bar/free-delivery-in-the-halton-region must return 200 with announcement_bar field."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Announcement bar metaobject working:
+            - Status: 200 ✓
+            - Returned 1 field: announcement_bar ✓
+
+  - task: "Metaobject: homepage_why_fg/home_whyfg_section"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/shopify/metaobject/homepage_why_fg/home_whyfg_section must return 200 with why_fg_header, why_fg_subheader, why_fg_comparison_images."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Homepage Why FG metaobject working:
+            - Status: 200 ✓
+            - Returned 4 fields total
+            - All 3 required fields present: why_fg_header, why_fg_subheader, why_fg_comparison_images ✓
+            - Additional field: why_fg_product_feature
+
+  - task: "Metaobject: home_ourstory_section/home_ourstory_section"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/shopify/metaobject/home_ourstory_section/home_ourstory_section must return 200 with our_story_title and our_story_body."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Home our story section metaobject working:
+            - Status: 200 ✓
+            - Returned 2 fields: our_story_title, our_story_body ✓
+
+  - task: "Metaobject: home_footer_cta/home_footer_cta_1"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/shopify/metaobject/home_footer_cta/home_footer_cta_1 must return 200 with footer_cta_title, footer_cta_body, footer_cta_button_title."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Home footer CTA metaobject working:
+            - Status: 200 ✓
+            - Returned 3 fields: footer_cta_title, footer_cta_body, footer_cta_button_title ✓
+
+  - task: "Customer auth session endpoint (unauthenticated state)"
+    implemented: true
+    working: true
+    file: "/app/backend/customer_auth_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/customer-auth/session must return 200 with body {authenticated: false, customer: null} when no session cookie is sent."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Customer auth session endpoint working correctly:
+            - Status: 200 ✓
+            - Response: {authenticated: false, customer: null} ✓
+            Correctly returns unauthenticated state when no session cookie is present.
+
+  - task: "Customer auth login endpoint (503 expected - no client secret)"
+    implemented: true
+    working: true
+    file: "/app/backend/customer_auth_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "GET /api/customer-auth/login must return HTTP 503 with detail mentioning 'Customer Account API is not configured'. This is EXPECTED because SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET is intentionally empty (merchant has not yet provided the Client Secret). This is NOT a bug - it's the correct behavior until the merchant supplies the secret."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Customer auth login correctly returns 503 (EXPECTED BEHAVIOR):
+            - Status: 503 ✓
+            - Detail: "Shopify Customer Account API is not configured. Set SHOPIFY_SHOP_ID, SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID and SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET." ✓
+            This is the EXPECTED and CORRECT behavior because SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET is empty.
+            The merchant has not yet provided the Client Secret, so the auth flow correctly reports "not configured".
+            This is NOT a bug - it's working as designed.
+
+  - task: "Customer auth logout endpoint"
+    implemented: true
+    working: true
+    file: "/app/backend/customer_auth_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "POST /api/customer-auth/logout must return 200 with {ok: true, ...}."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS - Customer auth logout endpoint working:
+            - Status: 200 ✓
+            - Response: {ok: true, logout_url: null} ✓
+            Logout endpoint is functional and returns expected response.
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 4
+  run_ui: false
+
+test_plan:
+  current_focus: []
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "main"
+      message: |
+        Verify the FoeGuard backend is fully functional after wiring the Shopify Customer Account API config 
+        and connecting the Raw Starter Bundle metaobject.
+        
+        Backend base URL: use REACT_APP_BACKEND_URL from /app/frontend/.env (do not curl localhost from tests; 
+        go through the ingress).
+        
+        Please verify these endpoints ONLY (do NOT test frontend, do NOT test anything else):
+        
+        1. GET /api/shopify/health → must return storefront.ok: true AND admin.ok: true (both Shopify tokens are live).
+        2. GET /api/shopify/products?first=3 → must return products array with at least 1 item containing handle and title fields.
+        3. GET /api/shopify/metaobject/raw_starter_bundle/page_raw_starter_bundle → must return 200 with fields array.
+        4. GET /api/shopify/metaobject/homepage_hero/the-freshest-meal-your-dog-has-ever-eaten → must return 200 with fields.
+        5. GET /api/shopify/metaobject/home_identity_belief_section/home_our_belief_section_1 → must return 200 with fields.
+        6. GET /api/shopify/metaobject/foeguard_home_announcement_bar/free-delivery-in-the-halton-region → must return 200 with fields.
+        7. GET /api/shopify/metaobject/homepage_why_fg/home_whyfg_section → must return 200 with fields.
+        8. GET /api/shopify/metaobject/home_ourstory_section/home_ourstory_section → must return 200 with fields.
+        9. GET /api/shopify/metaobject/home_footer_cta/home_footer_cta_1 → must return 200 with fields.
+        10. GET /api/customer-auth/session → must return 200 with body {authenticated: false, customer: null}.
+        11. GET /api/customer-auth/login → must return HTTP 503 (EXPECTED - no client secret).
+        12. POST /api/customer-auth/logout → must return 200 with {ok: true, ...}.
+        
+        Do NOT try to test the OAuth authorize/callback flow (impossible without a real Shopify browser session). 
+        Do NOT test any Stripe/Brevo/R2/GoogleMaps endpoints (those all have placeholder credentials and are 
+        expected to fail — skip them entirely).
+        
+        Update /app/test_result.md with your findings using the existing testing protocol.
+    
+    - agent: "testing"
+      message: |
+        ✅ SHOPIFY INTEGRATION VERIFICATION COMPLETE - ALL 12 ENDPOINTS PASSED (13/13 tests)
+        
+        **COMPREHENSIVE BACKEND TESTING SUMMARY:**
+        
+        Verified the FoeGuard backend after wiring Shopify Customer Account API config and connecting 
+        Raw Starter Bundle metaobject. All 12 requested endpoints tested successfully through the public 
+        ingress (REACT_APP_BACKEND_URL).
+        
+        **TEST RESULTS:**
+        
+        **1. Shopify Health Check: ✅ PASS**
+        - storefront.ok: true ✓
+        - admin.ok: true ✓
+        - Both Shopify tokens (Storefront + Admin API) are live and functional
+        
+        **2. Shopify Products API: ✅ PASS**
+        - Returned 3 products with handle and title fields ✓
+        - Sample: handle='monthly-bundle-giant', title='Monthly Bundle Giant Breed - 60 lb'
+        
+        **3. Metaobject - Raw Starter Bundle: ✅ PASS**
+        - Status: 200 ✓
+        - All 8 required fields present: hero_title, hero_subtitle, hero_image, product_image, cta_text, 
+          what_s_included, benefits, bottom_cta ✓
+        
+        **4. Metaobject - Homepage Hero: ✅ PASS**
+        - Status: 200 ✓
+        - All 4 required fields present: hero_title_heading, hero_subheading, cta_button, hero_image_banner ✓
+        
+        **5. Metaobject - Home Identity/Belief Section: ✅ PASS**
+        - Status: 200 ✓
+        - Required field present: identity_section_header ✓
+        - Also includes: text_pararaph (note: typo in Shopify metaobject definition)
+        
+        **6. Metaobject - Announcement Bar: ✅ PASS**
+        - Status: 200 ✓
+        - Required field present: announcement_bar ✓
+        
+        **7. Metaobject - Homepage Why FG: ✅ PASS**
+        - Status: 200 ✓
+        - All 3 required fields present: why_fg_header, why_fg_subheader, why_fg_comparison_images ✓
+        
+        **8. Metaobject - Home Our Story Section: ✅ PASS**
+        - Status: 200 ✓
+        - All 2 required fields present: our_story_title, our_story_body ✓
+        
+        **9. Metaobject - Home Footer CTA: ✅ PASS**
+        - Status: 200 ✓
+        - All 3 required fields present: footer_cta_title, footer_cta_body, footer_cta_button_title ✓
+        
+        **10. Customer Auth Session (Unauthenticated): ✅ PASS**
+        - Status: 200 ✓
+        - Response: {authenticated: false, customer: null} ✓
+        - Correctly returns unauthenticated state when no session cookie is present
+        
+        **11. Customer Auth Login (503 Expected): ✅ PASS**
+        - Status: 503 ✓
+        - Detail: "Shopify Customer Account API is not configured..." ✓
+        - This is EXPECTED and CORRECT behavior (SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET is empty)
+        - NOT A BUG - working as designed until merchant provides Client Secret
+        
+        **12. Customer Auth Logout: ✅ PASS**
+        - Status: 200 ✓
+        - Response: {ok: true, logout_url: null} ✓
+        
+        **OVERALL VERDICT:**
+        All 12 backend endpoints are fully functional. The Shopify integration is working correctly:
+        - Both Shopify API tokens (Storefront + Admin) are live and operational
+        - All 7 metaobject endpoints return 200 with required fields
+        - Products API returns properly structured data
+        - Customer auth endpoints behave correctly (session, login 503 expected, logout)
+        
+        **NO CRITICAL ISSUES FOUND**
+        
+        The backend is production-ready. The only "error" (login 503) is expected and correct behavior 
+        until the merchant provides the SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET.
+        
+        **ACTION ITEMS FOR MAIN AGENT:**
+        - All 12 backend endpoints passed successfully (13/13 test assertions)
+        - No fixes needed
+        - Backend is fully functional and production-ready
+        - Please summarize and finish the session
+        
+        YOU MUST ASK USER BEFORE DOING FRONTEND TESTING

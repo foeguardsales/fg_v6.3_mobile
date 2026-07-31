@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Star, ChevronDown, Truck, Snowflake, Heart } from 'lucide-react';
+import { useRawStarterBundleContent } from '../hooks/useRawStarterBundleContent';
 
 /* -------------------------------------------------------------------------
  * STANDALONE Raw Starter Bundle landing page (Prompt 5).
  * NOT linked in the site nav — a focused destination for social ads / CTAs.
- * All product + checkout details are driven by the BUNDLE config below so the
- * live Shopify data/variant can be dropped in later with zero layout changes.
+ * All content (hero, images, includes, benefits, FAQ, CTA) is now driven by
+ * the Shopify metaobject `raw_starter_bundle / page_raw_starter_bundle` via
+ * useRawStarterBundleContent(). Every field falls back to the hardcoded copy
+ * below when the merchant hasn't populated it yet — design stays untouched.
  * ----------------------------------------------------------------------- */
 
 const C = {
@@ -22,14 +25,10 @@ const C = {
   gold: '#C9A84C',
 };
 
-// ---- Wire these to your Shopify Storefront data when ready (no layout changes needed) ----
+// ---- Hardcoded fallbacks (used ONLY when Shopify metaobject fields are empty) ----
 const BUNDLE = {
   title: 'Raw Starter Bundle',
   handle: 'raw-starter-bundle',
-  price: 89,            // TODO: replace with live Shopify price
-  compareAt: 119,       // TODO: replace with live Shopify compare-at price
-  currency: 'CAD',
-  shopifyVariantId: '', // TODO: set to your Shopify Storefront variant GID, e.g. 'gid://shopify/ProductVariant/1234567890'
   image: 'https://images.unsplash.com/photo-1745252798506-29500efc5b39?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200',
   includes: [
     '4 lbs of farm-fresh raw meals across our best-selling proteins',
@@ -115,6 +114,7 @@ export const RawStarterBundlePage = () => {
   const navigate = useNavigate();
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
+  const content = useRawStarterBundleContent();
 
   useEffect(() => {
     document.title = 'Raw Starter Bundle — FoeGuard';
@@ -130,8 +130,35 @@ export const RawStarterBundlePage = () => {
     navigate('/meal-plan?source=starter-pack');
   };
 
-  const price = (n) => `$${Number(n).toFixed(2)}`;
+  // ------ Resolved copy (Shopify metaobject → hardcoded fallback) ------
+  const heroTitle    = content.heroTitle    || 'Give your dog the freshest meal they’ve ever eaten.';
+  const heroSubtitle = content.heroSubtitle || 'The Raw Starter Bundle is the easiest way to try 100% organic, human-grade raw food — portioned, delivered, and ready to serve.';
+  const heroImage    = content.heroImage    || IMAGES.hero;
+  const productImage = content.productImage || BUNDLE.image;
+  const ctaText      = content.ctaText      || 'Build Your Starter Bundle';
+  const includes     = (content.includes && content.includes.length) ? content.includes : BUNDLE.includes;
+  const howItWorks   = (content.howItWorks && content.howItWorks.length) ? content.howItWorks : HOW_IT_WORKS;
+  const benefits     = content.benefits;
+  const benefitsHeader    = benefits?.header    || 'Why dogs (and their humans) love it';
+  const benefitsSubheader = benefits?.subheader || null;
+  const benefitItems      = (benefits?.items && benefits.items.length)
+    ? benefits.items.map((b, i) => ({
+        icon: BENEFITS[i % BENEFITS.length].icon,
+        title: b.title || BENEFITS[i % BENEFITS.length].title,
+        text: b.text || BENEFITS[i % BENEFITS.length].text,
+      }))
+    : BENEFITS;
+  const testimonials = (content.testimonials && content.testimonials.length)
+    ? content.testimonials
+    : REVIEWS.map((r) => ({ ...r, rating: 5 }));
+  const faq          = (content.faq && content.faq.length) ? content.faq : FAQS;
+  const bottomCta    = content.bottomCta;
+  const bottomCtaTitle  = bottomCta?.title  || 'Ready to make the switch?';
+  const bottomCtaBody   = bottomCta?.body   || 'Try the Raw Starter Bundle risk-free today.';
+  const bottomCtaButton = bottomCta?.button || ctaText;
+
   const maxW = { maxWidth: '1120px', margin: '0 auto', padding: '0 24px' };
+  const bundleTitle = BUNDLE.title;
 
   return (
     <div style={{ background: C.cream, color: C.charcoal, fontFamily: 'var(--font-body)', minHeight: '100vh' }} data-testid="raw-starter-bundle-page">
@@ -142,7 +169,7 @@ export const RawStarterBundlePage = () => {
 
       {/* 1–3. HEADER + SUBHEADER + CTA (hero) */}
       <section style={{ position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${IMAGES.hero})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, rgba(20,15,12,0.82) 0%, rgba(20,15,12,0.55) 55%, rgba(20,15,12,0.25) 100%)' }} />
         <div style={{ ...maxW, position: 'relative', padding: '96px 24px' }}>
           <div style={{ maxWidth: '600px' }}>
@@ -150,14 +177,13 @@ export const RawStarterBundlePage = () => {
               LIMITED-TIME STARTER OFFER
             </span>
             <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '52px', lineHeight: 1.05, color: C.cream, margin: '0 0 18px', fontWeight: 800 }}>
-              Give your dog the freshest meal they’ve ever eaten.
+              {heroTitle}
             </h1>
-            <p style={{ fontSize: '20px', lineHeight: 1.5, color: 'rgba(245,243,239,0.92)', margin: '0 0 30px' }}>
-              The Raw Starter Bundle is the easiest way to try 100% organic, human-grade raw food — portioned, delivered, and ready to serve.
+            <p style={{ fontSize: '20px', lineHeight: 1.5, color: 'rgba(245,243,239,0.92)', margin: '0 0 30px', whiteSpace: 'pre-line' }}>
+              {heroSubtitle}
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
-              <CtaButton testid="hero-cta" onClick={handleBuy} busy={busy}>Get the Starter Bundle — {price(BUNDLE.price)}</CtaButton>
-              <span style={{ color: 'rgba(245,243,239,0.8)', textDecoration: 'line-through', fontSize: '18px' }}>{price(BUNDLE.compareAt)}</span>
+              <CtaButton testid="hero-cta" onClick={handleBuy} busy={busy}>{ctaText}</CtaButton>
             </div>
             <p style={{ color: 'rgba(245,243,239,0.8)', fontSize: '14px', marginTop: '16px' }}>★★★★★ Loved by hundreds of Ontario dogs • Free local delivery</p>
           </div>
@@ -168,18 +194,13 @@ export const RawStarterBundlePage = () => {
       <section style={{ ...maxW, padding: '80px 24px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '56px', alignItems: 'center' }} className="rsb-two-col">
           <div>
-            <img src={BUNDLE.image} alt={BUNDLE.title} style={{ width: '100%', borderRadius: '16px', objectFit: 'cover', aspectRatio: '4/3', boxShadow: '0 16px 40px rgba(0,0,0,0.12)' }} />
+            <img src={productImage} alt={bundleTitle} style={{ width: '100%', borderRadius: '16px', objectFit: 'cover', aspectRatio: '4/3', boxShadow: '0 16px 40px rgba(0,0,0,0.12)' }} />
           </div>
           <div>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '34px', margin: '0 0 8px', fontWeight: 800 }}>{BUNDLE.title}</h2>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '20px' }}>
-              <span style={{ fontSize: '30px', fontWeight: 800, color: C.red, fontFamily: 'var(--font-heading)' }}>{price(BUNDLE.price)}</span>
-              <span style={{ fontSize: '18px', color: '#999', textDecoration: 'line-through' }}>{price(BUNDLE.compareAt)}</span>
-              <span style={{ background: C.straw, color: C.forest, fontWeight: 700, fontSize: '13px', padding: '4px 10px', borderRadius: '6px' }}>Save {price(BUNDLE.compareAt - BUNDLE.price)}</span>
-            </div>
+            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '34px', margin: '0 0 20px', fontWeight: 800 }}>{bundleTitle}</h2>
             <p style={{ fontFamily: 'var(--font-heading)', fontSize: '18px', fontWeight: 700, margin: '0 0 14px' }}>Raw Starter Bundle includes:</p>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 30px' }} data-testid="bundle-includes">
-              {BUNDLE.includes.map((item) => (
+              {includes.map((item) => (
                 <li key={item} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '9px 0', fontSize: '16px', lineHeight: 1.5 }}>
                   <span style={{ flexShrink: 0, width: '24px', height: '24px', borderRadius: '50%', background: C.sage, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginTop: '1px' }}>
                     <Check size={15} color={C.cream} />
@@ -188,7 +209,7 @@ export const RawStarterBundlePage = () => {
                 </li>
               ))}
             </ul>
-            <CtaButton testid="includes-cta" onClick={handleBuy} busy={busy}>Start my dog on raw</CtaButton>
+            <CtaButton testid="includes-cta" onClick={handleBuy} busy={busy}>{ctaText}</CtaButton>
             {notice && <p style={{ marginTop: '16px', color: C.redDark, fontSize: '14px' }} data-testid="rsb-notice">{notice}</p>}
           </div>
         </div>
@@ -199,11 +220,11 @@ export const RawStarterBundlePage = () => {
         <div style={maxW}>
           <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', textAlign: 'center', margin: '0 0 48px', fontWeight: 800 }}>How it works</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px' }} className="rsb-three-col">
-            {HOW_IT_WORKS.map((s) => (
-              <div key={s.title} style={{ textAlign: 'center' }}>
-                <img src={s.img} alt={s.title} style={{ width: '100%', height: '220px', objectFit: 'cover', borderRadius: '14px', marginBottom: '20px', boxShadow: '0 10px 26px rgba(0,0,0,0.1)' }} />
-                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '21px', margin: '0 0 10px', fontWeight: 700 }}>{s.title}</h3>
-                <p style={{ color: '#5a5a5a', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>{s.text}</p>
+            {howItWorks.slice(0, 3).map((s, i) => (
+              <div key={s.title || i} style={{ textAlign: 'center' }}>
+                <img src={s.image || HOW_IT_WORKS[i % HOW_IT_WORKS.length].img} alt={s.title || `Step ${i + 1}`} style={{ width: '100%', height: '220px', objectFit: 'cover', borderRadius: '14px', marginBottom: '20px', boxShadow: '0 10px 26px rgba(0,0,0,0.1)' }} />
+                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '21px', margin: '0 0 10px', fontWeight: 700 }}>{s.title || HOW_IT_WORKS[i % HOW_IT_WORKS.length].title}</h3>
+                <p style={{ color: '#5a5a5a', fontSize: '15px', lineHeight: 1.7, margin: 0 }}>{s.text || HOW_IT_WORKS[i % HOW_IT_WORKS.length].text}</p>
               </div>
             ))}
           </div>
@@ -214,12 +235,15 @@ export const RawStarterBundlePage = () => {
       <section style={{ ...maxW, padding: '80px 24px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '56px', alignItems: 'center' }} className="rsb-two-col">
           <div>
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', margin: '0 0 28px', fontWeight: 800 }}>Why dogs (and their humans) love it</h2>
+            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', margin: '0 0 12px', fontWeight: 800 }}>{benefitsHeader}</h2>
+            {benefitsSubheader && (
+              <p style={{ color: '#5a5a5a', fontSize: '16px', lineHeight: 1.6, margin: '0 0 24px' }}>{benefitsSubheader}</p>
+            )}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '26px' }} className="rsb-two-col">
-              {BENEFITS.map((b) => {
-                const Icon = b.icon;
+              {benefitItems.slice(0, 6).map((b, i) => {
+                const Icon = b.icon || BENEFITS[i % BENEFITS.length].icon;
                 return (
-                  <div key={b.title}>
+                  <div key={b.title || i}>
                     <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: C.straw, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '14px' }}>
                       <Icon size={24} color={C.red} />
                     </div>
@@ -239,7 +263,7 @@ export const RawStarterBundlePage = () => {
         <div style={{ maxWidth: '760px', margin: '0 auto', padding: '0 24px' }}>
           <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', textAlign: 'center', margin: '0 0 40px', fontWeight: 800 }}>Questions, answered</h2>
           <div>
-            {FAQS.map((f) => <FaqItem key={f.q} q={f.q} a={f.a} />)}
+            {faq.map((f) => <FaqItem key={f.q} q={f.q} a={f.a} />)}
           </div>
         </div>
       </section>
@@ -247,9 +271,9 @@ export const RawStarterBundlePage = () => {
       {/* 10. CTA band */}
       <section style={{ background: C.forest, padding: '64px 0', textAlign: 'center' }}>
         <div style={maxW}>
-          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '34px', color: C.cream, margin: '0 0 12px', fontWeight: 800 }}>Ready to make the switch?</h2>
-          <p style={{ color: 'rgba(245,243,239,0.85)', fontSize: '18px', margin: '0 0 28px' }}>Try the Raw Starter Bundle risk-free today.</p>
-          <CtaButton testid="band-cta" onClick={handleBuy} busy={busy}>Get the Starter Bundle — {price(BUNDLE.price)}</CtaButton>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '34px', color: C.cream, margin: '0 0 12px', fontWeight: 800 }}>{bottomCtaTitle}</h2>
+          <p style={{ color: 'rgba(245,243,239,0.85)', fontSize: '18px', margin: '0 0 28px' }}>{bottomCtaBody}</p>
+          <CtaButton testid="band-cta" onClick={handleBuy} busy={busy}>{bottomCtaButton}</CtaButton>
         </div>
       </section>
 
@@ -257,15 +281,23 @@ export const RawStarterBundlePage = () => {
       <section style={{ ...maxW, padding: '80px 24px' }}>
         <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '36px', textAlign: 'center', margin: '0 0 48px', fontWeight: 800 }}>What pet parents are saying</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '28px' }} className="rsb-three-col">
-          {REVIEWS.map((r) => (
-            <div key={r.name} style={{ background: '#fff', borderRadius: '14px', padding: '28px', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
-              <div style={{ display: 'flex', gap: '3px', marginBottom: '14px' }}>
-                {[0, 1, 2, 3, 4].map((s) => <Star key={s} size={18} fill={C.gold} color={C.gold} />)}
+          {testimonials.slice(0, 3).map((r, i) => {
+            const stars = Math.max(1, Math.min(5, Number(r.rating) || 5));
+            return (
+              <div key={(r.name || 'r') + i} style={{ background: '#fff', borderRadius: '14px', padding: '28px', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
+                <div style={{ display: 'flex', gap: '3px', marginBottom: '14px' }}>
+                  {Array.from({ length: stars }).map((_, s) => <Star key={s} size={18} fill={C.gold} color={C.gold} />)}
+                </div>
+                <p style={{ fontSize: '15px', lineHeight: 1.7, color: C.charcoal, margin: '0 0 18px' }}>“{r.text}”</p>
+                {(r.name || r.pet) && (
+                  <p style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, margin: 0 }}>
+                    {r.name}
+                    {r.pet && <span style={{ color: '#999', fontWeight: 400 }}> {r.pet.startsWith('with') ? r.pet : `with ${r.pet}`}</span>}
+                  </p>
+                )}
               </div>
-              <p style={{ fontSize: '15px', lineHeight: 1.7, color: C.charcoal, margin: '0 0 18px' }}>“{r.text}”</p>
-              <p style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, margin: 0 }}>{r.name} <span style={{ color: '#999', fontWeight: 400 }}>{r.pet}</span></p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -280,7 +312,7 @@ export const RawStarterBundlePage = () => {
             data-testid="final-cta"
             style={{ background: C.cream, color: C.red, border: 'none', padding: '18px 48px', borderRadius: '8px', fontFamily: 'var(--font-heading)', fontSize: '18px', fontWeight: 800, cursor: busy ? 'wait' : 'pointer', boxShadow: '0 8px 22px rgba(0,0,0,0.2)' }}
           >
-            {busy ? 'One moment…' : `Claim your Raw Starter Bundle — ${price(BUNDLE.price)}`}
+            {busy ? 'One moment…' : ctaText}
           </button>
           {notice && <p style={{ marginTop: '18px', color: C.cream, fontSize: '14px' }}>{notice}</p>}
         </div>

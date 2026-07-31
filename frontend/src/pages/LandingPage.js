@@ -5,6 +5,7 @@ import { useCart, SlideCart } from '../contexts/CartContext';
 import { SeoHead } from '../components/SeoHead';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 import { metaobjects } from '../services/shopify';
+import { useHomepageContent } from '../hooks/useHomepageContent';
 
 // FoeGuard Brand Colors — Farm Palette
 const COLORS = {
@@ -99,6 +100,8 @@ const ModernNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const { itemCount, setIsCartOpen } = useCart();
+  const homepage = useHomepageContent();
+  const announcementText = homepage.announcement?.text || 'Free Delivery in the Halton Region';
 
   // Signed-in state — reflects the Shopify Customer Account session flag set
   // by ShopifyAuthContext.  Polls + listens to storage/custom events so the
@@ -281,7 +284,7 @@ const ModernNavbar = () => {
             gap: '6px'
           }}
         >
-          <span>Free Delivery in the Halton Region</span>
+          <span>{announcementText}</span>
           <ChevronRight size={14} strokeWidth={2} color={COLORS.charcoal} />
         </div>
       </nav>
@@ -705,6 +708,24 @@ const ModernFooter = () => {
 export const LandingPage = () => {
   const navigate = useNavigate();
   const [activeFaq, setActiveFaq] = useState(null);
+  const homepage = useHomepageContent();
+
+  // Merchant-driven copy with hardcoded fallbacks — never breaks if Shopify
+  // hasn't published the field yet.
+  const heroTitle       = homepage.hero?.title      || 'The freshest meal your dog has ever eaten.';
+  const heroSubtitle    = homepage.hero?.subtitle   || '100% organic, human-grade raw meals, grown on our Ontario farm and prepared fresh to order.';
+  const heroCta         = homepage.hero?.cta        || 'Shop Now';
+  const heroImageUrl    = homepage.hero?.image_url  || 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop';
+  const identityTitle   = homepage.identity?.title  || null;
+  const identityBody    = homepage.identity?.paragraph || null;
+  const whyFgTitle      = homepage.whyFg?.title     || 'From our Acton farm to your dog\u2019s bowl.';
+  const whyFgSubtitle   = homepage.whyFg?.subtitle  || 'Every ingredient is raised or grown by us, made fresh daily and delivered straight to your door in just 3-5 business days \u2014 no middlemen, no markups, no mystery.';
+  const whyFgImages     = homepage.whyFg?.comparison_images || [];
+  const ourStoryTitle   = homepage.ourStory?.title  || 'Where real food became a family tradition';
+  const ourStoryBody    = homepage.ourStory?.body   || null;
+  const footerCtaTitle  = homepage.footerCta?.title || 'Your dog\u2019s healthiest days start now.';
+  const footerCtaBody   = homepage.footerCta?.body  || 'Farm-fresh, made to order raw meals \u2014 raised right here in Ontario.';
+  const footerCtaButton = homepage.footerCta?.button || 'Shop Now';
 
   // "Shop Now" opens the pre-menu funnel ("How would you like to order?").
   // Passing state.funnel=true makes the funnel a real history entry so the Back
@@ -781,7 +802,7 @@ export const LandingPage = () => {
           style={{
             position: 'relative',
             overflow: 'hidden',
-            background: `#2C2C2C url('https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=2200&h=1400&fit=crop') center/cover no-repeat`,
+            background: `#2C2C2C url('${heroImageUrl}') center/cover no-repeat`,
             minHeight: 'clamp(600px, 135vw, 620px)',
             display: 'block',
             marginTop: '-84px'
@@ -837,7 +858,7 @@ export const LandingPage = () => {
                 maxWidth: '18ch',
                 margin: '0 0 14px 0'
               }}>
-                The freshest meal your dog has ever eaten.
+                {heroTitle}
               </h1>
 
               <p style={{
@@ -851,7 +872,7 @@ export const LandingPage = () => {
                 textShadow: '0 1px 6px rgba(0,0,0,0.45)',
                 textAlign: 'left'
               }}>
-                100% organic, human-grade raw meals, grown on our Ontario farm and prepared fresh to order.
+                {heroSubtitle}
               </p>
 
               <button
@@ -867,7 +888,7 @@ export const LandingPage = () => {
                 onMouseEnter={(e) => liftedButtonHover(e, true)}
                 onMouseLeave={(e) => liftedButtonHover(e, false)}
               >
-                Shop Now
+                {heroCta}
               </button>
               <p
                 data-testid="hero-guarantee"
@@ -1033,6 +1054,46 @@ export const LandingPage = () => {
           </div>
         </section>
 
+        {/* FROM SOIL TO SERVING — brand identity (renders only when Shopify metaobject provides content) */}
+        {(identityTitle || identityBody) && (
+          <section
+            data-testid="identity-section"
+            style={{
+              background: COLORS.cream,
+              padding: '48px 20px 56px',
+              borderTop: `1px solid ${COLORS.khaki}`
+            }}
+          >
+            <div style={{ maxWidth: '820px', margin: '0 auto', textAlign: 'center' }}>
+              {identityTitle && (
+                <h2 style={{
+                  fontSize: 'clamp(28px, 3.4vw, 38px)',
+                  fontWeight: 600,
+                  color: COLORS.charcoal,
+                  lineHeight: 1.2,
+                  marginBottom: '16px',
+                  fontFamily: "'Barlow Semi Condensed', serif"
+                }}>
+                  {identityTitle}
+                </h2>
+              )}
+              {identityBody && (
+                <p style={{
+                  fontSize: 'clamp(16px, 1.7vw, 18px)',
+                  fontWeight: 400,
+                  color: COLORS.charcoal,
+                  lineHeight: 1.7,
+                  margin: 0,
+                  fontFamily: "'Barlow', sans-serif",
+                  whiteSpace: 'pre-line'
+                }}>
+                  {identityBody}
+                </p>
+              )}
+            </div>
+          </section>
+        )}
+
         {/* WHY FOEGUARD RAW? */}
         <section style={{
           background: COLORS.white,
@@ -1049,7 +1110,7 @@ export const LandingPage = () => {
                 marginBottom: '14px',
                 fontFamily: "'Barlow Semi Condensed', serif"
               }}>
-                From our Acton farm to your dog&apos;s bowl.
+                {whyFgTitle}
               </h2>
               <p style={{
                 fontSize: 'clamp(17px, 1.8vw, 18px)',
@@ -1059,7 +1120,7 @@ export const LandingPage = () => {
                 margin: 0,
                 fontFamily: "'Barlow', sans-serif"
               }}>
-                Every ingredient is raised or grown by us, made fresh daily and delivered straight to your door in just 3-5 business days &mdash; no middlemen, no markups, no mystery.
+                {whyFgSubtitle}
               </p>
             </div>
 
@@ -1077,8 +1138,8 @@ export const LandingPage = () => {
               <div style={{ width: '100%', margin: '0 auto' }}>
                 {(() => {
                   const comparisonImages = {
-                    beforeImage: 'https://images.unsplash.com/photo-1745252798506-29500efc5b39?w=900&q=80&fit=crop', // LEFT = our raw food
-                    afterImage: 'https://images.pexels.com/photos/34952079/pexels-photo-34952079.jpeg?auto=compress&cs=tinysrgb&w=900' // RIGHT = 'other' kibble
+                    beforeImage: whyFgImages[0] || 'https://images.unsplash.com/photo-1745252798506-29500efc5b39?w=900&q=80&fit=crop', // LEFT = our raw food
+                    afterImage:  whyFgImages[1] || 'https://images.pexels.com/photos/34952079/pexels-photo-34952079.jpeg?auto=compress&cs=tinysrgb&w=900' // RIGHT = 'other' kibble
                   };
                   return (
                     <>
@@ -1633,26 +1694,41 @@ export const LandingPage = () => {
                 fontFamily: "'Barlow Semi Condensed', serif",
                 lineHeight: 1.2
               }}>
-                Where real food became a family tradition
+                {ourStoryTitle}
               </h2>
-              <p style={{
-                fontSize: '17px',
-                color: COLORS.charcoal,
-                lineHeight: '1.65',
-                marginBottom: '14px',
-                fontFamily: "'Barlow', sans-serif"
-              }}>
-                FoeGuard started because of one dog. When we couldn&apos;t find raw food made to our standards as third-generation farmers, we made it ourselves. Before long our neighbours were asking for meals &mdash; then their friends were too.
-              </p>
-              <p style={{
-                fontSize: '17px',
-                color: COLORS.charcoal,
-                lineHeight: '1.65',
-                marginBottom: '20px',
-                fontFamily: "'Barlow', sans-serif"
-              }}>
-                What started on our small farm in Acton grew into something bigger &mdash; built by the community, for the community. If you&apos;re here reading this, your story might not be so different.
-              </p>
+              {ourStoryBody ? (
+                <p style={{
+                  fontSize: '17px',
+                  color: COLORS.charcoal,
+                  lineHeight: '1.65',
+                  marginBottom: '20px',
+                  fontFamily: "'Barlow', sans-serif",
+                  whiteSpace: 'pre-line'
+                }}>
+                  {ourStoryBody}
+                </p>
+              ) : (
+                <>
+                  <p style={{
+                    fontSize: '17px',
+                    color: COLORS.charcoal,
+                    lineHeight: '1.65',
+                    marginBottom: '14px',
+                    fontFamily: "'Barlow', sans-serif"
+                  }}>
+                    FoeGuard started because of one dog. When we couldn&apos;t find raw food made to our standards as third-generation farmers, we made it ourselves. Before long our neighbours were asking for meals &mdash; then their friends were too.
+                  </p>
+                  <p style={{
+                    fontSize: '17px',
+                    color: COLORS.charcoal,
+                    lineHeight: '1.65',
+                    marginBottom: '20px',
+                    fontFamily: "'Barlow', sans-serif"
+                  }}>
+                    What started on our small farm in Acton grew into something bigger &mdash; built by the community, for the community. If you&apos;re here reading this, your story might not be so different.
+                  </p>
+                </>
+              )}
               <button
                 onClick={() => navigate('/about')}
                 style={{
@@ -1764,7 +1840,7 @@ export const LandingPage = () => {
               fontFamily: "'Barlow Semi Condensed', serif",
               lineHeight: 1.2
             }}>
-              Your dog&apos;s healthiest days start now.
+              {footerCtaTitle}
             </h2>
             <p style={{
               fontSize: 'clamp(16px, 1.8vw, 19px)',
@@ -1774,7 +1850,7 @@ export const LandingPage = () => {
               lineHeight: 1.55,
               fontFamily: "'Barlow', sans-serif"
             }}>
-              Farm-fresh, made to order raw meals &mdash; raised right here in Ontario.
+              {footerCtaBody}
             </p>
             <button
               data-testid="final-cta-shop-now"
@@ -1783,7 +1859,7 @@ export const LandingPage = () => {
               onMouseEnter={(e) => liftedButtonHover(e, true)}
               onMouseLeave={(e) => liftedButtonHover(e, false)}
             >
-              Shop Now
+              {footerCtaButton}
             </button>
           </div>
         </section>
