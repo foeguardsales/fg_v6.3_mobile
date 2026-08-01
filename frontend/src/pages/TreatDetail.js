@@ -383,9 +383,21 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
               </CollapsibleSection>
             )}
             <CollapsibleSection title="Product Information">
-              <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: 0, whiteSpace: 'pre-line' }}>
-                {treat.product_information || `${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
-              </p>
+              {treat.product_information ? (
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: 0, whiteSpace: 'pre-line' }}>
+                  {treat.product_information}
+                </p>
+              ) : treat.descriptionHtml ? (
+                <div
+                  data-testid="treat-info-html"
+                  style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C' }}
+                  dangerouslySetInnerHTML={{ __html: treat.descriptionHtml }}
+                />
+              ) : (
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: 0 }}>
+                  {`${treat.name} is a natural, single-ingredient treat perfect for dogs of all sizes.`}
+                </p>
+              )}
             </CollapsibleSection>
             <CollapsibleSection title="Feeding Guide">
               <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: '0 0 10px' }}>

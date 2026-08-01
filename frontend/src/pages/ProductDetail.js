@@ -727,7 +727,16 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               <NutritionSection value={product.nutritional_analysis || product.nutrition_facts} />
             </CollapsibleSection>
             <CollapsibleSection title="Product Information">
-              <ProductInfo value={product.product_information} />
+              {product.product_information ? (
+                <ProductInfo value={product.product_information} />
+              ) : (product.descriptionHtml ? (
+                <div
+                  data-testid="product-info-html"
+                  className="pd-shopify-descriptionHtml"
+                  style={{ padding: '4px 0', color: '#2C2C2C', fontSize: '15px', lineHeight: 1.7 }}
+                  dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+                />
+              ) : null)}
             </CollapsibleSection>
             <CollapsibleSection title="Feeding Guide">
               <FeedingGuide value={product.feeding_guide} />

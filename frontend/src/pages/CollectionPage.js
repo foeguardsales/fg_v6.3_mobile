@@ -73,11 +73,17 @@ export const CollectionPage = () => {
         <h1 style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 700, margin: 0 }}>
           {collection.title}
         </h1>
-        {collection.description && (
-          <p style={{ fontSize: '17px', maxWidth: '640px', margin: '18px auto 0', lineHeight: 1.6, color: '#EDE6DA' }}>
+        {collection.descriptionHtml ? (
+          <div
+            data-testid="collection-description"
+            style={{ fontSize: '17px', maxWidth: '640px', margin: '18px auto 0', lineHeight: 1.6, color: '#EDE6DA' }}
+            dangerouslySetInnerHTML={{ __html: collection.descriptionHtml }}
+          />
+        ) : (collection.description && (
+          <p data-testid="collection-description" style={{ fontSize: '17px', maxWidth: '640px', margin: '18px auto 0', lineHeight: 1.6, color: '#EDE6DA' }}>
             {collection.description}
           </p>
-        )}
+        ))}
       </section>
 
       {/* Product grid */}

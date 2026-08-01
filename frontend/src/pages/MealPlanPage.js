@@ -3,9 +3,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronRight, Check, Plus, Trash2, X } from 'lucide-react';
 import axios from 'axios';
-import { getRecommendationsForDog } from '../services/mealPlanRecommendation';
+import { getRecommendationsForDog, setAlgorithmWeights } from '../services/mealPlanRecommendation';
 import { trackShopifyEmailEvent, trackMealPlanCompleted } from '../services/analytics';
 import { useCart } from '../contexts/CartContext';
+import { useMealPlanConfig } from '../hooks/useMealPlanConfig';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 const API = `${BACKEND_URL}/api`;
@@ -110,6 +111,48 @@ export const MealPlanPage = () => {
   const [error, setError] = useState('');
 
   const TOTAL_STEPS = 8;
+
+  // Shopify-driven meal-plan config (health conditions, activity levels,
+  // weight goals, algorithm weights). Falls back to hardcoded arrays below
+  // when the metaobject hasn't been published yet.
+  const mealConfig = useMealPlanConfig();
+
+  // Once Shopify config is ready, push its algorithm weights into the
+  // recommendation service so merchant tweaks (in Shopify admin) actually
+  // move protein rankings. No-op if the field is missing / malformed.
+  useEffect(() => {
+    if (mealConfig.ready && mealConfig.algorithmWeights) {
+      setAlgorithmWeights(mealConfig.algorithmWeights);
+    }
+  }, [mealConfig.ready, mealConfig.algorithmWeights]);
+
+  // Resolved lists: prefer Shopify (merchant is source of truth), otherwise
+  // fall back to the hardcoded constants at the top of this file.
+  const healthIssues = (mealConfig.healthConditions.length
+    ? [
+        ...mealConfig.healthConditions,
+        // Keep the "None" escape hatch for UX; merchants configure only real
+        // conditions in Shopify, and we still need a way for users to say
+        // "no known issues".
+        { id: 'none', label: 'None' },
+      ]
+    : HEALTH_ISSUES);
+
+  const bodyConditionOptions = (mealConfig.weightGoals.length
+    ? mealConfig.weightGoals.map((g) => ({ id: g.id, label: g.label, desc: g.desc || '' }))
+    : [
+        { id: 'underweight', label: 'Underweight', desc: 'Ribs are visible' },
+        { id: 'fit', label: 'Fit', desc: 'Ribs can be felt but not seen' },
+        { id: 'overweight', label: 'Overweight', desc: 'Ribs can\u2019t be felt or seen' },
+      ]);
+
+  const lifestyleOptions = (mealConfig.activityLevels.length
+    ? mealConfig.activityLevels.map((a) => ({ id: a.id, label: a.label, desc: a.desc || '' }))
+    : [
+        { id: 'lower_energy', label: 'Lower Energy', desc: 'Mostly resting' },
+        { id: 'active', label: 'Active', desc: 'Daily walks' },
+        { id: 'high_energy', label: 'High Energy', desc: 'Very active' },
+      ]);
 
   // Meal Plan LANDING sales page view — a distinct event from a meal plan
   // creation started via the direct menu funnel. Fire once on mount.
@@ -666,11 +709,7 @@ export const MealPlanPage = () => {
                   </h3>
                   
                   <div style={{ display: 'grid', gap: '10px' }}>
-                    {[
-                      { id: 'underweight', label: 'Underweight', desc: 'Ribs are visible' },
-                      { id: 'fit', label: 'Fit', desc: 'Ribs can be felt but not seen' },
-                      { id: 'overweight', label: 'Overweight', desc: 'Ribs can\'t be felt or seen' }
-                    ].map(option => (
+                    {bodyConditionOptions.map(option => (
                       <button
                         key={option.id}
                         onClick={() => updateDog(index, 'body_condition', option.id)}
@@ -754,11 +793,7 @@ export const MealPlanPage = () => {
                       What is {name}'s lifestyle?
                     </label>
                     <div style={{ display: 'grid', gap: '8px' }}>
-                      {[
-                        { id: 'lower_energy', label: 'Lower Energy', desc: 'Mostly resting' },
-                        { id: 'active', label: 'Active', desc: 'Daily walks' },
-                        { id: 'high_energy', label: 'High Energy', desc: 'Very active' }
-                      ].map(option => (
+                      {lifestyleOptions.map(option => (
                         <button
                           key={option.id}
                           onClick={() => updateDog(index, 'lifestyle', option.id)}
@@ -811,7 +846,7 @@ export const MealPlanPage = () => {
                   </h3>
                   
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                    {HEALTH_ISSUES.map(issue => {
+                    {healthIssues.map(issue => {
                       const isSelected = dog.health_issues.includes(issue.id);
                       const isNone = issue.id === 'none';
                       

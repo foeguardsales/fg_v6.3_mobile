@@ -33,6 +33,22 @@ export const MEAL_PLAN_CONFIG = {
   age_groups:     ['Puppy', 'Adult', 'Senior'],
 };
 
+/**
+ * Merge Shopify-driven overrides into the algorithm weights. Called by
+ * MealPlanPage after `useMealPlanConfig()` resolves. Only accepts numeric
+ * values on the four known keys and ignores anything else, so a malformed
+ * metaobject can never blank out the weights.
+ */
+export const setAlgorithmWeights = (partial) => {
+  if (!partial || typeof partial !== 'object') return;
+  const next = { ...MEAL_PLAN_CONFIG.weights };
+  for (const k of ['health', 'age', 'weight', 'activity']) {
+    const v = partial[k];
+    if (typeof v === 'number' && isFinite(v) && v >= 0) next[k] = v;
+  }
+  MEAL_PLAN_CONFIG.weights = next;
+};
+
 // ---------------------------------------------------------------------------
 // 2. PROTEIN SCORES  (1–5, 5 = best match)
 // ---------------------------------------------------------------------------
