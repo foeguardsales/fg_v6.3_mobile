@@ -14,6 +14,7 @@ import {
   ComparisonTable,
   BenefitIcons,
 } from '../components/ProductMetafields';
+import { computeTierLbs, activeProductTierLbs, isMonthlyBundle } from '../utils/cartTier';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -485,11 +486,22 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     if (product.product_line === 'royal_paws') return 'cat';
     return sessionStorage.getItem('foeguard_menu_pet') || 'dog';
   })();
-  // Effective lbs for THIS product's tier = other meals in the SAME pet bucket + this product's chosen qty
-  const otherLbs = Object.entries(selectedProteins || {})
-    .filter(([pid, d]) => pid !== productId && (d.petType || 'dog') === productPet)
-    .reduce((s, [, d]) => s + (d.qty || 0), 0);
-  const bulkRate = getTierFromLbs(otherLbs + quantity, DISCOUNT_RATES).rate;
+  // Effective tier-lbs = other lines in this pet bucket + this product's own contribution.
+  // Uses the shared cart-tier util so bundles contribute (units × bundle_weight_lbs)
+  // while meals contribute their raw qty. Keeps BoxBuilder & ProductDetail in sync.
+  const activeKey = `${productId}::${VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]}`;
+  const otherLbs = computeTierLbs({
+    selectedProteins,
+    products,
+    pet: productPet,
+    excludeKey: activeKey,
+  });
+  const activeLbs = product ? activeProductTierLbs(product, quantity) : quantity;
+  // Bundles are FIXED-PRICE — their tier rate never applies. Meals still use the
+  // tier rate reached by the combined meal-lbs + bundle-lbs total.
+  const bulkRate = isMonthlyBundle(product)
+    ? 0
+    : getTierFromLbs(otherLbs + activeLbs, DISCOUNT_RATES).rate;
 
   const getBasePrice = (prod) => {
     const pricing = prod.pricing.find(p => p.size_lb === 6);

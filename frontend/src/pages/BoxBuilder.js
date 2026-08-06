@@ -9,6 +9,7 @@ import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
 import { useCart } from '../contexts/CartContext';
 import { metaobjects, collections as shopifyCollections } from '../services/shopify';
+import { computeTierLbs, isMonthlyBundle } from '../utils/cartTier';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -356,6 +357,11 @@ export const BoxBuilder = () => {
           const nodes = (c.products?.nodes) || [];
           for (const p of nodes) {
             const priceAmount = parseFloat(p.priceRange?.minVariantPrice?.amount || '0');
+            // Derive bundle_weight_lbs from the title (e.g. "Monthly Bundle Giant Breed - 60 lb").
+            // When the merchant publishes a `foeguard.bundle_weight_lbs` metafield later,
+            // it will come through the shared normaliser instead of this local synthesiser.
+            const titleWeightMatch = String(p.title || '').match(/-\s*(\d+(?:\.\d+)?)\s*lb/i);
+            const bundleWeightLbs = titleWeightMatch ? parseFloat(titleWeightMatch[1]) : 0;
             bundles.push({
               product_id: p.handle,               // reuse handle as internal id
               handle: p.handle,
@@ -375,6 +381,9 @@ export const BoxBuilder = () => {
               // "+" opens the product page so the shopper picks a size / configures it.
               has_variants: true,
               is_bundle: true,
+              // Fixed weight of this bundle (contributes to the meal-tier threshold
+              // in the cart, but the bundle itself keeps its flat price).
+              bundle_weight_lbs: bundleWeightLbs,
             });
           }
         }
@@ -546,8 +555,23 @@ export const BoxBuilder = () => {
   };
 
   // Calculate price for 6lb based on the discount tier reached by total lbs IN THIS PET BUCKET.
-  // pet defaults to the active view (petType). Dog basket and cat basket have SEPARATE tiers.
-  const getDiscountedPrice = (basePrice, pet = petType) => {
+  // Bundles are FIXED-PRICE (Monthly Bundles collection) — their weight still
+  // contributes to the tier threshold but the tier RATE is never applied to
+  // their price. Non-bundle meals get the standard `basePrice * (1 - rate)`.
+  const getDiscountedPrice = (basePriceOrProduct, pet = petType) => {
+    // Legacy call sites pass just a number; new call sites pass the full
+    // product so we can bypass the discount for bundles. Support both.
+    let basePrice;
+    let product = null;
+    if (typeof basePriceOrProduct === 'number') {
+      basePrice = basePriceOrProduct;
+    } else if (basePriceOrProduct && typeof basePriceOrProduct === 'object') {
+      product = basePriceOrProduct;
+      basePrice = getBasePrice(product);
+    } else {
+      basePrice = 0;
+    }
+    if (isMonthlyBundle(product)) return basePrice; // bundles never get a rate
     const { rate } = getTierFromLbs(getTotalSelectedLbsForPet(pet), DISCOUNT_RATES);
     return basePrice * (1 - rate);
   };
@@ -563,12 +587,13 @@ export const BoxBuilder = () => {
     return Object.values(selectedProteins).reduce((sum, data) => sum + (data.qty || 0), 0);
   };
 
-  // Per-pet-bucket lbs total (drives the per-pet discount tier).
-  // Legacy entries with no petType are assumed to be 'dog'.
+  // Per-pet-bucket EFFECTIVE tier lbs = meals (raw qty) + bundles (units × weight).
+  // Uses the shared utility so ProductDetail computes the same number.
   const getTotalSelectedLbsForPet = (pet) => {
-    return Object.values(selectedProteins)
-      .filter(d => (d.petType || 'dog') === pet)
-      .reduce((sum, data) => sum + (data.qty || 0), 0);
+    // `products` here comes from Mongo local + Shopify meals; augment with the
+    // Shopify bundles so bundle entries can look up their bundle_weight_lbs.
+    const catalog = [...(products || []), ...(bundleProducts || [])];
+    return computeTierLbs({ selectedProteins, products: catalog, pet });
   };
 
   // Auto-upgrade the displayed box size to the tier reached by the CURRENT view's lbs.

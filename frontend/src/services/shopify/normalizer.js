@@ -297,6 +297,17 @@ export function normalizeShopifyProduct(sp) {
     nutrition_facts: mfJson(mf, 'nutritional_analysis', null) || mfJson(mf, 'nutrition_facts', {}),
     feeding_guide: mfJson(mf, 'feeding_guide', null),
     product_information: mfString(mf, 'product_information') || plainDescription,
+    // Bundle weight (lbs) — only meaningful for `product_line: 'monthly_bundle'`.
+    // Priority: (1) merchant metafield  (2) parse "- N lb" from the title.
+    // Kept on every product (0 for non-bundles) so downstream code doesn't
+    // have to null-check.
+    bundle_weight_lbs: (function () {
+      const raw = mfString(mf, 'bundle_weight_lbs');
+      const n = raw != null ? parseFloat(raw) : NaN;
+      if (Number.isFinite(n) && n > 0) return n;
+      const m = String(sp.title || '').match(/-\s*(\d+(?:\.\d+)?)\s*lb/i);
+      return m ? parseFloat(m[1]) : 0;
+    })(),
     // comparison_table — JSON: { headers: [...], rows: [ [attr, us, kibble, ...], ... ] }
     // or {"rows": [{"attribute":"...","foeguard":"...","kibble":"..."}]}
     comparison_table: mfJson(mf, 'comparison_table', null),
