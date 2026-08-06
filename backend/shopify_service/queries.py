@@ -41,7 +41,22 @@ fragment ProductCard on Product {
     {namespace: "foeguard", key: "product_information"},
     {namespace: "foeguard", key: "bundle_weight_lbs"},
     {namespace: "foeguard", key: "comparison_table"}
-  ]) { namespace key value type }
+  ]) {
+    namespace
+    key
+    value
+    type
+    reference {
+      ... on Metaobject { id type handle fields { key value type } }
+      ... on MediaImage { image { url altText width height } }
+    }
+    references(first: 25) {
+      nodes {
+        ... on Metaobject { id type handle fields { key value type } }
+        ... on MediaImage { image { url altText width height } }
+      }
+    }
+  }
 }
 """
 

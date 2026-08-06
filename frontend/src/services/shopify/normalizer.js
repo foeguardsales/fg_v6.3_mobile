@@ -67,7 +67,81 @@ function logMissingMetafields(handle, mfIndex) {
 function mfString(mf, key, fallback = null) {
   const m = mf[key];
   if (!m || m.value === null || m.value === undefined) return fallback;
+  // Reference-type metafields carry a gid in `value` (e.g.
+  // "gid://shopify/Metaobject/123"). Never leak that as display text — the
+  // caller should read the expanded `reference`/`references` instead.
+  if (typeof m.type === 'string' && m.type.includes('reference')) return fallback;
   return m.value;
+}
+
+/**
+ * Flatten Shopify `rich_text_field` JSON (TipTap-like structure) into a
+ * plain-text string, preserving paragraph breaks so it reads naturally
+ * inside a `white-space: pre-wrap` block. Design-safe: any non-JSON /
+ * unexpected input is returned (or ignored) without throwing.
+ */
+function richTextToPlain(raw) {
+  if (raw == null) return null;
+  if (typeof raw !== 'string') return null;
+  const trimmed = raw.trim();
+  if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) return trimmed || null;
+  let json;
+  try { json = JSON.parse(trimmed); } catch { return trimmed || null; }
+
+  const blocks = [];
+  const inline = (node) => {
+    if (!node) return '';
+    if (typeof node.value === 'string') return node.value;
+    return (node.children || []).map(inline).join('');
+  };
+  const walk = (node) => {
+    if (!node) return;
+    const t = node.type;
+    if (t === 'paragraph' || t === 'heading') {
+      const txt = (node.children || []).map(inline).join('').trim();
+      if (txt) blocks.push(txt);
+      return;
+    }
+    if (t === 'list') {
+      (node.children || []).forEach((li) => {
+        const txt = (li.children || []).map(inline).join('').trim();
+        if (txt) blocks.push(`\u2022 ${txt}`);
+      });
+      return;
+    }
+    (node.children || []).forEach(walk);
+  };
+  walk(json);
+  const out = blocks.join('\n\n').trim();
+  return out || null;
+}
+
+/**
+ * Extract the display value of a metaobject-reference metafield.
+ * `product_information` in this store points to a `product_info` metaobject
+ * whose own `product_information` field holds the rich text. We dig into the
+ * expanded reference, flatten the first rich-text / text field we find, and
+ * fall back to the given default.
+ */
+function mfReferenceText(mf, key, fallback = null) {
+  const m = mf[key];
+  if (!m) return fallback;
+  const ref = m.reference;
+  if (ref && Array.isArray(ref.fields)) {
+    // prefer a field matching the key, else the first non-empty field
+    const same = ref.fields.find((f) => f.key === key && f.value);
+    const first = same || ref.fields.find((f) => f.value);
+    if (first) {
+      const flat = richTextToPlain(first.value);
+      if (flat) return flat;
+    }
+  }
+  // Not a reference (plain rich text or string) — flatten `value` directly.
+  if (m.value && !(typeof m.type === 'string' && m.type.includes('reference'))) {
+    const flat = richTextToPlain(m.value);
+    if (flat) return flat;
+  }
+  return fallback;
 }
 
 function mfJson(mf, key, fallback = null) {
@@ -296,7 +370,7 @@ export function normalizeShopifyProduct(sp) {
     // Alias kept for older UI components that still reference nutrition_facts
     nutrition_facts: mfJson(mf, 'nutritional_analysis', null) || mfJson(mf, 'nutrition_facts', {}),
     feeding_guide: mfJson(mf, 'feeding_guide', null),
-    product_information: mfString(mf, 'product_information') || plainDescription,
+    product_information: mfReferenceText(mf, 'product_information', plainDescription),
     // Bundle weight (lbs) — only meaningful for `product_line: 'monthly_bundle'`.
     // Priority: (1) merchant metafield  (2) parse "- N lb" from the title.
     // Kept on every product (0 for non-bundles) so downstream code doesn't
