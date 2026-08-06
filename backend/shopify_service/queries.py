@@ -26,6 +26,22 @@ fragment ProductCard on Product {
     maxVariantPrice { amount currencyCode }
   }
   options { id name values }
+  metafields(identifiers: [
+    {namespace: "foeguard", key: "product_line"},
+    {namespace: "foeguard", key: "protein_type"},
+    {namespace: "foeguard", key: "pet_type"},
+    {namespace: "foeguard", key: "no_variants"},
+    {namespace: "foeguard", key: "mini_description"},
+    {namespace: "foeguard", key: "highlights"},
+    {namespace: "foeguard", key: "benefit_icons"},
+    {namespace: "foeguard", key: "ingredients"},
+    {namespace: "foeguard", key: "nutritional_analysis"},
+    {namespace: "foeguard", key: "nutrition_facts"},
+    {namespace: "foeguard", key: "feeding_guide"},
+    {namespace: "foeguard", key: "product_information"},
+    {namespace: "foeguard", key: "bundle_weight_lbs"},
+    {namespace: "foeguard", key: "comparison_table"}
+  ]) { namespace key value type }
 }
 """
 
