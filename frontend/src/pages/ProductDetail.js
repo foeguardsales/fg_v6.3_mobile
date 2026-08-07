@@ -32,7 +32,8 @@ const proteinImages = {
 };
 
 // Shopify variant placeholders (visual only — wired to the Storefront API later)
-const VARIANT_OPTIONS = ['1 lb', '1.5 lb'];
+// 1.5 lb removed — 1 lb is the only packaging variant everywhere.
+const VARIANT_OPTIONS = ['1 lb'];
 
 const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -671,7 +672,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               </ul>
             ))}
 
-            {/* Variant selection — dot-style radios (placeholder, will bind to Shopify) */}
+            {/* Variant selection — hidden when only one packaging option exists (1 lb). */}
+            {VARIANT_OPTIONS.length > 1 && (
             <div className="pd-variant-group" data-testid="product-variants">
               <div className="pd-variant-label">Packaging</div>
               <div className="pd-radio-list">
@@ -689,6 +691,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 ))}
               </div>
             </div>
+            )}
 
             {/* Quantity */}
             <div className="pd-shopify-qty-row">

@@ -748,17 +748,8 @@ export const BoxBuilder = () => {
           ))}
         </div>
 
-        {/* Main Content — single page: Meals / Treats / Monthly Bundles */}
+        {/* Main Content — single page: Meals / Treats / Monthly Bundles / Cat Meals */}
         <>
-            <BoxSizePills
-              boxSize={boxSize}
-              rates={DISCOUNT_RATES}
-              onChange={(sz) => {
-                setBoxSize(sz);
-                sessionStorage.setItem('boxSize', sz.toString());
-              }}
-            />
-
             {loading ? (
               <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
             ) : (
@@ -851,36 +842,34 @@ export const BoxBuilder = () => {
         </>
       </div>
 
-      {/* Floating bottom button — opens the cart. Shows running $total and "Add Xlb to Cart". */}
+      {/* Sticky cart button — "Your Box (x lb) • $subtotal".
+          x lb = MEAL weight only (treats & bundles excluded). Subtotal = all items. */}
       {(() => {
-        const lbs = getTotalSelectedLbs();
-        // Compute meal subtotal (with bulk discount) + treats subtotal — matches the cart math
-        const proteinFull = Object.entries(selectedProteins || {}).reduce((s, [pid, d]) => {
-          const bpid = (d && d.productId) || String(pid).split('::')[0];
-          const product = products.find(p => p.product_id === bpid);
+        // Meal weight only — bundles now return 0 tier-lbs, treats aren't in selectedProteins.
+        const mealLbs = getTotalSelectedLbsForPet('dog') + getTotalSelectedLbsForPet('cat');
+        const catalog = [...(products || []), ...(bundleProducts || [])];
+        // Subtotal: meals get their per-pet bulk discount; bundles stay flat; treats flat.
+        const proteinsTotal = Object.entries(selectedProteins || {}).reduce((s, [pid, d]) => {
+          if (!d) return s;
+          const bpid = d.productId || String(pid).split('::')[0];
+          const product = catalog.find(p => p.product_id === bpid);
           if (!product) return s;
-          const base = getBasePrice ? getBasePrice(product) : (product.pricing.find(pp => pp.size_lb === 6)?.price || 0);
-          return s + (base / 6) * (d.qty || 0);
+          const per6 = getDiscountedPrice(product, d.petType || 'dog');
+          return s + (per6 / 6) * (d.qty || 0);
         }, 0);
-        const { rate } = getTierFromLbs(lbs, DISCOUNT_RATES);
-        const proteinDiscounted = proteinFull * (1 - rate);
         const treatsTotal = (selectedTreats || []).reduce((s, t) => s + (t.price || 0) * (t.quantity || 1), 0);
-        const runningTotal = proteinDiscounted + treatsTotal;
+        const subtotal = proteinsTotal + treatsTotal;
         return (
           <button
             onClick={openBasket}
             data-testid="cart-button"
             className="bb-floating-checkout"
           >
-            <span className="bb-floating-action">View Cart</span>
+            <span className="bb-floating-action" data-testid="cart-button-label">
+              Your Box{mealLbs > 0 ? ` (${mealLbs} lb)` : ''}
+            </span>
             <span className="bb-floating-sep">•</span>
-            <span className="bb-floating-total">${runningTotal.toFixed(2)}</span>
-            {lbs > 0 && (
-              <>
-                <span className="bb-floating-sep">•</span>
-                <span className="bb-floating-lbs" data-testid="cart-button-lbs">{lbs} lb</span>
-              </>
-            )}
+            <span className="bb-floating-total">${subtotal.toFixed(2)}</span>
           </button>
         );
       })()}
@@ -936,20 +925,13 @@ export const BoxBuilder = () => {
 // Product Card Component
 const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPrice, getBasePrice, boxSize, navigate, petType, onOpenProduct, isRecommended = false }) => {
   const basePrice = getBasePrice(product);
-  const discountedPrice = getDiscountedPrice(basePrice);
-  // Tier rate driven by the CURRENTLY-SELECTED box pill (6/12/24/36). This makes
-  // every un-selected card preview reflect the pill the shopper just tapped —
-  // 6lb → 0%, 12lb → 5%, 24lb → 10%, 36lb → 15% — even before they add anything.
   const RATES = petType === 'cat' ? CAT_DISCOUNT_RATES : DOG_DISCOUNT_RATES;
-  const boxRate = RATES[boxSize] || 0;
-  const boxDiscountedPerLb = (basePrice / 6) * (1 - boxRate);
-  // Pricing is stored as the 6lb base price. Show /1lb by default; once a quantity
-  // is selected, show the full price for that amount.
+  // Prompt 4: cards ALWAYS display the lowest ("From") per-lb price — the 36 lb+
+  // tier. Browsing never changes the card price by discount tier; the actual
+  // discounted totals are shown in the sticky cart button + checkout only.
   const basePerLb = basePrice / 6;
-  const discountedPerLb = discountedPrice / 6;
-  const displayQty = selectedQty > 0 ? selectedQty : 1;
-  const showPrice = discountedPerLb * displayQty;
-  const showOriginal = basePerLb * displayQty;
+  const maxRate = RATES[36] || RATES['36'] || 0;
+  const lowestPerLb = basePerLb * (1 - maxRate);
 
   // Every menu product now adds directly (no packaging modal on the menu).
   // Tapping the card body still opens the detail modal for full info.
@@ -1002,13 +984,6 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
     e.stopPropagation();
     if (canAdd) onUpdate(product.product_id, product.name, 6);
   };
-
-  // Display the price for the currently selected qty (default 6lb pack when none selected).
-  // The per-lb price reflects the CURRENT bulk-discount tier across ALL selected meals,
-  // so adding a new product is automatically discounted if the cart already hit a tier.
-  const effectiveLbs = selectedQty > 0 ? selectedQty : 6;
-  const lineTotal = discountedPerLb * effectiveLbs;
-  const perLbDisplay = discountedPerLb;
 
   return (
     <div 
@@ -1073,19 +1048,13 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
         <div className="product-card-price">
           {product.is_bundle ? (
-            // Monthly Bundles are flat-priced (not per-lb). Show Shopify's total price
-            // straight from the product; hide the /lb badge so the card is truthful.
+            // Monthly Bundles are flat-priced (not per-lb). Show Shopify's total price.
             <span className="price-regular" data-testid={`bundle-price-${product.product_id}`}>${(product.pricing?.[0]?.price || 0).toFixed(2)}</span>
-          ) : (selectedQty > 0) ? (
-            <>
-              <span className="price-regular">${lineTotal.toFixed(2)}</span>
-              <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>
-            </>
           ) : (
-            // Direct per-lb price at the CURRENT box tier (defaults to 36lb = lowest price).
-            // No "From" label — shoppers see the actual price straight away.
+            // Prompt 4: always "From $X.XX/lb" (lowest 36 lb+ tier price). Never
+            // changes with the discount tier while browsing.
             <>
-              <span className="price-regular">${boxDiscountedPerLb.toFixed(2)}</span>
+              <span className="price-regular" data-testid={`price-${product.product_id}`}>From ${lowestPerLb.toFixed(2)}</span>
               <span className="price-unit">/lb</span>
             </>
           )}

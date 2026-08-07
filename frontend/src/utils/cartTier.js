@@ -63,16 +63,14 @@ export function bundleUnitsFromQty(qty) {
 
 /**
  * Lbs this cart entry contributes to the discount-tier threshold.
- * - Bundles → bundle_units × bundle_weight_lbs
  * - Meals   → raw qty (already in lbs)
- * - Bundles with unknown weight → raw qty (safe pre-configuration fallback)
+ * - Bundles → 0 (Monthly Bundles do NOT contribute to discount weight)
+ * - Treats  → not stored here (never contribute)
  */
 export function tierLbsForEntry(entry, product) {
   const qty = Number(entry?.qty) || 0;
-  if (!isMonthlyBundle(product)) return qty;
-  const w = bundleWeightLbs(product);
-  if (w <= 0) return qty; // couldn't derive → keep the pre-existing behaviour
-  return bundleUnitsFromQty(qty) * w;
+  if (isMonthlyBundle(product)) return 0; // bundles never count toward the discount tier
+  return qty;
 }
 
 /**

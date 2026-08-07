@@ -64,3 +64,13 @@ File: frontend/src/pages/BoxBuilder.js (design/box-engine untouched per user).
 ## MENU REVAMP — PROMPTS 2 & 3 ✅ DONE (2026-07)
 Prompt 2 (pre-menu funnel, MenuFunnel in BoxBuilder.js): Card1 "Browse Menu"/"Most Popular" (menu img, onShopRaw); Card2 "Meal Recommendations"/"2-minute personalized meal plan" (meal-plan img, now onClick=onCalculator -> opens FeedingCalculator). Removed standalone "Feeding Calculator" link. Layout unchanged. Verified: Card2 opens calculator modal.
 Prompt 3 (BoxBuilder sections + App.css): order now Meals -> Treats -> Monthly Bundles -> Cat Meals (added 4th tab + #menu-section-cat-meals). Meals = Comfort Dinner + Primal Feast; Cat Meals = Royal Paws. Removed cat TreatsSection from menu (dog treats only; cat-coverage note to be added in Shopify dog-treats description). Banner height reduced ~45%: .menu-collection-banner 104->58px mobile, 150->82px desktop (image/overlay/title/desc kept). Verified via screenshots.
+
+## MENU REVAMP — PROMPTS 4-7 + 1.5lb hide ✅ DONE (2026-07)
+- 1.5lb: ProductDetail VARIANT_OPTIONS = ['1 lb']; packaging selector hidden when <=1 option. 1lb only everywhere.
+- P4 Product cards (BoxBuilder ProductCard): ALWAYS "From $X.XX/lb" = 36lb+ tier (lowest) price; no tier-based change while browsing. Bundles stay flat price. Removed tier-based/lineTotal price logic on cards.
+- P5: Removed BoxSizePills (6/12/24/36) from menu top; browse starts after hero.
+- P6 Sticky cart (BoxBuilder): "Your Box (x lb) • $subtotal"; x lb = MEAL weight only (treats+bundles excluded); subtotal = meals(discounted)+treats+bundles(flat). No discount-progress text.
+- P7 Cart (CartContext UniversalCart): summary card "YOUR BOX (x lb) / $subtotal ✓ Y% OFF unlocked / Add N lb more to unlock Z% OFF" (dynamic). Items grouped Meals / Add-ons (Treats) / Monthly Bundles. Meals get bulk discount (DISCOUNT_RATES 12=5/24=10/36=15%); treats+bundles flat & excluded from discount weight.
+- cartTier.js tierLbsForEntry: bundles now return 0 (never count toward discount tier).
+- CartContext now merges Shopify bundles (/api/shopify/products, handle contains 'bundle') into catalog so cart can price+group them (bundle line shows units = qty/6). Meals still from /api/products (Mongo).
+- All verified via screenshot: From-price, sticky "Your Box (18 lb) • $112.72", summary 5% unlocked + next-tier nudge, grouped Meals/Monthly Bundles, bundle 1 unit $35.80.

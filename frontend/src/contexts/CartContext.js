@@ -3,9 +3,19 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { cart as shopifyCart, checkout as shopifyCheckout } from '../services/shopify';
 import { trackCheckoutInitiated } from '../services/analytics';
+import { isMonthlyBundle } from '../utils/cartTier';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+
+// Bulk discount tiers — apply ONLY to total MEAL lbs (treats & bundles excluded).
+const DISCOUNT_RATES = { 0: 0, 12: 0.05, 24: 0.10, 36: 0.15 };
+const getTierFromLbs = (lbs, rates = DISCOUNT_RATES) => {
+  const sizes = Object.keys(rates).map(Number).sort((a, b) => a - b);
+  let chosen = { size: sizes[0], rate: rates[sizes[0]] };
+  sizes.forEach(s => { if (lbs >= s) chosen = { size: s, rate: rates[s] }; });
+  return chosen;
+};
 
 const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
@@ -51,11 +61,30 @@ export const CartProvider = ({ children }) => {
   });
 
   // Load the product catalog once (for cart-line pricing + shopify variant lookup).
+  // Meals come from Mongo (/api/products); Monthly Bundles live only in Shopify,
+  // so we also pull those and merge them in (keyed by handle = their product_id)
+  // so the cart can price + group bundles correctly.
   useEffect(() => {
     let cancelled = false;
-    axios.get(`${API}/products`)
-      .then(res => { if (!cancelled) setProducts(Array.isArray(res.data) ? res.data : []); })
-      .catch(() => { /* browsing still works without pricing */ });
+    const loadMeals = axios.get(`${API}/products`).then(res => (Array.isArray(res.data) ? res.data : [])).catch(() => []);
+    const loadBundles = axios.get(`${API}/shopify/products?first=60`)
+      .then(res => {
+        const list = res.data?.products || res.data?.nodes || (Array.isArray(res.data) ? res.data : []);
+        return list
+          .filter(p => String(p.handle || '').toLowerCase().includes('bundle'))
+          .map(p => ({
+            product_id: p.handle,
+            name: p.title,
+            product_line: 'monthly_bundle',
+            is_bundle: true,
+            shopify_variant_id: p.variants?.nodes?.[0]?.id || p.variants?.[0]?.id || null,
+            pricing: [{ size_lb: 6, price: Number(p.priceRange?.minVariantPrice?.amount) || 0 }],
+          }));
+      })
+      .catch(() => []);
+    Promise.all([loadMeals, loadBundles]).then(([meals, bundles]) => {
+      if (!cancelled) setProducts([...meals, ...bundles]);
+    });
     return () => { cancelled = true; };
   }, []);
 
@@ -149,7 +178,6 @@ export const CartProvider = ({ children }) => {
 
   // ----- Derived values -----
   const proteinEntries = Object.entries(proteins || {}).filter(([, d]) => (d?.qty || 0) > 0);
-  const totalLbs = proteinEntries.reduce((s, [, d]) => s + (d.qty || 0), 0);
 
   const perLbForProduct = useCallback((productId) => {
     const product = products.find(p => p.product_id === productId);
@@ -158,11 +186,36 @@ export const CartProvider = ({ children }) => {
     return base / 6;
   }, [products]);
 
-  const mealsSubtotal = proteinEntries.reduce((s, [key, d]) => {
-    return s + perLbForProduct(baseProductId(key, d)) * (d.qty || 0);
-  }, 0);
+  // Is this cart entry a Monthly Bundle? (bundles never count toward discount weight)
+  const isBundleEntry = useCallback((key, d) => {
+    const pid = baseProductId(key, d);
+    const product = products.find(p => p.product_id === pid);
+    return isMonthlyBundle(product) || isMonthlyBundle({ product_id: pid });
+  }, [products]);
+
+  // Split meals vs bundles.
+  const mealEntries = proteinEntries.filter(([key, d]) => !isBundleEntry(key, d));
+  const bundleEntries = proteinEntries.filter(([key, d]) => isBundleEntry(key, d));
+
+  // Discount weight = MEAL lbs only (treats & bundles excluded).
+  const mealLbs = mealEntries.reduce((s, [, d]) => s + (d.qty || 0), 0);
+  const totalLbs = mealLbs; // back-compat alias (meals only)
+  const { rate: bulkRate, size: currentTier } = getTierFromLbs(mealLbs);
+
+  // Next tier nudge — "Add N lb more to unlock Z% OFF".
+  const tierSizes = Object.keys(DISCOUNT_RATES).map(Number).sort((a, b) => a - b);
+  const nextSize = tierSizes.find(s => s > mealLbs && DISCOUNT_RATES[s] > bulkRate) || null;
+  const nextTier = nextSize ? { size: nextSize, rate: DISCOUNT_RATES[nextSize], lbsAway: nextSize - mealLbs } : null;
+
+  // Line prices: meals get the bulk discount, bundles stay flat, treats flat.
+  const mealLinePrice = useCallback((key, d) => perLbForProduct(baseProductId(key, d)) * (d.qty || 0) * (1 - bulkRate), [perLbForProduct, bulkRate]);
+  const bundleLinePrice = useCallback((key, d) => perLbForProduct(baseProductId(key, d)) * (d.qty || 0), [perLbForProduct]);
+
+  const mealsFull = mealEntries.reduce((s, [key, d]) => s + perLbForProduct(baseProductId(key, d)) * (d.qty || 0), 0);
+  const mealsSubtotal = mealsFull * (1 - bulkRate);
+  const bundlesSubtotal = bundleEntries.reduce((s, [key, d]) => s + perLbForProduct(baseProductId(key, d)) * (d.qty || 0), 0);
   const treatsSubtotal = (treats || []).reduce((s, t) => s + (t.price || 0) * (t.quantity || 1), 0);
-  const subtotal = mealsSubtotal + treatsSubtotal;
+  const subtotal = mealsSubtotal + treatsSubtotal + bundlesSubtotal;
 
   // Each meal line = 1 item; each treat pack quantity counts as items.
   const itemCount = proteinEntries.length + (treats || []).reduce((s, t) => s + (t.quantity || 1), 0);
@@ -189,6 +242,9 @@ export const CartProvider = ({ children }) => {
   const value = {
     // new API
     proteins, treats, products, proteinEntries,
+    // Prompt 7: meal/bundle split + tier info for the cart summary + grouping
+    mealEntries, bundleEntries, mealLbs, bulkRate, currentTier, nextTier,
+    mealLinePrice, bundleLinePrice,
     deliveryDate, setDeliveryDate,
     deliveryNotes, setDeliveryNotes,
     isCartOpen, setIsCartOpen,
@@ -267,6 +323,8 @@ export const UniversalCart = () => {
   const navigate = useNavigate();
   const {
     proteinEntries, treats, products,
+    mealEntries, bundleEntries, mealLbs, bulkRate, nextTier,
+    mealLinePrice, bundleLinePrice,
     deliveryDate, setDeliveryDate,
     deliveryNotes, setDeliveryNotes,
     isCartOpen, setIsCartOpen,
@@ -373,10 +431,41 @@ export const UniversalCart = () => {
             </div>
           )}
 
-          {/* Meals */}
-          {proteinEntries.map(([key, d]) => {
+          {/* Prompt 7: YOUR BOX summary card (dynamic) — meal weight + subtotal + tier unlock */}
+          {hasItems && (
+            <div
+              data-testid="cart-box-summary"
+              style={{
+                background: '#F5F1E6', border: '1px solid #E4DAC4', borderRadius: '12px',
+                padding: '14px 16px', marginBottom: '16px',
+              }}
+            >
+              <div style={{ fontSize: '13px', fontWeight: 800, letterSpacing: '0.06em', color: '#2C2C2C' }}>
+                YOUR BOX ({mealLbs} lb)
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '4px 0 0', fontSize: '18px', fontWeight: 800, color: '#2C2C2C' }}>
+                <span data-testid="cart-summary-subtotal">${subtotal.toFixed(2)}</span>
+                {bulkRate > 0 && (
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#2E7D32' }} data-testid="cart-summary-unlocked">
+                    ✓ {Math.round(bulkRate * 100)}% OFF unlocked
+                  </span>
+                )}
+              </div>
+              {nextTier && (
+                <div style={{ margin: '6px 0 0', fontSize: '13px', color: '#8A7156' }} data-testid="cart-summary-next">
+                  Add {nextTier.lbsAway} lb more to unlock {Math.round(nextTier.rate * 100)}% OFF
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ===== MEALS (contribute to discount tiers) ===== */}
+          {mealEntries.length > 0 && (
+            <div className="cart-group-title" data-testid="cart-group-meals" style={{ fontSize: '12px', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '4px 0 8px' }}>Meals</div>
+          )}
+          {mealEntries.map(([key, d]) => {
             const variantLabel = mealVariantLabel(d);
-            const linePrice = perLbForProduct(baseProductId(key, d)) * (d.qty || 0);
+            const linePrice = mealLinePrice(key, d);
             return (
               <div key={key} className="cart-item cart-line" data-testid={`cart-protein-${key}`}>
                 <div className="cart-line-info">
@@ -406,7 +495,10 @@ export const UniversalCart = () => {
             );
           })}
 
-          {/* Treats — identical layout to meals */}
+          {/* ===== ADD-ONS (TREATS) — do NOT contribute to discount ===== */}
+          {treats && treats.length > 0 && (
+            <div className="cart-group-title" data-testid="cart-group-addons" style={{ fontSize: '12px', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Add-ons (Treats)</div>
+          )}
           {(treats || []).map((t) => {
             const qty = t.quantity || 1;
             const packLabel = (typeof t.variantLabel === 'string' && t.variantLabel) ? t.variantLabel : null;
@@ -432,6 +524,38 @@ export const UniversalCart = () => {
                   </div>
                   <span className="cart-line-price">${((t.price || 0) * qty).toFixed(2)}</span>
                   <button onClick={() => removeTreat(t.treat_id)} title="Remove" data-testid={`cart-remove-treat-${t.treat_id}`} className="cart-line-remove">×</button>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* ===== MONTHLY BUNDLES — do NOT contribute to discount ===== */}
+          {bundleEntries.length > 0 && (
+            <div className="cart-group-title" data-testid="cart-group-bundles" style={{ fontSize: '12px', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Monthly Bundles</div>
+          )}
+          {bundleEntries.map(([key, d]) => {
+            const linePrice = bundleLinePrice(key, d);
+            return (
+              <div key={key} className="cart-item cart-line" data-testid={`cart-bundle-${key}`}>
+                <div className="cart-line-info">
+                  <span className="cart-line-name">{d.name}</span>
+                </div>
+                <div className="cart-line-right">
+                  <div className="cart-qty-mini">
+                    <button
+                      onClick={() => (d.qty > 6 ? adjustProtein(key, d.qty - 6) : removeProtein(key))}
+                      data-testid={`cart-bundle-dec-${key}`}
+                      aria-label="Decrease"
+                    >−</button>
+                    <span>{Math.max(1, Math.round((d.qty || 6) / 6))}</span>
+                    <button
+                      onClick={() => adjustProtein(key, d.qty + 6)}
+                      data-testid={`cart-bundle-inc-${key}`}
+                      aria-label="Increase"
+                    >+</button>
+                  </div>
+                  <span className="cart-line-price">${linePrice.toFixed(2)}</span>
+                  <button onClick={() => removeProtein(key)} title="Remove" data-testid={`cart-remove-bundle-${key}`} className="cart-line-remove">×</button>
                 </div>
               </div>
             );
