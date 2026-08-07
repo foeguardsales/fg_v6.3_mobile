@@ -72,37 +72,25 @@ const COLLECTION_IMAGES = {
   royal_paws: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/u0taocl0_6.png'
 };
 
-// Immersive category hero — shown below the category tabs, above Stock Up & Save.
-// PLACEHOLDER images + copy for now; these will be pulled from the Shopify Storefront API (collection image + description).
-const CATEGORY_HERO = {
-  'dog-food': {
-    title: 'Raw Dog Food',
-    desc: 'Complete, farm-fresh raw nutrition for dogs of all life stages — human-grade meat, organs and bone, portioned and ready to serve.',
-    image: COLLECTION_IMAGES.dog
-  },
-  'dog-treats': {
-    title: 'Raw Dog Treats',
-    desc: 'Natural, single-ingredient treats that support dental health, enrichment and training — a wholesome reward your dog will love.',
-    image: COLLECTION_IMAGES.dog
-  },
-  'cat-food': {
-    title: 'Raw Cat Food',
-    desc: 'Species-appropriate raw meals crafted for obligate carnivores — high-protein, moisture-rich nutrition for cats of all life stages.',
-    image: COLLECTION_IMAGES.cat
-  },
-  'cat-treats': {
-    title: 'Raw Cat Treats',
-    desc: 'Simple, natural treats cats crave — pure protein rewards for enrichment, bonding and everyday spoiling.',
-    image: COLLECTION_IMAGES.cat
-  }
+// Single static menu hero (never changes while browsing) + the sticky
+// on-page section tabs that smooth-scroll to Meals / Treats / Monthly Bundles.
+const MENU_HERO = {
+  title: 'Raw Food Menu',
+  desc: 'Browse fresh meals, treats and bundles for dogs and cats.',
+  image: COLLECTION_IMAGES.dog,
 };
+
+const SECTION_TABS = [
+  { id: 'meals', label: 'Meals' },
+  { id: 'treats', label: 'Treats' },
+  { id: 'bundles', label: 'Monthly Bundles' },
+];
 
 export const BoxBuilder = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [petType, setPetType] = useState('dog'); // 'dog' or 'cat'
-  const [viewMode, setViewMode] = useState('food'); // 'food' | 'treats'
 
   // Prompt 5: highlight recommended proteins for a specific dog (from a
   // Plan Bar state — reads all saved pet plans (dogs[]) from localStorage.
@@ -515,27 +503,13 @@ export const BoxBuilder = () => {
     setBoxSize(36);
   };
 
-  const bannerCards = [
-    { id: 'dog-food', title: 'Raw Dog Food', petType: 'dog', viewMode: 'food', active: petType === 'dog' && viewMode === 'food' },
-    { id: 'dog-treats', title: 'Raw Dog Treats', petType: 'dog', viewMode: 'treats', active: petType === 'dog' && viewMode === 'treats' },
-    { id: 'cat-food', title: 'Raw Cat Food', petType: 'cat', viewMode: 'food', active: petType === 'cat' && viewMode === 'food' },
-    { id: 'cat-treats', title: 'Raw Cat Treats', petType: 'cat', viewMode: 'treats', active: petType === 'cat' && viewMode === 'treats' }
-  ];
-
-  // Map each menu tab to the Shopify collection whose image / title / description
-  // should populate the hero card. Empty entries fall back to the local
-  // CATEGORY_HERO constants above.
-  const BANNER_TO_COLLECTION = {
-    'dog-food': 'raw-dog-food',
-    'dog-treats': 'raw-dog-treats',
-    'cat-food': 'raw-cat-food',
-    'cat-treats': 'raw-cat-treats',
-  };
-
-  const handleCategoryClick = (card) => {
-    // Cart persists across pet types — no clearing on category switch
-    setPetType(card.petType);
-    setViewMode(card.viewMode);
+  // Smooth-scroll to an on-page section (Meals / Treats / Monthly Bundles).
+  // Scrolls the #root scroller; CSS scroll-margin-top offsets the sticky tabs.
+  const scrollToSection = (id) => {
+    const el = document.getElementById(`menu-section-${id}`);
+    if (el && el.scrollIntoView) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   const topNavTabs = [
@@ -708,9 +682,6 @@ export const BoxBuilder = () => {
   const royalPawsProducts = products.filter(p => p.product_line === 'royal_paws').map(withMenuCopy);
   const monthlyBundleProducts = bundleProducts.map(withMenuCopy);
 
-  // Box size — show only on food view
-  const showBoxSize = viewMode === 'food';
-
   return (
     <>
       <Navbar />
@@ -748,279 +719,129 @@ export const BoxBuilder = () => {
           }}
         />
 
-        {/* Category Tabs: Raw Dog Food | Monthly Bundles | Raw Dog Treats | Raw Cat Food | Raw Cat Treats
-            (Feeding Calculator removed here — it is offered on the funnel/selector page instead) */}
-        {/* Immersive category hero with the menu-selection tabs OVERLAID on the image
-            (cinematic — image sits under the selection, less wasted vertical space on mobile) */}
-        {(() => {
-          // Prefer Shopify Collection metadata (title / description / image) so the
-          // merchant can edit the hero straight from Shopify admin. Falls back to
-          // the local CATEGORY_HERO constants for anything Shopify hasn't populated.
-          const activeCard = bannerCards.find((c) => c.active) || bannerCards[0];
-          const localHero = CATEGORY_HERO[`${petType}-${viewMode}`];
-          const shopifyHero = shopifyCollectionsMap[BANNER_TO_COLLECTION[activeCard.id]];
-          const hero = shopifyHero || localHero ? {
-            title: shopifyHero?.title || localHero?.title || activeCard.title,
-            desc: shopifyHero?.description || localHero?.desc || '',
-            image: shopifyHero?.image_url || localHero?.image || COLLECTION_IMAGES[petType],
-          } : null;
-          const tabs = (
-            <div className="menu-category-tabs-wrap menu-category-tabs-wrap--on-hero">
-              <div className="menu-category-text menu-category-text--on-hero" data-testid="menu-category-tabs">
-                {bannerCards.map((card) => (
-                  <button
-                    key={card.id}
-                    onClick={() => handleCategoryClick(card)}
-                    data-testid={`category-${card.id}`}
-                    className={`menu-category-text-btn ${card.active ? 'is-active' : ''}`}
-                  >
-                    {card.title}
-                  </button>
-                ))}
-              </div>
+        {/* Single STATIC hero — never changes while browsing. */}
+        <div className="menu-collection-hero" data-testid="menu-collection-hero">
+          <div
+            className="menu-collection-hero-img"
+            style={{ backgroundImage: `url(${MENU_HERO.image})` }}
+          >
+            <div className="menu-collection-hero-overlay" aria-hidden="true" />
+            <div className="menu-collection-hero-text">
+              <h2 className="menu-collection-hero-title">{MENU_HERO.title}</h2>
+              <p className="menu-collection-hero-desc">{MENU_HERO.desc}</p>
             </div>
-          );
-          if (!hero) {
-            return <div className="menu-category-text" data-testid="menu-category-tabs">{tabs.props.children.props.children}</div>;
-          }
-          return (
-            <div className="menu-collection-hero" data-testid="menu-collection-hero">
-              <div
-                className="menu-collection-hero-img"
-                style={{ backgroundImage: `url(${hero.image})` }}
-              >
-                <div className="menu-collection-hero-overlay" aria-hidden="true" />
-                {tabs}
-                <div className="menu-collection-hero-text">
-                  <h2 className="menu-collection-hero-title">{hero.title}</h2>
-                  <p className="menu-collection-hero-desc">{hero.desc}</p>
-                </div>
-              </div>
-            </div>
-          );
-        })()}
+          </div>
+        </div>
 
-        {/* Main Content - Dog or Cat */}
+        {/* Sticky category tabs — smooth-scroll to on-page sections (no page swap). */}
+        <div className="menu-category-text" data-testid="menu-category-tabs">
+          {SECTION_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => scrollToSection(tab.id)}
+              data-testid={`category-${tab.id}`}
+              className="menu-category-text-btn"
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Main Content — single page: Meals / Treats / Monthly Bundles */}
         <>
-            {showBoxSize && (
-              <BoxSizePills
-                boxSize={boxSize}
-                rates={DISCOUNT_RATES}
-                onChange={(sz) => {
-                  setBoxSize(sz);
-                  sessionStorage.setItem('boxSize', sz.toString());
-                }}
-              />
-            )}
+            <BoxSizePills
+              boxSize={boxSize}
+              rates={DISCOUNT_RATES}
+              onChange={(sz) => {
+                setBoxSize(sz);
+                sessionStorage.setItem('boxSize', sz.toString());
+              }}
+            />
 
             {loading ? (
               <div style={{ padding: '60px', textAlign: 'center' }}>Loading products...</div>
-            ) : viewMode === 'treats' ? (
-              <TreatsSection 
-                selectedTreats={selectedTreats}
-                onToggleTreat={handleToggleTreat}
-                petType={petType}
-                navigate={navigate}
-                hideHeader={true}
-                showCategoryDescriptions={true}
-                onOpenTreat={(tid) => setActiveTreatId(tid)}
-              />
-            ) : petType === 'dog' ? (
+            ) : (
               <>
-                {/* Comfort Dinner Collection - DOG */}
-                <div className="product-collection menu-collection">
-                  <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-comfort">
-                    <div
-                      className="menu-collection-banner menu-collection-banner--overlay"
-                      style={{ backgroundImage: `url(${COLLECTION_IMAGES.comfort_dinner})` }}
-                    >
-                      <div className="menu-collection-banner-text">
-                        <h3 className="menu-collection-title">Comfort Dinner</h3>
-                        <p className="menu-collection-desc">Complete raw food for dogs of all-life stages.</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="product-grid">
-                    {comfortDinnerProducts.map(product => (
-                      <ProductCard 
-                        key={product.product_id}
-                        product={product}
-                        selectedQty={selectedProteins[product.product_id]?.qty || 0}
-                        onUpdate={handleUpdateProtein}
-                        canAdd={canAdd(product.product_id)}
-                        getDiscountedPrice={getDiscountedPrice}
-                        getBasePrice={getBasePrice}
-                        boxSize={boxSize}
-                        navigate={navigate}
-                        petType={petType}
-                        onOpenProduct={(pid) => setActiveProductId(pid)}
-                        isRecommended={false}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Primal Feast Collection - DOG */}
-                <div className="product-collection menu-collection">
-                  <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-primal">
-                    <div
-                      className="menu-collection-banner menu-collection-banner--overlay"
-                      style={{ backgroundImage: `url(${COLLECTION_IMAGES.primal_feast})` }}
-                    >
-                      <div className="menu-collection-banner-text">
-                        <h3 className="menu-collection-title">Primal Feast</h3>
-                        <p className="menu-collection-desc">Whole prey raw pet food made with 80% meat, 10% bone and 10% organ.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="product-grid">
-                    {primalFeastProducts.map(product => (
-                      <ProductCard 
-                        key={product.product_id}
-                        product={product}
-                        selectedQty={selectedProteins[product.product_id]?.qty || 0}
-                        onUpdate={handleUpdateProtein}
-                        canAdd={canAdd(product.product_id)}
-                        getDiscountedPrice={getDiscountedPrice}
-                        getBasePrice={getBasePrice}
-                        boxSize={boxSize}
-                        navigate={navigate}
-                        petType={petType}
-                        onOpenProduct={(pid) => setActiveProductId(pid)}
-                        isRecommended={false}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Monthly Bundles Collection - DOG (Shopify collection `monthly-bundles-raw-dog-food`).
-                    Sits above the Treats section within Raw Dog Food view. Uses the exact same
-                    menu-collection markup as Comfort Dinner / Primal Feast so styling is 1:1. */}
-                {monthlyBundleProducts.length > 0 && (
+                {/* ===================== MEALS ===================== */}
+                <section id="menu-section-meals" style={{ scrollMarginTop: '70px' }}>
+                  {/* Comfort Dinner */}
                   <div className="product-collection menu-collection">
-                    <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-bundles">
-                      <div
-                        className="menu-collection-banner menu-collection-banner--overlay"
-                        style={{ backgroundImage: `url(${shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.image_url || COLLECTION_IMAGES.primal_feast})` }}
-                      >
+                    <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-comfort">
+                      <div className="menu-collection-banner menu-collection-banner--overlay" style={{ backgroundImage: `url(${COLLECTION_IMAGES.comfort_dinner})` }}>
                         <div className="menu-collection-banner-text">
-                          <h3 className="menu-collection-title">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.title || 'Monthly Bundles'}</h3>
-                          <p className="menu-collection-desc">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.description || 'One box per month — every meal your dog needs, delivered.'}</p>
+                          <h3 className="menu-collection-title">Comfort Dinner</h3>
+                          <p className="menu-collection-desc">Complete raw food for dogs of all-life stages.</p>
                         </div>
                       </div>
                     </div>
                     <div className="product-grid">
-                      {monthlyBundleProducts.map(product => (
-                        <ProductCard
-                          key={product.product_id}
-                          product={product}
-                          selectedQty={selectedProteins[product.product_id]?.qty || 0}
-                          onUpdate={handleUpdateProtein}
-                          canAdd={canAdd(product.product_id)}
-                          getDiscountedPrice={getDiscountedPrice}
-                          getBasePrice={getBasePrice}
-                          boxSize={boxSize}
-                          navigate={navigate}
-                          petType="dog"
-                          onOpenProduct={(pid) => setActiveProductId(pid)}
-                          isRecommended={false}
-                        />
+                      {comfortDinnerProducts.map(product => (
+                        <ProductCard key={product.product_id} product={product} selectedQty={selectedProteins[product.product_id]?.qty || 0} onUpdate={handleUpdateProtein} canAdd={canAdd(product.product_id)} getDiscountedPrice={getDiscountedPrice} getBasePrice={getBasePrice} boxSize={boxSize} navigate={navigate} petType="dog" onOpenProduct={(pid) => setActiveProductId(pid)} isRecommended={false} />
                       ))}
                     </div>
                   </div>
-                )}
 
-                {/* Treats Section - DOG */}
-                <TreatsSection 
-                  selectedTreats={selectedTreats}
-                  onToggleTreat={handleToggleTreat}
-                  petType="dog"
-                  navigate={navigate}
-                  showCategoryDescriptions={true}
-                  onOpenTreat={(tid) => setActiveTreatId(tid)}
-                />
-              </>
-            ) : (
-              <>
-                {/* Royal Paws Collection - CAT */}
-                <div className="product-collection menu-collection">
-                  <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-royal">
-                    <div
-                      className="menu-collection-banner menu-collection-banner--overlay"
-                      style={{ backgroundImage: `url(${COLLECTION_IMAGES.royal_paws})` }}
-                    >
-                      <div className="menu-collection-banner-text">
-                        <h3 className="menu-collection-title">Royal Paws Dinner</h3>
-                        <p className="menu-collection-desc">Complete raw food for cats of all-life stages.</p>
+                  {/* Primal Feast */}
+                  <div className="product-collection menu-collection">
+                    <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-primal">
+                      <div className="menu-collection-banner menu-collection-banner--overlay" style={{ backgroundImage: `url(${COLLECTION_IMAGES.primal_feast})` }}>
+                        <div className="menu-collection-banner-text">
+                          <h3 className="menu-collection-title">Primal Feast</h3>
+                          <p className="menu-collection-desc">Whole prey raw pet food made with 80% meat, 10% bone and 10% organ.</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  
-                  <div className="product-grid">
-                    {royalPawsProducts.map(product => (
-                      <ProductCard 
-                        key={product.product_id}
-                        product={product}
-                        selectedQty={selectedProteins[product.product_id]?.qty || 0}
-                        onUpdate={handleUpdateProtein}
-                        canAdd={canAdd(product.product_id)}
-                        getDiscountedPrice={getDiscountedPrice}
-                        getBasePrice={getBasePrice}
-                        boxSize={boxSize}
-                        navigate={navigate}
-                        petType={petType}
-                        onOpenProduct={(pid) => setActiveProductId(pid)}
-                        isRecommended={false}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {/* Primal Feast Collection - CAT (same line as dog, 80/10/10 base) */}
-                <div className="product-collection menu-collection">
-                  <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-primal-cat">
-                    <div
-                      className="menu-collection-banner menu-collection-banner--overlay"
-                      style={{ backgroundImage: `url(${COLLECTION_IMAGES.primal_feast})` }}
-                    >
-                      <div className="menu-collection-banner-text">
-                        <h3 className="menu-collection-title">Primal Feast</h3>
-                        <p className="menu-collection-desc">Whole prey raw pet food made with 80% meat, 10% bone and 10% organ.</p>
-                      </div>
+                    <div className="product-grid">
+                      {primalFeastProducts.map(product => (
+                        <ProductCard key={product.product_id} product={product} selectedQty={selectedProteins[product.product_id]?.qty || 0} onUpdate={handleUpdateProtein} canAdd={canAdd(product.product_id)} getDiscountedPrice={getDiscountedPrice} getBasePrice={getBasePrice} boxSize={boxSize} navigate={navigate} petType="dog" onOpenProduct={(pid) => setActiveProductId(pid)} isRecommended={false} />
+                      ))}
                     </div>
                   </div>
 
-                  <div className="product-grid">
-                    {primalFeastProducts.map(product => (
-                      <ProductCard 
-                        key={product.product_id}
-                        product={product}
-                        selectedQty={selectedProteins[product.product_id]?.qty || 0}
-                        onUpdate={handleUpdateProtein}
-                        canAdd={canAdd(product.product_id)}
-                        getDiscountedPrice={getDiscountedPrice}
-                        getBasePrice={getBasePrice}
-                        boxSize={boxSize}
-                        navigate={navigate}
-                        petType={petType}
-                        onOpenProduct={(pid) => setActiveProductId(pid)}
-                        isRecommended={false}
-                      />
-                    ))}
+                  {/* Royal Paws (cat) */}
+                  <div className="product-collection menu-collection">
+                    <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-royal">
+                      <div className="menu-collection-banner menu-collection-banner--overlay" style={{ backgroundImage: `url(${COLLECTION_IMAGES.royal_paws})` }}>
+                        <div className="menu-collection-banner-text">
+                          <h3 className="menu-collection-title">Royal Paws Dinner</h3>
+                          <p className="menu-collection-desc">Complete raw food for cats of all-life stages.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="product-grid">
+                      {royalPawsProducts.map(product => (
+                        <ProductCard key={product.product_id} product={product} selectedQty={selectedProteins[product.product_id]?.qty || 0} onUpdate={handleUpdateProtein} canAdd={canAdd(product.product_id)} getDiscountedPrice={getDiscountedPrice} getBasePrice={getBasePrice} boxSize={boxSize} navigate={navigate} petType="cat" onOpenProduct={(pid) => setActiveProductId(pid)} isRecommended={false} />
+                      ))}
+                    </div>
                   </div>
-                </div>
+                </section>
 
-                {/* Treats Section - CAT */}
-                <TreatsSection 
-                  selectedTreats={selectedTreats}
-                  onToggleTreat={handleToggleTreat}
-                  petType="cat"
-                  navigate={navigate}
-                  showCategoryDescriptions={true}
-                  onOpenTreat={(tid) => setActiveTreatId(tid)}
-                />
+                {/* ===================== TREATS ===================== */}
+                <section id="menu-section-treats" style={{ scrollMarginTop: '70px' }}>
+                  <TreatsSection selectedTreats={selectedTreats} onToggleTreat={handleToggleTreat} petType="dog" navigate={navigate} showCategoryDescriptions={true} onOpenTreat={(tid) => setActiveTreatId(tid)} />
+                  <TreatsSection selectedTreats={selectedTreats} onToggleTreat={handleToggleTreat} petType="cat" navigate={navigate} showCategoryDescriptions={true} onOpenTreat={(tid) => setActiveTreatId(tid)} />
+                </section>
+
+                {/* ===================== MONTHLY BUNDLES ===================== */}
+                <section id="menu-section-bundles" style={{ scrollMarginTop: '70px' }}>
+                  {monthlyBundleProducts.length > 0 && (
+                    <div className="product-collection menu-collection">
+                      <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-bundles">
+                        <div className="menu-collection-banner menu-collection-banner--overlay" style={{ backgroundImage: `url(${shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.image_url || COLLECTION_IMAGES.primal_feast})` }}>
+                          <div className="menu-collection-banner-text">
+                            <h3 className="menu-collection-title">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.title || 'Monthly Bundles'}</h3>
+                            <p className="menu-collection-desc">{shopifyCollectionsMap['monthly-bundles-raw-dog-food']?.description || 'One box per month — every meal your dog needs, delivered.'}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="product-grid">
+                        {monthlyBundleProducts.map(product => (
+                          <ProductCard key={product.product_id} product={product} selectedQty={selectedProteins[product.product_id]?.qty || 0} onUpdate={handleUpdateProtein} canAdd={canAdd(product.product_id)} getDiscountedPrice={getDiscountedPrice} getBasePrice={getBasePrice} boxSize={boxSize} navigate={navigate} petType="dog" onOpenProduct={(pid) => setActiveProductId(pid)} isRecommended={false} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </section>
               </>
             )}
         </>
@@ -1126,11 +947,9 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const showPrice = discountedPerLb * displayQty;
   const showOriginal = basePerLb * displayQty;
 
-  // Products with variants (packaging/size options) are configured on the Product Page,
-  // not on the menu. Menu just shows a "+" that opens the detail view. Products flagged
-  // `no_variants: true` fall back to the classic inline +/qty stepper.
-  const hasVariants = product.no_variants !== true;
-  
+  // Every menu product now adds directly (no packaging modal on the menu).
+  // Tapping the card body still opens the detail modal for full info.
+
   // Product image URL - use the uploaded comfort dinner image for all products
   const productImage = 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';
   
@@ -1189,7 +1008,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
   return (
     <div 
-      className={`product-card-row ${(!hasVariants && isSelected) ? 'is-selected' : ''} ${isRecommended ? 'is-recommended' : ''}`}
+      className={`product-card-row ${isSelected ? 'is-selected' : ''} ${isRecommended ? 'is-recommended' : ''}`}
       data-testid={`product-${product.product_id}`}
       data-recommended={isRecommended ? 'true' : 'false'}
       style={isRecommended ? { position: 'relative' } : undefined}
@@ -1201,19 +1020,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       {/* Image — on RIGHT side (desktop), on TOP (mobile via CSS order) */}
       <div className="product-card-media">
         <img src={productImage} alt={product.name} />
-        {/* + button (variants) OR + / qty stepper (no variants). Variant products
-            never show a stepper on the menu — clicking "+" opens the product page
-            where packaging + quantity are chosen. */}
-        {hasVariants ? (
-          <button
-            className="product-card-plus"
-            onClick={(e) => { e.stopPropagation(); goToProduct(); }}
-            data-testid={`add-${product.product_id}`}
-            aria-label="Configure and add to cart"
-          >
-            +
-          </button>
-        ) : selectedQty === 0 ? (
+        {/* Every product adds DIRECTLY from the menu: "+" adds to the box, then a
+            −/qty stepper appears. Tapping the card body still opens the detail
+            modal (ingredients / nutrition). No separate build-a-box step. */}
+        {selectedQty === 0 ? (
           <button
             className="product-card-plus"
             onClick={stopAndAdd}
@@ -1262,7 +1072,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
             // Monthly Bundles are flat-priced (not per-lb). Show Shopify's total price
             // straight from the product; hide the /lb badge so the card is truthful.
             <span className="price-regular" data-testid={`bundle-price-${product.product_id}`}>${(product.pricing?.[0]?.price || 0).toFixed(2)}</span>
-          ) : (!hasVariants && selectedQty > 0) ? (
+          ) : (selectedQty > 0) ? (
             <>
               <span className="price-regular">${lineTotal.toFixed(2)}</span>
               <span className="price-unit">(${perLbDisplay.toFixed(2)}/lb)</span>

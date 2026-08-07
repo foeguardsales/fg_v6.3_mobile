@@ -50,3 +50,13 @@ Frontend: ShopifyAuthContext rewritten -> reads /customer-auth/session (fetch cr
 ENV (backend/.env, all blank placeholders — user adds real values in their Shopify account/env): SHOPIFY_SHOP_ID, SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID, SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_SECRET, SHOPIFY_CUSTOMER_ACCOUNT_API_VERSION, CUSTOMER_AUTH_REDIRECT_URI (blank=auto-derive), CUSTOMER_AUTH_POST_LOGIN_REDIRECT.
 PENDING (needs user): real Customer Account API app creds + register callback URL {origin}/api/customer-auth/callback in Shopify. Then run backend+frontend testing agents for true E2E OAuth login/callback/session/logout.
 NOTE: classic Storefront customer-token code (services/shopify/customers.js, customerTokenStorage) is now UNUSED but left in place (harmless, GitHub-safe). Can be removed later if desired.
+
+## MENU REVAMP — PROMPT 1 (Simplify Menu Flow) ✅ DONE (2026-07)
+File: frontend/src/pages/BoxBuilder.js (design/box-engine untouched per user).
+- Removed separate build-a-box step: meal `+` now adds DIRECTLY (inline +/qty stepper for ALL products; card-body click still opens detail modal). ProductCard `hasVariants` modal branch removed.
+- Single STATIC hero (MENU_HERO): "Raw Food Menu" / "Browse fresh meals, treats and bundles for dogs and cats." — never changes (removed per-category CATEGORY_HERO + bannerCards + handleCategoryClick + BANNER_TO_COLLECTION).
+- Sticky tabs (.menu-category-text) = Meals / Treats / Monthly Bundles → smooth-scroll to on-page sections (#menu-section-meals/treats/bundles, scrollMarginTop 70px). No page swap, no hero change.
+- Single page: Meals (Comfort Dinner + Primal Feast + Royal Paws), Treats (dog + cat TreatsSection), Monthly Bundles. No dog/cat toggle (viewMode state removed).
+- Box math/discount engine/localStorage selectedProteins UNCHANGED (6lb increments, tiers). Checkout still maps meals to product.shopify_variant_id (variants[0] = 1lb pack).
+- Verified via screenshots: hero static, tabs smooth-scroll, meal `+` direct-adds (cart updates), bundles/treats render.
+- OPEN: 1.5lb still selectable inside the ProductDetail detail modal/page (menu add bypasses it). Pending user decision: strip 1.5lb in frontend detail view too, or remove the 1.5lb variant in Shopify (cleanest).
