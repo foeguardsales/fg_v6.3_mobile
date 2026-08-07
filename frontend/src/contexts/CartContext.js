@@ -431,28 +431,27 @@ export const UniversalCart = () => {
             </div>
           )}
 
-          {/* Prompt 7: YOUR BOX summary card (dynamic) — meal weight + subtotal + tier unlock */}
+          {/* Prompt 7: YOUR BOX summary card (dynamic) — meal weight + tier unlock.
+              Total is shown only at the bottom (Subtotal/Total), so it's omitted here. */}
           {hasItems && (
             <div
               data-testid="cart-box-summary"
               style={{
                 background: '#F5F1E6', border: '1px solid #E4DAC4', borderRadius: '12px',
                 padding: '14px 16px', marginBottom: '16px',
+                fontFamily: "'Barlow Semi Condensed', serif",
               }}
             >
-              <div style={{ fontSize: '13px', fontWeight: 800, letterSpacing: '0.06em', color: '#2C2C2C' }}>
+              <div style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '0.04em', color: '#2C2C2C' }}>
                 YOUR BOX ({mealLbs} lb)
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '4px 0 0', fontSize: '18px', fontWeight: 800, color: '#2C2C2C' }}>
-                <span data-testid="cart-summary-subtotal">${subtotal.toFixed(2)}</span>
-                {bulkRate > 0 && (
-                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#2E7D32' }} data-testid="cart-summary-unlocked">
-                    ✓ {Math.round(bulkRate * 100)}% OFF unlocked
-                  </span>
-                )}
-              </div>
+              {bulkRate > 0 && (
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#2E7D32', marginTop: '4px' }} data-testid="cart-summary-unlocked">
+                  ✓ {Math.round(bulkRate * 100)}% OFF unlocked
+                </div>
+              )}
               {nextTier && (
-                <div style={{ margin: '6px 0 0', fontSize: '13px', color: '#8A7156' }} data-testid="cart-summary-next">
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#8A7156', marginTop: '4px' }} data-testid="cart-summary-next">
                   Add {nextTier.lbsAway} lb more to unlock {Math.round(nextTier.rate * 100)}% OFF
                 </div>
               )}
@@ -461,7 +460,7 @@ export const UniversalCart = () => {
 
           {/* ===== MEALS (contribute to discount tiers) ===== */}
           {mealEntries.length > 0 && (
-            <div className="cart-group-title" data-testid="cart-group-meals" style={{ fontSize: '12px', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '4px 0 8px' }}>Meals</div>
+            <div className="cart-group-title" data-testid="cart-group-meals" style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '4px 0 8px' }}>Meals</div>
           )}
           {mealEntries.map(([key, d]) => {
             const variantLabel = mealVariantLabel(d);
@@ -497,7 +496,7 @@ export const UniversalCart = () => {
 
           {/* ===== ADD-ONS (TREATS) — do NOT contribute to discount ===== */}
           {treats && treats.length > 0 && (
-            <div className="cart-group-title" data-testid="cart-group-addons" style={{ fontSize: '12px', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Add-ons (Treats)</div>
+            <div className="cart-group-title" data-testid="cart-group-addons" style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Add-ons (Treats)</div>
           )}
           {(treats || []).map((t) => {
             const qty = t.quantity || 1;
@@ -531,7 +530,7 @@ export const UniversalCart = () => {
 
           {/* ===== MONTHLY BUNDLES — do NOT contribute to discount ===== */}
           {bundleEntries.length > 0 && (
-            <div className="cart-group-title" data-testid="cart-group-bundles" style={{ fontSize: '12px', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Monthly Bundles</div>
+            <div className="cart-group-title" data-testid="cart-group-bundles" style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Monthly Bundles</div>
           )}
           {bundleEntries.map(([key, d]) => {
             const linePrice = bundleLinePrice(key, d);

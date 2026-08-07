@@ -153,7 +153,51 @@ query Pages($first: Int!, $after: String) {
 
 _PAGE_QUERY = """
 query Page($handle: String!) {
-  page(handle: $handle) { id title handle body }
+  page(handle: $handle) {
+    id title handle body
+    metafield(namespace: "foeguard", key: "page_builder") {
+      key
+      type
+      references(first: 40) {
+        nodes {
+          __typename
+          ... on Metaobject {
+            id
+            type
+            handle
+            fields {
+              key
+              value
+              type
+              reference {
+                ... on MediaImage { image { url altText width height } }
+                ... on Metaobject {
+                  id type handle
+                  fields {
+                    key value type
+                    reference { ... on MediaImage { image { url altText } } }
+                  }
+                }
+              }
+              references(first: 25) {
+                nodes {
+                  ... on MediaImage { image { url altText } }
+                  ... on Metaobject {
+                    id type handle
+                    fields {
+                      key value type
+                      reference { ... on MediaImage { image { url altText } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          ... on MediaImage { image { url altText } }
+        }
+      }
+    }
+  }
 }
 """
 
@@ -165,7 +209,15 @@ async def _fetch_pages(first: int, after: Optional[str]):
 
 async def _fetch_page(handle: str):
     data = await get_storefront().query(_PAGE_QUERY, {"handle": handle})
-    return (data or {}).get("page")
+    page = (data or {}).get("page")
+    if not page:
+        return page
+    # Normalise the page_builder metafield into a `metafields` array so the
+    # frontend pageMeta helpers (indexPageMetafields / getMetafieldMetaobjects)
+    # can read ordered sections uniformly. Empty / missing -> [].
+    mf = page.pop("metafield", None)
+    page["metafields"] = [{**mf, "namespace": "foeguard"}] if mf else []
+    return page
 
 
 @router.get("/pages")

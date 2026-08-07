@@ -1,0 +1,195 @@
+import React from 'react';
+import { getMetafieldMetaobjects } from '../services/shopify/pageMeta';
+
+/**
+ * Renders a Shopify `foeguard_page_builder` metafield (an ordered
+ * list.mixed_reference of section metaobjects) into on-brand sections.
+ *
+ * DESIGN-SAFE: unknown section types fall back to a generic title + rich-text
+ * + image renderer, so new sections added in Shopify still appear. If the page
+ * has no page_builder content, this renders nothing and the caller keeps its
+ * existing fallback markup.
+ */
+
+// ---- Shopify rich_text_field (JSON) -> HTML string --------------------
+function inlineToHtml(node) {
+  if (!node) return '';
+  if (typeof node.value === 'string') {
+    let t = node.value
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    if (node.bold) t = `<strong>${t}</strong>`;
+    if (node.italic) t = `<em>${t}</em>`;
+    return t;
+  }
+  if (node.type === 'link' && node.url) {
+    const inner = (node.children || []).map(inlineToHtml).join('');
+    return `<a href="${node.url}" target="_blank" rel="noreferrer">${inner}</a>`;
+  }
+  return (node.children || []).map(inlineToHtml).join('');
+}
+
+export function richTextToHtml(raw) {
+  if (raw == null) return '';
+  let json = raw;
+  if (typeof raw === 'string') {
+    const t = raw.trim();
+    if (!t.startsWith('{') && !t.startsWith('[')) return t ? `<p>${t}</p>` : '';
+    try { json = JSON.parse(t); } catch { return `<p>${t}</p>`; }
+  }
+  const out = [];
+  const walk = (node) => {
+    if (!node) return;
+    switch (node.type) {
+      case 'heading': {
+        const lvl = Math.min(Math.max(node.level || 3, 2), 4);
+        out.push(`<h${lvl}>${(node.children || []).map(inlineToHtml).join('')}</h${lvl}>`);
+        break;
+      }
+      case 'paragraph':
+        out.push(`<p>${(node.children || []).map(inlineToHtml).join('')}</p>`);
+        break;
+      case 'list': {
+        const tag = node.listType === 'ordered' ? 'ol' : 'ul';
+        const items = (node.children || [])
+          .map((li) => `<li>${(li.children || []).map(inlineToHtml).join('')}</li>`).join('');
+        out.push(`<${tag}>${items}</${tag}>`);
+        break;
+      }
+      default:
+        (node.children || []).forEach(walk);
+    }
+  };
+  if (json && Array.isArray(json.children)) json.children.forEach(walk);
+  else if (Array.isArray(json)) json.forEach(walk);
+  return out.join('');
+}
+
+const RichText = ({ value, className }) => {
+  const html = richTextToHtml(value);
+  if (!html) return null;
+  return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+};
+
+// pick first non-empty among candidate field keys
+const pick = (s, keys) => {
+  for (const k of keys) { if (s[k] != null && s[k] !== '') return s[k]; }
+  return null;
+};
+const imgUrl = (v) => (typeof v === 'string' ? v : (v && v.url) || null);
+
+// ---- Section renderers ------------------------------------------------
+function Hero({ s }) {
+  const title = pick(s, ['page_hero_header', 'header', 'title']);
+  const sub = pick(s, ['page_hero_subheading', 'subheading', 'subheader']);
+  const img = imgUrl(pick(s, ['page_hero_image', 'image', 'background_image']));
+  return (
+    <section className="spb-hero" style={img ? { backgroundImage: `url(${img})` } : undefined} data-testid="pb-hero">
+      <div className="spb-hero-overlay" />
+      <div className="spb-hero-inner">
+        {title && <h1 className="spb-hero-title">{title}</h1>}
+        {sub && <p className="spb-hero-sub">{sub}</p>}
+      </div>
+    </section>
+  );
+}
+
+function TextBlock({ s, i }) {
+  const title = pick(s, ['title', 'header']);
+  const body = pick(s, ['body_content', 'body', 'content', 'description']);
+  const img = imgUrl(pick(s, ['image_video', 'image', 'media']));
+  const reversed = i % 2 === 1;
+  return (
+    <section className={`spb-text ${img ? 'spb-text--split' : ''} ${reversed ? 'spb-text--rev' : ''}`} data-testid="pb-text">
+      <div className="spb-text-body">
+        {title && <h2 className="spb-h2">{title}</h2>}
+        <RichText value={body} className="spb-rich" />
+      </div>
+      {img && <div className="spb-text-media"><img src={img} alt={title || ''} loading="lazy" /></div>}
+    </section>
+  );
+}
+
+function CtaBanner({ s }) {
+  const title = pick(s, ['cta_title', 'title', 'header']);
+  const desc = pick(s, ['cta_description', 'description', 'subheader']);
+  const btn = pick(s, ['cta_button', 'button', 'button_text']);
+  const label = typeof btn === 'object' ? pick(btn, ['label', 'text', 'title']) : btn;
+  const href = typeof btn === 'object' ? pick(btn, ['url', 'link', 'href']) : null;
+  return (
+    <section className="spb-cta" data-testid="pb-cta">
+      {title && <h2 className="spb-cta-title">{title}</h2>}
+      {desc && <p className="spb-cta-desc">{desc}</p>}
+      {label && <a className="spb-cta-btn" href={href || '/menu'}>{label}</a>}
+    </section>
+  );
+}
+
+// Generic "header + subheader + cards" block (benefits / protein / recipes / reviews)
+function CardsBlock({ s }) {
+  const header = pick(s, ['about_us_protein_header', 'review_section_header', 'header', 'title', 'section_header']);
+  const sub = pick(s, ['about_us_protein_subheader', 'review_section_subheader', 'subheader', 'subheading']);
+  // find the first array-of-objects field -> the cards
+  const cardsKey = Object.keys(s).find((k) => Array.isArray(s[k]) && s[k].some((x) => x && typeof x === 'object' && x.__type !== 'image'));
+  const cards = cardsKey ? s[cardsKey].filter((c) => c && c.__type !== 'image') : [];
+  const bodyCandidate = pick(s, ['body_content', 'description']);
+  return (
+    <section className="spb-cards" data-testid="pb-cards">
+      {header && <h2 className="spb-h2 spb-center">{header}</h2>}
+      {sub && <p className="spb-sub spb-center">{sub}</p>}
+      <RichText value={bodyCandidate} className="spb-rich spb-center" />
+      {cards.length > 0 && (
+        <div className="spb-card-grid">
+          {cards.map((c, idx) => {
+            const cImg = imgUrl(pick(c, ['image', 'icon', 'photo', 'image_video', 'card_image']));
+            const cTitle = pick(c, ['title', 'header', 'name', 'customer_name', 'protein_title']);
+            const cBody = pick(c, ['body_content', 'description', 'text', 'review', 'content', 'body']);
+            return (
+              <div className="spb-card" key={idx}>
+                {cImg && <img className="spb-card-img" src={cImg} alt={cTitle || ''} loading="lazy" />}
+                {cTitle && <h3 className="spb-card-title">{cTitle}</h3>}
+                {cBody && (typeof cBody === 'string' && (cBody.startsWith('{') || cBody.startsWith('['))
+                  ? <RichText value={cBody} className="spb-card-body" />
+                  : (cBody && <p className="spb-card-body">{typeof cBody === 'string' ? cBody : ''}</p>))}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function ImagesBlock({ s }) {
+  const imgs = [];
+  Object.values(s).forEach((v) => {
+    if (Array.isArray(v)) v.forEach((x) => { const u = imgUrl(x); if (u) imgs.push(u); });
+    else { const u = imgUrl(v); if (u && typeof v === 'string') imgs.push(u); }
+  });
+  if (imgs.length === 0) return null;
+  return (
+    <section className="spb-images" data-testid="pb-images">
+      {imgs.map((u, i) => <img key={i} src={u} alt="" loading="lazy" />)}
+    </section>
+  );
+}
+
+function renderSection(s, i) {
+  const type = s.__type || '';
+  if (/hero/.test(type)) return <Hero key={i} s={s} />;
+  if (/text_block/.test(type)) return <TextBlock key={i} s={s} i={i} />;
+  if (/cta/.test(type)) return <CtaBanner key={i} s={s} />;
+  if (/compare_images|images/.test(type)) return <ImagesBlock key={i} s={s} />;
+  if (/protein|recipes|benefits|reviews|comparison|contact|social|details/.test(type)) return <CardsBlock key={i} s={s} />;
+  // generic fallback
+  return <CardsBlock key={i} s={s} />;
+}
+
+export default function ShopifyPageBuilder({ page, className }) {
+  const sections = React.useMemo(() => getMetafieldMetaobjects(page, 'page_builder'), [page]);
+  if (!sections || sections.length === 0) return null;
+  return (
+    <div className={`shopify-page-builder ${className || ''}`} data-testid="shopify-page-builder">
+      {sections.map((s, i) => renderSection(s, i))}
+    </div>
+  );
+}

@@ -117,19 +117,55 @@ export function getMetafieldMetaobjects(page, key) {
   const idx = indexPageMetafields(page);
   const m = idx[key];
   if (!m || !m.references || !Array.isArray(m.references.nodes)) return [];
-  return m.references.nodes.map((n) => {
-    if (!n || !Array.isArray(n.fields)) return null;
-    const obj = { __handle: n.handle, __type: n.type };
-    n.fields.forEach((f) => {
-      if (!f || !f.key) return;
-      // Try to parse JSON values (e.g. media references)
-      if (f.value && (f.value.startsWith('{') || f.value.startsWith('['))) {
-        try { obj[f.key] = JSON.parse(f.value); return; } catch { /* fall through */ }
-      }
-      obj[f.key] = f.value;
-    });
-    return obj;
-  }).filter(Boolean);
+  return m.references.nodes.map((n) => flattenMetaobjectNode(n)).filter(Boolean);
+}
+
+/** MediaImage node OR a metaobject field's image reference -> url (or null). */
+function nodeImageUrl(node) {
+  if (!node) return null;
+  if (node.image && node.image.url) return node.image.url;
+  return null;
+}
+
+/**
+ * Flatten a metaobject node into a plain `{ __type, __handle, key: value }`
+ * object. Resolves (2 levels deep):
+ *   - MediaImage references  -> url string
+ *   - nested metaobject refs -> flattened object
+ *   - nested reference lists  -> array of flattened objects / urls
+ *   - JSON string values      -> parsed
+ */
+export function flattenMetaobjectNode(n) {
+  if (!n || !Array.isArray(n.fields)) {
+    // A bare MediaImage node (mixed_reference lists can contain images)
+    const url = nodeImageUrl(n);
+    return url ? { __type: 'image', url } : null;
+  }
+  const obj = { __handle: n.handle, __type: n.type };
+  n.fields.forEach((f) => {
+    if (!f || !f.key) return;
+    // 1) Single reference (image or nested metaobject)
+    if (f.reference) {
+      const url = nodeImageUrl(f.reference);
+      if (url) { obj[f.key] = url; return; }
+      if (Array.isArray(f.reference.fields)) { obj[f.key] = flattenMetaobjectNode(f.reference); return; }
+    }
+    // 2) Reference list (nested metaobjects or image list)
+    if (f.references && Array.isArray(f.references.nodes)) {
+      obj[f.key] = f.references.nodes.map((x) => {
+        const url = nodeImageUrl(x);
+        if (url) return { __type: 'image', url };
+        return flattenMetaobjectNode(x);
+      }).filter(Boolean);
+      return;
+    }
+    // 3) Scalar value (auto-parse JSON)
+    if (f.value && (f.value.startsWith('{') || f.value.startsWith('['))) {
+      try { obj[f.key] = JSON.parse(f.value); return; } catch { /* fall through */ }
+    }
+    obj[f.key] = f.value;
+  });
+  return obj;
 }
 
 export default {

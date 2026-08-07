@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Navbar, Footer } from '../components/Layout';
 import { useShopifyPage } from '../hooks/useShopifyPage';
-import { getMetafieldImage, getMetafieldImageList } from '../services/shopify/pageMeta';
+import { getMetafieldImage, getMetafieldImageList, getMetafieldMetaobjects } from '../services/shopify/pageMeta';
+import ShopifyPageBuilder from '../components/ShopifyPageBuilder';
 import { SeoHead } from '../components/SeoHead';
 
 const PROTEINS = [
@@ -55,6 +56,7 @@ export const AboutPage = () => {
   // Live Shopify Page (handle: `about-us`). When present, its title and body
   // override the hardcoded copy while preserving the surrounding design.
   const { page: shopifyPage } = useShopifyPage('about-us');
+  const hasBuilder = getMetafieldMetaobjects(shopifyPage, 'page_builder').length > 0;
 
   // Metafield-driven imagery. The moment the merchant assigns
   // ``foeguard.hero`` (single MediaImage) or ``foeguard.team_images``
@@ -94,6 +96,7 @@ export const AboutPage = () => {
     <>
       <SeoHead endpoint="/api/shopify/page/about-us" fallback={{ title: 'About Us | FoeGuard' }} />
       <Navbar />
+      {hasBuilder ? <ShopifyPageBuilder page={shopifyPage} /> : (
       <div className="about-page">
         {/* Hero Section */}
         <section className="about-hero">
@@ -248,6 +251,7 @@ export const AboutPage = () => {
           </div>
         </section>
       </div>
+      )}
       <Footer />
     </>
   );

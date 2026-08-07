@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Navbar, Footer } from '../components/Layout';
-import { ShopifyPageContent } from '../components/ShopifyPageContent';
+import { useShopifyPage } from '../hooks/useShopifyPage';
+import ShopifyPageBuilder from '../components/ShopifyPageBuilder';
 import { SeoHead } from '../components/SeoHead';
 
 export const ContactPage = () => {
+  const { page: contactPage } = useShopifyPage('contact');
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -28,7 +30,7 @@ export const ContactPage = () => {
     <>
       <SeoHead endpoint="/api/shopify/page/contact" fallback={{ title: "Contact | FoeGuard" }} />
       <Navbar />
-      <ShopifyPageContent handle="contact" testId="contact-shopify-body" />
+      <ShopifyPageBuilder page={contactPage} />
       <div className="contact-page">
         <div className="contact-container">
           <div className="contact-form-section">
@@ -42,7 +44,7 @@ export const ContactPage = () => {
               <div className="contact-success">
                 <div className="success-icon">✓</div>
                 <h2>Message Sent!</h2>
-                <p>Thank you for reaching out. We'll get back to you within 24-48 hours.</p>
+                <p>Thank you for reaching out. We&apos;ll get back to you within 24-48 hours.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="contact-form">

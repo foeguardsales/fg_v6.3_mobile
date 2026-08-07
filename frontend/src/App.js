@@ -22,6 +22,7 @@ import { PoliciesPage } from './pages/PoliciesPage';
 import { TermsPage } from './pages/TermsPage';
 import { ContactPage } from './pages/ContactPage';
 import { NewToRawPage } from './pages/NewToRawPage';
+import { WhyRawPage } from './pages/WhyRawPage';
 import { CalculatorPage } from './pages/CalculatorPage';
 import { AccountPage } from './pages/AccountPage';
 import { AdminPage } from './pages/AdminPage';
@@ -109,6 +110,8 @@ function App() {
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/new-to-raw" element={<NewToRawPage />} />
+            <Route path="/why-foeguard" element={<WhyRawPage handle="why-foeguard-raw-dog-food" title="Why FoeGuard Raw?" />} />
+            <Route path="/why-raw" element={<WhyRawPage handle="why-foeguard-raw-dog-food" title="Why Raw?" />} />
             <Route path="/calculator" element={<CalculatorPage />} />
             <Route path="/account" element={<AccountPage />} />
             <Route path="/blog" element={<BlogListPage />} />

@@ -584,6 +584,47 @@ export const BoxBuilder = () => {
     }
   }, [selectedProteins, petType]);
 
+  // ---- Prompt 9: slide-up milestone celebration above the sticky cart ----
+  // Fires once per discount tier per cart session, only when MEAL lbs INCREASE
+  // into a new tier, 2s after the last cart action. Never on removals; never
+  // re-fires a tier already celebrated this session (even after dropping below).
+  const [milestone, setMilestone] = useState(null);
+  const prevMealLbsRef = useRef(0);
+  const celebratedTiersRef = useRef(null);
+  if (celebratedTiersRef.current === null) {
+    try {
+      celebratedTiersRef.current = new Set(JSON.parse(sessionStorage.getItem('fg_celebrated_tiers') || '[]'));
+    } catch { celebratedTiersRef.current = new Set(); }
+  }
+  useEffect(() => {
+    const mealLbs = getTotalSelectedLbsForPet('dog') + getTotalSelectedLbsForPet('cat');
+    const prev = prevMealLbsRef.current;
+    prevMealLbsRef.current = mealLbs;
+    if (mealLbs <= prev) return; // only on increases (never on removals)
+    const tier = getTierFromLbs(mealLbs, DOG_DISCOUNT_RATES); // dog==cat rates
+    if (!tier || tier.rate <= 0) return;
+    if (celebratedTiersRef.current.has(tier.size)) return; // once per tier per session
+
+    const showTimer = setTimeout(() => {
+      celebratedTiersRef.current.add(tier.size);
+      try { sessionStorage.setItem('fg_celebrated_tiers', JSON.stringify([...celebratedTiersRef.current])); } catch { /* ignore */ }
+      const next = getNextTier(mealLbs, DOG_DISCOUNT_RATES);
+      const packs = next ? Math.max(1, Math.ceil((next.size - mealLbs) / 6)) : 0;
+      setMilestone({
+        pct: Math.round(tier.rate * 100),
+        nextPct: next ? Math.round(next.rate * 100) : null,
+        packs,
+      });
+    }, 2000); // wait 2s after last cart action
+    return () => clearTimeout(showTimer);
+  }, [selectedProteins]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!milestone) return;
+    const t = setTimeout(() => setMilestone(null), 5000); // auto-dismiss
+    return () => clearTimeout(t);
+  }, [milestone]);
+
   const handleUpdateProtein = (productId, productName, quantity) => {
     setSelectedProteins(prev => {
       const next = { ...prev };
