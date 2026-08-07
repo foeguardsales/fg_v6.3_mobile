@@ -336,6 +336,30 @@ test_plan_current_session:
         and styling. No critical issues found.
 
 agent_communication_current_session:
+    -agent: "main"
+    -message: |
+        SHOPIFY HEADLESS FILL — backend change to verify (2026-07 session):
+        Changed file: backend/shopify_service/queries.py — PRODUCT_CARD_FRAGMENT now requests the REAL
+        foeguard.* product metafields (product_ingredients_nutrition, product_information,
+        product_mini_menu_descriptions, product_page_icons_section, product_type,
+        product_meal_plan_scores, product_meal_feature_section, product_faqs, bundle_weight_lbs)
+        and EXPANDS each metaobject reference TWO levels deep via a new `MetaobjectExpanded` fragment
+        (needed for nested badge list inside product_page_icons_section).
+
+        PLEASE TEST (backend only, Shopify tokens are LIVE/real in this env):
+        1. GET /api/shopify/health -> storefront.ok true AND admin.ok true
+        2. GET /api/shopify/products?first=5 -> 200, each product has metafields array
+        3. GET /api/shopify/products/comfortdinner-chicken-raw-dog-food -> 200; metafields include
+           key "product_ingredients_nutrition" whose reference.fields contain recipe_ingredients +
+           recipe_nutrition; key "product_page_icons_section" whose reference field
+           product_page_icon_section has references.nodes (nested badges with badge_title);
+           key "product_mini_menu_descriptions" reference has product_description.
+        4. GET /api/shopify/collections?first=50 -> 200, includes handles build-your-meal-plan,
+           raw-dog-food-menu, raw-cat-food-menu (each with image + descriptionHtml).
+        5. GET /api/shopify/collections/raw-dog-food-menu -> 200 with image + descriptionHtml.
+        6. GET /api/shopify/metaobject/homepage_hero/the-freshest-meal-your-dog-has-ever-eaten -> 200 with fields.
+        7. GET /api/shopify/pages -> 200 list (page bodies may be empty; that's expected/OK).
+        Do NOT test any auth/customer flows. Focus only on the Shopify catalog/metaobject endpoints.
     - agent: "main"
       message: |
         FRONTEND TEST REQUEST (navigation bug fix + funnel redesign). Focus task:

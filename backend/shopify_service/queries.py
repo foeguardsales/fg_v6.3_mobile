@@ -27,22 +27,40 @@ fragment ProductCard on Product {
   }
   options { id name values }
   metafields(identifiers: [
-    {namespace: "foeguard", key: "product_line"},
-    {namespace: "foeguard", key: "protein_type"},
-    {namespace: "foeguard", key: "pet_type"},
-    {namespace: "foeguard", key: "no_variants"},
-    {namespace: "foeguard", key: "mini_description"},
-    {namespace: "foeguard", key: "highlights"},
-    {namespace: "foeguard", key: "benefit_icons"},
-    {namespace: "foeguard", key: "ingredients"},
-    {namespace: "foeguard", key: "nutritional_analysis"},
-    {namespace: "foeguard", key: "nutrition_facts"},
-    {namespace: "foeguard", key: "feeding_guide"},
+    {namespace: "foeguard", key: "product_ingredients_nutrition"},
     {namespace: "foeguard", key: "product_information"},
-    {namespace: "foeguard", key: "bundle_weight_lbs"},
-    {namespace: "foeguard", key: "comparison_table"}
+    {namespace: "foeguard", key: "product_mini_menu_descriptions"},
+    {namespace: "foeguard", key: "product_page_icons_section"},
+    {namespace: "foeguard", key: "product_type"},
+    {namespace: "foeguard", key: "product_meal_plan_scores"},
+    {namespace: "foeguard", key: "product_meal_feature_section"},
+    {namespace: "foeguard", key: "product_faqs"},
+    {namespace: "foeguard", key: "bundle_weight_lbs"}
   ]) {
     namespace
+    key
+    value
+    type
+    reference {
+      ...MetaobjectExpanded
+      ... on MediaImage { image { url altText width height } }
+    }
+    references(first: 25) {
+      nodes {
+        ...MetaobjectExpanded
+        ... on MediaImage { image { url altText width height } }
+      }
+    }
+  }
+}
+
+# Expand a metaobject one level deep, and any references INSIDE its fields a
+# further level (needed e.g. for product_page_icons_section -> badge list).
+fragment MetaobjectExpanded on Metaobject {
+  id
+  type
+  handle
+  fields {
     key
     value
     type
@@ -50,7 +68,7 @@ fragment ProductCard on Product {
       ... on Metaobject { id type handle fields { key value type } }
       ... on MediaImage { image { url altText width height } }
     }
-    references(first: 25) {
+    references(first: 15) {
       nodes {
         ... on Metaobject { id type handle fields { key value type } }
         ... on MediaImage { image { url altText width height } }

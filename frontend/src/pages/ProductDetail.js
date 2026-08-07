@@ -711,19 +711,20 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               </div>
             </div>
 
-            {/* Trust badges — below quantity */}
+            {/* Trust badges — below quantity. Icons/layout stay; labels come
+                from Shopify product_page_icons_section badges when present. */}
             <div className="pd-shopify-trust" data-testid="product-trust-row">
               <div className="pd-shopify-trust-item">
                 <Recycle size={26} strokeWidth={1.8} />
-                <span>100% Recyclable</span>
+                <span>{product.page_icon_badges?.[0] || '100% Recyclable'}</span>
               </div>
               <div className="pd-shopify-trust-item">
                 <Heart size={26} strokeWidth={1.8} />
-                <span>Humanely Raised</span>
+                <span>{product.page_icon_badges?.[1] || 'Humanely Raised'}</span>
               </div>
               <div className="pd-shopify-trust-item">
                 <MapPin size={26} strokeWidth={1.8} />
-                <span>Made in Canada</span>
+                <span>{product.page_icon_badges?.[2] || 'Made in Canada'}</span>
               </div>
             </div>
           </div>

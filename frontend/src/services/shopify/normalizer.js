@@ -45,12 +45,10 @@ function indexMetafields(mfList) {
  *   comparison_table, benefit_icons.
  */
 const EXPECTED_PRODUCT_METAFIELDS = [
-  'ingredients',
-  'nutritional_analysis',
-  'feeding_guide',
+  'product_ingredients_nutrition',
   'product_information',
-  'comparison_table',
-  'benefit_icons',
+  'product_mini_menu_descriptions',
+  'product_page_icons_section',
 ];
 
 function logMissingMetafields(handle, mfIndex) {
@@ -164,6 +162,77 @@ function mfBool(mf, key, fallback = false) {
   const raw = mfString(mf, key);
   if (raw === null || raw === undefined) return fallback;
   return raw === 'true' || raw === true || raw === '1' || raw === 1;
+}
+
+// ---------- expanded metaobject-reference helpers ---------------------
+// The product fragment expands each foeguard.* metafield's referenced
+// metaobject (one level) plus references INSIDE those fields (a second
+// level, e.g. the badge list). These helpers read that shape safely.
+
+/** Referenced metaobject's fields, keyed by field key (each value = full field obj). */
+function refFields(mf, key) {
+  const m = mf[key];
+  if (!m || !m.reference || !Array.isArray(m.reference.fields)) return null;
+  const out = {};
+  for (const f of m.reference.fields) out[f.key] = f;
+  return out;
+}
+
+/** Scalar `.value` of a single field inside a referenced metaobject. */
+function refFieldValue(mf, key, fieldKey, fallback = null) {
+  const fields = refFields(mf, key);
+  if (!fields || !fields[fieldKey]) return fallback;
+  const v = fields[fieldKey].value;
+  return v == null || v === '' ? fallback : v;
+}
+
+/**
+ * A metafield whose referenced metaobject holds a list.metaobject_reference
+ * field (2 levels). Returns an array of plain {fieldKey: value} objects for
+ * each nested metaobject. Used for product_page_icons_section -> badges.
+ */
+function nestedRefList(mf, key, listFieldKey) {
+  const fields = refFields(mf, key);
+  if (!fields || !fields[listFieldKey]) return [];
+  const nodes = (fields[listFieldKey].references && fields[listFieldKey].references.nodes) || [];
+  return nodes.map((n) => {
+    const o = {};
+    (n.fields || []).forEach((f) => { o[f.key] = f.value; });
+    return o;
+  });
+}
+
+/** Direct list.metaobject_reference metafield -> array of {fieldKey: value}. */
+function refListObjects(mf, key) {
+  const m = mf[key];
+  if (!m) return [];
+  const nodes = (m.references && m.references.nodes) || [];
+  return nodes.map((n) => {
+    const o = {};
+    (n.fields || []).forEach((f) => { o[f.key] = f.value; });
+    return o;
+  });
+}
+
+/**
+ * Parse a free-text "Guaranteed Analysis" block into [{label, value}] rows
+ * for <NutritionSection>. Lines without a "Label: value" shape (e.g. the
+ * heading) are skipped. Returns null when nothing parses.
+ */
+function parseNutritionText(text) {
+  if (!text || typeof text !== 'string') return null;
+  const rows = [];
+  text.split(/\n+/).forEach((line) => {
+    const l = line.trim();
+    if (!l) return;
+    const idx = l.indexOf(':');
+    if (idx > 0 && idx < l.length - 1) {
+      const label = l.slice(0, idx).trim();
+      const value = l.slice(idx + 1).trim();
+      if (label && value) rows.push({ label, value });
+    }
+  });
+  return rows.length ? rows : null;
 }
 
 // ---------- inference -------------------------------------------------
@@ -341,10 +410,14 @@ export function normalizeShopifyProduct(sp) {
     name: sp.title,
     description: plainDescription,
     descriptionHtml: sp.descriptionHtml,
-    mini_description: mfString(mf, 'mini_description') || plainDescription.split('.').filter(Boolean)[0] || '',
+    mini_description: refFieldValue(mf, 'product_mini_menu_descriptions', 'product_description')
+      || mfString(mf, 'mini_description')
+      || plainDescription.split('.').filter(Boolean)[0] || '',
     product_line,
     protein_type,
     pet_type,
+    // product_type metaobject list -> display pills e.g. ["Complete & Balanced","Meal"]
+    product_types: refListObjects(mf, 'product_type').map((o) => o.product_type_title).filter(Boolean),
     category: sp.productType || product_line,
     tags: sp.tags || [],
     pricing,
@@ -360,17 +433,34 @@ export function normalizeShopifyProduct(sp) {
     // inventory
     availableForSale: !!sp.availableForSale,
 
-    // rich content (from metafields; may be null / empty)
+    // rich content (from Shopify metaobjects; may be null / empty)
     highlights: mfList(mf, 'highlights', []),
     // benefit_icons — list of { icon, label } pairs for the checkmark bullets
     benefit_icons: mfJson(mf, 'benefit_icons', null) || mfList(mf, 'benefit_icons', null),
-    ingredients: mfString(mf, 'ingredients') || mfList(mf, 'ingredients', []),
-    // nutritional_analysis is the new canonical key; nutrition_facts is the legacy fallback.
-    nutritional_analysis: mfJson(mf, 'nutritional_analysis', null) || mfJson(mf, 'nutrition_facts', {}),
+    // page icon badges (product_page_icons_section -> badge titles) drive the
+    // 3-icon trust row (icons/layout stay hardcoded, labels come from Shopify).
+    page_icon_badges: nestedRefList(mf, 'product_page_icons_section', 'product_page_icon_section')
+      .map((b) => b.badge_title || b.title).filter(Boolean),
+    // Ingredients: recipe_ingredients free text from the recipe metaobject.
+    ingredients: refFieldValue(mf, 'product_ingredients_nutrition', 'recipe_ingredients')
+      || mfString(mf, 'ingredients') || mfList(mf, 'ingredients', []),
+    ingredients_title: refFieldValue(mf, 'product_ingredients_nutrition', 'recipe_breakdown'),
+    // Nutritional analysis: parse the "Guaranteed Analysis" free text into rows.
+    nutritional_analysis: parseNutritionText(refFieldValue(mf, 'product_ingredients_nutrition', 'recipe_nutrition'))
+      || mfJson(mf, 'nutritional_analysis', null) || mfJson(mf, 'nutrition_facts', null),
     // Alias kept for older UI components that still reference nutrition_facts
-    nutrition_facts: mfJson(mf, 'nutritional_analysis', null) || mfJson(mf, 'nutrition_facts', {}),
+    nutrition_facts: parseNutritionText(refFieldValue(mf, 'product_ingredients_nutrition', 'recipe_nutrition'))
+      || mfJson(mf, 'nutritional_analysis', null) || mfJson(mf, 'nutrition_facts', null),
+    // Per-product feeding guide is NOT stored in Shopify (only a global feeding
+    // guide page exists) — product_information already covers handling/feeding.
     feeding_guide: mfJson(mf, 'feeding_guide', null),
     product_information: mfReferenceText(mf, 'product_information', plainDescription),
+    // Meal-plan health/weight/activity/age scores (comfort dinners only).
+    meal_plan_scores: (function () {
+      const raw = refFieldValue(mf, 'product_meal_plan_scores', 'product_score_json');
+      if (!raw) return null;
+      try { return typeof raw === 'string' ? JSON.parse(raw) : raw; } catch { return null; }
+    })(),
     // Bundle weight (lbs) — only meaningful for `product_line: 'monthly_bundle'`.
     // Priority: (1) merchant metafield  (2) parse "- N lb" from the title.
     // Kept on every product (0 for non-bundles) so downstream code doesn't

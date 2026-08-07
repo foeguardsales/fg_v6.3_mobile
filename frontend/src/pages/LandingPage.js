@@ -6,6 +6,7 @@ import { SeoHead } from '../components/SeoHead';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 import { metaobjects } from '../services/shopify';
 import { useHomepageContent } from '../hooks/useHomepageContent';
+import { useCollectionCards } from '../hooks/useCollectionCards';
 
 // FoeGuard Brand Colors — Farm Palette
 const COLORS = {
@@ -709,6 +710,11 @@ export const LandingPage = () => {
   const navigate = useNavigate();
   const [activeFaq, setActiveFaq] = useState(null);
   const homepage = useHomepageContent();
+  // "Shop Farm Fresh" cards pull photo + description from these Shopify
+  // collections (link/CTA/design stay hardcoded — box-builder, not Shopify).
+  const sffCollections = useCollectionCards([
+    'build-your-meal-plan', 'raw-dog-food-menu', 'raw-cat-food-menu',
+  ]);
 
   // Merchant-driven copy with hardcoded fallbacks — never breaks if Shopify
   // hasn't published the field yet.
@@ -950,6 +956,7 @@ export const LandingPage = () => {
                   title: 'Build your meal plan',
                   desc: 'Take our simple quiz to receive your customized raw feeding plan in seconds.',
                   image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&h=400&fit=crop&auto=format',
+                  collectionHandle: 'build-your-meal-plan',
                   path: '/meal-plan',
                   selection: 'meal-plan',
                   cta: 'Get Started'
@@ -958,6 +965,7 @@ export const LandingPage = () => {
                   title: 'Raw Dog Food Menu',
                   desc: 'Fresh meals that are easy to portion and serve. Real food your dog will love.',
                   image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop&auto=format',
+                  collectionHandle: 'raw-dog-food-menu',
                   path: '/menu',
                   selection: 'shop-raw',
                   cta: 'Order Now'
@@ -966,12 +974,22 @@ export const LandingPage = () => {
                   title: 'Raw Cat Food Menu',
                   desc: 'Raw meals crafted for cats that are high in protein, taurine-rich and made fresh.',
                   image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&h=400&fit=crop&auto=format',
+                  collectionHandle: 'raw-cat-food-menu',
                   path: '/menu',
                   selection: 'shop-raw',
                   petType: 'cat',
                   cta: 'Order Now'
                 }
-              ].map((card, i) => (
+              ].map((baseCard, i) => {
+                // Merge Shopify collection photo + description (link/CTA stay).
+                const sf = sffCollections[baseCard.collectionHandle];
+                const card = {
+                  ...baseCard,
+                  title: sf?.title || baseCard.title,
+                  desc: sf?.description || baseCard.desc,
+                  image: sf?.image || baseCard.image,
+                };
+                return (
                 <div
                   key={i}
                   className="shop-farm-fresh-card"
@@ -1049,7 +1067,8 @@ export const LandingPage = () => {
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
