@@ -84,6 +84,7 @@ const SECTION_TABS = [
   { id: 'meals', label: 'Meals' },
   { id: 'treats', label: 'Treats' },
   { id: 'bundles', label: 'Monthly Bundles' },
+  { id: 'cat-meals', label: 'Cat Meals' },
 ];
 
 export const BoxBuilder = () => {
@@ -798,28 +799,12 @@ export const BoxBuilder = () => {
                     </div>
                   </div>
 
-                  {/* Royal Paws (cat) */}
-                  <div className="product-collection menu-collection">
-                    <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-royal">
-                      <div className="menu-collection-banner menu-collection-banner--overlay" style={{ backgroundImage: `url(${COLLECTION_IMAGES.royal_paws})` }}>
-                        <div className="menu-collection-banner-text">
-                          <h3 className="menu-collection-title">Royal Paws Dinner</h3>
-                          <p className="menu-collection-desc">Complete raw food for cats of all-life stages.</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-grid">
-                      {royalPawsProducts.map(product => (
-                        <ProductCard key={product.product_id} product={product} selectedQty={selectedProteins[product.product_id]?.qty || 0} onUpdate={handleUpdateProtein} canAdd={canAdd(product.product_id)} getDiscountedPrice={getDiscountedPrice} getBasePrice={getBasePrice} boxSize={boxSize} navigate={navigate} petType="cat" onOpenProduct={(pid) => setActiveProductId(pid)} isRecommended={false} />
-                      ))}
-                    </div>
-                  </div>
+                  {/* Royal Paws moved to its own "Cat Meals" section below. */}
                 </section>
 
                 {/* ===================== TREATS ===================== */}
                 <section id="menu-section-treats" style={{ scrollMarginTop: '70px' }}>
                   <TreatsSection selectedTreats={selectedTreats} onToggleTreat={handleToggleTreat} petType="dog" navigate={navigate} showCategoryDescriptions={true} onOpenTreat={(tid) => setActiveTreatId(tid)} />
-                  <TreatsSection selectedTreats={selectedTreats} onToggleTreat={handleToggleTreat} petType="cat" navigate={navigate} showCategoryDescriptions={true} onOpenTreat={(tid) => setActiveTreatId(tid)} />
                 </section>
 
                 {/* ===================== MONTHLY BUNDLES ===================== */}
@@ -841,6 +826,25 @@ export const BoxBuilder = () => {
                       </div>
                     </div>
                   )}
+                </section>
+
+                {/* ===================== CAT MEALS ===================== */}
+                <section id="menu-section-cat-meals" style={{ scrollMarginTop: '70px' }}>
+                  <div className="product-collection menu-collection">
+                    <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-royal">
+                      <div className="menu-collection-banner menu-collection-banner--overlay" style={{ backgroundImage: `url(${COLLECTION_IMAGES.royal_paws})` }}>
+                        <div className="menu-collection-banner-text">
+                          <h3 className="menu-collection-title">Royal Paws Dinner</h3>
+                          <p className="menu-collection-desc">Complete raw food for cats of all-life stages.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="product-grid">
+                      {royalPawsProducts.map(product => (
+                        <ProductCard key={product.product_id} product={product} selectedQty={selectedProteins[product.product_id]?.qty || 0} onUpdate={handleUpdateProtein} canAdd={canAdd(product.product_id)} getDiscountedPrice={getDiscountedPrice} getBasePrice={getBasePrice} boxSize={boxSize} navigate={navigate} petType="cat" onOpenProduct={(pid) => setActiveProductId(pid)} isRecommended={false} />
+                      ))}
+                    </div>
+                  </div>
                 </section>
               </>
             )}
@@ -1093,21 +1097,21 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
 
 // ===== Menu Funnel Overlay — hovers above /menu on first landing =====
-const MenuFunnel = ({ open, onShopRaw, onMealPlan, onClose, onCalculator, dismissable = true, selectedId = null }) => {
+const MenuFunnel = ({ open, onShopRaw, onClose, onCalculator, dismissable = true, selectedId = null }) => {
   const options = [
     {
       id: 'shop-raw',
-      label: 'Raw Food Menu',
-      sub: 'Browse every meal & treat. Build your own box.',
+      label: 'Browse Menu',
+      sub: 'Most Popular',
       image: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/a5bhlhqi_5.png',
       onClick: onShopRaw
     },
     {
       id: 'meal-plan',
-      label: 'Build a Meal Plan',
-      sub: 'Personalized plan based on your dog\u2019s profile.',
+      label: 'Meal Recommendations',
+      sub: '2-minute personalized meal plan',
       image: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/wtts10dz_4.png',
-      onClick: onMealPlan
+      onClick: onCalculator
     }
   ];
 
@@ -1146,16 +1150,6 @@ const MenuFunnel = ({ open, onShopRaw, onMealPlan, onClose, onCalculator, dismis
             </button>
           ))}
         </div>
-        {onCalculator && (
-          <button
-            type="button"
-            className="menu-funnel-calc-link"
-            onClick={onCalculator}
-            data-testid="funnel-calculator-link"
-          >
-            Feeding Calculator
-          </button>
-        )}
       </div>
     </div>
   );

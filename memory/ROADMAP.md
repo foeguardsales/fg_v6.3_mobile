@@ -60,3 +60,7 @@ File: frontend/src/pages/BoxBuilder.js (design/box-engine untouched per user).
 - Box math/discount engine/localStorage selectedProteins UNCHANGED (6lb increments, tiers). Checkout still maps meals to product.shopify_variant_id (variants[0] = 1lb pack).
 - Verified via screenshots: hero static, tabs smooth-scroll, meal `+` direct-adds (cart updates), bundles/treats render.
 - OPEN: 1.5lb still selectable inside the ProductDetail detail modal/page (menu add bypasses it). Pending user decision: strip 1.5lb in frontend detail view too, or remove the 1.5lb variant in Shopify (cleanest).
+
+## MENU REVAMP — PROMPTS 2 & 3 ✅ DONE (2026-07)
+Prompt 2 (pre-menu funnel, MenuFunnel in BoxBuilder.js): Card1 "Browse Menu"/"Most Popular" (menu img, onShopRaw); Card2 "Meal Recommendations"/"2-minute personalized meal plan" (meal-plan img, now onClick=onCalculator -> opens FeedingCalculator). Removed standalone "Feeding Calculator" link. Layout unchanged. Verified: Card2 opens calculator modal.
+Prompt 3 (BoxBuilder sections + App.css): order now Meals -> Treats -> Monthly Bundles -> Cat Meals (added 4th tab + #menu-section-cat-meals). Meals = Comfort Dinner + Primal Feast; Cat Meals = Royal Paws. Removed cat TreatsSection from menu (dog treats only; cat-coverage note to be added in Shopify dog-treats description). Banner height reduced ~45%: .menu-collection-banner 104->58px mobile, 150->82px desktop (image/overlay/title/desc kept). Verified via screenshots.
