@@ -562,11 +562,7 @@ export const UniversalCart = () => {
 
           {hasItems && (
             <>
-              <div className="cart-item" style={{ marginTop: '8px' }}>
-                <span>Subtotal</span>
-                <span data-testid="cart-subtotal">${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="cart-total">
+              <div className="cart-total" style={{ marginTop: '8px' }}>
                 <span>Total</span>
                 <span data-testid="cart-total">${subtotal.toFixed(2)}</span>
               </div>

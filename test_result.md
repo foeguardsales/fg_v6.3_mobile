@@ -1075,10 +1075,127 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Menu visual: charcoal hero gradient + thin sub-collection image banners + remove From on product detail"
+    - "Menu crash fix (useRef) + Prompt 9 milestone toast + cart font unify + remove redundant Subtotal"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+
+frontend_new_session_2026_07:
+  - task: "FIX reported menu crash (useRef not defined) + finish Prompt 9 milestone toast"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/BoxBuilder.js + App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            REPORTED BUG: /menu showed "Uncaught runtime error: useRef is not defined" (BoxBuilder crashed,
+            white error screen). ROOT CAUSE: previous agent added milestone code using useRef/useRef but the
+            React import was `import React, { useState, useEffect }` (no useRef). FIX: added useRef to import.
+            ALSO finished Prompt 9: the milestone STATE/logic existed but had NO UI. Added a slide-up toast
+            (data-testid="milestone-toast") that renders ABOVE the sticky cart button (.bb-floating-checkout),
+            NOT a centered popup. Rules already coded: fires 2s after last cart action, ONLY when meal lbs
+            INCREASE into a NEW discount tier (12lb=5%, 24lb=10%, 36lb=15%), once per tier per cart session
+            (persisted in sessionStorage fg_celebrated_tiers), never on removals, never re-fires a tier already
+            celebrated even after dropping below; auto-dismisses after 5s. Toast text: "🎉 X% OFF unlocked!"
+            + "Add N more pack(s) to unlock Y% OFF." (1 pack = 6 lb).
+            TEST: (1) /menu loads with NO runtime error, products + sticky "Your Box • $0.00" visible.
+            (2) Add 12 lb of meals (e.g. 2 packs of one meal) → after ~2s the milestone-toast appears above the
+            cart button reading "🎉 5% OFF unlocked!" and "Add 2 more packs to unlock 10% OFF."; it auto-dismisses.
+            (3) Remove items then re-add back to 12 lb → toast must NOT reappear (once per session).
+            (4) Removing items never triggers a toast.
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ ALL TESTS PASSED (3/3) - Menu crash fix + Prompt 9 milestone toast + cart drawer fonts working perfectly.
+            
+            **TEST 1 — MENU LOADS (useRef bug fix): ✅ PASS (6/6)**
+            ✅ NO error overlay on page
+            ✅ Menu hero visible (data-testid="menu-collection-hero")
+            ✅ Category tabs visible (Meals/Treats/Monthly Bundles/Cat Meals)
+            ✅ Sticky cart button visible (data-testid="cart-button" shows "Your Box • $0.00")
+            ✅ NO 'useRef is not defined' error in console
+            ✅ NO page errors detected
+            VERDICT: The reported useRef crash is FIXED. /menu loads without errors.
+            
+            **TEST 2 — PROMPT 9 MILESTONE TOAST: ✅ PASS (7/7)**
+            ✅ Toast appeared 2.5s after adding 12 lb of meals
+            ✅ Toast positioned ABOVE sticky cart button (toast Y:746 < cart Y:828)
+            ✅ Title reads "🎉 5% OFF unlocked!" (data-testid="milestone-title")
+            ✅ Sub reads "Add 2 more packs to unlock 10% OFF." (data-testid="milestone-sub")
+            ✅ Toast auto-dismissed after 5 seconds
+            ✅ Toast did NOT reappear when removing and re-adding to 12 lb (once-per-session working)
+            ✅ NO toast on removal (removed 6 lb from 18 lb → no toast fired)
+            VERDICT: Milestone toast working correctly. Slide-up animation above cart, correct text, auto-dismiss, once-per-tier-per-session, never on removals.
+
+  - task: "Cart drawer: unify fonts (one global design) + remove redundant top Subtotal line"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/contexts/CartContext.js + App.css"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            User asked: cart should be ONE global design (meal lb text and per-item quantity text same
+            font/size/weight; no mixed bolds/sizes), and REMOVE the total from the top since the bottom
+            already shows it. CHANGES: (a) .cart-line-name now weight 600 (was 700), .cart-line-sub now
+            Barlow Semi Condensed 14px/500 (was 12px), so name / qty-lb / per-item qty / price all read as
+            one unified 14px/600 Barlow spec. (b) Removed the duplicate "Subtotal $X" row that sat directly
+            above the identical "Total $X" row (Subtotal===Total since taxes/delivery are at checkout); only
+            "Total" (data-testid=cart-total) remains. data-testid cart-subtotal no longer exists.
+            TEST: open cart drawer with items → line-item text visually uniform; only ONE money total row
+            labelled "Total"; cart-subtotal testid absent; cart-total present.
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ PASS (5/5) - Cart drawer fonts unified and single Total row verified.
+            
+            **FONT UNIFICATION:**
+            ✅ All elements use Barlow Semi Condensed font-family
+            ✅ All elements use 14px font-size
+            ✅ All elements use 600 font-weight
+            Measured values:
+            • .cart-line-name: "Barlow Semi Condensed", serif, 14px, weight 600
+            • .cart-qty-mini span: "Barlow Semi Condensed", serif, 14px, weight 600
+            • .cart-line-price: "Barlow Semi Condensed", serif, 14px, weight 600
+            
+            **SINGLE TOTAL ROW:**
+            ✅ ONE 'Total' row found (data-testid="cart-total")
+            ✅ NO 'Subtotal' row (data-testid="cart-subtotal" does NOT exist, count=0)
+            
+            VERDICT: Cart drawer has unified font design (all line items use same font/size/weight) and only ONE total row at bottom. Redundant Subtotal removed.
+
+agent_communication_2026_07:
+    - agent: "main"
+      message: |
+        Please FRONTEND-test the reported menu crash fix + Prompt 9 milestone + cart edits (see the two
+        tasks under frontend_new_session_2026_07). Shopify is now LIVE (real creds) but if any 502 appears
+        the app still falls back to local catalog — ignore transient Shopify errors, focus on the 4 menu
+        checks and the 3 cart checks. Preview URL from /app/frontend/.env.
+    - agent: "testing"
+      message: |
+        ✅ TESTING COMPLETE - ALL 3 TESTS PASSED (18/18 sub-checks)
+        
+        Comprehensive testing of menu crash fix, Prompt 9 milestone toast, and cart drawer changes completed on desktop viewport 1440x900.
+        All requirements verified and working correctly. Shopify 502 errors ignored as expected (fallback to local catalog working).
+        
+        **SUMMARY:**
+        ✅ TEST 1 — Menu loads (useRef bug fix): PASS (6/6)
+        ✅ TEST 2 — Prompt 9 milestone toast: PASS (7/7)
+        ✅ TEST 3 — Cart drawer fonts + single Total: PASS (5/5)
+        
+        **KEY FINDINGS:**
+        1. The reported "useRef is not defined" crash is FIXED - /menu loads without errors
+        2. Milestone toast working perfectly - slide-up above cart, correct text, auto-dismiss, once-per-session, never on removals
+        3. Cart drawer fonts unified (all 14px/600 Barlow Semi Condensed) and single Total row (Subtotal removed)
+        
+        No critical issues found. All features are production-ready.
 
 agent_communication:
     - agent: "main"

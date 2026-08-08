@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
@@ -882,6 +882,25 @@ export const BoxBuilder = () => {
             )}
         </>
       </div>
+
+      {/* Prompt 9 — slide-up milestone celebration above the sticky cart (no centered popup) */}
+      {milestone && (
+        <div
+          className="fg-milestone-toast"
+          data-testid="milestone-toast"
+          role="status"
+          aria-live="polite"
+        >
+          <span className="fg-milestone-title" data-testid="milestone-title">
+            🎉 {milestone.pct}% OFF unlocked!
+          </span>
+          {milestone.nextPct != null && (
+            <span className="fg-milestone-sub" data-testid="milestone-sub">
+              Add {milestone.packs} more pack{milestone.packs === 1 ? '' : 's'} to unlock {milestone.nextPct}% OFF.
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Sticky cart button — "Your Box (x lb) • $subtotal".
           x lb = MEAL weight only (treats & bundles excluded). Subtotal = all items. */}
