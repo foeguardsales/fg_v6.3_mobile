@@ -1078,7 +1078,7 @@ test_plan:
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
-  last_result_2026_07: "ALL PASS (3/3) — menu useRef crash fixed & verified; Prompt 9 milestone toast working; cart fonts unified + redundant Subtotal removed."
+  last_result_2026_07: "PASS — menu crash fixed; Prompt 9 milestone; cart unified. Round 2 PASS — ShopifyPageBuilder cards (About/Contact/WhyRaw) show images+titles (protein/recipe/benefits mapped, array images handled); Meal Plan scoring sourced from Shopify metaobjects verified end-to-end ($127.44 plan, no crash)."
 
 frontend_new_session_2026_07:
   - task: "FIX reported menu crash (useRef not defined) + finish Prompt 9 milestone toast"

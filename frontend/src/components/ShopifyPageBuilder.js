@@ -135,8 +135,8 @@ function CtaBanner({ s }) {
 
 // Generic "header + subheader + cards" block (benefits / protein / recipes / reviews)
 function CardsBlock({ s }) {
-  const header = pick(s, ['about_us_protein_header', 'review_section_header', 'header', 'title', 'section_header']);
-  const sub = pick(s, ['about_us_protein_subheader', 'review_section_subheader', 'subheader', 'subheading']);
+  const header = pick(s, ['about_us_protein_header', 'review_section_header', 'benefits_header', 'header', 'title', 'section_header']);
+  const sub = pick(s, ['about_us_protein_subheader', 'review_section_subheader', 'benefits_subheader', 'subheader', 'subheading']);
   // find the first array-of-objects field -> the cards
   const cardsKey = Object.keys(s).find((k) => Array.isArray(s[k]) && s[k].some((x) => x && typeof x === 'object' && x.__type !== 'image'));
   const cards = cardsKey ? s[cardsKey].filter((c) => c && c.__type !== 'image') : [];
@@ -150,7 +150,7 @@ function CardsBlock({ s }) {
         <div className="spb-card-grid">
           {cards.map((c, idx) => {
             const cImg = imgUrl(pick(c, ['image', 'icon', 'photo', 'image_video', 'card_image', 'abous_us_protein_image', 'recipe_image']));
-            const cTitle = pick(c, ['title', 'header', 'name', 'customer_name', 'protein_title', 'abous_us_protein_title', 'recipe_type_title']);
+            const cTitle = pick(c, ['title', 'header', 'name', 'customer_name', 'protein_title', 'abous_us_protein_title', 'recipe_type_title', 'benefit_item', 'feature_name']);
             const cBody = pick(c, ['body_content', 'description', 'text', 'review', 'content', 'body', 'abous_us_protein_description', 'recipe_type_body']);
             return (
               <div className="spb-card" key={idx}>
