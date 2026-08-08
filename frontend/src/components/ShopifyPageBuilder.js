@@ -75,7 +75,16 @@ const pick = (s, keys) => {
   for (const k of keys) { if (s[k] != null && s[k] !== '') return s[k]; }
   return null;
 };
-const imgUrl = (v) => (typeof v === 'string' ? v : (v && v.url) || null);
+const imgUrl = (v) => {
+  if (!v) return null;
+  // Array image field (e.g. list.file_reference like `image_video`) -> first usable URL
+  if (Array.isArray(v)) {
+    for (const x of v) { const u = imgUrl(x); if (u) return u; }
+    return null;
+  }
+  if (typeof v === 'string') return v;
+  return v.url || null;
+};
 
 // ---- Section renderers ------------------------------------------------
 function Hero({ s }) {
@@ -140,9 +149,9 @@ function CardsBlock({ s }) {
       {cards.length > 0 && (
         <div className="spb-card-grid">
           {cards.map((c, idx) => {
-            const cImg = imgUrl(pick(c, ['image', 'icon', 'photo', 'image_video', 'card_image']));
-            const cTitle = pick(c, ['title', 'header', 'name', 'customer_name', 'protein_title']);
-            const cBody = pick(c, ['body_content', 'description', 'text', 'review', 'content', 'body']);
+            const cImg = imgUrl(pick(c, ['image', 'icon', 'photo', 'image_video', 'card_image', 'abous_us_protein_image', 'recipe_image']));
+            const cTitle = pick(c, ['title', 'header', 'name', 'customer_name', 'protein_title', 'abous_us_protein_title', 'recipe_type_title']);
+            const cBody = pick(c, ['body_content', 'description', 'text', 'review', 'content', 'body', 'abous_us_protein_description', 'recipe_type_body']);
             return (
               <div className="spb-card" key={idx}>
                 {cImg && <img className="spb-card-img" src={cImg} alt={cTitle || ''} loading="lazy" />}
