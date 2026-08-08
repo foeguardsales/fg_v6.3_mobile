@@ -6,6 +6,7 @@ import { SeoHead } from '../components/SeoHead';
 import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 import { metaobjects } from '../services/shopify';
 import { useHomepageContent } from '../hooks/useHomepageContent';
+import { useHomeReviews } from '../hooks/useHomeReviews';
 import { useCollectionCards } from '../hooks/useCollectionCards';
 
 // FoeGuard Brand Colors — Farm Palette
@@ -786,7 +787,7 @@ export const LandingPage = () => {
     return urls[i % urls.length];
   };
 
-  const reviews = [
+  const fallbackReviews = [
     { name: 'Sarah M.', text: "Her digestion improved within weeks. I'll never go back to kibble.", rating: 5, img: CUSTOMER_IMG(0) },
     { name: 'Daniel R.', text: 'Finally a raw brand I trust.', rating: 5, img: CUSTOMER_IMG(1) },
     { name: 'Melissa T.', text: 'Energy, coat, stools — everything changed.', rating: 5, img: CUSTOMER_IMG(2) },
@@ -794,6 +795,10 @@ export const LandingPage = () => {
     { name: 'Michael K.', text: "Switching to FoeGuard was the best decision for our pup's health.", rating: 5, img: CUSTOMER_IMG(4) },
     { name: 'Amanda R.', text: "I love knowing exactly what my dog is eating. Real ingredients!", rating: 5, img: CUSTOMER_IMG(5) }
   ];
+  // Live Shopify home review cards (home_customer_reviews_section metaobject) —
+  // same card shape, so the design below is unchanged. Falls back when empty.
+  const homeReviews = useHomeReviews();
+  const reviews = (homeReviews.cards && homeReviews.cards.length) ? homeReviews.cards : fallbackReviews;
 
   return (
     <>

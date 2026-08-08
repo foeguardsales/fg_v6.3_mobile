@@ -9,7 +9,6 @@ import { SeoHead } from '../components/SeoHead';
 import {
   IngredientsSection,
   NutritionSection,
-  FeedingGuide,
   ProductInfo,
   ComparisonTable,
   BenefitIcons,
@@ -239,9 +238,10 @@ const PersonalizeSection = ({ navigate }) => {
   );
 };
 
-// Product FAQ accordion
-const ProductFaqSection = () => {
-  const faqs = [
+// Product FAQ accordion. Prefers live Shopify `product_faqs` when present,
+// otherwise falls back to the hardcoded set below.
+const ProductFaqSection = ({ shopifyFaqs }) => {
+  const fallbackFaqs = [
     {
       q: 'How much raw should I feed?',
       a: (
@@ -267,6 +267,9 @@ const ProductFaqSection = () => {
       a: "All of our meats are sourced directly from our own farm in Acton, ON and a small group of hand-picked Ontario partners we know personally. Every recipe is prepared in our government-regulated, human-grade kitchen — high quality, consistent and fully traceable."
     }
   ];
+  const faqs = (Array.isArray(shopifyFaqs) && shopifyFaqs.length)
+    ? shopifyFaqs.map((f) => ({ q: f.q, a: f.a }))
+    : fallbackFaqs;
   const [openIdx, setOpenIdx] = useState(-1);
   return (
     <section data-testid="product-faq-section" style={{ marginTop: '0', marginBottom: '0' }}>
@@ -598,6 +601,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const basePerLb = getBasePrice(product) / 6;
   const lowestPerLb = basePerLb * 0.85; // lowest /lb — max 15% bulk discount
 
+  // Monthly bundles are PREPAID, fixed-price packs — quantity is a UNIT count
+  // (1, 2, 3 …), NOT a 6 lb meal increment. Everything else steps in 6 lb.
+  const isBundle = isMonthlyBundle(product);
+  const qtyStep = isBundle ? 1 : 6;
+  const bundleUnitPrice = product.price || getBasePrice(product) || 0;
+
   return (
     <>
       {!embedded && productId && (
@@ -635,9 +644,20 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             {/* Title */}
             <h1 className="pd-shopify-title">{product.name}</h1>
 
-            {/* Price — direct "$X/lb" (at the lowest 36lb tier) until a quantity is chosen */}
+            {/* Price — bundles show a flat prepaid price; meals show $X/lb until a qty is chosen */}
             <div className="pd-shopify-price-row" data-testid="product-price">
-              {quantity > 0 ? (
+              {isBundle ? (
+                <>
+                  <span className="pd-shopify-price" data-testid="qty-price-total">
+                    ${(bundleUnitPrice * (quantity > 0 ? quantity : 1)).toFixed(2)}
+                  </span>
+                  {quantity > 1 && (
+                    <span className="pd-shopify-price-unit" data-testid="qty-price-perlb">
+                      (${bundleUnitPrice.toFixed(2)} each)
+                    </span>
+                  )}
+                </>
+              ) : quantity > 0 ? (
                 <>
                   <span className="pd-shopify-price" data-testid="qty-price-total">
                     ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
@@ -699,14 +719,16 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 <div className="pd-shopify-mini-label">Quantity</div>
                 <div className="pd-shopify-qty-controls">
                   <button
-                    onClick={() => setBoxQty(quantity - 6)}
+                    onClick={() => setBoxQty(quantity - qtyStep)}
                     disabled={quantity <= 0}
                     className="pd-shopify-qty-btn"
                     data-testid="qty-decrease"
                   >−</button>
-                  <span data-testid="qty-display" className="pd-shopify-qty-display">{quantity} lb</span>
+                  <span data-testid="qty-display" className="pd-shopify-qty-display">
+                    {isBundle ? `${quantity}` : `${quantity} lb`}
+                  </span>
                   <button
-                    onClick={() => setBoxQty(quantity + 6)}
+                    onClick={() => setBoxQty(quantity + qtyStep)}
                     className="pd-shopify-qty-btn"
                     data-testid="qty-increase"
                   >+</button>
@@ -754,15 +776,6 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                 />
               ) : null)}
             </CollapsibleSection>
-            <CollapsibleSection title="Feeding Guide">
-              <FeedingGuide value={product.feeding_guide} />
-              {product.feeding_guide && (
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#2C2C2C', margin: '12px 0 0' }}>
-                  For how much to feed, visit our{' '}
-                  <a href="/calculator" style={{ color: '#2C2C2C', fontWeight: 700, textDecoration: 'underline' }}>calculator</a>.
-                </p>
-              )}
-            </CollapsibleSection>
             {product.comparison_table && (
               <CollapsibleSection title="How We Compare">
                 <ComparisonTable value={product.comparison_table} />
@@ -786,15 +799,17 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
           </div>
         </div>
 
-        {/* FAQ section — bottom of product page */}
+        {/* FAQ section — bottom of product page (Shopify product_faqs when present, else fallback) */}
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 16px 4px' }}>
-          <ProductFaqSection />
+          <ProductFaqSection shopifyFaqs={product.faqs} />
         </div>
 
         {/* Floating Add/Update Cart — stationary bottom bar (same format as menu) */}
         {(() => {
-          const ctaQty = quantity > 0 ? quantity : 6;
-          const totalPrice = getDiscountedPrice(product) * (ctaQty / 6);
+          const ctaQty = quantity > 0 ? quantity : qtyStep;
+          const totalPrice = isBundle
+            ? bundleUnitPrice * ctaQty
+            : getDiscountedPrice(product) * (ctaQty / 6);
           // "Update Cart" only when THIS product+variant was already in the box when the
           // page opened; brand-new additions always read "Add to Cart" (any amount).
           const variantLabel = VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0];

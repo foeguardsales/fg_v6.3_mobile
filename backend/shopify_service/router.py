@@ -279,7 +279,13 @@ query MetaobjectByHandle($type: String!, $handle: String!) {
           ... on MediaImage { image { url altText width height } }
           ... on Metaobject {
             id handle type
-            fields { key value type }
+            fields {
+              key value type
+              reference {
+                __typename
+                ... on MediaImage { image { url altText width height } }
+              }
+            }
           }
           ... on Product { id handle title }
           ... on Collection { id handle title }

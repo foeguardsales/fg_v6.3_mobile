@@ -169,12 +169,34 @@ export async function getProductByHandle(handle) {
   }
   // Local fallback (same shape as normalized Shopify product). Tries the
   // Mongo /products/{id} endpoint first, then the preloaded all-products list.
+  let local = null;
   try {
-    return await _getLocalJSON(`/products/${handle}`);
+    local = await _getLocalJSON(`/products/${handle}`);
   } catch (_) {
     const meals = await _localMeals();
-    return meals.find((m) => m.product_id === handle || m.handle === handle) || null;
+    local = meals.find((m) => m.product_id === handle || m.handle === handle) || null;
   }
+  // GLOBAL Shopify bridge: many product pages are opened with a legacy Mongo id
+  // (e.g. `cd-chicken`) which 404s on Shopify. Resolve the live Shopify twin by
+  // product_line + protein_type so EVERY product (not just monthly bundles)
+  // shows Shopify-managed content (ingredients, reviews, scores, etc.).
+  if (local && !_shopifyDown && local.product_line && local.product_line !== 'monthly_bundles') {
+    try {
+      const all = await getAllProducts();
+      const twin = (all || []).find((sp) =>
+        sp.product_line === local.product_line &&
+        sp.protein_type === local.protein_type);
+      if (twin && twin.handle) {
+        // Upgrade to the FULL query (variants/images) for the twin handle.
+        try {
+          const rawFull = await getProduct(twin.handle);
+          _cache.byHandle.set(twin.handle, rawFull);
+          return normalizeShopifyProduct(rawFull);
+        } catch (_) { return twin; }
+      }
+    } catch (_) { /* keep local */ }
+  }
+  return local;
 }
 
 export async function getTreatByHandle(handle) {

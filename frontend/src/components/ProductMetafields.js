@@ -30,12 +30,23 @@ const containerStyle = {
 
 export const IngredientsSection = ({ value }) => {
   if (!value) return null;
-  // value can be a plain string, a list of strings, or a comma-separated string.
-  let items = [];
-  if (Array.isArray(value)) items = value.filter(Boolean);
-  else if (typeof value === 'string') {
-    items = value.split(/[,\n\u2022]+/).map((s) => s.trim()).filter(Boolean);
+  // A plain string from the recipe metaobject is written as a paragraph
+  // (comma-separated ingredient run) -> render it AS a paragraph, not a list.
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    const paras = trimmed.split(/\n{2,}/).map((s) => s.trim()).filter(Boolean);
+    const blocks = paras.length ? paras : [trimmed];
+    return (
+      <div data-testid="ingredients-section" style={containerStyle}>
+        {blocks.map((p, i) => (
+          <p key={i} style={{ margin: i ? '10px 0 0' : 0, whiteSpace: 'pre-line' }}>{p}</p>
+        ))}
+      </div>
+    );
   }
+  // Genuine array of ingredients -> clean list.
+  const items = Array.isArray(value) ? value.filter(Boolean) : [];
   if (items.length === 0) return null;
   return (
     <ul

@@ -476,6 +476,88 @@ export function normalizeShopifyProduct(sp) {
     // or {"rows": [{"attribute":"...","foeguard":"...","kibble":"..."}]}
     comparison_table: mfJson(mf, 'comparison_table', null),
 
+    // Live customer reviews (product_customer_reviews -> section -> cards).
+    // Shape: { header, subheader, cards:[{name, text, photo}] } or null.
+    customer_reviews: (function () {
+      const m = mf['product_customer_reviews'];
+      const section = m && m.references && Array.isArray(m.references.nodes) ? m.references.nodes[0] : null;
+      if (!section || !Array.isArray(section.fields)) return null;
+      const sf = {}; section.fields.forEach((f) => { if (f && f.key) sf[f.key] = f; });
+      const header = (sf.review_section_header && sf.review_section_header.value) || null;
+      const subheader = (sf.review_section_subheader && sf.review_section_subheader.value) || null;
+      const cardsField = sf.review_section_customer_cards;
+      const nodes = (cardsField && cardsField.references && cardsField.references.nodes) || [];
+      const cards = nodes.map((n) => {
+        const o = {}; (n.fields || []).forEach((f) => { if (f && f.key) o[f.key] = f; });
+        let photo = null;
+        const pf = o.customer_photo;
+        if (pf) {
+          if (pf.reference && pf.reference.image && pf.reference.image.url) photo = pf.reference.image.url;
+          else if (typeof pf.value === 'string' && pf.value.startsWith('http')) photo = pf.value;
+        }
+        return {
+          name: (o.customer_name && o.customer_name.value) || null,
+          text: (o.customer_review_text && o.customer_review_text.value) || null,
+          photo,
+        };
+      }).filter((c) => c.text || c.name);
+      return cards.length ? { header, subheader, cards } : null;
+    })(),
+
+    // Optional product FAQ list (product_faqs). Merchant may leave empty ->
+    // null so the page keeps its hardcoded fallback FAQ. Supports either a
+    // section metaobject with a faq items list, or a direct items list.
+    faqs: (function () {
+      const m = mf['product_faqs'];
+      if (!m) return null;
+      let itemNodes = [];
+      const section = m.references && Array.isArray(m.references.nodes) ? m.references.nodes : null;
+      if (m.reference && Array.isArray(m.reference.fields)) {
+        // single section metaobject -> find its item list field
+        const listField = m.reference.fields.find((f) => f.references && Array.isArray(f.references.nodes));
+        if (listField) itemNodes = listField.references.nodes;
+      } else if (section && section.length) {
+        // list of items OR a single section whose field holds the items
+        if (section[0] && Array.isArray(section[0].fields) &&
+            section[0].fields.some((f) => f.references && Array.isArray(f.references.nodes))) {
+          const listField = section[0].fields.find((f) => f.references && Array.isArray(f.references.nodes));
+          itemNodes = (listField && listField.references.nodes) || [];
+        } else {
+          itemNodes = section;
+        }
+      }
+      const items = (itemNodes || []).map((n) => {
+        const o = {}; (n.fields || []).forEach((f) => { if (f && f.key) o[f.key] = f.value; });
+        const q = o.question || o.faq_question || o.q || o.title || null;
+        const a = o.answer || o.faq_answer || o.a || o.body || o.body_content || null;
+        return q ? { q, a: a ? richTextToPlain(a) || a : '' } : null;
+      }).filter(Boolean);
+      return items.length ? items : null;
+    })(),
+
+    // Optional "meal feature" marketing section (product_meal_feature_section).
+    // Passed through as flat {header, subheader, body, image} when present.
+    meal_feature_section: (function () {
+      const m = mf['product_meal_feature_section'];
+      const ref = m && m.reference;
+      if (!ref || !Array.isArray(ref.fields)) return null;
+      const o = {};
+      ref.fields.forEach((f) => {
+        if (!f || !f.key) return;
+        if (f.reference && f.reference.image && f.reference.image.url) o[f.key] = f.reference.image.url;
+        else o[f.key] = f.value;
+      });
+      const header = o.header || o.title || o.meal_feature_header || null;
+      const body = o.body_content || o.body || o.description || o.meal_feature_body || null;
+      const image = Object.entries(o).find(([k, v]) => /image|photo/i.test(k) && typeof v === 'string' && v.startsWith('http'));
+      return (header || body) ? {
+        header,
+        subheader: o.subheader || o.subheading || null,
+        body: body ? (richTextToPlain(body) || body) : null,
+        image: image ? image[1] : null,
+      } : null;
+    })(),
+
     // menu behavior
     no_variants,
   };

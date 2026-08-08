@@ -6823,10 +6823,10 @@ h2, h3, h4 {
 /* ===== Collection header — flattened to plain text on cream page background ===== */
 .menu-collection-header--banner {
   padding: 0;
-  margin: 10px 0 8px;
+  margin: 2px 0 8px;
 }
 @media (min-width: 760px) {
-  .menu-collection-header--banner { padding: 0; margin: 18px 0 10px; }
+  .menu-collection-header--banner { padding: 0; margin: 4px 0 10px; }
 }
 /* ===== Sub-collection THIN image banners — same look as the main header hero
    (charcoal gradient, title + subheader bottom-left) but much shorter, so the
@@ -6843,7 +6843,7 @@ h2, h3, h4 {
   margin-bottom: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;       /* vertically centered text in the slim banner */
 }
 @media (min-width: 760px) {
   .menu-collection-banner { height: 82px; border-radius: 12px; }
@@ -6867,17 +6867,17 @@ h2, h3, h4 {
 .menu-collection-banner-text {
   position: relative;
   z-index: 1;
-  padding: 0 18px 12px;          /* bottom-left */
+  padding: 0 18px;               /* vertically centered — no bottom offset */
   max-width: 100%;
   display: block;
   text-align: left;
 }
 .menu-collection-banner-text .menu-collection-title {
   color: #F5F3EF;
-  margin: 0 0 3px;
+  margin: 0 0 2px;
   font-family: var(--font-heading) !important;
   text-transform: uppercase;
-  font-size: clamp(17px, 4.6vw, 24px) !important;
+  font-size: clamp(14px, 3.6vw, 19px) !important;
   font-weight: 700 !important;
   letter-spacing: 0.4px;
   line-height: 1.05;
@@ -6887,8 +6887,8 @@ h2, h3, h4 {
   color: #F5F3EF;
   opacity: 0.95;
   margin: 0;
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 11px;
+  line-height: 1.35;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -6896,8 +6896,8 @@ h2, h3, h4 {
   overflow: hidden;
 }
 @media (min-width: 760px) {
-  .menu-collection-banner-text { padding: 0 24px 16px; }
-  .menu-collection-banner-text .menu-collection-desc { font-size: 13px; -webkit-line-clamp: 2; }
+  .menu-collection-banner-text { padding: 0 24px; }
+  .menu-collection-banner-text .menu-collection-desc { font-size: 12px; -webkit-line-clamp: 2; }
 }
 
 /* ===== Description clamp — strictly 2 lines (Task 2.5) ===== */

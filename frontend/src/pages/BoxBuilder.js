@@ -81,7 +81,7 @@ const MENU_HERO = {
 };
 
 const SECTION_TABS = [
-  { id: 'meals', label: 'Meals' },
+  { id: 'meals', label: 'Dog Meals' },
   { id: 'treats', label: 'Treats' },
   { id: 'bundles', label: 'Monthly Bundles' },
   { id: 'cat-meals', label: 'Cat Meals' },
