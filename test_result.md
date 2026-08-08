@@ -1074,11 +1074,11 @@ metadata:
   run_ui: true
 
 test_plan:
-  current_focus:
-    - "Menu crash fix (useRef) + Prompt 9 milestone toast + cart font unify + remove redundant Subtotal"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+  last_result_2026_07: "ALL PASS (3/3) — menu useRef crash fixed & verified; Prompt 9 milestone toast working; cart fonts unified + redundant Subtotal removed."
 
 frontend_new_session_2026_07:
   - task: "FIX reported menu crash (useRef not defined) + finish Prompt 9 milestone toast"
