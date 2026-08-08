@@ -1171,13 +1171,61 @@ frontend_new_session_2026_07:
             
             VERDICT: Cart drawer has unified font design (all line items use same font/size/weight) and only ONE total row at bottom. Redundant Subtotal removed.
 
+  - task: "Prompt 8: ShopifyPageBuilder card mapping (protein/recipe) + array image handling"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/ShopifyPageBuilder.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Shopify is LIVE. The page_builder metafield already flows from backend (About/WhyRaw/Contact
+            pages consume it). BUG: CardsBlock used wrong field keys so protein/recipe cards had no image/title.
+            FIX: added exact live keys — images: abous_us_protein_image / recipe_image; titles:
+            abous_us_protein_title / recipe_type_title; body: abous_us_protein_description / recipe_type_body.
+            Also imgUrl now handles ARRAY image fields (list.file_reference like image_video) -> first URL.
+            TEST: /about renders live Shopify sections (hero image, text blocks with farm photos, an "Our
+            Ingredients" protein card grid WITH images+titles, recipe cards WITH images+titles), no runtime
+            errors. /new-to-raw (Why Raw) and /contact use the same component and should render their builder
+            sections. Ignore any Shopify 502 (won't happen now that creds are live).
+
+  - task: "Meal Plan Scoring sourced from Shopify product_meal_plan_scores metaobjects"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/services/mealPlanRecommendation.js + pages/MealPlanPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            The meal-plan recommendation now sources PROTEIN_SCORES from the live Shopify metaobject
+            `product_meal_plan_scores` (field product_score_json: health_scores/weight_scores/activity_scores/
+            age_scores) instead of the hardcoded table. setProteinScoresFromShopify() reads GET
+            /api/shopify/products, maps snake_case keys to canonical, and overrides scores per protein.
+            Algorithm unchanged (health*0.40+age*0.30+weight*0.15+activity*0.15). Per user: any MISSING score
+            defaults to 1 (not 0). OutcomePane fetches Shopify products on mount, applies scores, then
+            re-ranks (scoresReady) and one-time re-syncs the 3 default proteins. Falls back to built-in scores
+            if Shopify unavailable.
+            TEST: complete the /meal-plan quiz for one dog (name -> add details -> select a health issue like
+            "Allergies" or "Joint Issues" -> finish all 8 steps) and reach the plan outcome. Verify: page does
+            NOT crash, recommended proteins/products are shown, and the plan renders meal cards with prices.
+            (Exact ranking is merchant-data-driven; just confirm it completes and produces a sensible plan.)
+
 agent_communication_2026_07:
     - agent: "main"
       message: |
-        Please FRONTEND-test the reported menu crash fix + Prompt 9 milestone + cart edits (see the two
-        tasks under frontend_new_session_2026_07). Shopify is now LIVE (real creds) but if any 502 appears
-        the app still falls back to local catalog — ignore transient Shopify errors, focus on the 4 menu
-        checks and the 3 cart checks. Preview URL from /app/frontend/.env.
+        Round 2 (Shopify features). Please FRONTEND-test the two new tasks above:
+        (1) ShopifyPageBuilder card mapping on /about (protein + recipe cards must now show images AND titles;
+            hero + text-block farm images render). Also quickly confirm /contact and /new-to-raw builder sections
+            render without runtime errors.
+        (2) Meal Plan scoring: complete the /meal-plan 8-step quiz for a single dog and confirm the outcome plan
+            renders (no crash, proteins + priced meal cards shown). Shopify is LIVE so no 502s expected.
+        Preview URL from /app/frontend/.env.
     - agent: "testing"
       message: |
         ✅ TESTING COMPLETE - ALL 3 TESTS PASSED (18/18 sub-checks)
@@ -8934,3 +8982,105 @@ agent_communication:
         - Please summarize and finish the session
         
         YOU MUST ASK USER BEFORE DOING FRONTEND TESTING
+
+
+    - agent: "testing"
+      message: |
+        ✅ FRONTEND TESTING COMPLETE - FEATURE 1 PARTIAL PASS (2/3), FEATURE 2 FULL PASS
+        
+        **USER REQUEST:** Test FoeGuard site at https://15df79e3-5184-4134-9ced-e9bfa72b21e4.preview.emergentagent.com 
+        on desktop viewport 1440x900. Shopify is LIVE (no 502 errors expected). Two features to verify.
+        
+        **FEATURE 1 — Shopify Page Builder rendering (About / Why-Raw / Contact):**
+        
+        **TEST 1a — /about page: ✅ PASS (with minor issue)**
+        ✅ Page renders without runtime errors (12 CORS errors are non-blocking auth session checks)
+        ✅ Shopify Page Builder detected (data-testid="shopify-page-builder" present)
+        ✅ Hero section present (data-testid="pb-hero") with title "About Us"
+        ⚠️ MINOR: Hero does NOT have background image (backgroundImage not in style attribute)
+        ✅ Text blocks present (data-testid="pb-text"): 4 total
+           - Text block 1: No image
+           - Text block 2: Image loads (naturalWidth: 2565px) ✓
+           - Text block 3: Image loads (naturalWidth: 2160px) ✓
+        ✅ Card sections present (data-testid="pb-cards"): 2 sections found
+        ✅ First card section has 3 cards (.spb-card):
+           - Card 1: Image ✓ (naturalWidth > 0), Title ✓ ("Complete & Balanced")
+           - Card 2: Image ✓ (naturalWidth > 0), Title ✓ ("Prey Model Raw (80/10/10)")
+           - Card 3: Image ✓ (naturalWidth > 0), Title ✓ ("Personalized Meals")
+        ✅ ALL 3 cards have BOTH images (naturalWidth > 0) AND titles (non-empty text)
+        
+        **NOTE:** User spec mentioned "Our Ingredients" protein cards with 8 proteins, but actual Shopify 
+        content shows 3 recipe type cards. This appears to be what's configured in Shopify admin.
+        
+        **TEST 1b — /contact page: ✅ PASS**
+        ✅ Page renders without runtime errors
+        ✅ Shopify Page Builder detected (data-testid="shopify-page-builder" present)
+        ✅ Hero section present (data-testid="pb-hero"): 1
+        ✅ Card sections present (data-testid="pb-cards"): 3
+        
+        **TEST 1c — /new-to-raw page: ❌ FAIL**
+        ❌ NO Shopify Page Builder found (data-testid="shopify-page-builder" does NOT exist)
+        ❌ Page uses hardcoded React content (NewToRawPage.js), NOT Shopify Page Builder
+        ❌ This page was never configured to use Shopify Page Builder in the code
+        
+        **FEATURE 1 VERDICT: PARTIAL PASS (2/3 pages)**
+        - /about: PASS (Shopify Page Builder renders with hero, text blocks with images, cards with images+titles)
+        - /contact: PASS (Shopify Page Builder renders with hero and card sections)
+        - /new-to-raw: FAIL (No Shopify Page Builder - uses hardcoded React content)
+        
+        **FEATURE 2 — Meal Plan scoring completes end-to-end:**
+        
+        **TEST 2 — Meal Plan Quiz (8 steps for SINGLE dog): ✅ PASS (100%)**
+        ✅ Step 1: Dog name entered ("Rex") and Continue clicked
+        ✅ Step 2: Postal code entered ("M5V1A1") and Continue clicked
+        ✅ Step 3: Gender (male) and neutered status (Yes) selected and Continue clicked
+        ✅ Step 4: Breed (Labrador Retriever) and birthday (2024-08-08) entered and Continue clicked
+        ✅ Step 5: Body condition (Fit) selected and Continue clicked
+        ✅ Step 6: Weight (40 lbs) and lifestyle (Active) entered and Continue clicked
+        ✅ Step 7: Health issue (Joint Issues) selected and Continue clicked
+        ✅ Step 8: Email (rex.owner.1786170903@foeguard-test.com) entered and Save Profile clicked
+        ✅ NO page errors during entire quiz flow (0 page errors)
+        ✅ Outcome screen rendered (data-testid="meal-plan-outcome" present)
+        ✅ Recommended meal cards present: 3 cards (data-testid="outcome-meal-0/1/2")
+        ✅ Total price displayed: $127.44 (data-testid="outcome-total")
+        ✅ Box size: 12 lb
+        ✅ Duration selector: 2 Weeks (dropdown present)
+        ✅ "Add Recommended Box to Cart" button present (data-testid="outcome-add-to-cart")
+        
+        **FEATURE 2 VERDICT: ✅ FULL PASS**
+        Quiz completes successfully through all 8 steps without errors. Final outcome screen renders 
+        with meal plan showing recommended proteins, priced meal cards with dollar amounts ($127.44 total), 
+        and Add to Cart button.
+        
+        **SCREENSHOTS CAPTURED:**
+        - test1a_about_page.png: /about page with Shopify Page Builder
+        - test1a_about_protein_cards.png: Protein/recipe cards section
+        - about_protein_cards_detailed.png: Detailed view of 3 cards with images+titles
+        - test1b_contact_page.png: /contact page with Shopify Page Builder
+        - contact_page_detailed.png: Contact page showing hero and card sections
+        - test1c_newtoraw_page.png: /new-to-raw page (NO Shopify Page Builder)
+        - test2_meal_plan_outcome.png: Meal plan outcome screen with recommended box
+        
+        **OVERALL SUMMARY:**
+        
+        ✅ FEATURE 1: PARTIAL PASS (2/3)
+        - /about: PASS - Shopify Page Builder renders with hero (title "About Us"), text blocks with 
+          images loading, and cards with BOTH images AND titles
+        - /contact: PASS - Shopify Page Builder renders with hero and card sections
+        - /new-to-raw: FAIL - No Shopify Page Builder (uses hardcoded React content)
+        
+        ✅ FEATURE 2: FULL PASS
+        - Meal plan quiz completes end-to-end (8 steps) without errors
+        - Outcome screen renders with meal plan, priced meal cards ($127.44), and Add to Cart button
+        
+        **CRITICAL ISSUES:**
+        1. /new-to-raw does NOT use Shopify Page Builder (never implemented in code)
+        
+        **MINOR ISSUES:**
+        1. /about hero section does NOT have background image (spec mentioned it should)
+        2. CORS errors on all pages (non-blocking, just auth session checks failing)
+        
+        **ACTION ITEMS FOR MAIN AGENT:**
+        1. CRITICAL: Implement Shopify Page Builder for /new-to-raw page (currently uses hardcoded React)
+        2. Minor: Add background image to /about hero section if required by spec
+        3. If above issues are acceptable, please summarize and finish

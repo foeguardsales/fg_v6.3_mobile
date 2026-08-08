@@ -104,7 +104,106 @@ export const PROTEIN_SCORES = {
 };
 
 // ---------------------------------------------------------------------------
-// Questionnaire-answer  →  algorithm-key mappers
+// 2b. SHOPIFY-SOURCED SCORES
+// ---------------------------------------------------------------------------
+// The merchant maintains the real per-product scores in the Shopify metaobject
+// `meal_plan_score` (field `product_score_json`), referenced by each Complete &
+// Balanced dinner via the `foeguard.product_meal_plan_scores` metafield. The
+// JSON shape is:
+//   { product:"Chicken",
+//     health_scores:{allergies,diabetes,constipation,diarrhea,itchy_skin,
+//                    dry_coat,weight_management,joint_issues,
+//                    digestive_sensitivity,pancreatitis,picky_eater,none},
+//     weight_scores:{underweight,healthy_weight,overweight},
+//     activity_scores:{low,normal,high},
+//     age_scores:{puppy,adult,senior} }
+// We convert those snake_case keys to the algorithm's canonical keys and
+// OVERRIDE the hardcoded PROTEIN_SCORES so every user's plan is driven by the
+// live metaobject data. Anything missing falls back to 1 at scoring time.
+
+const SHOPIFY_HEALTH_KEY_MAP = {
+  allergies: 'Allergies', diabetes: 'Diabetes', constipation: 'Constipation',
+  diarrhea: 'Diarrhea', itchy_skin: 'Itchy Skin', dry_coat: 'Dry Coat',
+  weight_management: 'Weight Management', joint_issues: 'Joint Issues',
+  digestive_sensitivity: 'Digestive Sensitivity', pancreatitis: 'Pancreatitis',
+  picky_eater: 'Picky Eater', none: 'None',
+};
+const SHOPIFY_WEIGHT_KEY_MAP = { underweight: 'Underweight', healthy_weight: 'Healthy', overweight: 'Overweight' };
+const SHOPIFY_ACTIVITY_KEY_MAP = { low: 'Low', normal: 'Normal', high: 'High' };
+const SHOPIFY_AGE_KEY_MAP = { puppy: 'Puppy', adult: 'Adult', senior: 'Senior' };
+
+// Normalise the metaobject `product` label to a canonical PROTEIN_SCORES key.
+const normalizeProteinName = (name) => {
+  if (!name || typeof name !== 'string') return null;
+  const t = name.trim().toLowerCase();
+  if (/fish/.test(t)) return 'Wild-Caught Fish';
+  const known = { beef: 'Beef', chicken: 'Chicken', duck: 'Duck', goat: 'Goat', lamb: 'Lamb', rabbit: 'Rabbit', turkey: 'Turkey' };
+  return known[t] || name.trim();
+};
+
+const remap = (obj, keyMap) => {
+  const out = {};
+  if (obj && typeof obj === 'object') {
+    Object.entries(obj).forEach(([k, v]) => {
+      const canon = keyMap[String(k).toLowerCase()];
+      if (canon && typeof v === 'number') out[canon] = v;
+    });
+  }
+  return out;
+};
+
+/** Convert a parsed product_score_json into the internal PROTEIN_SCORES shape. */
+export const shopifyScoreToInternal = (j) => ({
+  health: remap(j.health_scores, SHOPIFY_HEALTH_KEY_MAP),
+  weight: remap(j.weight_scores, SHOPIFY_WEIGHT_KEY_MAP),
+  activity: remap(j.activity_scores, SHOPIFY_ACTIVITY_KEY_MAP),
+  age: remap(j.age_scores, SHOPIFY_AGE_KEY_MAP),
+});
+
+// Pull the raw product_score_json string out of a RAW Shopify product node
+// (as returned by GET /api/shopify/products). Returns null if absent.
+const extractScoreJson = (product) => {
+  const mfs = (product && product.metafields) || [];
+  const mf = mfs.find((m) => m && m.key === 'product_meal_plan_scores');
+  if (!mf) return null;
+  let raw = null;
+  const ref = mf.reference;
+  if (ref && Array.isArray(ref.fields)) {
+    const f = ref.fields.find((x) => x && x.key === 'product_score_json');
+    if (f && f.value) raw = f.value;
+  }
+  if (!raw && typeof mf.value === 'string' && mf.value.trim().startsWith('{')) raw = mf.value;
+  if (!raw) return null;
+  try { return typeof raw === 'string' ? JSON.parse(raw) : raw; } catch { return null; }
+};
+
+let _shopifyScoresApplied = false;
+export const shopifyScoresApplied = () => _shopifyScoresApplied;
+
+/**
+ * Override PROTEIN_SCORES from a list of RAW Shopify products (each with a
+ * `metafields` array). Only products carrying `product_meal_plan_scores` are
+ * used — these are the Complete & Balanced dinners. Returns the number of
+ * proteins whose scores were sourced from Shopify. Safe to call repeatedly.
+ */
+export const setProteinScoresFromShopify = (rawProducts) => {
+  if (!Array.isArray(rawProducts)) return 0;
+  let count = 0;
+  rawProducts.forEach((p) => {
+    const j = extractScoreJson(p);
+    if (!j) return;
+    const name = normalizeProteinName(j.product);
+    if (!name) return;
+    const internal = shopifyScoreToInternal(j);
+    // Only apply if it actually carried health data (avoid blanking a protein).
+    if (internal.health && Object.keys(internal.health).length) {
+      PROTEIN_SCORES[name] = internal;
+      count += 1;
+    }
+  });
+  if (count > 0) _shopifyScoresApplied = true;
+  return count;
+};
 // (Kept in one place so the survey UI can evolve without breaking the algorithm.)
 // ---------------------------------------------------------------------------
 
@@ -177,17 +276,18 @@ export const calculateProteinScores = (profile) => {
     : ['None'];
 
   const results = Object.entries(PROTEIN_SCORES).map(([protein, scores]) => {
-    // Health = average across all selected conditions
+    // Health = average across all selected conditions.
+    // Per user spec: if a product LACKS a score for a condition, treat it as 1.
+    const health = scores.health || {};
     const healthValues = conditions
-      .map((c) => scores.health[c])
-      .filter((v) => typeof v === 'number');
+      .map((c) => (typeof health[c] === 'number' ? health[c] : 1));
     const healthAvg = healthValues.length
       ? healthValues.reduce((a, b) => a + b, 0) / healthValues.length
-      : 0;
+      : 1;
 
-    const ageVal      = scores.age[profile.ageGroup]        ?? 0;
-    const weightVal   = scores.weight[profile.weightGoal]   ?? 0;
-    const activityVal = scores.activity[profile.activityLevel] ?? 0;
+    const ageVal      = (scores.age && typeof scores.age[profile.ageGroup] === 'number') ? scores.age[profile.ageGroup] : 1;
+    const weightVal   = (scores.weight && typeof scores.weight[profile.weightGoal] === 'number') ? scores.weight[profile.weightGoal] : 1;
+    const activityVal = (scores.activity && typeof scores.activity[profile.activityLevel] === 'number') ? scores.activity[profile.activityLevel] : 1;
 
     const final =
       healthAvg   * weights.health +

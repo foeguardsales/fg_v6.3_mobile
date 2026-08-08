@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { ChevronLeft, ChevronRight, Check, Plus, Trash2, X } from 'lucide-react';
 import axios from 'axios';
-import { getRecommendationsForDog, setAlgorithmWeights } from '../services/mealPlanRecommendation';
+import { getRecommendationsForDog, setAlgorithmWeights, setProteinScoresFromShopify } from '../services/mealPlanRecommendation';
 import { trackShopifyEmailEvent, trackMealPlanCompleted } from '../services/analytics';
 import { useCart } from '../contexts/CartContext';
 import { useMealPlanConfig } from '../hooks/useMealPlanConfig';
@@ -1161,14 +1161,18 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
   const { setIsCartOpen } = useCart();
   const [products, setProducts] = useState([]);
   const [duration, setDuration] = useState('2w'); // '2w' | '1m'
+  // Shopify meal-plan scores: sourced from the `product_meal_plan_scores`
+  // metaobjects. Recommendations recompute once these are applied.
+  const [scoresReady, setScoresReady] = useState(false);
   const primaryDog = dogs[0] || {};
   const dogLabel = capitalizeName(primaryDog.name || 'your dog');
 
   // Recommendation: get up to 8 ranked proteins for dropdown options.
+  // Depends on `scoresReady` so the plan re-ranks once live Shopify scores load.
   const rec = React.useMemo(() => {
     try { return getRecommendationsForDog(primaryDog, 8); }
     catch (_) { return { top: [], all: [] }; }
-  }, [primaryDog]);
+  }, [primaryDog, scoresReady]);
 
   // Available protein keys (algorithm order → product key).
   const availableKeys = rec.all
@@ -1190,12 +1194,38 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
 
   const [selectedKeys, setSelectedKeys] = useState(defaultKeys);
 
+  // When live Shopify scores apply (once), refresh the pre-selected proteins to
+  // the freshly-ranked defaults — but only before the user has changed anything.
+  const scoreSyncRef = useRef(false);
+  useEffect(() => {
+    if (scoresReady && !scoreSyncRef.current) {
+      scoreSyncRef.current = true;
+      setSelectedKeys(defaultKeys);
+    }
+  }, [scoresReady]);
+
   // Load products once for pricing + card display.
   useEffect(() => {
     let cancelled = false;
     axios.get(`${API}/products`)
       .then(res => { if (!cancelled) setProducts(Array.isArray(res.data) ? res.data : []); })
       .catch(() => { /* graceful */ });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Apply live Shopify meal-plan scores (from the product_meal_plan_scores
+  // metaobjects) so the recommendation is driven by merchant-managed data.
+  // Falls back silently to the built-in scores if Shopify is unavailable.
+  useEffect(() => {
+    let cancelled = false;
+    axios.get(`${API}/shopify/products?first=50`)
+      .then(res => {
+        if (cancelled) return;
+        const list = (res.data && res.data.products) || [];
+        const n = setProteinScoresFromShopify(list);
+        if (n > 0) setScoresReady(true);
+      })
+      .catch(() => { /* Shopify unconfigured/502 → keep built-in scores */ });
     return () => { cancelled = true; };
   }, []);
 
