@@ -679,8 +679,15 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               {product.description}
             </p>
 
-            {/* Feature section — benefit_icons from Shopify metafield, falls back to legacy highlights */}
-            {product.benefit_icons ? (
+            {/* Product features checks — foeguard.product_feature_section (protein-specific)
+                takes priority; falls back to benefit_icons, then legacy highlights. Design unchanged. */}
+            {product.feature_checks && product.feature_checks.length > 0 ? (
+              <ul className="pd-shopify-checks" data-testid="product-features">
+                {product.feature_checks.map((h, i) => (
+                  <li key={i}><Check size={16} strokeWidth={2.5} /> <span>{h}</span></li>
+                ))}
+              </ul>
+            ) : product.benefit_icons ? (
               <div data-testid="product-features">
                 <BenefitIcons value={product.benefit_icons} />
               </div>

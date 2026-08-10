@@ -435,6 +435,13 @@ export function normalizeShopifyProduct(sp) {
 
     // rich content (from Shopify metaobjects; may be null / empty)
     highlights: mfList(mf, 'highlights', []),
+    // Product Features Checks — foeguard.product_feature_section -> a protein-
+    // specific metaobject (e.g. beef_product_features) whose product_features_section
+    // list holds product_feature_item entries. Matched per product via the
+    // product's own reference (no manual protein lookup needed).
+    feature_checks: nestedRefList(mf, 'product_feature_section', 'product_features_section')
+      .map((o) => o.product_feature_item || o.product_feature || o.feature || o.title)
+      .filter(Boolean),
     // benefit_icons — list of { icon, label } pairs for the checkmark bullets
     benefit_icons: mfJson(mf, 'benefit_icons', null) || mfList(mf, 'benefit_icons', null),
     // page icon badges (product_page_icons_section -> badge titles) drive the

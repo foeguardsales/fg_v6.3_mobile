@@ -33,10 +33,9 @@ fragment ProductCard on Product {
     {namespace: "foeguard", key: "product_page_icons_section"},
     {namespace: "foeguard", key: "product_type"},
     {namespace: "foeguard", key: "product_meal_plan_scores"},
-    {namespace: "foeguard", key: "product_meal_feature_section"},
+    {namespace: "foeguard", key: "product_feature_section"},
     {namespace: "foeguard", key: "product_customer_reviews"},
     {namespace: "foeguard", key: "product_faqs"},
-    {namespace: "custom", key: "foeguard_product_faqs"},
     {namespace: "foeguard", key: "bundle_weight_lbs"}
   ]) {
     namespace

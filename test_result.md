@@ -1126,7 +1126,18 @@ session_2026_08_10:
 agent_communication_2026_08_10:
     - agent: "main"
       message: |
-        Please TEST (frontend) two things on the LIVE site (Shopify configured):
+        PDP DATA WIRING (Product Cards/Pages) — DONE & verified via screenshots + backend:
+        - Fixed backend metafield key: product query requested foeguard.product_meal_feature_section (wrong,
+          always null) -> corrected to foeguard.product_feature_section (queries.py).
+        - Added normalizer field `feature_checks` (product_feature_section -> product_features_section ->
+          product_feature_item[]). PDP "Product features checks" now renders the 3 protein-specific bullets
+          with existing checkmark design (pd-shopify-checks). Auto protein-match via product's own reference
+          (Beef/Chicken/Turkey verified).
+        - product_information CONFIRMED working (Shopify product_info metaobject, rich text) — renders in the
+          "Product Information" collapsible (collapsed by default). NOTE: it is a SHARED metaobject referenced
+          by every product, so all products show identical Product Information text (Shopify content setup).
+        - Icons/Ingredients/Nutrition already wired and confirmed. FAQs intentionally NOT wired (user: ignore).
+        - Also fixed backend GraphQL fragment bug (CartErr/UserErr split) so customer login/register work.
         1) REPORTED BUG — /about must render the Shopify HEADLESS page builder:
            data-testid='shopify-page-builder' present, data-testid='pb-hero' present with a hero image and
            the 'About Us' title + 'Welcome to the farm...' subheading, plus story text sections. It must NOT
