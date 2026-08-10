@@ -386,6 +386,11 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
       const root = document.getElementById('root');
       if (root) root.scrollTop = 0;
     }
+
+    // Clear stale product data on every route change so the PREVIOUS product's
+    // image / variants / metafields never linger while the new one loads.
+    setProduct(null);
+    setLoading(true);
     
     // Sync with sessionStorage whenever the page becomes visible
     const syncFromStorage = () => {

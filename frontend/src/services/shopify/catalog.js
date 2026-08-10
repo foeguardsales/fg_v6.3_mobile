@@ -96,11 +96,16 @@ async function _fetchAllRaw() {
   let after = null;
   // hard cap so we can't loop forever
   for (let i = 0; i < 20; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
     const page = await listProducts({ first: 100, after });
-    (page.nodes || []).forEach((n) => all.push(n));
-    const hasNext = page?.pageInfo?.hasNextPage;
-    after = page?.pageInfo?.endCursor;
+    // Backend returns { products, page_info }; support the GraphQL-style
+    // { nodes, pageInfo } too so either response shape works. Without this the
+    // list came back empty and the Menu silently fell back to the LOCAL catalog
+    // (placeholder images / legacy ids) instead of real Shopify data.
+    const list = page?.nodes || page?.products || [];
+    list.forEach((n) => all.push(n));
+    const info = page?.pageInfo || page?.page_info || {};
+    const hasNext = info.hasNextPage;
+    after = info.endCursor;
     if (!hasNext || !after) break;
   }
   return all;
@@ -150,11 +155,12 @@ export async function getAllTreats() {
 export async function getProductByHandle(handle) {
   if (!handle) return null;
   if (!_shopifyDown) {
-    // Prefer cache from all-products preload (fresh, includes metafields)
-    if (_cache.byHandle.has(handle)) {
-      return normalizeShopifyProduct(_cache.byHandle.get(handle));
-    }
     try {
+      // Always fetch the FULL single-product query on every navigation. The
+      // menu / all-products preload stores a LEAN node (no images / variants /
+      // seo), so serving that cached node here caused product data to
+      // "disappear" when a PDP was opened via the menu. Fetching fresh
+      // guarantees complete, up-to-date metafields + media on each route change.
       const raw = await getProduct(handle);
       _cache.byHandle.set(handle, raw);
       return normalizeShopifyProduct(raw);
@@ -202,10 +208,10 @@ export async function getProductByHandle(handle) {
 export async function getTreatByHandle(handle) {
   if (!handle) return null;
   if (!_shopifyDown) {
-    if (_cache.byHandle.has(handle)) {
-      return normalizeShopifyTreat(_cache.byHandle.get(handle));
-    }
     try {
+      // Always fetch the FULL single-product query (see getProductByHandle) so
+      // treat pages reached via the menu get complete, fresh data instead of
+      // the lean preloaded node.
       const raw = await getProduct(handle);
       _cache.byHandle.set(handle, raw);
       return normalizeShopifyTreat(raw);

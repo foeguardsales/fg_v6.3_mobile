@@ -9741,3 +9741,193 @@ test_session_visual_regression_2026_07:
     is working as expected. All collection banners render consistently with proper vertical
     spacing across both desktop and mobile viewports. No visual regression issues detected.
 
+
+session_2026_08_10_backend_data_verification:
+  context: |
+    User requested verification that FoeGuard preview site is loading real data from backend after 
+    REACT_APP_BACKEND_URL fix + restart. Base URL: https://storefront-preview-28.preview.emergentagent.com
+  
+  verification_tasks:
+    - task: "Backend data verification - Homepage, Menu, and Product Detail pages"
+      implemented: true
+      working: true
+      file: "Frontend site-wide (all pages)"
+      priority: "high"
+      needs_retesting: false
+      status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ ALL 3 TESTS PASSED - FoeGuard preview site is loading real data from backend
+            
+            **TEST 1 — HOMEPAGE LOADS AND SHOWS DATA: ✅ PASS**
+            - URL: https://storefront-preview-28.preview.emergentagent.com
+            - ✅ Page renders successfully with FoeGuard branding (logo visible in header)
+            - ✅ Hero section displays: "The freshest meal your dog has ever eaten"
+            - ✅ "Order Now" buttons present (4 found)
+            - ✅ Trust badges visible (Human Grade, 100% Natural, Humanely Raised, etc.)
+            - ✅ "Shop Farm Fresh" section with product images
+            - ✅ NO app-wide errors or blank white screen (5654 chars of content)
+            - ✅ NO failed network calls to old/stale backend hosts
+            - ✅ API host CORRECT: All 52 API requests going to storefront-preview-28.preview.emergentagent.com
+            - API requests include: /api/stripe-public-key, /api/seo/site/home, /api/products, 
+              /api/shopify/products, /api/shopify/metaobject/* (homepage content from Shopify)
+            - Screenshot: test1_homepage_final.png
+            
+            **TEST 2 — PRODUCT DATA LOADS ON /MENU: ✅ PASS**
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
+            - ✅ Real products visible: 287 product cards found (NOT empty)
+            - ✅ Collections confirmed: "Comfort Dinner", "Primal Feast", "Monthly Bundle" all present
+            - ✅ Prices displayed: $ symbols found throughout
+            - ✅ NO empty state messages
+            - ✅ API host CORRECT: All 46 API requests going to storefront-preview-28.preview.emergentagent.com
+            - ✅ Shopify data loading successfully: 28 Shopify API requests including:
+              • GET /api/shopify/products?first=60
+              • GET /api/shopify/collections/raw-dog-food?products_first=30
+              • GET /api/shopify/collections/raw-dog-treats?products_first=30
+              • GET /api/shopify/collections/raw-cat-food?products_first=30
+              • GET /api/shopify/collections/raw-cat-treats?products_first=30
+              • GET /api/shopify/collections/monthly-bundles-raw-dog-food?products_first=30
+              • GET /api/shopify/metaobject/page_menu_mini_descriptions/*
+            - Screenshots: test2_menu.png, test2_menu_scrolled.png
+            
+            **TEST 3 — PRODUCT DETAIL PAGE LOADS DATA: ✅ PASS**
+            - URL: https://storefront-preview-28.preview.emergentagent.com/product/comfort-beef-raw-dog-food
+            - ✅ Product title visible: "Comfort Dinner Beef"
+            - ✅ Price displayed: "$5.66 /lb"
+            - ✅ Product features (checkmark bullets): 1 section with 6 feature items including:
+              • "Pasture-Raised Canadian Beef (antibiotic & hormone-free, grass-fed)"
+              • "Organic (no additives, preservatives, or fillers)"
+              • "Human Grade (no by-products, trims, or old meat)"
+            - ✅ Trust badges row visible: 4 badges (Recyclable Packaging, Humanely Raised, Made in Canada)
+            - ✅ Product information sections: Ingredients, Nutritional Analysis, Product Information, Notes
+            - ✅ API host CORRECT: All 53 API requests going to storefront-preview-28.preview.emergentagent.com
+            - ✅ Shopify product data loading: 34 Shopify API requests including:
+              • GET /api/shopify/products/comfort-beef-raw-dog-food (specific product data)
+              • GET /api/shopify/products?first=100&sort_key=BEST_SELLING
+            - Screenshots: test3_product_detail.png, test3_product_detail_scrolled.png
+            
+            **API HOST VERIFICATION:**
+            ✅ CONFIRMED: All API requests across all 3 pages are using the CORRECT backend host:
+               storefront-preview-28.preview.emergentagent.com
+            ✅ NO requests to old/stale backend hosts detected
+            ✅ NO failed network calls or CORS errors
+            
+            **OVERALL VERDICT:**
+            The REACT_APP_BACKEND_URL fix is working correctly. The preview site is successfully loading 
+            real data from the backend at storefront-preview-28.preview.emergentagent.com. All Shopify 
+            API integrations are functioning properly with live data from foeguard.myshopify.com.
+
+agent_communication_2026_08_10_verification:
+    - agent: "testing"
+      message: |
+        ✅ BACKEND DATA VERIFICATION COMPLETE - ALL TESTS PASSED
+        
+        Verified that FoeGuard preview site (https://storefront-preview-28.preview.emergentagent.com) 
+        is loading real data from the backend after REACT_APP_BACKEND_URL fix + restart.
+        
+        **PASS/FAIL SUMMARY:**
+        ✅ TEST 1 — Homepage loads and shows data: PASS
+        ✅ TEST 2 — Product data loads on /menu (287 products visible): PASS
+        ✅ TEST 3 — Product detail page loads data: PASS
+        
+        **API HOST OBSERVED:**
+        All API requests (151 total across 3 pages) are correctly using:
+        storefront-preview-28.preview.emergentagent.com
+        
+        No requests to old/stale backend hosts detected. The reported bug "preview isn't showing 
+        any data" is RESOLVED. The site is now successfully displaying real Shopify product data.
+
+session_2026_08_10_shopify_image_bugfix:
+  context: |
+    Re-verification of bug fix: products opened VIA THE MENU were showing placeholder images 
+    (customer-assets.emergentagent.com) instead of real Shopify CDN images (cdn.shopify.com).
+    The fix corrects the products list response-shape parsing so the app uses real Shopify data.
+    Base site URL: https://storefront-preview-28.preview.emergentagent.com
+  
+  verification_tasks:
+    - task: "Shopify product images via menu navigation"
+      implemented: true
+      working: true
+      file: "/app/frontend/src/pages/BoxBuilder.js + ProductDetail.js + services/shopify/normalizer.js"
+      priority: "high"
+      needs_retesting: false
+      status_history:
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ ALL 3 TESTS PASSED - Shopify product image bug fix verified and working
+            
+            **TEST A — Direct product load (baseline): ✅ PASS**
+            - URL: /product/comfort-beef-raw-dog-food
+            - Product title: "Comfort Dinner Beef" ✓
+            - Price displayed ✓
+            - Feature checkmarks: 3 bullets ✓
+            - 📸 Image src: https://cdn.shopify.com/s/files/1/0607/4394/2302/files/103.png?v=1704357807
+            - ✅ PASS: Image uses cdn.shopify.com (real Shopify CDN)
+            - Screenshot: testA_direct_product_load.png
+            
+            **TEST B — Product opened VIA THE MENU (THE BUG FIX): ✅ PASS**
+            - URL: /menu → clicked "Comfort Dinner Chicken" product card
+            - Product cards found: 41 ✓
+            - Product modal opened successfully ✓
+            - Product title: "Comfort Dinner Chicken" ✓
+            - Price displayed ✓
+            - Feature checkmarks: 3 bullets ✓
+            - 📸 Image src: https://cdn.shopify.com/s/files/1/0607/4394/2302/files/103_6021040e-553e-48d7-9add-eda17765a716.png?v=1704357849
+            - ✅✅✅ PASS: Image uses cdn.shopify.com (BUG IS FIXED!)
+            - ✅ Products opened via menu now show real Shopify CDN images
+            - Screenshots: testB_menu_before_click.png, testB_product_via_menu_final.png
+            
+            **TEST C — Multiple products via menu (stale-state check): ✅ PASS**
+            - Product #1: "Comfort Dinner Chicken"
+              • Image: https://cdn.shopify.com/s/files/1/0607/4394/2302/files/103_6021040e-553e-48d7-9add-eda17765a716.png?v=1704357849
+              • ✅ Uses cdn.shopify.com
+            - Product #2: "Comfort Dinner Beef"
+              • Image: https://cdn.shopify.com/s/files/1/0607/4394/2302/files/103.png?v=1704357807
+              • ✅ Uses cdn.shopify.com
+            - Product #3: "Comfort Dinner Duck"
+              • Image: https://cdn.shopify.com/s/files/1/0607/4394/2302/files/103_aba3955e-7933-4b40-a8ee-6e5bec3c85e8.png?v=1704484480
+              • ✅ Uses cdn.shopify.com
+            - ✅ All three products showed different titles (no stale state)
+            - ✅✅✅ PASS: All products use cdn.shopify.com images
+            - Screenshot: testC_product3_via_menu.png
+            
+            **KEY FINDINGS:**
+            ✅ Direct product load shows cdn.shopify.com images (baseline working)
+            ✅ Products opened via menu NOW show cdn.shopify.com images (bug fixed)
+            ✅ Multiple products via menu all show correct cdn.shopify.com images (no stale state)
+            ✅ No placeholder images (customer-assets.emergentagent.com) detected
+            
+            **OVERALL VERDICT:**
+            The bug fix is working correctly. Products opened via the menu now display real 
+            Shopify CDN images (cdn.shopify.com) instead of local placeholder images. The 
+            products list response-shape parsing has been corrected and the app is using 
+            real Shopify data for product images across all navigation paths.
+
+agent_communication_2026_08_10_shopify_image_bugfix:
+    - agent: "testing"
+      message: |
+        ✅ SHOPIFY PRODUCT IMAGE BUG FIX VERIFICATION COMPLETE - ALL TESTS PASSED (3/3 PASS)
+        
+        Re-verified the bug fix for products opened via menu showing placeholder images.
+        
+        **PASS/FAIL SUMMARY:**
+        ✅ TEST A — Direct product load (baseline): PASS
+        ✅ TEST B — Product via menu (THE BUG): PASS (BUG IS FIXED!)
+        ✅ TEST C — Multiple products via menu: PASS
+        
+        **IMAGE SOURCES OBSERVED:**
+        All product images across all navigation paths are using cdn.shopify.com:
+        - Comfort Dinner Beef: cdn.shopify.com/s/files/1/0607/4394/2302/files/103.png
+        - Comfort Dinner Chicken: cdn.shopify.com/s/files/1/0607/4394/2302/files/103_6021040e-553e-48d7-9add-eda17765a716.png
+        - Comfort Dinner Duck: cdn.shopify.com/s/files/1/0607/4394/2302/files/103_aba3955e-7933-4b40-a8ee-6e5bec3c85e8.png
+        
+        **CRITICAL VERIFICATION:**
+        ✅ Products opened via menu NOW show real Shopify CDN images (not placeholders)
+        ✅ No customer-assets.emergentagent.com placeholder images detected
+        ✅ All products show correct, unique images (no stale state)
+        
+        The reported bug "opening a product VIA THE MENU showed the product but with the 
+        Shopify product IMAGE missing (falling back to local placeholder images)" is RESOLVED.
+
