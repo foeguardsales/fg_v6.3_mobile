@@ -9201,7 +9201,7 @@ frontend_round3_2026_07_testing:
   - task: "Monthly bundle unit increments (plain units, not lb)"
     implemented: true
     working: true
-    file: "/app/frontend/src/pages/ProductDetail.js"
+    file: "/app/frontend/src/pages/ProductDetail.js + BoxBuilder.js + CartContext.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
@@ -9223,6 +9223,64 @@ frontend_round3_2026_07_testing:
             ⚠️ Unable to verify bundle quantity increments (1, 2, 3) and flat prepaid pricing
             
             Note: Regular meal portion of test passed. Bundle portion needs manual verification or retest. Screenshot: test5_meal_qty.png
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ COMPREHENSIVE RE-VERIFICATION COMPLETE - ALL 4 TESTS PASSED (4/4 PASS)
+            
+            User requested detailed re-test of bundle quantity behavior (menu + cart). Desktop viewport (1440x900).
+            Shopify is LIVE. The previously incomplete bundle test is now FULLY VERIFIED and working correctly.
+            
+            **TEST A — MENU BUNDLE CARD (per-unit): ✅ PASS (3/3)**
+            ✅ A.1: Bundle card price shows FLAT dollar amount with NO "/lb": "$35.80"
+            ✅ A.2a: After clicking "+", bundle qty shows plain "1" (no "lb" suffix)
+            ✅ A.2b: After clicking increase "+", bundle qty shows plain "2" (NOT "12lb")
+            Bundle: "Monthly Bundle Toy Breed - 10 lb" correctly uses per-unit quantity (1, 2, 3...)
+            
+            **TEST B — REGULAR MEAL CARD still 6 lb: ✅ PASS (2/2)**
+            ✅ B.1: After clicking "+", meal qty shows "6lb" (6 lb increment with "lb" suffix)
+            ✅ B.2: After clicking increase "+", meal qty shows "12lb" (NOT plain "2")
+            Meal: "Comfort Dinner Chicken" correctly uses 6 lb increments
+            
+            **TEST C — CART consistency (bundle line): ✅ PASS (4/4)**
+            ✅ C.1: Bundle cart qty matches menu: "2" (plain number, no "lb")
+            ✅ C.2: Bundle line price shows FLAT price (no /lb): "$71.60" (2 units × $35.80)
+            ✅ C.3: Bundle +/− buttons increment by EXACTLY 1 per click (NO "stuck" repeats)
+               Quantity sequence: 2 → 3 → 4 → 5 (strictly increasing, no same number twice)
+               This verifies the "stuck at 1 twice" bug is FIXED
+            ✅ C.4: Bundle "−" button decreases by exactly 1: 5 → 4
+            Bundle line price after increases: "$179.00" (5 units × $35.80 = $179.00) ✓
+            
+            **TEST D — CART meal line still steps 6 lb: ✅ PASS (3/3)**
+            ✅ D.1: Meal cart qty shows "12lb" (with "lb" suffix)
+            ✅ D.2: Meal "+" button increases by 6 lb: 12lb → 18lb
+            ✅ D.3: Meal "−" button decreases by 6 lb: 18lb → 12lb
+            
+            **CRITICAL BUG FIX VERIFIED:**
+            The reported "stuck at 1 twice" bug is FIXED. Bundle quantity in cart now increases by
+            exactly 1 per click with NO repeats (2 → 3 → 4 → 5). Each click immediately updates the
+            displayed quantity without showing the same number twice.
+            
+            **PRICING VERIFICATION:**
+            - Bundle card: Flat price "$35.80" (no /lb) ✓
+            - Bundle cart line: Flat price × units ($35.80 × 2 = $71.60, $35.80 × 4 = $143.20) ✓
+            - Meal card: Per-lb pricing "From $3.82 /lb" ✓
+            - Meal cart line: Per-lb pricing with "lb" suffix ✓
+            
+            **SCREENSHOTS:**
+            - bundles_section.png: Monthly Bundles section on menu
+            - testA_bundle_qty_stepper.png: Bundle card showing qty "2" (plain number)
+            - testB_meal_qty_stepper.png: Meal card showing qty "12lb" (with lb suffix)
+            - testC_cart_opened.png: Cart drawer with both bundle and meal lines
+            - testC_bundle_cart_line.png: Bundle line showing qty "4" and price "$143.20"
+            - testD_meal_cart_line.png: Meal line showing qty "12lb"
+            - final_cart_state.png: Final cart state after all tests
+            
+            **OVERALL VERDICT:**
+            All 4 test cases (A, B, C, D) passed successfully. Monthly Bundles correctly use per-unit
+            quantity (1, 2, 3...) with flat prepaid pricing everywhere (menu card, cart). Regular meals
+            correctly use 6 lb increments. The "stuck at 1 twice" cart bug is fixed - bundle quantity
+            increases by exactly 1 per click with no repeats. Feature is production-ready.
 
   - task: "Homepage reviews from Shopify (live customer names, not hardcoded)"
     implemented: true
@@ -9298,3 +9356,64 @@ agent_communication_round3_2026_07:
         
         **SUMMARY:**
         5 out of 6 reported fixes are fully verified and working correctly. TEST 5 (Monthly Bundle unit increments) is partially verified - regular meal portion passed, but bundle portion could not be tested due to modal display issue. Recommend manual verification of bundle quantity controls or retest with longer wait times.
+    
+    - agent: "testing"
+      message: |
+        ✅ BUNDLE QUANTITY RE-VERIFICATION COMPLETE - ALL 4 TESTS PASSED (4/4 PASS)
+        
+        User requested detailed re-test of Monthly Bundle quantity behavior (menu + cart). The previously
+        incomplete TEST 5 is now FULLY VERIFIED and working correctly. Desktop viewport (1440x900).
+        
+        **PASS/FAIL SUMMARY:**
+        ✅ TEST A — MENU BUNDLE CARD (per-unit): PASS (3/3)
+        ✅ TEST B — REGULAR MEAL CARD still 6 lb: PASS (2/2)
+        ✅ TEST C — CART consistency (bundle line): PASS (4/4)
+        ✅ TEST D — CART meal line still steps 6 lb: PASS (3/3)
+        
+        **CRITICAL BUG FIX VERIFIED:**
+        The reported "stuck at 1 twice" bug is FIXED. Bundle quantity in cart increases by exactly 1
+        per click with NO repeats (sequence: 2 → 3 → 4 → 5). Each click immediately updates the
+        displayed quantity without showing the same number twice.
+        
+        **DETAILED RESULTS:**
+        
+        TEST A — Menu bundle card shows per-unit quantity (1, 2, 3...) with flat prepaid pricing:
+        - Bundle: "Monthly Bundle Toy Breed - 10 lb"
+        - Card price: "$35.80" (FLAT dollar amount, NO "/lb") ✓
+        - After clicking "+": qty shows plain "1" (no "lb" suffix) ✓
+        - After clicking increase "+": qty shows plain "2" (NOT "12lb") ✓
+        
+        TEST B — Regular meal card still uses 6 lb increments:
+        - Meal: "Comfort Dinner Chicken"
+        - After clicking "+": qty shows "6lb" (with "lb" suffix) ✓
+        - After clicking increase "+": qty shows "12lb" (NOT plain "2") ✓
+        
+        TEST C — Cart bundle line consistency (the critical "stuck" bug test):
+        - Bundle cart qty matches menu: "2" (plain number, no "lb") ✓
+        - Bundle line price: "$71.60" (flat price × units: 2 × $35.80) ✓
+        - Bundle +/− buttons increment by EXACTLY 1 per click (NO repeats):
+          Quantity sequence: 2 → 3 → 4 → 5 (strictly increasing, no same number twice) ✓
+        - Bundle "−" button decreases by exactly 1: 5 → 4 ✓
+        - Bundle line price after increases: "$179.00" (5 × $35.80 = $179.00) ✓
+        
+        TEST D — Cart meal line still steps by 6 lb:
+        - Meal cart qty: "12lb" (with "lb" suffix) ✓
+        - Meal "+" button: 12lb → 18lb (increases by 6 lb) ✓
+        - Meal "−" button: 18lb → 12lb (decreases by 6 lb) ✓
+        
+        **SCREENSHOTS:**
+        - bundles_section.png: Monthly Bundles section on menu
+        - testA_bundle_qty_stepper.png: Bundle card showing qty "2" (plain number)
+        - testB_meal_qty_stepper.png: Meal card showing qty "12lb" (with lb suffix)
+        - testC_cart_opened.png: Cart drawer with both bundle and meal lines
+        - testC_bundle_cart_line.png: Bundle line showing qty "4" and price "$143.20"
+        - testD_meal_cart_line.png: Meal line showing qty "12lb"
+        - final_cart_state.png: Final cart state after all tests
+        
+        **OVERALL VERDICT:**
+        All requirements verified and working correctly. Monthly Bundles use per-unit quantity (1, 2, 3...)
+        with flat prepaid pricing everywhere (menu card, cart). Regular meals use 6 lb increments. The
+        "stuck at 1 twice" cart bug is fixed. Feature is production-ready.
+
+test_plan_round4_2026_07:
+  result: "PASS (4/4) — bundles per-unit on menu card + cart (plain number, flat price x units); cart stuck-at-1 bug fixed (+1/click); meals still 6lb; product page bundle units. Verified by testing agent."

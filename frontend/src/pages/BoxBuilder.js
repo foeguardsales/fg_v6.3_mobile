@@ -1020,6 +1020,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
   const collectionColor = getCollectionColor();
   const isSelected = selectedQty > 0;
+  // Monthly bundles are prepaid packs -> qty is a UNIT count (1, 2 …), stepping
+  // by 1 with a plain number. Everything else steps in 6 lb.
+  const isBundle = product.is_bundle === true || isMonthlyBundle(product);
+  const step = isBundle ? 1 : 6;
 
   const goToProduct = () => {
     if (onOpenProduct) {
@@ -1034,15 +1038,15 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
   const stopAndDecrease = (e) => {
     e.stopPropagation();
-    onUpdate(product.product_id, product.name, Math.max(0, selectedQty - 6));
+    onUpdate(product.product_id, product.name, Math.max(0, selectedQty - step));
   };
   const stopAndIncrease = (e) => {
     e.stopPropagation();
-    if (canAdd) onUpdate(product.product_id, product.name, selectedQty + 6);
+    if (canAdd) onUpdate(product.product_id, product.name, selectedQty + step);
   };
   const stopAndAdd = (e) => {
     e.stopPropagation();
-    if (canAdd) onUpdate(product.product_id, product.name, 6);
+    if (canAdd) onUpdate(product.product_id, product.name, step);
   };
 
   return (
@@ -1083,7 +1087,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
               −
             </button>
             <span className="qty-display-mini" data-testid={`qty-${product.product_id}`}>
-              {selectedQty}<span className="qty-lb-unit">lb</span>
+              {selectedQty}{!isBundle && <span className="qty-lb-unit">lb</span>}
             </span>
             <button
               className="qty-btn-mini"

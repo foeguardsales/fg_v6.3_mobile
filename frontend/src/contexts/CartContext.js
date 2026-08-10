@@ -186,6 +186,14 @@ export const CartProvider = ({ children }) => {
     return base / 6;
   }, [products]);
 
+  // Full flat price of a Monthly Bundle (prepaid pack). Bundle qty is a UNIT
+  // count (1, 2, 3 …), so a bundle line = full price × units.
+  const bundleUnitPriceFor = useCallback((productId) => {
+    const product = products.find(p => p.product_id === productId);
+    if (!product || !Array.isArray(product.pricing)) return 0;
+    return (product.pricing.find(p => p.size_lb === 6) || product.pricing[0])?.price || 0;
+  }, [products]);
+
   // Is this cart entry a Monthly Bundle? (bundles never count toward discount weight)
   const isBundleEntry = useCallback((key, d) => {
     const pid = baseProductId(key, d);
@@ -207,13 +215,13 @@ export const CartProvider = ({ children }) => {
   const nextSize = tierSizes.find(s => s > mealLbs && DISCOUNT_RATES[s] > bulkRate) || null;
   const nextTier = nextSize ? { size: nextSize, rate: DISCOUNT_RATES[nextSize], lbsAway: nextSize - mealLbs } : null;
 
-  // Line prices: meals get the bulk discount, bundles stay flat, treats flat.
+  // Line prices: meals get the bulk discount, bundles are flat price × units, treats flat.
   const mealLinePrice = useCallback((key, d) => perLbForProduct(baseProductId(key, d)) * (d.qty || 0) * (1 - bulkRate), [perLbForProduct, bulkRate]);
-  const bundleLinePrice = useCallback((key, d) => perLbForProduct(baseProductId(key, d)) * (d.qty || 0), [perLbForProduct]);
+  const bundleLinePrice = useCallback((key, d) => bundleUnitPriceFor(baseProductId(key, d)) * (d.qty || 0), [bundleUnitPriceFor]);
 
   const mealsFull = mealEntries.reduce((s, [key, d]) => s + perLbForProduct(baseProductId(key, d)) * (d.qty || 0), 0);
   const mealsSubtotal = mealsFull * (1 - bulkRate);
-  const bundlesSubtotal = bundleEntries.reduce((s, [key, d]) => s + perLbForProduct(baseProductId(key, d)) * (d.qty || 0), 0);
+  const bundlesSubtotal = bundleEntries.reduce((s, [key, d]) => s + bundleUnitPriceFor(baseProductId(key, d)) * (d.qty || 0), 0);
   const treatsSubtotal = (treats || []).reduce((s, t) => s + (t.price || 0) * (t.quantity || 1), 0);
   const subtotal = mealsSubtotal + treatsSubtotal + bundlesSubtotal;
 
@@ -373,10 +381,12 @@ export const UniversalCart = () => {
         const product = products.find(p => p.product_id === baseProductId(key, d));
         const variantId = product?.shopify_variant_id;
         if (variantId) {
+          const isBundle = isMonthlyBundle(product) || product?.is_bundle === true;
           lines.push({
             merchandiseId: variantId,
-            quantity: Math.max(1, Math.round((d.qty || 6) / 6)),
-            attributes: [{ key: 'Weight', value: `${d.qty} lb` }],
+            // Bundles: qty is already a UNIT count. Meals: convert lb -> 6lb packs.
+            quantity: isBundle ? Math.max(1, d.qty || 1) : Math.max(1, Math.round((d.qty || 6) / 6)),
+            attributes: [{ key: isBundle ? 'Bundles' : 'Weight', value: isBundle ? `${d.qty}` : `${d.qty} lb` }],
           });
         }
       });
@@ -542,13 +552,13 @@ export const UniversalCart = () => {
                 <div className="cart-line-right">
                   <div className="cart-qty-mini">
                     <button
-                      onClick={() => (d.qty > 6 ? adjustProtein(key, d.qty - 6) : removeProtein(key))}
+                      onClick={() => (d.qty > 1 ? adjustProtein(key, d.qty - 1) : removeProtein(key))}
                       data-testid={`cart-bundle-dec-${key}`}
                       aria-label="Decrease"
                     >−</button>
-                    <span>{Math.max(1, Math.round((d.qty || 6) / 6))}</span>
+                    <span>{Math.max(1, d.qty || 1)}</span>
                     <button
-                      onClick={() => adjustProtein(key, d.qty + 6)}
+                      onClick={() => adjustProtein(key, (d.qty || 0) + 1)}
                       data-testid={`cart-bundle-inc-${key}`}
                       aria-label="Increase"
                     >+</button>
