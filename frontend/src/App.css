@@ -2067,6 +2067,23 @@ h2, h3, h4 {
 .menu-collection {
   margin-bottom: 24px;
 }
+
+/* Uniform collection spacing on the menu page.
+   The global `section { padding: 24px 0 }` rule (top of this file) was adding an
+   extra 24px top + 24px bottom ONLY to the collections that live in their own
+   <section> (Treats / Monthly Bundles / Cat Meals), making them look far more
+   spaced-out than Comfort Dinner → Primal Feast (which share one section).
+   Zero the per-section vertical padding here so EVERY collection gap is governed
+   solely by `.product-collection/.menu-collection { margin-bottom: 24px }`,
+   matching the tight spacing of the first two collections. (ID specificity beats
+   the global !important rule.) */
+#menu-section-meals,
+#menu-section-treats,
+#menu-section-bundles,
+#menu-section-cat-meals {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
 .menu-collection-header {
   padding: 0 16px 8px;
   margin-bottom: 0;
