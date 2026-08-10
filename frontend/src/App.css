@@ -2004,7 +2004,7 @@ h2, h3, h4 {
 
 /* Product Collection */
 .product-collection {
-  margin-bottom: 64px;
+  margin-bottom: 24px;
 }
 
 .collection-header {
@@ -2065,14 +2065,14 @@ h2, h3, h4 {
 
 /* ===== Restaurant-style menu collection headers ===== */
 .menu-collection {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 .menu-collection-header {
-  padding: 4px 16px 10px;
+  padding: 0 16px 8px;
   margin-bottom: 0;
 }
 @media (min-width: 760px) {
-  .menu-collection-header { padding: 4px 0 10px; }
+  .menu-collection-header { padding: 0 0 8px; }
 }
 .menu-collection-title {
   font-family: var(--font-heading) !important;
@@ -6823,10 +6823,10 @@ h2, h3, h4 {
 /* ===== Collection header — flattened to plain text on cream page background ===== */
 .menu-collection-header--banner {
   padding: 0;
-  margin: 2px 0 8px;
+  margin: 0 0 8px;
 }
 @media (min-width: 760px) {
-  .menu-collection-header--banner { padding: 0; margin: 4px 0 10px; }
+  .menu-collection-header--banner { padding: 0; margin: 0 0 10px; }
 }
 /* ===== Sub-collection THIN image banners — same look as the main header hero
    (charcoal gradient, title + subheader bottom-left) but much shorter, so the
@@ -6834,7 +6834,7 @@ h2, h3, h4 {
 .menu-collection-banner {
   position: relative;
   width: 100%;
-  height: 58px;                  /* THIN — mobile (reduced ~45%) */
+  height: 67px;                  /* THIN — mobile (+15% height) */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -6846,7 +6846,7 @@ h2, h3, h4 {
   justify-content: center;       /* vertically centered text in the slim banner */
 }
 @media (min-width: 760px) {
-  .menu-collection-banner { height: 82px; border-radius: 12px; }
+  .menu-collection-banner { height: 94px; border-radius: 12px; }
 }
 /* Charcoal gradient overlay — transparent top → charcoal bottom (matches main header) */
 .menu-collection-banner--overlay::before {
