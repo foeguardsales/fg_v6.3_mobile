@@ -1074,11 +1074,67 @@ metadata:
   run_ui: true
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "About Us page renders Shopify headless page_builder content (reported bug)"
+    - "Account custom email/password auth form wired to Shopify headless customer API"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
   last_result_2026_07: "PASS — menu crash fixed; Prompt 9 milestone; cart unified. Round 2 PASS — ShopifyPageBuilder cards (About/Contact/WhyRaw) show images+titles (protein/recipe/benefits mapped, array images handled); Meal Plan scoring sourced from Shopify metaobjects verified end-to-end ($127.44 plan, no crash)."
+
+session_2026_08_10:
+  context: |
+    Continuation: restored missing backend/.env + frontend/.env (were git-ignored, lost on fork).
+    Shopify now LIVE (foeguard.myshopify.com) — /api/shopify/health storefront.ok=true admin.ok=true.
+  frontend_tasks:
+    - task: "About Us page shows Shopify headless content (page_builder) — reported bug"
+      implemented: true
+      working: "NA"
+      file: "/app/frontend/src/pages/AboutPage.js + components/ShopifyPageBuilder.js + services/shopify/pageMeta.js"
+      priority: "high"
+      status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            User reported About Us (previously Shopify-headless) was 'not showing up' after code pull.
+            Root cause: Shopify was unconfigured (missing .env), so /api/shopify/page/about-us failed and
+            AboutPage fell back to hardcoded content. After restoring Shopify creds + restarting backend,
+            /api/shopify/page/about-us returns the page_builder metaobjects (page_hero_banner + text blocks).
+            Verify: /about renders data-testid='shopify-page-builder' with data-testid='pb-hero' (hero image
+            'freshly-baled-field.jpg', title 'About Us', subheading 'Welcome to the farm...'), plus the story
+            text sections — i.e. the Shopify headless content, NOT the generic hardcoded fallback.
+    - task: "Account custom email/password auth (reverted from Shopify hosted redirect) → Shopify headless customer API"
+      implemented: true
+      working: "NA"
+      file: "/app/frontend/src/components/account/AuthSection.js + contexts/ShopifyAuthContext.js + services/shopify/customers.js + backend shopify_service/{queries,customers,cart}.py"
+      priority: "high"
+      status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Reverted customer auth from Shopify-hosted OAuth redirect back to a site-coded email/password
+            form that POSTs to the Shopify HEADLESS customer API (/api/shopify/customers/*). Also fixed a
+            backend GraphQL bug: shared USER_ERRORS_FRAGMENT defined both UserErr+CartErr causing Shopify to
+            reject customer mutations ('Fragment CartErr was defined, but not used'); split into
+            CUSTOMER_USER_ERRORS_FRAGMENT / CART_USER_ERRORS_FRAGMENT.
+            Verify on /account: data-testid='auth-section' shows email (auth-email) + password (auth-password)
+            fields + 'Sign in' submit (auth-submit-btn); NO 'continue-with-shopify-btn'; toggle (auth-toggle-btn)
+            switches to Create account (auth-firstname/auth-lastname appear). Submitting a WRONG login shows a
+            friendly inline error data-testid='auth-error' (e.g. 'Unidentified customer'). DO NOT create a real
+            account (register hits the live store) — only test invalid-login error + form presence/toggle.
+
+agent_communication_2026_08_10:
+    - agent: "main"
+      message: |
+        Please TEST (frontend) two things on the LIVE site (Shopify configured):
+        1) REPORTED BUG — /about must render the Shopify HEADLESS page builder:
+           data-testid='shopify-page-builder' present, data-testid='pb-hero' present with a hero image and
+           the 'About Us' title + 'Welcome to the farm...' subheading, plus story text sections. It must NOT
+           be blank and must NOT be only the generic hardcoded fallback.
+        2) /account auth form: email+password sign-in form present (auth-email, auth-password, auth-submit-btn),
+           NO Shopify redirect button (continue-with-shopify-btn absent), toggle to Create account works
+           (auth-firstname/auth-lastname appear), and an INVALID login shows inline error (auth-error).
+           IMPORTANT: do NOT register/create a real account (live Shopify store). Only invalid-login + UI checks.
 
 frontend_new_session_2026_07:
   - task: "FIX reported menu crash (useRef not defined) + finish Prompt 9 milestone toast"

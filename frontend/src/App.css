@@ -5788,7 +5788,7 @@ h2, h3, h4 {
 .menu-collection-hero-img {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;           /* mobile: cinematic 16:9 — user sees hero, box-size pills, and top of first product without scrolling */
+  aspect-ratio: 16 / 8;           /* mobile: cinematic banner — slightly shorter so hero + pills + first product show without scrolling */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -5911,8 +5911,8 @@ h2, h3, h4 {
 @media (min-width: 760px) {
   .menu-collection-hero-img {
     aspect-ratio: auto;
-    height: 440px;
-    max-height: 48vh;
+    height: 390px;
+    max-height: 44vh;
     border-radius: 14px;
   }
   .menu-collection-hero-text {

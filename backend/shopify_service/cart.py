@@ -8,11 +8,11 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional
 
 from .client import get_storefront
-from .queries import CART_FRAGMENT, USER_ERRORS_FRAGMENT
+from .queries import CART_FRAGMENT, CART_USER_ERRORS_FRAGMENT
 
 
 def _return_block() -> str:
-    return CART_FRAGMENT + USER_ERRORS_FRAGMENT
+    return CART_FRAGMENT + CART_USER_ERRORS_FRAGMENT
 
 
 async def cart_create(

@@ -36,6 +36,7 @@ fragment ProductCard on Product {
     {namespace: "foeguard", key: "product_meal_feature_section"},
     {namespace: "foeguard", key: "product_customer_reviews"},
     {namespace: "foeguard", key: "product_faqs"},
+    {namespace: "custom", key: "foeguard_product_faqs"},
     {namespace: "foeguard", key: "bundle_weight_lbs"}
   ]) {
     namespace
@@ -204,10 +205,18 @@ fragment CustomerFull on Customer {
 }
 """
 
-USER_ERRORS_FRAGMENT = """
+CUSTOMER_USER_ERRORS_FRAGMENT = """
 fragment UserErr on CustomerUserError { code field message }
+"""
+
+CART_USER_ERRORS_FRAGMENT = """
 fragment CartErr on CartUserError { code field message }
 """
+
+# Backward-compat alias. NOTE: includes BOTH fragment definitions — Shopify
+# rejects an operation that DEFINES a fragment it does not reference, so use the
+# specific CUSTOMER_/CART_ fragment in each module instead of this combined one.
+USER_ERRORS_FRAGMENT = CUSTOMER_USER_ERRORS_FRAGMENT + CART_USER_ERRORS_FRAGMENT
 
 # --- Full queries used by seo_service (kept here so all GraphQL lives together) --
 

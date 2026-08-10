@@ -1,9 +1,9 @@
 /**
- * useAuth() — legacy hook shape backed by the Shopify Customer Account API.
+ * useAuth() — legacy hook shape backed by the Shopify HEADLESS customer API.
  *
  * Keeps the same `{ user, isAuthenticated, loading, login, register, logout }`
- * surface existing consumers expect. `login`/`register` now trigger a redirect
- * to Shopify's hosted sign-in (OAuth/OIDC); there is no email/password path.
+ * surface existing consumers expect. `login`/`register` submit email/password
+ * to our own form → Shopify Storefront customer API (no hosted-page redirect).
  */
 import { useMemo } from 'react';
 import { useShopifyAuth } from '../contexts/ShopifyAuthContext';
@@ -32,8 +32,8 @@ export const useAuth = () => {
     user,
     isAuthenticated,
     loading,
-    login: () => login(),
-    register: () => register(),
+    login: (creds) => login(creds),
+    register: (data) => register(data),
     logout: () => logout(),
     recover,
     refresh,

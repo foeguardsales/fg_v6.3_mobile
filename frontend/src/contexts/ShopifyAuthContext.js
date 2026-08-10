@@ -1,17 +1,18 @@
 /**
  * ShopifyAuthContext
  *
- * The single source of truth for customer authentication, backed by Shopify's
- * new Customer Account API (OAuth 2.0 / OIDC). Authentication happens through a
- * redirect to Shopify's hosted login; the backend keeps the OAuth tokens in a
- * server-side session and exposes only an httpOnly cookie. The browser never
- * sees a Shopify token and there is NO Mongo/JWT customer login.
+ * Single source of truth for customer authentication. Customers sign in and
+ * sign up on OUR OWN site-coded form (email + password); those credentials are
+ * submitted to the Shopify HEADLESS Storefront customer API through our backend
+ * proxy at /api/shopify/customers/*. The opaque Storefront customerAccessToken
+ * is stored client-side (localStorage via customerTokenStorage). There is NO
+ * redirect to Shopify's hosted login page and NO Mongo/JWT customer login.
  *
- *   const { customer, isAuthenticated, loading, login, register, logout, refresh } = useShopifyAuth();
+ *   const { customer, isAuthenticated, loading, login, register, logout, recover, refresh } = useShopifyAuth();
  */
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import * as customerService from '../services/shopify/customers';
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const SIGNED_IN_FLAG = 'foeguard.signedIn';
 const USER_CACHE = 'foeguard.shopifyUser';
 
@@ -42,9 +43,7 @@ export const ShopifyAuthProvider = ({ children }) => {
 
   const refresh = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/customer-auth/session`, { credentials: 'include' });
-      const data = await res.json();
-      const c = data?.authenticated ? data.customer : null;
+      const c = await customerService.me();
       setCustomer(c);
       persist(c);
       return c;
@@ -59,26 +58,34 @@ export const ShopifyAuthProvider = ({ children }) => {
 
   useEffect(() => { refresh(); }, [refresh]);
 
-  // Redirect to Shopify hosted sign-in / sign-up.
-  const login = useCallback(() => {
-    window.location.href = `${API}/customer-auth/login`;
+  // Email/password sign-in against the Shopify headless customer API.
+  const login = useCallback(async (creds) => {
+    const { customer: c } = await customerService.login(creds);
+    setCustomer(c);
+    persist(c);
+    return c;
   }, []);
 
-  // Shopify's hosted flow handles both sign-in and account creation.
-  const register = useCallback(() => {
-    window.location.href = `${API}/customer-auth/login`;
+  // Create account (then auto sign-in) against the Shopify headless customer API.
+  const register = useCallback(async (data) => {
+    const { customer: c } = await customerService.register(data);
+    setCustomer(c);
+    persist(c);
+    return c;
   }, []);
 
   const logout = useCallback(async () => {
-    let logoutUrl = null;
-    try {
-      const res = await fetch(`${API}/customer-auth/logout`, { method: 'POST', credentials: 'include' });
-      const data = await res.json();
-      logoutUrl = data?.logout_url || null;
-    } catch (_) { /* ignore */ }
+    try { await customerService.logout(); } catch (_) { /* ignore */ }
     setCustomer(null);
     persist(null);
-    if (logoutUrl) window.location.href = logoutUrl;
+  }, []);
+
+  const recover = useCallback(async (email) => customerService.recover(email), []);
+
+  const updateCustomer = useCallback(async (patch) => {
+    const c = await customerService.updateProfile(patch);
+    if (c) { setCustomer(c); persist(c); }
+    return c;
   }, []);
 
   const value = useMemo(() => ({
@@ -88,10 +95,10 @@ export const ShopifyAuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    recover: login, // password recovery is handled on Shopify's hosted page
+    recover,
     refresh,
-    updateCustomer: async () => customer, // profile edits happen on Shopify account page
-  }), [customer, loading, login, register, logout, refresh]);
+    updateCustomer,
+  }), [customer, loading, login, register, logout, recover, refresh, updateCustomer]);
 
   return (
     <ShopifyAuthContext.Provider value={value}>

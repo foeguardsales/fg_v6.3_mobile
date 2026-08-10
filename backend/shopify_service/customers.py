@@ -18,9 +18,9 @@ from __future__ import annotations
 from typing import Any, Dict, Optional
 
 from .client import get_storefront
-from .queries import CUSTOMER_FRAGMENT, USER_ERRORS_FRAGMENT
+from .queries import CUSTOMER_FRAGMENT, CUSTOMER_USER_ERRORS_FRAGMENT
 
-_ERR = USER_ERRORS_FRAGMENT
+_ERR = CUSTOMER_USER_ERRORS_FRAGMENT
 
 
 async def customer_create(email: str, password: str, first_name: Optional[str] = None,
