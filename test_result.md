@@ -2304,7 +2304,7 @@ agent_communication:
     message: |
       ✅ 4-TEST BATCH VERIFICATION COMPLETED — ALL TESTS PASSED
       
-      Completed targeted testing of 4 specific items as requested. Base URL: https://distracted-taussig-15.preview.emergentagent.com
+      Completed targeted testing of 4 specific items as requested. Base URL: https://storefront-preview-28.preview.emergentagent.com
       
       ═══════════════════════════════════════════════════════════════════════════
       TEST 1 — SITE LOADS (BUG-FIX VERIFICATION) ✅ PASS
@@ -3847,7 +3847,7 @@ agent_communication:
       - Clean transition from funnel → meal plan page ✓
       
       Navigation:
-      - Final URL: https://distracted-taussig-15.preview.emergentagent.com/meal-plan ✓
+      - Final URL: https://storefront-preview-28.preview.emergentagent.com/meal-plan ✓
       - Successfully navigated to /meal-plan ✓
       
       **Conclusion:**
@@ -4488,7 +4488,7 @@ agent_communication:
         
         **Test Environment:**
         - Mobile viewport: iPhone 16 (393×852)
-        - URL: https://distracted-taussig-15.preview.emergentagent.com
+        - URL: https://storefront-preview-28.preview.emergentagent.com
         
         **TEST A — Benefits grid → "How FoeGuard Raw compares" gap (/new-to-raw): ✅ PASS**
         - Measured gap: 48px (exactly as expected, within 48px ±6px tolerance)
@@ -4525,7 +4525,7 @@ agent_communication:
         
         **Test Environment:**
         - Mobile viewport: iPhone 16 (393×852)
-        - URL: https://distracted-taussig-15.preview.emergentagent.com
+        - URL: https://storefront-preview-28.preview.emergentagent.com
         
         **TEST A — Footer marginTop removed (0px on all pages): ✅ PASS (3/3)**
         - Landing Page (/): marginTop=0px, backgroundColor=rgb(47, 69, 56) ✓
@@ -4692,7 +4692,7 @@ agent_communication:
         **Test Environment:**
         - Mobile viewport: 390×844
         - Desktop viewport: 1440×900 (bonus check)
-        - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+        - URL: https://storefront-preview-28.preview.emergentagent.com/menu
         
         **TEST 1 — MOBILE EDGE-TO-EDGE MEASUREMENT: ✅ PASS**
         Measured getBoundingClientRect on 390px mobile viewport:
@@ -4844,7 +4844,7 @@ agent_communication:
             **Test Environment:**
             - Mobile viewport: 390×844
             - Desktop viewport: 1440×900
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **TEST 1 — SCROLL POSITION PRESERVATION (CRITICAL): ✅ PASS**
             - Scrolled menu to 700px
@@ -5127,7 +5127,7 @@ agent_communication:
 
 
 user_problem_statement: |
-  FoeGuard site — Menu page hero + tab bug verification. Preview URL: https://distracted-taussig-15.preview.emergentagent.com
+  FoeGuard site — Menu page hero + tab bug verification. Preview URL: https://storefront-preview-28.preview.emergentagent.com
   
   Please test the following 3 items on /menu at BOTH mobile (390×844) and desktop (1440×900). Do NOT test anything else on the site.
   
@@ -5190,7 +5190,7 @@ frontend:
             **Test Environment:**
             - Mobile viewport: 390×844
             - Desktop viewport: 1440×900
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **MOBILE (390×844) TEST RESULTS:**
             Found 4 category tab buttons:
@@ -5240,7 +5240,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **ELEMENTS FOUND:**
             ✓ Outer wrap (.menu-category-tabs-wrap--on-hero) - carries brown background
@@ -5304,7 +5304,7 @@ frontend:
             **Test Environment:**
             - Mobile viewport: 390×844
             - Desktop viewport: 1440×900
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **CSS RULE:**
             .menu-collection-hero-title {
@@ -5357,7 +5357,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **REGRESSION CHECK 1 — Funnel X-close button:**
             ✓ Funnel overlay X-close button found (data-testid='menu-funnel-close')
@@ -5397,7 +5397,7 @@ agent_communication:
         **Test Environment:**
         - Mobile viewport: 390×844
         - Desktop viewport: 1440×900
-        - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+        - URL: https://storefront-preview-28.preview.emergentagent.com/menu
         
         **TEST RESULTS SUMMARY:**
         
@@ -5475,7 +5475,7 @@ agent_communication:
 user_problem_statement: |
   FoeGuard site — verify (A) mobile breadcrumb padding cascade fix, and (B) new "with variants / without variants" menu-card interaction rules.
   
-  Preview URL: https://distracted-taussig-15.preview.emergentagent.com
+  Preview URL: https://storefront-preview-28.preview.emergentagent.com
   
   Viewports: mobile 390×844 for all tests unless stated. Desktop 1440×900 only for a quick regression on test C.
   
@@ -5540,7 +5540,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390 × 844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             - Funnel dismissed successfully via X button
             
             **TEST RESULTS SUMMARY:**
@@ -5783,7 +5783,7 @@ frontend:
             **Test Environment:**
             - Mobile viewport: 390×844
             - Desktop viewport: 1440×900
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **MOBILE (390×844) RESULTS:**
             All 4 buttons (6/12/24/36 lb) have:
@@ -5834,7 +5834,7 @@ frontend:
             
             **Test Environment:**
             - Tested on THREE mobile viewports: 320×568, 375×667, 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **320×568 RESULTS: ✅ PASS**
             - Position check: ✓ (gap: 8px between navbar bottom and breadcrumb top)
@@ -5881,7 +5881,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/meal-plan
+            - URL: https://storefront-preview-28.preview.emergentagent.com/meal-plan
             - Test email: zeus.1784440031865@example.com
             - Test password: pass1234
             
@@ -5977,7 +5977,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390 × 844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             - Funnel dismissed successfully
             
             **TEST RESULTS:**
@@ -6309,7 +6309,7 @@ frontend:
             
             **Test Environment:**
             - Tested on THREE mobile viewports: 320×568, 375×667, 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **320×568 RESULTS: ✅ PASS**
             - paddingTop: 3px ✓ (expected 3px)
@@ -6349,7 +6349,7 @@ frontend:
             **Test Environment:**
             - Mobile viewport: 390×844
             - Desktop viewport: 1440×900
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **MOBILE (390×844) RESULTS: ✅ PASS**
             - Wrapper paddingLeft: 20px ✓ (expected 20px)
@@ -6490,7 +6490,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - Base URL: https://distracted-taussig-15.preview.emergentagent.com
+            - Base URL: https://storefront-preview-28.preview.emergentagent.com
             
             **TEST 1 — Recommended-protein highlights on /menu?plan=0:**
             
@@ -6506,7 +6506,7 @@ frontend:
               • Email: zeus.{timestamp}@example.com, Password: pass1234
             
             **VERIFY 1 — URL Redirect: ✅ PASS**
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu?plan=0 ✓
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu?plan=0 ✓
             - Redirected correctly after quiz completion
             
             **VERIFY 2 — Menu Funnel Overlay: ✅ PASS**
@@ -6635,7 +6635,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - Base URL: https://distracted-taussig-15.preview.emergentagent.com
+            - Base URL: https://storefront-preview-28.preview.emergentagent.com
             - Signed in as: zeus.1784441417377@example.com
             
             **TEST 2 — Account tabs (signed-in) + Saved Plans card → highlight flow:**
@@ -6672,7 +6672,7 @@ frontend:
             
             **VERIFY 2f — Saved Plans Navigation: ✅ PASS**
             - Clicked Zeus's Plan card ✓
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu?plan=0 ✓
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu?plan=0 ✓
             - At least 1 recommended product exists on resulting page ✓
             - Found 6 recommended products total ✓
             
@@ -6718,7 +6718,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - Base URL: https://distracted-taussig-15.preview.emergentagent.com
+            - Base URL: https://storefront-preview-28.preview.emergentagent.com
             
             **TEST RESULTS:**
             - .account-tabs element exists ✓
@@ -6782,7 +6782,7 @@ frontend:
             2. App.js Stripe init useEffect only called setStripeReady(true) on success,
                so if Stripe API call failed, app would be stuck on Loading forever.
             FIX APPLIED:
-            1. Created /app/frontend/.env with REACT_APP_BACKEND_URL=https://distracted-taussig-15.preview.emergentagent.com
+            1. Created /app/frontend/.env with REACT_APP_BACKEND_URL=https://storefront-preview-28.preview.emergentagent.com
             2. Modified App.js lines 64-77 to add finally block that calls setStripeReady(true)
                regardless of Stripe API success/failure. This unblocks UI - Stripe is only
                needed at checkout, browsing must work without it.
@@ -6794,7 +6794,7 @@ frontend:
             ✅ PRIMARY FIX VERIFIED — App no longer stuck on Loading screen
             
             **Test Environment:**
-            - URL: https://distracted-taussig-15.preview.emergentagent.com
+            - URL: https://storefront-preview-28.preview.emergentagent.com
             - Desktop viewport: 1920×1080
             
             **TEST RESULTS:**
@@ -6853,7 +6853,7 @@ agent_communication:
         ✅ PRIMARY FIX VERIFICATION COMPLETED — APP NO LONGER STUCK ON LOADING SCREEN
         
         **Test Date:** 2026-07-20
-        **Test URL:** https://distracted-taussig-15.preview.emergentagent.com
+        **Test URL:** https://storefront-preview-28.preview.emergentagent.com
         
         **PRIMARY FIX VERIFIED:**
         The app is no longer stuck on "Loading..." screen. Landing page renders correctly
@@ -6884,7 +6884,7 @@ agent_communication:
         ✅ FOCUSED RE-TEST COMPLETED — BOTH FIXES VERIFIED (100% SUCCESS)
         
         **Test Environment:**
-        - Base URL: https://distracted-taussig-15.preview.emergentagent.com
+        - Base URL: https://storefront-preview-28.preview.emergentagent.com
         - Mobile viewport: 390×844
         - Test email: zeus.1784441417377@example.com
         
@@ -7100,7 +7100,7 @@ agent_communication:
 
 
 user_problem_statement: |
-  Verify the following bug fixes across the FoeGuard site at `https://distracted-taussig-15.preview.emergentagent.com`.
+  Verify the following bug fixes across the FoeGuard site at `https://storefront-preview-28.preview.emergentagent.com`.
 
   **Important context**: Backend is dead on this pod (all `/api/*` calls → 502). This is EXPECTED. Do NOT flag 502s. Only test what the frontend renders. If product lists fail to load, focus on structural/CSS verification via DOM inspection.
 
@@ -7158,7 +7158,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **TEST RESULTS:**
             - Found .bb-floating-checkout element ✓
@@ -7190,7 +7190,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             - Seeded localStorage with test data (Zeus profile, 6 lb selected)
             
             **TEST RESULTS:**
@@ -7257,7 +7257,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **TEST RESULTS:**
             - Searched entire page innerText for "packed": NOT FOUND ✓
@@ -7287,7 +7287,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **TEST 4A — qty=24 (should auto-shift to 24 lb tier):**
             - Seeded localStorage.selectedProteins with qty: 24
@@ -7329,7 +7329,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **TEST RESULTS:**
             - Found .menu-collection-hero-img element ✓
@@ -7373,7 +7373,7 @@ frontend:
             
             **Test Environment:**
             - Mobile viewport: 390×844
-            - URL: https://distracted-taussig-15.preview.emergentagent.com/menu
+            - URL: https://storefront-preview-28.preview.emergentagent.com/menu
             
             **TEST 6A — Cart item persistence after reload:**
             - Injected test cart item in localStorage: "Beef Comfort" (6 lbs, $20)
@@ -7418,7 +7418,7 @@ agent_communication:
         
         **Test Environment:**
         - Mobile viewport: 390×844
-        - URL: https://distracted-taussig-15.preview.emergentagent.com
+        - URL: https://storefront-preview-28.preview.emergentagent.com
         - Backend: DEAD (502 expected) - tested frontend rendering only
         
         **TEST RESULTS SUMMARY:**
@@ -7521,7 +7521,7 @@ frontend:
             
             **Test Environment:**
             - Desktop viewport: 1920×1080
-            - Base URL: https://distracted-taussig-15.preview.emergentagent.com
+            - Base URL: https://storefront-preview-28.preview.emergentagent.com
             - Test date: 2026-07-22
             
             **STEP 1 — Product page /product/cd-chicken loads: ✅ PASS**
@@ -8280,7 +8280,7 @@ frontend:
             
             **Test Environment:**
             - Desktop viewport: 1920×1080
-            - Base URL: https://distracted-taussig-15.preview.emergentagent.com
+            - Base URL: https://storefront-preview-28.preview.emergentagent.com
             - Test date: 2026-07-26
             
             **TEST 1 — Cart drawer opens and shows seeded meal line item: ✅ PASS**
@@ -8988,7 +8988,7 @@ agent_communication:
       message: |
         ✅ FRONTEND TESTING COMPLETE - FEATURE 1 PARTIAL PASS (2/3), FEATURE 2 FULL PASS
         
-        **USER REQUEST:** Test FoeGuard site at https://15df79e3-5184-4134-9ced-e9bfa72b21e4.preview.emergentagent.com 
+        **USER REQUEST:** Test FoeGuard site at https://storefront-preview-28.preview.emergentagent.com 
         on desktop viewport 1440x900. Shopify is LIVE (no 502 errors expected). Two features to verify.
         
         **FEATURE 1 — Shopify Page Builder rendering (About / Why-Raw / Contact):**
@@ -9427,7 +9427,7 @@ test_session_visual_regression_2026_07:
   tester: "testing_agent"
   request: |
     Quick visual regression check of the FoeGuard MENU page spacing at 
-    https://15df79e3-5184-4134-9ced-e9bfa72b21e4.preview.emergentagent.com/menu.
+    https://storefront-preview-28.preview.emergentagent.com/menu.
     Focus: collection image banners and vertical spacing consistency (a spacing bug was just 
     fixed + banners made ~15% taller).
     
