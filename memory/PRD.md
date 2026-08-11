@@ -304,3 +304,18 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - **Product detail** — top per-lb price removed; **Size + Price** moved under the title (inits from menu qty, saves edits on back). Collapsibles moved **full-width** below the sticky image, reordered: Ingredients / Nutritional Analysis / Product Information / Feeding Guide / Notes. Titles semibold, prices lighter. "Add Xlb to Basket" (no "box").
 - **Treats** — bullet (•/-) description lines parsed into the checkmark feature list.
 - **Feeding Calculator / Meal Plan** — removed khaki/white nested containers → transparent bg + thin brown (#3B2A1A) borders (seamless); calculator single "Pet" title removed; meal-plan container-within-container flattened.
+
+### 2025-07 (Aug 11) — Env restore + Menu/Bundle/Gallery fixes
+- **Env restore**: recreated missing backend/.env + frontend/.env; wired live Shopify Headless
+  creds (store foeguard.myshopify.com, storefront + admin tokens, customer client id, shop id
+  141755973790). Made Cloudflare R2 + Stripe boot-safe/optional (site is Shopify-Headless).
+- **Menu grid → Shopify**: BoxBuilder now loads meals via shopifyCatalog.getAllProducts()
+  (Shopify handles + cdn.shopify.com images) instead of Mongo /api/products; ProductCard image
+  uses the real Shopify featured image. Monthly bundles excluded from the meal grid.
+- **Monthly bundle price fix**: sticky "Your Box" subtotal was dividing a bundle's FLAT price by 6
+  (the ~$10 bug). Now bundles add flat price × units. SlideCart already correct.
+- **Bundle qty sync**: ProductDetail now keys monthly bundles by the PLAIN handle (makeCartKey),
+  matching the menu, so qty stays in sync menu↔product (both directions) with a single cart line.
+- **Product image gallery**: .pd-gallery wrapper — square main image + clickable Shopify thumbnail
+  strip (all product.images). Modal/sheet image forced square (was 200px horizontal).
+- All 3 verified PASS by frontend testing agent (Aug 11).

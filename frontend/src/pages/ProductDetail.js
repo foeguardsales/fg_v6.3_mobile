@@ -356,12 +356,22 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const [selectedTreats, setSelectedTreats] = useState(initialTreats);
   const [products, setProducts] = useState([]);
   const [orderNotes, setOrderNotes] = useState('');
+  // Gallery: index of the currently-shown Shopify image (main image + thumbnails).
+  const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState('description');
   // Preload the previously-chosen variant for this product from the cart snapshot.
   const [selectedVariant, setSelectedVariant] = useState(() => {
     const v = initialProteins[productId]?.variant;
     return typeof v === 'number' ? v : 0;
   });
+
+  // Cart-key scheme: meals key by "handle::packagingVariant" (each packaging is
+  // its own cart line). Monthly bundles have NO packaging variant, so they key
+  // by the plain handle — the SAME key the menu grid uses — which keeps the menu
+  // card qty and this page's qty in perfect sync (fixes the bundle desync bug).
+  const makeCartKey = (variantLabel) =>
+    (isMonthlyBundle(product) ? productId : `${productId}::${variantLabel}`);
+
 
   // Zero-quantity toast state — shown when the user taps "Add to Cart" with qty 0.
   const [showZeroToast, setShowZeroToast] = useState(false);
@@ -391,7 +401,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     // image / variants / metafields never linger while the new one loads.
     setProduct(null);
     setLoading(true);
-    
+    setActiveImg(0); // reset gallery to the first Shopify image on every product change
     // Sync with sessionStorage whenever the page becomes visible
     const syncFromStorage = () => {
       const savedBoxSize = parseInt(sessionStorage.getItem('boxSize'));
@@ -430,7 +440,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   // in the basket for THAT variant (each variant is its own cart line — Prompt 1 #9).
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
-    const key = `${productId}::${VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]}`;
+    const key = makeCartKey(VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]);
     const existing = saved[key]?.qty;
     setQuantity(existing && existing > 0 ? existing : 0);
   }, [productId, product, selectedVariant]);
@@ -459,7 +469,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     // Persist edits to a meal that's already in the basket when leaving (per spec).
     // Each packaging variant is its own cart line (composite key).
     const existing = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
-    const key = `${productId}::${VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]}`;
+    const key = makeCartKey(VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]);
     if (existing[key]?.qty > 0 && product) {
       existing[key] = {
         qty: quantity,
@@ -498,7 +508,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   // Effective tier-lbs = other lines in this pet bucket + this product's own contribution.
   // Uses the shared cart-tier util so bundles contribute (units × bundle_weight_lbs)
   // while meals contribute their raw qty. Keeps BoxBuilder & ProductDetail in sync.
-  const activeKey = `${productId}::${VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]}`;
+  const activeKey = makeCartKey(VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]);
   const otherLbs = computeTierLbs({
     selectedProteins,
     products,
@@ -527,7 +537,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
     const q = Math.max(0, newQty);
     setQuantity(q);
     const variantLabel = VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0];
-    const key = `${productId}::${variantLabel}`;
+    const key = makeCartKey(variantLabel);
     const updated = { ...JSON.parse(localStorage.getItem('selectedProteins') || '{}') };
     if (q > 0) {
       updated[key] = {
@@ -603,6 +613,12 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const lineName = collectionInfo.name;
   const lineColor = collectionInfo.color;
   const productImage = product.image || proteinImages[product.protein_type] || proteinImages.chicken;
+  // Full Shopify image gallery (featured + all additional media). Falls back to
+  // the single resolved image when the product has no image list.
+  const galleryImages = (Array.isArray(product.images) && product.images.length > 0)
+    ? product.images
+    : [productImage];
+  const activeImageSrc = galleryImages[Math.min(activeImg, galleryImages.length - 1)] || productImage;
   const basePerLb = getBasePrice(product) / 6;
   const lowestPerLb = basePerLb * 0.85; // lowest /lb — max 15% bulk discount
 
@@ -635,9 +651,28 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
 
       <div className="pd-uber">
         <div className="pd-shopify">
-          {/* Image left */}
-          <div className="pd-shopify-media">
-            <img src={productImage} alt={product.name} />
+          {/* Image gallery — square main image + Shopify thumbnails underneath.
+              All images are pulled live from Shopify (product.images). */}
+          <div className="pd-gallery">
+            <div className="pd-shopify-media">
+              <img src={activeImageSrc} alt={product.name} />
+            </div>
+            {galleryImages.length > 1 && (
+              <div className="pd-gallery-thumbs" data-testid="product-gallery-thumbs">
+                {galleryImages.map((src, i) => (
+                  <button
+                    key={`${src}-${i}`}
+                    type="button"
+                    className={`pd-gallery-thumb ${i === activeImg ? 'is-active' : ''}`}
+                    onClick={() => setActiveImg(i)}
+                    data-testid={`product-thumb-${i}`}
+                    aria-label={`View image ${i + 1}`}
+                  >
+                    <img src={src} alt={`${product.name} ${i + 1}`} loading="lazy" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Content right */}

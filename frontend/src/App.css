@@ -6364,6 +6364,55 @@ h2, h3, h4 {
   object-fit: cover;
   display: block;
 }
+/* ===== Product image gallery (square main image + Shopify thumbnails) ===== */
+.pd-gallery {
+  min-width: 0;
+  align-self: start;
+}
+@media (min-width: 760px) {
+  /* Move the sticky behaviour to the gallery wrapper so the image + thumbs
+     stay pinned together while the right column scrolls. */
+  .pd-gallery {
+    position: sticky;
+    top: 120px;
+  }
+  .pd-gallery .pd-shopify-media {
+    position: static;
+    top: auto;
+    max-height: none;
+  }
+}
+/* Inside the product modal the sticky offset is smaller (matches old media rule). */
+.bb-overlay-scroll .pd-gallery { top: 16px; }
+/* Force the modal/sheet main image to be SQUARE (was a 200px horizontal banner). */
+.bb-overlay--sheet .pd-gallery .pd-shopify-media {
+  aspect-ratio: 1 / 1;
+  height: auto;
+}
+.pd-gallery-thumbs {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.pd-gallery-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: #E8DFC8;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease;
+}
+.pd-gallery-thumb.is-active { border-color: #C8102E; }
+.pd-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .pd-shopify-content {
   min-width: 0;
 }

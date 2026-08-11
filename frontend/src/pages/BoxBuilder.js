@@ -8,7 +8,7 @@ import { ProductDetailModal } from './ProductDetail';
 import { TreatDetailModal } from './TreatDetail';
 import { FeedingCalculator } from '../components/FeedingCalculator';
 import { useCart } from '../contexts/CartContext';
-import { metaobjects, collections as shopifyCollections } from '../services/shopify';
+import { metaobjects, collections as shopifyCollections, catalog as shopifyCatalog } from '../services/shopify';
 import { computeTierLbs, isMonthlyBundle } from '../utils/cartTier';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -274,13 +274,17 @@ export const BoxBuilder = () => {
     const loadData = async () => {
       setLoading(true);
       try {
-        // Fetch ALL products (both pet types) so the cart can look up cross-pet items.
-        // Display filtering by product_line happens client-side below.
-        const [productsRes, treatsRes] = await Promise.all([
-          axios.get(`${API}/products`),
-          axios.get(`${API}/treats`)
+        // Menu grid loads MEALS straight from Shopify so cards use Shopify
+        // handles + CDN images directly (no local Mongo twin lookup). Monthly
+        // bundles are rendered from their dedicated collection below, so we
+        // exclude them here to avoid double-rendering. Treats keep their own
+        // section/component. getAllProducts() transparently falls back to the
+        // local catalog if Shopify is ever unavailable.
+        const [allMeals, treatsRes] = await Promise.all([
+          shopifyCatalog.getAllProducts(),
+          axios.get(`${API}/treats`).catch(() => ({ data: [] }))
         ]);
-        setProducts(productsRes.data);
+        setProducts((allMeals || []).filter(p => !isMonthlyBundle(p)));
         setTreats(treatsRes.data);
       } catch (error) {
         console.error('Failed to load data:', error);
@@ -632,8 +636,9 @@ export const BoxBuilder = () => {
         delete next[productId];
       } else {
         const existing = prev[productId] || {};
-        // Find the product in the loaded catalog so we can lock pet bucket from product_line
-        const fullProduct = products.find(pp => pp.product_id === productId);
+        // Find the product in the loaded catalog (meals + bundles) so we can
+        // lock the pet bucket from product_line.
+        const fullProduct = [...products, ...bundleProducts].find(pp => pp.product_id === productId);
         const pet = productPetBucket(fullProduct, existing.petType || petType);
         next[productId] = { qty: quantity, name: productName, petType: pet };
       }
@@ -912,8 +917,14 @@ export const BoxBuilder = () => {
         const proteinsTotal = Object.entries(selectedProteins || {}).reduce((s, [pid, d]) => {
           if (!d) return s;
           const bpid = d.productId || String(pid).split('::')[0];
-          const product = catalog.find(p => p.product_id === bpid);
+          const product = catalog.find(p => p.product_id === bpid || p.handle === bpid);
           if (!product) return s;
+          // Monthly bundles are FLAT-priced prepaid packs — qty is a UNIT count,
+          // so the line is (flat price × units). NEVER divide by 6 (that produced
+          // the wrong "$10" total). Meals keep their per-lb bulk-discount math.
+          if (isMonthlyBundle(product)) {
+            return s + getBasePrice(product) * (d.qty || 0);
+          }
           const per6 = getDiscountedPrice(product, d.petType || 'dog');
           return s + (per6 / 6) * (d.qty || 0);
         }, 0);
@@ -996,8 +1007,10 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   // Every menu product now adds directly (no packaging modal on the menu).
   // Tapping the card body still opens the detail modal for full info.
 
-  // Product image URL - use the uploaded comfort dinner image for all products
-  const productImage = 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';
+  // Product image — use the real Shopify featured image for this product
+  // (falls back to the collection placeholder only if Shopify has none).
+  const productImage = product.image || product.image_url
+    || 'https://customer-assets.emergentagent.com/job_site-upload-4/artifacts/ktno4gsu_2024%20site%20pics.jpg';
   
   // Get collection color based on product line
   const getCollectionColor = () => {

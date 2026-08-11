@@ -67,7 +67,10 @@ function App() {
     const initStripe = async () => {
       try {
         const { data } = await axios.get(`${API}/stripe-public-key`);
-        stripePromise = loadStripe(data.publicKey);
+        // Stripe is optional (site runs on Shopify Headless checkout). Calling
+        // loadStripe('') throws a hard error overlay, so only initialise when a
+        // real publishable key is configured; otherwise leave it null.
+        stripePromise = (data && data.publicKey) ? loadStripe(data.publicKey) : null;
       } catch (error) {
         console.error('Failed to load Stripe (checkout will be unavailable, browsing still works):', error);
         stripePromise = null;

@@ -1075,12 +1075,270 @@ metadata:
 
 test_plan:
   current_focus:
-    - "About Us page renders Shopify headless page_builder content (reported bug)"
-    - "Account custom email/password auth form wired to Shopify headless customer API"
+    - "Monthly bundle pricing + qty sync + menu/product images (THREE frontend fixes)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
   last_result_2026_07: "PASS — menu crash fixed; Prompt 9 milestone; cart unified. Round 2 PASS — ShopifyPageBuilder cards (About/Contact/WhyRaw) show images+titles (protein/recipe/benefits mapped, array images handled); Meal Plan scoring sourced from Shopify metaobjects verified end-to-end ($127.44 plan, no crash)."
+
+
+session_2026_08_11:
+  context: |
+    THREE FRONTEND FIXES TESTING (2026-08-11):
+    User requested testing of three specific frontend fixes on the FoeGuard e-commerce site:
+    1. Monthly bundle price correctness (was showing wrong ~$10)
+    2. Bundle qty sync between menu and product page
+    3. Menu images + product image gallery (Shopify CDN vs old placeholders)
+    
+  frontend_tasks:
+    - task: "Monthly bundle pricing — flat price × units (NOT divided by 6)"
+      implemented: true
+      working: true
+      file: "/app/frontend/src/pages/BoxBuilder.js (lines 924-930) + CartContext.js (lines 219-220)"
+      priority: "high"
+      needs_retesting: false
+      status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Fixed bundle pricing logic. Monthly bundles are PREPAID, fixed-price packs — quantity is a UNIT
+            count (1, 2, 3 …), NOT a 6 lb meal increment. Bundle line price = flat price × units.
+            Code at BoxBuilder.js lines 924-930 ensures bundles never get divided by 6.
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ TEST 1 COMPLETE — MONTHLY BUNDLE PRICING: PASS (2/2 checks)
+            
+            Comprehensive testing of monthly bundle pricing on /menu with all 5 bundle sizes.
+            
+            **BUNDLE PRICES VERIFIED:**
+            • Toy: $35.80
+            • Small: $64.44
+            • Medium: $114.56
+            • Large: $150.36
+            • Giant: $214.80
+            
+            **TEST 1.7 — Cart total with qty 1: ✅ PASS**
+            - Added 1 Toy bundle ($35.80)
+            - Cart total: $35.80
+            - Expected: $35.80
+            - ✅ Cart total EQUALS bundle flat price (NOT divided by 6)
+            
+            **TEST 1.9 — Cart total with qty 2: ✅ PASS**
+            - Increased Toy bundle qty to 2
+            - Cart total: $71.60
+            - Expected (2x flat price): $71.60
+            - ✅ Cart total EQUALS 2x bundle flat price
+            
+            **VERDICT:** The bundle pricing bug is FIXED. Bundles are correctly priced as flat price × units,
+            never divided by 6. The wrong "$10" pricing issue is resolved.
+            
+            Screenshot: test1_bundle_pricing.png
+
+    - task: "Bundle qty sync between menu and product page"
+      implemented: true
+      working: true
+      file: "/app/frontend/src/pages/ProductDetail.js (lines 372-373, 441-446) + CartContext.js"
+      priority: "high"
+      needs_retesting: false
+      status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Bundle cart key scheme: meals key by "handle::packagingVariant" but Monthly Bundles have NO
+            packaging variant, so they key by the plain handle — the SAME key the menu grid uses — which
+            keeps the menu card qty and product page qty in perfect sync.
+        - working: false
+          agent: "testing"
+          comment: |
+            ⚠️ TEST 2 COMPLETE — BUNDLE QTY SYNC: PARTIAL PASS (5/6 checks, 1 CRITICAL BUG)
+            
+            Tested bundle qty synchronization between menu and product page with monthly-bundle-toy.
+            
+            **PASSING CHECKS:**
+            ✅ TEST 2.3: Menu shows qty 1 after adding bundle
+            ✅ TEST 2.6: Product page shows qty 1 (synced from menu) — THE CORE BUG IS FIXED
+            ✅ TEST 2.7: Product page qty increased to 2
+            ✅ TEST 2.9: Menu card shows qty 2 after returning from product page (synced back)
+            ✅ TEST 2.10: Bundle line price in cart is correct ($71.60 = flat_price × 2)
+            
+            **CRITICAL BUG FOUND:**
+            ❌ TEST 2.10: Cart drawer shows 3 bundle line items instead of 1
+            - Expected: Exactly ONE line item for monthly-bundle-toy with qty 2
+            - Actual: 3 separate bundle line items in cart
+            - ⚠️ DUPLICATE BUNDLE LINES IN CART
+            
+            **ROOT CAUSE ANALYSIS NEEDED:**
+            The qty sync between menu and product page is working correctly (the reported bug is fixed),
+            but there's a separate issue causing duplicate bundle entries in the cart drawer. This may be
+            related to:
+            1. Cart key generation for bundles (plain handle vs composite key)
+            2. Multiple add operations creating separate cart lines
+            3. Cart context not properly deduplicating bundle entries
+            
+            **VERDICT:** The core qty sync bug is FIXED, but a new duplicate cart lines bug was discovered.
+            
+            Screenshots: test2_product_page_qty2.png, test2_cart_drawer.png
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ FOCUSED RE-TEST COMPLETE — NO DUPLICATE BUNDLE LINES (Previous test used incorrect selector)
+            
+            **TEST SCENARIO:**
+            1. Cleared cart (localStorage.removeItem for selectedProteins and selectedTreats)
+            2. Reloaded /menu and waited 5 seconds
+            3. Scrolled to Monthly Bundles section (id="menu-section-bundles")
+            4. Added Toy bundle (qty 1), then increased to qty 2
+            5. Added Small bundle (qty 1)
+            6. Opened cart drawer by clicking .bb-floating-checkout
+            7. Counted bundle line containers using ONLY DIV elements: document.querySelectorAll("div[data-testid^='cart-bundle-']")
+            
+            **CRITICAL FINDING:**
+            ✅ PASS: Found exactly 2 bundle line DIVs (expected: 2)
+            - cart-bundle-monthly-bundle-toy
+            - cart-bundle-monthly-bundle-small
+            
+            **WHY PREVIOUS TEST MIS-REPORTED:**
+            The previous test counted ALL elements with data-testid^='cart-bundle-', which included:
+            - 2 DIV line containers (the actual bundle lines)
+            - 4 BUTTON elements (cart-bundle-inc-* and cart-bundle-dec-* for each bundle)
+            - Total: 6 elements (not 3 duplicate lines)
+            
+            When counting ONLY DIV elements, we get exactly 2 lines as expected.
+            
+            **VERIFICATION RESULTS:**
+            ✅ Toy bundle: qty 2, price $71.60 (correct)
+            ✅ Small bundle: qty 1, price $64.44 (correct)
+            ✅ Cart total: $136.04 (correct)
+            ✅ No React/webpack error overlay detected
+            ✅ No Stripe "empty string" error on /menu or /product/comfort-beef-raw-dog-food
+            
+            **VERDICT:** NO duplicate bundle lines bug exists. The cart is working correctly.
+            The previous test used an incorrect selector that counted button elements along with line containers.
+            
+            Screenshot: cart_drawer_bundle_lines.png
+
+    - task: "Menu images + product image gallery (Shopify CDN vs old placeholders)"
+      implemented: true
+      working: true
+      file: "/app/frontend/src/pages/BoxBuilder.js (line 1012) + ProductDetail.js (lines 618-621, 661-675)"
+      priority: "medium"
+      needs_retesting: false
+      status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Menu meal cards now use real Shopify CDN images (product.image or product.image_url).
+            Product detail page shows full Shopify image gallery (product.images array) with square main
+            image and thumbnail strip. All images pulled live from Shopify.
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ TEST 3 COMPLETE — MENU IMAGES + PRODUCT GALLERY: PASS (7/7 checks)
+            
+            Comprehensive testing of menu card images and product page image gallery.
+            
+            **TEST 3.2 — Menu card images: ✅ PASS**
+            - Checked 5 meal cards (Comfort Dinner section)
+            - All 5 cards use Shopify CDN images (cdn.shopify.com)
+            - Zero old placeholder images (customer-assets.emergentagent.com)
+            - ✅ Menu cards show real Shopify product photos
+            
+            **TEST 3.5 — Product page main image: ✅ PASS**
+            - Product: comfort-beef-raw-dog-food
+            - Main image uses Shopify CDN (cdn.shopify.com)
+            - Image dimensions: 453x453 (display), 2160x2160 (natural)
+            - ✅ Main image is SQUARE and uses Shopify CDN
+            
+            **TEST 3.6 — Thumbnail strip: ✅ PASS**
+            - Thumbnail strip found (data-testid="product-gallery-thumbs")
+            - Number of thumbnails: 4
+            - ✅ Multiple thumbnails present
+            
+            **TEST 3.7 — Thumbnail image sources: ✅ PASS**
+            - All 4 thumbnails use Shopify CDN (cdn.shopify.com)
+            - ✅ All thumbnail images are real Shopify photos
+            
+            **TEST 3.8 — Thumbnail click interaction: ✅ PASS**
+            - Clicked thumbnail 2 (data-testid="product-thumb-2")
+            - Main image src changed from .../103.png to .../beef_...
+            - New main image uses Shopify CDN
+            - ✅ Clicking thumbnails changes main image correctly
+            
+            **VERDICT:** All menu and product images are correctly using Shopify CDN. No old placeholder
+            images found. Image gallery is fully functional with square main image and clickable thumbnails.
+            
+            Screenshots: test3_menu_images.png, test3_product_gallery.png
+
+agent_communication_2026_08_11:
+    - agent: "testing"
+      message: |
+        FOCUSED RE-TEST COMPLETE (2026-08-11) — NO DUPLICATE BUNDLE LINES
+        
+        User requested focused re-test on cart bundle line duplication issue. The previous test 
+        mis-reported "3 duplicate bundle lines" because it counted ALL elements with data-testid 
+        prefix "cart-bundle-" which included both DIV line containers AND BUTTON inc/dec elements.
+        
+        **RE-TEST RESULTS:**
+        ✅ PASS: Found exactly 2 bundle line DIVs (cart-bundle-monthly-bundle-toy, cart-bundle-monthly-bundle-small)
+        ✅ PASS: Toy bundle qty 2, price $71.60
+        ✅ PASS: Small bundle qty 1, price $64.44
+        ✅ PASS: Cart total $136.04
+        ✅ PASS: No React/webpack error overlay
+        ✅ PASS: No Stripe "empty string" error
+        
+        **CONCLUSION:**
+        NO duplicate bundle lines bug exists. The cart is working correctly. The previous test used 
+        an incorrect selector that counted button elements (cart-bundle-inc-*, cart-bundle-dec-*) 
+        along with the line container divs. When counting ONLY DIV elements using 
+        document.querySelectorAll("div[data-testid^='cart-bundle-']"), we get exactly 2 lines as expected.
+        
+        The "Bundle qty sync between menu and product page" task is now marked as working: true.
+    - agent: "testing"
+      message: |
+        THREE FRONTEND FIXES TESTING COMPLETE (2026-08-11)
+        
+        Tested three specific frontend fixes as requested:
+        1. Monthly bundle pricing correctness
+        2. Bundle qty sync between menu and product page
+        3. Menu images + product image gallery
+        
+        **OVERALL RESULTS: 2/3 PASS, 1 PARTIAL (with critical bug)**
+        
+        ✅ TEST 1 — MONTHLY BUNDLE PRICING: PASS (2/2 checks)
+        - Bundle flat prices correctly displayed (Toy $35.80, Small $64.44, etc.)
+        - Cart total with 1 bundle: $35.80 ✓ (equals flat price, NOT divided by 6)
+        - Cart total with 2 bundles: $71.60 ✓ (equals 2x flat price)
+        - The reported "$10" pricing bug is FIXED
+        
+        ⚠️ TEST 2 — BUNDLE QTY SYNC: PARTIAL PASS (5/6 checks, 1 CRITICAL BUG)
+        - Menu shows qty 1 after adding: ✅ PASS
+        - Product page shows qty 1 (synced from menu): ✅ PASS — THE CORE BUG IS FIXED
+        - Product page qty increased to 2: ✅ PASS
+        - Menu card shows qty 2 after returning: ✅ PASS
+        - Bundle line price correct ($71.60): ✅ PASS
+        - ❌ CRITICAL BUG: Cart drawer shows 3 bundle line items instead of 1 (duplicate lines)
+        
+        ✅ TEST 3 — MENU IMAGES + PRODUCT GALLERY: PASS (7/7 checks)
+        - Menu meal cards use Shopify CDN images (5/5 checked): ✅ PASS
+        - No old placeholder images found: ✅ PASS
+        - Product page main image uses Shopify CDN: ✅ PASS
+        - Product page has 4 thumbnails: ✅ PASS
+        - All thumbnails use Shopify CDN: ✅ PASS
+        - Clicking thumbnail 2 changes main image: ✅ PASS
+        
+        **ADDITIONAL ISSUE FOUND:**
+        ⚠️ Stripe integration error visible in console (red screen error overlay):
+        "Please call Stripe() with your publishable key. You used an empty string."
+        This is blocking the UI with an error overlay. Not part of the three tests requested,
+        but needs to be fixed as it's affecting user experience.
+        
+        **SCREENSHOTS CAPTURED:**
+        - test1_bundle_pricing.png: Bundle pricing with qty 2 ($71.60 total)
+        - test2_product_page_qty2.png: Product page showing qty 2
+        - test2_cart_drawer.png: Cart drawer showing duplicate bundle lines (BUG)
+        - test3_menu_images.png: Menu with Shopify CDN images
+        - test3_product_gallery.png: Product page with image gallery
 
 session_2026_08_10:
   context: |
@@ -9931,3 +10189,108 @@ agent_communication_2026_08_10_shopify_image_bugfix:
         The reported bug "opening a product VIA THE MENU showed the product but with the 
         Shopify product IMAGE missing (falling back to local placeholder images)" is RESOLVED.
 
+
+frontend_tasks_2026_08_11_menu_bundle_gallery:
+  - task: "Monthly bundle price + qty sync (menu <-> product page)"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/BoxBuilder.js, frontend/src/pages/ProductDetail.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            FIX 1 ($10 wrong price): BoxBuilder sticky "Your Box" subtotal was dividing a bundle's
+            FLAT price by 6 (meal per-lb math). Now bundles add (flat price x units). Verified via
+            screenshot: Toy bundle card $35.80 -> "Your Box $35.80" after one +.
+            FIX 2 (qty sync): ProductDetail used a composite cart key (handle::variant) while the menu
+            uses the plain handle key, so bundle qty never synced. Added makeCartKey() so monthly
+            bundles key by the PLAIN handle (same as menu) in all 4 sites (quantity init, activeKey,
+            handleBackToMenu, setBoxQty). Meals unchanged.
+  - task: "Menu grid loads meals straight from Shopify (ids + CDN images)"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/BoxBuilder.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            BoxBuilder now loads meals via shopifyCatalog.getAllProducts() (Shopify handles) instead of
+            Mongo /api/products, and ProductCard image uses product.image (Shopify CDN) instead of the
+            hardcoded placeholder. Monthly bundles excluded from the meal grid (rendered from their
+            own collection). Verified via screenshot: cards show real FoeGuard product photos.
+  - task: "Product page image gallery (square main + Shopify thumbnails)"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/ProductDetail.js, frontend/src/App.css"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: |
+            Added .pd-gallery wrapper: square main image + clickable thumbnail strip pulling ALL
+            product.images from Shopify. Modal/sheet image forced square (was 200px horizontal).
+            Verified via screenshot on /product/comfort-beef-raw-dog-food: 4 thumbnails render,
+            active thumb highlighted red.
+
+test_plan:
+  current_focus:
+    - "Monthly bundle price + qty sync (menu <-> product page)"
+    - "Menu grid loads meals straight from Shopify (ids + CDN images)"
+    - "Product page image gallery (square main + Shopify thumbnails)"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication_2026_08_11_menu_bundle_gallery:
+    - agent: "main"
+      message: |
+        Please verify THREE frontend fixes on the FoeGuard site (Shopify Headless is live).
+        The main menu route is /menu (BoxBuilder component). Product pages open both as a full
+        page (/product/<handle>) AND as an inline bottom-sheet modal when tapping a menu card body.
+
+        1) MONTHLY BUNDLE PRICE: On /menu scroll to "Monthly Bundles". Each bundle card shows a flat
+           price (e.g. Toy $35.80, Small $64.44, Giant $214.80). Click the "+" on a bundle. The
+           sticky "Your Box - $X" total at the bottom MUST equal that bundle's flat price x units
+           (NOT price/6). Click "+" again to make 2 units and confirm total = 2x flat price.
+
+        2) BUNDLE QTY SYNC (menu <-> product): Add a bundle from the menu (qty 1). Open that SAME
+           bundle's product page (tap the card body to open the modal, or navigate to
+           /product/monthly-bundle-toy). It MUST show quantity 1 (not 0). Increase to 2 on the
+           product page, close/back to menu, and the menu card MUST now show 2. Decrease on menu and
+           re-open product page -> must match. There must be only ONE cart line for that bundle
+           (open the cart drawer via the top-right bag icon to confirm no duplicate bundle lines).
+
+        3) MENU IMAGES + GALLERY: Confirm meal cards on /menu show real product photos (cdn.shopify.com),
+           NOT the old generic placeholder. On a product page (e.g. /product/comfort-beef-raw-dog-food)
+           confirm the main image is SQUARE with a row of clickable thumbnails below it; clicking a
+           thumbnail changes the main image. All thumbnails should be cdn.shopify.com images.
+
+        Note: product pages can take ~8-10s to load (heavy Shopify metafield query) - allow generous waits.
+
+agent_communication_2026_08_11_menu_bundle_gallery_retest:
+    - agent: "main"
+      message: |
+        Re-test focused on the ONE flagged item + the Stripe overlay. Prior run reported "3 duplicate
+        bundle lines" — that was a FALSE POSITIVE: the selector [data-testid^='cart-bundle-'] also matches
+        the per-line -inc- and -dec- BUTTONS (3 elements per single line). Main agent manually verified in a
+        clean session: localStorage.selectedProteins has exactly ONE key per bundle and the cart drawer shows
+        one line each. Also fixed App.js so an EMPTY Stripe key no longer throws the red error overlay
+        (loadStripe is only called when a real key exists; site is Shopify-Headless, Stripe intentionally off).
+
+        PLEASE VERIFY (clear localStorage first: localStorage.removeItem('selectedProteins')):
+        A) On /menu, scroll to Monthly Bundles. Add Toy (data-testid add-monthly-bundle-toy), press
+           increase-monthly-bundle-toy once (qty 2). Add Small (add-monthly-bundle-small) (qty 1). Open the
+           cart via the sticky ".bb-floating-checkout" button. Count ONLY line containers using selector
+           "div[data-testid^='cart-bundle-']" (NOT the -inc-/-dec- buttons). EXPECT exactly 2 lines:
+           cart-bundle-monthly-bundle-toy (qty 2, $71.60) and cart-bundle-monthly-bundle-small (qty 1, $64.44),
+           Total $136.04. Confirm NO duplicate lines for the same bundle.
+        B) Confirm there is NO red error overlay / Stripe "empty string" crash anywhere while browsing /menu
+           and a product page.
