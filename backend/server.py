@@ -616,22 +616,31 @@ async def get_admin_user(credentials: HTTPAuthorizationCredentials = Depends(sec
 import boto3
 from botocore.client import Config
 
-r2_client = boto3.client(
-    's3',
-    endpoint_url=f"https://{os.environ['CLOUDFLARE_ACCOUNT_ID']}.r2.cloudflarestorage.com",
-    aws_access_key_id=os.environ['CLOUDFLARE_R2_ACCESS_KEY'],
-    aws_secret_access_key=os.environ['CLOUDFLARE_R2_SECRET_KEY'],
-    config=Config(signature_version='s3v4'),
-    region_name='auto'
-)
+# Cloudflare R2 is optional (site uses Shopify Headless). Only initialise if configured.
+CLOUDFLARE_ACCOUNT_ID = os.environ.get('CLOUDFLARE_ACCOUNT_ID', '')
+r2_client = None
+if CLOUDFLARE_ACCOUNT_ID and os.environ.get('CLOUDFLARE_R2_ACCESS_KEY'):
+    try:
+        r2_client = boto3.client(
+            's3',
+            endpoint_url=f"https://{CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com",
+            aws_access_key_id=os.environ['CLOUDFLARE_R2_ACCESS_KEY'],
+            aws_secret_access_key=os.environ['CLOUDFLARE_R2_SECRET_KEY'],
+            config=Config(signature_version='s3v4'),
+            region_name='auto'
+        )
+    except Exception as _e:
+        logging.warning("Cloudflare R2 not initialised: %s", _e)
 
 BUCKET_NAME = os.environ.get('CLOUDFLARE_R2_BUCKET_NAME', 'foeguard-assets')
-PUBLIC_URL = os.environ.get('CLOUDFLARE_R2_PUBLIC_URL', f"https://pub-{os.environ['CLOUDFLARE_ACCOUNT_ID']}.r2.dev")
+PUBLIC_URL = os.environ.get('CLOUDFLARE_R2_PUBLIC_URL', f"https://pub-{CLOUDFLARE_ACCOUNT_ID}.r2.dev")
 
 # Image Upload
 @api_router.post("/admin/upload-image")
 async def upload_image(file_data: dict, admin: dict = Depends(get_admin_user)):
     """Upload image to Cloudflare R2"""
+    if r2_client is None:
+        raise HTTPException(status_code=503, detail="Image storage (Cloudflare R2) is not configured.")
     try:
         import base64
         import mimetypes
