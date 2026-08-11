@@ -582,30 +582,15 @@ export function normalizeShopifyTreat(sp) {
   const mf = indexMetafields(sp.metafields);
 
   return {
+    // Spread the FULL normalized product so treats carry the SAME Shopify-managed
+    // content as meals: feature_checks, ingredients, nutritional_analysis,
+    // product_information, page_icon_badges, faqs, customer_reviews,
+    // comparison_table, meal_feature_section, images, variants, etc.
+    ...p,
+    // Treat-specific identifiers / fields:
     treat_id: p.handle,
-    handle: p.handle,
-    shopify_id: p.shopify_id,
-    name: p.name,
-    description: p.description,
-    descriptionHtml: p.descriptionHtml,
-    mini_description: p.mini_description,
-    price: p.price,
-    currency: p.currency,
-    image: p.image,
-    images: p.images,
-    category: p.category,
-    tags: p.tags,
-    protein_type: p.protein_type,
-    pet_type: p.pet_type,
-    variants: p.variants,
-    default_variant_id: p.default_variant_id,
-    availableForSale: p.availableForSale,
     benefits: mfList(mf, 'benefits', p.highlights || []),
-    ingredients: p.ingredients,
-    product_information: p.product_information,
-    feeding_guide: p.feeding_guide,
     quantity_description: mfString(mf, 'quantity_description') || p.mini_description,
-    highlights: p.highlights,
     no_variants: true,
   };
 }

@@ -273,7 +273,7 @@ query MetaobjectByHandle($type: String!, $handle: String!) {
         ... on Collection { id handle title }
         ... on Page { id handle title }
       }
-      references(first: 30) {
+      references(first: 250) {
         nodes {
           __typename
           ... on MediaImage { image { url altText width height } }

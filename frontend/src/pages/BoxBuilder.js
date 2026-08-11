@@ -400,12 +400,29 @@ export const BoxBuilder = () => {
     return protein ? `${line}-${protein}` : line;
   };
 
+  // Key a product to its `menu_descriptions` metaobject entry. Those entries are
+  // handled like "comfort-dinner-beef" / "royal-paws-dinner-chicken" / "primal-feast-beef",
+  // NOT by the real Shopify product handle (comfort-beef-raw-dog-food, rp-chicken-raw-cat-food).
+  // Monthly bundles DO share the same handle, so use it directly for those.
+  const menuCopyKey = (p) => {
+    if (!p) return null;
+    if (isMonthlyBundle(p)) return p.handle || p.product_id;
+    const protein = String(p.protein_type || '').replace(/_/g, '-');
+    if (!protein) return p.handle || null;
+    switch (p.product_line) {
+      case 'comfort_dinner': return `comfort-dinner-${protein}`;
+      case 'royal_paws':     return `royal-paws-dinner-${protein}`;
+      case 'primal_feast':   return `primal-feast-${protein}`;
+      default:               return p.handle || null;
+    }
+  };
+
   // Return a product decorated with Shopify-managed name/description when available.
   // Card rendering keeps its exact JSX + CSS; we just swap the two text fields.
   const withMenuCopy = (p) => {
     if (!p) return p;
-    const handle = deriveShopifyHandle(p);
-    const swap = handle && menuDescMap[handle];
+    const key = menuCopyKey(p);
+    const swap = key && menuDescMap[key];
     if (!swap) return p;
     return {
       ...p,

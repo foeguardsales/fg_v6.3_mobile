@@ -4,6 +4,7 @@ import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcEl
 import { useNavigate } from 'react-router-dom';
 import { Trash2, Edit2 } from 'lucide-react';
 import { trackOrderCompleted, trackShopifyEmailEvent, trackMealPlanPurchase, trackStarterPackPurchase, trackBuildABoxPurchase } from '../services/analytics';
+import { catalog as shopifyCatalog } from '../services/shopify';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -474,8 +475,10 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
   useEffect(() => {
     const loadTreats = async () => {
       try {
-        const { data } = await axios.get(`${API}/treats`);
-        const filteredTreats = data.filter(t => t.pet_type === petType);
+        // Treats now come straight from Shopify (real ids + cdn.shopify.com photos),
+        // matching the meal cards. Falls back to local catalog if Shopify is down.
+        const data = await shopifyCatalog.getAllTreats();
+        const filteredTreats = (data || []).filter(t => (t.pet_type || 'dog') === petType);
         setTreats(filteredTreats);
       } catch (error) {
         console.error('Failed to load treats:', error);
@@ -521,11 +524,12 @@ export const TreatsSection = ({ selectedTreats, onToggleTreat, petType = 'dog', 
           </div>
         </div>
 
-        {/* Image — on the right (desktop), on top (mobile) */}
+        {/* Image — on the right (desktop), on top (mobile). Use the Shopify
+            featured image (list query) with the images[] gallery as fallback. */}
         <div className="product-card-media">
-          {treat.images && treat.images.length > 0 ? (
+          {(treat.image || (treat.images && treat.images[0])) ? (
             <img
-              src={treat.images[0]}
+              src={treat.image || treat.images[0]}
               alt={treat.name}
               onError={(e) => { e.target.style.opacity = '0.4'; }}
             />
