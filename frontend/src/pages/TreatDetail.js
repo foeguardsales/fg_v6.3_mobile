@@ -61,7 +61,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
   const navigate = useNavigate();
   const [treat, setTreat] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedImageIndex] = useState(0);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   // Preload quantity + variant from the cart snapshot so the customer can edit
   // their previous selection when they re-open the treat page.
   const initialTreatsPreload = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
@@ -103,6 +103,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
 
     const fetchTreat = async () => {
       try {
+        setSelectedImageIndex(0); // reset gallery to first Shopify image on treat change
         const foundTreat = await shopifyCatalog.getTreatByHandle(treatId);
         setTreat(foundTreat);
       } catch (error) {
@@ -253,7 +254,11 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
     .filter(l => /^\s*[•\-]/.test(l))
     .map(l => l.replace(/^\s*[•\-]\s*/, '').trim())
     .filter(Boolean);
-  const featureList = (treat.benefits && treat.benefits.length) ? treat.benefits : descFeatures;
+  // Features as a checklist — same priority as meal product pages: Shopify
+  // feature_checks first, then benefits, then bullet lines parsed from the copy.
+  const featureList = (treat.feature_checks && treat.feature_checks.length)
+    ? treat.feature_checks
+    : ((treat.benefits && treat.benefits.length) ? treat.benefits : descFeatures);
 
   return (
     <>
@@ -278,13 +283,31 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
 
       <div className="pd-uber">
         <div className="pd-shopify">
-          {/* Image left */}
-          <div className="pd-shopify-media">
-            {currentImage ? (
-              <img src={currentImage} alt={treat.name} />
-            ) : (
-              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#2C2C2C', fontSize: '13px' }}>
-                Image coming soon
+          {/* Image gallery — square main image + Shopify thumbnails (same as product pages). */}
+          <div className="pd-gallery">
+            <div className="pd-shopify-media">
+              {currentImage ? (
+                <img src={currentImage} alt={treat.name} />
+              ) : (
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E8DFC8', color: '#2C2C2C', fontSize: '13px' }}>
+                  Image coming soon
+                </div>
+              )}
+            </div>
+            {images.length > 1 && (
+              <div className="pd-gallery-thumbs" data-testid="treat-gallery-thumbs">
+                {images.map((src, i) => (
+                  <button
+                    key={`${src}-${i}`}
+                    type="button"
+                    className={`pd-gallery-thumb ${i === selectedImageIndex ? 'is-active' : ''}`}
+                    onClick={() => setSelectedImageIndex(i)}
+                    data-testid={`treat-thumb-${i}`}
+                    aria-label={`View image ${i + 1}`}
+                  >
+                    <img src={src} alt={`${treat.name} ${i + 1}`} loading="lazy" />
+                  </button>
+                ))}
               </div>
             )}
           </div>
