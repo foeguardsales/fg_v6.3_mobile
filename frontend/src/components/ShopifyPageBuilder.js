@@ -1,4 +1,5 @@
 import React from 'react';
+import { Check } from 'lucide-react';
 import { getMetafieldMetaobjects } from '../services/shopify/pageMeta';
 
 /**
@@ -172,7 +173,11 @@ function ImagesBlock({ s }) {
   const imgs = [];
   Object.values(s).forEach((v) => {
     if (Array.isArray(v)) v.forEach((x) => { const u = imgUrl(x); if (u) imgs.push(u); });
-    else { const u = imgUrl(v); if (u && typeof v === 'string') imgs.push(u); }
+    else {
+      // Only real image URLs — never the metaobject's __handle / __type strings.
+      const u = imgUrl(v);
+      if (u && typeof v === 'string' && /^https?:\/\//.test(u)) imgs.push(u);
+    }
   });
   if (imgs.length === 0) return null;
   return (
@@ -182,13 +187,95 @@ function ImagesBlock({ s }) {
   );
 }
 
+// Find the first field that is a list of metaobjects (cards / items / rows).
+function firstObjectListKey(s) {
+  return Object.keys(s).find(
+    (k) => Array.isArray(s[k]) && s[k].some((x) => x && typeof x === 'object' && x.__type !== 'image')
+  );
+}
+
+// Benefits — header + subheader + a checkmark grid of benefit labels.
+function Benefits({ s }) {
+  const header = pick(s, ['benefits_header', 'header', 'title']);
+  const sub = pick(s, ['benefits_subheader', 'subheader', 'subheading']);
+  const key = firstObjectListKey(s);
+  const items = key ? s[key].filter((x) => x && x.__type !== 'image') : [];
+  const labels = items
+    .map((it) => pick(it, ['benefit_item', 'title', 'label', 'name', 'text']))
+    .filter(Boolean);
+  if (!header && labels.length === 0) return null;
+  return (
+    <section className="spb-benefits" data-testid="pb-benefits">
+      {header && <h2 className="spb-h2 spb-center">{header}</h2>}
+      {sub && <p className="spb-sub spb-center">{sub}</p>}
+      {labels.length > 0 && (
+        <ul className="spb-benefit-grid">
+          {labels.map((l, i) => (
+            <li key={i} className="spb-benefit-item"><Check size={18} strokeWidth={2.5} /> <span>{l}</span></li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+// Render one comparison cell: a check icon for ✓/yes, an ✕ for x/no, else raw text.
+function StatusCell({ value }) {
+  const t = String(value == null ? '' : value).trim();
+  if (/^(✓|✔|✅|yes|true|y)$/i.test(t)) return <span className="check-icon" aria-label="Yes">✓</span>;
+  if (/^(x|✕|✗|❌|no|false|n)$/i.test(t)) return <span className="status-text" aria-label="No">✕</span>;
+  return <span className="status-text">{t}</span>;
+}
+
+// Comparison table — reuses the existing .comparison-table design, filled from
+// Shopify so the merchant edits rows/values directly in the page_builder metafield.
+function PBComparisonTable({ s }) {
+  const header = pick(s, ['header', 'title']);
+  const sub = pick(s, ['subheader', 'subheading']);
+  const key = firstObjectListKey(s);
+  const rows = key ? s[key].filter((x) => x && x.__type !== 'image') : [];
+  if (rows.length === 0) return null;
+  return (
+    <section className="spb-compare ntf-compare" data-testid="pb-comparison-table">
+      <div className="spb-compare-inner">
+        {header && <h2 className="spb-h2 spb-center">{header}</h2>}
+        {sub && <p className="spb-sub spb-center">{sub}</p>}
+        <div className="comparison-table-wrapper">
+          <table className="comparison-table">
+            <thead>
+              <tr>
+                <th className="feature-col">Feature</th>
+                <th className="brand-col foeguard-col"><span className="brand-name">FoeGuard</span></th>
+                <th className="brand-col"><span className="brand-name">Retail Raw</span></th>
+                <th className="brand-col"><span className="brand-name">Kibble</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r, i) => (
+                <tr key={i}>
+                  <td className="feature-cell">{pick(r, ['feature_name', 'feature', 'title', 'name'])}</td>
+                  <td className="check-cell foeguard-cell"><StatusCell value={pick(r, ['foeguard_status', 'foeguard'])} /></td>
+                  <td className="check-cell"><StatusCell value={pick(r, ['retail_raw_status', 'retail_raw', 'retail'])} /></td>
+                  <td className="check-cell"><StatusCell value={pick(r, ['kibble_status', 'kibble'])} /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function renderSection(s, i) {
   const type = s.__type || '';
   if (/hero/.test(type)) return <Hero key={i} s={s} />;
+  if (/comparison_table|comparison/.test(type)) return <PBComparisonTable key={i} s={s} />;
+  if (/benefits/.test(type)) return <Benefits key={i} s={s} />;
   if (/text_block/.test(type)) return <TextBlock key={i} s={s} i={i} />;
   if (/cta/.test(type)) return <CtaBanner key={i} s={s} />;
   if (/compare_images|images/.test(type)) return <ImagesBlock key={i} s={s} />;
-  if (/protein|recipes|benefits|reviews|comparison|contact|social|details/.test(type)) return <CardsBlock key={i} s={s} />;
+  if (/protein|recipes|reviews|contact|social|details/.test(type)) return <CardsBlock key={i} s={s} />;
   // generic fallback
   return <CardsBlock key={i} s={s} />;
 }
