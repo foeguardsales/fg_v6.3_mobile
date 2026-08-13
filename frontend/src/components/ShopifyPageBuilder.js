@@ -96,13 +96,21 @@ function Hero({ s }) {
   const sub = pick(s, ['page_hero_subheading', 'subheading', 'subheader']);
   const img = imgUrl(pick(s, ['page_hero_image', 'image', 'background_image']));
   return (
-    <section className="spb-hero" style={img ? { backgroundImage: `url(${img})` } : undefined} data-testid="pb-hero">
-      <div className="spb-hero-overlay" />
-      <div className="spb-hero-inner">
-        {title && <h1 className="spb-hero-title">{title}</h1>}
-        {sub && <p className="spb-hero-sub">{sub}</p>}
-      </div>
-    </section>
+    <>
+      {img && (
+        <section className="spb-hero-img" data-testid="pb-hero">
+          <img src={img} alt={title || ''} />
+        </section>
+      )}
+      {(title || sub) && (
+        <section className="spb-hero-intro" data-testid="pb-hero-intro">
+          <div className="spb-hero-intro-inner">
+            {title && <h1 className="spb-hero-title">{title}</h1>}
+            {sub && <p className="spb-hero-sub">{sub}</p>}
+          </div>
+        </section>
+      )}
+    </>
   );
 }
 
