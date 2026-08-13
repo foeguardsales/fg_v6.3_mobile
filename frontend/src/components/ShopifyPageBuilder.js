@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Wind, Smile, Salad, Flame, Leaf, Droplet, ShieldCheck,
-  Shield, Brain, PawPrint, HeartPulse, Sparkles,
+  Shield, Brain, PawPrint, HeartPulse, Sparkles, Plus, Minus,
 } from 'lucide-react';
 import { getMetafieldMetaobjects } from '../services/shopify/pageMeta';
 
@@ -82,6 +82,28 @@ const RichText = ({ value, className }) => {
   const html = richTextToHtml(value);
   if (!html) return null;
   return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+};
+
+// Renders a value that may be rich_text JSON OR a plain multi_line string
+// (newlines become paragraphs / list rows). Keeps merchant line breaks.
+const MultiText = ({ value, className }) => {
+  if (value == null || value === '') return null;
+  const str = typeof value === 'string' ? value.trim() : '';
+  if (typeof value !== 'string' || str.startsWith('{') || str.startsWith('[')) {
+    return <RichText value={value} className={className} />;
+  }
+  const lines = str.split(/\n+/).map((l) => l.trim()).filter(Boolean);
+  if (lines.length === 0) return null;
+  return (
+    <div className={className}>
+      {lines.map((l, i) => {
+        const bullet = /^[-•*]\s+/.test(l);
+        return bullet
+          ? <p key={i} className="spb-bullet">{l.replace(/^[-•*]\s+/, '')}</p>
+          : <p key={i}>{l}</p>;
+      })}
+    </div>
+  );
 };
 
 // pick first non-empty among candidate field keys
@@ -344,8 +366,161 @@ function Timeline({ s }) {
   );
 }
 
+// FAQ — tabbed category groups with accordion Q&A (type
+// `frequently_asked_questions_section`). Tabs come from `faq_category_groups`
+// (category_title); each tab lists its `faq_category_items` (faq_question /
+// faq_answer). Design mirrors the site's card + accordion style.
+function FaqTabs({ s }) {
+  const header = pick(s, ['faq_header', 'header', 'title']);
+  const sub = pick(s, ['faq_subheader', 'subheader', 'subheading']);
+  const groups = (Array.isArray(s.faq_category_groups) ? s.faq_category_groups : [])
+    .filter((g) => g && g.__type !== 'image');
+  const [active, setActive] = useState(0);
+  const [openKey, setOpenKey] = useState('0-0');
+  if (!header && groups.length === 0) return null;
+  const activeIdx = Math.min(active, Math.max(groups.length - 1, 0));
+  const activeGroup = groups[activeIdx] || {};
+  const items = (Array.isArray(activeGroup.faq_category_items) ? activeGroup.faq_category_items : [])
+    .filter((x) => x && x.__type !== 'image');
+  return (
+    <section className="spb-faq" data-testid="pb-faq">
+      <div className="spb-faq-inner">
+        {(header || sub) && (
+          <div className="spb-faq-head">
+            {header && <h1 className="spb-faq-title">{header}</h1>}
+            {sub && <p className="spb-faq-sub">{sub}</p>}
+          </div>
+        )}
+        {groups.length > 1 && (
+          <div className="spb-faq-tabs" role="tablist">
+            {groups.map((g, i) => (
+              <button
+                key={i}
+                type="button"
+                data-testid={`faq-tab-${i}`}
+                className={`spb-faq-tab ${i === activeIdx ? 'is-active' : ''}`}
+                onClick={() => { setActive(i); setOpenKey(`${i}-0`); }}
+              >
+                {pick(g, ['category_title', 'title', 'header']) || `Category ${i + 1}`}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className="spb-faq-list">
+          {items.map((it, i) => {
+            const key = `${activeIdx}-${i}`;
+            const q = pick(it, ['faq_question', 'question', 'q', 'title']);
+            const a = pick(it, ['faq_answer', 'answer', 'a', 'body', 'body_content']);
+            const isOpen = openKey === key;
+            if (!q) return null;
+            return (
+              <div className="spb-faq-item" key={key}>
+                <button
+                  type="button"
+                  data-testid="faq-question-toggle"
+                  className="spb-faq-q"
+                  onClick={() => setOpenKey(isOpen ? null : key)}
+                >
+                  <span>{q}</span>
+                  {isOpen ? <Minus size={20} /> : <Plus size={20} />}
+                </button>
+                {isOpen && <RichText value={a} className="spb-faq-a spb-rich" />}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Contact details block (type `contact_details_sections`): title + rich text
+// (emails / phone). Rendered inside the contact two-column layout OR full width.
+function ContactDetails({ s }) {
+  const title = pick(s, ['title', 'header']);
+  const body = pick(s, ['section_content', 'body_content', 'body', 'content', 'description']);
+  if (!title && !body) return null;
+  return (
+    <section className="spb-contact-details" data-testid="pb-contact-details">
+      <div className="spb-contact-details-inner">
+        {title && <h2 className="spb-h2">{title}</h2>}
+        <RichText value={body} className="spb-rich" />
+      </div>
+    </section>
+  );
+}
+
+// Raw feeding guide (type `page_raw_feeding_guide`): a long-form editorial
+// page. Renders the ordered blocks the merchant filled in Shopify.
+function RawFeedingGuide({ s }) {
+  const header = pick(s, ['header', 'title']);
+  const sub = pick(s, ['subheader', 'subheading']);
+  const fgTitle = pick(s, ['feeding_guide_title']);
+  const fgBody = pick(s, ['feeding_guide_body']);
+  const images = [];
+  (Array.isArray(s.feeding_guide_images) ? s.feeding_guide_images : []).forEach((x) => {
+    const u = imgUrl(x); if (u) images.push(u);
+  });
+  const catBody = pick(s, ['cat_disclaimer_body']);
+  const transitionTitle = pick(s, ['transition_title']);
+  const transitionBody = pick(s, ['transition_body']);
+  const thawTitle = pick(s, ['raw_thawing_storage_title']);
+  const thawBody = pick(s, ['raw_thawing_storage_body']);
+  const handleTitle = pick(s, ['raw_handling_clean_up_title']);
+  const handleBody = pick(s, ['raw_handling_clean_up_body']);
+  return (
+    <section className="spb-guide" data-testid="pb-feeding-guide">
+      <div className="spb-guide-inner">
+        {(header || sub) && (
+          <div className="spb-guide-head">
+            {header && <h1 className="spb-guide-title">{header}</h1>}
+            {sub && <p className="spb-guide-sub">{sub}</p>}
+          </div>
+        )}
+        {(fgTitle || fgBody) && (
+          <div className="spb-guide-block">
+            {fgTitle && <h2 className="spb-h2">{fgTitle}</h2>}
+            <RichText value={fgBody} className="spb-rich" />
+          </div>
+        )}
+        {images.length > 0 && (
+          <div className="spb-guide-images">
+            {images.map((u, i) => <img key={i} src={u} alt="Feeding guide" loading="lazy" />)}
+          </div>
+        )}
+        {catBody && (
+          <div className="spb-guide-note">
+            <MultiText value={catBody} className="spb-rich" />
+          </div>
+        )}
+        {(transitionTitle || transitionBody) && (
+          <div className="spb-guide-block">
+            {transitionTitle && <h2 className="spb-h2">{transitionTitle}</h2>}
+            <RichText value={transitionBody} className="spb-rich" />
+          </div>
+        )}
+        {(thawTitle || thawBody) && (
+          <div className="spb-guide-block">
+            {thawTitle && <h2 className="spb-h2">{thawTitle}</h2>}
+            <MultiText value={thawBody} className="spb-rich" />
+          </div>
+        )}
+        {(handleTitle || handleBody) && (
+          <div className="spb-guide-block">
+            {handleTitle && <h2 className="spb-h2">{handleTitle}</h2>}
+            <MultiText value={handleBody} className="spb-rich" />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function renderSection(s, i) {
   const type = s.__type || '';
+  if (/frequently_asked_questions|faq/.test(type)) return <FaqTabs key={i} s={s} />;
+  if (/contact_details/.test(type)) return <ContactDetails key={i} s={s} />;
+  if (/raw_feeding_guide|feeding_guide/.test(type)) return <RawFeedingGuide key={i} s={s} />;
   if (/hero/.test(type)) return <Hero key={i} s={s} />;
   if (/timeline/.test(type)) return <Timeline key={i} s={s} />;
   if (/comparison_table|comparison/.test(type)) return <PBComparisonTable key={i} s={s} />;

@@ -33,6 +33,7 @@ import { CheckoutPage } from './pages/CheckoutPage';
 import { FaqPage } from './pages/FaqPage';
 import { DeliveryPage } from './pages/DeliveryPage';
 import { RawStarterBundlePage } from './pages/RawStarterBundlePage';
+import { RawFeedingGuidePage } from './pages/RawFeedingGuidePage';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -110,6 +111,8 @@ function App() {
             <Route path="/collection/:handle" element={<CollectionPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/policies" element={<PoliciesPage />} />
+            <Route path="/privacy-policy" element={<PoliciesPage handle="privacy-policy" title="Privacy Policy" />} />
+            <Route path="/returns-and-refunds-policy" element={<PoliciesPage handle="returns-and-refunds-policy" title="Returns & Refunds Policy" />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/new-to-raw" element={<NewToRawPage />} />
@@ -122,6 +125,7 @@ function App() {
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/delivery" element={<DeliveryPage />} />
             <Route path="/raw-starter-bundle" element={<RawStarterBundlePage />} />
+            <Route path="/raw-feeding-guide" element={<RawFeedingGuidePage />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>

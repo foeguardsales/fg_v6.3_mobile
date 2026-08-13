@@ -12,7 +12,7 @@ const DEFAULT_PET = () => ({
   activity: 'moderate'
 });
 
-export const FeedingCalculator = ({ onComplete, embedded = false }) => {
+export const FeedingCalculator = ({ onComplete, embedded = false, title, subheader }) => {
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
   const [pets, setPets] = useState([DEFAULT_PET()]);
@@ -154,10 +154,10 @@ export const FeedingCalculator = ({ onComplete, embedded = false }) => {
       )}
 
       <h2 style={{ fontSize: '32px', textAlign: 'center', marginBottom: '12px', fontFamily: "'Barlow Semi Condensed', serif", fontWeight: 700 }}>
-        Feeding Calculator
+        {title || 'Feeding Calculator'}
       </h2>
       <p style={{ textAlign: 'center', color: '#666', marginBottom: '28px', fontFamily: "'Barlow Semi Condensed', serif" }}>
-        Tell us about your pet(s) to get personalized feeding recommendations.
+        {subheader || 'Tell us about your pet(s) to get personalized feeding recommendations.'}
         {isAuthenticated
           ? ' Saved to your account.'
           : ' Saved for this browser session.'}

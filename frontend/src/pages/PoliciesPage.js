@@ -1,55 +1,32 @@
 import React from 'react';
 import { Navbar, Footer } from '../components/Layout';
 import { ShopifyPageContent } from '../components/ShopifyPageContent';
+import { useShopifyPage } from '../hooks/useShopifyPage';
 import { SeoHead } from '../components/SeoHead';
 
-export const PoliciesPage = () => (
-  <>
-    <SeoHead endpoint="/api/shopify/page/privacy-policy" fallback={{ title: 'Policies | FoeGuard' }} />
-    <Navbar />
-    <div className="content-page">
-      <div className="content-container">
-        <h1>Policies</h1>
-        {/* Live Shopify Pages \u2014 shipping, returns, privacy \u2014 render above the hardcoded fallback. */}
-        <ShopifyPageContent handle="privacy-policy" testId="policies-privacy" containerClassName="content-shopify-block" />
-        <ShopifyPageContent handle="returns-and-refunds-policy" testId="policies-returns" containerClassName="content-shopify-block" />
-        
-        <section>
-          <h2>Shipping Policy</h2>
-          <p>
-            We ship frozen orders within Ontario via insulated packaging with dry ice. Orders placed by Wednesday ship the following Monday. Delivery takes 1-2 business days.
-          </p>
-          <p>Shipping is calculated at checkout based on your location and order size.</p>
-        </section>
-
-        <section>
-          <h2>Return & Refund Policy</h2>
-          <p>
-            Due to the perishable nature of our products, we cannot accept returns. However, if you're unsatisfied with your order, contact us within 7 days of delivery for a refund or replacement.
-          </p>
-          <p>
-            For damaged or incorrect orders, please email photos to info@foeguard.com within 48 hours of delivery.
-          </p>
-        </section>
-
-        <section>
-          <h2>Storage & Handling</h2>
-          <p>
-            Keep frozen until ready to use. Thaw in refrigerator for 24 hours before serving. Once thawed, use within 3-4 days. Never refreeze thawed food.
-          </p>
-          <p>
-            Wash hands, bowls, and surfaces after handling raw food. Keep raw food separate from human food.
-          </p>
-        </section>
-
-        <section>
-          <h2>Privacy Policy</h2>
-          <p>
-            We collect only the information necessary to process orders and communicate with customers. We never sell your data. View our full privacy policy at info@foeguard.com.
-          </p>
-        </section>
+/**
+ * Generic legal / policy page rendered directly from a Shopify page
+ * description (no metafield). Used for Privacy Policy and Returns & Refunds.
+ */
+export const PoliciesPage = ({ handle = 'privacy-policy', title = 'Privacy Policy' }) => {
+  const { page, loading } = useShopifyPage(handle);
+  return (
+    <>
+      <SeoHead endpoint={`/api/shopify/page/${handle}`} fallback={{ title: `${title} | FoeGuard` }} />
+      <Navbar />
+      <div className="content-page">
+        <div className="content-container">
+          <h1>{page?.title || title}</h1>
+          {loading ? (
+            <p style={{ color: '#8A7156' }}>Loading…</p>
+          ) : (
+            <ShopifyPageContent handle={handle} testId={`policy-${handle}`} />
+          )}
+        </div>
       </div>
-    </div>
-    <Footer />
-  </>
-);
+      <Footer />
+    </>
+  );
+};
+
+export default PoliciesPage;

@@ -176,17 +176,50 @@ query Page($handle: String!) {
                   fields {
                     key value type
                     reference { ... on MediaImage { image { url altText } } }
+                    references(first: 50) {
+                      nodes {
+                        ... on MediaImage { image { url altText } }
+                        ... on Metaobject {
+                          id type handle
+                          fields {
+                            key value type
+                            reference { ... on MediaImage { image { url altText } } }
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
-              references(first: 25) {
+              references(first: 30) {
                 nodes {
                   ... on MediaImage { image { url altText } }
                   ... on Metaobject {
                     id type handle
                     fields {
                       key value type
-                      reference { ... on MediaImage { image { url altText } } }
+                      reference {
+                        ... on MediaImage { image { url altText } }
+                        ... on Metaobject {
+                          id type handle
+                          fields {
+                            key value type
+                            reference { ... on MediaImage { image { url altText } } }
+                          }
+                        }
+                      }
+                      references(first: 50) {
+                        nodes {
+                          ... on MediaImage { image { url altText } }
+                          ... on Metaobject {
+                            id type handle
+                            fields {
+                              key value type
+                              reference { ... on MediaImage { image { url altText } } }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }

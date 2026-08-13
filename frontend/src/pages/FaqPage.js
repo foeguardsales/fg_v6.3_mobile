@@ -3,6 +3,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, ChevronUp, MessageCircle } from 'lucide-react';
 import { ModernNavbar, ModernFooter, COLORS, liftedButtonStyle, liftedButtonHover } from './LandingPage';
 import { SlideCart } from '../contexts/CartContext';
+import { useShopifyPage } from '../hooks/useShopifyPage';
+import ShopifyPageBuilder from '../components/ShopifyPageBuilder';
+import { getMetafieldMetaobjects } from '../services/shopify/pageMeta';
+import { SeoHead } from '../components/SeoHead';
 
 const FAQ_CATEGORIES = [
   {
@@ -274,6 +278,12 @@ export const FaqPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openKey, setOpenKey] = useState('0-0');
+  const { page } = useShopifyPage('faqs-raw-dog-food');
+  const builderSections = React.useMemo(
+    () => getMetafieldMetaobjects(page, 'page_builder'),
+    [page],
+  );
+  const hasBuilder = builderSections && builderSections.length > 0;
 
   // Deep-link support: read hash on mount, find matching FAQ slug, open it + scroll
   useEffect(() => {
@@ -287,7 +297,6 @@ export const FaqPage = () => {
     });
     if (matchKey) {
       setOpenKey(matchKey);
-      // Scroll to the question after it renders
       const tryScroll = () => {
         const el = document.getElementById(`faq-${raw}`);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -297,6 +306,59 @@ export const FaqPage = () => {
     }
   }, [location.hash]);
 
+  const StillHaveQuestions = () => (
+    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 20px 80px' }}>
+      <div style={{
+        marginTop: '20px',
+        background: COLORS.khaki,
+        color: COLORS.charcoal,
+        padding: '48px 32px',
+        borderRadius: '20px',
+        textAlign: 'center',
+        boxShadow: '6px 6px 0px rgba(0,0,0,0.12)',
+        border: `1px solid ${COLORS.khakiDark}`,
+      }}>
+        <MessageCircle size={36} color={COLORS.red} style={{ marginBottom: '12px' }} />
+        <h3 style={{
+          fontSize: '24px', fontWeight: 700, marginBottom: '8px', color: COLORS.charcoal,
+          fontFamily: "'Barlow Semi Condensed', serif",
+        }}>Still have questions?</h3>
+        <p style={{
+          fontSize: '15px', color: COLORS.charcoal, opacity: 0.85, marginBottom: '24px',
+          maxWidth: '480px', marginLeft: 'auto', marginRight: 'auto',
+        }}>
+          Our team of dog-loving humans answers within a few hours, every day of the week.
+        </p>
+        <button
+          data-testid="faq-contact-cta"
+          onClick={() => navigate('/contact')}
+          style={liftedButtonStyle}
+          onMouseEnter={(e) => liftedButtonHover(e, true)}
+          onMouseLeave={(e) => liftedButtonHover(e, false)}
+        >
+          Talk to the FoeGuard team
+        </button>
+      </div>
+    </div>
+  );
+
+  // Preferred path: Shopify page_builder (hero image + FAQ tabs) drives content.
+  if (hasBuilder) {
+    return (
+      <>
+        <SeoHead endpoint="/api/shopify/page/faqs-raw-dog-food" fallback={{ title: 'FAQ | FoeGuard' }} />
+        <ModernNavbar />
+        <SlideCart />
+        <main style={{ background: COLORS.cream, minHeight: '80vh' }}>
+          <ShopifyPageBuilder page={page} />
+          <StillHaveQuestions />
+        </main>
+        <ModernFooter />
+      </>
+    );
+  }
+
+  // Fallback: legacy hardcoded categories (kept design-safe during migration).
   return (
     <>
       <ModernNavbar />
@@ -371,48 +433,8 @@ export const FaqPage = () => {
                 </div>
               </div>
             ))}
-
-            {/* CTA — still have questions */}
-            <div style={{
-              marginTop: '60px',
-              background: COLORS.khaki,
-              color: COLORS.charcoal,
-              padding: '48px 32px',
-              borderRadius: '20px',
-              textAlign: 'center',
-              boxShadow: '6px 6px 0px rgba(0,0,0,0.12)',
-              border: `1px solid ${COLORS.khakiDark}`
-            }}>
-              <MessageCircle size={36} color={COLORS.red} style={{ marginBottom: '12px' }} />
-              <h3 style={{
-                fontSize: '24px',
-                fontWeight: 700,
-                marginBottom: '8px',
-                color: COLORS.charcoal,
-                fontFamily: "'Barlow Semi Condensed', serif"
-              }}>Still have questions?</h3>
-              <p style={{
-                fontSize: '15px',
-                color: COLORS.charcoal,
-                opacity: 0.85,
-                marginBottom: '24px',
-                maxWidth: '480px',
-                marginLeft: 'auto',
-                marginRight: 'auto'
-              }}>
-                Our team of dog-loving humans answers within a few hours, every day of the week.
-              </p>
-              <button
-                data-testid="faq-contact-cta"
-                onClick={() => navigate('/contact')}
-                style={liftedButtonStyle}
-                onMouseEnter={(e) => liftedButtonHover(e, true)}
-                onMouseLeave={(e) => liftedButtonHover(e, false)}
-              >
-                Talk to the FoeGuard team
-              </button>
-            </div>
           </div>
+          <StillHaveQuestions />
         </section>
       </main>
       <ModernFooter />
