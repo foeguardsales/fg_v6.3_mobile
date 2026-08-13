@@ -1,5 +1,8 @@
 import React from 'react';
-import { Check } from 'lucide-react';
+import {
+  Wind, Smile, Salad, Flame, Leaf, Droplet, ShieldCheck,
+  Shield, Brain, PawPrint, HeartPulse, Sparkles,
+} from 'lucide-react';
 import { getMetafieldMetaobjects } from '../services/shopify/pageMeta';
 
 /**
@@ -194,7 +197,23 @@ function firstObjectListKey(s) {
   );
 }
 
-// Benefits — header + subheader + a checkmark grid of benefit labels.
+// Benefits — original card+icon grid design, titles filled from Shopify.
+const BENEFIT_ICONS = {
+  'allergy relief': Wind,
+  'better dental health': Smile,
+  'supports digestion': Salad,
+  'reduces inflammation': Flame,
+  'smaller stools': Leaf,
+  'naturally hydrates': Droplet,
+  'fewer allergies': ShieldCheck,
+  'boosts immune system': Shield,
+  'boost immune system': Shield,
+  'better brain activity': Brain,
+  'more meal-time wags': PawPrint,
+  'lower vet visits': HeartPulse,
+};
+const benefitIcon = (label) => BENEFIT_ICONS[String(label || '').trim().toLowerCase()] || Sparkles;
+
 function Benefits({ s }) {
   const header = pick(s, ['benefits_header', 'header', 'title']);
   const sub = pick(s, ['benefits_subheader', 'subheader', 'subheading']);
@@ -205,16 +224,26 @@ function Benefits({ s }) {
     .filter(Boolean);
   if (!header && labels.length === 0) return null;
   return (
-    <section className="spb-benefits" data-testid="pb-benefits">
-      {header && <h2 className="spb-h2 spb-center">{header}</h2>}
-      {sub && <p className="spb-sub spb-center">{sub}</p>}
-      {labels.length > 0 && (
-        <ul className="spb-benefit-grid">
-          {labels.map((l, i) => (
-            <li key={i} className="spb-benefit-item"><Check size={18} strokeWidth={2.5} /> <span>{l}</span></li>
-          ))}
-        </ul>
-      )}
+    <section className="spb-benefits-section" data-testid="pb-benefits">
+      <div className="spb-benefits-inner">
+        {(header || sub) && (
+          <div className="spb-benefits-head">
+            {header && <h2 className="spb-h2 spb-center">{header}</h2>}
+            {sub && <p className="spb-sub spb-center">{sub}</p>}
+          </div>
+        )}
+        <div className="benefits-grid">
+          {labels.map((label, i) => {
+            const Icon = benefitIcon(label);
+            return (
+              <div key={i} className="spb-benefit-card">
+                <div className="spb-benefit-ic"><Icon size={28} strokeWidth={2} /></div>
+                <div className="spb-benefit-lbl">{label}</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }

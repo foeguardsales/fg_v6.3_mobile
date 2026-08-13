@@ -127,7 +127,7 @@ const ModernNavbar = () => {
 
   const menuItems = [
     { label: 'Shop Now', path: '/menu' },
-    { label: 'Why Raw', path: '/new-to-raw' },
+    { label: 'Why Raw', path: '/why-foeguard' },
     { label: 'About Us', path: '/about' },
     {
       label: 'Learn More',
@@ -679,7 +679,7 @@ const ModernFooter = () => {
           <h4 style={footerHeadingStyle}>Company</h4>
           {[
             { label: 'About Us', to: '/about' },
-            { label: 'Why Raw?', to: '/new-to-raw' },
+            { label: 'Why Raw?', to: '/why-foeguard' },
             { label: 'Blog', to: '/blog' },
             { label: 'Privacy Policy', to: '/policies' },
             { label: 'Terms of Service', to: '/terms' }
