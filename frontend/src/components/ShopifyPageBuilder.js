@@ -49,9 +49,19 @@ export function richTextToHtml(raw) {
         out.push(`<h${lvl}>${(node.children || []).map(inlineToHtml).join('')}</h${lvl}>`);
         break;
       }
-      case 'paragraph':
-        out.push(`<p>${(node.children || []).map(inlineToHtml).join('')}</p>`);
+      case 'paragraph': {
+        let inline = (node.children || []).map(inlineToHtml).join('');
+        // Tidy newlines the merchant embedded inside bold labels.
+        inline = inline.replace(/<strong>\s*\n+/g, '<strong>').replace(/\n+\s*<\/strong>/g, '</strong>');
+        // Start a new paragraph at each newline that begins a bold heading
+        // (e.g. "Retail Raw" / "Gently Cooked" / "Kibble"); keep other newlines as <br>.
+        const blocks = inline
+          .split(/\n+(?=<strong>)/)
+          .map((b) => b.replace(/\n+/g, '<br>').replace(/^(?:<br>)+|(?:<br>)+$/g, '').trim())
+          .filter(Boolean);
+        (blocks.length ? blocks : [inline.replace(/\n+/g, '<br>')]).forEach((b) => out.push(`<p>${b}</p>`));
         break;
+      }
       case 'list': {
         const tag = node.listType === 'ordered' ? 'ol' : 'ul';
         const items = (node.children || [])
