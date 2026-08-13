@@ -314,9 +314,40 @@ function PBComparisonTable({ s }) {
   );
 }
 
+// Delivery timeline — numbered steps (title + description) from Shopify.
+function Timeline({ s }) {
+  const header = pick(s, ['timeline_header', 'header', 'title']);
+  const key = firstObjectListKey(s);
+  const steps = key ? s[key].filter((x) => x && x.__type !== 'image') : [];
+  if (!header && steps.length === 0) return null;
+  return (
+    <section className="spb-timeline" data-testid="pb-timeline">
+      <div className="spb-timeline-inner">
+        {header && <h2 className="spb-h2 spb-center">{header}</h2>}
+        <ol className="spb-timeline-steps">
+          {steps.map((st, i) => {
+            const t = pick(st, ['timeline_title', 'title', 'header', 'name']);
+            const b = pick(st, ['timeline_description', 'description', 'body', 'text']);
+            return (
+              <li key={i} className="spb-timeline-step">
+                <div className="spb-timeline-num">{i + 1}</div>
+                <div className="spb-timeline-txt">
+                  {t && <h3 className="spb-timeline-title">{t}</h3>}
+                  {b && <p className="spb-timeline-desc">{b}</p>}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
 function renderSection(s, i) {
   const type = s.__type || '';
   if (/hero/.test(type)) return <Hero key={i} s={s} />;
+  if (/timeline/.test(type)) return <Timeline key={i} s={s} />;
   if (/comparison_table|comparison/.test(type)) return <PBComparisonTable key={i} s={s} />;
   if (/benefits/.test(type)) return <Benefits key={i} s={s} />;
   if (/text_block/.test(type)) return <TextBlock key={i} s={s} i={i} />;
