@@ -8474,6 +8474,9 @@ button, strong, b, .btn-primary, .btn-secondary {
 
 /* ===== Shopify Page Builder (headless marketing sections) ===== */
 .shopify-page-builder { width: 100%; }
+/* Kill the global section 24px top/bottom padding around the page hero image so
+   it sits flush under the header (no white bars above/under the image). */
+.spb-hero-img { width: 100%; padding-top: 0 !important; padding-bottom: 0 !important; }
 .spb-hero-img { width: 100%; }
 .spb-hero-img img { display: block; width: 100%; max-height: 460px; object-fit: cover; }
 .spb-hero-intro { background: #fff; padding: 48px 24px; text-align: center; }

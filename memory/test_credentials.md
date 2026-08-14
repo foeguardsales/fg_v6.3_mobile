@@ -1,8 +1,18 @@
 # Test Credentials
 
-## Customer auth — Emergent Auth (Google OAuth)  [NEW 2026-08-14]
-Customers now sign in/up via Emergent Google auth (button "Continue with Google" on /account).
-There is NO password for customer accounts (Google OAuth). To test auth-gated flows, seed a
+## Customer auth — Email/Password (restored) + Emergent Google  [UPDATED 2026-07]
+Customers can now sign in / create an account with EMAIL + PASSWORD on /account
+(tabs "Sign In" / "Create Account", plus "Forgot your password?" and a "Continue with
+Google" fallback). Email/password go to the backend which creates/authenticates a REAL
+Shopify customer via the Storefront Customer API, then stores a 7-day session cookie.
+- Backend endpoints: POST /api/auth/signup {email,password,firstName,lastName},
+  POST /api/auth/signin {email,password}, POST /api/auth/recover {email},
+  GET /api/auth/session, POST /api/auth/logout, POST /api/auth/session (Google exchange).
+- Verified live: signup creates gid://shopify/Customer/... and signin returns a session.
+- To create a throwaway test customer: POST /api/auth/signup with any unique email + password.
+
+## (legacy) Seed a session directly in Mongo (still works)
+Customers can also sign in/up via Emergent Google auth. To test auth-gated flows, seed a
 session directly in Mongo (DB_NAME=foeguard) and use it as a cookie/Bearer token:
 
 ```

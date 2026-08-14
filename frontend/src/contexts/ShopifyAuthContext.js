@@ -91,10 +91,56 @@ export const ShopifyAuthProvider = ({ children }) => {
     return c;
   }, []);
 
-  // login / register / recover all go through Emergent Google auth.
-  const login = useCallback(() => { goToEmergentLogin(); }, []);
-  const register = useCallback(() => { goToEmergentLogin(); }, []);
-  const recover = useCallback(() => { goToEmergentLogin(); }, []);
+  // Explicit Google (Emergent hosted) sign-in.
+  const loginWithGoogle = useCallback(() => { goToEmergentLogin(); }, []);
+
+  // Email/password → our backend → Shopify Storefront customer API.
+  // Called with a creds object {email, password}. If called with no email
+  // (legacy no-arg call), fall back to Google so nothing breaks.
+  const login = useCallback(async (creds) => {
+    if (!creds || !creds.email) { goToEmergentLogin(); return null; }
+    try {
+      const { data } = await axios.post(
+        `${API}/auth/signin`,
+        { email: creds.email, password: creds.password },
+        { withCredentials: true },
+      );
+      const c = data?.user || null;
+      setCustomer(c); persist(c);
+      return c;
+    } catch (e) {
+      throw new Error(e?.response?.data?.detail || 'Invalid email or password.');
+    }
+  }, []);
+
+  const register = useCallback(async (payload) => {
+    if (!payload || !payload.email) { goToEmergentLogin(); return null; }
+    try {
+      const { data } = await axios.post(
+        `${API}/auth/signup`,
+        {
+          email: payload.email,
+          password: payload.password,
+          firstName: payload.firstName,
+          lastName: payload.lastName,
+        },
+        { withCredentials: true },
+      );
+      const c = data?.user || null;
+      setCustomer(c); persist(c);
+      return c;
+    } catch (e) {
+      throw new Error(e?.response?.data?.detail || 'Could not create your account.');
+    }
+  }, []);
+
+  const recover = useCallback(async (email) => {
+    if (!email || typeof email !== 'string') { goToEmergentLogin(); return null; }
+    try {
+      await axios.post(`${API}/auth/recover`, { email }, { withCredentials: true });
+    } catch (_) { /* never leak which emails exist */ }
+    return { ok: true };
+  }, []);
 
   const logout = useCallback(async () => {
     try { await axios.post(`${API}/auth/logout`, {}, { withCredentials: true }); } catch (_) { /* ignore */ }
@@ -107,12 +153,13 @@ export const ShopifyAuthProvider = ({ children }) => {
     isAuthenticated: !!customer,
     loading,
     login,
+    loginWithGoogle,
     register,
     logout,
     recover,
     refresh,
     processSession,
-  }), [customer, loading, login, register, logout, recover, refresh, processSession]);
+  }), [customer, loading, login, loginWithGoogle, register, logout, recover, refresh, processSession]);
 
   return (
     <ShopifyAuthContext.Provider value={value}>

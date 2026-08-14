@@ -818,7 +818,7 @@ export const BoxBuilder = () => {
             ) : (
               <>
                 {/* ===================== MEALS ===================== */}
-                <section id="menu-section-meals" style={{ scrollMarginTop: '70px' }}>
+                <section id="menu-section-meals" style={{ scrollMarginTop: '150px' }}>
                   {/* Comfort Dinner */}
                   <div className="product-collection menu-collection">
                     <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-comfort">
@@ -857,12 +857,12 @@ export const BoxBuilder = () => {
                 </section>
 
                 {/* ===================== TREATS ===================== */}
-                <section id="menu-section-treats" style={{ scrollMarginTop: '70px' }}>
+                <section id="menu-section-treats" style={{ scrollMarginTop: '150px' }}>
                   <TreatsSection selectedTreats={selectedTreats} onToggleTreat={handleToggleTreat} petType="dog" navigate={navigate} showCategoryDescriptions={true} onOpenTreat={(tid) => setActiveTreatId(tid)} />
                 </section>
 
                 {/* ===================== MONTHLY BUNDLES ===================== */}
-                <section id="menu-section-bundles" style={{ scrollMarginTop: '70px' }}>
+                <section id="menu-section-bundles" style={{ scrollMarginTop: '150px' }}>
                   {monthlyBundleProducts.length > 0 && (
                     <div className="product-collection menu-collection">
                       <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-bundles">
@@ -883,7 +883,7 @@ export const BoxBuilder = () => {
                 </section>
 
                 {/* ===================== CAT MEALS ===================== */}
-                <section id="menu-section-cat-meals" style={{ scrollMarginTop: '70px' }}>
+                <section id="menu-section-cat-meals" style={{ scrollMarginTop: '150px' }}>
                   <div className="product-collection menu-collection">
                     <div className="menu-collection-header menu-collection-header--banner" data-testid="collection-header-royal">
                       <div className="menu-collection-banner menu-collection-banner--overlay" style={{ backgroundImage: `url(${COLLECTION_IMAGES.royal_paws})` }}>

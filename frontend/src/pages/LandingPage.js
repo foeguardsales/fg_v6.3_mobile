@@ -666,7 +666,7 @@ const ModernFooter = () => {
             { label: 'Contact Us', to: '/contact' },
             { label: 'FAQs', to: '/faq' },
             { label: 'Delivery Information', to: '/delivery' },
-            { label: 'Returns', to: '/returns-and-refunds-policy' }
+            { label: 'Returns and Exchanges', to: '/returns-and-refunds-policy' }
           ].map(item => (
             <button key={item.label} onClick={() => navigate(item.to)} style={footerLinkStyle}>
               {item.label}
@@ -1083,9 +1083,8 @@ export const LandingPage = () => {
           <section
             data-testid="identity-section"
             style={{
-              background: COLORS.cream,
-              padding: '48px 20px 56px',
-              borderTop: `1px solid ${COLORS.khaki}`
+              background: COLORS.white,
+              padding: '48px 20px 56px'
             }}
           >
             <div style={{ maxWidth: '820px', margin: '0 auto', textAlign: 'center' }}>
@@ -1171,7 +1170,7 @@ export const LandingPage = () => {
                       <div style={{
                         position: 'relative',
                         width: '100%',
-                        maxWidth: '300px',
+                        maxWidth: '360px',
                         aspectRatio: '1 / 1',
                         margin: '0 auto',
                         borderRadius: '50%',
@@ -1198,28 +1197,27 @@ export const LandingPage = () => {
                           style={{ width: '100%', height: '100%', aspectRatio: '1 / 1' }}
                           handle={
                             <div style={{
-                              width: '4px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
                               height: '100%',
-                              background: 'white',
-                              boxShadow: '0 0 20px rgba(0,0,0,0.3)',
-                              cursor: 'ew-resize',
-                              position: 'relative'
+                              cursor: 'ew-resize'
                             }}>
                               <div style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                width: '48px',
-                                height: '48px',
+                                width: '42px',
+                                height: '42px',
                                 borderRadius: '50%',
                                 background: 'white',
-                                border: '3px solid #5F7C5A',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                                boxShadow: '0 3px 12px rgba(0,0,0,0.28)'
                               }}>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                  stroke="#2C2C2C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="9 6 4 12 9 18" />
+                                  <polyline points="15 6 20 12 15 18" />
+                                </svg>
                               </div>
                             </div>
                           }
@@ -1453,20 +1451,20 @@ export const LandingPage = () => {
                     background: COLORS.white,
                     border: `1px solid ${COLORS.khaki}`,
                     borderRadius: '16px',
-                    padding: '24px 22px',
+                    overflow: 'hidden',
                     textAlign: 'center',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
                     boxShadow: '2px 2px 0px rgba(0,0,0,0.04)'
                   }}>
                     {step.image && (
                       <img
                         src={step.image}
                         alt={step.title || `Step ${i + 1}`}
-                        style={{ width: '84px', height: '84px', objectFit: 'contain', marginBottom: '14px' }}
+                        style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }}
                       />
                     )}
+                    <div style={{ padding: '22px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     {step.title && (
                       <h3 style={{
                         fontSize: '20px',
@@ -1487,6 +1485,7 @@ export const LandingPage = () => {
                         fontFamily: "'Barlow', sans-serif"
                       }}>{step.body}</p>
                     )}
+                    </div>
                   </div>
                 ))}
               </div>
