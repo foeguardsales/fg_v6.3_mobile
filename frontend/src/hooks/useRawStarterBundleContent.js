@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import pages from '../services/shopify/pages';
 import { getMetafieldMetaobjects } from '../services/shopify/pageMeta';
+import { metaobjects } from '../services/shopify';
 
 /**
  * Drives the Raw Starter Bundle landing page from the Shopify page
@@ -22,9 +23,26 @@ export function useRawStarterBundleContent() {
       try { page = await pages.getByHandle('raw-starter-bundle'); } catch { page = null; }
       if (!alive) return;
 
+      // Shared FAQ — both the homepage and this page now source their FAQ from
+      // the single `frequently_asked_questions_section/home_faq_section` metaobject
+      // so the merchant maintains one list. Falls back to the page_builder faq below.
+      let faqMo = null;
+      try { faqMo = await metaobjects.getMetaobject('frequently_asked_questions_section', 'home_faq_section'); } catch { faqMo = null; }
+      if (!alive) return;
+      const asList = (v) => (Array.isArray(v) ? v : (v ? [v] : []));
+      const sharedFaq = [];
+      asList(faqMo?.fields?.faq_category_groups).forEach((g) => {
+        asList(g?.fields?.faq_category_items).forEach((it) => {
+          const itf = it?.fields || {};
+          const q = itf.faq_question || null;
+          const a = _richToPlain(itf.faq_answer);
+          if (q && a) sharedFaq.push({ q, a });
+        });
+      });
+
       const sections = getMetafieldMetaobjects(page, 'page_builder') || [];
       const s = sections.find((x) => /raw_starter_bundle/.test(x.__type || '')) || sections[0];
-      if (!s) { setState({ ready: true }); return; }
+      if (!s) { setState({ ready: true, faq: sharedFaq }); return; }
 
       const list = (v) => (Array.isArray(v) ? v.filter((x) => x && x.__type !== 'image') : []);
 
@@ -89,7 +107,7 @@ export function useRawStarterBundleContent() {
         howItWorks,
         benefits: (benefits.header || benefits.items.length) ? benefits : null,
         testimonials,
-        faq,
+        faq: sharedFaq.length ? sharedFaq : faq,
         bottomCta,
       });
     })();

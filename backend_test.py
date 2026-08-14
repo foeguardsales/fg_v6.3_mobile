@@ -1,6 +1,7 @@
 """
 Backend API Testing for Shopify Catalog/Metaobject Endpoints
-Tests the 2-level metaobject-reference expansion in queries.py
+Tests the 3-level metaobject-reference expansion in METAOBJECT_BY_HANDLE_QUERY
+Specifically tests FAQ and How It Works sections with deep nested references
 """
 import httpx
 import json
@@ -462,22 +463,364 @@ async def test_pages_list():
     except Exception as e:
         return log_test("Pages List", False, f"Exception: {str(e)}")
 
+async def test_faq_section_3level_expansion():
+    """Test 8: GET /api/shopify/metaobject/frequently_asked_questions_section/home_faq_section
+    -> verify 3-level expansion: faq_category_groups -> faq_category_items with faq_question/faq_answer"""
+    print("\n[TEST 8] Testing /api/shopify/metaobject/frequently_asked_questions_section/home_faq_section...")
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{API_BASE}/shopify/metaobject/frequently_asked_questions_section/home_faq_section"
+            )
+            
+            if response.status_code != 200:
+                return log_test(
+                    "FAQ Section 3-Level Expansion",
+                    False,
+                    f"Expected 200, got {response.status_code}: {response.text}"
+                )
+            
+            metaobject = response.json()
+            fields = metaobject.get("fields", [])
+            
+            if not fields:
+                return log_test(
+                    "FAQ Section 3-Level Expansion",
+                    False,
+                    "Metaobject has no fields"
+                )
+            
+            # Find faq_category_groups field
+            faq_category_groups_field = None
+            for field in fields:
+                if field.get("key") == "faq_category_groups":
+                    faq_category_groups_field = field
+                    break
+            
+            if not faq_category_groups_field:
+                return log_test(
+                    "FAQ Section 3-Level Expansion",
+                    False,
+                    "Missing field: faq_category_groups"
+                )
+            
+            # Check references.nodes (level 1: category groups)
+            references = faq_category_groups_field.get("references", {})
+            category_groups = references.get("nodes", [])
+            
+            if not category_groups:
+                return log_test(
+                    "FAQ Section 3-Level Expansion",
+                    False,
+                    "faq_category_groups has no references.nodes (category groups)"
+                )
+            
+            # Check first category group has faq_category_items field (level 2)
+            first_group = category_groups[0]
+            group_fields = first_group.get("fields", [])
+            
+            faq_category_items_field = None
+            for field in group_fields:
+                if field.get("key") == "faq_category_items":
+                    faq_category_items_field = field
+                    break
+            
+            if not faq_category_items_field:
+                return log_test(
+                    "FAQ Section 3-Level Expansion",
+                    False,
+                    "Category group missing field: faq_category_items"
+                )
+            
+            # Check faq_category_items has references.nodes (level 3: individual Q&A items)
+            items_references = faq_category_items_field.get("references", {})
+            qa_items = items_references.get("nodes", [])
+            
+            if not qa_items:
+                return log_test(
+                    "FAQ Section 3-Level Expansion",
+                    False,
+                    "faq_category_items has no references.nodes (Q&A items) - 3rd level expansion FAILED"
+                )
+            
+            # Check first Q&A item has faq_question and faq_answer fields
+            first_qa = qa_items[0]
+            qa_fields = first_qa.get("fields", [])
+            qa_field_keys = [f.get("key") for f in qa_fields]
+            
+            if "faq_question" not in qa_field_keys:
+                return log_test(
+                    "FAQ Section 3-Level Expansion",
+                    False,
+                    "Q&A item missing field: faq_question"
+                )
+            
+            if "faq_answer" not in qa_field_keys:
+                return log_test(
+                    "FAQ Section 3-Level Expansion",
+                    False,
+                    "Q&A item missing field: faq_answer"
+                )
+            
+            # Get sample question text
+            faq_question_field = next((f for f in qa_fields if f.get("key") == "faq_question"), None)
+            sample_question = faq_question_field.get("value", "N/A") if faq_question_field else "N/A"
+            
+            return log_test(
+                "FAQ Section 3-Level Expansion",
+                True,
+                f"3-level expansion SUCCESS. Found {len(category_groups)} category groups, "
+                f"{len(qa_items)} Q&A items in first group. Sample question: '{sample_question[:50]}...'"
+            )
+    except Exception as e:
+        return log_test("FAQ Section 3-Level Expansion", False, f"Exception: {str(e)}")
+
+async def test_how_it_works_section():
+    """Test 9: GET /api/shopify/metaobject/home_how_it_works_section/home_howitworks_sections_1
+    -> verify how_it_works_card with at least 3 cards having how_it_works_title and how_it_works_body"""
+    print("\n[TEST 9] Testing /api/shopify/metaobject/home_how_it_works_section/home_howitworks_sections_1...")
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{API_BASE}/shopify/metaobject/home_how_it_works_section/home_howitworks_sections_1"
+            )
+            
+            if response.status_code != 200:
+                return log_test(
+                    "How It Works Section",
+                    False,
+                    f"Expected 200, got {response.status_code}: {response.text}"
+                )
+            
+            metaobject = response.json()
+            fields = metaobject.get("fields", [])
+            
+            if not fields:
+                return log_test(
+                    "How It Works Section",
+                    False,
+                    "Metaobject has no fields"
+                )
+            
+            # Find how_it_works_card field
+            how_it_works_card_field = None
+            for field in fields:
+                if field.get("key") == "how_it_works_card":
+                    how_it_works_card_field = field
+                    break
+            
+            if not how_it_works_card_field:
+                return log_test(
+                    "How It Works Section",
+                    False,
+                    "Missing field: how_it_works_card"
+                )
+            
+            # Check references.nodes (cards)
+            references = how_it_works_card_field.get("references", {})
+            cards = references.get("nodes", [])
+            
+            if len(cards) < 3:
+                return log_test(
+                    "How It Works Section",
+                    False,
+                    f"Expected at least 3 cards, got {len(cards)}"
+                )
+            
+            # Check each card has how_it_works_title and how_it_works_body
+            for i, card in enumerate(cards):
+                card_fields = card.get("fields", [])
+                card_field_keys = [f.get("key") for f in card_fields]
+                
+                if "how_it_works_title" not in card_field_keys:
+                    return log_test(
+                        "How It Works Section",
+                        False,
+                        f"Card {i} missing field: how_it_works_title"
+                    )
+                
+                if "how_it_works_body" not in card_field_keys:
+                    return log_test(
+                        "How It Works Section",
+                        False,
+                        f"Card {i} missing field: how_it_works_body"
+                    )
+            
+            # Get sample title from first card
+            first_card_fields = cards[0].get("fields", [])
+            title_field = next((f for f in first_card_fields if f.get("key") == "how_it_works_title"), None)
+            sample_title = title_field.get("value", "N/A") if title_field else "N/A"
+            
+            return log_test(
+                "How It Works Section",
+                True,
+                f"Found {len(cards)} cards, all with how_it_works_title and how_it_works_body. "
+                f"Sample title: '{sample_title}'"
+            )
+    except Exception as e:
+        return log_test("How It Works Section", False, f"Exception: {str(e)}")
+
+async def test_regression_products():
+    """Test 10: Regression - GET /api/shopify/products?first=3 -> returns products array"""
+    print("\n[TEST 10] Regression - Testing /api/shopify/products?first=3...")
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(f"{API_BASE}/shopify/products?first=3")
+            
+            if response.status_code != 200:
+                return log_test(
+                    "Regression: Products",
+                    False,
+                    f"Expected 200, got {response.status_code}: {response.text}"
+                )
+            
+            data = response.json()
+            products = data.get("products", [])
+            
+            if len(products) < 1:
+                return log_test(
+                    "Regression: Products",
+                    False,
+                    "No products returned"
+                )
+            
+            return log_test(
+                "Regression: Products",
+                True,
+                f"Returned {len(products)} products"
+            )
+    except Exception as e:
+        return log_test("Regression: Products", False, f"Exception: {str(e)}")
+
+async def test_regression_pages():
+    """Test 11: Regression - GET /api/shopify/pages?first=5 -> returns nodes"""
+    print("\n[TEST 11] Regression - Testing /api/shopify/pages?first=5...")
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(f"{API_BASE}/shopify/pages?first=5")
+            
+            if response.status_code != 200:
+                return log_test(
+                    "Regression: Pages",
+                    False,
+                    f"Expected 200, got {response.status_code}: {response.text}"
+                )
+            
+            data = response.json()
+            
+            if "nodes" not in data:
+                return log_test(
+                    "Regression: Pages",
+                    False,
+                    "Response missing 'nodes' field"
+                )
+            
+            return log_test(
+                "Regression: Pages",
+                True,
+                f"Returned {len(data.get('nodes', []))} pages"
+            )
+    except Exception as e:
+        return log_test("Regression: Pages", False, f"Exception: {str(e)}")
+
+async def test_regression_hero_metaobject():
+    """Test 12: Regression - GET /api/shopify/metaobject/homepage_hero/the-freshest-meal-your-dog-has-ever-eaten
+    -> returns hero fields including cta_button"""
+    print("\n[TEST 12] Regression - Testing homepage_hero metaobject...")
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(
+                f"{API_BASE}/shopify/metaobject/homepage_hero/the-freshest-meal-your-dog-has-ever-eaten"
+            )
+            
+            if response.status_code != 200:
+                return log_test(
+                    "Regression: Hero Metaobject",
+                    False,
+                    f"Expected 200, got {response.status_code}: {response.text}"
+                )
+            
+            metaobject = response.json()
+            fields = metaobject.get("fields", [])
+            
+            if not fields:
+                return log_test(
+                    "Regression: Hero Metaobject",
+                    False,
+                    "Metaobject has no fields"
+                )
+            
+            # Check for cta_button field
+            field_keys = [f.get("key") for f in fields]
+            if "cta_button" not in field_keys:
+                return log_test(
+                    "Regression: Hero Metaobject",
+                    False,
+                    "Missing field: cta_button"
+                )
+            
+            return log_test(
+                "Regression: Hero Metaobject",
+                True,
+                f"Hero metaobject has {len(fields)} fields including cta_button"
+            )
+    except Exception as e:
+        return log_test("Regression: Hero Metaobject", False, f"Exception: {str(e)}")
+
+async def test_regression_collection_with_products():
+    """Test 13: Regression - GET /api/shopify/collections/raw-dog-food -> returns collection with products"""
+    print("\n[TEST 13] Regression - Testing /api/shopify/collections/raw-dog-food...")
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(f"{API_BASE}/shopify/collections/raw-dog-food")
+            
+            if response.status_code != 200:
+                return log_test(
+                    "Regression: Collection with Products",
+                    False,
+                    f"Expected 200, got {response.status_code}: {response.text}"
+                )
+            
+            collection = response.json()
+            
+            if "products" not in collection:
+                return log_test(
+                    "Regression: Collection with Products",
+                    False,
+                    "Collection missing 'products' field"
+                )
+            
+            products = collection.get("products", {})
+            nodes = products.get("nodes", [])
+            
+            return log_test(
+                "Regression: Collection with Products",
+                True,
+                f"Collection '{collection.get('title')}' has {len(nodes)} products"
+            )
+    except Exception as e:
+        return log_test("Regression: Collection with Products", False, f"Exception: {str(e)}")
+
 async def main():
     """Run all tests"""
     print("="*80)
     print("SHOPIFY CATALOG/METAOBJECT BACKEND ENDPOINT TESTING")
-    print("Testing 2-level metaobject-reference expansion in queries.py")
+    print("Testing 3-level metaobject-reference expansion for FAQ and How It Works")
     print(f"Base URL: {BASE_URL}")
     print("="*80)
     
-    # Run all tests
+    # Core tests - health check
     await test_shopify_health()
-    await test_products_list()
-    await test_product_metafield_expansion()
-    await test_collections_list()
-    await test_collection_by_handle()
-    await test_metaobject_by_handle()
-    await test_pages_list()
+    
+    # NEW TESTS - 3-level expansion for FAQ and How It Works
+    await test_faq_section_3level_expansion()
+    await test_how_it_works_section()
+    
+    # REGRESSION TESTS - ensure existing endpoints still work
+    await test_regression_products()
+    await test_regression_pages()
+    await test_regression_hero_metaobject()
+    await test_regression_collection_with_products()
     
     # Print summary
     print_summary()

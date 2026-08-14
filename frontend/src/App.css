@@ -8580,6 +8580,8 @@ button, strong, b, .btn-primary, .btn-secondary {
 .spb-guide-note { background: #F5EFE0; border-left: 4px solid #C9A84C; border-radius: 10px; padding: 20px 24px; margin: 0 0 22px; }
 .spb-guide-note .spb-rich p { margin: 0 0 8px; }
 .spb-guide-images { display: flex; flex-direction: column; gap: 16px; margin: 22px 0 0; }
+.how-it-works-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 768px) { .how-it-works-grid { grid-template-columns: 1fr !important; } }
 .spb-guide-images img { width: 100%; height: auto; border-radius: 14px; object-fit: contain; box-shadow: 0 8px 22px rgba(0,0,0,0.08); }
 .spb-bullet { position: relative; padding-left: 18px; margin: 0 0 8px; }
 .spb-bullet::before { content: '•'; position: absolute; left: 2px; color: #C8102E; font-weight: 700; }

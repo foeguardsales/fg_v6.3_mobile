@@ -129,12 +129,12 @@ const ModernNavbar = () => {
     { label: 'Order Now', path: '/menu', funnel: true },
     { label: 'Why Raw', path: '/why-foeguard' },
     { label: 'About Us', path: '/about' },
+    { label: 'FoeGuard Delivery', path: '/delivery' },
     {
       label: 'Learn More',
       isDropdown: true,
       items: [
         { label: 'Frequently Asked Questions', path: '/faq' },
-        { label: 'Delivery Information', path: '/delivery' },
         { label: 'Raw Feeding Guide', path: '/raw-feeding-guide' },
         { label: 'Build Your Meal Plan', path: '/meal-plan' },
         { label: 'Raw Dog Food Calculator', path: '/calculator' }
@@ -666,7 +666,7 @@ const ModernFooter = () => {
             { label: 'Contact Us', to: '/contact' },
             { label: 'FAQs', to: '/faq' },
             { label: 'Delivery Information', to: '/delivery' },
-            { label: 'Returns', to: '/policies' }
+            { label: 'Returns', to: '/returns-and-refunds-policy' }
           ].map(item => (
             <button key={item.label} onClick={() => navigate(item.to)} style={footerLinkStyle}>
               {item.label}
@@ -1425,6 +1425,75 @@ export const LandingPage = () => {
           </div>
         </section>
 
+        {/* HOW IT WORKS SECTION — Shopify-driven (home_how_it_works_section) */}
+        {homepage.howItWorks && homepage.howItWorks.length > 0 && (
+          <section
+            data-testid="how-it-works-section"
+            style={{ background: COLORS.cream, padding: '28px 20px 36px' }}
+          >
+            <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+              <h2 style={{
+                fontSize: 'clamp(28px, 3.4vw, 40px)',
+                fontWeight: 600,
+                textAlign: 'center',
+                marginBottom: '24px',
+                color: COLORS.charcoal,
+                fontFamily: "'Barlow Semi Condensed', serif",
+                lineHeight: 1.2
+              }}>
+                How It Works
+              </h2>
+              <div className="how-it-works-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(${Math.min(homepage.howItWorks.length, 3)}, 1fr)`,
+                gap: '20px'
+              }}>
+                {homepage.howItWorks.map((step, i) => (
+                  <div key={i} data-testid={`how-it-works-card-${i}`} style={{
+                    background: COLORS.white,
+                    border: `1px solid ${COLORS.khaki}`,
+                    borderRadius: '16px',
+                    padding: '24px 22px',
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    boxShadow: '2px 2px 0px rgba(0,0,0,0.04)'
+                  }}>
+                    {step.image && (
+                      <img
+                        src={step.image}
+                        alt={step.title || `Step ${i + 1}`}
+                        style={{ width: '84px', height: '84px', objectFit: 'contain', marginBottom: '14px' }}
+                      />
+                    )}
+                    {step.title && (
+                      <h3 style={{
+                        fontSize: '20px',
+                        fontWeight: 600,
+                        color: COLORS.charcoal,
+                        marginBottom: '8px',
+                        fontFamily: "'Barlow Semi Condensed', serif",
+                        lineHeight: 1.25
+                      }}>{step.title}</h3>
+                    )}
+                    {step.body && (
+                      <p style={{
+                        fontSize: '16px',
+                        fontWeight: 400,
+                        color: COLORS.charcoal,
+                        lineHeight: 1.55,
+                        margin: 0,
+                        fontFamily: "'Barlow', sans-serif"
+                      }}>{step.body}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* REVIEWS SECTION — uniform card horizontal feed (uma's pride style) */}
         <section style={{
           background: COLORS.cream,
@@ -1782,11 +1851,11 @@ export const LandingPage = () => {
               color: COLORS.charcoal,
               fontFamily: "'Barlow Semi Condensed', serif"
             }}>
-              Questions you may have
+              {homepage.faqHeader || 'Questions you may have'}
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {faqs.map((faq, i) => (
+              {(homepage.faq || faqs).map((faq, i) => (
                 <div key={i} style={{
                   background: COLORS.cream,
                   borderRadius: '12px',

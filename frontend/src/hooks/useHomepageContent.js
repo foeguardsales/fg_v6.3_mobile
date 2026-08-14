@@ -34,7 +34,9 @@ export function useHomepageContent() {
       metaobjects.getMetaobject('homepage_why_fg', 'home_whyfg_section').catch(() => null),
       metaobjects.getMetaobject('home_ourstory_section', 'home_ourstory_section').catch(() => null),
       metaobjects.getMetaobject('home_footer_cta', 'home_footer_cta_1').catch(() => null),
-    ]).then(([announcement, hero, identity, whyFg, ourStory, footerCta]) => {
+      metaobjects.getMetaobject('home_how_it_works_section', 'home_howitworks_sections_1').catch(() => null),
+      metaobjects.getMetaobject('frequently_asked_questions_section', 'home_faq_section').catch(() => null),
+    ]).then(([announcement, hero, identity, whyFg, ourStory, footerCta, howItWorksMo, faqMo]) => {
       if (!alive) return;
 
       // Rich-text (Shopify's TipTap-like JSON). Cheap flatten to plain text
@@ -49,6 +51,7 @@ export function useHomepageContent() {
           const walk = (n) => {
             if (!n) return;
             if (n.text) parts.push(n.text);
+            if (n.type === 'text' && n.value) parts.push(n.value);
             (n.children || []).forEach(walk);
           };
           walk(j);
@@ -63,6 +66,32 @@ export function useHomepageContent() {
         if (Array.isArray(v)) return v[0]?.url || null;
         return v.url || null;
       };
+
+      // How It Works — ordered cards (title / body / image) from
+      // home_how_it_works_section -> how_it_works_card[].
+      const asList = (v) => (Array.isArray(v) ? v : (v ? [v] : []));
+      const howItWorks = asList(howItWorksMo?.fields?.how_it_works_card)
+        .map((c) => {
+          const cf = c?.fields || {};
+          return {
+            title: cf.how_it_works_title || null,
+            body: cf.how_it_works_body || null,
+            image: imgUrl(cf.how_it_works_image),
+          };
+        })
+        .filter((c) => c.title || c.body || c.image);
+
+      // FAQ — flatten every category group's items into {q, a}.
+      const faq = [];
+      asList(faqMo?.fields?.faq_category_groups).forEach((g) => {
+        asList(g?.fields?.faq_category_items).forEach((it) => {
+          const itf = it?.fields || {};
+          const q = itf.faq_question || null;
+          const a = flattenRich(itf.faq_answer);
+          if (q && a) faq.push({ q, a });
+        });
+      });
+      const faqHeader = faqMo?.fields?.faq_header || null;
 
       setState({
         ready: true,
@@ -96,6 +125,9 @@ export function useHomepageContent() {
           body: footerCta.fields.footer_cta_body || null,
           button: footerCta.fields.footer_cta_button_title || null,
         } : null,
+        howItWorks: howItWorks.length ? howItWorks : null,
+        faq: faq.length ? faq : null,
+        faqHeader,
       });
     });
 

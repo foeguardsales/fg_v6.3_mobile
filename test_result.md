@@ -176,6 +176,58 @@ backend:
           agent: "testing"
           comment: "✅ PASS (4/4 tests) - Core regression check passed. GET /api/ returns 200 {message:FoeGuard API}. GET /api/stripe-public-key returns 200 with publicKey field. Auth register with unique email returns 200 with token. Auth login with same credentials returns 200 with token. All core functionality remains intact."
 
+  - task: "METAOBJECT_BY_HANDLE_QUERY 3-level expansion for FAQ and How It Works sections"
+    implemented: true
+    working: true
+    file: "/app/backend/shopify_service/router.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Deepened METAOBJECT_BY_HANDLE_QUERY to expand nested metaobject references 3 levels deep. FAQ section metaobject (frequently_asked_questions_section/home_faq_section) now returns faq_category_groups -> faq_category_items with individual Q&A items (faq_question/faq_answer fields). How It Works section (home_how_it_works_section/home_howitworks_sections_1) returns how_it_works_card list with how_it_works_title and how_it_works_body. Test all endpoints with Shopify tokens configured."
+        - working: true
+          agent: "testing"
+          comment: |
+            ✅ ALL TESTS PASSED (7/7) - 3-level metaobject expansion working perfectly.
+            
+            **CORE TESTS:**
+            ✅ TEST 1: Shopify Health Check - Both storefront.ok and admin.ok are TRUE. Store: foeguard.myshopify.com
+            
+            ✅ TEST 2: FAQ Section 3-Level Expansion - CRITICAL FIX VERIFIED
+               • GET /api/shopify/metaobject/frequently_asked_questions_section/home_faq_section returns 200
+               • Found 1 category group (type: faq_category_groups)
+               • Found 7 Q&A items in first group (type: frequently_asked_questions_list)
+               • Each Q&A item has BOTH faq_question (single_line_text_field) AND faq_answer (rich_text_field) populated
+               • Sample question: "Why FoeGuard? What Makes You Different?"
+               • Sample answer: Rich text JSON structure present (80+ chars)
+               • 3rd-level expansion SUCCESS - individual Q&A items are fully populated, not just the group
+            
+            ✅ TEST 3: How It Works Section
+               • GET /api/shopify/metaobject/home_how_it_works_section/home_howitworks_sections_1 returns 200
+               • Found 3 cards with how_it_works_card references
+               • All cards have how_it_works_title and how_it_works_body fields
+               • Card 1: "Step 1: Choose Your Raw Dog Food"
+               • Card 2: "Step 2: We Prepare it Fresh"
+               • Card 3: "Step 3: Feed with Confidence"
+            
+            **REGRESSION TESTS (4/4 PASS):**
+            ✅ TEST 4: GET /api/shopify/products?first=3 - Returns 3 products (products array structure)
+            ✅ TEST 5: GET /api/shopify/pages?first=5 - Returns 5 pages (nodes structure)
+            ✅ TEST 6: GET /api/shopify/metaobject/homepage_hero/the-freshest-meal-your-dog-has-ever-eaten - Returns 6 fields including cta_button
+            ✅ TEST 7: GET /api/shopify/collections/raw-dog-food - Returns collection "Raw Dog Food" with 10 products
+            
+            **BACKEND LOGS:** All endpoints returning HTTP 200 OK. No errors in backend logs.
+            
+            **KEY EVIDENCE:**
+            The 3-level expansion is the core of this fix. Previously, FAQ section would return category groups but NOT the individual Q&A items. Now it correctly expands:
+            Level 1: faq_category_groups field
+            Level 2: faq_category_items field within each group
+            Level 3: Individual metaobjects with faq_question and faq_answer fields
+            
+            This allows the frontend to display the full FAQ content without additional API calls.
+
 metadata_current_session:
   test_sequence: 3
   run_ui: true
@@ -1075,10 +1127,24 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Monthly bundle pricing + qty sync + menu/product images (THREE frontend fixes)"
+    - "Menu tab: FoeGuard Delivery item + returns footer link + homepage/trial-bundle FAQ & How-It-Works from Shopify"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+  new_changes_2026_08_14: |
+    THREE FIXES to verify (main agent):
+    1. BACKEND: METAOBJECT_BY_HANDLE_QUERY (router.py) deepened to expand 3 levels so
+       frequently_asked_questions_section/home_faq_section returns faq_category_items (Q&A).
+       Verify GET /api/shopify/metaobject/frequently_asked_questions_section/home_faq_section
+       returns nested faq_category_groups -> faq_category_items with faq_question/faq_answer.
+       Also verify GET /api/shopify/metaobject/home_how_it_works_section/home_howitworks_sections_1
+       returns how_it_works_card list. Regression-check /api/shopify/products, /api/shopify/pages,
+       and /api/shopify/metaobject/homepage_hero/... still work.
+    2. FRONTEND homepage (/): FAQ section now Shopify-driven (home_faq_section, header "Questions, Answered"),
+       NEW "How It Works" section (data-testid=how-it-works-section) with 3 cards between Benefits & Reviews.
+       Trial bundle page (/raw-starter-bundle) FAQ sourced from same shared home_faq_section.
+    3. FRONTEND nav menu: item renamed to "FoeGuard Delivery" (was "Delivery Information"), moved OUT of
+       Learn More dropdown to top-level between About Us and Learn More. Footer "Returns" now -> /returns-and-refunds-policy.
   last_result_2026_07: "PASS — menu crash fixed; Prompt 9 milestone; cart unified. Round 2 PASS — ShopifyPageBuilder cards (About/Contact/WhyRaw) show images+titles (protein/recipe/benefits mapped, array images handled); Meal Plan scoring sourced from Shopify metaobjects verified end-to-end ($127.44 plan, no crash)."
 
 
@@ -10506,3 +10572,110 @@ agent_communication_2026_08_14_nav_funnel:
         **VERDICT:**
         All three navigation and funnel changes are working correctly and meet specifications. No critical 
         issues found. The features are production-ready.
+
+
+    - agent: "main"
+      message: |
+        Test the FoeGuard FastAPI backend Shopify metaobject endpoints after a GraphQL query depth change. 
+        Backend base URL is the external REACT_APP_BACKEND_URL; all routes are prefixed with /api. 
+        Shopify Storefront + Admin tokens are configured (health should be ok).
+
+        CONTEXT: We deepened METAOBJECT_BY_HANDLE_QUERY in /app/backend/shopify_service/router.py to expand 
+        nested metaobject references 3 levels deep, so an FAQ section metaobject returns its category groups 
+        AND the individual Q&A items.
+
+        TESTS:
+        1. GET /api/shopify/health — confirm 200 and storefront.ok == true and admin.ok == true.
+        2. GET /api/shopify/metaobject/frequently_asked_questions_section/home_faq_section — confirm 200. 
+           In the JSON, confirm fields contains "faq_category_groups" whose references.nodes[0] (a Metaobject) 
+           has a field "faq_category_items" whose references.nodes contain Metaobjects with BOTH "faq_question" 
+           (single_line_text_field) and "faq_answer" (rich_text_field) fields populated. This 3rd-level expansion 
+           is the core of the fix — report PASS only if the individual Q&A items (faq_question/faq_answer) are 
+           present, not just the group.
+        3. GET /api/shopify/metaobject/home_how_it_works_section/home_howitworks_sections_1 — confirm 200 and 
+           fields contains "how_it_works_card" with references.nodes of at least 3 cards, each having 
+           how_it_works_title and how_it_works_body.
+        4. REGRESSION — confirm these still return 200 with sensible data:
+           - GET /api/shopify/products?first=3 (should return products array)
+           - GET /api/shopify/pages?first=5 (should return nodes)
+           - GET /api/shopify/metaobject/homepage_hero/the-freshest-meal-your-dog-has-ever-eaten (should return hero fields incl cta_button)
+           - GET /api/shopify/collections/raw-dog-food (should return a collection with products)
+
+        Report each test PASS/FAIL with the key evidence (e.g., a sample faq_question string, count of 
+        how_it_works cards, product count). Do NOT test the frontend.
+
+    - agent: "testing"
+      message: |
+        ✅ BACKEND TESTING COMPLETE - ALL 7 TESTS PASSED (7/7 PASS)
+        
+        Comprehensive testing of the Shopify metaobject endpoints after the GraphQL query depth change 
+        (3-level expansion) has been completed. All tests passed successfully.
+        
+        **TEST 1 — SHOPIFY HEALTH CHECK: ✅ PASS**
+        • GET /api/shopify/health returns 200
+        • storefront.ok = TRUE ✓
+        • admin.ok = TRUE ✓
+        • Store: foeguard.myshopify.com
+        
+        **TEST 2 — FAQ SECTION 3-LEVEL EXPANSION (CORE FIX): ✅ PASS**
+        • GET /api/shopify/metaobject/frequently_asked_questions_section/home_faq_section returns 200
+        • fields contains "faq_category_groups" ✓
+        • references.nodes[0] is a Metaobject (type: faq_category_groups) ✓
+        • First group has field "faq_category_items" ✓
+        • faq_category_items.references.nodes contains 7 Metaobjects (type: frequently_asked_questions_list) ✓
+        • Each Q&A item has BOTH fields:
+          - faq_question (single_line_text_field) ✓
+          - faq_answer (rich_text_field) ✓
+        • Sample faq_question: "Why FoeGuard? What Makes You Different?"
+        • Sample faq_answer: Rich text JSON structure (80+ chars)
+        • **CRITICAL: 3rd-level expansion SUCCESS** - Individual Q&A items (faq_question/faq_answer) are 
+          present and populated, not just the category group
+        
+        **TEST 3 — HOW IT WORKS SECTION: ✅ PASS**
+        • GET /api/shopify/metaobject/home_how_it_works_section/home_howitworks_sections_1 returns 200
+        • fields contains "how_it_works_card" ✓
+        • references.nodes contains 3 cards ✓
+        • All 3 cards have how_it_works_title and how_it_works_body fields ✓
+        • Card titles:
+          1. "Step 1: Choose Your Raw Dog Food"
+          2. "Step 2: We Prepare it Fresh"
+          3. "Step 3: Feed with Confidence"
+        
+        **TEST 4 — REGRESSION TESTS (4/4 PASS):**
+        
+        ✅ GET /api/shopify/products?first=3
+        • Returns 200 with products array ✓
+        • Product count: 3 products
+        • Sample product: "Monthly Bundle Giant Breed - 60 lb"
+        
+        ✅ GET /api/shopify/pages?first=5
+        • Returns 200 with nodes array ✓
+        • Page count: 5 pages
+        
+        ✅ GET /api/shopify/metaobject/homepage_hero/the-freshest-meal-your-dog-has-ever-eaten
+        • Returns 200 with fields array ✓
+        • Field count: 6 fields
+        • Contains cta_button field ✓
+        
+        ✅ GET /api/shopify/collections/raw-dog-food
+        • Returns 200 with collection object ✓
+        • Collection title: "Raw Dog Food"
+        • Product count: 10 products
+        
+        **BACKEND LOGS:**
+        All endpoints returning HTTP 200 OK. No errors in backend logs (/var/log/supervisor/backend.err.log).
+        
+        **KEY EVIDENCE:**
+        The 3-level expansion is working correctly. The FAQ section metaobject now returns:
+        - Level 1: faq_category_groups field
+        - Level 2: faq_category_items field within each category group
+        - Level 3: Individual Q&A metaobjects with faq_question and faq_answer fields fully populated
+        
+        This allows the frontend to display complete FAQ content without additional API calls. The fix 
+        addresses the core requirement: expanding nested metaobject references 3 levels deep so FAQ 
+        category groups return their individual Q&A items.
+        
+        **OVERALL VERDICT:**
+        All backend Shopify metaobject endpoints are working correctly after the GraphQL query depth 
+        change. The 3-level expansion for FAQ and How It Works sections is functioning as expected. 
+        All regression tests passed. No critical issues found.

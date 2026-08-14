@@ -317,6 +317,23 @@ query MetaobjectByHandle($type: String!, $handle: String!) {
               reference {
                 __typename
                 ... on MediaImage { image { url altText width height } }
+                ... on Metaobject { id handle type fields { key value type } }
+              }
+              references(first: 100) {
+                nodes {
+                  __typename
+                  ... on MediaImage { image { url altText width height } }
+                  ... on Metaobject {
+                    id handle type
+                    fields {
+                      key value type
+                      reference {
+                        __typename
+                        ... on MediaImage { image { url altText width height } }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
