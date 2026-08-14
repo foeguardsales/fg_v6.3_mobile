@@ -175,7 +175,7 @@ const PersonalizeSection = ({ navigate }) => {
       gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
       gap: '32px',
       alignItems: 'center',
-      background: '#E8DFC8',
+      background: '#F5F3EF',
       borderRadius: '8px',
       padding: '32px',
       border: '1px solid #D8CFB8'
