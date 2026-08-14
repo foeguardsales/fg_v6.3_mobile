@@ -8,7 +8,7 @@
 /* Global uniform section spacing — 24px top + 24px bottom so the total gap
    between any two adjacent sections equals 48px (matching design spec).
    Hero is excluded (self-bleeds under fixed navbar). Full-bleed sections opt out via .section-fullbleed. */
-section:not(.hero-section):not(.hero-section--foeguard):not(.section-fullbleed) {
+section:not(.hero-section):not(.hero-section--foeguard):not(.section-fullbleed):not(.spb-hero-img) {
   padding-top: 24px !important;
   padding-bottom: 24px !important;
 }

@@ -1083,7 +1083,7 @@ export const LandingPage = () => {
           <section
             data-testid="identity-section"
             style={{
-              background: COLORS.white,
+              background: '#FFFFFF',
               padding: '48px 20px 56px'
             }}
           >
