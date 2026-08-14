@@ -126,7 +126,7 @@ const ModernNavbar = () => {
   const totalCount = itemCount || 0;
 
   const menuItems = [
-    { label: 'Shop Now', path: '/menu' },
+    { label: 'Order Now', path: '/menu', funnel: true },
     { label: 'Why Raw', path: '/why-foeguard' },
     { label: 'About Us', path: '/about' },
     {
@@ -390,7 +390,7 @@ const ModernNavbar = () => {
                     </>
                   ) : (
                     <button
-                      onClick={() => { navigate(item.path); setMenuOpen(false); }}
+                      onClick={() => { if (item.funnel) { navigate(item.path, { state: { funnel: true } }); } else { navigate(item.path); } setMenuOpen(false); }}
                       style={{
                         display: 'flex',
                         alignItems: 'center',

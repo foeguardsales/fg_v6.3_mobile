@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Layout';
 import { FeedingCalculator } from '../components/FeedingCalculator';
-import { SelectionBreadcrumb } from './BoxBuilder';
 import { useShopifyPage } from '../hooks/useShopifyPage';
 import { getMetafieldMetaobjects } from '../services/shopify/pageMeta';
 import { SeoHead } from '../components/SeoHead';
@@ -30,13 +29,6 @@ export const CalculatorPage = () => {
     <>
       <SeoHead endpoint="/api/shopify/page/raw-pet-food-feeding-calculator" fallback={{ title: 'Feeding Calculator | FoeGuard' }} />
       <Navbar />
-      <SelectionBreadcrumb
-        label="Feeding Calculator"
-        onEdit={() => {
-          sessionStorage.removeItem('foeguard_selection');
-          navigate('/menu');
-        }}
-      />
       <FeedingCalculator onComplete={handleComplete} title={title} subheader={subheader} />
       <Footer />
     </>

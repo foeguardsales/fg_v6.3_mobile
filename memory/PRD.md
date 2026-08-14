@@ -11,6 +11,20 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 
 ## What's Implemented (Feb 2026)
 
+### 2025-07 (edits) — Feeding guide layout + Order Now funnel
+- **Feeding guide images now stack vertically** — `App.css` `.spb-guide-images` changed from an
+  auto-fit grid to `display:flex; flex-direction:column;` so all guide images render full-width, one
+  below the other (used by the `page_raw_feeding_guide` block in `ShopifyPageBuilder.js`).
+- **Removed legacy "Selection: … Edit" breadcrumb strip** from `pages/CalculatorPage.js`
+  (`SelectionBreadcrumb` no longer imported/rendered there; component still defined in `BoxBuilder.js` but unused).
+- **Nav menu "Shop Now" → "Order Now"** in `pages/LandingPage.js` `menuItems`.
+- **"Order Now" always opens the pre-menu funnel** — the nav item carries `funnel:true`; its click
+  handler passes `navigate('/menu', { state:{ funnel:true } })` so the "How would you like to order?"
+  selection overlay ALWAYS shows (never skips straight to the menu even after a prior selection).
+  Hero + footer CTAs already used `goShopNow` (funnel:true). Cart data (localStorage
+  `selectedProteins`/`selectedTreats` via CartContext) is untouched and persists globally.
+
+
 ### 2025-07 — Delivery Scheduler → Shopify cart attributes
 - **Delivery Notes field (NEW)** — `contexts/CartContext.js` `DeliveryDatePicker` now renders a single-line
   optional input **below the calendar**: "Delivery notes or drop-off instructions (Optional)"
