@@ -8579,8 +8579,8 @@ button, strong, b, .btn-primary, .btn-secondary {
 .spb-guide-block { background: #fff; border: 1px solid #E8E1D4; border-radius: 16px; padding: 28px 30px; margin: 0 0 22px; box-shadow: 3px 3px 0 rgba(0,0,0,0.05); }
 .spb-guide-note { background: #F5EFE0; border-left: 4px solid #C9A84C; border-radius: 10px; padding: 20px 24px; margin: 0 0 22px; }
 .spb-guide-note .spb-rich p { margin: 0 0 8px; }
-.spb-guide-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 0 0 26px; }
-.spb-guide-images img { width: 100%; border-radius: 14px; object-fit: cover; aspect-ratio: 4/3; box-shadow: 0 8px 22px rgba(0,0,0,0.08); }
+.spb-guide-images { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 22px 0 0; }
+.spb-guide-images img { width: 100%; height: auto; border-radius: 14px; object-fit: contain; box-shadow: 0 8px 22px rgba(0,0,0,0.08); }
 .spb-bullet { position: relative; padding-left: 18px; margin: 0 0 8px; }
 .spb-bullet::before { content: '•'; position: absolute; left: 2px; color: #C8102E; font-weight: 700; }
 

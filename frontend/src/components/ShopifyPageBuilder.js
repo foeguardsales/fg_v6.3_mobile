@@ -477,15 +477,15 @@ function RawFeedingGuide({ s }) {
             {sub && <p className="spb-guide-sub">{sub}</p>}
           </div>
         )}
-        {(fgTitle || fgBody) && (
+        {(fgTitle || fgBody || images.length > 0) && (
           <div className="spb-guide-block">
             {fgTitle && <h2 className="spb-h2">{fgTitle}</h2>}
             <RichText value={fgBody} className="spb-rich" />
-          </div>
-        )}
-        {images.length > 0 && (
-          <div className="spb-guide-images">
-            {images.map((u, i) => <img key={i} src={u} alt="Feeding guide" loading="lazy" />)}
+            {images.length > 0 && (
+              <div className="spb-guide-images">
+                {images.map((u, i) => <img key={i} src={u} alt="Feeding guide" loading="lazy" />)}
+              </div>
+            )}
           </div>
         )}
         {catBody && (
