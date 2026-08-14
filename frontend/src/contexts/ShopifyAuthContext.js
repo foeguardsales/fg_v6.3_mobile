@@ -1,20 +1,24 @@
 /**
- * ShopifyAuthContext
+ * Auth context (Emergent Google Auth).
  *
- * Single source of truth for customer authentication. Customers sign in and
- * sign up on OUR OWN site-coded form (email + password); those credentials are
- * submitted to the Shopify HEADLESS Storefront customer API through our backend
- * proxy at /api/shopify/customers/*. The opaque Storefront customerAccessToken
- * is stored client-side (localStorage via customerTokenStorage). There is NO
- * redirect to Shopify's hosted login page and NO Mongo/JWT customer login.
+ * Customer authentication is handled entirely by Emergent Auth (Google OAuth).
+ * There is NO email/password form and NO Shopify hosted login. `login`,
+ * `register` and `recover` all redirect the browser to Emergent's hosted
+ * Google sign-in; on return the session_id in the URL fragment is exchanged
+ * by <AuthCallback> which calls processSession(). The backend stores a
+ * 7-day session in an httpOnly cookie.
  *
- *   const { customer, isAuthenticated, loading, login, register, logout, recover, refresh } = useShopifyAuth();
+ *   const { customer, isAuthenticated, loading, login, logout, refresh, processSession } = useShopifyAuth();
+ *
+ * Note: the hook/provider names are kept (useShopifyAuth / ShopifyAuthProvider)
+ * so existing consumers keep working, but the backend is now Emergent Auth.
  */
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import * as customerService from '../services/shopify/customers';
+import axios from 'axios';
 
-const SIGNED_IN_FLAG = 'foeguard.signedIn';
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const USER_CACHE = 'foeguard.shopifyUser';
+const SIGNED_IN_FLAG = 'foeguard.signedIn';
 
 const ShopifyAuthContext = createContext(null);
 
@@ -37,13 +41,20 @@ function persist(customer) {
   try { window.dispatchEvent(new Event('foeguard:auth-changed')); } catch (_) { /* ignore */ }
 }
 
+// REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
+function goToEmergentLogin() {
+  const redirectUrl = window.location.origin + '/account';
+  window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}`;
+}
+
 export const ShopifyAuthProvider = ({ children }) => {
   const [customer, setCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
     try {
-      const c = await customerService.me();
+      const { data } = await axios.get(`${API}/auth/session`, { withCredentials: true });
+      const c = data?.authenticated ? data.user : null;
       setCustomer(c);
       persist(c);
       return c;
@@ -56,36 +67,39 @@ export const ShopifyAuthProvider = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => { refresh(); }, [refresh]);
+  useEffect(() => {
+    // If we're returning from the OAuth callback, let <AuthCallback> exchange
+    // the session_id first (avoids a race that would 401 the /session check).
+    if (window.location.hash?.includes('session_id=')) {
+      setLoading(false);
+      return;
+    }
+    refresh();
+  }, [refresh]);
 
-  // Email/password sign-in against the Shopify headless customer API.
-  const login = useCallback(async (creds) => {
-    const { customer: c } = await customerService.login(creds);
+  // Exchange the one-time session_id (from the URL fragment) for a session.
+  const processSession = useCallback(async (sessionId) => {
+    const { data } = await axios.post(
+      `${API}/auth/session`,
+      { session_id: sessionId },
+      { withCredentials: true },
+    );
+    const c = data?.user || null;
     setCustomer(c);
     persist(c);
+    setLoading(false);
     return c;
   }, []);
 
-  // Create account (then auto sign-in) against the Shopify headless customer API.
-  const register = useCallback(async (data) => {
-    const { customer: c } = await customerService.register(data);
-    setCustomer(c);
-    persist(c);
-    return c;
-  }, []);
+  // login / register / recover all go through Emergent Google auth.
+  const login = useCallback(() => { goToEmergentLogin(); }, []);
+  const register = useCallback(() => { goToEmergentLogin(); }, []);
+  const recover = useCallback(() => { goToEmergentLogin(); }, []);
 
   const logout = useCallback(async () => {
-    try { await customerService.logout(); } catch (_) { /* ignore */ }
+    try { await axios.post(`${API}/auth/logout`, {}, { withCredentials: true }); } catch (_) { /* ignore */ }
     setCustomer(null);
     persist(null);
-  }, []);
-
-  const recover = useCallback(async (email) => customerService.recover(email), []);
-
-  const updateCustomer = useCallback(async (patch) => {
-    const c = await customerService.updateProfile(patch);
-    if (c) { setCustomer(c); persist(c); }
-    return c;
   }, []);
 
   const value = useMemo(() => ({
@@ -97,8 +111,8 @@ export const ShopifyAuthProvider = ({ children }) => {
     logout,
     recover,
     refresh,
-    updateCustomer,
-  }), [customer, loading, login, register, logout, recover, refresh, updateCustomer]);
+    processSession,
+  }), [customer, loading, login, register, logout, recover, refresh, processSession]);
 
   return (
     <ShopifyAuthContext.Provider value={value}>

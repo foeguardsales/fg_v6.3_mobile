@@ -1000,6 +1000,12 @@ api_router.include_router(events_router)
 from customer_auth_service import customer_auth_router  # noqa: E402
 api_router.include_router(customer_auth_router)
 
+# ---- Emergent Auth (Google OAuth) — customer login/signup -----------------
+# Replaces Shopify Customer Account OAuth for customers. Endpoints:
+# POST/GET /api/auth/session, POST /api/auth/logout. Admin JWT auth untouched.
+from emergent_auth import router as emergent_auth_router  # noqa: E402
+api_router.include_router(emergent_auth_router)
+
 app.include_router(api_router)
 
 app.add_middleware(

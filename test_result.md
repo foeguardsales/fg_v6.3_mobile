@@ -1127,10 +1127,23 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Menu tab: FoeGuard Delivery item + returns footer link + homepage/trial-bundle FAQ & How-It-Works from Shopify"
+    - "Emergent Auth (Google) replacing Shopify customer login — backend session endpoints"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+  emergent_auth_2026_08_14: |
+    NEW customer auth via Emergent (Google OAuth). Backend module: backend/emergent_auth.py
+    mounted under /api. Test (read /app/auth_testing.md and /app/memory/test_credentials.md):
+    1. POST /api/auth/session with body {"session_id":"invalid"} -> expect 401 (Emergent rejects).
+    2. Seed a user + session in Mongo (DB_NAME=foeguard, collections users + user_sessions) per
+       test_credentials.md, then GET /api/auth/session with header Authorization: Bearer <token>
+       -> expect {authenticated:true, user:{email,name,user_id}}. Also verify cookie path works if possible.
+    3. GET /api/auth/session with NO auth -> {authenticated:false, user:null} (200).
+    4. POST /api/auth/logout with the Bearer token -> {ok:true} and the session doc is deleted
+       (subsequent GET /api/auth/session with same token -> authenticated:false).
+    5. REGRESSION admin JWT: POST /api/auth/login still exists (may 401 if admin not seeded — that's ok,
+       just confirm the route responds and did NOT get overridden by the new /auth/* router).
+    Do NOT test the Google redirect itself (cannot automate). Focus on the session lifecycle.
   new_changes_2026_08_14: |
     THREE FIXES to verify (main agent):
     1. BACKEND: METAOBJECT_BY_HANDLE_QUERY (router.py) deepened to expand 3 levels so

@@ -296,7 +296,7 @@ const AccountTabs = ({ active, onChange }) => (
 // ---------------------------------------------------------------------------
 export const AccountPage = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, loading, logout } = useAuth();
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [ordersLoaded, setOrdersLoaded] = useState(false);
@@ -333,6 +333,18 @@ export const AccountPage = () => {
   const handleAuthSuccess = () => window.location.reload();
   const handleLogout = () => { logout(); window.location.reload(); };
   const handleEditProfile = () => navigate('/meal-plan');
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="content-page">
+          <div style={{ padding: '80px', textAlign: 'center', color: '#2C2C2C' }}>Loading…</div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   if (!isAuthenticated) {
     return (

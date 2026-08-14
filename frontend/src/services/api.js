@@ -4,33 +4,35 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 // ---------------------------------------------------------------------------
-// authService / orderService — backed by Shopify's Customer Account API
-// (OAuth/OIDC). Authentication is a redirect to Shopify's hosted login; the
-// backend holds the tokens in a server-side session (httpOnly cookie). There
-// is NO custom user DB and NO legacy Mongo /api/auth/* usage for customers.
+// authService / orderService — backed by Emergent Auth (Google OAuth).
+// Sign-in/sign-up redirect to Emergent's hosted Google login; the backend
+// holds a 7-day session in an httpOnly cookie. No Shopify hosted login.
 // ---------------------------------------------------------------------------
 
 const USER_CACHE = 'foeguard.shopifyUser';
 
+// REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
+const goToEmergentLogin = () => {
+  const redirectUrl = window.location.origin + '/account';
+  window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}`;
+};
+
 export const authService = {
-  // Both sign-in and sign-up happen on Shopify's hosted page.
-  login: () => { window.location.href = `${API}/customer-auth/login`; },
-  register: () => { window.location.href = `${API}/customer-auth/login`; },
-  recover: () => { window.location.href = `${API}/customer-auth/login`; },
+  // Both sign-in and sign-up happen on Emergent's hosted Google page.
+  login: () => { goToEmergentLogin(); },
+  register: () => { goToEmergentLogin(); },
+  recover: () => { goToEmergentLogin(); },
 
   logout: async () => {
-    let logoutUrl = null;
     try {
-      const { data } = await axios.post(`${API}/customer-auth/logout`, {}, { withCredentials: true });
-      logoutUrl = data?.logout_url || null;
+      await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
     } catch (_) { /* ignore */ }
-    try { localStorage.removeItem(USER_CACHE); localStorage.removeItem('foeguard.signedIn'); } catch (_) {}
-    if (logoutUrl) window.location.href = logoutUrl;
+    try { localStorage.removeItem(USER_CACHE); localStorage.removeItem('foeguard.signedIn'); } catch (_) { /* ignore */ }
   },
 
   refresh: async () => {
-    const { data } = await axios.get(`${API}/customer-auth/session`, { withCredentials: true });
-    return data?.authenticated ? { user: data.customer } : { user: null };
+    const { data } = await axios.get(`${API}/auth/session`, { withCredentials: true });
+    return data?.authenticated ? { user: data.user } : { user: null };
   },
 
   getUser: () => {

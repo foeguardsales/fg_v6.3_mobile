@@ -14,6 +14,7 @@ import { MenuPage } from './pages/MenuPage';
 import { CartProvider, UniversalCart } from './contexts/CartContext';
 import { Analytics } from './components/Analytics';
 import { ShopifyAuthProvider } from './contexts/ShopifyAuthContext';
+import AuthCallback from './components/AuthCallback';
 import { ProductDetailPage } from './pages/ProductDetail';
 import { TreatDetailPage } from './pages/TreatDetail';
 import { CollectionPage } from './pages/CollectionPage';
@@ -96,6 +97,23 @@ function App() {
           <ScrollToTop />
           <Analytics />
           <UniversalCart />
+          <AppRoutes />
+        </BrowserRouter>
+        </CartProvider>
+      </ShopifyAuthProvider>
+      </HelmetProvider>
+    </Elements>
+  );
+}
+
+// Detect the Emergent OAuth return fragment (#session_id=...) synchronously
+// during render — BEFORE any route/auth check — and hand off to <AuthCallback>.
+function AppRoutes() {
+  const location = useLocation();
+  if (location.hash?.includes('session_id=')) {
+    return <AuthCallback />;
+  }
+  return (
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/order" element={<OrderChoicePage />} />
@@ -129,11 +147,6 @@ function App() {
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
-        </BrowserRouter>
-        </CartProvider>
-      </ShopifyAuthProvider>
-      </HelmetProvider>
-    </Elements>
   );
 }
 
