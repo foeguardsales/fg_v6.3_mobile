@@ -324,7 +324,7 @@ export const BoxBuilder = () => {
     // 2. Category hero (image / title / description) sourced from Shopify collections.
     const collectionHandles = [
       'raw-dog-food', 'raw-dog-treats',
-      'raw-cat-food', 'raw-cat-treats',
+      'royalpaws-cat-food', 'raw-cat-treats',
       'monthly-bundles-raw-dog-food',
     ];
     Promise.all(collectionHandles.map((h) =>
