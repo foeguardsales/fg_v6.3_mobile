@@ -397,7 +397,7 @@ async def get_metaobject(type: str, handle: str):
         )
         return data.get("metaobject")
 
-    obj = await cache.get_or_set(key, loader, bucket=BUCKET_METAOBJECTS)
+    obj = await _handle(cache.get_or_set(key, loader, bucket=BUCKET_METAOBJECTS))
     if not obj:
         raise HTTPException(status_code=404, detail="Metaobject not found")
     return obj
@@ -420,7 +420,7 @@ async def list_metaobjects(
         )
         return data.get("metaobjects", {"nodes": [], "pageInfo": {}})
 
-    return await cache.get_or_set(key, loader, bucket=BUCKET_METAOBJECTS)
+    return await _handle(cache.get_or_set(key, loader, bucket=BUCKET_METAOBJECTS))
 
 
 # -------------------------- Cart ------------------------------------------
