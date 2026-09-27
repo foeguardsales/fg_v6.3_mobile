@@ -309,3 +309,42 @@ async def logout(request: Request, response: Response):
         await sessions.delete_one({"session_token": token})
     response.delete_cookie(COOKIE, path="/")
     return {"ok": True}
+
+
+# ---------------------------------------------------------------------------
+# Order history — the logged-in customer's Shopify orders (Storefront Customer
+# API via the stored access token). Works for email/password sign-ins; Google
+# users without a Storefront token gracefully return an empty list.
+# ---------------------------------------------------------------------------
+@router.get("/orders")
+async def my_orders(request: Request):
+    user = await _resolve_user(request)
+    if not user:
+        return {"orders": []}
+    token = user.get("shopify_access_token")
+    if not token:
+        return {"orders": []}
+    try:
+        cust = await shopify_customers.customer_get(token) or {}
+    except Exception as e:  # noqa: BLE001
+        logger.info(f"order history fetch failed for {user.get('email')}: {e}")
+        return {"orders": []}
+
+    nodes = ((cust.get("orders") or {}).get("nodes")) or []
+    orders = []
+    for o in nodes:
+        total = o.get("currentTotalPrice") or {}
+        num = o.get("orderNumber")
+        orders.append({
+            "id": o.get("id"),
+            "name": f"#{num}" if num is not None else o.get("id"),
+            "processedAt": o.get("processedAt"),
+            "financialStatus": o.get("financialStatus"),
+            "fulfillmentStatus": o.get("fulfillmentStatus"),
+            "totalPrice": {
+                "amount": total.get("amount"),
+                "currencyCode": total.get("currencyCode"),
+            },
+            "lineItems": o.get("lineItems") or {"nodes": []},
+        })
+    return {"orders": orders}

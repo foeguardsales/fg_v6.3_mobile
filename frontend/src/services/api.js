@@ -81,7 +81,7 @@ function shopifyOrderToLegacyOrder(o) {
 export const orderService = {
   getMyOrders: async () => {
     try {
-      const { data } = await axios.get(`${API}/customer-auth/orders`, { withCredentials: true });
+      const { data } = await axios.get(`${API}/auth/orders`, { withCredentials: true });
       return (data?.orders || []).map(shopifyOrderToLegacyOrder);
     } catch (_) {
       return [];

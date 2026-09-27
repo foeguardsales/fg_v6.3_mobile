@@ -1,5 +1,12 @@
 # Test Credentials
 
+## WORKING demo customer (email/password, real Shopify customer) [2026-09]
+- Email: demo.customer@foeguard.com
+- Password: Demo12345!
+- Real Shopify customer id: gid://shopify/Customer/31238099370142
+- Sign in at /account (Sign In tab). Order history at /account uses GET /api/auth/orders
+  (Storefront Customer API via the stored access token; empty until this customer has orders).
+
 ## Customer auth — Email/Password (restored) + Emergent Google  [UPDATED 2026-07]
 Customers can now sign in / create an account with EMAIL + PASSWORD on /account
 (tabs "Sign In" / "Create Account", plus "Forgot your password?" and a "Continue with
