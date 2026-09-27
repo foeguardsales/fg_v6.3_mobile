@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).parent / 'frontend' / '.env')
 load_dotenv(Path(__file__).parent / 'backend' / '.env')
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://site-lifter.preview.emergentagent.com')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://pullup-hub-1.preview.emergentagent.com')
 API_BASE = f"{BASE_URL}/api"
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
 DB_NAME = os.environ.get('DB_NAME', 'foeguard')
