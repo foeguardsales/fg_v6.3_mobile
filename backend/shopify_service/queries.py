@@ -26,6 +26,25 @@ fragment ProductCard on Product {
     maxVariantPrice { amount currencyCode }
   }
   options { id name values }
+  sellingPlanGroups(first: 3) {
+    nodes {
+      name
+      options { name values }
+      sellingPlans(first: 10) {
+        nodes {
+          id
+          name
+          recurringDeliveries
+          priceAdjustments {
+            adjustmentValue {
+              __typename
+              ... on SellingPlanPercentagePriceAdjustment { adjustmentPercentage }
+            }
+          }
+        }
+      }
+    }
+  }
   metafields(identifiers: [
     {namespace: "foeguard", key: "product_ingredients_nutrition"},
     {namespace: "foeguard", key: "product_information"},

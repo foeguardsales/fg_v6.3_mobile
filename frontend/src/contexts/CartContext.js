@@ -60,6 +60,12 @@ export const CartProvider = ({ children }) => {
     try { return localStorage.getItem(LS_DELIVERY_NOTES) || ''; } catch (_) { return ''; }
   });
 
+  // Subscription ("Subscribe & Save") — whole-cart toggle + chosen delivery
+  // frequency. Selling plans (per variant) come from Shopify Subscriptions.
+  const [subscribe, setSubscribe] = useState(false);
+  const [subInterval, setSubInterval] = useState('4w');
+  const [subPlans, setSubPlans] = useState({ plans_by_variant: {}, intervals: [] });
+
   // Load the product catalog once (for cart-line pricing + shopify variant lookup).
   // Meals come from Mongo (/api/products); Monthly Bundles live only in Shopify,
   // so we also pull those and merge them in (keyed by handle = their product_id)
@@ -85,6 +91,27 @@ export const CartProvider = ({ children }) => {
     Promise.all([loadMeals, loadBundles]).then(([meals, bundles]) => {
       if (!cancelled) setProducts([...meals, ...bundles]);
     });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Load subscription selling plans once (variant -> plans + interval options).
+  useEffect(() => {
+    let cancelled = false;
+    axios.get(`${API}/shopify/selling-plans`)
+      .then(res => {
+        if (cancelled) return;
+        const data = res.data || {};
+        setSubPlans({
+          plans_by_variant: data.plans_by_variant || {},
+          intervals: Array.isArray(data.intervals) ? data.intervals : [],
+        });
+        // Default the frequency selector to the last available interval (e.g. 4w).
+        if (data.intervals && data.intervals.length) {
+          setSubInterval(prev => (data.intervals.some(i => i.key === prev)
+            ? prev : data.intervals[data.intervals.length - 1].key));
+        }
+      })
+      .catch(() => { /* subscriptions simply unavailable — cart still works */ });
     return () => { cancelled = true; };
   }, []);
 
@@ -259,6 +286,8 @@ export const CartProvider = ({ children }) => {
     adjustProtein, removeProtein, setTreatQty, removeTreat, clearCart,
     itemCount, totalLbs, subtotal, perLbForProduct, baseProductId,
     MEAL_VARIANT_LABELS,
+    // Subscription ("Subscribe & Save")
+    subscribe, setSubscribe, subInterval, setSubInterval, subPlans,
     // backward-compat (do not remove — used by legacy pages)
     cartItems, total: subtotal, totalDiscount: 0, discountAmount: 0,
     isSubscription: false, setIsSubscription: () => {},
@@ -338,6 +367,7 @@ export const UniversalCart = () => {
     isCartOpen, setIsCartOpen,
     adjustProtein, removeProtein, setTreatQty, removeTreat,
     itemCount, subtotal, perLbForProduct, baseProductId, MEAL_VARIANT_LABELS: variantLabels,
+    subscribe, setSubscribe, subInterval, setSubInterval, subPlans,
   } = useCart();
 
   const drawerRef = useRef(null);
@@ -364,6 +394,13 @@ export const UniversalCart = () => {
   const hasItems = proteinEntries.length > 0 || (treats && treats.length > 0);
   const canCheckout = hasItems && !!deliveryDate && !checkingOut;
 
+  // Subscription discount % (from any selling plan) for the toggle label.
+  const subSavePct = (() => {
+    const any = Object.values(subPlans?.plans_by_variant || {})[0];
+    const p = (any || []).find(x => x.percent_off != null);
+    return p ? Math.round(p.percent_off) : null;
+  })();
+
   const mealVariantLabel = (d) => {
     if (typeof d.variantLabel === 'string' && d.variantLabel) return `${d.variantLabel} pack`;
     if (typeof d.variant === 'number' && variantLabels[d.variant]) return `${variantLabels[d.variant]} pack`;
@@ -377,22 +414,34 @@ export const UniversalCart = () => {
     trackCheckoutInitiated({ value: Number(subtotal.toFixed(2)), num_items: itemCount });
     try {
       const lines = [];
+      const planIdFor = (variantId) => {
+        if (!subscribe || !variantId) return undefined;
+        const plans = subPlans?.plans_by_variant?.[variantId] || [];
+        const match = plans.find(p => p.interval === subInterval) || plans[0];
+        return match?.id;
+      };
       proteinEntries.forEach(([key, d]) => {
         const product = products.find(p => p.product_id === baseProductId(key, d));
         const variantId = product?.shopify_variant_id;
         if (variantId) {
           const isBundle = isMonthlyBundle(product) || product?.is_bundle === true;
-          lines.push({
+          const line = {
             merchandiseId: variantId,
             // Bundles: qty is already a UNIT count. Meals: convert lb -> 6lb packs.
             quantity: isBundle ? Math.max(1, d.qty || 1) : Math.max(1, Math.round((d.qty || 6) / 6)),
             attributes: [{ key: isBundle ? 'Bundles' : 'Weight', value: isBundle ? `${d.qty}` : `${d.qty} lb` }],
-          });
+          };
+          const planId = planIdFor(variantId);
+          if (planId) line.sellingPlanId = planId;
+          lines.push(line);
         }
       });
       (treats || []).forEach((t) => {
         if (t.shopify_variant_id) {
-          lines.push({ merchandiseId: t.shopify_variant_id, quantity: t.quantity || 1 });
+          const line = { merchandiseId: t.shopify_variant_id, quantity: t.quantity || 1 };
+          const planId = planIdFor(t.shopify_variant_id);
+          if (planId) line.sellingPlanId = planId;
+          lines.push(line);
         }
       });
 
@@ -404,17 +453,25 @@ export const UniversalCart = () => {
       }
 
       const res = await shopifyCart.cartCreate({ lines, attributes });
-      let url = res?.checkoutUrl || res?.cart?.checkoutUrl;
-      const cartId = res?.id || res?.cart?.id;
+      // Response may be wrapped as { cartCreate: { cart, userErrors } } (raw
+      // GraphQL) or already unwrapped — handle both shapes.
+      const cart = res?.cartCreate?.cart || res?.cart || res || {};
+      const userErrors = res?.cartCreate?.userErrors || res?.userErrors || [];
+      let url = cart?.checkoutUrl;
+      const cartId = cart?.id;
       if (!url && cartId) {
         const co = await shopifyCheckout.getCheckoutUrl(cartId);
-        url = co?.checkoutUrl;
+        url = co?.checkoutUrl || co?.cart?.checkoutUrl;
       }
       if (url) {
         window.location.href = url;
         return;
       }
-      setCheckoutErr('Unable to start checkout right now. Please try again.');
+      if (userErrors.length) {
+        setCheckoutErr(userErrors[0]?.message || 'Unable to start checkout right now. Please try again.');
+      } else {
+        setCheckoutErr('Unable to start checkout right now. Please try again.');
+      }
     } catch (err) {
       console.error('Shopify checkout failed:', err);
       setCheckoutErr('Unable to start checkout right now. Please try again.');
@@ -579,6 +636,45 @@ export const UniversalCart = () => {
               <p style={{ margin: '6px 0 0', fontSize: '12px', color: '#8A7156' }}>
                 Taxes &amp; delivery calculated at checkout.
               </p>
+
+              {/* Subscribe & Save — whole-cart subscription via Shopify Subscriptions */}
+              {subPlans?.intervals?.length > 0 && (
+                <div data-testid="cart-subscribe" style={{ marginTop: '14px', padding: '12px 14px', border: `1.5px solid ${subscribe ? '#556B2F' : '#E0D9CB'}`, borderRadius: '10px', background: subscribe ? '#F3F6EC' : '#FBFAF6', transition: 'all .15s' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={subscribe}
+                      onChange={(e) => setSubscribe(e.target.checked)}
+                      data-testid="cart-subscribe-toggle"
+                      style={{ width: 18, height: 18, accentColor: '#556B2F', cursor: 'pointer' }}
+                    />
+                    <span style={{ fontWeight: 700, color: '#2C2C2C', fontSize: '14px' }}>
+                      Subscribe &amp; Save{subSavePct ? ` ${subSavePct}%` : ''}
+                    </span>
+                  </label>
+                  <p style={{ margin: '6px 0 0 28px', fontSize: '12px', color: '#8A7156' }}>
+                    Get your box on repeat{subSavePct ? ` and save ${subSavePct}% on every order` : ''}. Skip, change or cancel anytime from your account.
+                  </p>
+                  {subscribe && (
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '10px', marginLeft: '28px', flexWrap: 'wrap' }}>
+                      {subPlans.intervals.map((iv) => {
+                        const active = subInterval === iv.key;
+                        return (
+                          <button
+                            key={iv.key}
+                            type="button"
+                            onClick={() => setSubInterval(iv.key)}
+                            data-testid={`cart-sub-interval-${iv.key}`}
+                            style={{ padding: '7px 12px', borderRadius: '999px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', border: `1.5px solid ${active ? '#556B2F' : '#D6CDBA'}`, background: active ? '#556B2F' : '#fff', color: active ? '#fff' : '#5A5142' }}
+                          >
+                            {iv.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Delivery date + notes — below the total, date mandatory / notes optional */}
               <DeliveryDatePicker

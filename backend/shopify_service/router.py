@@ -111,6 +111,103 @@ async def get_variant(variant_id: str):
     return v
 
 
+# -------------------------- Subscriptions ---------------------------------
+
+def _plan_interval(name: str):
+    """Derive a compact interval key + label from a selling-plan name, e.g.
+    'Deliver every 2 weeks, 5% off' -> ('2w', 'Every 2 weeks')."""
+    import re
+    n = (name or "").lower()
+    wk = re.search(r"every\s+(\d+)\s*week", n)
+    mo = re.search(r"every\s+(\d+)\s*month", n)
+    if wk:
+        return f"{wk.group(1)}w", f"Every {wk.group(1)} weeks"
+    if mo:
+        return f"{mo.group(1)}m", f"Every {mo.group(1)} months"
+    return None, None
+
+
+@router.get("/selling-plans")
+async def selling_plans():
+    """Map every variant -> its subscription selling plans (+ the set of
+    available delivery-frequency intervals). Powers the cart 'Subscribe & Save'
+    toggle so meals (loaded from Mongo) and bundles (from Shopify) can all
+    attach the correct per-product selling plan at checkout."""
+    cache = get_cache()
+    key = make_key("selling.plans.all")
+
+    async def loader():
+        query = """
+        query SellingPlans($first: Int!, $after: String) {
+          products(first: $first, after: $after) {
+            pageInfo { hasNextPage endCursor }
+            nodes {
+              id
+              handle
+              variants(first: 100) { nodes { id } }
+              sellingPlanGroups(first: 3) {
+                nodes {
+                  sellingPlans(first: 10) {
+                    nodes {
+                      id
+                      name
+                      priceAdjustments {
+                        adjustmentValue {
+                          __typename
+                          ... on SellingPlanPercentagePriceAdjustment { adjustmentPercentage }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        """
+        plans_by_variant: Dict[str, List[Dict[str, Any]]] = {}
+        intervals: Dict[str, str] = {}
+        after = None
+        for _ in range(6):  # up to 600 products
+            data = await get_storefront().query(query, {"first": 100, "after": after})
+            prods = data.get("products", {}) or {}
+            for p in prods.get("nodes", []):
+                plans = []
+                for grp in (p.get("sellingPlanGroups", {}) or {}).get("nodes", []):
+                    for pl in (grp.get("sellingPlans", {}) or {}).get("nodes", []):
+                        ikey, ilabel = _plan_interval(pl.get("name"))
+                        pct = None
+                        for adj in pl.get("priceAdjustments", []) or []:
+                            av = adj.get("adjustmentValue") or {}
+                            if av.get("adjustmentPercentage") is not None:
+                                pct = av.get("adjustmentPercentage")
+                                break
+                        plans.append({
+                            "id": pl.get("id"),
+                            "name": pl.get("name"),
+                            "interval": ikey,
+                            "percent_off": pct,
+                        })
+                        if ikey:
+                            intervals[ikey] = ilabel
+                if plans:
+                    for v in (p.get("variants", {}) or {}).get("nodes", []):
+                        if v.get("id"):
+                            plans_by_variant[v["id"]] = plans
+            page = prods.get("pageInfo", {}) or {}
+            if not page.get("hasNextPage"):
+                break
+            after = page.get("endCursor")
+
+        interval_list = [
+            {"key": k, "label": intervals[k]}
+            for k in sorted(intervals, key=lambda x: (x[-1], int(x[:-1])))
+        ]
+        return {"plans_by_variant": plans_by_variant, "intervals": interval_list}
+
+    return await _handle(cache.get_or_set(key, loader, bucket=BUCKET_PRODUCTS))
+
+
 # -------------------------- Collections -----------------------------------
 
 @router.get("/collections")

@@ -400,6 +400,29 @@ export function normalizeShopifyProduct(sp) {
   if (distinctSizes <= 1) inferredNoVariants = inferredNoVariants || product_line === 'meaty_bone_treats';
   const no_variants = mf.no_variants ? mfBool(mf, 'no_variants', inferredNoVariants) : inferredNoVariants;
 
+  // Subscription selling plans (Shopify Subscriptions "Subscribe & save").
+  // Flatten every plan across groups into a simple list the cart can use.
+  // Each plan carries a derived `interval` key (e.g. "2w", "4w") so the cart
+  // can pick the matching plan per product for the customer's chosen frequency.
+  const selling_plans = [];
+  (sp.sellingPlanGroups?.nodes || []).forEach((grp) => {
+    (grp.sellingPlans?.nodes || []).forEach((plan) => {
+      const pct = (plan.priceAdjustments || [])
+        .map((a) => a.adjustmentValue?.adjustmentPercentage)
+        .find((v) => v != null);
+      const nm = (plan.name || '').toLowerCase();
+      const wk = nm.match(/every\s+(\d+)\s*week/);
+      const mo = nm.match(/every\s+(\d+)\s*month/);
+      const interval = wk ? `${wk[1]}w` : (mo ? `${mo[1]}m` : null);
+      selling_plans.push({
+        id: plan.id,
+        name: plan.name,
+        interval,
+        percent_off: pct != null ? Number(pct) : null,
+      });
+    });
+  });
+
   return {
     // legacy identifiers
     product_id: sp.handle, // use handle as stable id in the UI
@@ -432,6 +455,9 @@ export function normalizeShopifyProduct(sp) {
 
     // inventory
     availableForSale: !!sp.availableForSale,
+
+    // subscription selling plans (Shopify Subscriptions)
+    selling_plans,
 
     // rich content (from Shopify metaobjects; may be null / empty)
     highlights: mfList(mf, 'highlights', []),
