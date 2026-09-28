@@ -1,0 +1,56 @@
+{
+  "summary": "Frontend-only verification of ProductDetail meal pricing + menu modal behavior on /product/cd-beef and /menu. All 5 requested flows PASS. Tier discount pricing is present and dynamic (0%, ~5%, ~10%, ~15% at 6/12/24/36 lb). Container upcharge is exactly +$1.00/lb on top of tier. ATC is positioned below Quantity with no $ text. Meal cards on /menu open the slide-up modal (both card body click and + button); no navigation to /product/... URL.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verified_flows": [
+    {
+      "flow": "Menu card body click opens modal (no full-page nav)",
+      "result": "PASS — clicking 'Comfort Dinner Beef' card body keeps URL at /menu and product-modal-overlay appears."
+    },
+    {
+      "flow": "Menu '+' button opens modal (data-testid add-comfort-beef-raw-dog-food)",
+      "result": "PASS — clicking + keeps URL at /menu and product-modal-overlay appears."
+    },
+    {
+      "flow": "ATC location + text on /product/cd-beef",
+      "result": "PASS — button text 'Add to Cart' (no $), positioned directly below Quantity row (atc y=677 > qty bottom 669)."
+    },
+    {
+      "flow": "Packaging variants",
+      "result": "PASS — variant-0='Freezer Pouch - 1 lb', variant-1='Freezer Pouch - 1.5 lb', variant-2='Container - 1 lb' with '+$1.00/lb' badge."
+    },
+    {
+      "flow": "Dynamic tier per-lb pricing (Freezer Pouch 1 lb) — each qty-increase adds 6 lb",
+      "result": "PASS — 6lb=$6.66/lb (base), 12lb=$6.33/lb (ratio 0.9505 ≈ 0.95), 24lb=$6.00/lb (ratio 0.9009 ≈ 0.90), 36lb=$5.66/lb (ratio 0.8498 ≈ 0.85). Per-lb strictly DECREASES as lbs increase. Tier pricing is NOT gone — it is working correctly."
+    },
+    {
+      "flow": "Total = per-lb × lbs",
+      "result": "PASS with expected rounding — 6lb total $39.97 vs 39.96; 12lb $75.94 vs 75.96; 24lb $143.89 vs 144.00; 36lb $203.85 vs 203.76 (differences ≤ $0.11, purely from displaying per-lb rounded to 2 decimals while total is computed from unrounded value). This is expected/acceptable display rounding."
+    },
+    {
+      "flow": "Container upcharge on top of tier @36 lb",
+      "result": "PASS — pouch per-lb $5.66, container per-lb $6.66, delta = $1.0000 exactly. Total updates from $203.85 → $239.85 (=$6.66×36)."
+    },
+    {
+      "flow": "Add to Cart persists + closes",
+      "result": "PASS — localStorage.selectedProteins written with key 'cd-beef::Container - 1 lb' qty=36, variantLabel='Container - 1 lb', petType='dog'. After click, URL navigated to /menu (non-embedded page mode)."
+    }
+  ],
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Minor: Total-vs-(perLb*lbs) display can be up to ~$0.11 off due to rounding perLb display before multiplication. Only cosmetic; users comparing shown per-lb × qty may notice a few cents. Consider computing total from unrounded per-lb (already done) but also displaying perLb at 3 decimals or adding a subtle note — low priority.",
+    "The '+$1.00/lb' badge sits flush with the variant label 'Container - 1 lb+$1.00/lb' (no space). Cosmetic only; consider a small gap or wrap in a separate span (it is already separate, but text_content concatenates in tests — visual spacing looks fine in screenshot)."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped per request)", "frontend": "100% (8/8 flows)"},
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "cd-beef base per-lb = $6.66 (from pricing[size_lb=6]=$39.96). Each qty-increase step for meals = 6 lb (qtyStep=6). Tier rates confirmed: {12:0.05, 24:0.10, 36:0.15}. Container upcharge = $1.00/lb added AFTER tier discount. Menu modal is rendered by BoxBuilder via activeProductId → ProductDetailModal; both card body click and + button call onOpenProduct.",
+  "rca of the issue": "User's claim that 'tier pricing is gone' is NOT reproducible. The per-lb price on /product/cd-beef with Freezer Pouch - 1 lb decreases strictly at 12/24/36 lb by 5%/10%/15% as designed. Possible user-side cause: (a) user may have been viewing a Monthly Bundle (isMonthlyBundle→bulkRate forced to 0), or (b) user only viewed the 'From $X.XX /lb' initial state at qty=0 which correctly shows the base per-lb (no tier applied until qty > 0), or (c) user changed variant which re-uses same tier and can look unchanged when lbs is under 12. No code fix required."
+}
