@@ -58,8 +58,6 @@ async def seed_database():
     logger.info("Updating products with latest data...")
     
     # Use bulk operations to update or insert
-    from seed_data import ALL_PRODUCTS, ALL_TREATS
-    
     # Get valid product IDs from seed data and remove any that no longer exist
     valid_product_ids = [p["product_id"] for p in ALL_PRODUCTS]
     await db.products.delete_many({"product_id": {"$nin": valid_product_ids}})
@@ -225,20 +223,20 @@ async def create_or_update_profile(data: dict):
     profile = await db.profiles.find_one({"profile_id": profile_id}, {"_id": 0})
     return profile
 
-@api_router.get("/profiles/{email}")
-async def get_profile(email: str):
-    """Get a user profile by email"""
-    profile = await db.profiles.find_one({"email": email}, {"_id": 0})
-    if not profile:
-        raise HTTPException(status_code=404, detail="Profile not found")
-    return profile
-
 @api_router.get("/profiles/me")
 async def get_my_profile(current_user = Depends(get_current_user)):
     """Get the current user's profile"""
     profile = await db.profiles.find_one({"email": current_user["email"]}, {"_id": 0})
     if not profile:
         return None
+    return profile
+
+@api_router.get("/profiles/{email}")
+async def get_profile(email: str):
+    """Get a user profile by email"""
+    profile = await db.profiles.find_one({"email": email}, {"_id": 0})
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
     return profile
 
 @api_router.delete("/profiles/{email}")

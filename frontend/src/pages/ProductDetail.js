@@ -30,9 +30,13 @@ const proteinImages = {
   bison: 'https://images.unsplash.com/photo-1551028150-64b9f398f678?w=600&h=400&fit=crop'
 };
 
-// Shopify variant placeholders (visual only — wired to the Storefront API later)
-// 1.5 lb removed — 1 lb is the only packaging variant everywhere.
-const VARIANT_OPTIONS = ['1 lb'];
+// Packaging variants (mirrors Shopify packaging option). Pouches (1 lb / 1.5 lb)
+// are standard — no upcharge. Container = +$1.00/lb (matches Shopify: e.g. 12 lb
+// Container $81.97 vs Pouch $69.97 = +$1/lb). Priced per 1 lb so it scales with
+// box size automatically — no per-size adjustment needed.
+const VARIANT_OPTIONS = ['Freezer Pouch - 1 lb', 'Freezer Pouch - 1.5 lb', 'Container - 1 lb'];
+const CONTAINER_UPCHARGE_PER_LB = 1.00;
+const isContainerVariant = (label) => /container/i.test(label || '');
 
 const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -346,10 +350,31 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const initialProteins = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
   const initialTreats = JSON.parse(localStorage.getItem('selectedTreats') || '[]');
   
-  // Slider starts at whatever is already in the box for this product (connected to the menu)
+  // In-progress draft (qty + packaging) persists across packaging changes and
+  // navigation; only cleared on Add to Cart. Stored per product handle.
+  const readDraft = () => {
+    try { return (JSON.parse(localStorage.getItem('fg_pd_draft') || '{}'))[productId] || null; }
+    catch (_) { return null; }
+  };
+  const saveDraft = (q, variant) => {
+    try {
+      const d = JSON.parse(localStorage.getItem('fg_pd_draft') || '{}');
+      d[productId] = { qty: q, variant };
+      localStorage.setItem('fg_pd_draft', JSON.stringify(d));
+    } catch (_) { /* ignore */ }
+  };
+  const clearDraft = () => {
+    try {
+      const d = JSON.parse(localStorage.getItem('fg_pd_draft') || '{}');
+      delete d[productId];
+      localStorage.setItem('fg_pd_draft', JSON.stringify(d));
+    } catch (_) { /* ignore */ }
+  };
+
+  // Slider starts at whatever draft the customer last chose for this product.
   const [quantity, setQuantity] = useState(() => {
-    const existing = initialProteins[productId]?.qty;
-    return existing && existing > 0 ? existing : 0;
+    try { return (JSON.parse(localStorage.getItem('fg_pd_draft') || '{}'))[productId]?.qty || 0; }
+    catch (_) { return 0; }
   });
   const [boxSize, setBoxSize] = useState(initialBoxSize);
   const [selectedProteins, setSelectedProteins] = useState(initialProteins);
@@ -361,8 +386,10 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   const [activeTab, setActiveTab] = useState('description');
   // Preload the previously-chosen variant for this product from the cart snapshot.
   const [selectedVariant, setSelectedVariant] = useState(() => {
-    const v = initialProteins[productId]?.variant;
-    return typeof v === 'number' ? v : 0;
+    try {
+      const v = (JSON.parse(localStorage.getItem('fg_pd_draft') || '{}'))[productId]?.variant;
+      return typeof v === 'number' ? v : 0;
+    } catch (_) { return 0; }
   });
 
   // Cart-key scheme: meals key by "handle::packagingVariant" (each packaging is
@@ -438,12 +465,15 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   // Keep the size slider connected to the menu — once the product/id AND the
   // chosen packaging variant are known, start it at whatever quantity is already
   // in the basket for THAT variant (each variant is its own cart line — Prompt 1 #9).
+  // Load this product's saved draft (qty + packaging) when the product changes.
+  // Keyed on productId ONLY — changing the packaging must NOT reset the qty.
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
-    const key = makeCartKey(VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]);
-    const existing = saved[key]?.qty;
-    setQuantity(existing && existing > 0 ? existing : 0);
-  }, [productId, product, selectedVariant]);
+    const draft = readDraft();
+    if (draft) {
+      if (typeof draft.qty === 'number') setQuantity(draft.qty);
+      if (typeof draft.variant === 'number') setSelectedVariant(draft.variant);
+    }
+  }, [productId, product]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fire GA4-compatible `view_item` into dataLayer once per (product, variant)
   // so GTM can route it to whichever analytics tag the merchant has configured.
@@ -466,25 +496,9 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   }, [product, productId, selectedVariant]);
 
   const handleBackToMenu = () => {
-    // Persist edits to a meal that's already in the basket when leaving (per spec).
-    // Each packaging variant is its own cart line (composite key).
-    const existing = JSON.parse(localStorage.getItem('selectedProteins') || '{}');
-    const key = makeCartKey(VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]);
-    if (existing[key]?.qty > 0 && product) {
-      existing[key] = {
-        qty: quantity,
-        name: product.name,
-        productId,
-        petType: existing[key].petType || productPet,
-        variant: selectedVariant,
-        variantLabel: VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0],
-      };
-      localStorage.setItem('selectedProteins', JSON.stringify(existing));
-    }
-    if (embedded && onClose) {
-      onClose();
-      return;
-    }
+    // Draft already persisted on every change — just leave. Nothing is committed
+    // to the cart until the customer taps "Add to Cart".
+    if (embedded && onClose) { onClose(); return; }
     navigate('/menu');
   };
   
@@ -529,32 +543,55 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
 
   const getDiscountedPrice = (prod) => getBasePrice(prod) * (1 - bulkRate);
   
-  // Live-sync the product's box quantity to the shared menu selection (no separate
-  // "Add to Cart" button on the product page — the +/- IS the size/add control, and the
-  // menu page's primary Add-to-Cart button remains the only commit).
+  // Update the in-progress quantity. Saves to the DRAFT only — nothing is
+  // committed to the cart until "Add to Cart" is tapped.
   const setBoxQty = (newQty) => {
     if (!product) return;
     const q = Math.max(0, newQty);
     setQuantity(q);
+    saveDraft(q, selectedVariant);
+  };
+
+  // Change packaging without touching the quantity (draft keeps the same qty).
+  const chooseVariant = (i) => {
+    setSelectedVariant(i);
+    saveDraft(quantity, i);
+  };
+
+  // Container upcharge (per lb) for the currently-selected packaging.
+  const perLbUpcharge = (!isMonthlyBundle(product) && isContainerVariant(VARIANT_OPTIONS[selectedVariant]))
+    ? CONTAINER_UPCHARGE_PER_LB : 0;
+
+  // Commit the current draft to the cart, then clear the draft + reset qty to 0.
+  const handleAddToCart = () => {
+    if (!product) return;
+    if (quantity <= 0) {
+      setShowZeroToast(true);
+      if (zeroToastTimerRef.current) clearTimeout(zeroToastTimerRef.current);
+      zeroToastTimerRef.current = setTimeout(() => setShowZeroToast(false), 2200);
+      return;
+    }
     const variantLabel = VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0];
     const key = makeCartKey(variantLabel);
     const updated = { ...JSON.parse(localStorage.getItem('selectedProteins') || '{}') };
-    if (q > 0) {
-      updated[key] = {
-        qty: q,
-        name: product.name,
-        productId,
-        petType: (updated[key] && updated[key].petType) || productPet,
-        variant: selectedVariant,
-        variantLabel,
-      };
-    } else {
-      delete updated[key];
-    }
+    const prevQty = updated[key]?.qty || 0;
+    updated[key] = {
+      qty: prevQty + quantity,
+      name: product.name,
+      productId,
+      petType: (updated[key] && updated[key].petType) || productPet,
+      variant: selectedVariant,
+      variantLabel,
+    };
     localStorage.setItem('selectedProteins', JSON.stringify(updated));
     setSelectedProteins(updated);
-    // Notify the menu (rendered behind the sheet) so both stay in unison live.
     window.dispatchEvent(new Event('foeguard:box-updated'));
+    const lineTotal = isMonthlyBundle(product)
+      ? bundleUnitPrice * quantity
+      : (getDiscountedPrice(product) / 6 + perLbUpcharge) * quantity;
+    trackAddToCart({ name: product?.name, value: Number(lineTotal.toFixed(2)), quantity, items: [{ item_id: productId, item_name: product?.name, quantity }] });
+    clearDraft();
+    setQuantity(0);
   };
 
   // (Variant changes now create/select a separate cart line via the composite key
@@ -700,15 +737,15 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               ) : quantity > 0 ? (
                 <>
                   <span className="pd-shopify-price" data-testid="qty-price-total">
-                    ${(getDiscountedPrice(product) * (quantity / 6)).toFixed(2)}
+                    ${((getDiscountedPrice(product) / 6 + perLbUpcharge) * quantity).toFixed(2)}
                   </span>
                   <span className="pd-shopify-price-unit" data-testid="qty-price-perlb">
-                    (${(getDiscountedPrice(product) / 6).toFixed(2)}/lb)
+                    (${(getDiscountedPrice(product) / 6 + perLbUpcharge).toFixed(2)}/lb)
                   </span>
                 </>
               ) : (
                 <>
-                  <span className="pd-shopify-price" data-testid="qty-price-total">${lowestPerLb.toFixed(2)}</span>
+                  <span className="pd-shopify-price" data-testid="qty-price-total">${(lowestPerLb + perLbUpcharge).toFixed(2)}</span>
                   <span className="pd-shopify-price-unit" data-testid="qty-price-perlb">/lb</span>
                 </>
               )}
@@ -749,11 +786,16 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
                     type="button"
                     key={opt}
                     className={`pd-radio-row ${selectedVariant === i ? 'is-selected' : ''}`}
-                    onClick={() => setSelectedVariant(i)}
+                    onClick={() => chooseVariant(i)}
                     data-testid={`variant-${i}`}
                   >
                     <span className="pd-radio-circle" aria-hidden="true" />
                     <span className="pd-radio-text">{opt}</span>
+                    {isContainerVariant(opt) && CONTAINER_UPCHARGE_PER_LB > 0 && (
+                      <span className="pd-radio-note" style={{ marginLeft: 'auto', color: '#8A7156', fontSize: '13px', fontWeight: 600 }}>
+                        +${CONTAINER_UPCHARGE_PER_LB.toFixed(2)}/lb
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
@@ -783,22 +825,30 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               </div>
             </div>
 
-            {/* Trust badges — below quantity. Icons/layout stay; labels come
-                from Shopify product_page_icons_section badges when present. */}
-            <div className="pd-shopify-trust" data-testid="product-trust-row">
-              <div className="pd-shopify-trust-item">
-                <Recycle size={26} strokeWidth={1.8} />
-                <span>{product.page_icon_badges?.[0] || '100% Recyclable'}</span>
+            {/* Add to Cart — plain Shopify-style button, directly under quantity.
+                No price on the button (price shows only at the top of the page). */}
+            <button
+              type="button"
+              className="pd-shopify-atc"
+              onClick={() => {
+                if (quantity <= 0) {
+                  setShowZeroToast(true);
+                  if (zeroToastTimerRef.current) clearTimeout(zeroToastTimerRef.current);
+                  zeroToastTimerRef.current = setTimeout(() => setShowZeroToast(false), 2200);
+                  return;
+                }
+                handleAddToCart();
+                if (embedded && onClose) onClose(); else navigate('/menu');
+              }}
+              data-testid="product-add-to-box"
+            >
+              {(initialCartKeysRef.current && (initialCartKeysRef.current.has(`${productId}::${VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]}`) || initialCartKeysRef.current.has(productId))) ? 'Update Cart' : 'Add to Cart'}
+            </button>
+            {showZeroToast && (
+              <div role="alert" data-testid="qty-zero-toast" style={{ marginTop: '10px', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', fontWeight: 700, color: '#c8102e' }}>
+                Please choose a quantity first
               </div>
-              <div className="pd-shopify-trust-item">
-                <Heart size={26} strokeWidth={1.8} />
-                <span>{product.page_icon_badges?.[1] || 'Humanely Raised'}</span>
-              </div>
-              <div className="pd-shopify-trust-item">
-                <MapPin size={26} strokeWidth={1.8} />
-                <span>{product.page_icon_badges?.[2] || 'Made in Canada'}</span>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -851,51 +901,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
           <ProductFaqSection shopifyFaqs={product.faqs} />
         </div>
 
-        {/* Floating Add/Update Cart — stationary bottom bar (same format as menu) */}
-        {(() => {
-          const ctaQty = quantity > 0 ? quantity : qtyStep;
-          const totalPrice = isBundle
-            ? bundleUnitPrice * ctaQty
-            : getDiscountedPrice(product) * (ctaQty / 6);
-          // "Update Cart" only when THIS product+variant was already in the box when the
-          // page opened; brand-new additions always read "Add to Cart" (any amount).
-          const variantLabel = VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0];
-          const currentKey = `${productId}::${variantLabel}`;
-          const alreadyAdded = initialCartKeysRef.current
-            ? (initialCartKeysRef.current.has(currentKey) || initialCartKeysRef.current.has(productId))
-            : false;
-          return (
-            <div className={`pd-cta-wrap ${embedded ? 'pd-cta-wrap--inline' : ''}`}>
-              {showZeroToast && (
-                <div
-                  className="pd-zero-toast"
-                  role="alert"
-                  data-testid="qty-zero-toast"
-                >
-                  Quantity is 0
-                </div>
-              )}
-              <button
-                onClick={() => {
-                  if (quantity <= 0) {
-                    setShowZeroToast(true);
-                    if (zeroToastTimerRef.current) clearTimeout(zeroToastTimerRef.current);
-                    zeroToastTimerRef.current = setTimeout(() => setShowZeroToast(false), 2200);
-                    return;
-                  }
-                  trackAddToCart({ name: product?.name, value: Number(totalPrice.toFixed(2)), quantity: ctaQty, items: [{ item_id: productId, item_name: product?.name, quantity: ctaQty }] });
-                  if (embedded && onClose) onClose(); else navigate('/menu');
-                }}
-                className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
-                data-testid="product-add-to-box"
-              >
-                <span className="bb-floating-action">{alreadyAdded ? 'Update Cart' : 'Add to Cart'}</span>
-                <span className="bb-floating-sep">•</span>
-                <span className="bb-floating-total">${totalPrice.toFixed(2)}</span>
-              </button>
-            </div>
-          );
-        })()}
+        {/* Add to Cart moved inline under the quantity selector (Shopify-style, no price). */}
       </div>
 
       {!embedded && <Footer />}

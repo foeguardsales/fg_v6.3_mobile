@@ -377,21 +377,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
               </div>
             </div>
 
-            {/* Trust badges — below quantity */}
-            <div className="pd-shopify-trust" data-testid="treat-trust-row">
-              <div className="pd-shopify-trust-item">
-                <Recycle size={26} strokeWidth={1.8} />
-                <span>100% Recyclable</span>
-              </div>
-              <div className="pd-shopify-trust-item">
-                <Heart size={26} strokeWidth={1.8} />
-                <span>Humanely Raised</span>
-              </div>
-              <div className="pd-shopify-trust-item">
-                <MapPin size={26} strokeWidth={1.8} />
-                <span>Made in Canada</span>
-              </div>
-            </div>
+            {/* Trust badges removed to make room for variants + add-to-cart. */}
           </div>
         </div>
 

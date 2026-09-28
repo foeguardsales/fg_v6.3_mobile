@@ -905,63 +905,6 @@ export const BoxBuilder = () => {
         </>
       </div>
 
-      {/* Prompt 9 — slide-up milestone celebration above the sticky cart (no centered popup) */}
-      {milestone && (
-        <div
-          className="fg-milestone-toast"
-          data-testid="milestone-toast"
-          role="status"
-          aria-live="polite"
-        >
-          <span className="fg-milestone-title" data-testid="milestone-title">
-            🎉 {milestone.pct}% OFF unlocked!
-          </span>
-          {milestone.nextPct != null && (
-            <span className="fg-milestone-sub" data-testid="milestone-sub">
-              Add {milestone.packs} more pack{milestone.packs === 1 ? '' : 's'} to unlock {milestone.nextPct}% OFF.
-            </span>
-          )}
-        </div>
-      )}
-
-      {/* Sticky cart button — "Your Box (x lb) • $subtotal".
-          x lb = MEAL weight only (treats & bundles excluded). Subtotal = all items. */}
-      {(() => {
-        // Meal weight only — bundles now return 0 tier-lbs, treats aren't in selectedProteins.
-        const mealLbs = getTotalSelectedLbsForPet('dog') + getTotalSelectedLbsForPet('cat');
-        const catalog = [...(products || []), ...(bundleProducts || [])];
-        // Subtotal: meals get their per-pet bulk discount; bundles stay flat; treats flat.
-        const proteinsTotal = Object.entries(selectedProteins || {}).reduce((s, [pid, d]) => {
-          if (!d) return s;
-          const bpid = d.productId || String(pid).split('::')[0];
-          const product = catalog.find(p => p.product_id === bpid || p.handle === bpid);
-          if (!product) return s;
-          // Monthly bundles are FLAT-priced prepaid packs — qty is a UNIT count,
-          // so the line is (flat price × units). NEVER divide by 6 (that produced
-          // the wrong "$10" total). Meals keep their per-lb bulk-discount math.
-          if (isMonthlyBundle(product)) {
-            return s + getBasePrice(product) * (d.qty || 0);
-          }
-          const per6 = getDiscountedPrice(product, d.petType || 'dog');
-          return s + (per6 / 6) * (d.qty || 0);
-        }, 0);
-        const treatsTotal = (selectedTreats || []).reduce((s, t) => s + (t.price || 0) * (t.quantity || 1), 0);
-        const subtotal = proteinsTotal + treatsTotal;
-        return (
-          <button
-            onClick={openBasket}
-            data-testid="cart-button"
-            className="bb-floating-checkout"
-          >
-            <span className="bb-floating-action" data-testid="cart-button-label">
-              Your Box{mealLbs > 0 ? ` (${mealLbs} lb)` : ''}
-            </span>
-            <span className="bb-floating-sep">•</span>
-            <span className="bb-floating-total">${subtotal.toFixed(2)}</span>
-          </button>
-        );
-      })()}
-
       {/* Inline Product Modal — replaces /product/:id navigation */}
       {activeProductId && (
         <ProductDetailModal
@@ -1056,27 +999,13 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
   const step = isBundle ? 1 : 6;
 
   const goToProduct = () => {
-    if (onOpenProduct) {
-      onOpenProduct(product.product_id);
-      return;
-    }
+    // Open the slide-up card modal (same as treats). Fall back to the full page
+    // only if no modal opener was provided.
+    if (onOpenProduct) { onOpenProduct(product.product_id); return; }
     const root = document.getElementById('root');
     const scrollPos = root ? root.scrollTop : window.scrollY;
     sessionStorage.setItem('menuScrollPosition', scrollPos.toString());
     navigate(`/product/${product.product_id}`);
-  };
-
-  const stopAndDecrease = (e) => {
-    e.stopPropagation();
-    onUpdate(product.product_id, product.name, Math.max(0, selectedQty - step));
-  };
-  const stopAndIncrease = (e) => {
-    e.stopPropagation();
-    if (canAdd) onUpdate(product.product_id, product.name, selectedQty + step);
-  };
-  const stopAndAdd = (e) => {
-    e.stopPropagation();
-    if (canAdd) onUpdate(product.product_id, product.name, step);
   };
 
   return (
@@ -1090,46 +1019,20 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter') goToProduct(); }}
     >
-      {/* Image — on RIGHT side (desktop), on TOP (mobile via CSS order) */}
+      {/* Image — on RIGHT side (desktop), on TOP (mobile via CSS order).
+          The (+) button stays as an Uber-Eats-style affordance but no longer
+          quick-adds: it opens the product page where the customer picks
+          packaging variants and adds to cart. */}
       <div className="product-card-media">
         <img src={productImage} alt={product.name} />
-        {/* Every product adds DIRECTLY from the menu: "+" adds to the box, then a
-            −/qty stepper appears. Tapping the card body still opens the detail
-            modal (ingredients / nutrition). No separate build-a-box step. */}
-        {selectedQty === 0 ? (
-          <button
-            className="product-card-plus"
-            onClick={stopAndAdd}
-            disabled={!canAdd}
-            data-testid={`add-${product.product_id}`}
-            aria-label="Add to cart"
-          >
-            +
-          </button>
-        ) : (
-          <div className="product-card-qty-pill" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="qty-btn-mini"
-              onClick={stopAndDecrease}
-              data-testid={`decrease-${product.product_id}`}
-              aria-label="Decrease"
-            >
-              −
-            </button>
-            <span className="qty-display-mini" data-testid={`qty-${product.product_id}`}>
-              {selectedQty}{!isBundle && <span className="qty-lb-unit">lb</span>}
-            </span>
-            <button
-              className="qty-btn-mini"
-              onClick={stopAndIncrease}
-              disabled={!canAdd}
-              data-testid={`increase-${product.product_id}`}
-              aria-label="Increase"
-            >
-              +
-            </button>
-          </div>
-        )}
+        <button
+          className="product-card-plus"
+          onClick={(e) => { e.stopPropagation(); goToProduct(); }}
+          data-testid={`add-${product.product_id}`}
+          aria-label="View product"
+        >
+          +
+        </button>
       </div>
 
       {/* Stacked content: Title → Description → Price (tap card to open detail) */}

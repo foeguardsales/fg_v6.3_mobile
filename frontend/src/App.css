@@ -6747,6 +6747,27 @@ h2, h3, h4 {
   font-weight: 800;
   color: #2C2C2C;
 }
+/* Product page Add to Cart — plain Shopify-style solid button under the qty selector. */
+.pd-shopify-atc {
+  display: block;
+  width: 100%;
+  margin: 8px 0 4px;
+  padding: 15px 24px;
+  background: #c8102e;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Barlow Semi Condensed', serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+.pd-shopify-atc:hover { background: #a50d26; }
+.pd-shopify-atc:active { transform: translateY(1px); }
+
 /* Adds — same line as Add to box, slimmer, left-aligned */
 .pd-shopify-adds {
   text-align: left;
