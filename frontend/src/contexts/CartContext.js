@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, createContext, useContext, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { cart as shopifyCart, checkout as shopifyCheckout } from '../services/shopify';
+import { cart as shopifyCart, checkout as shopifyCheckout, catalog as shopifyCatalog } from '../services/shopify';
 import { trackCheckoutInitiated } from '../services/analytics';
 import { isMonthlyBundle } from '../utils/cartTier';
 
@@ -72,7 +72,17 @@ export const CartProvider = ({ children }) => {
   // so the cart can price + group bundles correctly.
   useEffect(() => {
     let cancelled = false;
+    // Primary catalog = the SAME normalized Shopify catalog the menu/product
+    // pages use (product_id = handle, WITH a pricing[] array), so cart lines
+    // added by Shopify handle can actually be priced. Without this the cart
+    // showed $0 because it only knew the Mongo `cd-*` ids.
+    const loadShop = shopifyCatalog.getAllProducts()
+      .then(list => (Array.isArray(list) ? list : []))
+      .catch(() => []);
+    // Mongo meals — fallback for any legacy `cd-*` keyed lines.
     const loadMeals = axios.get(`${API}/products`).then(res => (Array.isArray(res.data) ? res.data : [])).catch(() => []);
+    // Explicit bundle load keeps the checkout variant id (shopify_variant_id)
+    // that the normalized catalog doesn't expose.
     const loadBundles = axios.get(`${API}/shopify/products?first=60`)
       .then(res => {
         const list = res.data?.products || res.data?.nodes || (Array.isArray(res.data) ? res.data : []);
@@ -88,8 +98,10 @@ export const CartProvider = ({ children }) => {
           }));
       })
       .catch(() => []);
-    Promise.all([loadMeals, loadBundles]).then(([meals, bundles]) => {
-      if (!cancelled) setProducts([...meals, ...bundles]);
+    Promise.all([loadShop, loadMeals, loadBundles]).then(([shop, meals, bundles]) => {
+      // Order matters: explicit bundles first (they carry the checkout variant
+      // id), then the Shopify catalog (meal pricing by handle), then Mongo.
+      if (!cancelled) setProducts([...bundles, ...shop, ...meals]);
     });
     return () => { cancelled = true; };
   }, []);
@@ -207,7 +219,7 @@ export const CartProvider = ({ children }) => {
   const proteinEntries = Object.entries(proteins || {}).filter(([, d]) => (d?.qty || 0) > 0);
 
   const perLbForProduct = useCallback((productId) => {
-    const product = products.find(p => p.product_id === productId);
+    const product = products.find(p => p.product_id === productId || p.handle === productId);
     if (!product || !Array.isArray(product.pricing)) return 0;
     const base = (product.pricing.find(p => p.size_lb === 6) || product.pricing[0])?.price || 0;
     return base / 6;
@@ -216,7 +228,7 @@ export const CartProvider = ({ children }) => {
   // Full flat price of a Monthly Bundle (prepaid pack). Bundle qty is a UNIT
   // count (1, 2, 3 …), so a bundle line = full price × units.
   const bundleUnitPriceFor = useCallback((productId) => {
-    const product = products.find(p => p.product_id === productId);
+    const product = products.find(p => p.product_id === productId || p.handle === productId);
     if (!product || !Array.isArray(product.pricing)) return 0;
     return (product.pricing.find(p => p.size_lb === 6) || product.pricing[0])?.price || 0;
   }, [products]);
@@ -224,7 +236,7 @@ export const CartProvider = ({ children }) => {
   // Is this cart entry a Monthly Bundle? (bundles never count toward discount weight)
   const isBundleEntry = useCallback((key, d) => {
     const pid = baseProductId(key, d);
-    const product = products.find(p => p.product_id === pid);
+    const product = products.find(p => p.product_id === pid || p.handle === pid);
     return isMonthlyBundle(product) || isMonthlyBundle({ product_id: pid });
   }, [products]);
 
@@ -512,16 +524,6 @@ export const UniversalCart = () => {
               <div style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '0.04em', color: '#2C2C2C' }}>
                 YOUR BOX ({mealLbs} lb)
               </div>
-              {bulkRate > 0 && (
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#2E7D32', marginTop: '4px' }} data-testid="cart-summary-unlocked">
-                  ✓ {Math.round(bulkRate * 100)}% OFF unlocked
-                </div>
-              )}
-              {nextTier && (
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#8A7156', marginTop: '4px' }} data-testid="cart-summary-next">
-                  Add {nextTier.lbsAway} lb more to unlock {Math.round(nextTier.rate * 100)}% OFF
-                </div>
-              )}
             </div>
           )}
 

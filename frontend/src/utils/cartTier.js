@@ -84,13 +84,14 @@ export function tierLbsForEntry(entry, product) {
  *                                           so it can add "other lbs + this product's own")
  * @returns {number} lbs to feed into `getTierFromLbs(lbs, RATES)`
  */
-export function computeTierLbs({ selectedProteins, products, pet, excludeKey = null }) {
+export function computeTierLbs({ selectedProteins, products, pet = null, excludeKey = null }) {
   if (!selectedProteins) return 0;
   let total = 0;
   for (const [key, entry] of Object.entries(selectedProteins)) {
     if (!entry) continue;
     if (excludeKey && key === excludeKey) continue;
-    if ((entry.petType || 'dog') !== pet) continue;
+    // pet === null → count EVERY pet's meals (whole-cart tier, matches the cart drawer).
+    if (pet && (entry.petType || 'dog') !== pet) continue;
     const productId = entry.productId || String(key).split('::')[0];
     const product = (products || []).find(
       (p) => p.product_id === productId || p.handle === productId

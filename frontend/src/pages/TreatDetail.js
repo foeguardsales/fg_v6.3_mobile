@@ -377,7 +377,15 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
               </div>
             </div>
 
-            {/* Trust badges removed to make room for variants + add-to-cart. */}
+            {/* Add to Cart — plain Shopify-style button, directly under quantity (identical to meal pages). */}
+            <button
+              type="button"
+              className="pd-shopify-atc"
+              onClick={handleAddToCart}
+              data-testid="treat-add-to-box"
+            >
+              {selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'Update Cart' : 'Add to Cart'}
+            </button>
           </div>
         </div>
 
@@ -434,16 +442,7 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
         </div>
       </div>
 
-      {/* Floating Add/Update Cart — stationary bottom bar (same format as menu) */}
-      <button
-        onClick={handleAddToCart}
-        className={`bb-floating-checkout ${embedded ? 'bb-floating-checkout--inline' : ''}`}
-        data-testid="treat-add-to-box"
-      >
-        <span className="bb-floating-action">{selectedTreats.some(t => t.treat_id === treat.treat_id) ? 'Update Cart' : 'Add to Cart'}</span>
-        <span className="bb-floating-sep">•</span>
-        <span className="bb-floating-total">${(treat.price * quantity).toFixed(2)}</span>
-      </button>
+      {/* Add to Cart moved inline under the quantity selector (Shopify-style, identical to meal pages). */}
 
       {!embedded && <Footer />}
     </>

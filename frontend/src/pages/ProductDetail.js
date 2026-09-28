@@ -31,11 +31,10 @@ const proteinImages = {
 };
 
 // Packaging variants (mirrors Shopify packaging option). Pouches (1 lb / 1.5 lb)
-// are standard — no upcharge. Container = +$1.00/lb (matches Shopify: e.g. 12 lb
-// Container $81.97 vs Pouch $69.97 = +$1/lb). Priced per 1 lb so it scales with
-// box size automatically — no per-size adjustment needed.
+// are standard — no upcharge. Container = +$0.50/lb. Priced per 1 lb so it scales
+// with box size automatically — no per-size adjustment needed.
 const VARIANT_OPTIONS = ['Freezer Pouch - 1 lb', 'Freezer Pouch - 1.5 lb', 'Container - 1 lb'];
-const CONTAINER_UPCHARGE_PER_LB = 1.00;
+const CONTAINER_UPCHARGE_PER_LB = 0.50;
 const isContainerVariant = (label) => /container/i.test(label || '');
 
 const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
@@ -522,19 +521,18 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
   // Effective tier-lbs = other lines in this pet bucket + this product's own contribution.
   // Uses the shared cart-tier util so bundles contribute (units × bundle_weight_lbs)
   // while meals contribute their raw qty. Keeps BoxBuilder & ProductDetail in sync.
-  const activeKey = makeCartKey(VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]);
-  const otherLbs = computeTierLbs({
-    selectedProteins,
-    products,
-    pet: productPet,
-    excludeKey: activeKey,
-  });
+  // Discount tier is driven by the WHOLE cart's meal weight (every protein,
+  // treats & bundles excluded) PLUS the amount being added on this page. The
+  // page quantity is ADDITIVE (it adds on top of what's already in the cart),
+  // so we count all committed meal lines here — no pet split, no exclude — and
+  // add the live selection. This keeps the price shown here perfectly in sync
+  // with the cart total (mix-and-match builder).
+  const cartMealLbs = computeTierLbs({ selectedProteins, products });
   const activeLbs = product ? activeProductTierLbs(product, quantity) : quantity;
-  // Bundles are FIXED-PRICE — their tier rate never applies. Meals still use the
-  // tier rate reached by the combined meal-lbs + bundle-lbs total.
+  // Bundles are FIXED-PRICE — their tier rate never applies.
   const bulkRate = isMonthlyBundle(product)
     ? 0
-    : getTierFromLbs(otherLbs + activeLbs, DISCOUNT_RATES).rate;
+    : getTierFromLbs(cartMealLbs + activeLbs, DISCOUNT_RATES).rate;
 
   const getBasePrice = (prod) => {
     const pricing = prod.pricing.find(p => p.size_lb === 6);
