@@ -58,7 +58,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
-          fontFamily: "'Barlow Semi Condensed', serif",
+          fontFamily: "'Rubik', sans-serif",
           fontSize: '15px',
           fontWeight: '700',
           color: '#2C2C2C',
@@ -113,7 +113,7 @@ const ProductBrandIcons = () => {
             <Icon size={22} color="#2C2C2C" strokeWidth={1.8} />
           </div>
           <span style={{
-            fontFamily: "'Barlow Semi Condensed', serif",
+            fontFamily: "'Rubik', sans-serif",
             fontSize: '12px',
             fontWeight: 600,
             color: '#2C2C2C',
@@ -136,7 +136,7 @@ const FarmToBowlSection = () => {
   return (
     <section data-testid="farm-to-bowl-section" style={{ marginTop: '56px' }}>
       <h2 style={{
-        fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+        fontFamily: "'Rubik', sans-serif",
         fontSize: 'clamp(26px, 3.2vw, 36px)',
         fontWeight: 600,
         color: '#2C2C2C',
@@ -154,7 +154,7 @@ const FarmToBowlSection = () => {
             boxShadow: 'none'
           }}>
             <h3 style={{
-              fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+              fontFamily: "'Rubik', sans-serif",
               fontSize: '22px',
               fontWeight: 600,
               color: '#C8102E',
@@ -193,7 +193,7 @@ const PersonalizeSection = ({ navigate }) => {
         alignItems: 'center',
         justifyContent: 'center',
         color: '#2C2C2C',
-        fontFamily: "'Barlow Semi Condensed', serif",
+        fontFamily: "'Rubik', sans-serif",
         fontSize: '13px',
         textTransform: 'uppercase',
         letterSpacing: '0.05em'
@@ -206,7 +206,7 @@ const PersonalizeSection = ({ navigate }) => {
       </div>
       <div>
         <h2 style={{
-          fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+          fontFamily: "'Rubik', sans-serif",
           fontSize: 'clamp(26px, 3.2vw, 36px)',
           fontWeight: 600,
           color: '#2C2C2C',
@@ -225,7 +225,7 @@ const PersonalizeSection = ({ navigate }) => {
             color: '#FFFFFF',
             border: 'none',
             borderRadius: '999px',
-            fontFamily: "'Barlow Semi Condensed', serif",
+            fontFamily: "'Rubik', sans-serif",
             fontWeight: 700,
             fontSize: '15px',
             cursor: 'pointer',
@@ -277,7 +277,7 @@ const ProductFaqSection = ({ shopifyFaqs }) => {
   return (
     <section data-testid="product-faq-section" style={{ marginTop: '0', marginBottom: '0' }}>
       <h2 style={{
-        fontFamily: "'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+        fontFamily: "'Rubik', sans-serif",
         fontSize: 'clamp(22px, 2.8vw, 30px)',
         fontWeight: 600,
         color: '#2C2C2C',
@@ -312,7 +312,7 @@ const ProductFaqSection = ({ shopifyFaqs }) => {
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
-                  fontFamily: "'Barlow Semi Condensed', serif",
+                  fontFamily: "'Rubik', sans-serif",
                   fontSize: '15px',
                   fontWeight: 500,
                   color: '#2C2C2C',
@@ -843,7 +843,7 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
               {(initialCartKeysRef.current && (initialCartKeysRef.current.has(`${productId}::${VARIANT_OPTIONS[selectedVariant] || VARIANT_OPTIONS[0]}`) || initialCartKeysRef.current.has(productId))) ? 'Update Cart' : 'Add to Cart'}
             </button>
             {showZeroToast && (
-              <div role="alert" data-testid="qty-zero-toast" style={{ marginTop: '10px', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', fontWeight: 700, color: '#c8102e' }}>
+              <div role="alert" data-testid="qty-zero-toast" style={{ marginTop: '10px', fontFamily: "'Rubik', sans-serif", fontSize: '13px', fontWeight: 700, color: '#c8102e' }}>
                 Please choose a quantity first
               </div>
             )}
@@ -878,8 +878,8 @@ export const ProductDetailPage = ({ productId: propProductId = null, embedded = 
             )}
             {/* Notes — always open, stationary (no collapse toggle), same design/placement */}
             <div className="pd-notes-static" style={{ borderBottom: '1px solid #E8DDD0', padding: '18px 0 22px' }}>
-              <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, color: '#2C2C2C', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
-              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', color: '#2C2C2C', marginBottom: '6px' }}>
+              <div style={{ fontFamily: "'Rubik', sans-serif", fontSize: '15px', fontWeight: 700, color: '#2C2C2C', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
+              <label style={{ display: 'block', fontFamily: "'Rubik', sans-serif", fontSize: '13px', color: '#2C2C2C', marginBottom: '6px' }}>
                 Add any special notes for your order (e.g. remove an ingredient, preference).
               </label>
               <textarea

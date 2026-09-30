@@ -253,7 +253,7 @@ const AccordionItem = ({ q, a, isOpen, onToggle, anchorId }) => (
         fontSize: '17px',
         fontWeight: 600,
         color: COLORS.charcoal,
-        fontFamily: "'Barlow Semi Condensed', serif"
+        fontFamily: "'Rubik', sans-serif"
       }}>{q}</span>
       {isOpen
         ? <ChevronUp size={22} color={COLORS.red} />
@@ -321,7 +321,7 @@ export const FaqPage = () => {
         <MessageCircle size={36} color={COLORS.red} style={{ marginBottom: '12px' }} />
         <h3 style={{
           fontSize: '24px', fontWeight: 700, marginBottom: '8px', color: COLORS.charcoal,
-          fontFamily: "'Barlow Semi Condensed', serif",
+          fontFamily: "'Rubik', sans-serif",
         }}>Still have questions?</h3>
         <p style={{
           fontSize: '15px', color: COLORS.charcoal, opacity: 0.85, marginBottom: '24px',
@@ -388,7 +388,7 @@ export const FaqPage = () => {
               color: COLORS.charcoal,
               lineHeight: 1.15,
               marginBottom: '0',
-              fontFamily: "'Barlow Semi Condensed', serif"
+              fontFamily: "'Rubik', sans-serif"
             }}>
               Everything you need to know, before you switch to FoeGuard Raw.
             </h1>
@@ -407,7 +407,7 @@ export const FaqPage = () => {
                   letterSpacing: '0.12em',
                   color: COLORS.red,
                   marginBottom: '8px',
-                  fontFamily: "'Barlow Semi Condensed', serif"
+                  fontFamily: "'Rubik', sans-serif"
                 }}>{cat.title}</h2>
                 <div style={{
                   background: COLORS.white,

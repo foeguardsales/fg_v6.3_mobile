@@ -518,7 +518,7 @@ export const UniversalCart = () => {
               style={{
                 background: '#F5F1E6', border: '1px solid #E4DAC4', borderRadius: '12px',
                 padding: '14px 16px', marginBottom: '16px',
-                fontFamily: "'Barlow Semi Condensed', serif",
+                fontFamily: "'Rubik', sans-serif",
               }}
             >
               <div style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '0.04em', color: '#2C2C2C' }}>
@@ -529,7 +529,7 @@ export const UniversalCart = () => {
 
           {/* ===== MEALS (contribute to discount tiers) ===== */}
           {mealEntries.length > 0 && (
-            <div className="cart-group-title" data-testid="cart-group-meals" style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '4px 0 8px' }}>Meals</div>
+            <div className="cart-group-title" data-testid="cart-group-meals" style={{ fontFamily: "'Rubik', sans-serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '4px 0 8px' }}>Meals</div>
           )}
           {mealEntries.map(([key, d]) => {
             const variantLabel = mealVariantLabel(d);
@@ -565,7 +565,7 @@ export const UniversalCart = () => {
 
           {/* ===== ADD-ONS (TREATS) — do NOT contribute to discount ===== */}
           {treats && treats.length > 0 && (
-            <div className="cart-group-title" data-testid="cart-group-addons" style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Add-ons (Treats)</div>
+            <div className="cart-group-title" data-testid="cart-group-addons" style={{ fontFamily: "'Rubik', sans-serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Add-ons (Treats)</div>
           )}
           {(treats || []).map((t) => {
             const qty = t.quantity || 1;
@@ -599,7 +599,7 @@ export const UniversalCart = () => {
 
           {/* ===== MONTHLY BUNDLES — do NOT contribute to discount ===== */}
           {bundleEntries.length > 0 && (
-            <div className="cart-group-title" data-testid="cart-group-bundles" style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Monthly Bundles</div>
+            <div className="cart-group-title" data-testid="cart-group-bundles" style={{ fontFamily: "'Rubik', sans-serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#8A7156', margin: '14px 0 8px' }}>Monthly Bundles</div>
           )}
           {bundleEntries.map(([key, d]) => {
             const linePrice = bundleLinePrice(key, d);
@@ -703,7 +703,7 @@ export const UniversalCart = () => {
               type="button"
               onClick={() => { setIsCartOpen(false); navigate('/menu'); }}
               data-testid="cart-add-items"
-              style={{ background: 'transparent', border: '1.5px solid #2C2C2C', color: '#2C2C2C', padding: '12px 18px', borderRadius: '6px', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', fontWeight: 700, cursor: 'pointer', letterSpacing: '0.02em' }}
+              style={{ background: 'transparent', border: '1.5px solid #2C2C2C', color: '#2C2C2C', padding: '12px 18px', borderRadius: '6px', fontFamily: "'Rubik', sans-serif", fontSize: '13px', fontWeight: 700, cursor: 'pointer', letterSpacing: '0.02em' }}
             >
               + Add items
             </button>
@@ -712,7 +712,7 @@ export const UniversalCart = () => {
               onClick={handleCheckout}
               disabled={!canCheckout}
               data-testid="cart-proceed-checkout"
-              style={{ background: canCheckout ? '#2C2C2C' : '#A89B7C', color: '#F5F3EF', padding: '14px 22px', border: 'none', borderRadius: '6px', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, cursor: canCheckout ? 'pointer' : 'not-allowed', letterSpacing: 0, textTransform: 'none' }}
+              style={{ background: canCheckout ? '#2C2C2C' : '#A89B7C', color: '#F5F3EF', padding: '14px 22px', border: 'none', borderRadius: '6px', fontFamily: "'Rubik', sans-serif", fontSize: '15px', fontWeight: 700, cursor: canCheckout ? 'pointer' : 'not-allowed', letterSpacing: 0, textTransform: 'none' }}
             >
               {checkingOut ? 'Starting checkout…' : (hasItems ? 'Go to checkout' : 'No items in cart')}
             </button>

@@ -42,7 +42,7 @@ export const ContactPage = () => {
       <div className="contact-page">
         <div className="contact-container">
           <div className="contact-form-section">
-            <h1 style={{ fontFamily: "'Barlow Semi Condensed', serif" }}>{heroTitle || 'Contact Us'}</h1>
+            <h1 style={{ fontFamily: "'Rubik', sans-serif" }}>{heroTitle || 'Contact Us'}</h1>
             <p className="contact-intro">
               {heroSub || 'We love getting inquiries about new products, recommendations and custom recipes. Feel free to reach out through the form below or directly at our contact information.'}
             </p>

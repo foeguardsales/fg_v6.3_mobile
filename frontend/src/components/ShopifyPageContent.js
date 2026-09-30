@@ -35,7 +35,7 @@ export const ShopifyPageContent = ({
       {showTitle && page.title && (
         <h2
           style={{
-            fontFamily: "'Barlow Semi Condensed', serif",
+            fontFamily: "'Rubik', sans-serif",
             fontSize: 'clamp(28px, 4vw, 40px)',
             fontWeight: 700,
             color: '#3B2A1A',

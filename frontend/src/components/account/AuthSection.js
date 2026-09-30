@@ -97,7 +97,7 @@ export const AuthSection = ({ onSuccess }) => {
 
       <h2 style={{
         fontSize: '24px', fontWeight: 700, marginBottom: '6px', color: COLORS.text,
-        fontFamily: "'Barlow Semi Condensed', serif", textAlign: 'center',
+        fontFamily: "'Rubik', sans-serif", textAlign: 'center',
       }}>
         {heading}
       </h2>

@@ -1,6 +1,6 @@
 /* FoeGuard - Modern Farmhouse Design System */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap');
 
@@ -171,45 +171,60 @@ body {
 
 /* Heritage typography: Barlow Semi Condensed Bold for headings/accents, Barlow for paragraphs */
 :root {
-  --font-body: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-heading: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-accent: 'Barlow Semi Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-accent: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* Default body — Barlow 400 site-wide; headings switch to Barlow Semi Condensed Bold via the rules below */
+/* Default body — Rubik 400 site-wide; headings use Rubik with the weight hierarchy below */
 body {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 1.5;
   background: #F5F3EF;
   color: #2C2C2C;
 }
-/* Headings = Barlow Semi Condensed Bold (700), min 22px */
+/* Heading hierarchy (Rubik): H1 700, H2/H3/H4 600. Mobile-first scale. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading) !important;
-  font-weight: 700 !important;
   color: #2C2C2C;
 }
-h1 { font-size: max(28px, 1em); }
-h2 { font-size: max(24px, 1em); }
-h3, h4, h5, h6 { font-size: max(22px, 1em); }
-/* Paragraph text = Barlow 400, min 16px */
+h1 { font-size: 26px; line-height: 1.2; font-weight: 700; }
+h2 { font-size: 20px; line-height: 1.25; font-weight: 600; }
+h3 { font-size: 18px; line-height: 1.3; font-weight: 600; }
+h4, h5, h6 { font-size: 16px; line-height: 1.3; font-weight: 600; }
+/* Paragraph text = Rubik 400 */
 p, li, blockquote, dd, dt, figcaption, .subtext {
   font-family: var(--font-body) !important;
   color: #2C2C2C;
   font-weight: 400;
+  line-height: 1.5;
 }
-/* Labels + disclaimers min 12px */
+/* Small / supporting text */
 small, .small, .disclaimer, .label, label {
   font-family: var(--font-body) !important;
-  font-size: max(12px, 0.75em);
+  font-size: 13px;
+  line-height: 1.4;
 }
-/* Buttons / inputs / labels / accents = Barlow */
+/* Buttons / inputs / accents = Rubik */
 button, input, select, textarea, label, a, span {
   font-family: var(--font-body);
 }
-/* Bold emphasis uses Barlow 600 */
+button { font-weight: 600; }
+nav, nav a { font-weight: 500; }
+/* Bold emphasis uses Rubik 600 */
 strong, b { font-weight: 600; }
+
+/* Desktop typography scale */
+@media (min-width: 1024px) {
+  body { font-size: 16px; }
+  h1 { font-size: 42px; }
+  h2 { font-size: 30px; }
+  h3 { font-size: 22px; }
+  p, li, blockquote, dd, dt, figcaption, .subtext { font-size: 16px; }
+  small, .small, .disclaimer, .label, label { font-size: 14px; }
+}
 
 /* ========== CSS VARIABLES ========== */
 :root {
@@ -589,7 +604,7 @@ h2, h3, h4 {
 }
 
 .hero-title {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: clamp(38px, 5vw, 52px);
   font-weight: normal;
   color: var(--text-inverse);
@@ -1560,7 +1575,7 @@ h2, h3, h4 {
   border: none;
   padding: 8px 14px;
   border-radius: 999px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -1638,7 +1653,7 @@ h2, h3, h4 {
   border: 1px solid #E8E4DC;
   background: #FFFFFF;
   border-radius: 10px;
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-weight: 400;
   font-size: 14px;
   color: #2C2C2C;
@@ -1763,7 +1778,7 @@ h2, h3, h4 {
   .box-pills-wrap { margin: 20px 0 24px; }
 }
 .box-pills-heading {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 700;
   color: #2C2C2C;
@@ -1815,7 +1830,7 @@ h2, h3, h4 {
   top: -9px;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -1858,7 +1873,7 @@ h2, h3, h4 {
   margin: 0;
 }
 .bb-subscribe-label {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 15px;
   font-weight: 700;
   color: #2C2C2C;
@@ -1907,7 +1922,7 @@ h2, h3, h4 {
   border-radius: 8px;
   border: 1.5px solid #D8CFB8;
   background: #FFFFFF;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: #2B2B2B;
@@ -1925,7 +1940,7 @@ h2, h3, h4 {
   gap: 10px;
   font-size: 13px;
   color: #2B2B2B;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
 }
 .bb-subscribe-tick {
   color: var(--barn-red);
@@ -2101,7 +2116,7 @@ h2, h3, h4 {
   text-transform: none !important;
 }
 .menu-collection-desc {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   color: #2C2C2C;
   margin: 0;
@@ -2151,7 +2166,7 @@ h2, h3, h4 {
   .product-card-title { font-size: 17px !important; }
 }
 .product-card-desc {
-  font-family: 'Barlow', 'Barlow Semi Condensed', serif !important;
+  font-family: 'Rubik', 'Rubik', sans-serif !important;
   font-size: 12.5px !important;
   color: #2C2C2C;
   line-height: 1.35;
@@ -2176,7 +2191,7 @@ h2, h3, h4 {
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   flex-wrap: wrap;
   margin: 2px 0;
 }
@@ -2214,7 +2229,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   padding: 0;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #2C2C2C;
@@ -2317,7 +2332,7 @@ h2, h3, h4 {
   cursor: not-allowed;
 }
 .product-card-qty-pill .qty-display-mini {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #F5F3EF;
@@ -2398,7 +2413,7 @@ h2, h3, h4 {
 }
 .product-card-qty .qty-btn-mini:disabled { opacity: 0.35; cursor: not-allowed; }
 .product-card-qty .qty-display-mini {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 700;
   color: #2C2C2C;
@@ -2589,7 +2604,7 @@ h2, h3, h4 {
 }
 
 .treat-info h4 {
-  font-family: 'Barlow Semi Condensed', serif !important;
+  font-family: 'Rubik', sans-serif !important;
   font-size: 17px !important;
   font-weight: 700;
   color: #2B2B2B;
@@ -4220,7 +4235,7 @@ h2, h3, h4 {
   display: block;
 }
 .about-protein-label {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-weight: 700;
   font-size: 18px;
   color: var(--charcoal, #2C2C2C);
@@ -4230,7 +4245,7 @@ h2, h3, h4 {
   text-align: left;
 }
 .about-protein-desc {
-  font-family: 'Barlow', sans-serif !important;
+  font-family: 'Rubik', sans-serif !important;
   font-size: 14px;
   line-height: 1.55;
   color: var(--charcoal, #2C2C2C);
@@ -5229,7 +5244,8 @@ h2, h3, h4 {
   }
   
   .hero-section--foeguard {
-    min-height: 580px !important;
+    min-height: unset !important;
+    height: 84vh !important;
   }
   
   .hero-content {
@@ -5303,7 +5319,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 999px;
   padding: 14px 26px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
@@ -5351,7 +5367,7 @@ h2, h3, h4 {
 
 /* Menu pill buttons — aged wood bg / khaki text */
 .menu-pill {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 700;
   color: #D8CFB8;
@@ -5419,7 +5435,7 @@ h2, h3, h4 {
   background-repeat: no-repeat;
   border: 1px solid #2C2C2C;
   padding: 22px 16px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 700;
   color: #F5F3EF;
@@ -5489,7 +5505,7 @@ h2, h3, h4 {
   border: 1.5px solid #D8CFB8;
   background: #F5F3EF;
   color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -5532,7 +5548,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   padding: 10px 14px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #2C2C2C;
@@ -5599,7 +5615,7 @@ h2, h3, h4 {
   background: #FFFFFF;
   border: 1px solid #D8CFB8;
   color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -5650,7 +5666,7 @@ h2, h3, h4 {
   gap: 6px;
   background: #E8DFC8;
   color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 11px;
   font-weight: 700;
   padding: 6px 12px;
@@ -5663,7 +5679,7 @@ h2, h3, h4 {
   border: 1px solid #D8CFB8;
   border-radius: 10px;
   padding: 12px 14px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   color: #2C2C2C;
   resize: vertical;
@@ -5685,7 +5701,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 6px;
   padding: 16px 24px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -5742,7 +5758,7 @@ h2, h3, h4 {
 .menu-category-text-btn {
   background: transparent;
   border: none;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: #2C2C2C;
@@ -6006,7 +6022,7 @@ h2, h3, h4 {
   gap: 4px;
 }
 .weight-progress-label {
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 500;
   color: #2C2C2C;
@@ -6059,7 +6075,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 6px;
   padding: 16px 24px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -6112,7 +6128,7 @@ h2, h3, h4 {
   animation: fgMilestoneUp 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .fg-milestone-title {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.02em;
@@ -6253,7 +6269,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 600;
   text-decoration: underline;
@@ -6419,7 +6435,7 @@ h2, h3, h4 {
   min-width: 0;
 }
 .pd-shopify-collection {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #2C2C2C;
@@ -6446,25 +6462,25 @@ h2, h3, h4 {
   flex-wrap: wrap;
 }
 .pd-shopify-price {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 26px;
   font-weight: 700;
   color: #2C2C2C;
 }
 .pd-shopify-price-unit {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   color: #2C2C2C;
   font-weight: 500;
 }
 .pd-shopify-price-original {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 15px;
   color: #8A7156;
   text-decoration: line-through;
 }
 .pd-shopify-desc {
-  font-family: 'Barlow', 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', 'Rubik', sans-serif;
   font-size: 15px;
   line-height: 1.6;
   color: #2C2C2C;
@@ -6477,7 +6493,7 @@ h2, h3, h4 {
   border-top: none;
 }
 .pd-variant-label {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -6491,7 +6507,7 @@ h2, h3, h4 {
   gap: 8px;
 }
 .pd-pill {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #2C2C2C;
@@ -6549,13 +6565,13 @@ h2, h3, h4 {
   background: #2C2C2C;
 }
 .pd-radio-text {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 15px;
   font-weight: 600;
   color: #2C2C2C;
 }
 .pd-shopify-price-from {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #2C2C2C;
@@ -6573,7 +6589,7 @@ h2, h3, h4 {
   border: none;
   border-radius: 8px;
   padding: 16px 24px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -6634,7 +6650,7 @@ h2, h3, h4 {
   background: #C9A84C;
   color: #2C2C2C;
   border: none;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 11px;
   font-weight: 700;
   padding: 4px 9px;
@@ -6660,21 +6676,21 @@ h2, h3, h4 {
   border: none;
 }
 .pd-shopify-boxsize-label {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   color: #2C2C2C;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
 .pd-shopify-boxsize-value {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 15px;
   color: #2C2C2C;
   font-weight: 800;
 }
 .pd-shopify-boxsize-discount {
   display: inline-flex;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 10px;
   color: #2C2C2C;
   font-weight: 800;
@@ -6688,7 +6704,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -6708,7 +6724,7 @@ h2, h3, h4 {
   margin: 0 0 12px;
 }
 .pd-shopify-mini-label {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 11px;
   color: #2C2C2C;
   text-transform: uppercase;
@@ -6744,7 +6760,7 @@ h2, h3, h4 {
 .pd-shopify-qty-display {
   min-width: 54px;
   text-align: center;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
   font-weight: 800;
   color: #2C2C2C;
@@ -6759,7 +6775,7 @@ h2, h3, h4 {
   color: #FFFFFF;
   border: none;
   border-radius: 8px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -6775,7 +6791,7 @@ h2, h3, h4 {
   text-align: left;
 }
 .pd-shopify-adds-total {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 16px;
   font-weight: 600;
   color: #2C2C2C;
@@ -6790,7 +6806,7 @@ h2, h3, h4 {
   margin-left: 8px;
   background: #C9A84C;
   color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -6799,7 +6815,7 @@ h2, h3, h4 {
   border-radius: 3px;
 }
 .pd-shopify-adds-perlb {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: #2C2C2C;
@@ -6809,7 +6825,7 @@ h2, h3, h4 {
   height: 36px;
 }
 .pd-shopify-adds-original {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   color: #8A7156;
   text-decoration: line-through;
@@ -6842,7 +6858,7 @@ h2, h3, h4 {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-family: 'Barlow', 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', 'Rubik', sans-serif;
   font-size: 14px;
   color: #2C2C2C;
   line-height: 1.5;
@@ -6872,7 +6888,7 @@ h2, h3, h4 {
   align-items: center;
   text-align: center;
   gap: 8px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #2C2C2C;
@@ -7069,7 +7085,7 @@ h2, h3, h4 {
   color: #C8102E;
 }
 .menu-topsheet-sub {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   color: #2C2C2C;
   text-align: center;
@@ -7089,7 +7105,7 @@ h2, h3, h4 {
   background: white;
   border: 1px solid #D8CFB8;
   border-radius: 8px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
 }
 .menu-topsheet-card-name {
   font-weight: 600;
@@ -7110,7 +7126,7 @@ h2, h3, h4 {
 .menu-topsheet-btn {
   padding: 12px 14px;
   border-radius: 10px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
@@ -7134,7 +7150,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   font-weight: 600;
   text-decoration: underline;
@@ -7513,7 +7529,7 @@ h2, h3, h4 {
   line-height: 1.15;
 }
 .menu-funnel-card-sub {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   margin: 0;
   color: #F5F3EF;
@@ -7649,7 +7665,7 @@ h2, h3, h4 {
   .menu-funnel-card-row-title { font-size: 20px; }
 }
 .menu-funnel-card-row-sub {
-  font-family: 'Barlow', 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', 'Rubik', sans-serif;
   font-size: 13px;
   color: #2C2C2C;
   margin: 0;
@@ -7662,7 +7678,7 @@ h2, h3, h4 {
   background: transparent;
   border: none;
   color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 600;
   padding: 4px 6px;
@@ -7915,13 +7931,13 @@ input, select, textarea {
 }
 .stock-up-toggle-left svg { color: #C8102E; flex-shrink: 0; }
 .stock-up-toggle-title {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 .stock-up-toggle-meta {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -7936,7 +7952,7 @@ input, select, textarea {
   border-top: none;
 }
 .stock-up-intro {
-  font-family: 'Barlow', 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', 'Rubik', sans-serif;
   font-size: 12.5px;
   color: #2C2C2C;
   line-height: 1.5;
@@ -7969,13 +7985,13 @@ input, select, textarea {
   color: #2E7D32;
 }
 .stock-up-tier-size {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   font-weight: 700;
   color: #2C2C2C;
 }
 .stock-up-tier-off {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   font-weight: 600;
   color: #C8102E;
@@ -8018,7 +8034,7 @@ input, select, textarea {
   border: 1px solid #D8CFB8;
   border-radius: 6px;
   padding: 8px 14px;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 13px;
   color: #2C2C2C;
   text-align: center;
@@ -8045,7 +8061,7 @@ input, select, textarea {
   flex-wrap: wrap;
 }
 .cart-box-lbs {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 12px;
   font-weight: 700;
   color: #2E7D32;
@@ -8060,20 +8076,20 @@ input, select, textarea {
 }
 .cart-line-info { min-width: 0; display: flex; flex-direction: column; }
 .cart-line-name {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #2C2C2C;
 }
 .cart-line-sub {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: #8A7156;
 }
 .cart-line-right { display: flex; align-items: center; gap: 10px; }
 .cart-line-price {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #2C2C2C;
@@ -8110,7 +8126,7 @@ input, select, textarea {
   height: 22px;
 }
 .cart-qty-mini span {
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 14px;
   font-weight: 600;
   color: #2C2C2C;
@@ -8170,7 +8186,7 @@ input, select, textarea {
   padding: 3px 8px;
   background: #C9A84C;
   color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -8230,14 +8246,14 @@ h1, h2, h3, h4, h5, h6 {
 
 /* --- Font stack confirmation (no font changes, only weight/family reinforcement) --- */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Barlow Semi Condensed', 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  font-family: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   font-weight: 700 !important;
 }
 body, p, li, span, a, label, input, select, textarea, blockquote {
-  font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 button, strong, b, .btn-primary, .btn-secondary {
-  font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 600;
 }
 
@@ -8357,7 +8373,7 @@ button, strong, b, .btn-primary, .btn-secondary {
   background: transparent;
   border: none;
   padding: 10px 14px 12px;
-  font-family: 'Barlow', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Rubik', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 600;
   font-size: 14px;
   color: #2C2C2C;
@@ -8424,7 +8440,7 @@ button, strong, b, .btn-primary, .btn-secondary {
   left: 8px;
   background: #c8102e;
   color: #fff;
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Rubik', sans-serif;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -8504,13 +8520,13 @@ button, strong, b, .btn-primary, .btn-secondary {
 .spb-hero-img img { display: block; width: 100%; max-height: 460px; object-fit: cover; }
 .spb-hero-intro { background: #fff; padding: 48px 24px; text-align: center; }
 .spb-hero-intro-inner { max-width: 820px; margin: 0 auto; }
-.spb-hero-title { font-family: 'Barlow Semi Condensed', serif; font-size: 44px; font-weight: 800; letter-spacing: .01em; margin: 0 0 14px; color: #2C2C2C; }
+.spb-hero-title { font-family: 'Rubik', sans-serif; font-size: 44px; font-weight: 800; letter-spacing: .01em; margin: 0 0 14px; color: #2C2C2C; }
 .spb-hero-sub { font-size: 18px; line-height: 1.6; margin: 0; color: #4a4a4a; }
 .spb-text { max-width: 1100px; margin: 0 auto; padding: 56px 24px; }
 .spb-text--split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
 .spb-text--split.spb-text--rev .spb-text-media { order: -1; }
 .spb-text-media img { width: 100%; border-radius: 16px; display: block; }
-.spb-h2 { font-family: 'Barlow Semi Condensed', serif; font-size: 30px; font-weight: 800; color: #2C2C2C; margin: 0 0 16px; }
+.spb-h2 { font-family: 'Rubik', sans-serif; font-size: 30px; font-weight: 800; color: #2C2C2C; margin: 0 0 16px; }
 .spb-sub { font-size: 17px; color: #6b6b6b; margin: 0 0 20px; }
 .spb-center { text-align: center; }
 /* page_builder: benefits card+icon grid + comparison section */
@@ -8526,15 +8542,15 @@ button, strong, b, .btn-primary, .btn-secondary {
   width: 56px; height: 56px; border-radius: 50%; background: rgba(200,16,46,0.1);
   display: flex; align-items: center; justify-content: center; color: var(--barn-red);
 }
-.spb-benefit-lbl { font-size: 15px; font-weight: 700; color: #2C2C2C; line-height: 1.3; font-family: 'Barlow Semi Condensed', serif; }
+.spb-benefit-lbl { font-size: 15px; font-weight: 700; color: #2C2C2C; line-height: 1.3; font-family: 'Rubik', sans-serif; }
 .spb-compare { background: var(--cream); padding: 56px 24px; }
 .spb-compare-inner { max-width: 1000px; margin: 0 auto; }
 .spb-timeline { background: #fff; padding: 56px 24px; }
 .spb-timeline-inner { max-width: 820px; margin: 0 auto; }
 .spb-timeline-steps { list-style: none; margin: 32px 0 0; padding: 0; display: flex; flex-direction: column; gap: 24px; }
 .spb-timeline-step { display: flex; gap: 18px; align-items: flex-start; }
-.spb-timeline-num { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 50%; background: var(--barn-red); color: #fff; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Semi Condensed', serif; }
-.spb-timeline-title { font-family: 'Barlow Semi Condensed', serif; font-size: 19px; font-weight: 700; color: #2C2C2C; margin: 6px 0 6px; }
+.spb-timeline-num { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 50%; background: var(--barn-red); color: #fff; font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; font-family: 'Rubik', sans-serif; }
+.spb-timeline-title { font-family: 'Rubik', sans-serif; font-size: 19px; font-weight: 700; color: #2C2C2C; margin: 6px 0 6px; }
 .spb-timeline-desc { font-size: 15px; line-height: 1.6; color: #5a5a5a; margin: 0; }
 .spb-rich { font-size: 16px; line-height: 1.7; color: #3a3a3a; }
 .spb-rich p { margin: 0 0 14px; }
@@ -8543,20 +8559,21 @@ button, strong, b, .btn-primary, .btn-secondary {
 .spb-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 28px; }
 .spb-card { background: #FBF8F1; border: 1px solid #EFE7D6; border-radius: 16px; padding: 22px; text-align: center; }
 .spb-card-img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 14px; }
-.spb-card-title { font-family: 'Barlow Semi Condensed', serif; font-size: 19px; font-weight: 700; color: #2C2C2C; margin: 0 0 8px; }
+.spb-card-title { font-family: 'Rubik', sans-serif; font-size: 19px; font-weight: 700; color: #2C2C2C; margin: 0 0 8px; }
 .spb-card-body { font-size: 14px; line-height: 1.6; color: #5a5a5a; margin: 0; }
 .spb-cta { text-align: center; padding: 64px 24px; background: #F5F1E6; }
-.spb-cta-title { font-family: 'Barlow Semi Condensed', serif; font-size: 32px; font-weight: 800; color: #2C2C2C; margin: 0 0 12px; }
+.spb-cta-title { font-family: 'Rubik', sans-serif; font-size: 32px; font-weight: 800; color: #2C2C2C; margin: 0 0 12px; }
 .spb-cta-desc { font-size: 17px; color: #6b6b6b; max-width: 640px; margin: 0 auto 24px; }
 .spb-cta-btn { display: inline-block; background: #2C2C2C; color: #fff; padding: 14px 34px; border-radius: 999px; font-weight: 700; text-decoration: none; }
 .spb-images {
   max-width: 1100px; margin: 0 auto; padding: 40px 24px;
-  display: flex; flex-wrap: nowrap; gap: 20px; justify-content: center;
+  display: flex; flex-wrap: nowrap; gap: 20px; justify-content: flex-start;
   overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  scroll-padding-left: 24px;
 }
-.spb-images img { flex: 1 1 0; min-width: 0; max-width: 33.33%; border-radius: 16px; object-fit: cover; scroll-snap-align: center; }
+.spb-images img { flex: 1 1 0; min-width: 0; max-width: 33.33%; border-radius: 16px; object-fit: cover; scroll-snap-align: start; }
 @media (max-width: 768px) {
-  .spb-images { gap: 14px; padding: 28px 16px; }
+  .spb-images { gap: 14px; padding: 28px 16px; scroll-padding-left: 16px; }
   .spb-images img { flex: 0 0 84%; max-width: 84%; }
   .spb-hero-title { font-size: 32px; }
   .spb-hero-img img { max-height: 300px; }
@@ -8569,12 +8586,12 @@ button, strong, b, .btn-primary, .btn-secondary {
 .spb-faq { background: var(--cream); padding: 40px 20px 80px; }
 .spb-faq-inner { max-width: 900px; margin: 0 auto; }
 .spb-faq-head { text-align: center; max-width: 780px; margin: 0 auto 32px; }
-.spb-faq-title { font-family: 'Barlow Semi Condensed', serif; font-size: clamp(34px, 4.5vw, 48px); font-weight: 800; color: #2C2C2C; line-height: 1.15; margin: 0 0 14px; }
+.spb-faq-title { font-family: 'Rubik', sans-serif; font-size: clamp(34px, 4.5vw, 48px); font-weight: 800; color: #2C2C2C; line-height: 1.15; margin: 0 0 14px; }
 .spb-faq-sub { font-size: 17px; line-height: 1.6; color: #5a5a5a; margin: 0; }
 .spb-faq-tabs { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 0 0 32px; }
 .spb-faq-tab {
   background: #fff; border: 1px solid #D8CFB8; color: #2C2C2C;
-  font-family: 'Barlow Semi Condensed', serif; font-size: 14px; font-weight: 700;
+  font-family: 'Rubik', sans-serif; font-size: 14px; font-weight: 700;
   letter-spacing: .02em; padding: 10px 20px; border-radius: 999px; cursor: pointer;
   transition: all .15s ease;
 }
@@ -8586,7 +8603,7 @@ button, strong, b, .btn-primary, .btn-secondary {
 .spb-faq-q {
   width: 100%; background: transparent; border: none; cursor: pointer; text-align: left;
   display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0;
-  font-family: 'Barlow Semi Condensed', serif; font-size: 17px; font-weight: 600; color: #2C2C2C;
+  font-family: 'Rubik', sans-serif; font-size: 17px; font-weight: 600; color: #2C2C2C;
 }
 .spb-faq-q svg { color: #C8102E; flex-shrink: 0; }
 .spb-faq-a { padding: 0 0 22px; max-width: 760px; }
@@ -8600,7 +8617,7 @@ button, strong, b, .btn-primary, .btn-secondary {
 .spb-guide { background: var(--cream); padding: 48px 20px 80px; }
 .spb-guide-inner { max-width: 860px; margin: 0 auto; }
 .spb-guide-head { text-align: center; margin: 0 0 40px; }
-.spb-guide-title { font-family: 'Barlow Semi Condensed', serif; font-size: clamp(32px, 4.5vw, 46px); font-weight: 800; color: #2C2C2C; line-height: 1.15; margin: 0 0 14px; }
+.spb-guide-title { font-family: 'Rubik', sans-serif; font-size: clamp(32px, 4.5vw, 46px); font-weight: 800; color: #2C2C2C; line-height: 1.15; margin: 0 0 14px; }
 .spb-guide-sub { font-size: 17px; line-height: 1.65; color: #5a5a5a; margin: 0; }
 .spb-guide-block { background: #fff; border: 1px solid #E8E1D4; border-radius: 16px; padding: 28px 30px; margin: 0 0 22px; box-shadow: 3px 3px 0 rgba(0,0,0,0.05); }
 .spb-guide-note { background: #F5EFE0; border-left: 4px solid #C9A84C; border-radius: 10px; padding: 20px 24px; margin: 0 0 22px; }
@@ -8615,4 +8632,124 @@ button, strong, b, .btn-primary, .btn-secondary {
 @media (max-width: 768px) {
   .spb-faq-list { padding: 4px 18px; }
   .spb-guide-block { padding: 22px 20px; }
+}
+
+/* =========================================================================
+   BRAND REUSABLE CONTAINERS  (FoeGuard standard containers)
+   Radius / spacing come from tokens so the whole set stays consistent.
+   ========================================================================= */
+:root {
+  --brand-radius: 12px;
+  --brand-gap: 16px;
+  --brand-red: #C8102E;
+  --brand-cream: #F5F3EF;
+  --brand-charcoal: #2C2C2C;
+}
+
+/* Responsive row: mobile = horizontal swipe starting at the LEFT card,
+   desktop (>=1024px) = equal columns filling the width (no scroll). */
+.brand-carousel {
+  display: flex;
+  gap: var(--brand-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 4px 0 6px;
+}
+.brand-carousel::-webkit-scrollbar { display: none; }
+.brand-carousel > * {
+  scroll-snap-align: start;   /* start at left, never center */
+  flex: 0 0 82%;              /* mobile: one card + peek of next */
+  min-width: 0;
+}
+@media (min-width: 640px) {
+  .brand-carousel > * { flex: 0 0 46%; }   /* tablet: 2-up */
+}
+@media (max-width: 1023px) {
+  /* Full-bleed on mobile/tablet: the scroll row spans the FULL viewport width
+     (ignoring the section's side padding) so cards flow off the right screen
+     edge instead of being clipped inside a white margin. Uses the viewport
+     centering trick so it works no matter what padding the parent section has. */
+  .brand-carousel {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding-left: var(--brand-bleed, 24px);
+    padding-right: var(--brand-bleed, 24px);
+    scroll-padding-left: var(--brand-bleed, 24px);
+  }
+}
+@media (min-width: 1024px) {
+  .brand-carousel { overflow-x: visible; gap: 24px; }
+  .brand-carousel > * { flex: 1 1 0; }     /* desktop: equal columns, fills width */
+}
+
+/* ---- Container 1 : Cinematic card (image + one button = title) ---- */
+.brand-cinematic {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--brand-radius);
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: var(--brand-charcoal);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.brand-cinematic__img {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+}
+.brand-cinematic__scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(0,0,0,0.55) 100%);
+  pointer-events: none;
+}
+.brand-cinematic__label {
+  position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #2F4538; color: var(--brand-cream);
+  padding: 12px 22px; border-radius: var(--brand-radius);
+  font-family: 'Rubik', sans-serif; font-weight: 600; font-size: 15px;
+  line-height: 1; letter-spacing: 0.01em; text-align: center;
+  white-space: nowrap; max-width: calc(100% - 32px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.30);
+}
+.brand-cinematic__arrow { font-size: 17px; line-height: 1; display: inline-block; }
+@media (max-width: 640px) {
+  .brand-cinematic__label { font-size: 14px; padding: 11px 18px; }
+}
+
+/* ---- Container 2 : Feature card (rounded image + text underneath) ---- */
+.brand-feature { display: flex; flex-direction: column; text-align: left; }
+.brand-feature__img {
+  width: 100%; aspect-ratio: 4 / 3;
+  border-radius: var(--brand-radius);
+  background-size: cover; background-position: center;
+  background-color: #EDE7DA;
+}
+.brand-feature__body { padding: 16px 4px 0; }
+/* Wide variant: full-width feature cards (e.g. Benefits stack) become a slim
+   landscape rectangle on desktop/laptop instead of a large square. */
+@media (min-width: 768px) {
+  .brand-feature--wide .brand-feature__img { aspect-ratio: 16 / 6; }
+}
+.brand-feature__title {
+  font-family: 'Rubik', sans-serif; font-weight: 600;
+  font-size: 22px; line-height: 1.3; margin: 0 0 8px; color: var(--brand-charcoal);
+}
+.brand-feature__text {
+  font-family: 'Rubik', sans-serif; font-weight: 400;
+  font-size: 16px; line-height: 1.5; margin: 0; color: var(--brand-charcoal);
+}
+.brand-feature__lead { font-weight: 600; }
+.brand-feature--on-dark .brand-feature__title { color: #FBF7EF; }
+.brand-feature--on-dark .brand-feature__text { color: #EEE7D6; }
+@media (max-width: 640px) {
+  .brand-feature__title { font-size: 18px; }
+  .brand-feature__text { font-size: 14px; }
 }

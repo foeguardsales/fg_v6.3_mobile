@@ -35,7 +35,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }) => {
           background: 'transparent',
           border: 'none',
           cursor: 'pointer',
-          fontFamily: "'Barlow Semi Condensed', serif",
+          fontFamily: "'Rubik', sans-serif",
           fontSize: '15px',
           fontWeight: '700',
           color: '#2C2C2C',
@@ -425,8 +425,8 @@ export const TreatDetailPage = ({ treatId: propTreatId = null, embedded = false,
               </p>
             </CollapsibleSection>
             <div className="pd-notes-static" style={{ borderBottom: '1px solid #E8DDD0', padding: '18px 0 22px' }}>
-              <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '15px', fontWeight: 700, color: '#2C2C2C', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
-              <label style={{ display: 'block', fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', color: '#2C2C2C', marginBottom: '6px' }}>
+              <div style={{ fontFamily: "'Rubik', sans-serif", fontSize: '15px', fontWeight: 700, color: '#2C2C2C', letterSpacing: '0.02em', marginBottom: '10px' }}>Notes</div>
+              <label style={{ display: 'block', fontFamily: "'Rubik', sans-serif", fontSize: '13px', color: '#2C2C2C', marginBottom: '6px' }}>
                 Add any special notes for your order.
               </label>
               <textarea

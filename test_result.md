@@ -10930,3 +10930,128 @@ agent_communication_2026_08_14_nav_funnel:
         
         Feature is production-ready. No critical issues found.
 
+
+# ============================================================================
+# 2026-09 SESSION — Homepage container redesign + carousel bug fix
+# ============================================================================
+frontend_2026_09_containers:
+  - task: "Homepage cinematic collection cards (Shop Farm Fresh) — Container 1"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/LandingPage.js, frontend/src/components/brand/BrandContainers.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Replaced the old 3-card (image+title+desc+button) 'Shop Farm Fresh' grid with cinematic CinematicCard components inside a CardCarousel. Each card = one full-bleed image + one dark-green button whose label IS the collection title, with a right arrow. data-testid: shop-farm-fresh-carousel, sff-cta-0/1/2. Clicking a card navigates (Build meal plan -> /meal-plan, Dog -> /menu, Cat -> /menu with pet_type=cat)."
+  - task: "Cinematic card tap-vs-swipe guard (no accidental navigation)"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/brand/BrandContainers.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "CinematicCard now suppresses click if pointer moved >8px between pointerdown and click (i.e. a swipe/scroll). A deliberate tap should still navigate. Needs mobile verification."
+  - task: "Mobile full-bleed carousels (cards flow to right screen edge, start at left)"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/App.css (.brand-carousel)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "On <1024px the .brand-carousel spans full viewport width (50%-50vw trick) so cards flow off the right edge instead of stopping at a white margin. First card aligned to content inset via scroll-padding-left. Applies to Shop Farm Fresh and How It Works carousels."
+  - task: "Benefits section — Container 2 feature cards from Shopify (home_raw_benefits)"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/LandingPage.js, frontend/src/hooks/useHomepageContent.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "'Start to see benefits in just 2 weeks' now renders a vertical stack of FeatureCards (rounded image + bold lead line + description underneath), content pulled from Shopify metaobject home_raw_benefits (3 journey cards: Day 3/7/14). Removed the 6 checkmark cards and the placeholder landscape banner. Section background is now clean cream (was forest green). Learn More CTA is dark green. data-testid benefit-card-0/1/2."
+  - task: "How It Works — Container 2 feature cards, horizontal swipeable"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/LandingPage.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "Converted the How It Works grid to a horizontal swipeable CardCarousel of FeatureCards (image + title + body). data-testid how-it-works-carousel, how-it-works-card-0..n."
+  - task: "BUG FIX — comparison chart 3-image row started at center card"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/App.css (.spb-images)"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "main"
+          comment: "REPORTED BUG: the 3 comparison card-images (FoeGuard / Retail Raw / Kibble bowls) rendered by the Shopify page-builder (.spb-images) started scrolled to the CENTER card on mobile. Root cause: justify-content:center + scroll-snap-align:center. Fixed to justify-content:flex-start + scroll-snap-align:start + scroll-padding-left. This block appears on the /new-to-raw page under 'How FoeGuard Raw compares'. Must verify the FIRST (left) card is visible/aligned first on mobile."
+
+metadata:
+  created_by: "main_agent"
+  version: "2.0"
+  test_sequence: 1
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "BUG FIX — comparison chart 3-image row started at center card"
+    - "Homepage cinematic collection cards (Shop Farm Fresh) — Container 1"
+    - "Cinematic card tap-vs-swipe guard (no accidental navigation)"
+    - "Mobile full-bleed carousels (cards flow to right screen edge, start at left)"
+    - "Benefits section — Container 2 feature cards from Shopify (home_raw_benefits)"
+    - "How It Works — Container 2 feature cards, horizontal swipeable"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "stuck_first"
+
+agent_communication_2026_09_containers:
+    - agent: "main"
+      message: |
+        FRONTEND TEST REQUEST (homepage container redesign + carousel bug fix).
+        App: FoeGuard raw pet food (React). Test on the deployed preview base URL.
+
+        FOCUS 1 — REPORTED BUG (highest priority):
+        Go to /new-to-raw. Scroll to the "How FoeGuard Raw compares" area. There is a row of
+        3 comparison card-images (.spb-images). On a MOBILE viewport (e.g. 390x844) confirm the
+        row STARTS on the FIRST/LEFT card (not scrolled to the middle card). PASS = left card
+        visible first with no initial horizontal offset.
+
+        FOCUS 2 — Homepage cinematic cards ("Shop Farm Fresh"):
+        On "/", find [data-testid=shop-farm-fresh-carousel]. It should show 3 cinematic cards,
+        each = one image + one dark-green button whose text is the collection title with a right
+        arrow ("Build your meal plan", "Raw Dog Food Menu", "Raw Cat Food Menu"). There should be
+        NO separate title text or description paragraph. Clicking a card (a deliberate tap) should
+        navigate: sff-cta-0 -> /meal-plan, sff-cta-1 -> /menu, sff-cta-2 -> /menu.
+
+        FOCUS 3 — Tap vs swipe guard (mobile):
+        On a mobile viewport, a horizontal swipe on the Shop Farm Fresh carousel should NOT
+        trigger navigation (URL stays on "/"). A direct tap on a card SHOULD navigate.
+
+        FOCUS 4 — Mobile full-bleed carousels:
+        On mobile, the Shop Farm Fresh and How It Works carousels ([data-testid=how-it-works-carousel])
+        should let the next card flow toward the RIGHT screen edge (not clipped inside a white side
+        margin), and the FIRST card should be aligned at the left content inset.
+
+        FOCUS 5 — Benefits & How It Works content:
+        On "/", the "Start to see benefits in just 2 weeks" section shows 3 feature cards
+        (benefit-card-0/1/2) each with a rounded image and text underneath (bold lead + description),
+        NO green checkmark icons, on a clean (non-green) background. How It Works shows feature cards
+        with image + text underneath.
+
+        Please report PASS/FAIL per focus with screenshots (desktop + mobile). No login needed.

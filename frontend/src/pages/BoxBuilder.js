@@ -1063,7 +1063,7 @@ const ProductCard = ({ product, selectedQty, onUpdate, canAdd, getDiscountedPric
 
 
 // ===== Menu Funnel Overlay — hovers above /menu on first landing =====
-const MenuFunnel = ({ open, onShopRaw, onClose, onCalculator, dismissable = true, selectedId = null }) => {
+const MenuFunnel = ({ open, onShopRaw, onClose, onCalculator, onMealPlan, dismissable = true, selectedId = null }) => {
   const options = [
     {
       id: 'shop-raw',
@@ -1077,7 +1077,7 @@ const MenuFunnel = ({ open, onShopRaw, onClose, onCalculator, dismissable = true
       label: 'Meal Recommendations',
       sub: '2-minute personalized meal plan',
       image: 'https://customer-assets.emergentagent.com/job_c26be434-5664-4617-995c-8c836934bef5/artifacts/wtts10dz_4.png',
-      onClick: onCalculator
+      onClick: onMealPlan || onCalculator
     }
   ];
 

@@ -309,22 +309,22 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                   style={{ marginTop: '2px', accentColor: '#2C2C2C', width: '18px', height: '18px' }}
                 />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '14px', fontWeight: 700, color: '#2C2C2C' }}>
+                  <div style={{ fontFamily: "'Rubik', sans-serif", fontSize: '14px', fontWeight: 700, color: '#2C2C2C' }}>
                     Subscribe &amp; save 5%
                   </div>
-                  <div style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '12px', color: '#2C2C2C', marginTop: '2px' }}>
+                  <div style={{ fontFamily: "'Rubik', sans-serif", fontSize: '12px', color: '#2C2C2C', marginTop: '2px' }}>
                     Free delivery. Pause, skip, or cancel anytime.
                   </div>
                 </div>
               </label>
               {subscriptionPlan && (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #E8DDD0' }}>
-                  <span style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '13px', color: '#2C2C2C', fontWeight: 600 }}>Delivery Schedule</span>
+                  <span style={{ fontFamily: "'Rubik', sans-serif", fontSize: '13px', color: '#2C2C2C', fontWeight: 600 }}>Delivery Schedule</span>
                   <select
                     value={subWeeks}
                     onChange={(e) => onSubscriptionChange(`every_${e.target.value}_weeks`)}
                     data-testid="cart-subscribe-schedule"
-                    style={{ padding: '8px 10px', border: '1.5px solid #D8CFB8', borderRadius: '6px', background: '#fff', fontSize: '13px', color: '#2C2C2C', fontFamily: "'Barlow Semi Condensed', serif", cursor: 'pointer' }}
+                    style={{ padding: '8px 10px', border: '1.5px solid #D8CFB8', borderRadius: '6px', background: '#fff', fontSize: '13px', color: '#2C2C2C', fontFamily: "'Rubik', sans-serif", cursor: 'pointer' }}
                   >
                     {[1, 2, 3, 4, 5, 6].map(n => (
                       <option key={n} value={n}>Every {n} {n === 1 ? 'week' : 'weeks'}</option>
@@ -430,7 +430,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 color: '#2C2C2C',
                 padding: '12px 18px',
                 borderRadius: '6px',
-                fontFamily: "'Barlow Semi Condensed', serif",
+                fontFamily: "'Rubik', sans-serif",
                 fontSize: '13px',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -450,7 +450,7 @@ export const CartDrawer = ({ isOpen, onClose, boxSize, selectedProteins, selecte
                 padding: '14px 22px',
                 border: 'none',
                 borderRadius: '6px',
-                fontFamily: "'Barlow Semi Condensed', serif",
+                fontFamily: "'Rubik', sans-serif",
                 fontSize: '15px',
                 fontWeight: 700,
                 cursor: canCheckout ? 'pointer' : 'not-allowed',

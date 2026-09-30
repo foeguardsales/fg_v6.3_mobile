@@ -8,6 +8,7 @@ import { metaobjects } from '../services/shopify';
 import { useHomepageContent } from '../hooks/useHomepageContent';
 import { useHomeReviews } from '../hooks/useHomeReviews';
 import { useCollectionCards } from '../hooks/useCollectionCards';
+import { CardCarousel, CinematicCard, FeatureCard } from '../components/brand/BrandContainers';
 
 // FoeGuard Brand Colors — Farm Palette
 const COLORS = {
@@ -39,7 +40,7 @@ const liftedButtonStyle = {
   fontSize: '15px',
   fontWeight: '600',
   letterSpacing: '0.04em',
-  fontFamily: "'Barlow', sans-serif",
+  fontFamily: "'Rubik', sans-serif",
   cursor: 'pointer',
   transition: 'all 0.2s ease',
   position: 'relative',
@@ -272,7 +273,7 @@ const ModernNavbar = () => {
             textAlign: 'center',
             padding: '0 8px',
             fontSize: '12px',
-            fontFamily: "'Barlow', sans-serif",
+            fontFamily: "'Rubik', sans-serif",
             fontWeight: 600,
             letterSpacing: '0.02em',
             textTransform: 'none',
@@ -346,7 +347,7 @@ const ModernNavbar = () => {
                           fontWeight: '700',
                           letterSpacing: '0.08em',
                           textTransform: 'uppercase',
-                          fontFamily: "'Barlow', sans-serif",
+                          fontFamily: "'Rubik', sans-serif",
                           color: COLORS.cream
                         }}
                       >
@@ -377,7 +378,7 @@ const ModernNavbar = () => {
                                 fontWeight: '500',
                                 letterSpacing: '0.06em',
                                 textTransform: 'uppercase',
-                                fontFamily: "'Barlow', sans-serif",
+                                fontFamily: "'Rubik', sans-serif",
                                 color: COLORS.cream
                               }}
                             >
@@ -405,7 +406,7 @@ const ModernNavbar = () => {
                         fontWeight: '700',
                         letterSpacing: '0.08em',
                         textTransform: 'uppercase',
-                        fontFamily: "'Barlow', sans-serif",
+                        fontFamily: "'Rubik', sans-serif",
                         color: COLORS.cream
                       }}
                     >
@@ -432,7 +433,7 @@ const ModernNavbar = () => {
                   fontWeight: '600',
                   letterSpacing: '0.06em',
                   textTransform: 'uppercase',
-                  fontFamily: "'Barlow', sans-serif",
+                  fontFamily: "'Rubik', sans-serif",
                   color: COLORS.cream
                 }}
               >
@@ -487,7 +488,7 @@ const ModernFooter = () => {
     cursor: 'pointer',
     opacity: 0.85,
     textAlign: 'left',
-    fontFamily: "'Barlow', sans-serif"
+    fontFamily: "'Rubik', sans-serif"
   };
 
   const footerHeadingStyle = {
@@ -497,7 +498,7 @@ const ModernFooter = () => {
     color: COLORS.cream,
     letterSpacing: '0.04em',
     textTransform: 'uppercase',
-    fontFamily: "'Barlow', sans-serif"
+    fontFamily: "'Rubik', sans-serif"
   };
 
   return (
@@ -516,7 +517,7 @@ const ModernFooter = () => {
           <div style={{ marginBottom: '12px' }}>
             <FoeGuardLogo size="default" />
           </div>
-          <p style={{ fontSize: '13px', lineHeight: '1.6', color: COLORS.cream, opacity: 0.85, marginBottom: '20px', fontFamily: "'Barlow', sans-serif" }}>
+          <p style={{ fontSize: '13px', lineHeight: '1.6', color: COLORS.cream, opacity: 0.85, marginBottom: '20px', fontFamily: "'Rubik', sans-serif" }}>
             FoeGuard Raw Pet Food &mdash; Feeding All Carnivores.
           </p>
           <div style={{ display: 'flex', gap: '10px' }}>
@@ -716,7 +717,7 @@ export const LandingPage = () => {
             position: 'relative',
             overflow: 'hidden',
             background: `#2C2C2C url('${heroImageUrl}') center/cover no-repeat`,
-            minHeight: 'clamp(600px, 135vw, 620px)',
+            minHeight: 'clamp(600px, 88vh, 900px)',
             display: 'block',
             marginTop: '-84px'
           }}
@@ -768,7 +769,7 @@ export const LandingPage = () => {
                 color: COLORS.cream,
                 lineHeight: '1.15',
                 marginBottom: '14px',
-                fontFamily: "'Barlow Semi Condensed', serif",
+                fontFamily: "'Rubik', sans-serif",
                 letterSpacing: '-0.3px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
                 textAlign: 'center',
@@ -786,7 +787,7 @@ export const LandingPage = () => {
                 margin: '0 auto 16px',
                 lineHeight: '1.55',
                 fontWeight: 500,
-                fontFamily: "'Barlow', sans-serif",
+                fontFamily: "'Rubik', sans-serif",
                 textShadow: '0 1px 6px rgba(0,0,0,0.45)',
                 textAlign: 'center',
                 maxWidth: '60ch'
@@ -818,7 +819,7 @@ export const LandingPage = () => {
                   margin: '0',
                   lineHeight: 1.5,
                   fontWeight: 400,
-                  fontFamily: "'Barlow', sans-serif",
+                  fontFamily: "'Rubik', sans-serif",
                   textShadow: '0 1px 6px rgba(0,0,0,0.45)',
                   textAlign: 'center'
                 }}
@@ -834,7 +835,7 @@ export const LandingPage = () => {
                     textDecoration: 'underline',
                     fontSize: '12px',
                     marginLeft: '4px',
-                    fontFamily: "'Barlow', sans-serif"
+                    fontFamily: "'Rubik', sans-serif"
                   }}
                 >
                   See terms.
@@ -855,131 +856,59 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '20px',
               color: COLORS.charcoal,
-              fontFamily: "'Barlow Semi Condensed', serif"
+              fontFamily: "'Rubik', sans-serif"
             }}>
               Shop Farm Fresh
             </h2>
 
-            <div className="shop-farm-fresh-grid">
+            <CardCarousel testId="shop-farm-fresh-carousel">
               {[
                 {
                   title: 'Build your meal plan',
-                  desc: 'Take our simple quiz to receive your customized raw feeding plan in seconds.',
-                  image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&h=400&fit=crop&auto=format',
+                  image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&h=1000&fit=crop&auto=format',
                   collectionHandle: 'build-your-meal-plan',
                   path: '/meal-plan',
-                  selection: 'meal-plan',
-                  cta: 'Get Started'
+                  selection: 'meal-plan'
                 },
                 {
                   title: 'Raw Dog Food Menu',
-                  desc: 'Fresh meals that are easy to portion and serve. Real food your dog will love.',
-                  image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop&auto=format',
+                  image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=1000&fit=crop&auto=format',
                   collectionHandle: 'raw-dog-food-menu',
                   path: '/menu',
-                  selection: 'shop-raw',
-                  cta: 'Order Now'
+                  selection: 'shop-raw'
                 },
                 {
                   title: 'Raw Cat Food Menu',
-                  desc: 'Raw meals crafted for cats that are high in protein, taurine-rich and made fresh.',
-                  image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&h=400&fit=crop&auto=format',
+                  image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&h=1000&fit=crop&auto=format',
                   collectionHandle: 'raw-cat-food-menu',
                   path: '/menu',
                   selection: 'shop-raw',
-                  petType: 'cat',
-                  cta: 'Order Now'
+                  petType: 'cat'
                 }
               ].map((baseCard, i) => {
-                // Merge Shopify collection photo + description (link/CTA stay).
+                // Merge Shopify collection photo + title (link stays).
                 const sf = sffCollections[baseCard.collectionHandle];
                 const card = {
                   ...baseCard,
                   title: sf?.title || baseCard.title,
-                  desc: sf?.description || baseCard.desc,
                   image: sf?.image || baseCard.image,
                 };
                 return (
-                <div
-                  key={i}
-                  className="shop-farm-fresh-card"
-                  style={{
-                    background: COLORS.cream,
-                    border: `1px solid ${COLORS.khaki}`,
-                    borderRadius: '8px',
-                    overflow: 'hidden',
-                    textAlign: 'left',
-                    boxShadow: 'none',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%'
-                  }}
-                >
-                  <div className="shop-farm-fresh-img" style={{
-                    height: '200px',
-                    background: `url(${card.image}) center top / cover no-repeat`,
-                    flexShrink: 0
-                  }} />
-                  <div className="shop-farm-fresh-body" style={{
-                    padding: '24px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flex: '1 1 auto'
-                  }}>
-                    <h3 style={{
-                      fontSize: '20px',
-                      fontWeight: 600,
-                      color: COLORS.charcoal,
-                      marginBottom: '8px',
-                      fontFamily: "'Barlow Semi Condensed', serif"
-                    }}>
-                      {card.title}
-                    </h3>
-                    <p style={{
-                      fontSize: '17px',
-                      fontWeight: 400,
-                      color: COLORS.charcoal,
-                      lineHeight: '1.5',
-                      marginBottom: '16px',
-                      fontFamily: "'Barlow', sans-serif"
-                    }}>
-                      {card.desc}
-                    </p>
-                    <button
-                      onClick={() => {
-                        if (card.selection) sessionStorage.setItem('foeguard_selection', card.selection);
-                        if (card.petType) sessionStorage.setItem('foeguard_pet_type', card.petType);
-                        else sessionStorage.removeItem('foeguard_pet_type');
-                        navigate(card.path);
-                      }}
-                      data-testid={`sff-cta-${i}`}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        alignSelf: 'flex-start',
-                        marginTop: 'auto',
-                        background: COLORS.red,
-                        color: COLORS.cream,
-                        border: 'none',
-                        borderRadius: '8px',
-                        padding: '12px 24px',
-                        minHeight: '44px',
-                        fontFamily: "'Barlow', sans-serif",
-                        fontWeight: 600,
-                        fontSize: '15px',
-                        cursor: 'pointer',
-                        lineHeight: 1,
-                        letterSpacing: '0.01em'
-                      }}
-                    >
-                      {card.cta}
-                    </button>
-                  </div>
-                </div>
+                  <CinematicCard
+                    key={i}
+                    testId={`sff-cta-${i}`}
+                    image={card.image}
+                    label={card.title}
+                    onClick={() => {
+                      if (card.selection) sessionStorage.setItem('foeguard_selection', card.selection);
+                      if (card.petType) sessionStorage.setItem('foeguard_pet_type', card.petType);
+                      else sessionStorage.removeItem('foeguard_pet_type');
+                      navigate(card.path);
+                    }}
+                  />
                 );
               })}
-            </div>
+            </CardCarousel>
           </div>
         </section>
 
@@ -1000,7 +929,7 @@ export const LandingPage = () => {
                   color: COLORS.charcoal,
                   lineHeight: 1.2,
                   marginBottom: '16px',
-                  fontFamily: "'Barlow Semi Condensed', serif"
+                  fontFamily: "'Rubik', sans-serif"
                 }}>
                   {identityTitle}
                 </h2>
@@ -1012,7 +941,7 @@ export const LandingPage = () => {
                   color: COLORS.charcoal,
                   lineHeight: 1.7,
                   margin: 0,
-                  fontFamily: "'Barlow', sans-serif",
+                  fontFamily: "'Rubik', sans-serif",
                   whiteSpace: 'pre-line'
                 }}>
                   {identityBody}
@@ -1036,7 +965,7 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 lineHeight: 1.2,
                 marginBottom: '14px',
-                fontFamily: "'Barlow Semi Condensed', serif"
+                fontFamily: "'Rubik', sans-serif"
               }}>
                 {whyFgTitle}
               </h2>
@@ -1046,7 +975,7 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 lineHeight: 1.6,
                 margin: 0,
-                fontFamily: "'Barlow', sans-serif"
+                fontFamily: "'Rubik', sans-serif"
               }}>
                 {whyFgSubtitle}
               </p>
@@ -1080,8 +1009,8 @@ export const LandingPage = () => {
                         margin: '0 auto',
                         borderRadius: '50%',
                         overflow: 'hidden',
-                        background: 'transparent',
-                        boxShadow: '0 18px 40px rgba(0,0,0,0.16)'
+                        background: COLORS.white,
+                        boxShadow: 'none'
                       }}>
                         <ReactCompareSlider
                           itemOne={
@@ -1131,7 +1060,7 @@ export const LandingPage = () => {
 
                       {/* Drag instruction text */}
                       <p style={{
-                        fontFamily: "'Barlow', sans-serif",
+                        fontFamily: "'Rubik', sans-serif",
                         fontSize: '14px',
                         color: '#999',
                         textAlign: 'center',
@@ -1178,7 +1107,7 @@ export const LandingPage = () => {
                           fontWeight: 600,
                           color: COLORS.charcoal,
                           margin: '0 0 4px',
-                          fontFamily: "'Barlow Semi Condensed', serif"
+                          fontFamily: "'Rubik', sans-serif"
                         }}>
                           {item.title}
                         </h4>
@@ -1188,7 +1117,7 @@ export const LandingPage = () => {
                           color: COLORS.charcoal,
                           margin: 0,
                           lineHeight: 1.55,
-                          fontFamily: "'Barlow', sans-serif"
+                          fontFamily: "'Rubik', sans-serif"
                         }}>
                           {item.desc}
                         </p>
@@ -1203,110 +1132,51 @@ export const LandingPage = () => {
 
         {/* BENEFITS SECTION */}
         <section style={{
-          background: COLORS.forestGreen,
-          padding: '28px 20px 36px',
-          color: COLORS.cream
+          background: COLORS.cream,
+          padding: '28px 20px 36px'
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 20px' }}>
+            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 24px' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: 600,
                 marginBottom: '12px',
-                fontFamily: "'Barlow Semi Condensed', serif",
+                fontFamily: "'Rubik', sans-serif",
                 lineHeight: 1.2,
-                color: COLORS.khaki
+                color: COLORS.charcoal
               }}>
                 Start to see benefits in just 2 weeks
               </h2>
               <p style={{
                 fontSize: 'clamp(17px, 1.8vw, 18px)',
-                opacity: 1,
                 margin: 0,
                 fontWeight: 400,
                 lineHeight: 1.6,
-                color: COLORS.white,
-                fontFamily: "'Barlow', sans-serif"
+                color: COLORS.charcoal,
+                fontFamily: "'Rubik', sans-serif"
               }}>
                 Here&apos;s what you can expect from real food nutrition:
               </p>
             </div>
 
-            {/* Landscape image placeholder — spans the full benefits-row width. Swap the src for
-                the Shopify metaobject image when the headless API is connected. */}
-            <div style={{
-              width: '100%',
-              maxWidth: '1100px',
-              margin: '0 auto 20px',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              aspectRatio: '3 / 1',
-              boxShadow: '0 12px 30px rgba(0,0,0,0.18)'
-            }}>
-              <img
-                src="https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=1400&q=80&fit=crop"
-                alt="Healthy happy dog"
-                data-testid="benefits-banner-image"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-              />
-            </div>
-
-            <div className="benefits-2week-grid" style={{
-              display: 'grid',
-              gap: '14px',
-              marginBottom: '20px'
-            }}>
-              {[
-                { title: 'Improved Digestibility', desc: 'Less gas, less bloat, more comfort.' },
-                { title: 'Healthier Skin & Coat', desc: 'Real nutrients absorbed from the inside out.' },
-                { title: 'More Stable Energy', desc: 'No crashes from fillers or artificial ingredients.' },
-                { title: 'Muscle Condition Improves', desc: 'Without overfeeding or additional toppers.' },
-                { title: 'Smaller, Firm Stools', desc: 'A sign your dog is actually absorbing what they eat.' },
-                { title: 'Stronger, Cleaner Teeth', desc: 'Less chewing residue and plaque buildup over time.' }
-              ].map((benefit, i) => (
-                <div key={i} style={{
-                  background: 'rgba(255,255,255,0.08)',
-                  border: `1px solid rgba(255,255,255,0.12)`,
-                  padding: '18px 18px',
-                  borderRadius: '12px',
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: '12px',
-                  textAlign: 'left'
-                }}>
-                  <div style={{
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '50%',
-                    background: COLORS.lightGreen,
-                    color: COLORS.forestGreen,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    fontSize: '14px',
-                    fontWeight: '700',
-                    marginTop: '2px'
-                  }}>✓</div>
-                  <div>
-                    <div style={{
-                      fontSize: '17px',
-                      fontWeight: '700',
-                      marginBottom: '4px',
-                      fontFamily: "'Barlow', sans-serif",
-                      lineHeight: 1.3,
-                      color: COLORS.cream,
-                      letterSpacing: '0.02em'
-                    }}>{benefit.title}</div>
-                    <div style={{
-                      fontSize: '15px',
-                      opacity: 0.9,
-                      lineHeight: 1.5,
-                      color: COLORS.softBg,
-                      fontFamily: "'Barlow', sans-serif"
-                    }}>{benefit.desc}</div>
-                  </div>
-                </div>
+            {/* Raw benefits journey — vertical stack of feature cards (image + text
+                underneath), content from Shopify (home_raw_benefits). Design-safe
+                fallback keeps the section populated until the metaobject loads. */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', marginBottom: '28px' }}>
+              {(homepage.benefits || [
+                { title: 'Day 3 — Easier Digestion', lead: 'A fresh start. A happier belly.', body: 'Your dog gets real, balanced nutrition made from quality ingredients, without unnecessary fillers or artificial ingredients.', image: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=1200&q=80&fit=crop' },
+                { title: 'Day 7 — Skin, Coat & Energy', lead: 'Starting to feel the difference.', body: 'You may notice a healthier-looking coat, steadier energy and a dog that seems more comfortable throughout the day.', image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=1200&q=80&fit=crop' },
+                { title: 'Day 14 — Visible Changes', lead: 'Start to see the benefits.', body: 'You may notice firmer, smaller stools, better muscle condition and a healthier-looking dog from nose to tail.', image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=1200&q=80&fit=crop' }
+              ]).map((b, i) => (
+                <FeatureCard
+                  key={i}
+                  testId={`benefit-card-${i}`}
+                  wide
+                  image={b.image}
+                  title={b.title}
+                  lead={b.lead}
+                  body={b.body}
+                />
               ))}
             </div>
 
@@ -1316,8 +1186,8 @@ export const LandingPage = () => {
                 onClick={() => navigate('/new-to-raw')}
                 style={{
                   ...liftedButtonStyle,
-                  background: COLORS.red,
-                  color: COLORS.white
+                  background: COLORS.forestGreen,
+                  color: COLORS.cream
                 }}
                 onMouseEnter={(e) => liftedButtonHover(e, true)}
                 onMouseLeave={(e) => liftedButtonHover(e, false)}
@@ -1341,59 +1211,22 @@ export const LandingPage = () => {
                 textAlign: 'center',
                 marginBottom: '24px',
                 color: COLORS.charcoal,
-                fontFamily: "'Barlow Semi Condensed', serif",
+                fontFamily: "'Rubik', sans-serif",
                 lineHeight: 1.2
               }}>
                 How It Works
               </h2>
-              <div className="how-it-works-grid" style={{
-                display: 'grid',
-                gridTemplateColumns: `repeat(${Math.min(homepage.howItWorks.length, 3)}, 1fr)`,
-                gap: '20px'
-              }}>
+              <CardCarousel testId="how-it-works-carousel" bleed={20}>
                 {homepage.howItWorks.map((step, i) => (
-                  <div key={i} data-testid={`how-it-works-card-${i}`} style={{
-                    background: COLORS.white,
-                    border: `1px solid ${COLORS.khaki}`,
-                    borderRadius: '16px',
-                    overflow: 'hidden',
-                    textAlign: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    boxShadow: '2px 2px 0px rgba(0,0,0,0.04)'
-                  }}>
-                    {step.image && (
-                      <img
-                        src={step.image}
-                        alt={step.title || `Step ${i + 1}`}
-                        style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }}
-                      />
-                    )}
-                    <div style={{ padding: '22px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    {step.title && (
-                      <h3 style={{
-                        fontSize: '20px',
-                        fontWeight: 600,
-                        color: COLORS.charcoal,
-                        marginBottom: '8px',
-                        fontFamily: "'Barlow Semi Condensed', serif",
-                        lineHeight: 1.25
-                      }}>{step.title}</h3>
-                    )}
-                    {step.body && (
-                      <p style={{
-                        fontSize: '16px',
-                        fontWeight: 400,
-                        color: COLORS.charcoal,
-                        lineHeight: 1.55,
-                        margin: 0,
-                        fontFamily: "'Barlow', sans-serif"
-                      }}>{step.body}</p>
-                    )}
-                    </div>
-                  </div>
+                  <FeatureCard
+                    key={i}
+                    testId={`how-it-works-card-${i}`}
+                    image={step.image}
+                    title={step.title}
+                    body={step.body}
+                  />
                 ))}
-              </div>
+              </CardCarousel>
             </div>
           </section>
         )}
@@ -1412,11 +1245,11 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '8px',
               color: COLORS.charcoal,
-              fontFamily: "'Barlow Semi Condensed', serif"
+              fontFamily: "'Rubik', sans-serif"
             }}>
               Hear from Happy FoeGuardians
             </h2>
-            <p style={{ textAlign: 'center', color: COLORS.charcoal, marginBottom: '18px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '16px', fontFamily: "'Barlow', sans-serif" }}>
+            <p style={{ textAlign: 'center', color: COLORS.charcoal, marginBottom: '18px', maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55, fontSize: '16px', fontFamily: "'Rubik', sans-serif" }}>
               Real food shows real results.
             </p>
           </div>
@@ -1491,7 +1324,7 @@ export const LandingPage = () => {
                         fontWeight: '700',
                         color: COLORS.red,
                         margin: 0,
-                        fontFamily: "'Barlow Semi Condensed', serif"
+                        fontFamily: "'Rubik', sans-serif"
                       }}>
                         — {r.name}
                       </p>
@@ -1540,7 +1373,7 @@ export const LandingPage = () => {
                 color: COLORS.charcoal,
                 lineHeight: 1.2,
                 marginBottom: '12px',
-                fontFamily: "'Barlow Semi Condensed', serif"
+                fontFamily: "'Rubik', sans-serif"
               }}>
                 Pick your dog&apos;s favourites from 8 proteins
               </h2>
@@ -1550,7 +1383,7 @@ export const LandingPage = () => {
                 lineHeight: 1.6,
                 margin: 0,
                 fontWeight: 400,
-                fontFamily: "'Barlow', sans-serif"
+                fontFamily: "'Rubik', sans-serif"
               }}>
                 Every protein is raised on our farm &mdash; each with its own flavour, benefits and nutritional profile.
               </p>
@@ -1613,7 +1446,7 @@ export const LandingPage = () => {
                     fontSize: '16px',
                     fontWeight: 700,
                     color: COLORS.charcoal,
-                    fontFamily: "'Barlow', sans-serif",
+                    fontFamily: "'Rubik', sans-serif",
                     textAlign: 'left'
                   }}>{p.label}</span>
                 </button>
@@ -1688,7 +1521,7 @@ export const LandingPage = () => {
                 fontWeight: 600,
                 color: COLORS.charcoal,
                 marginBottom: '14px',
-                fontFamily: "'Barlow Semi Condensed', serif",
+                fontFamily: "'Rubik', sans-serif",
                 lineHeight: 1.2
               }}>
                 {ourStoryTitle}
@@ -1699,7 +1532,7 @@ export const LandingPage = () => {
                   color: COLORS.charcoal,
                   lineHeight: '1.65',
                   marginBottom: '20px',
-                  fontFamily: "'Barlow', sans-serif",
+                  fontFamily: "'Rubik', sans-serif",
                   whiteSpace: 'pre-line'
                 }}>
                   {ourStoryBody}
@@ -1711,7 +1544,7 @@ export const LandingPage = () => {
                     color: COLORS.charcoal,
                     lineHeight: '1.65',
                     marginBottom: '14px',
-                    fontFamily: "'Barlow', sans-serif"
+                    fontFamily: "'Rubik', sans-serif"
                   }}>
                     FoeGuard started because of one dog. When we couldn&apos;t find raw food made to our standards as third-generation farmers, we made it ourselves. Before long our neighbours were asking for meals &mdash; then their friends were too.
                   </p>
@@ -1720,7 +1553,7 @@ export const LandingPage = () => {
                     color: COLORS.charcoal,
                     lineHeight: '1.65',
                     marginBottom: '20px',
-                    fontFamily: "'Barlow', sans-serif"
+                    fontFamily: "'Rubik', sans-serif"
                   }}>
                     What started on our small farm in Acton grew into something bigger &mdash; built by the community, for the community. If you&apos;re here reading this, your story might not be so different.
                   </p>
@@ -1753,7 +1586,7 @@ export const LandingPage = () => {
               textAlign: 'center',
               marginBottom: '20px',
               color: COLORS.charcoal,
-              fontFamily: "'Barlow Semi Condensed', serif"
+              fontFamily: "'Rubik', sans-serif"
             }}>
               {homepage.faqHeader || 'Questions you may have'}
             </h2>
@@ -1780,7 +1613,7 @@ export const LandingPage = () => {
                       textAlign: 'left'
                     }}
                   >
-                    <span style={{ fontSize: '18px', fontWeight: '600', color: COLORS.charcoal, fontFamily: "'Barlow', sans-serif" }}>
+                    <span style={{ fontSize: '18px', fontWeight: '600', color: COLORS.charcoal, fontFamily: "'Rubik', sans-serif" }}>
                       {faq.q}
                     </span>
                     <ChevronDown
@@ -1798,7 +1631,7 @@ export const LandingPage = () => {
                       fontSize: '17px',
                       color: COLORS.charcoal,
                       lineHeight: '1.6',
-                      fontFamily: "'Barlow', sans-serif"
+                      fontFamily: "'Rubik', sans-serif"
                     }}>
                       {faq.a}
                     </div>
@@ -1834,7 +1667,7 @@ export const LandingPage = () => {
               fontWeight: 600,
               marginBottom: '12px',
               color: COLORS.cream,
-              fontFamily: "'Barlow Semi Condensed', serif",
+              fontFamily: "'Rubik', sans-serif",
               lineHeight: 1.2
             }}>
               {footerCtaTitle}
@@ -1845,7 +1678,7 @@ export const LandingPage = () => {
               opacity: 0.95,
               color: COLORS.cream,
               lineHeight: 1.55,
-              fontFamily: "'Barlow', sans-serif"
+              fontFamily: "'Rubik', sans-serif"
             }}>
               {footerCtaBody}
             </p>

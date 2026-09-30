@@ -333,3 +333,20 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - **Product image gallery**: .pd-gallery wrapper — square main image + clickable Shopify thumbnail
   strip (all product.images). Modal/sheet image forced square (was 200px horizontal).
 - All 3 verified PASS by frontend testing agent (Aug 11).
+
+### 2026-09 — Reusable brand containers + homepage redesign + Rubik typography
+- **Restored env / live Shopify** — recreated backend/frontend `.env` (were gitignored/missing); site now live against `foeguard.myshopify.com` (storefront + admin tokens OK).
+- **Hero** — taller (`clamp(600px,88vh,900px)`, mobile `84vh`) so the next section peeks; hero copy/button centered across all breakpoints (removed left-offset desktop rules).
+- **Removed** the rotating trust-badge marquee under the hero.
+- **New reusable containers** (`frontend/src/components/brand/BrandContainers.js` + `.brand-*` CSS, 12px radius tokens):
+  - `CinematicCard` (Container 1): one image + one dark-green button whose label IS the title (with → arrow). Tap-vs-swipe guard prevents accidental navigation while scrolling.
+  - `FeatureCard` (Container 2): rounded image + title/description underneath (Apple-style); `wide` variant = slim 16/6 rectangle on desktop; `tone="dark"` variant available.
+  - `CardCarousel`: 3-up on desktop (fills width), full-bleed horizontal swipe on mobile/tablet that STARTS at the left card (viewport-bleed so cards flow to the right screen edge).
+- **Shop Farm Fresh** → CinematicCard carousel (Build meal plan / Dog / Cat).
+- **Benefits ("Start to see benefits in just 2 weeks")** → vertical FeatureCards from Shopify metaobject `home_raw_benefits` (3 journey cards, image+lead+body); removed 6 checkmark cards + placeholder banner; clean cream background; dark-green Learn More CTA. Hook wiring in `useHomepageContent.js`.
+- **How It Works** → horizontal swipeable FeatureCards.
+- **BUG FIX** — `.spb-images` 3-image comparison row (e.g. /new-to-raw) started on the CENTER card; changed to `justify-content:flex-start` + `scroll-snap-align:start`.
+- **BUG FIX** — pre-menu funnel "Meal Recommendations" now navigates to `/meal-plan` (was opening the calculator); `MenuFunnel` now accepts/uses `onMealPlan`.
+- **Why FoeGuard Raw** compare slider — removed white ring/shadow; circle now fills with section background for a clean look.
+- **Typography → Rubik sitewide** — all inline `Barlow`/`Barlow Semi Condensed` font strings and CSS vars swapped to Rubik (weights 300–800 imported). Base type scale set: mobile H1 26 / H2 20 / H3 18 / body 14 / small 13; desktop H1 42 / H2 30 / H3 22 / body 16 / small 14. Weight hierarchy H1 700, H2/H3 600, body 400, buttons 600, nav 500.
+- **PENDING (next):** universal page-width normalization (desktop 1200 / tablet 960 / mobile 100%+16px) and standard section spacing (desktop 64 / mobile 48) across all pages — deferred as a separate focused pass.

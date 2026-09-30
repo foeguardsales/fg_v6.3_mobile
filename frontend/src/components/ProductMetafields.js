@@ -20,7 +20,7 @@ import React from 'react';
 import { Check } from 'lucide-react';
 
 const containerStyle = {
-  fontFamily: "'Barlow Semi Condensed', serif",
+  fontFamily: "'Rubik', sans-serif",
   color: '#2C2C2C',
   fontSize: '15px',
   lineHeight: 1.7,

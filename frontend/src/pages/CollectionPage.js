@@ -45,7 +45,7 @@ export const CollectionPage = () => {
       <>
         <Navbar />
         <div style={{ padding: '80px 20px', textAlign: 'center' }}>
-          <h1 style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: '28px', color: '#3B2A1A' }}>Collection not found</h1>
+          <h1 style={{ fontFamily: "'Rubik', sans-serif", fontSize: '28px', color: '#3B2A1A' }}>Collection not found</h1>
           <button onClick={() => navigate('/menu')} className="btn-primary" style={{ marginTop: '24px', padding: '12px 24px' }}>Browse Menu</button>
         </div>
         <Footer />
@@ -70,7 +70,7 @@ export const CollectionPage = () => {
           textAlign: 'center',
         }}
       >
-        <h1 style={{ fontFamily: "'Barlow Semi Condensed', serif", fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 700, margin: 0 }}>
+        <h1 style={{ fontFamily: "'Rubik', sans-serif", fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 700, margin: 0 }}>
           {collection.title}
         </h1>
         {collection.descriptionHtml ? (

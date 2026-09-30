@@ -385,7 +385,7 @@ export const MealPlanPage = () => {
     if (step === 1) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
             How many dogs do you have?
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -493,7 +493,7 @@ export const MealPlanPage = () => {
     if (step === 2) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
             Where {dogs.length === 1 ? `does ${capitalizeName(dogs[0].name)}` : `do ${formatDogNames(dogs)}`} live?
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -536,7 +536,7 @@ export const MealPlanPage = () => {
     if (step === 3) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
             Tell us about {formatDogNames(dogs)}
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -616,7 +616,7 @@ export const MealPlanPage = () => {
     if (step === 4) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
             What breed {dogs.length === 1 ? `is ${capitalizeName(dogs[0].name)}` : `are ${formatDogNames(dogs)}`}?
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -692,7 +692,7 @@ export const MealPlanPage = () => {
     if (step === 5) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
             Describe {dogs.length === 1 ? `${capitalizeName(dogs[0].name)}'s` : 'their'} body condition
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -749,7 +749,7 @@ export const MealPlanPage = () => {
     if (step === 6) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
             Weight & lifestyle
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -829,7 +829,7 @@ export const MealPlanPage = () => {
     if (step === 7) {
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
             Any health issues or dietary needs?
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -892,7 +892,7 @@ export const MealPlanPage = () => {
 
       return (
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '600', marginBottom: '12px', textAlign: 'center', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
             Save Your Profile
           </h1>
           <p style={{ textAlign: 'center', color: '#666', marginBottom: '40px', fontSize: '16px' }}>
@@ -1248,7 +1248,7 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
           <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: '#E8F5E9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
             <Check size={40} color="#2E7D32" />
           </div>
-          <h1 style={{ fontSize: '32px', fontWeight: 600, marginBottom: '12px', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>Profile Saved!</h1>
+          <h1 style={{ fontSize: '32px', fontWeight: 600, marginBottom: '12px', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>Profile Saved!</h1>
         </div>
         <div style={{ background: 'linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%)', borderRadius: '16px', padding: '24px', marginBottom: '24px', border: '2px solid #FFB74D' }}>
           <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '12px', color: '#E65100' }}>We'll Contact You Personally</h3>
@@ -1321,7 +1321,7 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
         <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: '#E8F5E9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
           <Check size={40} color="#2E7D32" />
         </div>
-        <h1 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px', fontFamily: "'Barlow Semi Condensed', serif", textTransform: 'none' }}>
+        <h1 style={{ fontSize: '32px', fontWeight: 700, marginBottom: '8px', fontFamily: "'Rubik', sans-serif", textTransform: 'none' }}>
           {title}
         </h1>
         <p style={{ color: '#666', fontSize: '15px', margin: 0 }}>
@@ -1336,7 +1336,7 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '18px', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <div style={{ fontSize: '13px', color: '#666', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Box Size</div>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: '#2C2C2C', fontFamily: "'Barlow Semi Condensed', serif" }}>{boxLbs} lb</div>
+            <div style={{ fontSize: '22px', fontWeight: 700, color: '#2C2C2C', fontFamily: "'Rubik', sans-serif" }}>{boxLbs} lb</div>
           </div>
           {!isStarter && (
             <div>
@@ -1345,7 +1345,7 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
                 data-testid="outcome-duration"
-                style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #D8CFB8', fontSize: '15px', background: 'white', fontFamily: "'Barlow Semi Condensed', serif", cursor: 'pointer' }}
+                style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #D8CFB8', fontSize: '15px', background: 'white', fontFamily: "'Rubik', sans-serif", cursor: 'pointer' }}
               >
                 <option value="2w">2 Weeks</option>
                 <option value="1m">1 Month</option>
@@ -1354,14 +1354,14 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
           )}
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '13px', color: '#666', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Plan Price</div>
-            <div style={{ fontSize: '24px', fontWeight: 700, color: '#c8102e', fontFamily: "'Barlow Semi Condensed', serif" }} data-testid="outcome-total">
+            <div style={{ fontSize: '24px', fontWeight: 700, color: '#c8102e', fontFamily: "'Rubik', sans-serif" }} data-testid="outcome-total">
               ${totalPrice.toFixed(2)}
             </div>
           </div>
         </div>
       </div>
 
-      <h3 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 12px', color: '#2C2C2C', fontFamily: "'Barlow Semi Condensed', serif" }}>
+      <h3 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 12px', color: '#2C2C2C', fontFamily: "'Rubik', sans-serif" }}>
         Recommended Meals
       </h3>
 
@@ -1380,7 +1380,7 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
                   value={key}
                   onChange={(e) => changeSlot(i, e.target.value)}
                   data-testid={`outcome-protein-${i}`}
-                  style={{ marginTop: '8px', padding: '8px 12px', borderRadius: '6px', border: '1px solid #D8CFB8', fontSize: '14px', background: 'white', fontFamily: "'Barlow Semi Condensed', serif", cursor: 'pointer', maxWidth: '260px' }}
+                  style={{ marginTop: '8px', padding: '8px 12px', borderRadius: '6px', border: '1px solid #D8CFB8', fontSize: '14px', background: 'white', fontFamily: "'Rubik', sans-serif", cursor: 'pointer', maxWidth: '260px' }}
                 >
                   {opts.map(k => {
                     const p = productForProtein(products, k);
@@ -1404,7 +1404,7 @@ const OutcomePane = ({ dogs, source, navigate, needsConsultation }) => {
       <button
         onClick={handleAddToCart}
         data-testid="outcome-add-to-cart"
-        style={{ width: '100%', padding: '16px 24px', background: '#c8102e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 700, cursor: 'pointer', fontFamily: "'Barlow Semi Condensed', serif", letterSpacing: '0.02em' }}
+        style={{ width: '100%', padding: '16px 24px', background: '#c8102e', color: 'white', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 700, cursor: 'pointer', fontFamily: "'Rubik', sans-serif", letterSpacing: '0.02em' }}
       >
         {ctaLabel}
       </button>

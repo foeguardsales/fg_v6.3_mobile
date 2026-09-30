@@ -35,8 +35,9 @@ export function useHomepageContent() {
       metaobjects.getMetaobject('home_ourstory_section', 'home_ourstory_section').catch(() => null),
       metaobjects.getMetaobject('home_footer_cta', 'home_footer_cta_1').catch(() => null),
       metaobjects.getMetaobject('home_how_it_works_section', 'home_howitworks_sections_1').catch(() => null),
+      metaobjects.getMetaobject('home_raw_benefits', 'home_raw_benefits_section').catch(() => null),
       metaobjects.getMetaobject('frequently_asked_questions_section', 'home_faq_section').catch(() => null),
-    ]).then(([announcement, hero, identity, whyFg, ourStory, footerCta, howItWorksMo, faqMo]) => {
+    ]).then(([announcement, hero, identity, whyFg, ourStory, footerCta, howItWorksMo, benefitsMo, faqMo]) => {
       if (!alive) return;
 
       // Rich-text (Shopify's TipTap-like JSON). Cheap flatten to plain text
@@ -93,6 +94,36 @@ export function useHomepageContent() {
       });
       const faqHeader = faqMo?.fields?.faq_header || null;
 
+      // Raw Benefits journey cards (home_raw_benefits -> benefits_card[]).
+      // Each card: title + rich-text description (bold lead line + body) + image.
+      const richLeadBody = (v) => {
+        try {
+          const j = typeof v === 'string' ? JSON.parse(v) : v;
+          let lead = '', body = '';
+          const walk = (n) => {
+            if (!n) return;
+            const t = n.value || n.text;
+            if (n.type === 'text' && t) {
+              if (n.bold && !body.trim()) lead += t;
+              else body += t;
+            }
+            (n.children || []).forEach(walk);
+          };
+          walk(j);
+          return {
+            lead: lead.trim() || null,
+            body: body.replace(/\n{2,}/g, '\n').trim() || null,
+          };
+        } catch { return { lead: null, body: flattenRich(v) }; }
+      };
+      const benefits = asList(benefitsMo?.fields?.benefits_card)
+        .map((c) => {
+          const cf = c?.fields || {};
+          const { lead, body } = richLeadBody(cf.descriptions);
+          return { title: cf.title || null, lead, body, image: imgUrl(cf.image) };
+        })
+        .filter((b) => b.title || b.body || b.image);
+
       setState({
         ready: true,
         announcement: announcement?.fields ? {
@@ -126,6 +157,7 @@ export function useHomepageContent() {
           button: footerCta.fields.footer_cta_button_title || null,
         } : null,
         howItWorks: howItWorks.length ? howItWorks : null,
+        benefits: benefits.length ? benefits : null,
         faq: faq.length ? faq : null,
         faqHeader,
       });

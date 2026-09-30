@@ -40,7 +40,7 @@ const SavedPlansSection = ({ profile, navigate }) => {
       marginBottom: '32px',
       boxShadow: '0 2px 12px rgba(0,0,0,0.06)'
     }}>
-      <h3 style={{ fontSize: '20px', fontWeight: 700, margin: '0 0 16px', color: '#2C2C2C', fontFamily: "'Barlow Semi Condensed', serif" }}>
+      <h3 style={{ fontSize: '20px', fontWeight: 700, margin: '0 0 16px', color: '#2C2C2C', fontFamily: "'Rubik', sans-serif" }}>
         Saved Plans and Feeding Guides
       </h3>
 
