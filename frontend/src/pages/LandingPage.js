@@ -750,10 +750,15 @@ export const LandingPage = () => {
             className="hero-text"
             style={{
               position: 'absolute',
-              bottom: '16px',
-              left: '24px',
-              width: '75%',
-              textAlign: 'left',
+              bottom: '64px',
+              left: 0,
+              right: 0,
+              width: '100%',
+              padding: '0 24px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
               zIndex: 1
             }}
           >
@@ -766,10 +771,10 @@ export const LandingPage = () => {
                 fontFamily: "'Barlow Semi Condensed', serif",
                 letterSpacing: '-0.3px',
                 textShadow: '0 3px 14px rgba(0,0,0,0.35)',
-                textAlign: 'left',
+                textAlign: 'center',
                 textWrap: 'balance',
                 maxWidth: '18ch',
-                margin: '0 0 14px 0'
+                margin: '0 auto 14px auto'
               }}>
                 {heroTitle}
               </h1>
@@ -778,12 +783,13 @@ export const LandingPage = () => {
                 fontSize: 'clamp(17px, 1.8vw, 18px)',
                 color: COLORS.cream,
                 opacity: 0.96,
-                margin: '0 0 16px',
+                margin: '0 auto 16px',
                 lineHeight: '1.55',
                 fontWeight: 500,
                 fontFamily: "'Barlow', sans-serif",
                 textShadow: '0 1px 6px rgba(0,0,0,0.45)',
-                textAlign: 'left'
+                textAlign: 'center',
+                maxWidth: '60ch'
               }}>
                 {heroSubtitle}
               </p>
@@ -814,7 +820,7 @@ export const LandingPage = () => {
                   fontWeight: 400,
                   fontFamily: "'Barlow', sans-serif",
                   textShadow: '0 1px 6px rgba(0,0,0,0.45)',
-                  textAlign: 'left'
+                  textAlign: 'center'
                 }}
               >
                 A happy dog or your money back &mdash; guaranteed.{' '}

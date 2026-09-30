@@ -5242,17 +5242,19 @@ h2, h3, h4 {
   }
 }
 
-/* Desktop: give the FoeGuard hero text more left padding so it isn't flush to the edge */
+/* Desktop: keep the FoeGuard hero text centered across all breakpoints */
 @media (min-width: 1024px) {
   .hero-section--foeguard .hero-text {
-    left: 72px !important;
-    width: 60% !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
   }
 }
 @media (min-width: 1600px) {
   .hero-section--foeguard .hero-text {
-    left: 120px !important;
-    width: 55% !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
   }
 }
 
