@@ -74,22 +74,23 @@ const outlineButtonStyle = {
   lineHeight: 1.2
 };
 
-// FoeGuard Logo Component — round red badge (no ring)
+// FoeGuard Logo — cream wordmark (transparent bg) sized by height so it sits
+// cleanly on the red navbar and the dark footer.
 const FoeGuardLogo = ({ size = 'default' }) => {
-  const sizes = {
-    small: 56,
-    default: 60,
-    large: 120
+  const heights = {
+    small: 22,
+    default: 30,
+    large: 46
   };
-  const dim = sizes[size];
+  const h = heights[size];
 
   return (
     <img
-      src="https://customer-assets.emergentagent.com/job_build-box-redesign/artifacts/7j9zxw13_FoeGuard%20Official%20Logo_2026.png"
+      src="/fg_wordmark.png"
       alt="FoeGuard"
       style={{
-        width: dim,
-        height: dim,
+        height: h,
+        width: 'auto',
         objectFit: 'contain',
         display: 'block'
       }}
@@ -508,7 +509,7 @@ const ModernFooter = () => {
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
         gap: '28px',
-        padding: '32px 20px 24px',
+        padding: 'clamp(48px, 6vw, 64px) 20px',
         maxWidth: '1200px',
         margin: '0 auto'
       }}>
@@ -847,7 +848,7 @@ export const LandingPage = () => {
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
           background: COLORS.cream,
-          padding: '44px 24px 40px'
+          padding: 'clamp(48px, 6vw, 64px) 24px'
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
             <h2 style={{
@@ -918,7 +919,7 @@ export const LandingPage = () => {
             data-testid="identity-section"
             style={{
               background: COLORS.cream,
-              padding: '48px 20px 56px'
+              padding: 'clamp(48px, 6vw, 64px) 20px'
             }}
           >
             <div style={{ maxWidth: '820px', margin: '0 auto', textAlign: 'center' }}>
@@ -954,7 +955,7 @@ export const LandingPage = () => {
         {/* WHY FOEGUARD RAW? */}
         <section style={{
           background: COLORS.white,
-          padding: '28px 20px 36px'
+          padding: 'clamp(48px, 6vw, 64px) 20px'
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             {/* Headline */}
@@ -1133,7 +1134,7 @@ export const LandingPage = () => {
         {/* BENEFITS SECTION */}
         <section style={{
           background: COLORS.cream,
-          padding: '28px 20px 36px'
+          padding: 'clamp(48px, 6vw, 64px) 20px'
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 24px' }}>
@@ -1202,7 +1203,7 @@ export const LandingPage = () => {
         {homepage.howItWorks && homepage.howItWorks.length > 0 && (
           <section
             data-testid="how-it-works-section"
-            style={{ background: COLORS.cream, padding: '28px 20px 36px' }}
+            style={{ background: COLORS.cream, padding: 'clamp(48px, 6vw, 64px) 20px' }}
           >
             <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
               <h2 style={{
@@ -1363,10 +1364,10 @@ export const LandingPage = () => {
         {/* PROTEIN OPTIONS — 8+ Meat Options */}
         <section style={{
           background: COLORS.white,
-          padding: '28px 20px 36px'
+          padding: 'clamp(48px, 6vw, 64px) 20px'
         }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-            <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 20px' }}>
+            <div style={{ textAlign: 'left', maxWidth: '720px', margin: '0 0 20px' }}>
               <h2 style={{
                 fontSize: 'clamp(30px, 3.6vw, 40px)',
                 fontWeight: 600,
@@ -1394,7 +1395,7 @@ export const LandingPage = () => {
               gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '24px 16px',
               maxWidth: '900px',
-              margin: '0 auto'
+              margin: '0'
             }} className="protein-grid">
               {[
                 { label: 'Chicken', url: 'https://customer-assets.emergentagent.com/job_b68c2142-db90-4d98-9725-e1ffe0396c9b/artifacts/dksu613b_chicken.png' },
@@ -1494,8 +1495,9 @@ export const LandingPage = () => {
                   display: 'block'
                 }}
               >
-                {/* TODO: swap this src for the Shopify-hosted family tradition video */}
-                <source src="" type="video/mp4" />
+                {/* TODO: add a <source> here once the Shopify-hosted family tradition
+                    video URL exists. Until then we show the poster image only (an empty
+                    <source src=""> triggers a browser "empty src" warning, so it's omitted). */}
               </video>
               {/* Overlay tint on top of the video/poster to keep the warm brand look */}
               <div
@@ -1577,7 +1579,7 @@ export const LandingPage = () => {
         {/* FAQ SECTION */}
         <section style={{
           background: COLORS.white,
-          padding: '28px 20px 36px'
+          padding: 'clamp(48px, 6vw, 64px) 20px'
         }}>
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <h2 style={{
@@ -1657,7 +1659,7 @@ export const LandingPage = () => {
         {/* SECTION 9 — READY TO MAKE THE SWITCH? (final CTA) */}
         <section className="cta-final-48" style={{
           background: COLORS.redOverlay,
-          padding: '32px 20px 36px',
+          padding: 'clamp(48px, 6vw, 64px) 20px',
           textAlign: 'center',
           color: COLORS.cream
         }}>

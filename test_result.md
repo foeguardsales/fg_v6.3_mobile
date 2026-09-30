@@ -11055,3 +11055,43 @@ agent_communication_2026_09_containers:
         with image + text underneath.
 
         Please report PASS/FAIL per focus with screenshots (desktop + mobile). No login needed.
+
+# ============================================================================
+# 2026-09 SESSION (batch 2) — launch errors, logo, protein align, spacing
+# IMPORTANT: test on the CURRENT preview domain: https://pull-up-site-2.preview.emergentagent.com
+# ============================================================================
+agent_communication_2026_09_batch2:
+    - agent: "main"
+      message: |
+        FRONTEND TEST REQUEST (batch 2). App: FoeGuard (React). Test on
+        https://pull-up-site-2.preview.emergentagent.com  (NOT any a4da9431 URL).
+
+        FOCUS 1 — REPORTED BUG: "errors when launching the site".
+        Load "/" and open the browser console. Confirm there are NO app console errors:
+        specifically NO "An empty string was passed to the src attribute" error (we removed an
+        empty <source src=""> in the Our Story video) and NO CORS / net::ERR_FAILED errors for
+        /api/* calls (all /api calls should be same-origin to pull-up-site-2 and return 200).
+        Ignore 3rd-party analytics noise (tiktok/meta/google-analytics/clarity/stripe.network).
+        PASS = no app errors, Shopify products/collections load (Shop Farm Fresh cards show real photos).
+
+        FOCUS 2 — New logo: the navbar (and footer, and mobile menu) show the cream "FoeGuard"
+        wordmark (/fg_wordmark.png), not the old round badge. Should look clean (transparent bg).
+
+        FOCUS 3 — Protein section ("Pick your dog's favourites from 8 proteins"): header text and
+        the 8-image grid are LEFT-aligned (flush to the left of the content column), not centered.
+
+        FOCUS 4 — Pre-menu funnel bug fix: open the menu funnel (e.g. click a "Shop"/"Order Now"
+        entry that shows the funnel with options). The "Meal Recommendations" option must navigate
+        to /meal-plan (NOT open the calculator). The "Shop Raw" option still goes to the menu.
+
+        FOCUS 5 — Homepage sections still render correctly after the spacing/typography changes:
+        Shop Farm Fresh cinematic cards (dark-green title buttons with arrow), Benefits feature
+        cards (image + text underneath, clean background), How It Works feature cards, and the
+        "Why FoeGuard Raw" circular compare slider (no white ring, blends into background).
+
+        FOCUS 6 — MOBILE (390x844): the Shop Farm Fresh and How It Works carousels should be
+        full-bleed (cards flow to the right screen edge, first card starts at left). A horizontal
+        swipe should NOT trigger navigation; a direct tap on a Shop Farm Fresh card should navigate.
+        Also on /new-to-raw the 3-image comparison row should START on the LEFT card (not centered).
+
+        Report PASS/FAIL per focus with desktop + mobile screenshots. No login required.

@@ -350,3 +350,12 @@ FoeGuard is a raw dog & cat food e-commerce site for Ontario, CA. The user itera
 - **Why FoeGuard Raw** compare slider — removed white ring/shadow; circle now fills with section background for a clean look.
 - **Typography → Rubik sitewide** — all inline `Barlow`/`Barlow Semi Condensed` font strings and CSS vars swapped to Rubik (weights 300–800 imported). Base type scale set: mobile H1 26 / H2 20 / H3 18 / body 14 / small 13; desktop H1 42 / H2 30 / H3 22 / body 16 / small 14. Weight hierarchy H1 700, H2/H3 600, body 400, buttons 600, nav 500.
 - **PENDING (next):** universal page-width normalization (desktop 1200 / tablet 960 / mobile 100%+16px) and standard section spacing (desktop 64 / mobile 48) across all pages — deferred as a separate focused pass.
+
+### 2026-09 (batch 2) — launch errors, logo, protein align, breathability
+- **Preview domain rotated** to `https://pull-up-site-2.preview.emergentagent.com` (frontend/.env REACT_APP_BACKEND_URL already updated to it). The earlier CORS/net::ERR_FAILED "launch errors" were only from loading the STALE a4da9431 URL — same-origin on the current domain, no code issue.
+- **BUG FIX (launch error)** — removed an empty `<source src="">` placeholder in the Our Story `<video>` (caused "empty string passed to src attribute"). Verified: 0 empty-src, 0 app console errors (testing agent PASS).
+- **Logo** — replaced round red badge with the new cream "FoeGuard" wordmark. Processed the supplied red-background PNG into a tight transparent-bg wordmark at `frontend/public/fg_wordmark.png`; `FoeGuardLogo` now renders it height-based (navbar/footer/mobile menu).
+- **Protein "Our Ingredients" section** — header + 8-image grid now LEFT-aligned (was centered).
+- **Breathability** — 9 homepage content sections bumped to `padding: clamp(48px,6vw,64px) <side>` (mobile ~48 / desktop ~64) for Apple-like whitespace; nav/announcement untouched.
+- **Funnel fix** — pre-menu "Meal Recommendations" now navigates to /meal-plan (MenuFunnel accepts/uses onMealPlan; was wired to onCalculator).
+- **Comparison center-start** — `.spb-images` (ShopifyPageBuilder 3-image row) changed to justify-content:flex-start + scroll-snap-align:start (+ scroll-padding-left) so it starts on the left card on mobile.
