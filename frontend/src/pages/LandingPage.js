@@ -446,104 +446,6 @@ const ModernNavbar = () => {
   );
 };
 
-// Trust Badge Marquee — uses the warm brown so the hero's bottom-fade merges seamlessly.
-// When the Shopify metaobject `our_promise / home_brand_badges_1` is populated,
-// its `badge_title` (list.file_reference → MediaImage) is used to render the
-// icons. Otherwise falls back to the hardcoded text badges below.
-//
-// Layout notes: the marquee track duplicates the badge list EXACTLY ONCE so a
-// `translateX(-50%)` keyframe produces a seamless loop with no visible gap at
-// wrap-around. Height scales with viewport (mobile 60 → tablet 74 → desktop 88)
-// so the badges stay fully readable on every screen.
-const TrustMarquee = () => {
-  const [imgBadges, setImgBadges] = useState([]);
-  useEffect(() => {
-    let alive = true;
-    metaobjects.getMetaobject('our_promise', 'home_brand_badges_1')
-      .then((mo) => {
-        if (!alive || !mo) return;
-        const list = mo.fields?.badge_title || [];
-        const urls = (Array.isArray(list) ? list : [list])
-          .map((x) => x?.url || (typeof x === 'string' ? x : null))
-          .filter(Boolean);
-        if (urls.length) setImgBadges(urls);
-      });
-    return () => { alive = false; };
-  }, []);
-
-  const textBadges = ['Farm Fresh', '100% Canadian', 'Family-Run', 'Organic', 'Human Grade'];
-
-  return (
-    <div className="trust-marquee-outer" style={{
-      background: '#2C2C2C',
-      color: COLORS.cream,
-      overflow: 'hidden',
-      padding: '18px 0',
-      marginTop: '0',
-      width: '100%'
-    }}>
-      <div className="trust-marquee-track">
-        {imgBadges.length > 0 ? (
-          // Duplicate exactly once so translateX(-50%) yields a seamless loop.
-          [...imgBadges, ...imgBadges].map((url, i) => (
-            <span key={i} className="trust-marquee-item">
-              <img src={url} alt="" className="trust-marquee-img" />
-            </span>
-          ))
-        ) : (
-          [...textBadges, ...textBadges].map((badge, i) => (
-            <span key={i} className="trust-marquee-item trust-marquee-item--text">
-              <span style={{ color: COLORS.white, opacity: 0.85, marginRight: '10px' }}>✦</span>
-              {badge}
-            </span>
-          ))
-        )}
-      </div>
-      <style>{`
-        .trust-marquee-track {
-          display: flex;
-          align-items: center;
-          width: max-content;
-          animation: marquee 28s linear infinite;
-          white-space: nowrap;
-        }
-        .trust-marquee-item {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          padding: 0 44px;
-        }
-        .trust-marquee-item--text {
-          font-size: 15px;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-        }
-        .trust-marquee-img {
-          display: block;
-          height: 60px;
-          width: auto;
-          max-width: none;
-        }
-        @media (min-width: 640px) {
-          .trust-marquee-item { padding: 0 60px; }
-          .trust-marquee-img { height: 74px; }
-        }
-        @media (min-width: 1024px) {
-          .trust-marquee-outer { padding: 22px 0 !important; }
-          .trust-marquee-item { padding: 0 76px; }
-          .trust-marquee-img { height: 88px; }
-        }
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
-    </div>
-  );
-};
-
 // Modern Footer
 const ModernFooter = () => {
   const navigate = useNavigate();
@@ -934,9 +836,6 @@ export const LandingPage = () => {
               </p>
           </div>
         </section>
-
-        {/* TRUST MARQUEE */}
-        <TrustMarquee />
 
         {/* COLLECTION CARDS - "Shop Farm Fresh" */}
         <section style={{
