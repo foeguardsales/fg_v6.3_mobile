@@ -78,9 +78,9 @@ const outlineButtonStyle = {
 // cleanly on the red navbar and the dark footer.
 const FoeGuardLogo = ({ size = 'default' }) => {
   const heights = {
-    small: 22,
-    default: 30,
-    large: 46
+    small: 19,
+    default: 26,
+    large: 40
   };
   const h = heights[size];
 
